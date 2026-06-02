@@ -237,8 +237,45 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     color: var(--border-strong);
 }
 
+/* ---------- Hero CTA buttons ---------- */
+.hero-cta { display: flex; gap: 0.8em; flex-wrap: wrap; margin: 0 0 1.6em 0; }
+.btn-hero {
+    display: inline-flex; align-items: center; gap: 0.5em;
+    padding: 0.7em 1.5em; border-radius: var(--btn-border-radius);
+    font-size: 1em; font-weight: 600; cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition), border-color var(--transition);
+    text-decoration: none;
+}
+.btn-hero:hover { transform: translateY(-1px); text-decoration: none; }
+.btn-primary { background: var(--accent); color: #15110F; border: 1px solid transparent; }
+.btn-primary:hover { background: var(--accent-strong); }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ---------- Arc opener (always-visible) ---------- */
+.arc-opener {
+    font-size: 1.15em;
+    font-weight: 500;
+    color: var(--text);
+    margin: 1.6em 0 0.6em 0 !important;
+}
+
 .intro-columns { display: flex; gap: 2em; margin-top: 1em; }
 .intro-columns p { width: 50%; font-size: 1.22em; }
+
+/* ---------- Stack / How I work ---------- */
+.stack-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.4em; margin-top: 0.4em; }
+.stack-col h3 { font-size: 1.4em; color: var(--text); margin-bottom: 0.8em; }
+.stack-col ul { list-style: none; padding: 0; margin: 0; }
+.stack-col li {
+    font-size: 1em; padding: 0.65em 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+}
+.stack-col li:last-child { border-bottom: none; }
+@media only screen and (max-width: 900px) {
+    .stack-grid { grid-template-columns: 1fr; gap: 1.6em; }
+}
 
 /* ---------- The arc (collapsible narrative) ---------- */
 .arc { margin-top: 1.8em; }
