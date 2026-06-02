@@ -239,6 +239,36 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .intro-columns { display: flex; gap: 2em; margin-top: 1em; }
 .intro-columns p { width: 50%; font-size: 1.22em; }
 
+/* ---------- The arc (collapsible narrative) ---------- */
+.arc { margin-top: 1.8em; }
+.arc summary {
+    cursor: pointer;
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    width: fit-content;
+    font-weight: 600;
+    font-size: 0.95em;
+    color: var(--accent);
+}
+.arc summary::-webkit-details-marker { display: none; }
+.arc summary::after { content: "↓"; transition: transform var(--transition); }
+.arc[open] summary::after { transform: rotate(180deg); }
+.arc summary:hover { text-decoration: underline; }
+.arc-body { margin-top: 1.2em; max-width: 68ch; }
+.arc-body p { font-size: 1.05em; line-height: 1.7; color: var(--muted); margin: 0 0 1em 0; }
+.arc-body p:first-child { color: var(--text); font-size: 1.18em; }
+.arc-body p:last-child { margin-bottom: 0; }
+
+/* y30 creed line (always visible) */
+.featured-creed {
+    color: var(--text) !important;
+    font-size: 1.12em !important;
+    font-style: italic;
+    margin: 0.2em 0 0 0 !important;
+}
+
 /* ---------- Featured (y30) card ---------- */
 .featured-card {
     background-color: var(--surface);
