@@ -92,6 +92,7 @@ body {
     align-items: center;
     transition: background-color var(--transition), color var(--transition);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
 /* Universal content width */
@@ -403,6 +404,8 @@ button:active { transform: translateY(1px); }
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 .testimonial-card p {
     font-size: 1em;
