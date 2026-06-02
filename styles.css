@@ -260,8 +260,8 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     margin: 1.6em 0 0.6em 0 !important;
 }
 
-.intro-columns { display: flex; gap: 2em; margin-top: 1em; }
-.intro-columns p { width: 50%; font-size: 1.22em; }
+.intro-columns { display: flex; flex-direction: column; gap: 0.8em; margin-top: 1em; }
+.intro-columns p { width: 100%; font-size: 1.22em; }
 
 /* ---------- Stack / How I work ---------- */
 .stack-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.4em; margin-top: 0.4em; }
