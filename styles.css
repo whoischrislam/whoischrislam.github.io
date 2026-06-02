@@ -470,6 +470,12 @@ button:active { transform: translateY(1px); }
 .project-card h3 { font-size: 1.9em; color: var(--text); }
 .project-card > p { font-size: 0.98em; color: var(--muted); }
 .project-card .keyword-container { margin: auto 0 1.2em 0; }
+.project-unlock {
+    font-size: 0.82em;
+    color: var(--accent);
+    margin: 0.2em 0 0.8em 0 !important;
+}
+.project-unlock::before { content: "→ "; }
 .project-status {
     display: block;
     font-size: 0.85em;
