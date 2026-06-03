@@ -252,6 +252,118 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
+/* ---------- Hero subtitle (co-founder line) ---------- */
+.hero-subtitle {
+    font-size: 1.3em;
+    color: var(--muted);
+    margin: 0 0 1.6em 0;
+    opacity: 0;
+    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 1 forwards;
+    animation-delay: 2.2s;
+}
+
+/* ---------- Voice placeholder ---------- */
+.voice-placeholder {
+    display: inline-block;
+    width: fit-content;
+    margin: 0 0 1.6em 0;
+    padding: 0.7em 1.4em;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--border-radius);
+}
+.voice-placeholder p {
+    margin: 0;
+    font-size: 0.92em;
+    color: var(--muted);
+}
+
+/* ---------- Open-to chip row (hero) ---------- */
+.open-to-chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4em;
+    margin: 0 0 1.6em 0;
+}
+.open-to-label {
+    font-size: 0.78em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    margin-right: 0.2em;
+}
+.open-to-chip {
+    font-size: 0.82em;
+    font-weight: 500;
+    padding: 0.3em 0.85em;
+    border-radius: 2em;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* ---------- Arc stages grid ---------- */
+.arc-stages {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin: 1.2em 0 1.6em 0;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+.arc-stage {
+    padding: 1.2em;
+    border-right: 1px solid var(--border);
+}
+.arc-stage:last-child { border-right: none; }
+.arc-stage-title {
+    display: block;
+    font-weight: 700;
+    font-size: 0.92em;
+    color: var(--accent);
+    margin-bottom: 0.15em;
+}
+.arc-stage-dates {
+    display: block;
+    font-size: 0.72em;
+    color: var(--muted);
+    margin-bottom: 0.7em;
+    font-family: var(--body-font);
+}
+.arc-stage-desc {
+    font-size: 0.88em !important;
+    color: var(--text) !important;
+    line-height: 1.55;
+    margin: 0 0 0.8em 0 !important;
+}
+.arc-stage-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3em;
+}
+.arc-stage-chips span {
+    font-size: 0.72em;
+    padding: 0.2em 0.6em;
+    border-radius: 2em;
+    background: var(--chip-bg);
+    color: var(--chip-text);
+    border: 1px solid var(--border);
+}
+@media only screen and (max-width: 700px) {
+    .arc-stages { grid-template-columns: 1fr; }
+    .arc-stage { border-right: none; border-bottom: 1px solid var(--border); }
+    .arc-stage:last-child { border-bottom: none; }
+}
+
+/* ---------- Contact section ---------- */
+.contact-lede {
+    font-size: 1.1em;
+    color: var(--muted);
+    margin: 1em 0 0 0 !important;
+}
+
 /* ---------- Arc opener (always-visible) ---------- */
 .arc-opener {
     font-size: 1.15em;
@@ -839,6 +951,6 @@ footer #nav-links { gap: 1.4em; }
         scroll-behavior: auto !important;
     }
     .animation-appear { opacity: 1; transform: none; }
-    #hero-line-1, #hero-line-2 { opacity: 1; }
+    #hero-line-1, #hero-line-2, .hero-subtitle { opacity: 1; }
     #loading { display: none; }
 }
