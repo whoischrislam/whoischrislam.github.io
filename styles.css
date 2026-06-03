@@ -358,6 +358,11 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 }
 
 /* ---------- Contact section ---------- */
+.contact-subtitle {
+    font-size: 1.2em;
+    color: var(--text);
+    margin: 0.2em 0 1em 0 !important;
+}
 .contact-lede {
     font-size: 1.1em;
     color: var(--muted);
