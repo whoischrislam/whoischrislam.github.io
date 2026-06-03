@@ -316,7 +316,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     box-shadow: var(--drop-shadow);
     position: relative;
     overflow: hidden;
-    max-width: 720px;
+    max-width: 100%;
 }
 .featured-card::before {
     content: "";
