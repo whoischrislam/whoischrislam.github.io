@@ -195,7 +195,7 @@ section {
 /* Subtle alternating rhythm */
 section:nth-of-type(even) { background-color: var(--bg-alt); }
 
-.section-lede { color: var(--muted); max-width: 46ch; }
+.section-lede { color: var(--muted); max-width: 100%; }
 
 /* ---------- Hero ---------- */
 #introduction { padding-top: 6em; padding-bottom: 4em; }
@@ -271,7 +271,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     display: flex;
     flex-direction: column;
     gap: 0;
-    max-width: 72ch;
+    max-width: 100%;
 }
 .looking-for-list li {
     font-size: 1.08em;
@@ -322,7 +322,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .arc summary::after { content: "↓"; transition: transform var(--transition); }
 .arc[open] summary::after { transform: rotate(180deg); }
 .arc summary:hover { text-decoration: underline; }
-.arc-body { margin-top: 1.2em; max-width: 68ch; }
+.arc-body { margin-top: 1.2em; max-width: 100%; }
 .arc-body p { font-size: 1.05em; line-height: 1.7; color: var(--muted); margin: 0 0 1em 0; }
 .arc-body p:first-child { color: var(--text); font-size: 1.18em; }
 .arc-body p:last-child { margin-bottom: 0; }
@@ -632,7 +632,7 @@ button:active { transform: translateY(1px); }
 /* ---------- Side projects ---------- */
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
     gap: 1.4em;
 }
 .project-card {
