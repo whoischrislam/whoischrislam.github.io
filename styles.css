@@ -388,6 +388,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .featured-actions button:disabled { opacity: 0.38; cursor: not-allowed; }
 .featured-actions button:disabled:hover { background-color: transparent; }
 .featured-visit { margin-top: 0.7em; }
+.featured-repo-link { margin-top: 0.8em !important; font-size: 0.88em !important; color: var(--muted) !important; }
 @media only screen and (max-width: 540px) {
     .featured-decisions li { grid-template-columns: 1fr; gap: 0.3em; }
 }
