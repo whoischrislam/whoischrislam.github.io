@@ -139,6 +139,32 @@
                         <p class="featured-role">Co-Founder &amp; CPTO · since 2026</p>
                         <p>Voice AI for older adults and their caregivers. I've spent years in the unglamorous parts of healthtech: call centers, care-coordination handoffs. The places where the gap between the system and the actual person is hardest to ignore. y30 is the layer that closes it, built to create useful caregiver signal, not just transcripts. I own the product, the UX, and the voice AI architecture, including an FSM safety engine with deterministic crisis response so the model never generates crisis language.</p>
                         <p class="featured-creed">Healthcare is the thread. Voice is the medium. Dignity is the constraint.</p>
+
+                        <div class="featured-divider"></div>
+
+                        <div class="featured-section animation-appear">
+                            <h4 class="featured-section-label">The problem</h4>
+                            <p>Caregivers and clinicians are flying blind between appointments. A senior can decline significantly in days, but the system only finds out at the next visit — if at all. The signal exists; it just has no infrastructure to surface it.</p>
+                        </div>
+
+                        <div class="featured-section animation-appear">
+                            <h4 class="featured-section-label">What I built</h4>
+                            <ul class="featured-decisions">
+                                <li>
+                                    <span class="featured-decision-title">FSM safety engine</span>
+                                    <span class="featured-decision-rationale">Crisis paths are deterministic code, not prompt instructions — a hard state the model cannot override. In healthcare, you cannot let an LLM improvise on a suicidal ideation turn.</span>
+                                </li>
+                                <li>
+                                    <span class="featured-decision-title">Longitudinal memory</span>
+                                    <span class="featured-decision-rationale">Sessions accumulate into caregiver intelligence over time. One call is a transcript. Thirty calls is a cognitive and emotional baseline a clinician can actually act on.</span>
+                                </li>
+                                <li>
+                                    <span class="featured-decision-title">Elder-first voice UX</span>
+                                    <span class="featured-decision-rationale">No app, no screen, no login — just a phone call. Every friction point removed for a 75+ user who may not own a smartphone or tolerate a new interface.</span>
+                                </li>
+                            </ul>
+                        </div>
+
                         <div class="keyword-container">
                             <p class="keyword">Voice AI</p>
                             <p class="keyword">Elder Care</p>
@@ -151,7 +177,14 @@
                             <p class="keyword">React</p>
                             <p class="keyword">Supabase</p>
                         </div>
-                        <button class="button" onclick="window.open('https://y30.ai', '_blank')">Visit y30.ai <span class="arrow">↗</span></button>
+
+                        <div class="button-group featured-actions animation-appear">
+                            <button class="button ghost" disabled title="Demo coming soon">▶ Watch demo</button>
+                            <button class="button" onclick="window.location.href='mailto:whoischrislam@gmail.com?subject=y30%20live%20walkthrough'">Schedule a live walkthrough <span class="arrow">→</span></button>
+                        </div>
+                        <div class="featured-visit animation-appear">
+                            <button class="button" onclick="window.open('https://y30.ai', '_blank')">Visit y30.ai <span class="arrow">↗</span></button>
+                        </div>
                     </article>
                 </div>
             </section>
