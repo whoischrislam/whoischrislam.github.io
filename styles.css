@@ -345,6 +345,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     animation: pulse 1.8s ease-in-out infinite;
 }
 .featured-glyph { color: var(--accent); font-size: 28px; opacity: 0.55; }
+.featured-badge-past { color: var(--muted); background: var(--chip-bg); border: 1px solid var(--border); }
 .featured-card h3 { color: var(--text); }
 .featured-card p { font-size: 1.05em; color: var(--muted); }
 
