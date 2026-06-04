@@ -281,12 +281,12 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-title { display: flex; align-items: center; gap: 0.4em; font-size: 1.05em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
 .va-title-icon { font-size: 20px; color: var(--accent); }
 .va-scope { font-size: 0.82em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
-.va-disclosure { font-size: 0.7em !important; color: var(--muted) !important; line-height: 1.5; margin: 0.8em 0 0 0 !important; }
+.va-disclosure { font-size: 0.66em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
 
-.va-modes { display: flex; flex-wrap: wrap; gap: 0.4em; margin-bottom: 1em; }
+.va-modes { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
 .va-mode {
-    font-size: 0.78em; font-weight: 500;
-    padding: 0.32em 0.85em !important;
+    font-size: 0.82em; font-weight: 500;
+    padding: 0.42em 0.95em !important;
     border: 1px solid var(--border-strong) !important;
     color: var(--muted) !important;
     cursor: pointer;
@@ -299,16 +299,24 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     background: var(--accent-soft) !important;
 }
 
-.va-conversation { display: flex; flex-direction: column; gap: 0.7em; max-height: 18em; overflow-y: auto; margin-bottom: 0.6em; }
+.va-conversation { display: flex; flex-direction: column; gap: 0.9em; }
 .va-conversation:empty { display: none; }
-.va-turn { font-size: 0.92em !important; line-height: 1.55; margin: 0 !important; padding: 0.6em 0.85em; border-radius: 0.7em; white-space: pre-wrap; overflow-wrap: break-word; }
-.va-turn-you { align-self: flex-end; background: var(--chip-bg); color: var(--text) !important; max-width: 85%; }
-.va-turn-agent { align-self: flex-start; background: var(--accent-soft); color: var(--text) !important; max-width: 94%; }
+.va-turn { margin: 0 !important; white-space: pre-wrap; overflow-wrap: break-word; }
+.va-turn-you { align-self: flex-end; max-width: 82%; font-size: 0.84em !important; line-height: 1.45; padding: 0.45em 0.8em; border-radius: 0.9em; background: var(--chip-bg); color: var(--muted) !important; }
+.va-turn-agent { align-self: stretch; max-width: 100%; font-size: 0.95em !important; line-height: 1.62; padding: 0.1em 0 0.2em 0.95em; border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); color: var(--text) !important; }
 
-.va-status { font-size: 0.8em !important; color: var(--muted) !important; margin: 0 0 0.6em 0 !important; }
+.va-status { font-size: 0.8em !important; color: var(--muted) !important; margin: 0 !important; }
 .va-status:empty { display: none; }
 
-.va-flows { display: flex; flex-wrap: wrap; gap: 0.4em; margin-bottom: 0.8em; }
+/* Single-scroll dock frame: header (dock) / scrolling messages / pinned footer tray */
+.va-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 0.7em; padding: 1.1em 1.2em 0.5em; }
+.va-foot { flex-shrink: 0; display: flex; flex-direction: column; gap: 0.55em; padding: 0.7em 1.1em 0.85em; border-top: 1px solid var(--border); background: var(--surface); }
+.va-intro { display: flex; flex-direction: column; gap: 0.7em; }
+.va-intro-msg { display: flex; align-items: flex-start; gap: 0.45em; font-size: 0.9em !important; line-height: 1.55; color: var(--text) !important; margin: 0 !important; }
+.va-intro-msg .va-title-icon { position: relative; top: 2px; flex-shrink: 0; }
+.va-started .va-intro-msg { display: none; }
+
+.va-flows { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
 .va-flows:empty { display: none; }
 .va-flow {
     font-size: 0.8em;
@@ -377,7 +385,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 }
 
 /* ---------- Recruiter brief (export artifact) ---------- */
-.va-brief-bar { margin-top: 0.8em; }
+.va-brief-bar { display: contents; }
 .va-brief-cta {
     width: auto !important;
     font-size: 0.85em; font-weight: 600;
@@ -438,9 +446,10 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-dock-title { font-size: 0.85em; font-weight: 600; color: var(--text); }
 .va-dock-close { width: auto !important; background: none !important; color: var(--muted) !important; padding: 0.1em 0.5em !important; font-size: 1.3em; line-height: 1; cursor: pointer; border-radius: 0.4em !important; }
 .va-dock-close:hover { color: var(--accent) !important; }
-.va-dock-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-/* Inside the dock, the agent drops its own card chrome (the dock provides it) */
-.va-dock .voice-agent { margin: 0 !important; border: none !important; box-shadow: none !important; max-width: none !important; border-radius: 0 !important; }
+.va-dock-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+/* Inside the dock, the agent drops its own card chrome (the dock provides it) and
+   fills the body as a flex column so only .va-scroll scrolls (no scroll-in-scroll) */
+.va-dock .voice-agent { margin: 0 !important; border: none !important; box-shadow: none !important; max-width: none !important; border-radius: 0 !important; padding: 0 !important; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 @media only screen and (max-width: 540px) {
     .va-dock { left: 0.6em; right: 0.6em; bottom: 0.6em; width: auto; max-height: 80vh; }
 }
@@ -458,9 +467,9 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     #brief-print-root .va-brief-actions { display: none !important; }
     #brief-print-root li::before { color: #000 !important; }
     #brief-print-root h4, #brief-print-root li, #brief-print-root p { break-inside: avoid; }
-    /* The brief lives inside the fixed dock; un-clip it so it prints in full */
-    #va-dock { position: static !important; overflow: visible !important; max-height: none !important; height: auto !important; width: auto !important; border: none !important; box-shadow: none !important; background: #fff !important; }
-    .va-dock-head { display: none !important; }
+    /* The brief lives inside the fixed dock's scroll region; un-clip both so it prints in full */
+    #va-dock, .va-dock-body, .va-scroll { position: static !important; overflow: visible !important; max-height: none !important; height: auto !important; width: auto !important; border: none !important; box-shadow: none !important; background: #fff !important; }
+    .va-dock-head, .va-foot { display: none !important; }
     .va-launcher, header, footer, .read-progress, #loading { display: none !important; }
 }
 

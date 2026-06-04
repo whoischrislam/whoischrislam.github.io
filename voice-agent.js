@@ -13,6 +13,7 @@
   function slice(n) { return Array.prototype.slice.call(n); }
 
   var modeBtns = slice(root.querySelectorAll(".va-mode"));
+  var scrollEl = root.querySelector(".va-scroll");
   var convoEl = root.querySelector(".va-conversation");
   var statusEl = root.querySelector(".va-status");
   var flowsEl = root.querySelector(".va-flows");
@@ -69,15 +70,16 @@
   function setStatus(m) { statusEl.textContent = m || ""; }
 
   function addTurn(role, text) {
+    root.classList.add("va-started"); // collapse the opener once the conversation begins
     var el = document.createElement("p");
     el.className = "va-turn va-turn-" + role;
     el.textContent = text;
     convoEl.appendChild(el);
-    convoEl.scrollTop = convoEl.scrollHeight;
+    if (scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight;
   }
 
   function renderFlows() {
-    var set = FLOWS[lens] || FLOWS.default;
+    var set = (FLOWS[lens] || FLOWS.default).slice(0, 3); // keep the footer tray compact
     flowsEl.innerHTML = "";
     set.forEach(function (q) {
       var b = document.createElement("button");
@@ -109,12 +111,22 @@
   function extFor(m) { if (m.indexOf("mp4") > -1) return "audio.mp4"; if (m.indexOf("ogg") > -1) return "audio.ogg"; return "audio.webm"; }
 
   // --- modes (change answer format server-side) ---
+  // A short, lens-tailored acknowledgement so picking a role feels like the guide
+  // engaging, not a passive filter. Spoken nowhere; just seeds the conversation.
+  var ACK = {
+    recruiter: "Got it, I'll keep this recruiter-focused: fit, level, and the fastest read on whether he's worth an interview. Ask away, or tap a question below.",
+    hiring_manager: "Got it. I'll go deeper on systems, what he'd own, and the outcomes he's actually moved. Ask away, or tap a question below.",
+    founder: "Got it. Founder lens: what Chris owns end to end and where he creates uncommon value. Ask away, or tap a question below.",
+    y30: "Got it. I'll focus on y30: what it is, how it's built, and the safety model. Ask away, or tap a question below.",
+  };
   modeBtns.forEach(function (b) {
     b.addEventListener("click", function () {
       if (state() !== "idle") return;
+      var firstPick = !root.classList.contains("va-started");
       if (lens === b.dataset.lens) { lens = null; b.classList.remove("is-active"); }
       else { lens = b.dataset.lens; modeBtns.forEach(function (x) { x.classList.toggle("is-active", x === b); }); }
       renderFlows();
+      if (lens && firstPick) addTurn("agent", ACK[lens] || "Got it. Ask away, or tap a question below.");
     });
   });
 
