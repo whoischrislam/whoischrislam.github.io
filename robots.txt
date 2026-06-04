@@ -1,4 +1,4 @@
-# whoischrislam.github.io — open to humans and AI alike.
+# whoischrislam.github.io: open to humans and AI alike.
 # AI crawlers are explicitly welcome, especially the query-time search bots
 # that surface citations when someone researches Chris with an AI assistant.
 

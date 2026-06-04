@@ -1,0 +1,30 @@
+# Chris Lam
+
+> Product engineer and designer, 14 years. Designs, builds, and ships end to end with no handoff. Building voice AI at y30. Open to senior IC roles, full-time, on small, fast, AI-native teams in AI, voice, and product engineering.
+
+Chris Lam (Christopher Lam) is a product engineer and designer based in Honolulu, remote-first, with Bay Area availability when needed. He has spent 14 years as the first, sole, or early designer-engineer in the room across healthcare, marketplaces, and consumer software. He is AI-native: he steers product, architecture, and systems while using AI agents to implement, owning the judgment, code review, and safety gates. He is currently Co-Founder and CPTO at y30 (voice AI for older adults and their caregivers) and is open to senior IC roles, full-time.
+
+His exits, framed honestly and never as a trophy count: he was early at Clover Health and GoodRx (both later IPO'd), a rescue hire at Sharecare during its acquisition (which then went public), and did the 2014 TaskRabbit rebrand before IKEA acquired it. The signal is repeated high ownership at early or critical stages, not an exit count.
+
+## Key pages
+- [Portfolio](https://whoischrislam.github.io): the full site, with selected work, the y30 and PlaySesh case studies, recommendations, and an interactive AI hiring guide.
+- [Candidate fact sheet](https://whoischrislam.github.io/candidate.html): a plain, machine-readable summary of role targets, outcomes, skills, and common questions.
+- [Resume (PDF)](https://whoischrislam.github.io/chris-lam-resume.pdf)
+
+## Profiles
+- [LinkedIn](https://www.linkedin.com/in/whoischrislam/)
+- [GitHub](https://github.com/whoischrislam)
+- [Dribbble](https://dribbble.com/whoischrislam)
+- [y30](https://y30.ai)
+
+## Selected outcomes
+- Clover Health (2nd designer, later IPO'd): ~7-8x lift in nurse visit-related revenue, ~2 hours saved per nurse per day.
+- GoodRx / Iodine (first full-time designer, later IPO'd): coupon conversion 2% to 5%; dataviz on Good Morning America and ABC News, cited by The Motley Fool; Webby 2018.
+- TaskRabbit (later acquired by IKEA): owned the Tasker experience; NPS recovered from about -5 to the mid-50s.
+- Amazon: prototyped the buy-and-gift Prime flow that contributed to 1M+ new subscribers.
+- Modus Create: shipped dark mode for JIRA and Confluence Cloud, 500K+ enterprise users.
+- y30: built the voice pipeline (multi-provider, deep fallback) and a model-independent safety floor; 1,389 commits, 127 test files.
+- PlaySesh: built 0 to 1 solo; 5,120 users across 121 Discord servers, 1,302 MAU, all organic.
+
+## Contact
+whoischrislam@gmail.com
