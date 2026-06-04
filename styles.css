@@ -202,7 +202,17 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 #introduction { padding-top: 6em; padding-bottom: 4em; }
 #introduction .section-content { display: flex; flex-direction: column; }
 #hero-line-1, #hero-line-2 { font-size: var(--h1-size); margin: 0; }
-#hero-line-2 { color: var(--accent); margin-bottom: 0.6em; }
+#hero-line-2 { margin-bottom: 0.1em; }
+.hero-claim {
+    font-family: var(--header-font);
+    font-weight: 400;
+    font-size: var(--h1-size);
+    line-height: 1.05;
+    letter-spacing: 0.4px;
+    color: var(--accent);
+    margin: 0 0 0.6em 0;
+    text-wrap: balance;
+}
 
 .availability {
     display: inline-block;
@@ -504,70 +514,96 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-/* ---------- Arc stages grid ---------- */
-.arc-stages {
+/* ---------- The arc: always-visible career track + expandable story ---------- */
+.arc-block { margin-top: 2.6em; }
+.arc-block .section-label { margin-bottom: 0.5em; }
+.arc-track {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.6em 0;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0;
-    margin: 1.2em 0 1.6em 0;
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius);
-    overflow: hidden;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6em;
 }
-.arc-stage {
-    padding: 1.2em;
-    border-right: 1px solid var(--border);
+.arc-step {
+    position: relative;
+    padding-top: 1.1em;
+    border-top: 2px solid var(--border);
 }
-.arc-stage:last-child { border-right: none; }
-.arc-stage-title {
+.arc-step::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-strong);
+}
+.arc-step-now::before {
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.arc-step-title { display: block; font-weight: 600; font-size: 1.02em; color: var(--text); }
+.arc-step-now .arc-step-title { color: var(--accent); }
+.arc-step-dates {
     display: block;
-    font-weight: 700;
-    font-size: 0.92em;
-    color: var(--accent);
-    margin-bottom: 0.15em;
-}
-.arc-stage-dates {
-    display: block;
-    font-size: 0.72em;
+    font-size: 0.76em;
+    letter-spacing: 0.4px;
     color: var(--muted);
-    margin-bottom: 0.7em;
+    margin: 0.2em 0 0.55em 0;
     font-family: var(--body-font);
 }
-.arc-stage-desc {
-    font-size: 0.88em !important;
-    color: var(--text) !important;
-    line-height: 1.55;
-    margin: 0 0 0.8em 0 !important;
-}
-.arc-stage-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3em;
-}
-.arc-stage-chips span {
-    font-size: 0.72em;
-    padding: 0.2em 0.6em;
+.arc-step-desc { font-size: 0.9em !important; color: var(--muted) !important; line-height: 1.55; margin: 0 !important; }
+
+.arc-more { margin: 0; }
+.arc-more-toggle {
+    cursor: pointer;
+    list-style: none;
+    width: fit-content;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.5em 1.1em;
+    border: 1px solid var(--border-strong);
     border-radius: 2em;
-    background: var(--chip-bg);
-    color: var(--chip-text);
-    border: 1px solid var(--border);
+    font-size: 0.88em;
+    font-weight: 600;
+    color: var(--text);
+    transition: border-color var(--transition), color var(--transition);
 }
+.arc-more-toggle::-webkit-details-marker { display: none; }
+.arc-more-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.arc-more-chevron { font-size: 18px; transition: transform var(--transition); }
+.arc-more[open] .arc-more-chevron { transform: rotate(180deg); }
+.arc-more-body { margin-top: 1.4em; max-width: 100%; }
+.arc-more-body p { font-size: 1.02em; line-height: 1.7; color: var(--muted); margin: 0 0 1em 0; }
+.arc-more-body p:first-child { color: var(--text); }
+.arc-more-body p:last-child { margin-bottom: 0; }
 @media only screen and (max-width: 700px) {
-    .arc-stages { grid-template-columns: 1fr; }
-    .arc-stage { border-right: none; border-bottom: 1px solid var(--border); }
-    .arc-stage:last-child { border-bottom: none; }
+    .arc-track { grid-template-columns: 1fr; gap: 0; }
+    .arc-step {
+        border-top: none;
+        border-left: 2px solid var(--border);
+        padding-top: 0;
+        padding-left: 1.3em;
+        padding-bottom: 1.4em;
+    }
+    .arc-step::before { top: 2px; left: -6px; }
+    .arc-step:last-child { padding-bottom: 0; }
 }
 
 /* ---------- Contact section ---------- */
+#contact { padding-bottom: 6.5em; }
 .contact-subtitle {
     font-size: 1.2em;
     color: var(--text);
-    margin: 0.2em 0 1em 0 !important;
+    margin: 0.4em 0 1.6em 0 !important;
 }
 .contact-lede {
     font-size: 1.1em;
     color: var(--muted);
-    margin: 1em 0 0 0 !important;
+    margin: 1.6em 0 2em 0 !important;
 }
 
 /* ---------- Arc opener (always-visible) ---------- */
@@ -575,7 +611,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     font-size: 1.15em;
     font-weight: 500;
     color: var(--text);
-    margin: 1.6em 0 0.6em 0 !important;
+    margin: 0.4em 0 1.3em 0 !important;
 }
 
 .intro-columns { display: flex; flex-direction: column; gap: 0.8em; margin-top: 1em; }
@@ -623,27 +659,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     .stack-grid { grid-template-columns: 1fr; gap: 1.6em; }
 }
 
-/* ---------- The arc (collapsible narrative) ---------- */
-.arc { margin-top: 1.8em; }
-.arc summary {
-    cursor: pointer;
-    list-style: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45em;
-    width: fit-content;
-    font-weight: 600;
-    font-size: 0.95em;
-    color: var(--accent);
-}
-.arc summary::-webkit-details-marker { display: none; }
-.arc summary::after { content: "↓"; transition: transform var(--transition); }
-.arc[open] summary::after { transform: rotate(180deg); }
-.arc summary:hover { text-decoration: underline; }
-.arc-body { margin-top: 1.2em; max-width: 100%; }
-.arc-body p { font-size: 1.05em; line-height: 1.7; color: var(--muted); margin: 0 0 1em 0; }
-.arc-body p:first-child { color: var(--text); font-size: 1.18em; }
-.arc-body p:last-child { margin-bottom: 0; }
+/* (old collapsible .arc replaced by .arc-block / .arc-track / .arc-more above) */
 
 /* y30 creed line (always visible) */
 .featured-creed {

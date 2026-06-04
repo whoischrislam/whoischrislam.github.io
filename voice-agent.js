@@ -27,7 +27,8 @@
   var dock = document.getElementById("va-dock");
   var dockBody = dock ? dock.querySelector(".va-dock-body") : null;
   var dockClose = dock ? dock.querySelector(".va-dock-close") : null;
-  var openCta = document.querySelector("[data-va-open]");
+  var openCtas = slice(document.querySelectorAll("[data-va-open]"));
+  var openCta = openCtas[0] || null; // the hero CTA, used for launcher visibility
 
   // Mode-aware quick flows (decision-oriented; content tuned over time).
   var FLOWS = {
@@ -247,8 +248,8 @@
   function done() { setState("idle"); }
   function fail(msg) { setState("idle"); setStatus(msg); }
 
-  // --- the hero CTA and the floating launcher both open the dock ---
-  if (openCta) openCta.addEventListener("click", function (e) { e.preventDefault(); openDock(); });
+  // --- every [data-va-open] CTA (hero + bottom) and the floating launcher open the dock ---
+  openCtas.forEach(function (el) { el.addEventListener("click", function (e) { e.preventDefault(); openDock(); }); });
   if (launcher) {
     launcher.addEventListener("click", openDock);
     // Launcher appears once the hero CTA is scrolled out of view (and the dock is closed).
