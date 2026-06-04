@@ -191,7 +191,7 @@
                         </div>
                         <h3>y30</h3>
                         <p class="featured-role">Co-Founder &amp; CPTO · since 2026</p>
-                        <p>Voice AI for older adults and their caregivers. I play a hybrid product engineer / design engineer role: I define problems with caregivers and clinicians, write the specs, design the IA and interactions, and ship the implementation: LiveKit, Python, React, Supabase. I've spent years in the unglamorous parts of healthtech: call centers, care-coordination handoffs. The places where the gap between the system and the actual person is hardest to ignore. y30 is the layer that closes it, built to create useful caregiver signal, not just transcripts. The voice AI architecture includes an FSM safety engine with deterministic crisis response so the model never generates crisis language.</p>
+                        <p>Voice AI for older adults and their caregivers. The bar I held it to: not "did it answer." "Would grandma keep talking?" I define problems with caregivers and clinicians, write the specs, design the IA and interactions, and ship end to end: Python, LiveKit, React, Supabase. Years in the unglamorous parts of healthtech: call centers, care-coordination handoffs. The places where the gap between the system and the actual person is hardest to ignore. y30 closes it: voice that earns trust, and every conversation becomes structured signal a caregiver can act on.</p>
                         <p class="featured-creed">Healthcare is the thread. Voice is the medium. Dignity is the constraint.</p>
 
                         <div class="featured-divider"></div>
@@ -205,19 +205,26 @@
                             <h4 class="featured-section-label">What I built</h4>
                             <ul class="featured-decisions">
                                 <li>
-                                    <span class="featured-decision-title">FSM safety engine</span>
-                                    <span class="featured-decision-rationale">Crisis paths are deterministic code, not prompt instructions. A hard state the model cannot override. In healthcare, you cannot let an LLM improvise on a suicidal ideation turn.</span>
+                                    <span class="featured-decision-title">Made it slower, on purpose</span>
+                                    <span class="featured-decision-rationale">Most pipelines fire at 200–400ms. For an 80-year-old, that's not fast. It's rude. y30 uses a 3.2-second patience window with a contextual turn-detector that holds longer when a sentence isn't finished. I covered the cost with immediate non-verbal feedback so the wait reads as listening, not lag.</span>
                                 </li>
                                 <li>
-                                    <span class="featured-decision-title">Longitudinal memory</span>
-                                    <span class="featured-decision-rationale">Sessions accumulate into caregiver intelligence over time. One call is a transcript. Thirty calls is a cognitive and emotional baseline a clinician can actually act on.</span>
+                                    <span class="featured-decision-title">Deterministic engine, warm LLM delivery</span>
+                                    <span class="featured-decision-rationale">Flow control runs on a finite-state machine. The LLM only owns phrasing, warmth, and repair. About 50% of routing decisions resolve in 0ms, no model call. LLM consulted only on ambiguity (p95 1.5s). Flow is engineering; warmth is the model. They don't bleed.</span>
                                 </li>
                                 <li>
-                                    <span class="featured-decision-title">Elder-first voice UX</span>
-                                    <span class="featured-decision-rationale">No app, no screen, no login. Just a phone call. Every friction point removed for a 75+ user who may not own a smartphone or tolerate a new interface.</span>
+                                    <span class="featured-decision-title">Safety that survives the model going down</span>
+                                    <span class="featured-decision-rationale">A rule-based detection floor fires independent of any LLM or feature flag. The classifier adds nuance on top, never as the sole line. A crisis response can't be contingent on an API being healthy. The voice session is sacred.</span>
                                 </li>
                             </ul>
                         </div>
+
+                        <div class="featured-section animation-appear">
+                            <h4 class="featured-section-label">What I didn't build</h4>
+                            <p>Killed preemptive generation: it tested well but produced ghost speech fragments in real conversations. No diagnosis, treatment plans, or financial advice, by design. Phase 1 had one job: prove voice quality. Restraint was a feature.</p>
+                        </div>
+
+                        <p class="featured-proof">1,389 commits · 127 test files · STT 4-deep · TTS 5-deep provider fallback</p>
 
                         <div class="keyword-container">
                             <p class="keyword">Voice AI</p>
