@@ -23,6 +23,10 @@
   var launcher = document.getElementById("va-launcher");
   var briefCta = root.querySelector(".va-brief-cta");
   var briefEl = document.getElementById("brief-print-root");
+  var dock = document.getElementById("va-dock");
+  var dockBody = dock ? dock.querySelector(".va-dock-body") : null;
+  var dockClose = dock ? dock.querySelector(".va-dock-close") : null;
+  var homeParent = root.parentNode, homeNext = root.nextSibling, docked = false;
 
   // Mode-aware quick flows (decision-oriented; content tuned over time).
   var FLOWS = {
@@ -233,16 +237,14 @@
 
   // --- floating launcher: appears once the inline agent scrolls out of view ---
   if (launcher) {
-    launcher.addEventListener("click", function () {
-      root.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(function () { try { inputEl.focus({ preventScroll: true }); } catch (e) {} }, 500);
-    });
+    launcher.addEventListener("click", openDock);
     if ("IntersectionObserver" in window) {
       new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { launcher.hidden = en.isIntersecting; });
+        entries.forEach(function (en) { if (!docked) launcher.hidden = en.isIntersecting; });
       }, { threshold: 0.25 }).observe(root);
     }
   }
+  if (dockClose) dockClose.addEventListener("click", closeDock);
 
   // --- recruiter brief (export artifact) ---
   function maybeShowBrief() {
@@ -369,23 +371,55 @@
     });
     return bestCount >= 1 ? best : null;
   }
-  function highlightSection(sectionEl) {
-    var inner = sectionEl.querySelector(".section-content") || sectionEl;
+  function pulse(inner) {
     inner.classList.remove("va-proof-highlight");
-    void inner.offsetWidth; // restart the animation if re-triggered
+    void inner.offsetWidth; // restart the animation
     inner.classList.add("va-proof-highlight");
     setTimeout(function () { inner.classList.remove("va-proof-highlight"); }, 2800);
   }
+  // Pulse when the section actually arrives in view, not when we start scrolling.
+  function highlightOnArrival(target) {
+    var inner = target.querySelector(".section-content") || target;
+    if (!("IntersectionObserver" in window)) { pulse(inner); return; }
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (en) { if (en.isIntersecting) { pulse(inner); obs.disconnect(); } });
+    }, { threshold: 0.2 });
+    io.observe(target);
+    setTimeout(function () { io.disconnect(); }, 6000); // safety
+  }
   function guideToProof(question, reply) {
-    var anchor = matchSection(question + " " + reply);
+    // Match the question first; only consult the reply if it's substantive (not a refusal).
+    var anchor = matchSection(question);
+    if (!anchor && reply && reply.length > 40 && reply.toLowerCase().indexOf("just here to talk") < 0) {
+      anchor = matchSection(reply);
+    }
     if (!anchor) return;
     var target = document.querySelector(anchor);
     if (!target) return;
-    highlightSection(target);
+    highlightOnArrival(target);
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return; // highlight only, no scroll
-    // Let the answer land first, then guide gently. User scroll interrupts it.
-    setTimeout(function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); }, 1100);
+    if (!reduce) setTimeout(function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900);
+  }
+
+  // --- pinned dock (agent stays visible while the page scrolls/highlights) ---
+  function openDock() {
+    if (docked || !dock || !dockBody) return;
+    dockBody.appendChild(root);
+    dock.hidden = false;
+    if (launcher) launcher.hidden = true;
+    docked = true;
+    try { inputEl.focus({ preventScroll: true }); } catch (e) {}
+  }
+  function closeDock() {
+    if (!docked) return;
+    if (homeNext && homeNext.parentNode === homeParent) homeParent.insertBefore(root, homeNext);
+    else homeParent.appendChild(root);
+    dock.hidden = true;
+    docked = false;
+    if (launcher) {
+      var r = root.getBoundingClientRect();
+      launcher.hidden = r.top < window.innerHeight && r.bottom > 0; // hide if the inline agent is in view
+    }
   }
 
   renderFlows();

@@ -420,6 +420,31 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     22%, 55% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 38%, transparent), 0 0 26px color-mix(in srgb, var(--accent) 22%, transparent); }
 }
 
+/* Pinned dock: the agent stays put while the page scrolls and highlights */
+.va-dock {
+    position: fixed; z-index: 250;
+    bottom: 1.2em; right: 1.2em;
+    width: min(390px, calc(100vw - 2.4em));
+    max-height: min(82vh, 660px);
+    display: flex; flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--border-radius);
+    box-shadow: var(--drop-shadow);
+    overflow: hidden;
+}
+.va-dock[hidden] { display: none; }
+.va-dock-head { display: flex; align-items: center; justify-content: space-between; padding: 0.55em 0.9em; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.va-dock-title { font-size: 0.85em; font-weight: 600; color: var(--text); }
+.va-dock-close { width: auto !important; background: none !important; color: var(--muted) !important; padding: 0.1em 0.5em !important; font-size: 1.3em; line-height: 1; cursor: pointer; border-radius: 0.4em !important; }
+.va-dock-close:hover { color: var(--accent) !important; }
+.va-dock-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+/* Inside the dock, the agent drops its own card chrome (the dock provides it) */
+.va-dock .voice-agent { margin: 0 !important; border: none !important; box-shadow: none !important; max-width: none !important; border-radius: 0 !important; }
+@media only screen and (max-width: 540px) {
+    .va-dock { left: 0.6em; right: 0.6em; bottom: 0.6em; width: auto; max-height: 80vh; }
+}
+
 /* Print: isolate the brief, force black-on-white, hide all site chrome */
 @media print {
     body * { visibility: hidden !important; }
