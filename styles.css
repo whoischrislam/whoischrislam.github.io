@@ -624,6 +624,14 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     line-height: 1.45;
     margin: 0.3em 0 1.4em 0 !important;
 }
+.arc-exits {
+    font-size: 0.86em;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0 0 1.4em 0;
+    padding-top: 1.2em;
+    border-top: 1px solid var(--border);
+}
 
 .intro-columns { display: flex; flex-direction: column; gap: 0.8em; margin-top: 1em; }
 .intro-columns p { width: 100%; font-size: 1.22em; }
