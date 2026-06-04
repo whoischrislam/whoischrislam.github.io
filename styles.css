@@ -376,6 +376,59 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     .va-launcher { padding: 0.75em !important; }
 }
 
+/* ---------- Recruiter brief (export artifact) ---------- */
+.va-brief-bar { margin-top: 0.8em; }
+.va-brief-cta {
+    width: auto !important;
+    font-size: 0.85em; font-weight: 600;
+    padding: 0.5em 1em !important;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent) !important;
+    background: var(--accent-soft) !important;
+    color: var(--accent) !important;
+    cursor: pointer;
+}
+.va-brief-cta[hidden] { display: none; }
+.va-brief-cta:hover { background: var(--accent) !important; color: #15110F !important; }
+
+.va-brief {
+    margin-top: 1em;
+    padding: 1.1em 1.2em;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--border-radius);
+}
+.va-brief[hidden] { display: none; }
+.va-brief h4 { font-family: var(--body-font); font-size: 0.72em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 1em 0 0.4em 0; }
+.va-brief-title { font-size: 1em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.2em 0 !important; }
+.va-brief p, .va-brief li { font-size: 0.88em !important; line-height: 1.55; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
+.va-brief ul { list-style: none; padding: 0; margin: 0; }
+.va-brief li { padding-left: 1em; position: relative; }
+.va-brief li::before { content: "\203A"; position: absolute; left: 0; color: var(--accent); }
+.va-brief-ev a { color: var(--accent); font-size: 0.82em; white-space: nowrap; }
+.va-brief-prov { font-size: 0.7em !important; color: var(--muted) !important; margin-top: 1em !important; padding-top: 0.7em; border-top: 1px solid var(--border); }
+.va-brief-actions { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: 1em; }
+.va-brief-actions button { width: auto !important; font-size: 0.82em; padding: 0.45em 0.9em !important; border-radius: 2em !important; cursor: pointer; }
+.va-brief-copy { background: var(--accent) !important; color: #15110F !important; }
+.va-brief-copy:hover { background: var(--accent-strong) !important; }
+.va-brief-print, .va-brief-close { border: 1px solid var(--border-strong) !important; color: var(--text) !important; }
+.va-brief-print:hover, .va-brief-close:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
+
+/* Print: isolate the brief, force black-on-white, hide all site chrome */
+@media print {
+    body * { visibility: hidden !important; }
+    #brief-print-root, #brief-print-root * { visibility: visible !important; }
+    #brief-print-root {
+        position: absolute; left: 0; top: 0; width: 100%;
+        margin: 0; padding: 0; border: none; border-radius: 0;
+        background: #fff !important; color: #000 !important;
+    }
+    #brief-print-root *, #brief-print-root h4 { color: #000 !important; background: transparent !important; }
+    #brief-print-root .va-brief-actions { display: none !important; }
+    #brief-print-root li::before { color: #000 !important; }
+    #brief-print-root h4, #brief-print-root li, #brief-print-root p { break-inside: avoid; }
+    .va-launcher, header, footer, .read-progress, #loading { display: none !important; }
+}
+
 /* ---------- Open-to chip row (hero) ---------- */
 .open-to-chips {
     display: flex;
