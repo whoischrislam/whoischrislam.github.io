@@ -111,24 +111,30 @@
   function extFor(m) { if (m.indexOf("mp4") > -1) return "audio.mp4"; if (m.indexOf("ogg") > -1) return "audio.ogg"; return "audio.webm"; }
 
   // --- modes (change answer format server-side) ---
-  // A short, lens-tailored acknowledgement so picking a role feels like the guide
-  // engaging, not a passive filter. Spoken nowhere; just seeds the conversation.
-  var ACK = {
-    recruiter: "Got it, I'll keep this recruiter-focused: fit, level, and the fastest read on whether he's worth an interview. Ask away, or tap a question below.",
-    hiring_manager: "Got it. I'll go deeper on systems, what he'd own, and the outcomes he's actually moved. Ask away, or tap a question below.",
-    founder: "Got it. Founder lens: what Chris owns end to end and where he creates uncommon value. Ask away, or tap a question below.",
-    y30: "Got it. I'll focus on y30: what it is, how it's built, and the safety model. Ask away, or tap a question below.",
-  };
+  // Radio behaviour: pick a role and the picker collapses to that choice; "Change"
+  // (or tapping the chosen pill) reopens it. The lens-tailored suggested questions
+  // are the feedback, so there's no persistent acknowledgement cluttering the thread.
+  var changeBtn = root.querySelector(".va-change");
   modeBtns.forEach(function (b) {
     b.addEventListener("click", function () {
       if (state() !== "idle") return;
-      var firstPick = !root.classList.contains("va-started");
-      if (lens === b.dataset.lens) { lens = null; b.classList.remove("is-active"); }
-      else { lens = b.dataset.lens; modeBtns.forEach(function (x) { x.classList.toggle("is-active", x === b); }); }
+      // Tapping the already-chosen role while collapsed just reopens the options.
+      if (root.classList.contains("va-role-chosen") && b.classList.contains("is-active")) {
+        root.classList.remove("va-role-chosen");
+        return;
+      }
+      if (lens === b.dataset.lens) {
+        lens = null; b.classList.remove("is-active");
+        root.classList.remove("va-role-chosen");
+      } else {
+        lens = b.dataset.lens;
+        modeBtns.forEach(function (x) { x.classList.toggle("is-active", x === b); });
+        root.classList.add("va-role-chosen");
+      }
       renderFlows();
-      if (lens && firstPick) addTurn("agent", ACK[lens] || "Got it. Ask away, or tap a question below.");
     });
   });
+  if (changeBtn) changeBtn.addEventListener("click", function () { root.classList.remove("va-role-chosen"); });
 
   // --- composer ---
   function sendTyped() {
