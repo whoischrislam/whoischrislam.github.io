@@ -108,32 +108,35 @@
                         <a class="btn-hero btn-ghost" href="/resume.pdf" download>Download resume</a>
                     </div>
                     <div id="voice-interface" class="voice-agent" data-state="idle" hidden>
-                        <div class="va-head">
-                            <p class="va-title"><span class="material-symbols-outlined va-title-icon" aria-hidden="true">graphic_eq</span> Chris's AI hiring guide</p>
-                            <p class="va-scope">A fast read on role fit, systems depth, and shipped outcomes. Ask by voice or text.</p>
+                        <div class="va-scroll">
+                            <div class="va-intro">
+                                <p class="va-intro-msg"><span class="material-symbols-outlined va-title-icon" aria-hidden="true">graphic_eq</span> <span>I'm Chris's AI hiring guide. Ask by voice or text and I'll give you a fast read on fit, systems depth, and shipped outcomes. First, who's asking? I'll tailor what I show you.</span></p>
+                                <div class="va-modes" role="group" aria-label="Who's asking">
+                                    <button type="button" class="va-mode" data-lens="recruiter">Recruiter</button>
+                                    <button type="button" class="va-mode" data-lens="hiring_manager">Hiring manager</button>
+                                    <button type="button" class="va-mode" data-lens="founder">Founder / exec</button>
+                                    <button type="button" class="va-mode" data-lens="y30">Curious about y30</button>
+                                </div>
+                            </div>
+                            <div class="va-conversation" aria-live="polite"></div>
+                            <p class="va-status" role="status" aria-live="polite"></p>
+                            <div id="brief-print-root" class="va-brief" hidden></div>
                         </div>
-                        <div class="va-modes" role="group" aria-label="Who's asking (optional)">
-                            <button type="button" class="va-mode" data-lens="recruiter">Recruiter</button>
-                            <button type="button" class="va-mode" data-lens="hiring_manager">Hiring manager</button>
-                            <button type="button" class="va-mode" data-lens="founder">Founder / exec</button>
-                            <button type="button" class="va-mode" data-lens="y30">Curious about y30</button>
+                        <div class="va-foot">
+                            <div class="va-brief-bar"><button type="button" class="va-brief-cta" hidden>Get the recruiter brief</button></div>
+                            <div class="va-flows" aria-label="Suggested questions"></div>
+                            <div class="va-composer">
+                                <input type="text" class="va-input" placeholder="Type a question, or tap the mic" aria-label="Ask a question" autocomplete="off" />
+                                <button type="button" class="va-send" aria-label="Send question">
+                                    <span class="material-symbols-outlined" aria-hidden="true">arrow_upward</span>
+                                </button>
+                                <button type="button" class="va-mic" aria-label="Ask by voice">
+                                    <span class="material-symbols-outlined" aria-hidden="true">mic</span>
+                                </button>
+                                <button type="button" class="va-stop" hidden>Stop</button>
+                            </div>
+                            <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
                         </div>
-                        <div class="va-conversation" aria-live="polite"></div>
-                        <p class="va-status" role="status" aria-live="polite"></p>
-                        <div class="va-flows" aria-label="Quick questions"></div>
-                        <div class="va-composer">
-                            <input type="text" class="va-input" placeholder="Type a question, or tap the mic" aria-label="Ask a question" autocomplete="off" />
-                            <button type="button" class="va-send" aria-label="Send question">
-                                <span class="material-symbols-outlined" aria-hidden="true">arrow_upward</span>
-                            </button>
-                            <button type="button" class="va-mic" aria-label="Ask by voice">
-                                <span class="material-symbols-outlined" aria-hidden="true">mic</span>
-                            </button>
-                            <button type="button" class="va-stop" hidden>Stop</button>
-                        </div>
-                        <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
-                        <div class="va-brief-bar"><button type="button" class="va-brief-cta" hidden>Get the recruiter brief</button></div>
-                        <div id="brief-print-root" class="va-brief" hidden></div>
                     </div>
                     <div class="intro-columns">
                         <p class="animation-appear">Healthcare, marketplaces, game dev tools, consumer software. Usually the first or sole designer in the room: writing specs, shipping alongside engineers, then eventually shipping the code myself. I do my best work owning the full arc from the first user conversation to production. Based in <del>foggy 🌁 San Francisco</del> sunny 🌺 Honolulu, HI.</p>
