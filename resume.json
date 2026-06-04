@@ -1,0 +1,149 @@
+{
+    "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+    "basics": {
+        "name": "Chris Lam",
+        "label": "Product engineer and designer",
+        "email": "whoischrislam@gmail.com",
+        "url": "https://whoischrislam.github.io",
+        "summary": "Product engineer and designer with 14 years shipping healthcare, marketplaces, game dev tools, and consumer software, usually as the first or second designer and building the implementation myself. Early at Clover Health and GoodRx, both of which later IPO'd; a rescue hire at Sharecare during its acquisition, which then went public; and part of the 2014 TaskRabbit rebrand before IKEA acquired it. Currently co-founding y30, a voice AI platform for older adults. Designs, builds, and ships end to end with no handoff. Open to senior IC roles in AI, voice, and product engineering, full-time.",
+        "location": { "city": "Honolulu", "region": "HI", "countryCode": "US" },
+        "profiles": [
+            { "network": "LinkedIn", "username": "whoischrislam", "url": "https://www.linkedin.com/in/whoischrislam/" },
+            { "network": "GitHub", "username": "whoischrislam", "url": "https://github.com/whoischrislam" },
+            { "network": "Dribbble", "username": "whoischrislam", "url": "https://dribbble.com/whoischrislam" }
+        ]
+    },
+    "work": [
+        {
+            "name": "y30",
+            "position": "Co-Founder & CPTO",
+            "url": "https://y30.ai",
+            "startDate": "2026-03",
+            "summary": "Voice AI for older adults and their care teams.",
+            "highlights": [
+                "Built an FSM safety engine where crisis paths are deterministic code, not prompt instructions, a hard state the model cannot override.",
+                "Architected a streaming speech-to-text to LLM to text-to-speech pipeline (multi-provider, deep fallback) fronted by a deterministic state machine.",
+                "Designed elder-first voice UX: no app, no screen, no login, just a phone call.",
+                "1,389 commits, 127 test files."
+            ]
+        },
+        {
+            "name": "PlaySesh",
+            "position": "Co-Founder & CEO",
+            "startDate": "2024-01",
+            "endDate": "2026-03",
+            "summary": "Collaborative game development tools for indie developers, built inside Discord.",
+            "highlights": [
+                "Shipped 0 to 1 alone in Vanilla JS, Express, and Supabase before recruiting co-founders. 1,790 commits, 291 passing tests, zero ad spend.",
+                "Grew to 5,120 users across 121 Discord servers, 1,302 MAU, 50-minute average sessions, all organic.",
+                "Pivoted from social gaming to game dev tooling based on user behavior signal."
+            ]
+        },
+        {
+            "name": "CureWise",
+            "position": "Contract Software Engineer",
+            "startDate": "2025",
+            "endDate": "2026",
+            "summary": "Oncology AI platform. Shipped multi-agent features in Next.js and TypeScript on a Firebase/Fasten Health stack."
+        },
+        {
+            "name": "Blue Startups",
+            "position": "Entrepreneur in Residence",
+            "startDate": "2024-07",
+            "endDate": "2024-11",
+            "summary": "Conducted design and product audits for 10 early-stage startups in cohort 16. Advised on product strategy, MVP scope, and design-to-engineering handoffs."
+        },
+        {
+            "name": "Modus Create",
+            "position": "Software Engineer",
+            "startDate": "2023-06",
+            "endDate": "2024-02",
+            "summary": "Shipped dark mode for JIRA and Confluence Cloud (500K+ enterprise users). Owned design, engineering implementation, and internal dev documentation. Contributed to the CI/CD pipeline with Docker Compose."
+        },
+        {
+            "name": "StartPlaying",
+            "position": "Founding Product Designer",
+            "startDate": "2022-07",
+            "endDate": "2023-01",
+            "summary": "First designer at a YC W20, a16z-backed seed-stage TTRPG marketplace. Redesigned the payment experience with Stripe for 100% on-time payouts; shipped a game master onboarding flow."
+        },
+        {
+            "name": "Sharecare",
+            "position": "Lead Product Designer",
+            "startDate": "2021-02",
+            "endDate": "2021-10",
+            "summary": "Rescue hire during the doc.ai acquisition; Sharecare later went public (NASDAQ: SHCR, 2021). Redesigned a legacy clinical-studies product through user testing and competitive research."
+        },
+        {
+            "name": "Pathstream",
+            "position": "Lead Product Designer",
+            "startDate": "2019-06",
+            "endDate": "2020-11",
+            "summary": "First design hire at a career-development and LMS platform. Shipped accessibility improvements, engagement features, and design-system foundations."
+        },
+        {
+            "name": "GoodRx / Iodine",
+            "position": "Lead Product Designer",
+            "startDate": "2017-04",
+            "endDate": "2018-10",
+            "summary": "First full-time designer, pre-IPO; GoodRx later IPO'd (NASDAQ: GDRX). Iodine acquired by GoodRx (2017).",
+            "highlights": [
+                "Redesigned the coupon redemption flow; conversion rate 2% to 5%.",
+                "Data visualizations ran on Good Morning America and ABC News, cited by The Motley Fool.",
+                "Won a Webby Award (2018) for GoodRx Research data work.",
+                "Published 50-state health fact sheets contributing to S.2554 / S.2553 prescription drug price transparency legislation."
+            ]
+        },
+        {
+            "name": "Clover Health",
+            "position": "Lead Product Designer",
+            "startDate": "2015-07",
+            "endDate": "2016-09",
+            "summary": "2nd designer, pre-IPO; Clover Health later IPO'd (NYSE: CLOV).",
+            "highlights": [
+                "Redesigned the nurse practitioner home-visit iPad web app end to end through contextual shadowing. ~7 to 8x lift in visit-related revenue; saved ~2 hours per nurse per day.",
+                "Led cross-functional alignment across design, engineering, product, data science, and medical."
+            ]
+        },
+        {
+            "name": "TaskRabbit",
+            "position": "Product Designer",
+            "startDate": "2014-05",
+            "endDate": "2015-03",
+            "summary": "Worked on the 2014 rebrand; TaskRabbit later acquired by IKEA (2017).",
+            "highlights": [
+                "Owned the Tasker experience and helped across the 2014 rebrand with the PMs.",
+                "Tasker NPS recovered from about -5 in mid-2014 to the mid-50s; Client NPS to the high-40s."
+            ]
+        },
+        {
+            "name": "Amazon",
+            "position": "User Experience Designer",
+            "startDate": "2012-04",
+            "endDate": "2013-09",
+            "highlights": [
+                "Prototyped the buy-and-gift Prime flow that contributed to 1M+ new subscribers.",
+                "Partnered with Samsung on the Amazon Prime Music app for the Samsung Shape wireless speaker."
+            ]
+        }
+    ],
+    "education": [
+        { "institution": "University of Washington", "area": "Human Centered Design & Engineering", "studyType": "MS", "endDate": "2012" },
+        { "institution": "University of Washington", "area": "Informatics, Human-Computer Interaction", "studyType": "BS", "endDate": "2010" }
+    ],
+    "skills": [
+        { "name": "AI & Voice", "keywords": ["Voice AI", "LLM orchestration", "Agentic systems", "FSM/LLM safety", "Evals & observability", "Multi-agent (Claude, OpenAI, MCP)", "LiveKit", "Real-time STT/TTS"] },
+        { "name": "Engineering", "keywords": ["React", "TypeScript", "Python", "Next.js", "Vanilla JS", "Supabase", "Firebase", "PostgreSQL", "Cloudflare Workers", "Docker", "CI/CD"] },
+        { "name": "Design", "keywords": ["Product design (0 to 1)", "Design systems", "UX research", "Prototyping", "Information architecture", "Accessibility", "Elder-care UX"] }
+    ],
+    "languages": [
+        { "language": "English", "fluency": "Native or bilingual" },
+        { "language": "Cantonese", "fluency": "Elementary" },
+        { "language": "Japanese", "fluency": "Limited working" }
+    ],
+    "meta": {
+        "canonical": "https://whoischrislam.github.io/resume.json",
+        "factSheet": "https://whoischrislam.github.io/candidate.html",
+        "note": "Open to senior IC roles in AI, voice, and product engineering, full-time. Remote-first from Honolulu, Bay Area availability when needed."
+    }
+}
