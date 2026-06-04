@@ -35,35 +35,67 @@
         <script type="text/javascript" src="script.js"></script>
         <script type="text/javascript" src="voice-agent.js" defer></script>
 
-        <!-- Machine-readable identity for AI / search (schema.org Person) -->
+        <!-- Machine-readable identity for AI / search (schema.org @graph: WebSite + ProfilePage + Person) -->
         <script type="application/ld+json">
         {
             "@context": "https://schema.org",
-            "@type": "Person",
-            "name": "Chris Lam",
-            "alternateName": "Christopher Lam",
-            "url": "https://whoischrislam.github.io/",
-            "email": "mailto:whoischrislam@gmail.com",
-            "jobTitle": "Product Engineer & Designer",
-            "description": "Product engineer and designer with 14 years shipping products people use across healthcare, marketplaces, and consumer software, often as the first, sole, or early designer-engineer in the room. Designs, builds, and ships without handoff, using AI as a force multiplier while owning architecture and product. Now building voice AI at y30. Companies he helped build went on to IPO or get acquired (Clover Health, GoodRx, Sharecare). Open to senior IC roles in AI, voice, and product engineering, full-time.",
-            "seeks": { "@type": "Demand", "name": "Senior IC roles in AI, voice, and product engineering, full-time" },
-            "worksFor": {
-                "@type": "Organization",
-                "name": "y30",
-                "url": "https://y30.ai",
-                "description": "Voice AI for older adults and their caregivers"
-            },
-            "homeLocation": { "@type": "Place", "name": "Honolulu, HI" },
-            "alumniOf": [
-                { "@type": "CollegeOrUniversity", "name": "University of Washington", "description": "BS, Informatics (Human-Computer Interaction)" },
-                { "@type": "CollegeOrUniversity", "name": "University of Washington", "description": "MS, Human Centered Design & Engineering" }
-            ],
-            "knowsLanguage": ["English", "Cantonese", "Japanese"],
-            "knowsAbout": ["Voice AI", "Product Engineering", "LLM Orchestration", "AI-Native Development", "Elder Care", "Healthcare Technology", "Product Design", "0 to 1 Product"],
-            "sameAs": [
-                "https://github.com/whoischrislam",
-                "https://www.linkedin.com/in/whoischrislam/",
-                "https://y30.ai"
+            "@graph": [
+                {
+                    "@type": "WebSite",
+                    "@id": "https://whoischrislam.github.io/#website",
+                    "url": "https://whoischrislam.github.io/",
+                    "name": "Chris Lam",
+                    "inLanguage": "en",
+                    "about": { "@id": "https://whoischrislam.github.io/#chris" }
+                },
+                {
+                    "@type": "ProfilePage",
+                    "@id": "https://whoischrislam.github.io/#profilepage",
+                    "url": "https://whoischrislam.github.io/",
+                    "name": "Chris Lam, product engineer and designer",
+                    "isPartOf": { "@id": "https://whoischrislam.github.io/#website" },
+                    "about": { "@id": "https://whoischrislam.github.io/#chris" },
+                    "mainEntity": { "@id": "https://whoischrislam.github.io/#chris" }
+                },
+                {
+                    "@type": "Person",
+                    "@id": "https://whoischrislam.github.io/#chris",
+                    "name": "Chris Lam",
+                    "alternateName": "Christopher Lam",
+                    "url": "https://whoischrislam.github.io/",
+                    "email": "mailto:whoischrislam@gmail.com",
+                    "jobTitle": "Product Engineer & Designer",
+                    "description": "Product engineer and designer with 14 years shipping products people use across healthcare, marketplaces, and consumer software, often as the first, sole, or early designer-engineer in the room. Designs, builds, and ships without handoff, using AI as a force multiplier while owning architecture and product. Now building voice AI at y30. Companies he helped build went on to IPO or get acquired (Clover Health, GoodRx, Sharecare). Open to senior IC roles in AI, voice, and product engineering, full-time.",
+                    "hasOccupation": {
+                        "@type": "Occupation",
+                        "name": "Product Engineer & Designer",
+                        "occupationalCategory": "Product engineering, design engineering, AI-native product",
+                        "skills": "Voice AI, LLM orchestration, agentic systems, FSM/LLM safety, evals and observability, full-stack engineering (React, TypeScript, Python, Next.js, Supabase, Cloudflare Workers), product design, design systems, UX research, 0 to 1 product"
+                    },
+                    "seeks": { "@type": "Demand", "name": "Senior IC roles in AI, voice, and product engineering, full-time" },
+                    "worksFor": {
+                        "@type": "Organization",
+                        "name": "y30",
+                        "url": "https://y30.ai",
+                        "description": "Voice AI for older adults and their caregivers"
+                    },
+                    "homeLocation": { "@type": "Place", "name": "Honolulu, HI" },
+                    "workLocation": { "@type": "Place", "name": "Remote, Honolulu with Bay Area availability" },
+                    "alumniOf": [
+                        { "@type": "CollegeOrUniversity", "name": "University of Washington", "description": "BS, Informatics (Human-Computer Interaction)" },
+                        { "@type": "CollegeOrUniversity", "name": "University of Washington", "description": "MS, Human Centered Design & Engineering" }
+                    ],
+                    "knowsLanguage": ["English", "Cantonese", "Japanese"],
+                    "knowsAbout": ["Voice AI", "Product Engineering", "Design Engineering", "Agentic Systems", "LLM Orchestration", "AI-Native Development", "Conversational AI", "Elder Care", "Healthcare Technology", "Product Design", "0 to 1 Product"],
+                    "sameAs": [
+                        "https://github.com/whoischrislam",
+                        "https://www.linkedin.com/in/whoischrislam/",
+                        "https://dribbble.com/whoischrislam",
+                        "https://www.behance.net/whoischrislam",
+                        "https://www.producthunt.com/@whoischrislam",
+                        "https://y30.ai"
+                    ]
+                }
             ]
         }
         </script>
