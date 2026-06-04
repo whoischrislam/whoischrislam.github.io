@@ -21,6 +21,8 @@
   var micBtn = root.querySelector(".va-mic");
   var stopBtn = root.querySelector(".va-stop");
   var launcher = document.getElementById("va-launcher");
+  var briefCta = root.querySelector(".va-brief-cta");
+  var briefEl = document.getElementById("brief-print-root");
 
   // Mode-aware quick flows (decision-oriented; content tuned over time).
   var FLOWS = {
@@ -33,6 +35,7 @@
 
   var lens = null;
   var mediaRecorder = null, chunks = [], audioCtx = null, currentSource = null, thinkTimer = null, requestingMic = false;
+  var receipts = [], turnCount = 0, briefing = false;
 
   function state() { return root.dataset.state; }
 
@@ -188,6 +191,7 @@
       .then(function (d) {
         var reply = d && d.reply ? d.reply : "";
         if (!reply) { fail("Something went wrong. Try again?"); return; }
+        if (d.receipt) { receipts.push(d.receipt); turnCount++; maybeShowBrief(); }
         addTurn("agent", reply);
         speak(reply, d.ttsToken);
       })
@@ -236,6 +240,109 @@
       new IntersectionObserver(function (entries) {
         entries.forEach(function (en) { launcher.hidden = en.isIntersecting; });
       }, { threshold: 0.25 }).observe(root);
+    }
+  }
+
+  // --- recruiter brief (export artifact) ---
+  function maybeShowBrief() {
+    if (briefCta && turnCount >= 3) briefCta.hidden = false;
+  }
+  if (briefCta) briefCta.addEventListener("click", requestBrief);
+
+  function requestBrief() {
+    if (briefing || receipts.length < 3) return;
+    briefing = true;
+    briefCta.disabled = true;
+    var orig = briefCta.textContent;
+    briefCta.textContent = "Generating…";
+    fetch(VOICE_API + "/brief", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ audience: "recruiter", receipts: receipts }),
+    })
+      .then(function (r) { return r.json(); })
+      .then(renderBrief)
+      .catch(function () {
+        briefEl.hidden = false;
+        briefEl.textContent = "Couldn't generate the brief right now. Try again in a moment.";
+      })
+      .then(function () { briefing = false; briefCta.disabled = false; briefCta.textContent = orig; });
+  }
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function section(title, node) {
+    briefEl.appendChild(el("h4", null, title));
+    if (node) briefEl.appendChild(node);
+  }
+  function list(items) {
+    var ul = el("ul");
+    (items || []).forEach(function (t) { ul.appendChild(el("li", null, t)); });
+    return ul;
+  }
+
+  function renderBrief(data) {
+    briefEl.innerHTML = "";
+    briefEl.hidden = false;
+    if (!data || (!data.brief && !data.insufficientSignal)) {
+      briefEl.appendChild(el("p", null, "Couldn't generate the brief right now. Try again in a moment."));
+      return;
+    }
+    if (!data.brief && data.insufficientSignal) {
+      briefEl.appendChild(el("p", "va-brief-title", "A bit more signal first"));
+      briefEl.appendChild(el("p", null, data.message || "Ask a few more questions and I can put together a recruiter brief."));
+      briefEl.appendChild(list(data.recommendedNextQuestions));
+      return;
+    }
+    var b = data.brief;
+    briefEl.appendChild(el("p", "va-brief-title", "Recruiter brief: Chris Lam"));
+    section("Snapshot", el("p", null, b.snapshot));
+    section("Best-fit roles", list(b.bestFitRoles));
+    var ev = el("ul");
+    (b.evidence || []).forEach(function (item) {
+      var li = el("li", "va-brief-ev");
+      li.appendChild(document.createTextNode(item.claim + " "));
+      if (item.anchor) { var a = el("a", null, "(see proof)"); a.href = item.anchor; li.appendChild(a); }
+      ev.appendChild(li);
+    });
+    section("Evidence", ev);
+    if (b.openQuestions && b.openQuestions.length) section("Open questions to clarify", list(b.openQuestions));
+    if (b.nextStep) section("Recommended next step", el("p", null, b.nextStep));
+    var prov = (b.provenance && b.provenance.basis ? b.provenance.basis : "");
+    if (b.provenance && b.provenance.generatedAt) prov += " Generated " + b.provenance.generatedAt.slice(0, 10) + ".";
+    briefEl.appendChild(el("p", "va-brief-prov", prov));
+
+    var actions = el("div", "va-brief-actions");
+    var copyBtn = el("button", "va-brief-copy", "Copy"); copyBtn.type = "button";
+    copyBtn.addEventListener("click", function () { copyBrief(b, copyBtn); });
+    var printBtn = el("button", "va-brief-print", "Print / PDF"); printBtn.type = "button";
+    printBtn.addEventListener("click", function () { window.print(); });
+    var closeBtn = el("button", "va-brief-close", "Close"); closeBtn.type = "button";
+    closeBtn.addEventListener("click", function () { briefEl.hidden = true; briefEl.innerHTML = ""; });
+    actions.appendChild(copyBtn); actions.appendChild(printBtn); actions.appendChild(closeBtn);
+    briefEl.appendChild(actions);
+    briefEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function copyBrief(b, btn) {
+    var L = ["RECRUITER BRIEF: CHRIS LAM", ""];
+    L.push("Snapshot: " + b.snapshot, "");
+    L.push("Best-fit roles:");
+    (b.bestFitRoles || []).forEach(function (r) { L.push("  - " + r); });
+    L.push("", "Evidence:");
+    (b.evidence || []).forEach(function (it) { L.push("  - " + it.claim + (it.anchor ? " [" + it.anchor + "]" : "")); });
+    if (b.openQuestions && b.openQuestions.length) { L.push("", "Open questions to clarify:"); b.openQuestions.forEach(function (q) { L.push("  - " + q); }); }
+    if (b.nextStep) L.push("", "Recommended next step: " + b.nextStep);
+    L.push("", b.provenance && b.provenance.basis ? b.provenance.basis : "", "Source: whoischrislam.github.io");
+    var text = L.join("\n");
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1500);
+      });
     }
   }
 
