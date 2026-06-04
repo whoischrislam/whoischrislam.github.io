@@ -273,7 +273,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     margin: 0 0 1.6em 0;
     opacity: 0;
     animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 1 forwards;
-    animation-delay: 2.2s;
+    animation-delay: 2.45s;
 }
 
 /* ---------- Voice agent (AI hiring guide) ---------- */
@@ -1186,12 +1186,13 @@ footer #nav-links { gap: 1.4em; }
 .project-card.animation-appear:nth-child(n+5) { transition-delay: 0.22s; }
 
 /* Hero entrance (runs after the loader lifts) */
-#hero-line-1, #hero-line-2 {
+#hero-line-1, #hero-line-2, .hero-claim {
     opacity: 0;
     animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 1 forwards;
 }
 #hero-line-1 { animation-delay: 1.7s; }
 #hero-line-2 { animation-delay: 1.95s; }
+.hero-claim { animation-delay: 2.2s; }
 
 @keyframes rise {
     0% { opacity: 0; transform: translateY(22px); }
