@@ -415,20 +415,34 @@
   }
 
   // --- pinned dock (the agent's only home; opens/closes, never inline) ---
-  // Keep the dock above the on-screen keyboard on mobile. A fixed bottom-anchored
-  // element otherwise sits at the layout-viewport bottom, which the keyboard hides.
-  // We read the visual viewport and lift the dock by the keyboard's height.
+  // Keep the dock usable when the mobile keyboard is up. A fixed bottom-sheet
+  // otherwise sits at the layout-viewport bottom, which the keyboard hides. When
+  // the keyboard is open on a small screen we anchor the dock to BOTH the top and
+  // bottom of the visible (visual) viewport, so it becomes a flush sheet filling
+  // the space above the keys: header at top, composer just above the keyboard, no
+  // floating gap and no guesswork about content height.
+  function clearDockKeyboardStyles() {
+    dock.style.top = "";
+    dock.style.bottom = "";
+    dock.style.left = "";
+    dock.style.right = "";
+    dock.style.maxHeight = "";
+    dock.style.borderRadius = "";
+  }
   function positionDockForKeyboard() {
-    if (!dock || dock.hidden) return;
+    if (!dock) return;
     var vv = window.visualViewport;
-    if (!vv || window.innerWidth > 540) { dock.style.bottom = ""; dock.style.maxHeight = ""; return; }
+    if (dock.hidden || !vv || window.innerWidth > 540) { clearDockKeyboardStyles(); return; }
     var keyboard = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
     if (keyboard > 80) {
-      dock.style.bottom = (keyboard + 8) + "px";
-      dock.style.maxHeight = (vv.height - 16) + "px";
+      dock.style.top = vv.offsetTop + "px";
+      dock.style.bottom = keyboard + "px";
+      dock.style.left = "0";
+      dock.style.right = "0";
+      dock.style.maxHeight = "none";
+      dock.style.borderRadius = "var(--border-radius) var(--border-radius) 0 0";
     } else {
-      dock.style.bottom = "";
-      dock.style.maxHeight = "";
+      clearDockKeyboardStyles();
     }
   }
   if (window.visualViewport) {
@@ -446,8 +460,7 @@
   function closeDock() {
     if (!dock) return;
     dock.hidden = true;
-    dock.style.bottom = "";
-    dock.style.maxHeight = "";
+    clearDockKeyboardStyles();
     updateLauncher();
   }
   function updateLauncher() {
