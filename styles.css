@@ -42,6 +42,7 @@
     --accent: #FF7059;
     --accent-strong: #FF8A77;
     --accent-soft: rgba(255, 112, 89, 0.14);
+    --on-accent: var(--on-accent); /* text/icon color on top of --accent (dark on the lighter coral) */
     --border: rgba(255, 255, 255, 0.10);
     --border-strong: rgba(255, 255, 255, 0.18);
     --chip-bg: rgba(255, 255, 255, 0.06);
@@ -62,6 +63,7 @@
     --accent: #D4512B;
     --accent-strong: #B8431F;
     --accent-soft: rgba(212, 81, 43, 0.10);
+    --on-accent: #FFFFFF; /* white on the darker rust reads far better than near-black */
     --border: rgba(0, 0, 0, 0.10);
     --border-strong: rgba(0, 0, 0, 0.16);
     --chip-bg: rgba(0, 0, 0, 0.05);
@@ -259,7 +261,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     text-decoration: none;
 }
 .btn-hero:hover { transform: translateY(-1px); text-decoration: none; }
-.btn-primary { background: var(--accent); color: #15110F; border: 1px solid transparent; }
+.btn-primary { background: var(--accent); color: var(--on-accent); border: 1px solid transparent; }
 .btn-primary:hover { background: var(--accent-strong); }
 .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
@@ -365,7 +367,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 }
 .va-send { background: var(--chip-bg) !important; color: var(--text) !important; }
 .va-send:hover { background: var(--surface-hover) !important; }
-.va-mic { background: var(--accent) !important; color: #15110F !important; }
+.va-mic { background: var(--accent) !important; color: var(--on-accent) !important; }
 .va-mic:hover { background: var(--accent-strong) !important; }
 .va-mic:disabled, .va-send:disabled { opacity: 0.5; cursor: default; }
 .va-send .material-symbols-outlined, .va-mic .material-symbols-outlined { font-size: 20px; }
@@ -386,7 +388,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     display: inline-flex; align-items: center; gap: 0.5em;
     width: auto !important;
     padding: 0.7em 1.1em !important;
-    background: var(--accent) !important; color: #15110F !important;
+    background: var(--accent) !important; color: var(--on-accent) !important;
     border: none !important; border-radius: 2em !important;
     font-family: var(--body-font); font-size: 0.9em; font-weight: 600;
     box-shadow: var(--drop-shadow); cursor: pointer;
@@ -412,7 +414,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     cursor: pointer;
 }
 .va-brief-cta[hidden] { display: none; }
-.va-brief-cta:hover { background: var(--accent) !important; color: #15110F !important; }
+.va-brief-cta:hover { background: var(--accent) !important; color: var(--on-accent) !important; }
 
 .va-brief {
     margin-top: 1em;
@@ -432,7 +434,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-brief-prov { font-size: 0.7em !important; color: var(--muted) !important; margin-top: 1em !important; padding-top: 0.7em; border-top: 1px solid var(--border); }
 .va-brief-actions { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: 1em; }
 .va-brief-actions button { width: auto !important; font-size: 0.82em; padding: 0.45em 0.9em !important; border-radius: 2em !important; cursor: pointer; }
-.va-brief-copy { background: var(--accent) !important; color: #15110F !important; }
+.va-brief-copy { background: var(--accent) !important; color: var(--on-accent) !important; }
 .va-brief-copy:hover { background: var(--accent-strong) !important; }
 .va-brief-print, .va-brief-close { border: 1px solid var(--border-strong) !important; color: var(--text) !important; }
 .va-brief-print:hover, .va-brief-close:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
@@ -898,7 +900,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 button {
     width: 100%;
     background-color: var(--accent);
-    color: #15110F;
+    color: var(--on-accent);
     border: none;
     padding: 0.85em 1.6em;
     border-radius: var(--btn-border-radius);
@@ -1133,7 +1135,7 @@ button:active { transform: translateY(1px); }
 .button.ghost:hover {
     background-color: var(--accent);
     border-color: var(--accent);
-    color: #15110F;
+    color: var(--on-accent);
 }
 
 /* ---------- Footer ---------- */
