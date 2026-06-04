@@ -413,6 +413,13 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-brief-print, .va-brief-close { border: 1px solid var(--border-strong) !important; color: var(--text) !important; }
 .va-brief-print:hover, .va-brief-close:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
 
+/* Build B: proof highlight pulse (the agent guiding you to evidence) */
+.va-proof-highlight { animation: va-proof-pulse 2.8s ease; border-radius: var(--border-radius); }
+@keyframes va-proof-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 transparent; }
+    22%, 55% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 38%, transparent), 0 0 26px color-mix(in srgb, var(--accent) 22%, transparent); }
+}
+
 /* Print: isolate the brief, force black-on-white, hide all site chrome */
 @media print {
     body * { visibility: hidden !important; }

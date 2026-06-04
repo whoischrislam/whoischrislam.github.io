@@ -193,6 +193,7 @@
         if (!reply) { fail("Something went wrong. Try again?"); return; }
         if (d.receipt) { receipts.push(d.receipt); turnCount++; maybeShowBrief(); }
         addTurn("agent", reply);
+        guideToProof(transcript, reply);
         speak(reply, d.ttsToken);
       })
       .catch(function (e) { fail(describeError(e && e.status)); });
@@ -344,6 +345,47 @@
         btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1500);
       });
     }
+  }
+
+  // --- Build B: page orchestration (guide to proof) ---
+  // Deterministic keyword -> real section. Only acts on a confident match;
+  // never invents a target. Scroll is gentle, interruptible, reduced-motion-safe.
+  var PROOF_MAP = [
+    { anchor: "#y30", kw: ["y30", "elder", "caregiver", "grandma", "safety", "patience window", "fsm", "voice ai"] },
+    { anchor: "#playsesh", kw: ["playsesh", "discord", "game dev", "game-thinking", "tldraw", "indie"] },
+    { anchor: "#work", kw: ["goodrx", "good rx", "clover", "amazon", "taskrabbit", "task rabbit", "ipo", "acquisition", "acquired", "conversion", "revenue", "nurse", "coupon", "prime", "webby", "sharecare", "modus", "jira", "dark mode", "metric", "outcome", "nps"] },
+    { anchor: "#looking-for", kw: ["looking for", "role", "remote", "relocat", "location", "honolulu", "bay area", "seniority", "level", "open to", "best fit", "best-fit"] },
+    { anchor: "#stack", kw: ["how he works", "how does he work", "his stack", "ai-native", "ai native", "force multiplier", "how he builds"] },
+    { anchor: "#testimonials", kw: ["recommend", "reference", "vouch", "say about him", "testimonial"] },
+    { anchor: "#play", kw: ["side project", "voice noir", "evolve die repeat", "board game", "for fun"] },
+  ];
+  function matchSection(text) {
+    var t = (" " + (text || "")).toLowerCase();
+    var best = null, bestCount = 0;
+    PROOF_MAP.forEach(function (m) {
+      var c = 0;
+      m.kw.forEach(function (k) { if (t.indexOf(k) > -1) c++; });
+      if (c > bestCount) { bestCount = c; best = m.anchor; }
+    });
+    return bestCount >= 1 ? best : null;
+  }
+  function highlightSection(sectionEl) {
+    var inner = sectionEl.querySelector(".section-content") || sectionEl;
+    inner.classList.remove("va-proof-highlight");
+    void inner.offsetWidth; // restart the animation if re-triggered
+    inner.classList.add("va-proof-highlight");
+    setTimeout(function () { inner.classList.remove("va-proof-highlight"); }, 2800);
+  }
+  function guideToProof(question, reply) {
+    var anchor = matchSection(question + " " + reply);
+    if (!anchor) return;
+    var target = document.querySelector(anchor);
+    if (!target) return;
+    highlightSection(target);
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return; // highlight only, no scroll
+    // Let the answer land first, then guide gently. User scroll interrupts it.
+    setTimeout(function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); }, 1100);
   }
 
   renderFlows();
