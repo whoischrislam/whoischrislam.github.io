@@ -263,10 +263,10 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     animation-delay: 2.2s;
 }
 
-/* ---------- Voice agent ---------- */
+/* ---------- Voice agent (AI hiring guide) ---------- */
 .voice-agent {
     width: 100%;
-    max-width: 540px;
+    max-width: 560px;
     margin: 0 0 1.8em 0;
     padding: 1.3em 1.4em;
     background: var(--surface);
@@ -275,65 +275,42 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     box-shadow: var(--drop-shadow);
 }
 /* Reset the global full-width button rule inside the widget */
-.voice-agent button {
-    width: auto;
-    background: none;
-    color: var(--text);
-    padding: 0;
-    border-radius: 2em;
-}
-.va-head { margin-bottom: 1em; }
-.va-title { font-size: 1.02em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.25em 0 !important; }
-.va-disclosure { font-size: 0.72em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
+.voice-agent button { width: auto; background: none; color: var(--text); padding: 0; border-radius: 2em; }
 
-.va-lenses { display: flex; flex-wrap: wrap; gap: 0.4em; margin-bottom: 1em; }
-.va-lens {
-    font-size: 0.78em;
-    font-weight: 500;
+.va-head { margin-bottom: 0.9em; }
+.va-title { display: flex; align-items: center; gap: 0.4em; font-size: 1.05em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
+.va-title-icon { font-size: 20px; color: var(--accent); }
+.va-scope { font-size: 0.82em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
+.va-disclosure { font-size: 0.7em !important; color: var(--muted) !important; line-height: 1.5; margin: 0.8em 0 0 0 !important; }
+
+.va-modes { display: flex; flex-wrap: wrap; gap: 0.4em; margin-bottom: 1em; }
+.va-mode {
+    font-size: 0.78em; font-weight: 500;
     padding: 0.32em 0.85em !important;
     border: 1px solid var(--border-strong) !important;
     color: var(--muted) !important;
     cursor: pointer;
     transition: color var(--transition), border-color var(--transition), background-color var(--transition);
 }
-.va-lens:hover { color: var(--text) !important; border-color: var(--text) !important; }
-.va-lens.is-active {
+.va-mode:hover { color: var(--text) !important; border-color: var(--text) !important; }
+.va-mode.is-active {
     color: var(--accent) !important;
     border-color: color-mix(in srgb, var(--accent) 45%, transparent) !important;
     background: var(--accent-soft) !important;
 }
 
-.va-controls { display: flex; align-items: center; gap: 0.7em; margin-bottom: 1em; }
-.va-mic {
-    display: inline-flex !important;
-    align-items: center;
-    gap: 0.5em;
-    padding: 0.65em 1.2em !important;
-    background: var(--accent) !important;
-    color: #15110F !important;
-    border-radius: 2em !important;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color var(--transition), transform var(--transition);
-}
-.va-mic:hover { background: var(--accent-strong) !important; }
-.va-mic:disabled { opacity: 0.55; cursor: default; }
-.va-mic-icon { font-size: 20px; }
-.va-stop {
-    padding: 0.5em 1em !important;
-    border: 1px solid var(--border-strong) !important;
-    color: var(--text) !important;
-    font-size: 0.85em;
-    cursor: pointer;
-}
-.va-stop:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
+.va-conversation { display: flex; flex-direction: column; gap: 0.7em; max-height: 18em; overflow-y: auto; margin-bottom: 0.6em; }
+.va-conversation:empty { display: none; }
+.va-turn { font-size: 0.92em !important; line-height: 1.55; margin: 0 !important; padding: 0.6em 0.85em; border-radius: 0.7em; white-space: pre-wrap; overflow-wrap: break-word; }
+.va-turn-you { align-self: flex-end; background: var(--chip-bg); color: var(--text) !important; max-width: 85%; }
+.va-turn-agent { align-self: flex-start; background: var(--accent-soft); color: var(--text) !important; max-width: 94%; }
 
-/* Listening: pulse the mic. Processing: dim it. */
-.voice-agent[data-state="listening"] .va-mic { animation: pulse 1.4s ease-in-out infinite; }
-.voice-agent[data-state="speaking"] .va-mic-icon::before { content: ""; }
+.va-status { font-size: 0.8em !important; color: var(--muted) !important; margin: 0 0 0.6em 0 !important; }
+.va-status:empty { display: none; }
 
-.va-starters { display: flex; flex-wrap: wrap; gap: 0.4em; margin-bottom: 1em; }
-.va-starter {
+.va-flows { display: flex; flex-wrap: wrap; gap: 0.4em; margin-bottom: 0.8em; }
+.va-flows:empty { display: none; }
+.va-flow {
     font-size: 0.8em;
     padding: 0.3em 0.8em !important;
     border: 1px solid var(--border) !important;
@@ -341,16 +318,63 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     cursor: pointer;
     transition: color var(--transition), border-color var(--transition);
 }
-.va-starter:hover { color: var(--accent) !important; border-color: color-mix(in srgb, var(--accent) 40%, transparent) !important; }
+.va-flow:hover { color: var(--accent) !important; border-color: color-mix(in srgb, var(--accent) 40%, transparent) !important; }
 
-.va-conversation { display: flex; flex-direction: column; gap: 0.7em; max-height: 16em; overflow-y: auto; }
-.va-conversation:empty { display: none; }
-.va-turn { font-size: 0.92em !important; line-height: 1.55; margin: 0 !important; padding: 0.6em 0.8em; border-radius: 0.7em; }
-.va-turn-you { align-self: flex-end; background: var(--chip-bg); color: var(--text) !important; max-width: 85%; }
-.va-turn-agent { align-self: flex-start; background: var(--accent-soft); color: var(--text) !important; max-width: 92%; }
+.va-composer { display: flex; align-items: center; gap: 0.5em; }
+.va-input {
+    flex: 1; min-width: 0;
+    font-family: var(--body-font); font-size: 0.95em;
+    padding: 0.6em 0.9em;
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border-strong); border-radius: 2em;
+    outline: none;
+    transition: border-color var(--transition);
+}
+.va-input:focus { border-color: var(--accent); }
+.va-input::placeholder { color: var(--muted); }
+.va-send, .va-mic {
+    display: inline-flex !important; align-items: center; justify-content: center;
+    width: 2.4em !important; height: 2.4em;
+    border-radius: 50% !important;
+    cursor: pointer; flex-shrink: 0;
+    transition: background-color var(--transition), transform var(--transition);
+}
+.va-send { background: var(--chip-bg) !important; color: var(--text) !important; }
+.va-send:hover { background: var(--surface-hover) !important; }
+.va-mic { background: var(--accent) !important; color: #15110F !important; }
+.va-mic:hover { background: var(--accent-strong) !important; }
+.va-mic:disabled, .va-send:disabled { opacity: 0.5; cursor: default; }
+.va-send .material-symbols-outlined, .va-mic .material-symbols-outlined { font-size: 20px; }
+.va-stop {
+    padding: 0.5em 1em !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text) !important; font-size: 0.85em; cursor: pointer; flex-shrink: 0;
+}
+.va-stop:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
 
-.va-status { font-size: 0.8em !important; color: var(--muted) !important; margin: 0.7em 0 0 0 !important; min-height: 1.1em; }
-.va-status:empty { margin: 0 !important; }
+/* States */
+.voice-agent[data-state="listening"] .va-mic { animation: pulse 1.3s ease-in-out infinite; }
+.voice-agent[data-state="processing"] .va-input { opacity: 0.6; }
+
+/* Floating launcher (persistent recall surface) */
+.va-launcher {
+    position: fixed; bottom: 1.4em; right: 1.4em; z-index: 200;
+    display: inline-flex; align-items: center; gap: 0.5em;
+    width: auto !important;
+    padding: 0.7em 1.1em !important;
+    background: var(--accent) !important; color: #15110F !important;
+    border: none !important; border-radius: 2em !important;
+    font-family: var(--body-font); font-size: 0.9em; font-weight: 600;
+    box-shadow: var(--drop-shadow); cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition);
+}
+.va-launcher[hidden] { display: none; }
+.va-launcher:hover { background: var(--accent-strong) !important; transform: translateY(-1px); }
+.va-launcher .material-symbols-outlined { font-size: 20px; }
+@media only screen and (max-width: 540px) {
+    .va-launcher-label { display: none; }
+    .va-launcher { padding: 0.75em !important; }
+}
 
 /* ---------- Open-to chip row (hero) ---------- */
 .open-to-chips {
