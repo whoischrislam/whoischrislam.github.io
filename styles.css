@@ -314,7 +314,12 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-intro { display: flex; flex-direction: column; gap: 0.7em; }
 .va-intro-msg { display: flex; align-items: flex-start; gap: 0.45em; font-size: 0.9em !important; line-height: 1.55; color: var(--text) !important; margin: 0 !important; }
 .va-intro-msg .va-title-icon { position: relative; top: 2px; flex-shrink: 0; }
-.va-started .va-intro-msg { display: none; }
+.va-started .va-intro-msg, .va-role-chosen .va-intro-msg { display: none; }
+/* Radio behaviour: once a role is picked, collapse to just that choice + Change */
+.va-change { display: none; width: auto !important; font-size: 0.78em; color: var(--muted) !important; padding: 0.42em 0.6em !important; border: none !important; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.va-change:hover { color: var(--accent) !important; }
+.va-role-chosen .va-change { display: inline-flex; }
+.va-role-chosen .va-mode:not(.is-active) { display: none; }
 
 .va-flows { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
 .va-flows:empty { display: none; }
