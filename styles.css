@@ -230,21 +230,19 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.4em 0.9em;
-    margin-top: 2.4em;
-    padding-top: 1.4em;
-    border-top: 1px solid var(--border);
+    gap: 0.5em 1.2em;
+    margin: 3.4em 0 1.2em 0;
 }
 .proof-strip span {
-    font-size: 0.78em;
-    letter-spacing: 0.6px;
+    font-size: 0.72em;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--muted);
 }
 .proof-strip span:not(:last-child)::after {
     content: "·";
-    margin-left: 0.9em;
+    margin-left: 1.2em;
     color: var(--border-strong);
 }
 
@@ -514,8 +512,14 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-/* ---------- The arc: always-visible career track + expandable story ---------- */
-.arc-block { margin-top: 2.6em; }
+/* ---------- The arc: a soft card holding the credibility rail's narrative ---------- */
+.arc-block {
+    margin-top: 1.2em;
+    padding: 1.9em 2em;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+}
 .arc-block .section-label { margin-bottom: 0.5em; }
 .arc-track {
     list-style: none;
@@ -581,6 +585,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .arc-more-body p:first-child { color: var(--text); }
 .arc-more-body p:last-child { margin-bottom: 0; }
 @media only screen and (max-width: 700px) {
+    .arc-block { padding: 1.5em 1.3em; }
     .arc-track { grid-template-columns: 1fr; gap: 0; }
     .arc-step {
         border-top: none;
