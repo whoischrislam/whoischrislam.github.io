@@ -26,7 +26,7 @@
   var dock = document.getElementById("va-dock");
   var dockBody = dock ? dock.querySelector(".va-dock-body") : null;
   var dockClose = dock ? dock.querySelector(".va-dock-close") : null;
-  var homeParent = root.parentNode, homeNext = root.nextSibling, docked = false;
+  var openCta = document.querySelector("[data-va-open]");
 
   // Mode-aware quick flows (decision-oriented; content tuned over time).
   var FLOWS = {
@@ -229,19 +229,13 @@
   function done() { setState("idle"); }
   function fail(msg) { setState("idle"); setStatus(msg); }
 
-  // --- hero CTA: focus the composer after the anchor scroll ---
-  var heroCta = document.querySelector("[data-va-focus]");
-  if (heroCta) heroCta.addEventListener("click", function () {
-    setTimeout(function () { try { inputEl.focus({ preventScroll: true }); } catch (e) { inputEl.focus(); } }, 500);
-  });
-
-  // --- floating launcher: appears once the inline agent scrolls out of view ---
+  // --- the hero CTA and the floating launcher both open the dock ---
+  if (openCta) openCta.addEventListener("click", function (e) { e.preventDefault(); openDock(); });
   if (launcher) {
     launcher.addEventListener("click", openDock);
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (!docked) launcher.hidden = en.isIntersecting; });
-      }, { threshold: 0.25 }).observe(root);
+    // Launcher appears once the hero CTA is scrolled out of view (and the dock is closed).
+    if ("IntersectionObserver" in window && openCta) {
+      new IntersectionObserver(function () { updateLauncher(); }, { threshold: 0 }).observe(openCta);
     }
   }
   if (dockClose) dockClose.addEventListener("click", closeDock);
@@ -401,27 +395,29 @@
     if (!reduce) setTimeout(function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900);
   }
 
-  // --- pinned dock (agent stays visible while the page scrolls/highlights) ---
+  // --- pinned dock (the agent's only home; opens/closes, never inline) ---
   function openDock() {
-    if (docked || !dock || !dockBody) return;
-    dockBody.appendChild(root);
+    if (!dock) return;
     dock.hidden = false;
     if (launcher) launcher.hidden = true;
-    docked = true;
     try { inputEl.focus({ preventScroll: true }); } catch (e) {}
   }
   function closeDock() {
-    if (!docked) return;
-    if (homeNext && homeNext.parentNode === homeParent) homeParent.insertBefore(root, homeNext);
-    else homeParent.appendChild(root);
+    if (!dock) return;
     dock.hidden = true;
-    docked = false;
-    if (launcher) {
-      var r = root.getBoundingClientRect();
-      launcher.hidden = r.top < window.innerHeight && r.bottom > 0; // hide if the inline agent is in view
-    }
+    updateLauncher();
+  }
+  function updateLauncher() {
+    if (!launcher) return;
+    if (dock && !dock.hidden) { launcher.hidden = true; return; }
+    if (!openCta) { launcher.hidden = false; return; }
+    var r = openCta.getBoundingClientRect();
+    launcher.hidden = r.top < window.innerHeight && r.bottom > 0; // hide while the hero CTA is on screen
   }
 
+  // The agent lives only in the dock (never inline). Home it there on load.
+  if (dockBody) { dockBody.appendChild(root); root.hidden = false; }
   renderFlows();
+  updateLauncher();
   setState("idle");
 })();

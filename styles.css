@@ -458,6 +458,9 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     #brief-print-root .va-brief-actions { display: none !important; }
     #brief-print-root li::before { color: #000 !important; }
     #brief-print-root h4, #brief-print-root li, #brief-print-root p { break-inside: avoid; }
+    /* The brief lives inside the fixed dock; un-clip it so it prints in full */
+    #va-dock { position: static !important; overflow: visible !important; max-height: none !important; height: auto !important; width: auto !important; border: none !important; box-shadow: none !important; background: #fff !important; }
+    .va-dock-head { display: none !important; }
     .va-launcher, header, footer, .read-progress, #loading { display: none !important; }
 }
 
