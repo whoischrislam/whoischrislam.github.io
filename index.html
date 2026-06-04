@@ -33,6 +33,7 @@
 
         <link rel="stylesheet" href="styles.css" />
         <script type="text/javascript" src="script.js"></script>
+        <script type="text/javascript" src="voice-agent.js" defer></script>
 
         <!-- Machine-readable identity for AI / search (schema.org Person) -->
         <script type="application/ld+json">
@@ -105,8 +106,31 @@
                         <a class="btn-hero btn-primary" href="mailto:whoischrislam@gmail.com">Email me</a>
                         <a class="btn-hero btn-ghost" href="/resume.pdf" download>Download resume</a>
                     </div>
-                    <div id="voice-interface" class="voice-placeholder animation-appear">
-                        <p>Ask me about my work ↓</p>
+                    <div id="voice-interface" class="voice-agent animation-appear" data-state="idle">
+                        <div class="va-head">
+                            <p class="va-title">Ask me about Chris's work</p>
+                            <p class="va-disclosure">An AI assistant. Voice is transcribed by ElevenLabs and answered by Claude (Anthropic). Nothing is stored.</p>
+                        </div>
+                        <div class="va-lenses" role="group" aria-label="Who's asking (optional)">
+                            <button type="button" class="va-lens" data-lens="hiring_manager">Hiring manager</button>
+                            <button type="button" class="va-lens" data-lens="recruiter">Recruiter</button>
+                            <button type="button" class="va-lens" data-lens="founder">Founder</button>
+                            <button type="button" class="va-lens" data-lens="y30">Curious about y30</button>
+                        </div>
+                        <div class="va-controls">
+                            <button type="button" class="va-mic" aria-label="Ask by voice">
+                                <span class="material-symbols-outlined va-mic-icon" aria-hidden="true">mic</span>
+                                <span class="va-mic-label">Tap to ask</span>
+                            </button>
+                            <button type="button" class="va-stop" hidden>Stop</button>
+                        </div>
+                        <div class="va-starters">
+                            <button type="button" class="va-starter">What is Chris looking for?</button>
+                            <button type="button" class="va-starter">Tell me about his IPO experience.</button>
+                            <button type="button" class="va-starter">What is y30?</button>
+                        </div>
+                        <div class="va-conversation" aria-live="polite"></div>
+                        <p class="va-status" role="status" aria-live="polite"></p>
                     </div>
                     <div class="intro-columns">
                         <p class="animation-appear">Healthcare, marketplaces, game dev tools, consumer software. Usually the first or sole designer in the room: writing specs, shipping alongside engineers, then eventually shipping the code myself. I do my best work owning the full arc from the first user conversation to production. Based in <del>foggy 🌁 San Francisco</del> sunny 🌺 Honolulu, HI.</p>
@@ -524,7 +548,7 @@
                             <h3>Engineering</h3>
                             <ul>
                                 <li>React · TypeScript · Vanilla JS · Python · Next.js · HTML/CSS</li>
-                                <li>Voice AI (LiveKit · Deepgram STT · ElevenLabs / Cartesia TTS · real-time pipelines)</li>
+                                <li>Voice AI (LiveKit · real-time STT/LLM/TTS pipelines · VAD &amp; turn-taking)</li>
                                 <li>Agent orchestration (FSM/LLM hybrid · attention arbiters · multi-layer safety harnesses)</li>
                                 <li>Evals &amp; observability (LLM judges · behavioral rubrics · WER · production monitoring)</li>
                                 <li>Multi-agent AI (Claude · OpenAI · OpenRouter · Perplexity · MCP)</li>
