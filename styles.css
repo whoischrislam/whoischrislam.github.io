@@ -20,8 +20,8 @@
     --header-font: 'Instrument Serif', Georgia, serif;
     --body-font: 'Open Sans', system-ui, sans-serif;
     --h1-size: 4.4em;
-    --h2-size: 2.4em;
-    --h3-size: 2.6em;
+    --h2-size: 2.8em;
+    --h3-size: 2em;
     --p-size: 1.18em;
     --keyword-size: 0.8em;
     /* Buttons */
@@ -107,6 +107,7 @@ h1, h2, h3 {
     font-weight: 400;
     line-height: 1.05;
     letter-spacing: 0.4px;
+    text-wrap: balance;
 }
 p, a, li, button, span { font-family: var(--body-font); }
 
@@ -452,6 +453,18 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     margin: 0.2em 0 0 0 !important;
 }
 
+/* ---------- Section wayfinding label ---------- */
+.section-label {
+    display: block;
+    font-family: var(--body-font);
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 0.55em 0;
+}
+
 /* ---------- Featured (y30) card ---------- */
 .featured-card {
     background-color: var(--surface);
@@ -491,7 +504,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 }
 .featured-glyph { color: var(--accent); font-size: 28px; opacity: 0.55; }
 .featured-badge-past { color: var(--muted); background: var(--chip-bg); border: 1px solid var(--border); }
-.featured-card h3 { color: var(--text); }
+.featured-card h3 { color: var(--text); font-size: 2.2em; }
 .featured-card p { font-size: 1.05em; color: var(--muted); }
 
 /* ---------- y30 case study expansion ---------- */
@@ -536,6 +549,89 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .featured-repo-link { margin-top: 0.8em !important; font-size: 0.88em !important; color: var(--muted) !important; }
 @media only screen and (max-width: 540px) {
     .featured-decisions li { grid-template-columns: 1fr; gap: 0.3em; }
+}
+
+/* ---------- Video facade (PlaySesh demos) ---------- */
+.video-demos {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4em;
+    margin: 1.6em 0;
+}
+.video-facade {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 0.6em;
+    overflow: hidden;
+    cursor: pointer;
+    background: #000;
+}
+.video-facade img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity var(--transition);
+}
+.video-facade:hover img { opacity: 0.75; }
+.video-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.video-play-btn {
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    background: rgba(255, 112, 89, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    transition: background var(--transition), transform var(--transition);
+}
+.video-facade:hover .video-play-btn {
+    background: var(--accent);
+    transform: scale(1.1);
+}
+.video-runtime {
+    position: absolute;
+    bottom: 0.55em;
+    right: 0.6em;
+    font-size: 0.75em;
+    font-weight: 600;
+    font-family: var(--body-font);
+    color: #fff;
+    background: rgba(0, 0, 0, 0.62);
+    padding: 0.2em 0.5em;
+    border-radius: 0.3em;
+}
+.video-facade iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+.video-caption { margin-top: 0.6em; }
+.video-caption-label {
+    font-size: 0.9em !important;
+    font-weight: 600;
+    color: var(--text) !important;
+    margin: 0 0 0.25em 0 !important;
+    line-height: 1.4;
+}
+.video-caption-desc {
+    font-size: 0.85em !important;
+    color: var(--muted) !important;
+    line-height: 1.55;
+    margin: 0 !important;
 }
 
 /* ---------- Keyword chips ---------- */
@@ -707,6 +803,7 @@ button:active { transform: translateY(1px); }
     border-left: 3px solid var(--accent);
     border-radius: var(--border-radius);
     padding: 1.5em;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
 }
 .case-head { margin-bottom: 0.7em; }
 .case-card h3 { font-size: 1.7em; color: var(--text); margin: 0; }
@@ -922,8 +1019,8 @@ footer #nav-links { gap: 1.4em; }
 @media only screen and (max-width: 900px) {
     :root {
         --h1-size: 3em;
-        --h2-size: 1.9em;
-        --h3-size: 2em;
+        --h2-size: 2.1em;
+        --h3-size: 1.7em;
         --section-padding: 3.4em 0;
         --page-width: 88vw;
     }

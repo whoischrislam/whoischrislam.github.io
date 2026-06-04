@@ -50,4 +50,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 
     revealEls.forEach(function (el) { observer.observe(el); });
+
+    /* Video facade — swap thumbnail for iframe on click */
+    document.querySelectorAll('.video-facade').forEach(function (facade) {
+        facade.addEventListener('click', function () {
+            var id = facade.dataset.videoId;
+            var si = facade.dataset.videoSi;
+            var src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1' + (si ? '&si=' + si : '');
+            var iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+            iframe.setAttribute('allowfullscreen', '');
+            facade.innerHTML = '';
+            facade.appendChild(iframe);
+        });
+    });
 });
