@@ -226,23 +226,26 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 }
 .availability strong { color: var(--accent); font-weight: 700; }
 
+/* Credibility rail: a quiet proof band at the top of the arc card, not a headline */
 .proof-strip {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5em 1.2em;
-    margin: 3.4em 0 1.2em 0;
+    gap: 0.45em 1em;
+    margin: 0 0 1.4em 0;
+    padding-bottom: 1.3em;
+    border-bottom: 1px solid var(--border);
 }
 .proof-strip span {
-    font-size: 0.72em;
-    letter-spacing: 1px;
+    font-size: 0.7em;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
     font-weight: 500;
     color: var(--muted);
 }
 .proof-strip span:not(:last-child)::after {
     content: "·";
-    margin-left: 1.2em;
+    margin-left: 1em;
     color: var(--border-strong);
 }
 
@@ -514,7 +517,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 
 /* ---------- The arc: a soft card holding the credibility rail's narrative ---------- */
 .arc-block {
-    margin-top: 1.2em;
+    margin-top: 4.5em;
     padding: 1.9em 2em;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -613,10 +616,11 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 
 /* ---------- Arc opener (always-visible) ---------- */
 .arc-opener {
-    font-size: 1.15em;
+    font-size: 1.22em;
     font-weight: 500;
     color: var(--text);
-    margin: 0.4em 0 1.3em 0 !important;
+    line-height: 1.45;
+    margin: 0.3em 0 1.4em 0 !important;
 }
 
 .intro-columns { display: flex; flex-direction: column; gap: 0.8em; margin-top: 1em; }
