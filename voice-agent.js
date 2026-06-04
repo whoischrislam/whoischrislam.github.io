@@ -415,15 +415,39 @@
   }
 
   // --- pinned dock (the agent's only home; opens/closes, never inline) ---
+  // Keep the dock above the on-screen keyboard on mobile. A fixed bottom-anchored
+  // element otherwise sits at the layout-viewport bottom, which the keyboard hides.
+  // We read the visual viewport and lift the dock by the keyboard's height.
+  function positionDockForKeyboard() {
+    if (!dock || dock.hidden) return;
+    var vv = window.visualViewport;
+    if (!vv || window.innerWidth > 540) { dock.style.bottom = ""; dock.style.maxHeight = ""; return; }
+    var keyboard = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+    if (keyboard > 80) {
+      dock.style.bottom = (keyboard + 8) + "px";
+      dock.style.maxHeight = (vv.height - 16) + "px";
+    } else {
+      dock.style.bottom = "";
+      dock.style.maxHeight = "";
+    }
+  }
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", positionDockForKeyboard);
+    window.visualViewport.addEventListener("scroll", positionDockForKeyboard);
+  }
+
   function openDock() {
     if (!dock) return;
     dock.hidden = false;
     if (launcher) launcher.hidden = true;
     try { inputEl.focus({ preventScroll: true }); } catch (e) {}
+    positionDockForKeyboard();
   }
   function closeDock() {
     if (!dock) return;
     dock.hidden = true;
+    dock.style.bottom = "";
+    dock.style.maxHeight = "";
     updateLauncher();
   }
   function updateLauncher() {
