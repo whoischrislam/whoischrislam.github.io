@@ -23,6 +23,8 @@
             "highlights": [
                 "Built an FSM safety engine where crisis paths are deterministic code, not prompt instructions, a hard state the model cannot override.",
                 "Architected a streaming speech-to-text to LLM to text-to-speech pipeline (multi-provider, deep fallback) fronted by a deterministic state machine.",
+                "Scoped the language model to phrasing and warmth while conversation flow runs as a deterministic state machine; about half of routing decisions resolve with no model call.",
+                "Built the first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the state-machine architecture and safety model across the rewrite.",
                 "Designed elder-first voice UX: no app, no screen, no login, just a phone call.",
                 "1,389 commits, 127 test files."
             ]
@@ -35,6 +37,7 @@
             "summary": "Collaborative game development tools for indie developers, built inside Discord.",
             "highlights": [
                 "Shipped 0 to 1 alone in Vanilla JS, Express, and Supabase before recruiting co-founders. 1,790 commits, 291 passing tests, zero ad spend.",
+                "Authored the core real-time engine: a custom operation-based sync protocol on Cloudflare Durable Objects, including authoritative ordering and WebSocket reconnection logic, after moving off an off-the-shelf canvas library.",
                 "Grew to 5,120 users across 121 Discord servers, 1,302 MAU, 50-minute average sessions, all organic.",
                 "Pivoted from social gaming to game dev tooling based on user behavior signal."
             ]

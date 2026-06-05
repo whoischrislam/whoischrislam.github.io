@@ -332,6 +332,10 @@
                                     <span class="featured-decision-rationale">Designed and shipped the first version alone (Vanilla JS, Express, Supabase) before recruiting co-founders. No design-to-engineering handoff because I was both. 1,790 commits and 291 passing tests is the proof.</span>
                                 </li>
                                 <li>
+                                    <span class="featured-decision-title">A custom real-time engine</span>
+                                    <span class="featured-decision-rationale">When the off-the-shelf canvas library couldn't carry real multiplayer, I replaced it with my own operation-based sync protocol on Cloudflare Durable Objects: authoritative ordering, conflict handling, and the WebSocket reconnection logic by hand. The foundation the whole collaborative tool runs on.</span>
+                                </li>
+                                <li>
                                     <span class="featured-decision-title">Product-led pivot</span>
                                     <span class="featured-decision-rationale">User behavior, not a roadmap, drove the shift from social gaming to game dev tooling. Sessions ran 50 minutes on average. That signal told us what people actually wanted to do.</span>
                                 </li>
@@ -375,7 +379,8 @@
                             <p class="keyword badge-founder">Founder</p>
                             <p class="keyword">Discord SDK</p>
                             <p class="keyword">Three.js</p>
-                            <p class="keyword">tldraw</p>
+                            <p class="keyword">Durable Objects</p>
+                            <p class="keyword">WebSockets</p>
                             <p class="keyword">Cloudflare Workers</p>
                         </div>
 
@@ -571,6 +576,7 @@
                     <span class="section-label animation-appear">Approach</span>
                     <h2 class="animation-appear">How I work</h2>
                     <p class="animation-appear section-lede">On most projects I connect research, product decisions, design craft, and implementation. I'm comfortable being effectively the PM and designer, or the engineer with strong UX opinions, owning the whole arc when that's the fastest path.</p>
+                    <p class="animation-appear">On AI: I treat agents as leverage, not autopilot. I set the architecture, the contracts, and the acceptance criteria; AI implements inside them; and I own the code review, the tests, and the safety gates. I incur comprehension debt deliberately, in prototypes, never in core or safety paths, and I keep it in check with pure-function extraction, regression tests tied to real incidents, adversarial multi-model reviews, and staged rollout. The judgment is mine; the speed is the tool's.</p>
                     <div class="stack-grid animation-appear">
                         <div class="stack-col">
                             <h3>Design</h3>
@@ -672,7 +678,7 @@
                         <article class="project-card animation-appear">
                             <img class="project-banner" loading="lazy" src="images/edr.png" alt="Evolve, Die, Repeat pixel-art creature">
                             <h3>Evolve, Die, Repeat</h3>
-                            <p>A 2D side-scrolling roguelite where you swap body parts mid-run to evolve: grow fins to swim, wings to fly, claws to climb. Built solo in Love2D (Lua), test-driven with 1,462 tests across 69 files, a telemetry and playtest-feedback pipeline, and CI/CD that ships Windows, macOS, and Linux builds to itch.io. In friends-and-family playtesting. Inspired by Hades, Dead Cells, and E.V.O.</p>
+                            <p>A 2D side-scrolling roguelite where you swap body parts mid-run to evolve: grow fins to swim, wings to fly, claws to climb. Built solo in Love2D (Lua), test-driven with 1,568 tests across 72 files, a telemetry and playtest-feedback pipeline, and CI/CD that ships Windows, macOS, and Linux builds to itch.io. In friends-and-family playtesting. Inspired by Hades, Dead Cells, and E.V.O.</p>
                             <p class="project-unlock">Unlocked: Lua, Love2D, test-driven game dev, telemetry-driven iteration, automated cross-platform CI/CD</p>
                             <div class="keyword-container">
                                 <p class="keyword">Love2D</p>

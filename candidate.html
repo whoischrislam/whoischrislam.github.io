@@ -26,7 +26,7 @@
                 {
                     "@type": "Question",
                     "name": "Is Chris a real engineer or a designer who codes?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "A real engineer with design training. The last several years are production-code and architecture ownership: 1,790 PlaySesh commits, 1,389 y30 commits with 127 test files, and the y30 voice and safety stack." }
+                    "acceptedAnswer": { "@type": "Answer", "text": "A real engineer with design training, and the proof is architecture, not commit counts. He authored PlaySesh's core real-time engine: a custom operation-based sync protocol on Cloudflare Durable Objects with hand-written WebSocket reconnection. His solo game proves every generated level is beatable with a solver he wrote, on a test harness he built from scratch. At y30 he designed a deterministic state machine for conversation flow and a model-independent safety floor." }
                 },
                 {
                     "@type": "Question",
@@ -41,7 +41,7 @@
                 {
                     "@type": "Question",
                     "name": "How does Chris use AI?",
-                    "acceptedAnswer": { "@type": "Answer", "text": "As a force multiplier. He steers product, architecture, and systems and uses AI agents to implement while owning the judgment, code review, and safety gates. He shipped production code for years before current AI tooling existed." }
+                    "acceptedAnswer": { "@type": "Answer", "text": "As a force multiplier with strict guardrails. He sets the architecture, contracts, and acceptance criteria; AI implements inside them; and he owns code review, tests, and safety gates. He manages the risk of AI-written code deliberately: pure-function extraction so logic is testable, regression tests tied to real incidents, adversarial multi-model reviews, and staged rollout behind flags. He shipped production code for years before current AI tooling existed." }
                 }
             ]
         }
@@ -66,6 +66,16 @@
 
             <h2>Current work</h2>
             <p>Co-Founder and CPTO at y30, voice AI for older adults and their caregivers. Owns product, design, and engineering. Built a streaming speech-to-text to LLM to text-to-speech pipeline (multi-provider, deep fallback) fronted by a deterministic state machine and a rule-based safety floor that runs independent of any model, so crisis handling never depends on an LLM being healthy. 1,389 commits, 127 test files.</p>
+
+            <h2>Selected engineering (systems depth)</h2>
+            <p>Architecture and judgment, not commit counts. These are the proofs that distinguish an engineer who designs from a designer who dabbles.</p>
+            <ul>
+                <li>PlaySesh real-time engine: authored a custom operation-based sync protocol on Cloudflare Durable Objects, including authoritative ordering and the WebSocket reconnection logic, after moving the product off an off-the-shelf canvas library. Primary engineer on the codebase among the co-founders.</li>
+                <li>Evolve, Die, Repeat (solo Lua and Love2D game): a solver that proves every procedurally generated level is completable using a reachability search over the player's jump physics, plus a from-scratch headless test harness running about 1,568 tests.</li>
+                <li>y30 voice architecture: conversation flow as a deterministic state machine, the language model scoped to phrasing and warmth, and a rule-based safety floor that runs independent of any model. About half of routing resolves with no model call.</li>
+                <li>Engineering judgment: built y30's first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the state-machine architecture and safety model across the rewrite as a spec.</li>
+                <li>Hand-built without AI: this site and its voice agent are hand-coded vanilla JavaScript (audio codec detection, mobile keyboard handling), shipped alongside production work that predates current AI tooling.</li>
+            </ul>
 
             <h2>Companies and outcomes (honest framing)</h2>
             <p>Early at Clover Health and GoodRx, both of which later IPO'd. A rescue hire at Sharecare (formerly doc.ai) during its acquisition, which then went public. The 2014 TaskRabbit rebrand before IKEA acquired it. Iodine was acquired into GoodRx and doc.ai into Sharecare. The signal is repeated high ownership at early or critical stages, not an exit count.</p>
@@ -114,13 +124,13 @@
 
             <h2>Common questions</h2>
             <h3>Is Chris a real engineer or a designer who codes?</h3>
-            <p>A real engineer with design training. The last several years are production-code and architecture ownership: 1,790 PlaySesh commits, 1,389 y30 commits with 127 test files, and the y30 voice and safety stack.</p>
+            <p>A real engineer with design training, and the proof is architecture, not commit counts. He authored PlaySesh's core real-time engine (a custom operation-based sync protocol on Cloudflare Durable Objects with hand-written WebSocket reconnection); wrote a solver that proves every level in his solo game is beatable, on a test harness he built from scratch; and designed y30's deterministic state machine and model-independent safety floor. See "Selected engineering" above.</p>
             <h3>What is he looking for?</h3>
             <p>Senior IC to staff roles, full-time, on small, fast, AI-native teams in AI, voice, and product engineering, where he owns a product surface end to end.</p>
             <h3>Where is he based?</h3>
             <p>Honolulu, remote-first, with Bay Area and Seattle availability when a role needs in-person time.</p>
             <h3>How does he use AI?</h3>
-            <p>As a force multiplier. He steers product, architecture, and systems and uses AI agents to implement while owning the judgment, code review, and safety gates. He shipped production code for years before current AI tooling existed.</p>
+            <p>As a force multiplier with strict guardrails. He sets the architecture, contracts, and acceptance criteria; AI implements inside them; and he owns code review, tests, and safety gates. He manages the risk of AI-written code deliberately: pure-function extraction so logic is testable, regression tests tied to real incidents, adversarial multi-model reviews, and staged rollout behind flags. He shipped production code for years before current AI tooling existed.</p>
 
             <p class="meta">Machine-readable summary, kept in sync with the full portfolio at whoischrislam.github.io.</p>
         </main>
