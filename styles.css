@@ -42,7 +42,7 @@
     --accent: #FF7059;
     --accent-strong: #FF8A77;
     --accent-soft: rgba(255, 112, 89, 0.14);
-    --on-accent: var(--on-accent); /* text/icon color on top of --accent (dark on the lighter coral) */
+    --on-accent: #15110F; /* text/icon color on top of --accent (dark on the lighter coral) */
     --border: rgba(255, 255, 255, 0.10);
     --border-strong: rgba(255, 255, 255, 0.18);
     --chip-bg: rgba(255, 255, 255, 0.06);
@@ -126,6 +126,13 @@ p {
 section p:last-child { margin: 0; }
 
 a { color: var(--link); text-decoration: none; transition: color var(--transition); }
+
+/* Visible keyboard focus for all interactive elements (a11y) */
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
 a:hover { text-decoration: underline; }
 del { color: var(--muted); text-decoration-thickness: 1.5px; }
 
