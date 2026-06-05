@@ -462,6 +462,14 @@
     dock.hidden = true;
     clearDockKeyboardStyles();
     updateLauncher();
+    // a11y: return focus to the launcher so keyboard users aren't stranded
+    try { if (launcher && !launcher.hidden) launcher.focus(); } catch (e) {}
+  }
+  // a11y: Escape closes the dock from anywhere inside it
+  if (dock) {
+    dock.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); closeDock(); }
+    });
   }
   function updateLauncher() {
     if (!launcher) return;
