@@ -1,0 +1,5 @@
+# Private job-hunt prep — local only, never commit or publish
+.jobhunt/
+
+# macOS
+.DS_Store
