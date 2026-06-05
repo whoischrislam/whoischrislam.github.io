@@ -70,7 +70,7 @@
                         "@type": "Occupation",
                         "name": "Product Engineer & Designer",
                         "occupationalCategory": "Product engineering, design engineering, AI-native product",
-                        "skills": "Voice AI, LLM orchestration, agentic systems, FSM/LLM safety, evals and observability, full-stack engineering (React, TypeScript, Python, Next.js, Supabase, Cloudflare Workers), product design, design systems, UX research, 0 to 1 product"
+                        "skills": "Voice AI, LLM orchestration, multi-agent orchestration, agentic systems, prompt engineering and system instructions, FSM/LLM safety, evals and evaluation UX, provenance and human-AI oversight, test-driven development, full-stack engineering (React, TypeScript, Python, Next.js, Supabase, Cloudflare Workers, CI/CD), product design, design systems (tokens, Storybook), WCAG accessibility, UX research, AI-native development, technical founder, 0 to 1 product"
                     },
                     "seeks": { "@type": "Demand", "name": "Senior IC roles in AI, voice, and product engineering, full-time" },
                     "worksFor": {
@@ -86,7 +86,7 @@
                         { "@type": "CollegeOrUniversity", "name": "University of Washington", "description": "MS, Human Centered Design & Engineering" }
                     ],
                     "knowsLanguage": ["English", "Cantonese", "Japanese"],
-                    "knowsAbout": ["Voice AI", "Product Engineering", "Design Engineering", "Agentic Systems", "LLM Orchestration", "AI-Native Development", "Conversational AI", "Elder Care", "Healthcare Technology", "Product Design", "0 to 1 Product"],
+                    "knowsAbout": ["Voice AI", "Product Engineering", "Design Engineering", "Agentic Systems", "Multi-Agent Orchestration", "LLM Orchestration", "Prompt Engineering", "LLM Evaluation", "Human-AI Interaction", "AI-Native Development", "Conversational AI", "Design Systems", "Accessibility (WCAG)", "Technical Founder", "Elder Care", "Healthcare Technology", "Product Design", "0 to 1 Product"],
                     "sameAs": [
                         "https://github.com/whoischrislam",
                         "https://www.linkedin.com/in/whoischrislam/",
@@ -565,10 +565,10 @@
                             <ul>
                                 <li>Product design (0→1, interaction, systems thinking)</li>
                                 <li>UX research (field interviews, usability testing, user testing)</li>
-                                <li>Design systems (Figma, React + Storybook + Chromatic)</li>
+                                <li>Design systems (Figma, React + Storybook + Chromatic, design tokens)</li>
                                 <li>Prototyping (Figma, Principle, interactive)</li>
                                 <li>Motion design</li>
-                                <li>Accessibility &amp; elder-care UX</li>
+                                <li>Accessibility (WCAG) &amp; elder-care UX</li>
                                 <li>Information architecture</li>
                             </ul>
                         </div>
@@ -577,10 +577,10 @@
                             <ul>
                                 <li>React · TypeScript · Vanilla JS · Python · Next.js · HTML/CSS</li>
                                 <li>Voice AI (LiveKit · real-time STT/LLM/TTS pipelines · VAD &amp; turn-taking)</li>
-                                <li>Agent orchestration (FSM/LLM hybrid · attention arbiters · multi-layer safety harnesses)</li>
-                                <li>Evals &amp; observability (LLM judges · behavioral rubrics · WER · production monitoring)</li>
+                                <li>Agent orchestration (FSM/LLM hybrid · prompt &amp; system-instruction design · attention arbiters · multi-layer safety harnesses)</li>
+                                <li>Evals &amp; observability (LLM judges · behavioral rubrics · evaluation UX · provenance · telemetry · WER)</li>
                                 <li>Multi-agent AI (Claude · OpenAI · OpenRouter · Perplexity · MCP)</li>
-                                <li>Supabase · Firebase · Postgres · Cloudflare Workers · Docker · CI/CD</li>
+                                <li>Supabase · Firebase · Postgres · Cloudflare Workers · Docker · CI/CD · test-driven development</li>
                                 <li>Product engineer mindset (owning features across stack, UX, data, and abstractions)</li>
                                 <li>Tauri · Discord SDK · tldraw</li>
                             </ul>
@@ -660,13 +660,15 @@
                         <article class="project-card animation-appear">
                             <img class="project-banner" loading="lazy" src="images/edr.png" alt="Evolve, Die, Repeat pixel-art creature">
                             <h3>Evolve, Die, Repeat</h3>
-                            <p>A 2D side-scrolling roguelite where you swap body parts mid-run to evolve: grow fins to swim, wings to fly, claws to climb. Built in Love2D (Lua) with a 1,400+ test suite and CI/CD that ships desktop builds to itch.io. Inspired by Hades, Dead Cells, and E.V.O.</p>
-                            <p class="project-unlock">Unlocked: Lua, Love2D, test-driven game dev, automated CI/CD shipping to itch.io</p>
+                            <p>A 2D side-scrolling roguelite where you swap body parts mid-run to evolve: grow fins to swim, wings to fly, claws to climb. Built solo in Love2D (Lua), test-driven with 1,462 tests across 69 files, a telemetry and playtest-feedback pipeline, and CI/CD that ships Windows, macOS, and Linux builds to itch.io. In friends-and-family playtesting. Inspired by Hades, Dead Cells, and E.V.O.</p>
+                            <p class="project-unlock">Unlocked: Lua, Love2D, test-driven game dev, telemetry-driven iteration, automated cross-platform CI/CD</p>
                             <div class="keyword-container">
                                 <p class="keyword">Love2D</p>
                                 <p class="keyword">Lua</p>
                                 <p class="keyword">Roguelite</p>
                                 <p class="keyword">Game Design</p>
+                                <p class="keyword">Test-driven</p>
+                                <p class="keyword">Telemetry</p>
                                 <p class="keyword">CI/CD</p>
                                 <p class="keyword">itch.io</p>
                             </div>
