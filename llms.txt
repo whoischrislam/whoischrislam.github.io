@@ -27,5 +27,12 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 - y30: built the voice pipeline (multi-provider, deep fallback) and a model-independent safety floor; 1,389 commits, 127 test files.
 - PlaySesh: built 0 to 1 solo; 5,120 users across 121 Discord servers, 1,302 MAU, all organic.
 
+## Selected engineering (systems depth, not commit counts)
+- PlaySesh: authored the core real-time engine, a custom operation-based sync protocol on Cloudflare Durable Objects (authoritative ordering, hand-written WebSocket reconnection), after moving the product off an off-the-shelf canvas library. Primary engineer on the codebase.
+- Evolve, Die, Repeat (solo Lua/Love2D game): a solver that proves every procedurally generated level is completable via a reachability search over the player's jump physics; from-scratch headless test harness, about 1,568 tests.
+- y30: conversation flow as a deterministic state machine with the language model scoped to phrasing and warmth, plus a model-independent rule-based safety floor; about half of routing resolves with no model call.
+- Engineering judgment: built y30's first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the architecture and safety model across as a spec.
+- Hand-built without AI: this site and its voice agent are vanilla JavaScript, no framework, down to audio codec detection and mobile keyboard handling.
+
 ## Contact
 whoischrislam@gmail.com
