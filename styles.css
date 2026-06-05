@@ -1095,6 +1095,26 @@ button:active { transform: translateY(1px); }
     .case-figures { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
 }
 
+/* Single process-sketch figure in "How I work" */
+.stack-figure { margin: 2.6em 0 0 0; max-width: 680px; }
+.stack-figure a {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background-color: var(--surface);
+    transition: border-color var(--transition), transform var(--transition);
+}
+.stack-figure a:hover { border-color: var(--accent); transform: translateY(-2px); }
+.stack-figure img { width: 100%; height: auto; display: block; }
+.stack-figure figcaption {
+    font-size: 0.85em;
+    color: var(--muted);
+    margin-top: 0.6em;
+    line-height: 1.5;
+    max-width: 60ch;
+}
+
 .work-subhead { font-size: 1.5em; color: var(--muted); margin: 0 0 1.2em 0; }
 
 /* ---------- Work list (condensed + chips) ---------- */
