@@ -132,9 +132,9 @@
         { "institution": "University of Washington", "area": "Informatics, Human-Computer Interaction", "studyType": "BS", "endDate": "2010" }
     ],
     "skills": [
-        { "name": "AI & Voice", "keywords": ["Voice AI", "LLM orchestration", "Agentic systems", "FSM/LLM safety", "Evals & observability", "Multi-agent (Claude, OpenAI, MCP)", "LiveKit", "Real-time STT/TTS"] },
-        { "name": "Engineering", "keywords": ["React", "TypeScript", "Python", "Next.js", "Vanilla JS", "Supabase", "Firebase", "PostgreSQL", "Cloudflare Workers", "Docker", "CI/CD"] },
-        { "name": "Design", "keywords": ["Product design (0 to 1)", "Design systems", "UX research", "Prototyping", "Information architecture", "Accessibility", "Elder-care UX"] }
+        { "name": "AI & Voice", "keywords": ["Voice AI", "LLM orchestration", "Multi-agent orchestration", "Agentic systems", "Prompt & system-instruction design", "FSM/LLM safety", "Evals & evaluation UX", "Provenance & human-AI oversight", "Agent frameworks", "MCP", "LiveKit", "Real-time STT/TTS"] },
+        { "name": "Engineering", "keywords": ["React", "TypeScript", "Python", "Next.js", "Vanilla JS", "Supabase", "Firebase", "PostgreSQL", "Cloudflare Workers", "Docker", "CI/CD", "Test-driven development", "Telemetry & instrumentation"] },
+        { "name": "Design", "keywords": ["Product design (0 to 1)", "Design systems", "Design tokens", "Storybook & Chromatic", "UX research", "Prototyping", "Information architecture", "WCAG accessibility", "Elder-care UX"] }
     ],
     "languages": [
         { "language": "English", "fluency": "Native or bilingual" },
