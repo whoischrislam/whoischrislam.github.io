@@ -1057,6 +1057,45 @@ button:active { transform: translateY(1px); }
 .case-outline { font-size: 1em; color: var(--text); line-height: 1.6; margin: 0 0 1.1em 0; }
 .case-outline strong { color: var(--accent); font-weight: 700; }
 .case-card .keyword-container { margin: auto 0 0 0; }
+
+/* Featured case with a data-visualization cluster (GoodRx) */
+.case-card--featured { grid-column: 1 / -1; }
+.case-card--featured .case-outline { max-width: 70ch; }
+.case-card--featured .keyword-container { margin: 0 0 1.3em 0; }
+.case-figures {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8em;
+}
+.case-figure {
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    background-color: var(--bg);
+    transition: border-color var(--transition), transform var(--transition);
+}
+.case-figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+}
+.case-figure:hover { border-color: var(--accent); transform: translateY(-2px); }
+.case-figures figcaption {
+    grid-column: 1 / -1;
+    font-size: 0.82em;
+    color: var(--muted);
+    margin-top: 0.4em;
+    line-height: 1.5;
+}
+@media (max-width: 640px) {
+    .case-figures { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+}
+
 .work-subhead { font-size: 1.5em; color: var(--muted); margin: 0 0 1.2em 0; }
 
 /* ---------- Work list (condensed + chips) ---------- */
