@@ -1060,7 +1060,6 @@ button:active { transform: translateY(1px); }
 
 /* Featured case with a data-visualization cluster (GoodRx) */
 .case-card--featured { grid-column: 1 / -1; }
-.case-card--featured .case-outline { max-width: 70ch; }
 .case-card--featured .keyword-container { margin: 0 0 1.3em 0; }
 .case-figures {
     margin: 0;
