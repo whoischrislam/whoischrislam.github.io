@@ -1095,32 +1095,6 @@ button:active { transform: translateY(1px); }
     .case-figures { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
 }
 
-/* "In practice" process artifact in How I work */
-.practice-block {
-    margin: 3em 0 0 0;
-    padding-top: 2.4em;
-    border-top: 1px solid var(--border);
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    gap: 1.8em;
-    align-items: center;
-}
-.practice-figure {
-    display: block;
-    border: 1px solid var(--border);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    background-color: var(--surface);
-    transition: border-color var(--transition), transform var(--transition);
-}
-.practice-figure:hover { border-color: var(--accent); transform: translateY(-2px); }
-.practice-figure img { width: 100%; height: auto; display: block; }
-.practice-note p { font-size: 1.02em; color: var(--text); line-height: 1.65; margin: 0; }
-.practice-note .practice-caption { font-size: 0.82em; color: var(--muted); margin-top: 0.7em; }
-@media (max-width: 720px) {
-    .practice-block { grid-template-columns: 1fr; gap: 1.2em; }
-}
-
 .work-subhead { font-size: 1.5em; color: var(--muted); margin: 0 0 1.2em 0; }
 
 /* ---------- Work list (condensed + chips) ---------- */
