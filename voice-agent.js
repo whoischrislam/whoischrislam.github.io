@@ -209,6 +209,9 @@
   function ask(transcript) {
     setState("processing");
     var body = lens ? { transcript: transcript, lens: lens } : { transcript: transcript };
+    // Send the verified receipts so the agent won't repeat proof it already gave.
+    // The server uses only the agent's own prior replies, never the visitor's text.
+    if (receipts.length) body.priorReceipts = receipts;
     fetch(VOICE_API + "/ask", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
       .then(function (r) { if (!r.ok) throw { status: r.status }; return r.json(); })
       .then(function (d) {
