@@ -33,6 +33,9 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 - y30: conversation flow as a deterministic state machine with the language model scoped to phrasing and warmth, plus a model-independent rule-based safety floor; about half of routing resolves with no model call.
 - Engineering judgment: built y30's first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the architecture and safety model across as a spec.
 - Hand-built without AI: this site and its voice agent are vanilla JavaScript, no framework, down to audio codec detection and mobile keyboard handling.
+- y30: an automated eval flywheel grades every conversation against a rubric and auto-files regressions as issues (metadata only, no transcript or PHI), so quality drops are caught without a human in the loop.
+- y30: real-time emotion-aware delivery, the agent reads emotional cues and adapts its voice in the moment (for example, softening when a conversation turns to grief).
+- y30: a provider-resilient voice pipeline that degrades gracefully across multiple STT, LLM, and TTS providers plus a separate speech-to-speech fallback, so a live call never breaks when one dependency fails.
 
 ## Contact
 whoischrislam@gmail.com
