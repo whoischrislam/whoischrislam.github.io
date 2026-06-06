@@ -264,7 +264,11 @@
                             <ul class="featured-decisions">
                                 <li>
                                     <span class="featured-decision-title">Made it slower, on purpose</span>
-                                    <span class="featured-decision-rationale">Most pipelines fire at 200–400ms. For an 80-year-old, that's not fast. It's rude. y30 uses a 3.2-second patience window with a contextual turn-detector that holds longer when a sentence isn't finished. I covered the cost with immediate non-verbal feedback so the wait reads as listening, not lag.</span>
+                                    <span class="featured-decision-rationale">Most pipelines fire at 200–400ms. For an 80-year-old, that's not fast. It's rude. y30 uses a 3.2-second patience window with a contextual turn-detector that holds longer when a sentence isn't finished, and I cover the wait with immediate non-verbal feedback so it reads as listening, not lag. One call wearing three hats: the product judgment to not rush them, the interaction design to make waiting feel like care, and the engineering to hold the turn.</span>
+                                </li>
+                                <li>
+                                    <span class="featured-decision-title">An interface an 80-year-old never has to learn</span>
+                                    <span class="featured-decision-rationale">One tap to start. One task per screen. Tap targets sized for unsteady hands, type for tired eyes, and a live audio indicator so the person always knows it's listening. No AI sparkle, no chat-bubble clutter, nothing to figure out. The hard part was everything I left out, so the user never feels tested.</span>
                                 </li>
                                 <li>
                                     <span class="featured-decision-title">Deterministic engine, warm LLM delivery</span>
@@ -284,12 +288,30 @@
 
                         <p class="featured-proof">1,389 commits · 127 test files · STT 4-deep · TTS 5-deep provider fallback</p>
 
+                        <p class="featured-proof">Every conversation auto-graded by an eval pipeline. Regressions file themselves as issues, metadata only, no PHI.</p>
+
+                        <div class="video-demos animation-appear">
+                            <div class="video-demo-item">
+                                <div class="video-embed">
+                                    <iframe src="https://www.loom.com/embed/eb44015201554d11ac841cd1700653ce?hide_owner=true&hide_share=true&hideEmbedTopBar=true"
+                                            allowfullscreen
+                                            title="y30 voice AI — an unscripted reminiscence call"></iframe>
+                                </div>
+                                <div class="video-caption">
+                                    <p class="video-caption-label">A real reminiscence call, and what it becomes.</p>
+                                    <p class="video-caption-desc">An unscripted voice session: the agent waits through a long pause without cutting in, yields the instant it's interrupted, and softens its tone when the conversation turns to grief. Then the conversation becomes structured signal a caregiver can act on.</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="keyword-container">
                             <p class="keyword">Voice AI</p>
                             <p class="keyword">Elder Care</p>
-                            <p class="keyword">FSM Safety Engine</p>
-                            <p class="keyword">LLM Orchestration</p>
-                            <p class="keyword">LiveKit</p>
+                            <p class="keyword">Human-AI Interaction</p>
+                            <p class="keyword">Interaction Design</p>
+                            <p class="keyword">Real-Time Systems</p>
+                            <p class="keyword">Accessibility</p>
+                            <p class="keyword">Product Engineering</p>
                         </div>
 
                         <div class="button-group featured-actions animation-appear">
@@ -336,6 +358,10 @@
                                     <span class="featured-decision-rationale">When the off-the-shelf canvas library couldn't carry real multiplayer, I replaced it with my own operation-based sync protocol on Cloudflare Durable Objects: authoritative ordering, conflict handling, and the WebSocket reconnection logic by hand. The foundation the whole collaborative tool runs on.</span>
                                 </li>
                                 <li>
+                                    <span class="featured-decision-title">Designed the feel, not just the features</span>
+                                    <span class="featured-decision-rationale">Real-time collaboration is a feeling, not a checkbox. I designed for presence: live cursors, instant updates, and game-specific tools (dice, counters, boards) so a remote team felt like one shared room. Simple enough to open cold, deep enough to live in for 50-minute sessions.</span>
+                                </li>
+                                <li>
                                     <span class="featured-decision-title">Product-led pivot</span>
                                     <span class="featured-decision-rationale">User behavior, not a roadmap, drove the shift from social gaming to game dev tooling. Sessions ran 50 minutes on average. That signal told us what people actually wanted to do.</span>
                                 </li>
@@ -377,11 +403,12 @@
 
                         <div class="keyword-container">
                             <p class="keyword badge-founder">Founder</p>
-                            <p class="keyword">Discord SDK</p>
-                            <p class="keyword">Three.js</p>
+                            <p class="keyword">Real-Time Collaboration</p>
+                            <p class="keyword">Interaction Design</p>
                             <p class="keyword">Durable Objects</p>
                             <p class="keyword">WebSockets</p>
-                            <p class="keyword">Cloudflare Workers</p>
+                            <p class="keyword">Three.js</p>
+                            <p class="keyword">0→1 Product</p>
                         </div>
 
                         <div class="featured-actions animation-appear">
