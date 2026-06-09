@@ -528,6 +528,10 @@
     if (!anchor) return;
     var target = document.querySelector(anchor);
     if (!target) return;
+    // Attribution: make the agent's page navigation legible instead of a mystery scroll.
+    // The status clears on its own when the turn ends (setState -> idle).
+    var PROOF_LABELS = { "#y30": "the y30 work", "#playsesh": "PlaySesh", "#work": "his work history", "#looking-for": "what he's looking for", "#stack": "how he works", "#testimonials": "the references", "#play": "his side projects" };
+    setStatus("Showing you " + (PROOF_LABELS[anchor] || "the proof") + " on the page…");
     highlightOnArrival(target);
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!reduce) setTimeout(function () { target.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900);
