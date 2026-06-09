@@ -481,10 +481,27 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 
 /* Print: isolate the brief, force black-on-white, hide all site chrome */
 @media print {
-    body * { visibility: hidden !important; }
-    #brief-print-root, #brief-print-root * { visibility: visible !important; }
+    /* Print ONLY the recruiter brief. The page is long, so the rest must be REMOVED from
+       layout with display:none — not hidden with visibility:hidden, which keeps the space
+       and prints as blank trailing pages. display:none collapses the document to the
+       brief's height. (#va-dock is a direct child of body and holds the live interface.) */
+    body > *:not(#va-dock) { display: none !important; }
+    #va-dock {
+        display: block !important; position: static !important; inset: auto !important;
+        width: auto !important; height: auto !important; max-height: none !important;
+        overflow: visible !important; margin: 0 !important; border: none !important;
+        box-shadow: none !important; background: #fff !important;
+    }
+    /* Un-clip the interface containers so the brief flows at natural height. */
+    #voice-interface, .va-dock-body, .va-scroll {
+        display: block !important; position: static !important;
+        height: auto !important; max-height: none !important; overflow: visible !important;
+    }
+    /* Hide dock chrome and the foot (CTA/composer), and the transcript — leave only the brief. */
+    .va-dock-head, .va-foot { display: none !important; }
+    .va-scroll > *:not(#brief-print-root) { display: none !important; }
     #brief-print-root {
-        position: absolute; left: 0; top: 0; width: 100%;
+        display: block !important; position: static !important; width: 100%;
         margin: 0; padding: 0; border: none; border-radius: 0;
         background: #fff !important; color: #000 !important;
     }
@@ -492,10 +509,6 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     #brief-print-root .va-brief-actions { display: none !important; }
     #brief-print-root li::before { color: #000 !important; }
     #brief-print-root h4, #brief-print-root li, #brief-print-root p { break-inside: avoid; }
-    /* The brief lives inside the fixed dock's scroll region; un-clip both so it prints in full */
-    #va-dock, .va-dock-body, .va-scroll { position: static !important; overflow: visible !important; max-height: none !important; height: auto !important; width: auto !important; border: none !important; box-shadow: none !important; background: #fff !important; }
-    .va-dock-head, .va-foot { display: none !important; }
-    .va-launcher, header, footer, .read-progress, #loading { display: none !important; }
 }
 
 /* ---------- Open-to chip row (hero) ---------- */
