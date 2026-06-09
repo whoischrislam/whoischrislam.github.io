@@ -283,6 +283,17 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     animation-delay: 2.45s;
 }
 
+/* Work-sample framing under the hero CTA: tells a skimmer the agent is substantive
+   (fact-grounded, streaming, server-side safety) BEFORE they open it. */
+.hero-agent-note {
+    font-size: 0.95em;
+    color: var(--muted);
+    max-width: 560px;
+    margin: -0.4em 0 1.8em 0;
+    line-height: 1.55;
+}
+.hero-agent-note strong { color: var(--text); font-weight: 600; }
+
 /* ---------- Voice agent (AI hiring guide) ---------- */
 .voice-agent {
     width: 100%;
