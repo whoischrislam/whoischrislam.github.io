@@ -41,6 +41,7 @@
 
   var lens = null;
   var mediaRecorder = null, chunks = [], audioCtx = null, currentSource = null, thinkTimer = null, requestingMic = false;
+  var streamReader = null, ttsQueue = [], ttsPlaying = false, streamDone = false;
   var receipts = [], turnCount = 0, briefing = false;
 
   function state() { return root.dataset.state; }
@@ -150,7 +151,7 @@
   sendBtn.addEventListener("click", sendTyped);
   inputEl.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); sendTyped(); } });
   micBtn.addEventListener("click", onMic);
-  stopBtn.addEventListener("click", stopPlayback);
+  stopBtn.addEventListener("click", stopTurn);
 
   function onMic() {
     unlockAudio(); // inside the gesture (iOS)
@@ -212,6 +213,127 @@
     // Send the verified receipts so the agent won't repeat proof it already gave.
     // The server uses only the agent's own prior replies, never the visitor's text.
     if (receipts.length) body.priorReceipts = receipts;
+    streamAsk(body, transcript);
+  }
+
+  // Streaming turn (/ask-stream, SSE). Render each sentence as it clears the server-side
+  // leak scan; queue per-sentence audio so speech starts on sentence 1 instead of after the
+  // whole answer. If the stream can't be established before any text is shown, fall back to
+  // the non-streaming /ask so the visitor still gets an answer.
+  function streamAsk(body, transcript) {
+    var agentEl = null, full = "", guided = false, fellBack = false;
+    ttsQueue = []; ttsPlaying = false; streamDone = false;
+
+    function append(text) {
+      if (state() !== "speaking") setState("speaking"); // first sentence: drop the "Thinking…" timer
+      if (!agentEl) {
+        root.classList.add("va-started");
+        agentEl = document.createElement("p");
+        agentEl.className = "va-turn va-turn-agent";
+        convoEl.appendChild(agentEl);
+      }
+      agentEl.textContent += (agentEl.textContent ? " " : "") + text;
+      if (scrollEl) scrollEl.scrollTop = scrollEl.scrollHeight;
+      full += (full ? " " : "") + text;
+      if (!guided) { guideToProof(transcript, full); guided = true; } // react as the answer begins
+    }
+
+    function onEvent(ev) {
+      if (ev.type === "sentence") {
+        append(ev.text);
+        if (ev.ttsToken) enqueueTts(ev.text, ev.ttsToken);
+      } else if (ev.type === "done") {
+        if (ev.receipt) { receipts.push(ev.receipt); turnCount++; maybeShowBrief(); }
+        if (ev.reply && !guided) { guideToProof(transcript, ev.reply); guided = true; }
+      } else if (ev.type === "error") {
+        if (!full && !fellBack) { fellBack = true; askJson(body, transcript); }
+      }
+      // "truncated": a sentence hit the scan; keep what was shown, end gracefully.
+    }
+
+    function finish() {
+      streamDone = true;
+      streamReader = null;
+      if (fellBack) return;
+      if (!full) { fail("Something went wrong. Try again?"); return; }
+      settleIdle(); // go idle once any queued audio drains
+    }
+
+    fetch(VOICE_API + "/ask-stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).then(function (r) {
+      if (!r.ok || !r.body) throw { status: r.status || 0 };
+      streamReader = r.body.getReader();
+      var decoder = new TextDecoder(), sse = "";
+      function pump() {
+        return streamReader.read().then(function (res) {
+          if (res.done) { finish(); return; }
+          sse += decoder.decode(res.value, { stream: true });
+          var nl;
+          while ((nl = sse.indexOf("\n\n")) !== -1) {
+            var raw = sse.slice(0, nl); sse = sse.slice(nl + 2);
+            var line = null;
+            raw.split("\n").forEach(function (l) { if (l.indexOf("data:") === 0) line = l.slice(5).trim(); });
+            if (line) { try { onEvent(JSON.parse(line)); } catch (e) {} }
+          }
+          return pump();
+        });
+      }
+      return pump();
+    }).catch(function (e) {
+      // Stream setup/continuation failed. Fall back only if nothing has been shown yet.
+      if (!full && !fellBack) { fellBack = true; askJson(body, transcript); return; }
+      finish();
+    });
+  }
+
+  // --- streaming audio queue (sequential per-sentence playback) ---
+  function enqueueTts(text, token) {
+    if (!audioCtx) return; // no unlocked audio context -> text-only, skip speech
+    ttsQueue.push({ text: text, token: token });
+    if (!ttsPlaying) playNextTts();
+  }
+  function playNextTts() {
+    if (ttsQueue.length === 0) { ttsPlaying = false; settleIdle(); return; }
+    ttsPlaying = true;
+    var item = ttsQueue.shift();
+    fetch(VOICE_API + "/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: item.text, token: item.token }) })
+      .then(function (r) { if (!r.ok) throw new Error("tts"); return r.arrayBuffer(); })
+      .then(function (buf) {
+        if (!audioCtx) { playNextTts(); return; }
+        return audioCtx.decodeAudioData(buf).then(function (ab) {
+          var src = audioCtx.createBufferSource();
+          src.buffer = ab;
+          src.connect(audioCtx.destination);
+          src.onended = function () { src.disconnect(); if (currentSource === src) currentSource = null; playNextTts(); };
+          currentSource = src;
+          src.start();
+        });
+      })
+      .catch(function () { playNextTts(); }); // a failed sentence shouldn't stall the rest
+  }
+  // Idle only when the stream has ended AND all queued audio has played.
+  function settleIdle() {
+    if (streamDone && !ttsPlaying && ttsQueue.length === 0) {
+      if (audioCtx) { try { audioCtx.suspend(); } catch (e) {} }
+      done();
+    }
+  }
+  // Stop button: cancel the stream, drop queued audio, stop playback, go idle.
+  function stopTurn() {
+    streamDone = true;
+    if (streamReader) { try { streamReader.cancel(); } catch (e) {} streamReader = null; }
+    ttsQueue = []; ttsPlaying = false;
+    if (currentSource) { try { currentSource.stop(); } catch (e) {} try { currentSource.disconnect(); } catch (e) {} currentSource = null; }
+    if (audioCtx) { try { audioCtx.suspend(); } catch (e) {} }
+    done();
+  }
+
+  // --- non-streaming fallback (kept for resilience if /ask-stream is unavailable) ---
+  function askJson(body, transcript) {
+    setState("processing");
     fetch(VOICE_API + "/ask", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
       .then(function (r) { if (!r.ok) throw { status: r.status }; return r.json(); })
       .then(function (d) {
@@ -220,12 +342,11 @@
         if (d.receipt) { receipts.push(d.receipt); turnCount++; maybeShowBrief(); }
         addTurn("agent", reply);
         guideToProof(transcript, reply);
-        speak(reply, d.ttsToken);
+        speakSingle(reply, d.ttsToken);
       })
       .catch(function (e) { fail(describeError(e && e.status)); });
   }
-
-  function speak(text, token) {
+  function speakSingle(text, token) {
     setState("speaking");
     if (!token) { done(); return; }
     fetch(VOICE_API + "/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: text, token: token }) })
@@ -242,11 +363,6 @@
         });
       })
       .catch(function () { done(); });
-  }
-  function stopPlayback() {
-    if (currentSource) { try { currentSource.stop(); } catch (e) {} try { currentSource.disconnect(); } catch (e) {} currentSource = null; }
-    if (audioCtx) { try { audioCtx.suspend(); } catch (e) {} }
-    done();
   }
   function done() { setState("idle"); }
   function fail(msg) { setState("idle"); setStatus(msg); }
