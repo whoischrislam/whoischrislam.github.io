@@ -42,7 +42,7 @@
   var lens = null;
   var mediaRecorder = null, chunks = [], audioCtx = null, currentSource = null, thinkTimer = null, requestingMic = false;
   var streamReader = null, ttsQueue = [], ttsPlaying = false, streamDone = false;
-  var receipts = [], turnCount = 0, briefing = false;
+  var receipts = [], turnCount = 0, briefing = false, firstAsked = false;
 
   function state() { return root.dataset.state; }
 
@@ -132,6 +132,7 @@
         lens = b.dataset.lens;
         modeBtns.forEach(function (x) { x.classList.toggle("is-active", x === b); });
         root.classList.add("va-role-chosen");
+        if (window.phCapture) window.phCapture("voice_agent_lens_selected", { lens: lens });
       }
       renderFlows();
     });
@@ -202,12 +203,16 @@
         var t = (d && d.transcript ? d.transcript : "").trim();
         if (!t) { fail("I didn't catch that. Try again, or type it."); return; }
         addTurn("you", t);
-        ask(t);
+        ask(t, "voice");
       })
       .catch(function (e) { fail(describeError(e && e.status)); });
   }
 
-  function ask(transcript) {
+  function ask(transcript, inputType) {
+    if (!firstAsked) {
+      firstAsked = true;
+      if (window.phCapture) window.phCapture("voice_agent_first_message", { input_type: inputType || "text", lens: lens || "none" });
+    }
     setState("processing");
     var body = lens ? { transcript: transcript, lens: lens } : { transcript: transcript };
     // Send the verified receipts so the agent won't repeat proof it already gave.
@@ -368,9 +373,18 @@
   function fail(msg) { setState("idle"); setStatus(msg); }
 
   // --- every [data-va-open] CTA (hero + bottom) and the floating launcher open the dock ---
-  openCtas.forEach(function (el) { el.addEventListener("click", function (e) { e.preventDefault(); openDock(); }); });
+  openCtas.forEach(function (el) {
+    el.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (window.phCapture) window.phCapture("opened_voice_agent", { location: el.closest("#contact") ? "contact" : "hero" });
+      openDock();
+    });
+  });
   if (launcher) {
-    launcher.addEventListener("click", openDock);
+    launcher.addEventListener("click", function () {
+      if (window.phCapture) window.phCapture("opened_voice_agent", { location: "launcher" });
+      openDock();
+    });
     // Launcher appears once the hero CTA is scrolled out of view (and the dock is closed).
     if ("IntersectionObserver" in window && openCta) {
       new IntersectionObserver(function () { updateLauncher(); }, { threshold: 0 }).observe(openCta);
@@ -387,6 +401,7 @@
   function requestBrief() {
     if (briefing || receipts.length < 3) return;
     briefing = true;
+    if (window.phCapture) window.phCapture("voice_agent_brief_requested", { turns: turnCount });
     briefCta.disabled = true;
     var orig = briefCta.textContent;
     briefCta.textContent = "Generating…";
@@ -434,6 +449,7 @@
       return;
     }
     var b = data.brief;
+    if (window.phCapture) window.phCapture("voice_agent_brief_generated", { roles: (b.bestFitRoles || []).length });
     briefEl.appendChild(el("p", "va-brief-title", "Recruiter brief: Chris Lam"));
     section("Snapshot", el("p", null, b.snapshot));
     section("Best-fit roles", list(b.bestFitRoles));
