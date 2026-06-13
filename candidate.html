@@ -14,6 +14,13 @@
           (function () {
             var KEY = "phc_wJ87u3UDqx4AokJzKguRM9jXR7YkQRJFKLoS6nPeEg5P"; // same PostHog project token as index.html
             if (KEY.indexOf("YOUR_") === 0) { window.__phDisabled = true; return; }
+            // Self-exclusion (see index.html): ?notrack=1 opts this browser out for good, ?track=1 re-enables.
+            try {
+              var qp = new URLSearchParams(location.search);
+              if (qp.get("notrack") === "1") { localStorage.setItem("ph_optout", "1"); alert("Analytics is now OFF on this browser — your visits won't be recorded."); }
+              if (qp.get("track") === "1") { localStorage.removeItem("ph_optout"); alert("Analytics is now ON for this browser."); }
+              if (localStorage.getItem("ph_optout") === "1") { window.__phDisabled = true; return; }
+            } catch (e) {}
             posthog.init(KEY, {
               api_host: "https://us.i.posthog.com",
               defaults: "2026-01-30",

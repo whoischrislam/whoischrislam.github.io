@@ -63,6 +63,12 @@ Keep UTM naming consistent: `utm_medium=email` for cold email, `utm_medium=intro
 
 **When to add backend events (not yet):** only if I later want server-truth the client can't see — cost per conversation, error/rate-limit rates, safety-layer triggers. The pattern then: the frontend sends `posthog.get_distinct_id()` in the request body; the Worker POSTs to PostHog's `/capture/` with that same `distinct_id` so events stitch to one person. Until there's a question only the server can answer, this stays out — smallest reversible step.
 
+## Excluding your own visits and tests
+
+Visit **`whoischrislam.github.io/?notrack=1`** once on each device/browser you use to test. That browser then never initializes PostHog again — no pageview, no events, no recording — so you stay out of the real data. An alert confirms it worked. `?track=1` re-enables. The choice persists in that browser's `localStorage`, so it survives across visits but not across fresh-incognito or cleared storage (re-run the link if you reset those). This is the travel-proof alternative to IP filtering, which breaks the moment your IP changes.
+
+For data already collected before you opted out (e.g. the Jun 13 setup tests), just start your dashboard date range the next day, or exclude those distinct_ids when building insights.
+
 ## Privacy posture
 
 - No DOM autocapture (only the deliberate events above). `localStorage` persistence (no third-party cookies). No cookie banner needed for a personal portfolio with no EU establishment; the trade-off vs `memory` persistence is that `localStorage` keeps return-visit identity, which is the whole point.
