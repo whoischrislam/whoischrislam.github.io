@@ -65,7 +65,8 @@ Keep UTM naming consistent: `utm_medium=email` for cold email, `utm_medium=intro
 
 ## Privacy posture
 
-- No autocapture (only the deliberate events above), no session recording, `localStorage` persistence (no third-party cookies). No cookie banner needed for a personal portfolio with no EU establishment; the trade-off vs `memory` persistence is that `localStorage` keeps return-visit identity, which is the whole point.
+- No DOM autocapture (only the deliberate events above). `localStorage` persistence (no third-party cookies). No cookie banner needed for a personal portfolio with no EU establishment; the trade-off vs `memory` persistence is that `localStorage` keeps return-visit identity, which is the whole point.
+- **Session replay is ON** (enabled in both the SDK config and PostHog project settings). PostHog masks form inputs by default, so text typed into the agent shows as asterisks — but the rendered agent conversation (visible Q&A text on the page) IS captured in the replay. That's fine here (it's Chris's own agent talking about Chris), just be aware. Replay consumes more free-tier quota than plain events; for portfolio traffic that's a non-issue. Turn off by setting `disable_session_recording: true` in both HTML files.
 - Email subjects/bodies are not captured — only that a mail link was clicked.
 
 ## Setup (one-time)
