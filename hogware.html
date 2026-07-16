@@ -274,7 +274,28 @@
           .hw-result-word.hw-fail { color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); }
           .hw-result-flavor { color: var(--muted); font-size: 0.95em; margin: 0; }
 
-          /* ---- Interstitial quote ---- */
+          /* ---- Interstitial: announcement + quote ---- */
+          .hw-announce-word {
+            font-family: var(--body-font);
+            font-weight: 800;
+            font-size: clamp(2.6em, 9vw, 4.4em);
+            letter-spacing: -0.02em;
+            color: var(--accent);
+            margin: 0 0 0.2em;
+            animation: hw-verb-pop 0.35s cubic-bezier(0.2, 1.6, 0.4, 1);
+          }
+          @media (prefers-reduced-motion: reduce) { .hw-announce-word { animation: none; } }
+
+          /* ---- WEIRD! L3 drift ---- */
+          @keyframes hw-wander {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(26px, -14px); }
+            50% { transform: translate(-22px, 12px); }
+            75% { transform: translate(14px, 18px); }
+          }
+          .hw-anim-wander { animation: hw-wander 3.2s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) { .hw-anim-wander { animation: none; } }
+
           #hw-quote .hw-quote-text {
             font-family: var(--header-font);
             font-style: italic;
@@ -486,8 +507,9 @@
                     <p class="hw-result-flavor" id="hw-result-flavor"></p>
                 </div>
 
-                <!-- Between-loop interstitial: real handbook quotes -->
+                <!-- Between-loop interstitial: escalation announcement + real handbook quote -->
                 <div id="hw-quote" class="hw-screen hw-hidden">
+                    <p class="hw-announce-word" id="hw-announce-word"></p>
                     <p class="hw-quote-text" id="hw-quote-text"></p>
                     <p class="hw-quote-source" id="hw-quote-source"></p>
                 </div>
