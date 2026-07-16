@@ -151,11 +151,22 @@
       ctx.state.holding = false;
       ctx.state.x = 0; // 0..1 progress toward the flag
       ctx.state.noticeAt = null;
+      // Your car speeds up with the run's speed-ups (half-rate) — the clock shrinks,
+      // so travel must too, or deep loops become mathematically unwinnable.
+      ctx.state.travelMs = ctx.params.travelMs * (0.55 + 0.45 * run.speed);
+      // Stall car takes a random slot (never the first — no time to react to it),
+      // so knowing "it's always the middle one" stops working after loop 2.
+      var stallAt = ctx.params.stallIdx >= 0 ? 1 + Math.floor(run.rng() * (ctx.params.obstacles.length - 1)) : -1;
+      var hesitateAt = -1;
+      if (ctx.params.hesitateIdx >= 0) {
+        hesitateAt = 1 + Math.floor(run.rng() * (ctx.params.obstacles.length - 1));
+        if (hesitateAt === stallAt) hesitateAt = (stallAt % (ctx.params.obstacles.length - 1)) + 1;
+      }
       // Seeded jitter so the road differs loop to loop (but is identical for everyone today).
       ctx.state.cars = ctx.params.obstacles.map(function (frac, i) {
         return {
           frac: Math.min(0.9, Math.max(0.15, frac + (run.rng() - 0.5) * 0.08)),
-          type: i === ctx.params.stallIdx ? "stall" : (i === ctx.params.hesitateIdx ? "hesitate" : "normal"),
+          type: i === stallAt ? "stall" : (i === hesitateAt ? "hesitate" : "normal"),
           dodged: false
         };
       });
@@ -194,7 +205,7 @@
       sfx("tick");
     },
     update: function (ctx, dt) {
-      if (ctx.state.holding) ctx.state.x = Math.min(1, ctx.state.x + dt / ctx.params.travelMs);
+      if (ctx.state.holding) ctx.state.x = Math.min(1, ctx.state.x + dt / ctx.state.travelMs);
       var car = $("hw-car");
       if (car) car.style.transform = "translate(" + (6 + ctx.state.x * 348) + "px, 30px)";
       var els = scene.querySelectorAll(".hw-traffic");
@@ -235,8 +246,8 @@
   var gamePublish = {
     id: "publish", value: "Make it public", verb: "PUBLISH!", input: "click",
     baseDurationMs: 4200,
-    params: { count: 3, relocks: 0 },
-    levels: [{}, { count: 4 }, { count: 5, relocks: 1 }],
+    params: { count: 3, relocks: 0, density: 0 },
+    levels: [{}, { count: 4, density: 1 }, { count: 5, relocks: 1, density: 2 }],
     _pool: ["the code", "the roadmap", "the salaries", "the finances", "the incident report", "the board deck", "the pricing model", "the postmortem"],
     setup: function (ctx) {
       // Draw this play's secrets from the pool (seeded) — different docs each loop.
@@ -249,7 +260,10 @@
         return '<div class="hw-toggle" data-i="' + i + '" role="button" tabindex="-1">' +
           '<span>' + label + '</span><span class="hw-pill">PRIVATE</span></div>';
       }).join("");
-      scene.innerHTML = '<div class="hw-screen"><div class="hw-toggles" style="gap:0.45em;">' + rows + '</div></div>';
+      // Density is the difficulty lever: a more cramped list = smaller targets,
+      // and it reads MORE like corporate software, not less.
+      var dens = ["", " hw-toggles-snug", " hw-toggles-dense"][ctx.params.density] || "";
+      scene.innerHTML = '<div class="hw-screen"><div class="hw-toggles' + dens + '" style="gap:0.45em;">' + rows + '</div></div>';
       function setState(el, isPublic) {
         el.classList.toggle("hw-public", isPublic);
         el.querySelector(".hw-pill").textContent = isPublic ? "PUBLIC" : "PRIVATE";
@@ -290,11 +304,11 @@
   var gameWeird = {
     id: "weird", value: "Do more weird", verb: "WEIRD!", input: "click",
     baseDurationMs: 4200,
-    params: { target: 10, drift: false },
+    params: { target: 10, drift: false, decayMs: 0 },
     levels: [
       {},
       { target: 12 },
-      { target: 14, drift: true } // the photo starts wandering; normalcy resists
+      { target: 14, drift: true, decayMs: 1100 } // normalcy fights back: idle too long and progress reverts
     ],
     _mutations: [
       function () { var e = $("hw-w-bg"); e.setAttribute("fill", "#B043D1"); },                                  // beige wall goes purple
@@ -314,10 +328,14 @@
     ],
     setup: function (ctx) {
       ctx.state.count = 0;
+      ctx.state.applied = 0;
+      ctx.state.lastClick = 0;
       ctx.state.order = shuffle(gameWeird._mutations.slice(), run.rng);
+      // Random starting spot (seeded) so the photo isn't always dead center.
+      var ox = Math.round((run.rng() - 0.5) * 90), oy = Math.round((run.rng() - 0.5) * 40);
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:center;">' +
-          '<div class="hw-w-wrap' + (ctx.params.drift ? ' hw-anim-wander' : '') + '" style="width:min(70%, 340px);">' +
+          '<div class="hw-w-wrap' + (ctx.params.drift ? ' hw-anim-wander-fast' : '') + '" style="width:min(70%, 340px); position:relative; margin:' + (20 + oy) + 'px 0 0 ' + ox + 'px;">' +
           '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="A perfectly normal stock photo">' +
             '<rect id="hw-w-bg" x="0" y="0" width="200" height="110" fill="#E8E0D0"/>' +
             '<circle id="hw-w-sun" cx="170" cy="20" r="12" fill="#FFC53D" style="opacity:0; transition: opacity 0.3s;"/>' +
@@ -340,14 +358,33 @@
         '</div>';
       $("hw-w-frame").addEventListener("pointerdown", function () {
         if (ctx.done) return;
-        var fn = ctx.state.order[ctx.state.count % ctx.state.order.length];
+        var fn = ctx.state.order[ctx.state.applied % ctx.state.order.length];
         try { fn(); } catch (e) {}
         sfx("tick");
         ctx.state.count++;
+        ctx.state.applied++;
+        ctx.state.lastClick = ctx.elapsed;
         var label = $("hw-weird-count");
         if (label) label.textContent = ctx.state.count;
         if (ctx.state.count >= ctx.params.target) ctx.win("Perfectly optimized for our strategy.", 0);
       });
+    },
+    update: function (ctx) {
+      // L3: normal creeps back in — idle too long between clicks and progress reverts.
+      if (!ctx.params.decayMs || ctx.state.count === 0) return;
+      var since = ctx.elapsed - Math.max(ctx.state.lastClick, ctx.state.lastDecay || 0);
+      if (since > ctx.params.decayMs) {
+        ctx.state.lastDecay = ctx.elapsed;
+        ctx.state.count = Math.max(0, ctx.state.count - 1);
+        var label = $("hw-weird-count");
+        if (label) label.textContent = ctx.state.count;
+        var frame = $("hw-w-frame");
+        if (frame) { // beige veil blinks: normalcy reasserting itself
+          frame.style.filter = "saturate(0.2)";
+          setTimeout(function () { if (frame) frame.style.filter = ""; }, 220);
+        }
+        sfx("fail");
+      }
     },
     onTimeout: function (ctx) { ctx.fail("Still " + (ctx.params.target - ctx.state.count) + " notches too normal."); }
   };
@@ -358,12 +395,14 @@
     baseDurationMs: 4600,
     levels: [
       {},
-      { spawnEveryMs: 380 },
-      { spawnEveryMs: 420, decoy: true } // a "SHIP LATER" button appears; reading is the skill
+      { spawnEveryMs: 380, shipDelayMs: 450 },                                        // the button isn't there yet — find it when it lands
+      { spawnEveryMs: 420, decoy: true, shipDelayMs: 700, decoyLockMs: 600, durationMs: 5200 } // SHIP LATER shows first; falling for it costs time
     ],
     params: {
       spawnEveryMs: 520,
+      shipDelayMs: 0,
       decoy: false,
+      decoyLockMs: 0,
       popups: [
         ["Quick sync?", "just 30 min"],
         ["Loop in legal", "before we do anything"],
@@ -374,15 +413,16 @@
       ]
     },
     setup: function (ctx) {
-      ctx.state.lastSpawn = 0;
+      ctx.state.lastSpawn = -ctx.params.spawnEveryMs; // first meeting invite lands immediately
       ctx.state.spawned = 0;
       ctx.state.popupOrder = shuffle(ctx.params.popups.slice(), run.rng); // different meeting barrage each loop
       ctx.state.nextGap = ctx.params.spawnEveryMs;
-      scene.innerHTML = '<button id="hw-ship-btn" class="hw-btn">SHIP</button>' +
+      ctx.state.lockedUntil = 0;
+      ctx.state.shipShown = false;
+      // Seeded random spot each play — "it's always dead center" stops being knowledge.
+      ctx.state.shipPos = { left: 15 + run.rng() * 50, top: 25 + run.rng() * 35 };
+      scene.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
         '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the meetings — just hit SHIP</p>';
-      $("hw-ship-btn").addEventListener("pointerdown", function () {
-        ctx.win("Shipped. Today.", ctx.state.spawned >= 5 ? 1 : 0);
-      });
       if (ctx.params.decoy) {
         var d = document.createElement("button");
         d.className = "hw-btn";
@@ -390,18 +430,47 @@
         d.textContent = "SHIP LATER";
         d.style.position = "absolute";
         d.style.zIndex = "12";
-        d.style.left = (28 + run.rng() * 20) + "%";
-        d.style.top = (24 + run.rng() * 14) + "%";
+        var dpos = { left: 15 + run.rng() * 50, top: 25 + run.rng() * 35 };
+        // keep decoy and real button visibly apart
+        if (Math.abs(dpos.left - ctx.state.shipPos.left) < 18) dpos.left = (dpos.left + 30) % 65 + 10;
+        d.style.left = dpos.left + "%";
+        d.style.top = dpos.top + "%";
         d.addEventListener("pointerdown", function (e) {
           e.stopPropagation();
+          ctx.state.lockedUntil = ctx.elapsed + ctx.params.decoyLockMs; // you're in the meeting now
           d.style.transform = "rotate(" + (run.rng() > 0.5 ? 8 : -8) + "deg)";
-          d.textContent = "later?!";
+          d.textContent = "in a meeting…";
           sfx("fail");
         });
-        scene.appendChild(d);
+        $("hw-ship-zone").appendChild(d);
       }
     },
+    _showShip: function (ctx) {
+      ctx.state.shipShown = true;
+      var b = document.createElement("button");
+      b.className = "hw-btn";
+      b.id = "hw-ship-btn";
+      b.textContent = "SHIP";
+      b.style.position = "absolute";
+      b.style.zIndex = "12";
+      b.style.left = ctx.state.shipPos.left + "%";
+      b.style.top = ctx.state.shipPos.top + "%";
+      b.style.transform = "none"; // pin the anchor: the shared #hw-ship-btn CSS centers via translate, which would fight the pop animation
+      if (!reducedMotion) { b.style.animation = "hw-verb-pop 0.25s cubic-bezier(0.2, 1.6, 0.4, 1)"; }
+      b.addEventListener("pointerdown", function () {
+        if (ctx.elapsed < ctx.state.lockedUntil) return; // still stuck in the meeting you clicked into
+        ctx.win("Shipped. Today.", ctx.state.spawned >= 5 ? 1 : 0);
+      });
+      $("hw-ship-zone").appendChild(b);
+    },
     update: function (ctx) {
+      if (!ctx.state.shipShown && ctx.elapsed >= ctx.params.shipDelayMs) gameShip._showShip(ctx);
+      var ship = $("hw-ship-btn");
+      if (ship) {
+        var locked = ctx.elapsed < ctx.state.lockedUntil;
+        ship.style.opacity = locked ? "0.35" : "";
+        ship.style.cursor = locked ? "not-allowed" : "";
+      }
       if (ctx.elapsed - ctx.state.lastSpawn < ctx.state.nextGap) return;
       ctx.state.lastSpawn = ctx.elapsed;
       ctx.state.nextGap = ctx.params.spawnEveryMs + (run.rng() - 0.5) * 160; // irregular cadence reads more human
@@ -410,14 +479,14 @@
       var el = document.createElement("div");
       el.className = "hw-popup";
       el.innerHTML = "<b>" + p[0] + "</b><span>" + p[1] + "</span>";
-      // Aim popups at a daily-seeded jittered ring around the button so they bury it over time.
-      var cx = box.width * 0.5, cy = box.height * 0.55;
+      // Aim popups at a daily-seeded jittered ring around the button's REAL spot so they bury it over time.
+      var cx = box.width * (ctx.state.shipPos.left / 100) + 40, cy = box.height * (ctx.state.shipPos.top / 100) + 20;
       var jx = cx + (run.rng() - 0.5) * box.width * 0.34;
       var jy = cy + (run.rng() - 0.5) * box.height * 0.34;
       el.style.left = Math.max(4, Math.min(box.width - 130, jx - 60)) + "px";
       el.style.top = Math.max(30, Math.min(box.height - 70, jy - 30)) + "px";
       el.style.transform = "rotate(" + (run.rng() * 10 - 5) + "deg)";
-      scene.appendChild(el);
+      $("hw-ship-zone").appendChild(el);
       ctx.state.spawned++;
     },
     onTimeout: function (ctx) { ctx.fail("Buried in meetings. Classic."); }
@@ -439,33 +508,36 @@
     },
     levels: [
       {},
-      { varyBands: true },
-      { chargeMs: 1050, varyBands: true }
+      { varyBands: true, failBelow: 35 },
+      { chargeMs: 1050, varyBands: true, failBelow: 55 }
     ],
     setup: function (ctx) {
       ctx.state.holding = false;
       ctx.state.power = 0;
       ctx.state.launched = false;
-      // L2+: the moonshot band's edge moves per play (seeded) — WarioWare's
-      // "increase the variance" method. You can't memorize the sweet spot.
-      if (ctx.params.varyBands) {
-        var moonStart = 88 + run.rng() * 6; // 88-94
-        ctx.state.zones = [
-          [35, "TIMID.", 0, true], [70, "SAFE.", 0, true],
-          [moonStart, "BOLD!", 1, true], [100, "MOONSHOT!!", 2, true],
-          [999, "…overboard.", 0, false]
-        ];
-      } else {
-        ctx.state.zones = ctx.params.zones;
-      }
+      // L2+: the moonshot edge moves per play (seeded variance), and a fail floor
+      // rises with level — under-charging stops being safe. Thematically exact:
+      // "never trying" is the only real failure this value recognizes.
+      var moonStart = ctx.params.varyBands ? 88 + run.rng() * 6 : 90;
+      var floor = ctx.params.failBelow || 0;
+      ctx.state.zones = [
+        [35, "TIMID.", 0], [70, "SAFE.", 0], [moonStart, "BOLD!", 1], [100, "MOONSHOT!!", 2]
+      ].map(function (z) { return [z[0], z[1], z[2], z[0] > floor]; });
+      ctx.state.zones.push([999, "…overboard.", 0, false]);
+      ctx.state.floor = floor;
+      // Rink bands drawn from the REAL zones so the shrinking safe area is visible.
+      var px = function (pct) { return 6 + (pct / 100) * 372 + 10; };
+      var bands =
+        (floor > 0 ? '<rect x="' + px(0) + '" y="36" width="' + (px(floor) - px(0)) + '" height="10" rx="5" fill="var(--chip-bg)" stroke="var(--border-strong)" stroke-dasharray="3 3"/>' : '') +
+        '<rect x="' + px(Math.max(floor, 35)) + '" y="36" width="' + (px(70) - px(Math.max(floor, 35))) + '" height="10" rx="5" fill="var(--accent-soft)"/>' +
+        '<rect x="' + px(70) + '" y="34" width="' + (px(moonStart) - px(70)) + '" height="14" rx="7" fill="var(--accent-soft)"/>' +
+        '<rect x="' + px(moonStart) + '" y="32" width="' + (px(100) - px(moonStart)) + '" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>';
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2.2em;">' +
           '<svg id="hw-rink" width="100%" height="120" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">' +
             '<rect x="0" y="38" width="400" height="6" rx="3" fill="var(--chip-bg)"/>' +
-            '<rect x="140" y="36" width="140" height="10" rx="5" fill="var(--accent-soft)"/>' +
-            '<rect x="280" y="34" width="80" height="14" rx="7" fill="var(--accent-soft)"/>' +
-            '<rect x="360" y="32" width="30" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>' +
-            '<line x1="396" y1="20" x2="396" y2="56" stroke="var(--accent-strong)" stroke-width="2.5" stroke-dasharray="3 3"/>' +
+            bands +
+            '<line x1="' + px(100) + '" y1="20" x2="' + px(100) + '" y2="56" stroke="var(--accent-strong)" stroke-width="2.5" stroke-dasharray="3 3"/>' +
             '<g id="hw-puck" style="transform: translate(6px, 26px);">' +
               '<circle cx="10" cy="14" r="10" fill="var(--accent)"/>' +
               '<circle cx="7" cy="12" r="1.4" fill="var(--bg)"/>' +
@@ -508,7 +580,8 @@
         for (var i = 0; i < zones.length; i++) {
           if (pct <= zones[i][0]) {
             if (zones[i][3]) return ctx.win(zones[i][1], zones[i][2]);
-            return ctx.fail(zones[i][1] + " Right past the edge.");
+            var why = i === zones.length - 1 ? " Right past the edge." : " That wasn't even trying.";
+            return ctx.fail(zones[i][1] + why);
           }
         }
       }, reducedMotion ? 150 : 720);

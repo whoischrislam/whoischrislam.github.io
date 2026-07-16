@@ -302,7 +302,8 @@
             75% { transform: translate(14px, 18px); }
           }
           .hw-anim-wander { animation: hw-wander 3.2s ease-in-out infinite; }
-          @media (prefers-reduced-motion: reduce) { .hw-anim-wander { animation: none; } }
+          .hw-anim-wander-fast { animation: hw-wander 1.9s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) { .hw-anim-wander, .hw-anim-wander-fast { animation: none; } }
 
           #hw-quote .hw-quote-text {
             font-family: var(--header-font);
@@ -366,6 +367,10 @@
           }
           .hw-toggle.hw-public { border-color: var(--accent); background: var(--accent-soft); cursor: default; }
           .hw-toggle.hw-public .hw-pill { background: var(--accent); color: var(--on-accent); }
+          .hw-toggles-snug { gap: 0.3em !important; }
+          .hw-toggles-snug .hw-toggle { padding: 0.4em 0.8em; font-size: 0.92em; }
+          .hw-toggles-dense { gap: 0.2em !important; }
+          .hw-toggles-dense .hw-toggle { padding: 0.28em 0.7em; font-size: 0.85em; }
 
           /* ---- SHIP IT microgame ---- */
           #hw-ship-btn {
