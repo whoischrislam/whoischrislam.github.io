@@ -836,8 +836,10 @@
         return Math.min(0.68, Math.max(0.22, f + (run.rng() - 0.5) * 0.1)); // clamped below the zone — never land ON a rock
       });
       var z = ctx.params.zone;
-      // power needed to coast to mid-zone: p = 100·√(2·friction·D)/k  (friction 0.22, k 0.814)
-      var targetPower = 100 * Math.sqrt(0.44 * (z[0] + z[1]) / 2) / 0.814;
+      // Linear power→distance (D = power/100 · 1.1), same readable mapping as AIM! —
+      // the original quadratic physics made "half power = half distance" false, which
+      // played as unfair, not hard. Friction stays visual (the ease-out), not physical.
+      var targetPower = 100 * ((z[0] + z[1]) / 2) / 1.1;
       var px = function (f) { return 8 + f * 372; };
       var rocksSvg = ctx.state.rocks.map(function (f) {
         return '<polygon points="' + (px(f) - 7) + ',64 ' + px(f) + ',52 ' + (px(f) + 7) + ',64" fill="var(--chip-text)"/>';
@@ -872,8 +874,13 @@
         if (s.power >= 110) gameBossHedgehog._launch(ctx); // greed launches itself
       }
       if (s.phase === "roll") {
-        s.x += s.v * dt / 1000;
-        s.v = Math.max(0, s.v - 0.22 * dt / 1000); // friction
+        // Ease toward the linear target distance: reads as friction, lands where power says.
+        var remain = s.targetX - s.x;
+        var step = Math.max(0.11, remain * 1.1) * dt / 1000; // keeps rock-approach speed human-readable
+        var airborneNow = ctx.elapsed < s.airUntil;
+        if (airborneNow) step = Math.max(step, 0.30 * dt / 1000); // a hop is a lunge: constant air distance even from a slow roll
+        s.x = Math.min(s.targetX, s.x + step);
+        s.v = remain > 0.004 ? 1 : 0; // "still moving" flag for the settle check
         var airborne = ctx.elapsed < s.airUntil;
         // Input buffering: a hop pressed mid-air fires the moment we land —
         // standard platformer forgiveness, and mashy players earn it constantly.
@@ -924,8 +931,9 @@
       var s = ctx.state;
       s.phase = "roll";
       s.holding = false;
-      // power → initial speed; with friction 0.22 this puts ~69-81% power in the zone
-      s.v = (s.power / 100) * 0.814;
+      // linear: where you'll stop is exactly power/100 × 1.1 down the rink (~65-89% lands the zone)
+      s.targetX = (s.power / 100) * 1.1;
+      s.v = 1;
       var hint = $("hw-curl-hint");
       if (hint) hint.innerHTML = 'hop the rocks — <span class="hw-kbd">space</span> / tap';
       sfx("verb");

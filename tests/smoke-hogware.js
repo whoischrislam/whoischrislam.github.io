@@ -82,19 +82,22 @@ function log(name, ok, detail) {
         await page.keyboard.down('Space');
         await page.waitForTimeout(info.target / 100 * info.charge - 40);
         await page.keyboard.up('Space');
-        // roll phase: hop each rock as it approaches
-        let hopped = 0;
-        for (let t = 0; t < 80 && hopped < info.rocks.length; t++) {
+        // roll phase: hop each rock as it approaches, with speed-aware lead time
+        let hopped = 0, prevX = 0, prevT = Date.now();
+        for (let t = 0; t < 120 && hopped < info.rocks.length; t++) {
           const st = await page.evaluate(() => ({
             x: parseFloat(document.getElementById('hw-curl-rink')?.dataset.hogx || '0'),
             res: !document.getElementById('hw-result').classList.contains('hw-hidden')
           }));
           if (st.res) break;
-          if (st.x > info.rocks[hopped] - 0.075) { // wide lookahead: poll+evaluate overhead eats ~0.03/cycle at speed
+          const nowT = Date.now();
+          const speed = Math.max(0.05, (st.x - prevX) / Math.max(1, nowT - prevT) * 1000); // track-fractions per second
+          prevX = st.x; prevT = nowT;
+          if (st.x > info.rocks[hopped] - (0.05 + speed * 0.09)) { // faster approach = earlier hop
             await page.keyboard.press('Space');
             hopped++;
           }
-          await page.waitForTimeout(25);
+          await page.waitForTimeout(20);
         }
       }
       const r = await waitResult();
