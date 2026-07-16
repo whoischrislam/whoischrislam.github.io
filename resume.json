@@ -2,10 +2,10 @@
     "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
     "basics": {
         "name": "Chris Lam",
-        "label": "Product engineer and designer",
+        "label": "Design-trained senior product engineer",
         "email": "whoischrislam@gmail.com",
         "url": "https://whoischrislam.github.io",
-        "summary": "Product engineer and designer with 14 years shipping healthcare, marketplaces, game dev tools, and consumer software, usually as the first or second designer and building the implementation myself. Early at Clover Health and GoodRx, both of which later IPO'd; a rescue hire at Sharecare during its acquisition, which then went public; and part of the 2014 TaskRabbit rebrand before IKEA acquired it. Currently co-founding y30, a voice AI platform for older adults. Designs, builds, and ships end to end with no handoff. Open to senior IC roles in AI, voice, and product engineering, full-time, and looking for a long-term home with depth and continuity over range.",
+        "summary": "Design-trained senior product engineer with 14 years shipping healthcare, marketplaces, game dev tools, and consumer software, usually as the first or second designer and building the implementation myself. Early at Clover Health and GoodRx, both of which later IPO'd; a rescue hire at Sharecare during its acquisition, which then went public; and part of the 2014 TaskRabbit rebrand before IKEA acquired it. Currently co-founding y30, a voice AI platform for older adults. Designs, builds, and ships end to end with no handoff. Open to senior IC roles in AI, voice, and product engineering, full-time, and looking for a long-term home with depth and continuity over range.",
         "location": { "city": "Honolulu", "region": "HI", "countryCode": "US" },
         "profiles": [
             { "network": "LinkedIn", "username": "whoischrislam", "url": "https://www.linkedin.com/in/whoischrislam/" },
