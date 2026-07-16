@@ -19,7 +19,9 @@ function log(name, ok, detail) {
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   page.on('dialog', d => d.accept());
 
-  await page.goto('file://' + path.join(SITE, 'hogware.html') + '?notrack=1');
+  // optional argv[2] forces a boss, e.g. `node tests/smoke-hogware.js incident`
+  const bossArg = process.argv[2] ? '&boss=' + process.argv[2] : '';
+  await page.goto('file://' + path.join(SITE, 'hogware.html') + '?notrack=1' + bossArg);
   await page.reload();
   await page.waitForTimeout(400);
 
@@ -29,7 +31,7 @@ function log(name, ok, detail) {
   async function currentGame() {
     return page.evaluate(() => {
       const s = document.getElementById('hw-scene');
-      if (s.querySelector('#hw-boss-scene')) return 'boss';
+      if (document.getElementById('hw-stage').dataset.boss === '1') return 'boss';
       if (s.querySelector('#hw-car')) return 'drive';
       if (s.querySelector('.hw-toggles')) return 'publish';
       if (s.querySelector('#hw-w-frame')) return 'weird';
@@ -49,7 +51,8 @@ function log(name, ok, detail) {
     return currentGame();
   }
   async function waitResult() {
-    await page.waitForFunction(() => !document.getElementById('hw-result').classList.contains('hw-hidden'), { timeout: 9000 });
+    await page.waitForFunction(() => !document.getElementById('hw-result').classList.contains('hw-hidden'), { timeout: 14000 }); // bosses run long
+
     const passed = await page.evaluate(() => document.getElementById('hw-result-word').classList.contains('hw-pass'));
     const flavor = await page.evaluate(() => document.getElementById('hw-result-flavor').textContent);
     await page.waitForFunction(() => document.getElementById('hw-result').classList.contains('hw-hidden'), { timeout: 6000 });
@@ -64,44 +67,81 @@ function log(name, ok, detail) {
     await maybeSkipQuote();
     const game = await waitForScene();
     if (game === 'boss') {
-      // HEDGEHOG MODE: charge to the exposed target power, then hop rocks by polling position.
-      const info = await page.evaluate(() => {
-        const r = document.getElementById('hw-curl-rink');
-        return {
-          target: parseFloat(r.dataset.targetpower),
-          charge: parseFloat(r.dataset.chargems),
-          rocks: r.dataset.rocks.split(',').map(Number)
-        };
+      // Boss dispatcher: the daily seed rotates which boss appears — play whichever it is.
+      const kind = await page.evaluate(() => {
+        if (document.getElementById('hw-curl-rink')) return 'curl';
+        if (document.getElementById('hw-incident-scene')) return 'incident';
+        if (document.getElementById('hw-funnel-rink')) return 'funnel';
+        return '?';
       });
-      if (deliberateFail) {
-        // a feeble 20% launch stops far short of the zone — fast, deterministic fail
-        await page.keyboard.down('Space');
-        await page.waitForTimeout(0.2 * info.charge);
-        await page.keyboard.up('Space');
-      } else {
-        await page.keyboard.down('Space');
-        await page.waitForTimeout(info.target / 100 * info.charge - 40);
-        await page.keyboard.up('Space');
-        // roll phase: hop each rock as it approaches, with speed-aware lead time
-        let hopped = 0, prevX = 0, prevT = Date.now();
-        for (let t = 0; t < 120 && hopped < info.rocks.length; t++) {
-          const st = await page.evaluate(() => ({
-            x: parseFloat(document.getElementById('hw-curl-rink')?.dataset.hogx || '0'),
-            res: !document.getElementById('hw-result').classList.contains('hw-hidden')
-          }));
-          if (st.res) break;
-          const nowT = Date.now();
-          const speed = Math.max(0.05, (st.x - prevX) / Math.max(1, nowT - prevT) * 1000); // track-fractions per second
-          prevX = st.x; prevT = nowT;
-          if (st.x > info.rocks[hopped] - (0.05 + speed * 0.09)) { // faster approach = earlier hop
-            await page.keyboard.press('Space');
-            hopped++;
+      if (kind === 'curl') {
+        const info = await page.evaluate(() => {
+          const r = document.getElementById('hw-curl-rink');
+          return { target: parseFloat(r.dataset.targetpower), charge: parseFloat(r.dataset.chargems), rocks: r.dataset.rocks.split(',').map(Number) };
+        });
+        if (deliberateFail) {
+          await page.keyboard.down('Space');
+          await page.waitForTimeout(0.2 * info.charge); // feeble launch: stops far short
+          await page.keyboard.up('Space');
+        } else {
+          await page.keyboard.down('Space');
+          await page.waitForTimeout(info.target / 100 * info.charge - 40);
+          await page.keyboard.up('Space');
+          let hopped = 0, prevX = 0, prevT = Date.now();
+          for (let t = 0; t < 120 && hopped < info.rocks.length; t++) {
+            const st = await page.evaluate(() => ({
+              x: parseFloat(document.getElementById('hw-curl-rink')?.dataset.hogx || '0'),
+              res: !document.getElementById('hw-result').classList.contains('hw-hidden')
+            }));
+            if (st.res) break;
+            const nowT = Date.now();
+            const speed = Math.max(0.05, (st.x - prevX) / Math.max(1, nowT - prevT) * 1000);
+            prevX = st.x; prevT = nowT;
+            if (st.x > info.rocks[hopped] - (0.05 + speed * 0.09)) { await page.keyboard.press('Space'); hopped++; }
+            await page.waitForTimeout(20);
           }
-          await page.waitForTimeout(20);
         }
+      } else if (kind === 'incident') {
+        if (deliberateFail) {
+          // revert everything EXCEPT the bad commit: three spikes top the graph fast
+          for (const b of await page.$$('.hw-commit[data-bad="0"]')) { await b.dispatchEvent('pointerdown'); await page.waitForTimeout(120); }
+        } else {
+          await (await page.$('.hw-commit[data-bad="1"]')).dispatchEvent('pointerdown');
+          await page.waitForSelector('#hw-rollback', { timeout: 3000 });
+          for (let i = 0; i < 60; i++) {
+            const done = await page.evaluate(() => !document.getElementById('hw-result').classList.contains('hw-hidden'));
+            if (done) break;
+            const btn = await page.$('#hw-rollback');
+            if (btn) await btn.dispatchEvent('pointerdown');
+            await page.waitForTimeout(45);
+          }
+          const dbg = await page.evaluate(() => {
+            const g = document.getElementById('hw-err-graph');
+            return g ? `p=${g.dataset.p} err=${g.dataset.err}` : 'no graph';
+          });
+          console.log('  [incident debug] ' + dbg);
+        }
+      } else if (kind === 'funnel') {
+        if (!deliberateFail) {
+          // steer: hold slides right, release drifts left — chase the lowest falling user
+          let holding = false;
+          for (let t = 0; t < 500; t++) {
+            const st = await page.evaluate(() => {
+              const r = document.getElementById('hw-funnel-rink');
+              return r ? { fx: parseFloat(r.dataset.fx || '0.5'), nx: parseFloat(r.dataset.nextx || '-1'), res: !document.getElementById('hw-result').classList.contains('hw-hidden') } : { res: true };
+            });
+            if (st.res) break;
+            const wantHold = st.nx >= 0 && st.nx > st.fx + 0.01;
+            if (wantHold && !holding) { await page.keyboard.down('Space'); holding = true; }
+            if (!wantHold && holding) { await page.keyboard.up('Space'); holding = false; }
+            await page.waitForTimeout(20);
+          }
+          if (holding) await page.keyboard.up('Space');
+        }
+        // deliberateFail: never steer; the funnel drifts to the wall and the users churn
       }
       const r = await waitResult();
-      return { game, ...r };
+      return { game, kind, ...r };
     }
     if (deliberateFail) {
       // do nothing; wait for timeout fail
@@ -209,8 +249,8 @@ function log(name, ok, detail) {
 
   // --- BOSS after the 5th game: RUN THE QUERY, clearing it restores a life ---
   const boss = await playOne(false);
-  log('boss appears after loop 1', boss.game === 'boss', boss.game);
-  log('boss cleared (charge, roll, hop the rocks)', boss.passed, boss.flavor);
+  log('boss appears after loop 1', boss.game === 'boss', boss.game + ':' + boss.kind);
+  log('boss cleared (' + boss.kind + ')', boss.passed, boss.flavor);
   const livesAfterBoss = await page.evaluate(() =>
     3 - document.querySelectorAll('#hw-hud-lives .hw-life-lost').length);
   log('boss restored the lost life', livesAfterBoss === 3, 'lives=' + livesAfterBoss);

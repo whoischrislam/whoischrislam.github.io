@@ -941,7 +941,183 @@
     onTimeout: function (ctx) { ctx.fail("Never left the starting line."); }
   };
 
-  var BOSSES = [gameBossHedgehog]; // daily rotation pool. RUN THE QUERY (gameBossQuery) shelved after playtest: quiz, not game — kept for a possible real-time rework.
+  /* ============================================================
+     BOSS: THE INCIDENT — the error graph is climbing RIGHT NOW.
+     Phase 1: spot the bad commit while errors rise (wrong click =
+     spike; graph tops out = escalated = fail). Phase 2: mash
+     ROLLBACK to rewind the deploy faster than the decay. A scan
+     under pressure, then a race — not a quiz.
+     ============================================================ */
+  var gameBossIncident = {
+    id: "boss-incident", value: "BOSS", verb: "THE INCIDENT!", input: "click", boss: true,
+    baseDurationMs: 30000,
+    params: { climbPerSec: 0.055, wrongSpike: 0.18, mashGain: 0.055, decayPerSec: 0.05 },
+    _commits: [
+      { bad: 0, text: "fix: typo in README" },
+      { bad: 0, text: "chore: bump dependencies" },
+      { bad: 0, text: "docs: update onboarding" },
+      { bad: 1, text: "feat: quick fix, tests off, deployed 5pm friday" }
+    ],
+    setup: function (ctx) {
+      ctx.state.err = 0.22;      // the graph is already unhappy
+      ctx.state.phase = 1;
+      ctx.state.progress = 0;
+      var commits = shuffle(gameBossIncident._commits.slice(), run.rng);
+      var rows = commits.map(function (c) {
+        return '<button class="hw-commit" data-bad="' + c.bad + '">' + c.text + '</button>';
+      }).join("");
+      scene.innerHTML =
+        '<div id="hw-incident-scene" class="hw-screen" style="gap:0.7em;">' +
+          '<svg id="hw-err-graph" width="min(88%, 460px)" height="54" viewBox="0 0 200 24" preserveAspectRatio="none">' +
+            '<rect x="0" y="0" width="200" height="24" fill="var(--surface)" stroke="var(--border-strong)"/>' +
+            '<line x1="0" y1="3" x2="200" y2="3" stroke="#E5484D" stroke-width="1" stroke-dasharray="3 2"/>' +
+            '<rect id="hw-err-fill" x="0" y="24" width="200" height="0" fill="#E5484D" opacity="0.55"/>' +
+          '</svg>' +
+          '<p class="hw-hint" id="hw-incident-hint" style="color:#E5484D;">errors climbing — which commit did this?</p>' +
+          '<div class="hw-frag-tray">' + rows + '</div>' +
+        '</div>';
+      scene.querySelectorAll(".hw-commit").forEach(function (btn) {
+        btn.addEventListener("pointerdown", function () {
+          if (ctx.done || !ctx.live || ctx.state.phase !== 1 || btn.disabled) return;
+          if (btn.dataset.bad === "1") {
+            gameBossIncident._phase2(ctx);
+          } else {
+            btn.disabled = true;
+            btn.classList.add("hw-frag-used");
+            ctx.state.err += ctx.params.wrongSpike; // reverting the wrong thing makes it worse
+            sfx("fail");
+            shake();
+          }
+        });
+      });
+    },
+    _phase2: function (ctx) {
+      ctx.state.phase = 2;
+      sfx("verb");
+      var graph = $("hw-err-graph").outerHTML;
+      scene.innerHTML =
+        '<div id="hw-incident-scene" class="hw-screen" style="gap:0.7em;">' +
+          graph +
+          '<button id="hw-rollback" class="hw-btn" style="font-size:1.2em; padding:0.75em 2.2em;">ROLLBACK</button>' +
+          '<p class="hw-hint" id="hw-incident-hint">mash it — rewind the deploy: <span id="hw-rb-pct">0</span>%</p>' +
+        '</div>';
+      $("hw-rollback").addEventListener("pointerdown", function () {
+        if (ctx.done) return;
+        ctx.state.progress = Math.min(1, ctx.state.progress + ctx.params.mashGain);
+        sfx("tick");
+        var pct = $("hw-rb-pct");
+        if (pct) pct.textContent = Math.round(ctx.state.progress * 100);
+        // Win at the peak, in the same click — checking in update() ran after decay,
+        // so 100% could never survive to the test (mash to full, nothing happens).
+        if (ctx.state.progress >= 1) ctx.win("Rolled back. The graph is green again. +1 life.", 1);
+      });
+    },
+    update: function (ctx, dt) {
+      var s = ctx.state;
+      if (s.phase === 1) {
+        s.err = Math.min(1, s.err + ctx.params.climbPerSec * dt / 1000);
+      } else {
+        s.progress = Math.max(0, s.progress - ctx.params.decayPerSec * dt / 1000); // the deploy resists
+        s.err = Math.min(1, Math.max(0, s.err - s.progress * 0.02 + 0.015 * dt / 1000));
+      }
+      var fill = $("hw-err-fill");
+      if (fill) {
+        fill.setAttribute("y", 24 - s.err * 22);
+        fill.setAttribute("height", s.err * 22);
+      }
+      var g = $("hw-err-graph");
+      if (g) { g.dataset.p = s.progress.toFixed(3); g.dataset.err = s.err.toFixed(3); } // live state for the headless player
+      if (s.err >= 1) return ctx.fail("Escalated. Enjoy the postmortem.");
+    },
+    onTimeout: function (ctx) { ctx.fail("The incident outlasted you."); }
+  };
+
+  /* ============================================================
+     BOSS: FUNNEL RESCUE — users are falling; steer the funnel.
+     One input: hold to slide right, release to drift left. Catch
+     4 of 6 in the funnel mouth = retained = +1 life.
+     ============================================================ */
+  var gameBossFunnel = {
+    id: "boss-funnel", value: "BOSS", verb: "FUNNEL RESCUE!", input: "space", boss: true,
+    baseDurationMs: 30000,
+    params: { users: 6, need: 4, spawnGapMs: 1400, fallMs: 2100, funnelSpeed: 0.6, mouth: 0.09 },
+    setup: function (ctx) {
+      var s = ctx.state;
+      s.holding = false;
+      s.fx = 0.5;
+      s.retained = 0;
+      s.resolved = 0;
+      s.users = [];
+      for (var i = 0; i < ctx.params.users; i++) {
+        s.users.push({ x: 0.1 + run.rng() * 0.8, bornAt: 600 + i * ctx.params.spawnGapMs, y: -0.1, done: false });
+      }
+      scene.innerHTML =
+        '<div id="hw-funnel-scene" class="hw-screen" style="justify-content:flex-end; padding-bottom:1.6em;">' +
+          '<svg id="hw-funnel-rink" width="100%" height="210" viewBox="0 0 400 110" preserveAspectRatio="none">' +
+            '<rect x="0" y="104" width="400" height="6" fill="var(--chip-bg)"/>' +
+            '<text x="12" y="100" font-size="9" fill="var(--muted)">churned</text>' +
+            '<text x="352" y="100" font-size="9" fill="var(--muted)">churned</text>' +
+            '<g id="hw-funnel-users"></g>' +
+            '<g id="hw-funnel">' +
+              '<path id="hw-funnel-path" d="" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>' +
+              '<text id="hw-funnel-label" y="107" font-size="9" fill="var(--accent)" text-anchor="middle">retained: 0/' + ctx.params.need + '</text>' +
+            '</g>' +
+          '</svg>' +
+          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press = slide right · release = drift left — catch the users</p>' +
+        '</div>';
+    },
+    update: function (ctx, dt) {
+      var s = ctx.state, p = ctx.params;
+      s.fx = Math.max(0.08, Math.min(0.92, s.fx + (s.holding ? 1 : -1) * p.funnelSpeed * dt / 1000));
+      var fpx = 14 + s.fx * 372;
+      var path = $("hw-funnel-path");
+      if (path) path.setAttribute("d", "M" + (fpx - 26) + " 78 L" + (fpx - 8) + " 96 L" + (fpx + 8) + " 96 L" + (fpx + 26) + " 78");
+      var label = $("hw-funnel-label");
+      if (label) { label.setAttribute("x", fpx); label.textContent = "retained: " + s.retained + "/" + p.need; }
+      var rink = $("hw-funnel-rink");
+      var lowest = null;
+      var usersG = $("hw-funnel-users");
+      var dotsSvg = "";
+      for (var i = 0; i < s.users.length; i++) {
+        var u = s.users[i];
+        if (u.done || ctx.elapsed < u.bornAt) continue;
+        u.y = (ctx.elapsed - u.bornAt) / p.fallMs;
+        if (u.y >= 0.82 && u.y < 1 && Math.abs(u.x - s.fx) < p.mouth) {
+          u.done = true; s.resolved++; s.retained++;
+          sfx("pass");
+          continue;
+        }
+        if (u.y >= 1) {
+          u.done = true; s.resolved++;
+          sfx("whiff");
+          continue;
+        }
+        dotsSvg += '<circle cx="' + (14 + u.x * 372) + '" cy="' + (u.y * 92) + '" r="5" fill="var(--text)" opacity="0.85"/>' +
+          '<circle cx="' + (12 + u.x * 372) + '" cy="' + (u.y * 92 - 2) + '" r="1.2" fill="var(--bg)"/>';
+        if (lowest === null || u.y > lowest.y) lowest = u;
+      }
+      if (usersG) usersG.innerHTML = dotsSvg;
+      if (rink) {
+        rink.dataset.fx = s.fx.toFixed(3);
+        rink.dataset.nextx = lowest ? lowest.x.toFixed(3) : "-1";
+      }
+      if (s.resolved >= p.users) {
+        if (s.retained >= p.need) return ctx.win("Retained " + s.retained + "/" + p.users + ". The funnel forgives. +1 life.", 1);
+        return ctx.fail("Only " + s.retained + " retained. The churn report writes itself.");
+      }
+    },
+    onPress: function (ctx) { ctx.state.holding = true; },
+    onRelease: function (ctx) { ctx.state.holding = false; },
+    onTimeout: function (ctx) { ctx.fail("Everyone churned while you watched."); }
+  };
+
+  var BOSSES = [gameBossHedgehog, gameBossIncident, gameBossFunnel]; // daily rotation via DAY_NUM. RUN THE QUERY (gameBossQuery) shelved after playtest: quiz, not game.
+  // ?boss=curl|incident|funnel forces a boss — playtest all three without waiting three days.
+  var BOSS_OVERRIDE = -1;
+  try {
+    var bq = new URLSearchParams(location.search).get("boss");
+    if (bq) BOSSES.forEach(function (b, i) { if (b.id.indexOf(bq) >= 0) BOSS_OVERRIDE = i; });
+  } catch (e) {}
 
   var GAMES = [gameDrive, gamePublish, gameWeird, gameShip, gameAim];
 
@@ -997,7 +1173,9 @@
 
   function nextGame() {
     // The slot after the last regular game is the boss — daily seed picks which one (pool of 1, for now).
-    var game = run.idx >= run.order.length ? BOSSES[DAY_NUM % BOSSES.length] : run.order[run.idx];
+    var game = run.idx >= run.order.length
+      ? BOSSES[BOSS_OVERRIDE >= 0 ? BOSS_OVERRIDE : DAY_NUM % BOSSES.length]
+      : run.order[run.idx];
     screens.verb.classList.toggle("hw-verb-boss", !!game.boss);
     hud.classList.toggle("hw-hud-boss", !!game.boss);
     swapScreens(screens.verb, function () {
@@ -1049,6 +1227,7 @@
     // Levels that add a time-costing mechanic (e.g. the stall stop) can buy more clock.
     var duration = (levelParams.durationMs || game.baseDurationMs) * run.speed;
     stage.dataset.level = levelIdx + 1; // exposed for tests/debugging
+    stage.dataset.boss = game.boss ? "1" : "0";
     stage.dataset.live = "0";
     active = {
       game: game,
