@@ -550,8 +550,8 @@
       ctx.state.nextGap = ctx.params.spawnEveryMs;
       ctx.state.lockedUntil = 0;
       ctx.state.shipShown = false;
-      // Seeded random spot each play — "it's always dead center" stops being knowledge.
-      ctx.state.shipPos = { left: 15 + run.rng() * 50, top: 25 + run.rng() * 35 };
+      // Seeded random spot each play, near-edge to near-edge — no safe central habit.
+      ctx.state.shipPos = { left: 4 + run.rng() * 68, top: 16 + run.rng() * 50 };
       scene.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
         '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the meetings — just hit SHIP</p>';
       if (ctx.params.decoy) {
@@ -561,9 +561,9 @@
         d.textContent = "SHIP LATER";
         d.style.position = "absolute";
         d.style.zIndex = "12";
-        var dpos = { left: 15 + run.rng() * 50, top: 25 + run.rng() * 35 };
+        var dpos = { left: 4 + run.rng() * 68, top: 16 + run.rng() * 50 };
         // keep decoy and real button visibly apart
-        if (Math.abs(dpos.left - ctx.state.shipPos.left) < 18) dpos.left = (dpos.left + 30) % 65 + 10;
+        if (Math.abs(dpos.left - ctx.state.shipPos.left) < 18) dpos.left = (dpos.left + 34) % 68 + 4;
         d.style.left = dpos.left + "%";
         d.style.top = dpos.top + "%";
         d.addEventListener("pointerdown", function (e) {
@@ -823,7 +823,7 @@
      ============================================================ */
   var gameBossHedgehog = {
     id: "boss-curl", value: "BOSS", verb: "HEDGEHOG MODE!", input: "space", boss: true,
-    instruction: "charge the launch, hop the rocks, stop in the glow",
+    instruction: "charge. hop the rocks. stop in the glow.",
     baseDurationMs: 30000, // invisible safety net, not a visible timer
     params: { chargeMs: 1600, hopMs: 420, zone: [0.72, 0.98] },
     setup: function (ctx) {
@@ -952,7 +952,7 @@
      ============================================================ */
   var gameBossIncident = {
     id: "boss-incident", value: "BOSS", verb: "THE INCIDENT!", input: "click", boss: true,
-    instruction: "errors are spiking — find the bad deploy, then mash ROLLBACK",
+    instruction: "find the bad deploy. mash ROLLBACK.",
     baseDurationMs: 30000,
     params: { climbPerSec: 0.055, wrongSpike: 0.18, mashGain: 0.055, decayPerSec: 0.05 },
     _commits: [
@@ -1042,7 +1042,7 @@
      ============================================================ */
   var gameBossFunnel = {
     id: "boss-funnel", value: "BOSS", verb: "FUNNEL RESCUE!", input: "space", boss: true,
-    instruction: "users are falling — retain 4 (the whale counts double)",
+    instruction: "catch falling users. retain 4.",
     baseDurationMs: 30000,
     params: { need: 4, funnelSpeed: 0.68, mouth: 0.09 },
     /* Wave of 8, realistic retention math (need 4 pts of 9 possible ≈ 44%):
@@ -1242,7 +1242,10 @@
       updateHud(); // loop counter can change between games
       timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
       $("hw-verb-word").textContent = game.verb;
-      $("hw-verb-value").textContent = game.value;
+      // One-second cards get ONE word; the value names live in the quotes and flavors.
+      var valEl = $("hw-verb-value");
+      valEl.textContent = game.boss ? game.value : "";
+      valEl.classList.toggle("hw-hidden", !game.boss);
       var instr = $("hw-verb-instr");
       instr.textContent = game.instruction || "";
       instr.classList.toggle("hw-hidden", !game.instruction);
