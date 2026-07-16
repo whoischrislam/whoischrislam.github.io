@@ -202,15 +202,26 @@ function log(name, ok, detail) {
         await page.waitForTimeout(150);
       }
     } else if (game === 'aim') {
-      // The target band moves per play — read it off the rink and charge to it.
+      // Press-to-stop slider: watch the position and press as it approaches the band.
       const info = await page.evaluate(() => {
         const r = document.getElementById('hw-rink');
-        return { band: parseFloat(r.dataset.band), charge: parseFloat(r.dataset.chargems) };
+        return { band: parseFloat(r.dataset.band), speed: parseFloat(r.dataset.speed) };
       });
-      const hold = Math.max(80, info.band / 100 * info.charge - 40); // -40ms for input latency drift
-      await page.keyboard.down('Space');
-      await page.waitForTimeout(hold);
-      await page.keyboard.up('Space');
+      const lead = Math.max(2, info.speed * 0.055); // compensate poll+keypress latency
+      for (let t = 0; t < 400; t++) {
+        const st = await page.evaluate(() => {
+          const r = document.getElementById('hw-rink');
+          return {
+            pos: r ? parseFloat(r.dataset.pos || '0') : 0,
+            dir: r ? parseFloat(r.dataset.dir || '1') : 1,
+            res: !document.getElementById('hw-result').classList.contains('hw-hidden')
+          };
+        });
+        if (st.res) break;
+        const approach = (info.band - st.pos) * st.dir; // >0 while closing in
+        if (approach > 0 && approach < lead) { await page.keyboard.press('Space'); break; }
+        await page.waitForTimeout(12);
+      }
     }
     const r = await waitResult();
     return { game, ...r };

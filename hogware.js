@@ -524,15 +524,15 @@
     baseDurationMs: 4600,
     levels: [
       {},
-      { spawnEveryMs: 380, shipDelayMs: 450, driftSpeed: 46 },                                        // the button isn't there yet — find it when it lands
-      { spawnEveryMs: 420, decoy: true, shipDelayMs: 700, decoyLockMs: 600, durationMs: 5200, driftSpeed: 42 } // SHIP LATER shows first; falling for it costs time
+      { spawnEveryMs: 380, shipDelayMs: 750, driftSpeed: 62 },                                         // the button isn't there yet — find it under the pile
+      { spawnEveryMs: 420, decoy: true, shipDelayMs: 1100, decoyLockMs: 600, durationMs: 5400, driftSpeed: 58 } // SHIP LATER sits alone longer; falling for it costs time
     ],
     params: {
       spawnEveryMs: 520,
       shipDelayMs: 0,
       decoy: false,
       decoyLockMs: 0,
-      driftSpeed: 30, // px/s — meetings creep toward your maker time
+      driftSpeed: 40, // px/s — meetings creep toward your maker time
 
       popups: [
         ["Quick sync?", "just 30 min"],
@@ -643,37 +643,40 @@
 
   /* ---- 5. OPTIMISTIC BY DEFAULT — "AIM!" (hold + release) ---- */
   var gameAim = {
-    id: "aim", value: "Optimistic by default", verb: "AIM!", input: "space",
+    id: "aim", value: "Optimistic by default", verb: "AIM!", input: "space", preHold: false,
     baseDurationMs: 5200,
     params: {
-      chargeMs: 1400,   // full bar fill time
-      bandHalf: 12,     // half-width of the target band, in power %
+      slideSpeed: 66,   // %/s — the hedgehog paces the rink on its own; you STOP it
+      bandHalf: 12,     // half-width of the target band
       strict: false     // L1: anywhere on the rink lands; band is pure upside
     },
     levels: [
       {},
-      { bandHalf: 9, strict: true },
-      { chargeMs: 1050, bandHalf: 7, strict: true }
+      { slideSpeed: 95, bandHalf: 9, strict: true },
+      { slideSpeed: 128, bandHalf: 7, strict: true }
     ],
     setup: function (ctx) {
-      ctx.state.holding = false;
-      ctx.state.power = 0;
-      ctx.state.launched = false;
-      // The target band lands ANYWHERE on the rink per play (seeded) — short chip,
-      // center lob, or a deep moonshot. Read the rink, then commit to the charge.
+      var s = ctx.state;
+      s.pos = 0;
+      s.dir = 1;
+      s.stopped = false;
+      // The target band lands ANYWHERE per play (seeded); the slider ping-pongs
+      // 0..105 — the sliver past the edge is the drowning zone, so late greed
+      // still exists even without a charge meter.
       var range = ctx.params.strict ? [25, 90] : [30, 80];
-      ctx.state.band = range[0] + run.rng() * (range[1] - range[0]);
-      ctx.state.moonshot = ctx.state.band >= 78; // deep placements keep the name
+      s.band = range[0] + run.rng() * (range[1] - range[0]);
+      s.moonshot = s.band >= 78; // deep placements keep the name
       var px = function (pct) { return 6 + (pct / 100) * 372 + 10; };
-      var b0 = ctx.state.band - ctx.params.bandHalf, b1 = ctx.state.band + ctx.params.bandHalf;
+      var b0 = s.band - ctx.params.bandHalf, b1 = s.band + ctx.params.bandHalf;
       var g0 = Math.max(0, b0 - 6), g1 = Math.min(100, b1 + 6); // "close" grace halo
       var bands =
         '<rect x="' + px(g0) + '" y="35" width="' + (px(g1) - px(g0)) + '" height="12" rx="6" fill="var(--accent-soft)"/>' +
-        '<rect x="' + px(Math.max(0, b0)) + '" y="32" width="' + (px(Math.min(100, b1)) - px(Math.max(0, b0))) + '" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>';
+        '<rect x="' + px(Math.max(0, b0)) + '" y="32" width="' + (px(Math.min(100, b1)) - px(Math.max(0, b0))) + '" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>' +
+        '<rect x="' + px(100) + '" y="34" width="' + (px(105) - px(100)) + '" height="14" fill="#E5484D" opacity="0.25"/>';
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2.2em;">' +
           '<svg id="hw-rink" width="100%" height="120" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true" ' +
-            'data-band="' + ctx.state.band.toFixed(1) + '" data-chargems="' + ctx.params.chargeMs + '">' +
+            'data-band="' + s.band.toFixed(1) + '" data-speed="' + ctx.params.slideSpeed + '">' +
             '<rect x="0" y="38" width="400" height="6" rx="3" fill="var(--chip-bg)"/>' +
             bands +
             '<line x1="' + px(100) + '" y1="20" x2="' + px(100) + '" y2="56" stroke="var(--accent-strong)" stroke-width="2.5" stroke-dasharray="3 3"/>' +
@@ -683,46 +686,36 @@
               '<circle cx="13" cy="12" r="1.4" fill="var(--bg)"/>' +
             '</g>' +
           '</svg>' +
-          '<div style="width:min(70%,320px); height:12px; border-radius:999px; background:var(--chip-bg); overflow:hidden;"><div id="hw-power-fill" style="height:100%; width:0%; border-radius:999px; background:var(--accent);"></div></div>' +
-          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press — release to land on the glow. past the edge drowns.</p>' +
+          '<p class="hw-hint"><span class="hw-kbd">space</span> / tap to STOP the hedgehog on the glow — past the edge drowns</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
-      if (ctx.state.holding && !ctx.state.launched) {
-        ctx.state.power = Math.min(110, ctx.state.power + (dt / ctx.params.chargeMs) * 100);
-        var fill = $("hw-power-fill");
-        if (fill) {
-          fill.style.width = Math.min(100, ctx.state.power) + "%";
-          if (ctx.state.power > 90) fill.style.background = "var(--accent-strong)";
-        }
-        if (ctx.state.power >= 110) gameAim._launch(ctx); // held too long: greed launches itself
-      }
+      var s = ctx.state;
+      if (s.stopped) return;
+      s.pos += s.dir * ctx.params.slideSpeed * dt / 1000;
+      if (s.pos >= 105) { s.pos = 105; s.dir = -1; }
+      if (s.pos <= 0) { s.pos = 0; s.dir = 1; }
+      var puck = $("hw-puck");
+      if (puck) puck.style.transform = "translate(" + (6 + (s.pos / 100) * 372) + "px, 26px)";
+      var rink = $("hw-rink");
+      if (rink) { rink.dataset.pos = s.pos.toFixed(1); rink.dataset.dir = s.dir; }
     },
     onPress: function (ctx) {
-      if (!ctx.state.launched) ctx.state.holding = true;
-    },
-    onRelease: function (ctx) {
-      if (ctx.state.holding && !ctx.state.launched) gameAim._launch(ctx);
-    },
-    _launch: function (ctx) {
-      ctx.state.launched = true;
-      ctx.state.holding = false;
-      var pct = ctx.state.power;
-      var puck = $("hw-puck");
-      var x = 6 + (pct / 100) * 372;
-      if (puck) {
-        if (!reducedMotion) puck.style.transition = "transform 0.7s cubic-bezier(0.1, 0.6, 0.3, 1)";
-        requestAnimationFrame(function () { puck.style.transform = "translate(" + x + "px, 26px)"; });
-      }
+      var s = ctx.state;
+      if (s.stopped) return;
+      s.stopped = true;
+      sfx("tick");
+      var pct = s.pos;
       setTimeout(function () {
+        if (ctx.done) return;
         if (pct > 100) return ctx.fail("…overboard. Right past the edge.");
-        var d = Math.abs(pct - ctx.state.band);
-        var big = ctx.state.moonshot ? "MOONSHOT!!" : "BULLSEYE!";
+        var d = Math.abs(pct - s.band);
+        var big = s.moonshot ? "MOONSHOT!!" : "BULLSEYE!";
         if (d <= ctx.params.bandHalf) return ctx.win(big, 2);
         if (d <= ctx.params.bandHalf + 6) return ctx.win("CLOSE.", 1);
         if (!ctx.params.strict) return ctx.win("…landed. Nothing gained.", 0);
-        return ctx.fail(pct < ctx.state.band ? "Short of the brief." : "Sailed right past it.");
-      }, reducedMotion ? 150 : 720);
+        return ctx.fail(pct < s.band ? "Short of the brief." : "Sailed right past it.");
+      }, reducedMotion ? 120 : 320);
     },
     onTimeout: function (ctx) { ctx.fail("Never even took the shot."); }
   };
@@ -1319,9 +1312,9 @@
       active.live = true;
       stage.dataset.live = "1"; // exposed for the headless test to wait on
       scene.style.pointerEvents = "";
-      // Pre-held input counts: if the player is already holding when a hold-input
-      // game starts, deliver the press now instead of demanding a re-press.
-      if (game.input === "space" && game.onPress && holdActive()) game.onPress(active);
+      // Pre-held input counts for HOLD games (DRIVE, boss charge) — but never for
+      // press-to-stop games (AIM), where a carried-over hold would fire instantly.
+      if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(active);
       startClock(game);
     });
   }
