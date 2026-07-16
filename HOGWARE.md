@@ -32,11 +32,11 @@ Real WarioWare runs on a strict format: ~4-5 seconds, one blunt verb ("Dodge!", 
 
 | Value | Verb | Input | Mechanic |
 |---|---|---|---|
-| You're the driver | DRIVE! | Spacebar (hold) | Hold to drive. Traffic bails out of your lane before you reach it — the road clears itself. The only way to fail is to hesitate. |
-| Make it public | PUBLISH! | Click | Flip three toggles — code, roadmap, pay — from Private to Public before time's up. |
-| Do more weird | WEIRD! | Click (mash) | A boring corporate stock photo mutates one notch weirder per click. Ten notches to win. |
-| Why not now? | SHIP IT! | Click | Hit Ship before the "let's schedule a sync" popups bury the button. |
-| Optimistic by default | AIM! | Spacebar (hold + release) | Charge and launch toward the rings. Safe and short, or risky and worth more. |
+| You're the driver | DRIVE! | Spacebar (hold) | Hold to drive; traffic bails out of your lane before you reach it. From level 2, one stall car only moves if you *stop* — hold into it and you crash. |
+| Make it public | PUBLISH! | Click | Flip every toggle from Private to Public. The list gets longer and denser per level, and at level 3 one re-locks itself ("legal had concerns"). |
+| Do more weird | WEIRD! | Click (aim) | A pulsing ring marks the next thing to weirdify on a boring stock photo — only clicks inside it count. At level 3 the photo wanders and normalcy creeps back if you stall. |
+| Why not now? | SHIP IT! | Click | Find and hit SHIP in a swarm of moving distractions — meetings, your mom, the dog. Nothing holds still. Later levels: the button arrives late, and a decoy shows up first. |
+| Optimistic by default | AIM! | Spacebar (press) | The hedgehog paces the rink on its own; stop it on the glowing band. A near-frame-perfect sliver past the edge pays triple. |
 
 Everyone gets the same gauntlet on the same day — a daily seed drives the order and every roll of the dice, so scores are comparable and your result is *today's* result. You get three lives (the icons are Max, PostHog's own mascot, straight from their press assets — it started at WarioWare's four, then playtesting said classic-NES three). Run ends when they're gone; score is total microgames cleared. At the end you get a copyable result — `HogWare #12 🟩🟩🟥🟩 · 7` — built to be pasted into Slack next to a coworker's.
 
@@ -59,14 +59,22 @@ After v1 shipped, two things happened before any polish: real research into how 
 
 Also for the record, the panel got things wrong: it assumed the game was keyboard-only (touch worked from day one) and unsanitized (initials were already clamped to A-Z0-9). Spec-only reviews infer; the code is the ground truth. Both kinds of findings are part of an honest review story.
 
-## The boss that got cut
+## Four bosses built, three cut
 
-Bosses arrived (longer stage after every loop, no timer, clearing one restores a life — the WarioWare structure that lets good runs go deep). The first one I built was RUN THE QUERY: assemble the leaderboard's actual HogQL query from fragments, then pick which chart `ORDER BY score DESC` returns. Maximum product-literacy signal. I playtested it once and cut it the same day.
+Bosses are the WarioWare structure that lets good runs go deep: a longer stage after every loop, no visible timer, and clearing one restores a lost life. I built four. One survived playtesting.
 
-It wasn't fun. Every engineer already knows SELECT comes before FROM, so phase one was data entry; phase two was one obvious click. After five four-second adrenaline hits, an untimed quiz is a pacing crater. I'd optimized for signal and forgotten to build a game — the cleverness ("the boss is literally the scoreboard's source code!") was a narrative joke, not a mechanic. Narrative jokes belong in this document. Mechanics belong in the game.
+**RUN THE QUERY** (assemble the leaderboard's actual HogQL, pick the right chart) — cut the same day I played it. It wasn't fun: every engineer knows SELECT comes before FROM, so it was data entry, then one obvious click. I'd optimized for signal and forgotten to build a game. Narrative jokes belong in this document; mechanics belong in the game.
 
-The boss that shipped instead is HEDGEHOG MODE — the original curling concept from this project's first hour, finally home: charge the launch, then hop rocks while rolling, land in the glow. Power is the bet, hops are the skill, and building it surfaced a real game-feel lesson: hop presses that land mid-air now buffer and fire on landing, because punishing a player for pressing 80ms early is how games feel broken without anyone knowing why.
+**HEDGEHOG MODE** (charge, roll, hop rocks, land in the glow — the project's original curling concept) and **THE INCIDENT** (spot the bad commit while the error graph climbs, then mash ROLLBACK) — both playable, both shelved after playtesting. They need more love than they've had, and a boss you half-like is worse than fewer bosses you fully like. They stay in the codebase awaiting rework.
+
+**FUNNEL RESCUE** is the keeper: eight users fall at seeded spots — regulars, fast ones, floaters, and one $-marked whale worth double (net revenue retention as a game rule) — and you steer the funnel with one input to retain four points' worth. Realistic retention math on purpose: needing ~44% of what falls is "great product" territory, not fantasy-land. Miss the rim and the user visibly bounces off and churns in full view.
+
+Building these surfaced two honest game-feel lessons the test suite caught before any human did: hop presses that land mid-air now buffer and fire on landing (punishing an 80ms-early press is how games feel broken without anyone knowing why), and THE INCIDENT's mash-meter once checked for 100% *after* the per-frame decay ran — you could mash to full and nothing would happen, forever.
+
+## The connective tissue
+
+The seamless feel came last and went through the heaviest process: research (the lookahead-scheduler pattern for Web Audio, iOS unlock quirks), a written architecture spec, and another adversarial review — which BLOCKED v1 and was right to. The shipped version: a beat clock (the conductor) that aligns *starts* — the next verb card lands on a beat — but never stretches durations and never gates feedback, because the panel proved beat-quantizing the result flash both broke the tuned timings and added dead air. Zoom transitions ride it, deliberately dramatic; games only start their clock and hear input once the zoom lands, so transitions cost zero playable time. The verb card doubles as the home scene: your remaining Max lives bounce to the beat, a stat tile reads the loop and level, and your score draws itself as a tiny insights-style sparkline. When the music speeds up someday (the beat clock is ready for a 120-BPM loop and stings), the whole scene will accelerate with it.
 
 ## Status
 
-Building in the open in `whoischrislam.github.io` as `hogware.html` / `hogware.js`. Iteration 2 (lives, daily seed, the two mechanic swaps, copyable results) is in. Next gate is playtesting with real humans — mechanics don't get polish until strangers confirm they're fun. After that: the leaderboard Worker (with score validation designed in from the start), a feature flag experiment that actually decides something (3 vs 4 lives against completion rate), audio, and my own hedgehog. The page stays unlisted until it earns the link.
+Building in the open in `whoischrislam.github.io` as `hogware.html` / `hogware.js`, with the headless test suite alongside at `tests/smoke-hogware.js` (32 checks; it plays every microgame and fights the boss). Gameplay is locked after many feel-tune rounds. Now: wiring the PostHog features for real (the leaderboard Worker with score validation designed in from the start, a feature flag experiment that actually decides something, a post-run survey), then playtests with strangers, then the craft pass — my own hedgehog, real audio through the beat clock, and the visual polish. The page stays unlisted until it earns the link.
