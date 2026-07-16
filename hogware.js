@@ -1460,7 +1460,16 @@
     return "🦔 HogWare #" + DAY_NUM + " · " + run.score + "\n" + rows.join("\n");
   }
   function resultString() {
-    return trailGrid() + "\nhttps://whoischrislam.github.io/hogware.html";
+    // Flag experiment 'hogware-share-taunt': does a challenge line raise the copy->share rate?
+    // (A lives-count flag was considered and rejected: it would break daily-leaderboard fairness.)
+    var taunt = "";
+    try {
+      var p = ph();
+      if (p && p.getFeatureFlag && p.getFeatureFlag("hogware-share-taunt") === "taunt") {
+        taunt = "\nbeat " + run.score + " or churn.";
+      }
+    } catch (e) {}
+    return trailGrid() + taunt + "\nhttps://whoischrislam.github.io/hogware.html";
   }
   function gameOver() {
     hide(hud);
@@ -1527,7 +1536,7 @@
       return;
     }
     el.textContent = "loading leaderboard…";
-    fetch(WORKER_URL).then(function (r) { return r.json(); }).then(function (rows) {
+    fetch(WORKER_URL + "?day=" + DAY_NUM).then(function (r) { return r.json(); }).then(function (rows) {
       if (!rows || !rows.length) { el.textContent = "no scores yet — be the first."; return; }
       el.innerHTML = "<table>" + rows.slice(0, 10).map(function (row, i) {
         return "<tr><td>" + (i + 1) + "</td><td>" + String(row.handle || "???").slice(0, 3) + "</td><td>" + row.best + "</td></tr>";

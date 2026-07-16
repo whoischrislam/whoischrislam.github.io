@@ -1,0 +1,10 @@
+name = "hogware-leaderboard"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+
+# Set these after creating the DEDICATED PostHog project (see README):
+#   wrangler secret put POSTHOG_API_KEY   <- personal API key, Query Read scope ONLY
+[vars]
+POSTHOG_HOST = "https://us.posthog.com"
+POSTHOG_PROJECT_ID = "REPLACE_ME"
+ALLOWED_ORIGIN = "https://whoischrislam.github.io"
