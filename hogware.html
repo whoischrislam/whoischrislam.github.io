@@ -285,6 +285,14 @@
             animation: hw-verb-pop 0.35s cubic-bezier(0.2, 1.6, 0.4, 1);
           }
           @media (prefers-reduced-motion: reduce) { .hw-announce-word { animation: none; } }
+          .hw-announce-word.hw-announce-speed { color: var(--accent-strong); font-style: italic; }
+          .hw-announce-axis {
+            font-size: 0.82em;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin: -0.4em 0 0.8em;
+          }
 
           /* ---- WEIRD! L3 drift ---- */
           @keyframes hw-wander {
@@ -478,7 +486,7 @@
                     <div id="hw-timer-track"><div id="hw-timer-fill"></div></div>
                     <div class="hw-hud-row">
                         <span id="hw-hud-score">Score 0</span>
-                        <span id="hw-hud-lives" aria-label="Lives remaining"><img class="hw-life" src="images/hogware/max-life.png" alt="" /><img class="hw-life" src="images/hogware/max-life.png" alt="" /><img class="hw-life" src="images/hogware/max-life.png" alt="" /><img class="hw-life" src="images/hogware/max-life.png" alt="" /></span>
+                        <span id="hw-hud-lives" aria-label="Lives remaining"></span>
                         <span id="hw-hud-loop">Loop 1</span>
                     </div>
                 </div>
@@ -510,6 +518,7 @@
                 <!-- Between-loop interstitial: escalation announcement + real handbook quote -->
                 <div id="hw-quote" class="hw-screen hw-hidden">
                     <p class="hw-announce-word" id="hw-announce-word"></p>
+                    <p class="hw-announce-axis" id="hw-announce-axis"></p>
                     <p class="hw-quote-text" id="hw-quote-text"></p>
                     <p class="hw-quote-source" id="hw-quote-source"></p>
                 </div>

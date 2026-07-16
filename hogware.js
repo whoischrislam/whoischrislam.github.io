@@ -28,7 +28,7 @@
   var QUOTE_MS = 2600;         // interstitial quote (press to skip)
   var SPEED_DECAY = 0.86;      // per-loop timer multiplier
   var SPEED_FLOOR = 0.5;
-  var LIVES = 4;               // WarioWare-authentic; sudden death killed runs before players saw all 5 values
+  var LIVES = 3;               // classic NES count (Chris's call); sudden death killed runs before players saw all 5 values
 
   /* ---------------- Daily seed ----------------
      Everyone gets the same gauntlet on the same (local) day, so scores are
@@ -134,25 +134,38 @@
      ============================================================ */
 
   /* ---- 1. YOU'RE THE DRIVER — "DRIVE!" (hold space) ----
-     The quote is "we get out of their way" — so the road literally clears
-     itself. Traffic ahead darts out of your lane just before you reach it;
-     the only way to fail is to hesitate. */
+     The quote is "we get out of their way" — traffic bails out of your lane
+     before you reach it. From L2, one STALL car only notices you once you
+     stop: hold into it and you crash; release, let it clear, resume. Obstacle
+     positions are seeded-jittered per play so no two loops read identical. */
   var gameDrive = {
     id: "drive", value: "You're the driver", verb: "DRIVE!", input: "space",
     baseDurationMs: 4200,
-    params: { travelMs: 2600, obstacles: [0.3, 0.55, 0.78], hesitateIdx: -1 },
+    params: { travelMs: 2600, obstacles: [0.3, 0.55, 0.78], hesitateIdx: -1, stallIdx: -1 },
     levels: [
       {},
-      { travelMs: 3000, obstacles: [0.25, 0.45, 0.65, 0.82] },
-      { travelMs: 3000, obstacles: [0.25, 0.45, 0.65, 0.82], hesitateIdx: 2 } // one car holds its nerve longer than you'd like
+      { travelMs: 2600, obstacles: [0.25, 0.48, 0.68, 0.84], stallIdx: 1, durationMs: 4800 },
+      { travelMs: 2600, obstacles: [0.25, 0.48, 0.68, 0.84], stallIdx: 1, hesitateIdx: 3, durationMs: 4800 }
     ],
     setup: function (ctx) {
       ctx.state.holding = false;
       ctx.state.x = 0; // 0..1 progress toward the flag
-      var cars = ctx.params.obstacles.map(function (frac, i) {
-        return '<g class="hw-traffic" data-frac="' + frac + '" style="transform: translate(' + (40 + frac * 300) + 'px, 30px);">' +
-          '<rect x="0" y="0" width="26" height="14" rx="4" fill="var(--chip-text)" opacity="0.8"/>' +
-          '<circle cx="6" cy="15" r="3.5" fill="var(--muted)"/><circle cx="20" cy="15" r="3.5" fill="var(--muted)"/></g>';
+      ctx.state.noticeAt = null;
+      // Seeded jitter so the road differs loop to loop (but is identical for everyone today).
+      ctx.state.cars = ctx.params.obstacles.map(function (frac, i) {
+        return {
+          frac: Math.min(0.9, Math.max(0.15, frac + (run.rng() - 0.5) * 0.08)),
+          type: i === ctx.params.stallIdx ? "stall" : (i === ctx.params.hesitateIdx ? "hesitate" : "normal"),
+          dodged: false
+        };
+      });
+      var carsSvg = ctx.state.cars.map(function (c, i) {
+        var fill = c.type === "stall" ? "var(--accent-strong)" : "var(--chip-text)";
+        return '<g class="hw-traffic" data-i="' + i + '" style="transform: translate(' + (40 + c.frac * 300) + 'px, 30px);">' +
+          '<rect x="0" y="0" width="26" height="14" rx="4" fill="' + fill + '" opacity="0.85"/>' +
+          '<circle cx="6" cy="15" r="3.5" fill="var(--muted)"/><circle cx="20" cy="15" r="3.5" fill="var(--muted)"/>' +
+          (c.type === "stall" ? '<text class="hw-stall-warn" x="8" y="-6" font-size="14" font-weight="bold" fill="var(--accent-strong)" opacity="0">!</text>' : '') +
+          '</g>';
       }).join("");
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2em;">' +
@@ -160,33 +173,52 @@
             '<rect x="0" y="26" width="400" height="26" rx="4" fill="var(--chip-bg)"/>' +
             '<line x1="0" y1="39" x2="400" y2="39" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="10 8"/>' +
             '<text x="382" y="22" font-size="16">🏁</text>' +
-            cars +
+            carsSvg +
             '<g id="hw-car" style="transform: translate(6px, 30px);">' +
               '<rect x="0" y="0" width="30" height="14" rx="5" fill="var(--accent)"/>' +
               '<circle cx="7" cy="15" r="3.5" fill="var(--text)"/><circle cx="23" cy="15" r="3.5" fill="var(--text)"/>' +
               '<circle cx="24" cy="4" r="5" fill="var(--accent-strong)"/>' +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press — everyone gets out of your way</p>' +
+          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press — everyone gets out of your way' +
+          (ctx.params.stallIdx >= 0 ? ' <span style="color:var(--accent-strong)">(almost everyone)</span>' : '') + '</p>' +
         '</div>';
+    },
+    _dodge: function (c, el) {
+      c.dodged = true;
+      var w = el.querySelector(".hw-stall-warn");
+      if (w) w.setAttribute("opacity", "0"); // it stopped yelling the moment it moved
+      if (!reducedMotion) el.style.transition = "transform 0.35s ease-out, opacity 0.35s";
+      el.style.transform = "translate(" + (40 + c.frac * 300) + "px, " + (c.frac > 0.5 ? -30 : 78) + "px)";
+      el.style.opacity = "0.25";
+      sfx("tick");
     },
     update: function (ctx, dt) {
       if (ctx.state.holding) ctx.state.x = Math.min(1, ctx.state.x + dt / ctx.params.travelMs);
       var car = $("hw-car");
       if (car) car.style.transform = "translate(" + (6 + ctx.state.x * 348) + "px, 30px)";
-      // Traffic bails out of the lane just before you reach it — that's the whole joke.
-      scene.querySelectorAll(".hw-traffic").forEach(function (t, ti) {
-        if (t.dataset.dodged) return;
-        var frac = parseFloat(t.dataset.frac);
-        var margin = (ti === ctx.params.hesitateIdx) ? 0.055 : 0.14; // the hesitant one waits until the last moment
-        if (ctx.state.x > frac - margin) {
-          t.dataset.dodged = "1";
-          if (!reducedMotion) t.style.transition = "transform 0.35s ease-out, opacity 0.35s";
-          t.style.transform = "translate(" + (40 + frac * 300) + "px, " + (frac > 0.5 ? -30 : 78) + "px)";
-          t.style.opacity = "0.25";
-          sfx("tick");
+      var els = scene.querySelectorAll(".hw-traffic");
+      for (var i = 0; i < ctx.state.cars.length; i++) {
+        var c = ctx.state.cars[i], el = els[i];
+        if (!el || c.dodged) continue;
+        if (c.type === "stall") {
+          var warn = el.querySelector(".hw-stall-warn");
+          var near = ctx.state.x > c.frac - 0.2;
+          if (warn) warn.setAttribute("opacity", near ? "1" : "0");
+          if (near && !ctx.state.holding) {
+            if (ctx.state.noticeAt === null) ctx.state.noticeAt = ctx.elapsed;
+            if (ctx.elapsed - ctx.state.noticeAt > 320) gameDrive._dodge(c, el); // it noticed you waiting
+          } else {
+            ctx.state.noticeAt = null; // it only moves for someone who stops
+          }
+          if (ctx.state.holding && ctx.state.x > c.frac - 0.05) {
+            return ctx.fail("You didn't have to tailgate.");
+          }
+        } else {
+          var margin = c.type === "hesitate" ? 0.055 : 0.14; // the hesitant one waits until the last moment
+          if (ctx.state.x > c.frac - margin) gameDrive._dodge(c, el);
         }
-      });
+      }
       if (ctx.state.x >= 1) {
         var early = 1 - ctx.elapsed / ctx.duration;
         ctx.win("Nothing in your way. That's the point.", early > 0.25 ? 1 : 0);
@@ -203,14 +235,13 @@
   var gamePublish = {
     id: "publish", value: "Make it public", verb: "PUBLISH!", input: "click",
     baseDurationMs: 4200,
-    params: { items: ["the code", "the roadmap", "the salaries"], relocks: 0 },
-    levels: [
-      {},
-      { items: ["the code", "the roadmap", "the salaries", "the finances"] },
-      { items: ["the code", "the roadmap", "the salaries", "the finances", "the incident report"], relocks: 1 }
-    ],
+    params: { count: 3, relocks: 0 },
+    levels: [{}, { count: 4 }, { count: 5, relocks: 1 }],
+    _pool: ["the code", "the roadmap", "the salaries", "the finances", "the incident report", "the board deck", "the pricing model", "the postmortem"],
     setup: function (ctx) {
-      var items = ctx.params.items;
+      // Draw this play's secrets from the pool (seeded) — different docs each loop.
+      var items = shuffle(gamePublish._pool.slice(), run.rng).slice(0, ctx.params.count);
+      ctx.state.items = items;
       ctx.state.pub = {};
       ctx.state.relocksLeft = ctx.params.relocks;
       ctx.state.relockIdx = Math.floor(run.rng() * items.length);
@@ -247,7 +278,7 @@
       });
     },
     onTimeout: function (ctx) {
-      var left = ctx.params.items.length - Object.keys(ctx.state.pub).filter(function (k) { return ctx.state.pub[k]; }).length;
+      var left = ctx.state.items.length - Object.keys(ctx.state.pub).filter(function (k) { return ctx.state.pub[k]; }).length;
       ctx.fail("Still " + left + " thing" + (left > 1 ? "s" : "") + " behind closed doors.");
     }
   };
@@ -277,7 +308,9 @@
       function () { var e = $("hw-w-caption"); e.textContent = "WHY NOT NOW"; e.setAttribute("fill", "var(--accent)"); },
       function () { var e = $("hw-w-frame"); e.style.transform = "rotate(3deg) scale(1.04)"; },                   // reality tilts
       function () { var e = $("hw-w-sun"); e.style.opacity = "1"; },                                              // indoor sun
-      function () { var e = $("hw-w-chart"); e.classList.add("hw-anim-spin"); }                                   // the chart has had enough
+      function () { var e = $("hw-w-chart"); e.classList.add("hw-anim-spin"); },                                  // the chart has had enough
+      function () { document.querySelectorAll("#hw-w-person circle").forEach(function (c) { var r = parseFloat(c.getAttribute("r")); if (r < 3) c.setAttribute("r", r * 2.2); }); }, // googly eyes
+      function () { var e = $("hw-w-chart"); e.setAttribute("stroke-width", "6"); e.setAttribute("stroke-linecap", "round"); } // the chart thickens
     ],
     setup: function (ctx) {
       ctx.state.count = 0;
@@ -343,6 +376,8 @@
     setup: function (ctx) {
       ctx.state.lastSpawn = 0;
       ctx.state.spawned = 0;
+      ctx.state.popupOrder = shuffle(ctx.params.popups.slice(), run.rng); // different meeting barrage each loop
+      ctx.state.nextGap = ctx.params.spawnEveryMs;
       scene.innerHTML = '<button id="hw-ship-btn" class="hw-btn">SHIP</button>' +
         '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the meetings — just hit SHIP</p>';
       $("hw-ship-btn").addEventListener("pointerdown", function () {
@@ -367,10 +402,11 @@
       }
     },
     update: function (ctx) {
-      if (ctx.elapsed - ctx.state.lastSpawn < ctx.params.spawnEveryMs) return;
+      if (ctx.elapsed - ctx.state.lastSpawn < ctx.state.nextGap) return;
       ctx.state.lastSpawn = ctx.elapsed;
+      ctx.state.nextGap = ctx.params.spawnEveryMs + (run.rng() - 0.5) * 160; // irregular cadence reads more human
       var box = stage.getBoundingClientRect();
-      var p = ctx.params.popups[ctx.state.spawned % ctx.params.popups.length];
+      var p = ctx.state.popupOrder[ctx.state.spawned % ctx.state.popupOrder.length];
       var el = document.createElement("div");
       el.className = "hw-popup";
       el.innerHTML = "<b>" + p[0] + "</b><span>" + p[1] + "</span>";
@@ -403,13 +439,25 @@
     },
     levels: [
       {},
-      { zones: [[35, "TIMID.", 0, true], [70, "SAFE.", 0, true], [93, "BOLD!", 1, true], [100, "MOONSHOT!!", 2, true], [999, "…overboard.", 0, false]] },
-      { chargeMs: 1050, zones: [[35, "TIMID.", 0, true], [70, "SAFE.", 0, true], [93, "BOLD!", 1, true], [100, "MOONSHOT!!", 2, true], [999, "…overboard.", 0, false]] }
+      { varyBands: true },
+      { chargeMs: 1050, varyBands: true }
     ],
     setup: function (ctx) {
       ctx.state.holding = false;
       ctx.state.power = 0;
       ctx.state.launched = false;
+      // L2+: the moonshot band's edge moves per play (seeded) — WarioWare's
+      // "increase the variance" method. You can't memorize the sweet spot.
+      if (ctx.params.varyBands) {
+        var moonStart = 88 + run.rng() * 6; // 88-94
+        ctx.state.zones = [
+          [35, "TIMID.", 0, true], [70, "SAFE.", 0, true],
+          [moonStart, "BOLD!", 1, true], [100, "MOONSHOT!!", 2, true],
+          [999, "…overboard.", 0, false]
+        ];
+      } else {
+        ctx.state.zones = ctx.params.zones;
+      }
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2.2em;">' +
           '<svg id="hw-rink" width="100%" height="120" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">' +
@@ -455,7 +503,7 @@
         if (!reducedMotion) puck.style.transition = "transform 0.7s cubic-bezier(0.1, 0.6, 0.3, 1)";
         requestAnimationFrame(function () { puck.style.transform = "translate(" + x + "px, 26px)"; });
       }
-      var zones = ctx.params.zones;
+      var zones = ctx.state.zones;
       setTimeout(function () {
         for (var i = 0; i < zones.length; i++) {
           if (pct <= zones[i][0]) {
@@ -503,7 +551,17 @@
 
   function startRun() {
     run = newRun();
-    capture("hogware_run_started", { pace_variant: paceVariant });
+    // Life icons rendered from LIVES so the count stays a one-line change (and flag-testable later).
+    var livesEl = $("hw-hud-lives");
+    livesEl.innerHTML = "";
+    for (var i = 0; i < LIVES; i++) {
+      var img = document.createElement("img");
+      img.className = "hw-life";
+      img.src = "images/hogware/max-life.png";
+      img.alt = "";
+      livesEl.appendChild(img);
+    }
+    capture("hogware_run_started", { pace_variant: paceVariant, lives: LIVES });
     show(hud); updateHud();
     nextGame();
   }
@@ -522,10 +580,11 @@
 
   function playGame(game) {
     hideAllScreens();
-    var duration = game.baseDurationMs * run.speed;
     // Difficulty level: loop 1 = L1, loop 2 = L2, loop 3+ = L3 (speed takes over from loop 4).
     var levelIdx = Math.min(run.loop - 1, 2);
     var levelParams = (game.levels && game.levels[levelIdx]) || {};
+    // Levels that add a time-costing mechanic (e.g. the stall stop) can buy more clock.
+    var duration = (levelParams.durationMs || game.baseDurationMs) * run.speed;
     stage.dataset.level = levelIdx + 1; // exposed for tests/debugging
     active = {
       game: game,
@@ -540,6 +599,9 @@
     scene.innerHTML = "";
     show(scene);
     game.setup(active);
+    // Pre-held input counts: if the player is already holding when a hold-input
+    // game starts, deliver the press now instead of demanding a re-press.
+    if (game.input === "space" && game.onPress && holdActive()) game.onPress(active);
     timerFill.classList.remove("hw-timer-hot");
     var last = performance.now();
     (function tick(now) {
@@ -595,14 +657,13 @@
       if (run.idx >= run.order.length) {
         run.idx = 0;
         run.loop++;
-        // Escalation, WarioWare-style: difficulty levels first (loops 2-3, gentle
-        // speed), then pure speed-ups once every game is already at L3.
+        // Pure axes, like real WarioWare: LEVEL UP changes only the game configs
+        // (new complications), SPEED UP changes only the clock. Never both at once.
         if (run.loop <= 3) {
-          run.speed = Math.max(SPEED_FLOOR, run.speed * 0.95);
-          showAnnounce("LEVEL UP!");
+          showAnnounce("LEVEL UP!", "new complications");
         } else {
           run.speed = Math.max(SPEED_FLOOR, run.speed * SPEED_DECAY);
-          showAnnounce("SPEED UP!");
+          showAnnounce("SPEED UP!", "same games. less time.");
         }
         run.order = shuffle(run.order, run.rng);
       } else {
@@ -613,12 +674,15 @@
 
   /* ---- Interstitial: escalation announcement + a real value quote (skippable) ---- */
   var quoteTimer = null;
-  function showAnnounce(word) {
+  function showAnnounce(word, axisNote) {
     hideAllScreens();
     var pool = QUOTES.slice();
     if (ph()) pool.push(REPLAY_QUOTE);
     var q = pool[Math.floor(Math.random() * pool.length)];
-    $("hw-announce-word").textContent = word;
+    var wordEl = $("hw-announce-word");
+    wordEl.textContent = word;
+    wordEl.classList.toggle("hw-announce-speed", word === "SPEED UP!");
+    $("hw-announce-axis").textContent = axisNote || "";
     $("hw-quote-text").textContent = q.text;
     $("hw-quote-source").textContent = q.value + " — posthog.com/handbook/values";
     show(screens.quote);
@@ -727,25 +791,34 @@
     if (g.input === "space" && g.onRelease) g.onRelease(active);
   }
 
+  /* Real held-state tracking: players pre-hold space/touch before a game starts
+     (especially DRIVE), and a "fresh press only" model reads that as no input —
+     an unfair fail. playGame() consults holdActive() to synthesize the press. */
+  var spaceHeld = false, pointerHeld = false;
+  function holdActive() { return spaceHeld || pointerHeld; }
+
   document.addEventListener("keydown", function (e) {
     if (e.code !== "Space") return;
     var t = e.target;
     if (t && (t.tagName === "INPUT" || t.tagName === "BUTTON")) return;
     e.preventDefault();
     if (e.repeat) return;
+    spaceHeld = true;
     if (!run && !screens.title.classList.contains("hw-hidden")) return startRun();
     pressActive(e);
   });
   document.addEventListener("keyup", function (e) {
-    if (e.code === "Space") releaseActive();
+    if (e.code === "Space") { spaceHeld = false; releaseActive(); }
   });
+  window.addEventListener("blur", function () { spaceHeld = false; pointerHeld = false; releaseActive(); });
   stage.addEventListener("pointerdown", function (e) {
+    pointerHeld = true;
     // For space-input games, any tap on the stage is the button.
     if (active && !active.done && active.game.input === "space") { e.preventDefault(); pressActive(e); }
     else if (run && run.phase === "quote") endQuote();
   });
-  stage.addEventListener("pointerup", releaseActive);
-  stage.addEventListener("pointercancel", releaseActive);
+  stage.addEventListener("pointerup", function () { pointerHeld = false; releaseActive(); });
+  stage.addEventListener("pointercancel", function () { pointerHeld = false; releaseActive(); });
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", function () {
