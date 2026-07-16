@@ -38,7 +38,7 @@ Real WarioWare runs on a strict format: ~4-5 seconds, one blunt verb ("Dodge!", 
 | Why not now? | SHIP IT! | Click | Hit Ship before the "let's schedule a sync" popups bury the button. |
 | Optimistic by default | AIM! | Spacebar (hold + release) | Charge and launch toward the rings. Safe and short, or risky and worth more. |
 
-Everyone gets the same gauntlet on the same day — a daily seed drives the order and every roll of the dice, so scores are comparable and your result is *today's* result. You get four lives (the icons are Max, PostHog's own mascot, straight from their press assets). Run ends when they're gone; score is total microgames cleared. At the end you get a copyable result — `HogWare #12 🟩🟩🟥🟩 · 7` — built to be pasted into Slack next to a coworker's.
+Everyone gets the same gauntlet on the same day — a daily seed drives the order and every roll of the dice, so scores are comparable and your result is *today's* result. You get three lives (the icons are Max, PostHog's own mascot, straight from their press assets — it started at WarioWare's four, then playtesting said classic-NES three). Run ends when they're gone; score is total microgames cleared. At the end you get a copyable result — `HogWare #12 🟩🟩🟥🟩 · 7` — built to be pasted into Slack next to a coworker's.
 
 ## The decisions I'd defend
 
@@ -52,7 +52,7 @@ Everyone gets the same gauntlet on the same day — a daily seed drives the orde
 
 After v1 shipped, two things happened before any polish: real research into how WarioWare actually works, and a four-model adversarial review (Codex, DeepSeek, Minimax, Stepfun — external models, deliberately not the AI that built it) of the whole concept. Verdict: **block before sharing**. They were right. What changed because of it:
 
-- **Sudden death died.** The math was brutal: with one miss ending the run, most first-time players would never see all five values — and all five values is the whole pitch. Real WarioWare gives you four lives; now HogWare does too.
+- **Sudden death died.** The math was brutal: with one miss ending the run, most first-time players would never see all five values — and all five values is the whole pitch. Real WarioWare gives you four lives; HogWare shipped with four, and later playtesting tuned it to a classic-NES three. (An earlier version of this paragraph said "four" while the code said three — caught by review, again. Building in public means the doc drifts get caught in public too.)
 - **Two microgames were contradicting the values they represented.** "You're the driver" was a stoplight reaction test — but the actual quote is "we hire people that are really great at their jobs, and **get out of their way**." A traffic light telling you exactly when to act is the opposite of that. Now the road literally clears itself. Same with "Do more weird": clicking fast isn't weird, so now a boring stock photo mutates weirder with every click.
 - **The share mechanic I'd already diagnosed and then failed to build got built.** The reason Wordle spreads inside companies is a copyable result that needs no link click. Daily seed, emoji trail, one COPY button.
 - **The panel also caught this document lying** — see the audio note above. Keeping the catch visible instead of quietly fixing it is the point of the doc.
