@@ -17,10 +17,10 @@
   }
 
   /* ---------------- Leaderboard endpoint ----------------
-     Cloudflare Worker that runs a HogQL query over hogware_score_submitted
-     events with a Query-Read-only personal API key (server-side only).
-     Empty string = not deployed yet; the UI degrades to local-best-only. */
-  var WORKER_URL = "";
+     Cloudflare Worker (source: hogware-worker/) that runs a HogQL query over
+     hogware_score_submitted with a Query-Read-only personal API key held
+     server-side. Daily top-20, plausibility-gated, 60s edge cache. */
+  var WORKER_URL = "https://hogware-leaderboard.whoischrislam.workers.dev";
 
   /* ---------------- Tunables ---------------- */
   var VERB_MS = 950;           // verb card hold
