@@ -32,13 +32,13 @@ Real WarioWare runs on a strict format: ~4-5 seconds, one blunt verb ("Dodge!", 
 
 | Value | Verb | Input | Mechanic |
 |---|---|---|---|
-| You're the driver | DRIVE! | Spacebar | Floor it the instant the light turns green. Jump early, you stall. |
+| You're the driver | DRIVE! | Spacebar (hold) | Hold to drive. Traffic bails out of your lane before you reach it — the road clears itself. The only way to fail is to hesitate. |
 | Make it public | PUBLISH! | Click | Flip three toggles — code, roadmap, pay — from Private to Public before time's up. |
-| Do more weird | WEIRD! | Click (mash) | Plaster a poster with stickers as fast as you can. |
+| Do more weird | WEIRD! | Click (mash) | A boring corporate stock photo mutates one notch weirder per click. Ten notches to win. |
 | Why not now? | SHIP IT! | Click | Hit Ship before the "let's schedule a sync" popups bury the button. |
 | Optimistic by default | AIM! | Spacebar (hold + release) | Charge and launch toward the rings. Safe and short, or risky and worth more. |
 
-Runs shuffle the order every loop and speed up each time through, until you miss one. Score is total microgames cleared, not just loops survived — more room to actually rank people on a leaderboard.
+Everyone gets the same gauntlet on the same day — a daily seed drives the order and every roll of the dice, so scores are comparable and your result is *today's* result. You get four lives (the icons are Max, PostHog's own mascot, straight from their press assets). Run ends when they're gone; score is total microgames cleared. At the end you get a copyable result — `HogWare #12 🟩🟩🟥🟩 · 7` — built to be pasted into Slack next to a coworker's.
 
 ## The decisions I'd defend
 
@@ -46,8 +46,19 @@ Runs shuffle the order every loop and speed up each time through, until you miss
 
 **Built for variants from day one, not retrofitted.** Every microgame is a small config object on one shared engine (verb card, timer, input capture, pass/fail, PostHog capture) instead of five one-off scripts. A cosmetic variant is just a new skin on the same config. A real mechanic variant — extra decoys, moving targets, tighter thresholds — is a small delta of logic inside that one microgame, not a rewrite. That's what makes it realistic to keep adding to this after the first version ships.
 
-**No raster art, no live third-party calls at runtime.** Everything on screen is inline SVG — scalable, recolorable off the same CSS tokens already driving the rest of the site. The one thing that got a real design pass instead of code is the hedgehog itself. Sound and music came out of ElevenLabs (their SFX and Music APIs, both genuinely good), generated once and shipped as static files — not called live from the browser, same reason the PostHog personal API key never leaves the Worker: no secret ships to the client, ever.
+**Code-drawn scenes, no live third-party calls at runtime.** Everything on screen is inline SVG — scalable, recolorable off the same CSS tokens already driving the rest of the site — with two exceptions: the life icons are official Max PNGs from PostHog's press assets (sanctioned, credited in the footer), and the playable hedgehog will get a real design pass from me rather than staying code-drawn. Sound and music will come from ElevenLabs (their SFX and Music APIs) — generated once during the build and shipped as static files, not called live from the browser. Same reason the PostHog personal API key will never leave the Worker: no secret ships to the client, ever. (For the record: as of this writing the audio doesn't exist yet — the current build has placeholder synth blips. An earlier version of this doc said "shipped" in past tense; an adversarial review caught that as a transparency bug in a doc about transparency. Fair. Fixed.)
+
+## Iteration 2: the adversarial pass
+
+After v1 shipped, two things happened before any polish: real research into how WarioWare actually works, and a four-model adversarial review (Codex, DeepSeek, Minimax, Stepfun — external models, deliberately not the AI that built it) of the whole concept. Verdict: **block before sharing**. They were right. What changed because of it:
+
+- **Sudden death died.** The math was brutal: with one miss ending the run, most first-time players would never see all five values — and all five values is the whole pitch. Real WarioWare gives you four lives; now HogWare does too.
+- **Two microgames were contradicting the values they represented.** "You're the driver" was a stoplight reaction test — but the actual quote is "we hire people that are really great at their jobs, and **get out of their way**." A traffic light telling you exactly when to act is the opposite of that. Now the road literally clears itself. Same with "Do more weird": clicking fast isn't weird, so now a boring stock photo mutates weirder with every click.
+- **The share mechanic I'd already diagnosed and then failed to build got built.** The reason Wordle spreads inside companies is a copyable result that needs no link click. Daily seed, emoji trail, one COPY button.
+- **The panel also caught this document lying** — see the audio note above. Keeping the catch visible instead of quietly fixing it is the point of the doc.
+
+Also for the record, the panel got things wrong: it assumed the game was keyboard-only (touch worked from day one) and unsanitized (initials were already clamped to A-Z0-9). Spec-only reviews infer; the code is the ground truth. Both kinds of findings are part of an honest review story.
 
 ## Status
 
-Building in the open in `whoischrislam.github.io` as `hogware.html` / `hogware.js`. Full technical plan lives alongside the build. Core five microgames and the run loop first; leaderboard, feature flag, and survey wiring depend on a couple of things only I can do (a scoped API key, a Cloudflare account, an actual PostHog feature flag and survey created in their dashboard). Hedgehog art and audio come from me directly, not generated blind.
+Building in the open in `whoischrislam.github.io` as `hogware.html` / `hogware.js`. Iteration 2 (lives, daily seed, the two mechanic swaps, copyable results) is in. Next gate is playtesting with real humans — mechanics don't get polish until strangers confirm they're fun. After that: the leaderboard Worker (with score validation designed in from the start), a feature flag experiment that actually decides something (3 vs 4 lives against completion rate), audio, and my own hedgehog. The page stays unlisted until it earns the link.

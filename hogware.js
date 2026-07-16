@@ -28,6 +28,24 @@
   var QUOTE_MS = 2600;         // interstitial quote (press to skip)
   var SPEED_DECAY = 0.86;      // per-loop timer multiplier
   var SPEED_FLOOR = 0.5;
+  var LIVES = 4;               // WarioWare-authentic; sudden death killed runs before players saw all 5 values
+
+  /* ---------------- Daily seed ----------------
+     Everyone gets the same gauntlet on the same (local) day, so scores are
+     comparable and the emoji result reads like "today's run" — the Wordle
+     mechanic. Retrying the same day replays the same seed on purpose. */
+  var HW_EPOCH = new Date(2026, 6, 15); // launch day = HogWare #1 (local time)
+  var _now = new Date();
+  var _todayMidnight = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate());
+  var DAY_NUM = Math.max(1, Math.round((_todayMidnight - HW_EPOCH) / 86400000) + 1);
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
 
   /* Feature-flag hook (flag not created in the dashboard yet — safe default until it is).
      'brisk' variant starts runs 15% faster; controls nothing else. */
@@ -115,43 +133,62 @@
      games get a unified press (spacebar OR tap) via onPress/onRelease.
      ============================================================ */
 
-  /* ---- 1. YOU'RE THE DRIVER — "DRIVE!" (space) ---- */
+  /* ---- 1. YOU'RE THE DRIVER — "DRIVE!" (hold space) ----
+     The quote is "we get out of their way" — so the road literally clears
+     itself. Traffic ahead darts out of your lane just before you reach it;
+     the only way to fail is to hesitate. */
   var gameDrive = {
     id: "drive", value: "You're the driver", verb: "DRIVE!", input: "space",
     baseDurationMs: 4200,
-    params: { minRedMs: 900, maxRedMs: 2400 },
+    params: { travelMs: 2600, obstacles: [0.3, 0.55, 0.78] },
     setup: function (ctx) {
-      ctx.state.green = false;
-      ctx.state.greenAt = null;
-      ctx.state.flipAt = ctx.params.minRedMs + Math.random() * (ctx.params.maxRedMs - ctx.params.minRedMs);
+      ctx.state.holding = false;
+      ctx.state.x = 0; // 0..1 progress toward the flag
+      var cars = ctx.params.obstacles.map(function (frac, i) {
+        return '<g class="hw-traffic" data-frac="' + frac + '" style="transform: translate(' + (40 + frac * 300) + 'px, 30px);">' +
+          '<rect x="0" y="0" width="26" height="14" rx="4" fill="var(--chip-text)" opacity="0.8"/>' +
+          '<circle cx="6" cy="15" r="3.5" fill="var(--muted)"/><circle cx="20" cy="15" r="3.5" fill="var(--muted)"/></g>';
+      }).join("");
       scene.innerHTML =
-        '<div class="hw-screen">' +
-          '<svg width="72" height="180" viewBox="0 0 40 100" aria-hidden="true">' +
-            '<rect x="4" y="2" width="32" height="96" rx="8" fill="var(--surface)" stroke="var(--border-strong)"/>' +
-            '<circle id="hw-light-red" cx="20" cy="22" r="11" fill="#E5484D"/>' +
-            '<circle id="hw-light-green" cx="20" cy="56" r="11" fill="var(--chip-bg)"/>' +
+        '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2em;">' +
+          '<svg width="100%" height="140" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true">' +
+            '<rect x="0" y="26" width="400" height="26" rx="4" fill="var(--chip-bg)"/>' +
+            '<line x1="0" y1="39" x2="400" y2="39" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="10 8"/>' +
+            '<text x="382" y="22" font-size="16">🏁</text>' +
+            cars +
+            '<g id="hw-car" style="transform: translate(6px, 30px);">' +
+              '<rect x="0" y="0" width="30" height="14" rx="5" fill="var(--accent)"/>' +
+              '<circle cx="7" cy="15" r="3.5" fill="var(--text)"/><circle cx="23" cy="15" r="3.5" fill="var(--text)"/>' +
+              '<circle cx="24" cy="4" r="5" fill="var(--accent-strong)"/>' +
+            '</g>' +
           '</svg>' +
-          '<div style="display:flex; align-items:center; gap:0.6em;">' + hedgehogSVG(44) +
-            '<span style="color:var(--muted); font-size:0.9em;">no deadlines. but the light matters.</span></div>' +
-          '<p class="hw-hint"><span class="hw-kbd">space</span> / tap when it turns green</p>' +
+          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press — everyone gets out of your way</p>' +
         '</div>';
     },
-    update: function (ctx) {
-      if (!ctx.state.green && ctx.elapsed >= ctx.state.flipAt) {
-        ctx.state.green = true;
-        ctx.state.greenAt = ctx.elapsed;
-        var red = $("hw-light-red"), grn = $("hw-light-green");
-        if (red) red.setAttribute("fill", "var(--chip-bg)");
-        if (grn) grn.setAttribute("fill", "#46A758");
-        sfx("tick");
+    update: function (ctx, dt) {
+      if (ctx.state.holding) ctx.state.x = Math.min(1, ctx.state.x + dt / ctx.params.travelMs);
+      var car = $("hw-car");
+      if (car) car.style.transform = "translate(" + (6 + ctx.state.x * 348) + "px, 30px)";
+      // Traffic bails out of the lane just before you reach it — that's the whole joke.
+      scene.querySelectorAll(".hw-traffic").forEach(function (t) {
+        if (t.dataset.dodged) return;
+        var frac = parseFloat(t.dataset.frac);
+        if (ctx.state.x > frac - 0.14) {
+          t.dataset.dodged = "1";
+          if (!reducedMotion) t.style.transition = "transform 0.35s ease-out, opacity 0.35s";
+          t.style.transform = "translate(" + (40 + frac * 300) + "px, " + (frac > 0.5 ? -30 : 78) + "px)";
+          t.style.opacity = "0.25";
+          sfx("tick");
+        }
+      });
+      if (ctx.state.x >= 1) {
+        var early = 1 - ctx.elapsed / ctx.duration;
+        ctx.win("Nothing in your way. That's the point.", early > 0.25 ? 1 : 0);
       }
     },
-    onPress: function (ctx) {
-      if (!ctx.state.green) return ctx.fail("Jumped the gun. Stalled.");
-      var ms = Math.round(ctx.elapsed - ctx.state.greenAt);
-      ctx.win(ms + "ms — floor it.", ms < 350 ? 1 : 0);
-    },
-    onTimeout: function (ctx) { ctx.fail("The light was green. It's still green."); }
+    onPress: function (ctx) { ctx.state.holding = true; },
+    onRelease: function (ctx) { ctx.state.holding = false; },
+    onTimeout: function (ctx) { ctx.fail("The road was empty and you hesitated."); }
   };
 
   /* ---- 2. MAKE IT PUBLIC — "PUBLISH!" (click) ---- */
@@ -180,42 +217,65 @@
     onTimeout: function (ctx) { ctx.fail("Still " + ctx.state.left + " thing" + (ctx.state.left > 1 ? "s" : "") + " behind closed doors."); }
   };
 
-  /* ---- 3. DO MORE WEIRD — "WEIRD!" (mash) ---- */
+  /* ---- 3. DO MORE WEIRD — "WEIRD!" (mash) ----
+     A boring corporate stock photo mutates one notch weirder per click —
+     transformation of one scene, not decoration on top of it. Mutation
+     order is daily-seeded so everyone's photo gets weird the same way. */
   var gameWeird = {
     id: "weird", value: "Do more weird", verb: "WEIRD!", input: "click",
     baseDurationMs: 4200,
-    params: { target: 12, words: ["WEIRD", "HOG", "!?", "★", "WHY NOT", "MORE", "♨", "hi"] },
+    params: { target: 10 },
+    _mutations: [
+      function () { var e = $("hw-w-bg"); e.setAttribute("fill", "#B043D1"); },                                  // beige wall goes purple
+      function () { var e = $("hw-w-chart"); e.setAttribute("points", "10,58 25,20 40,55 55,8 70,40 85,4"); e.setAttribute("stroke", "var(--accent)"); }, // chart becomes a rollercoaster
+      function () { var e = $("hw-w-tie"); e.classList.add("hw-anim-spin"); },                                    // tie becomes a propeller
+      function () { var e = $("hw-w-caption"); e.textContent = "SYNERWEIRD"; },
+      function () { var e = $("hw-w-head"); e.setAttribute("fill", "var(--accent)"); $("hw-w-spikes").style.opacity = "1"; }, // person hedgehogs
+      function () { var e = $("hw-w-plant"); e.classList.add("hw-anim-grow"); },                                  // plant refuses to stay decorative
+      function () { var e = $("hw-w-eye3"); e.style.opacity = "1"; },                                             // third eye opens
+      function () { var e = $("hw-w-person"); e.classList.add("hw-anim-float"); },                                // levitation unlocked
+      function () { var e = $("hw-w-caption"); e.textContent = "WHY NOT NOW"; e.setAttribute("fill", "var(--accent)"); },
+      function () { var e = $("hw-w-frame"); e.style.transform = "rotate(3deg) scale(1.04)"; },                   // reality tilts
+      function () { var e = $("hw-w-sun"); e.style.opacity = "1"; },                                              // indoor sun
+      function () { var e = $("hw-w-chart"); e.classList.add("hw-anim-spin"); }                                   // the chart has had enough
+    ],
     setup: function (ctx) {
       ctx.state.count = 0;
+      ctx.state.order = shuffle(gameWeird._mutations.slice(), run.rng);
       scene.innerHTML =
-        '<div class="hw-poster" id="hw-poster">' +
-          '<div class="hw-poster-label" id="hw-poster-label">a perfectly normal poster</div>' +
-        '</div>' +
-        '<p class="hw-hint" style="position:absolute; bottom:6%; left:0; right:0; text-align:center;">click it weirder — ' +
-          '<span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>';
-      var poster = $("hw-poster");
-      var colors = ["var(--accent)", "var(--accent-strong)", "var(--chip-text)"];
-      poster.addEventListener("pointerdown", function (e) {
-        var r = poster.getBoundingClientRect();
-        var s = document.createElement("span");
-        s.className = "hw-sticker";
-        s.textContent = ctx.params.words[Math.floor(Math.random() * ctx.params.words.length)];
-        var c = colors[Math.floor(Math.random() * colors.length)];
-        s.style.color = "var(--on-accent)";
-        s.style.background = c;
-        s.style.left = (e.clientX - r.left - 14) + "px";
-        s.style.top = (e.clientY - r.top - 12) + "px";
-        s.style.transform = "rotate(" + (Math.random() * 44 - 22) + "deg) scale(" + (0.8 + Math.random() * 0.7) + ")";
-        poster.appendChild(s);
+        '<div class="hw-screen" style="justify-content:center;">' +
+          '<svg id="hw-w-frame" width="min(70%, 340px)" viewBox="0 0 200 110" style="background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="A perfectly normal stock photo">' +
+            '<rect id="hw-w-bg" x="0" y="0" width="200" height="110" fill="#E8E0D0"/>' +
+            '<circle id="hw-w-sun" cx="170" cy="20" r="12" fill="#FFC53D" style="opacity:0; transition: opacity 0.3s;"/>' +
+            '<g id="hw-w-person" style="transform-origin: 60px 70px;">' +
+              '<circle id="hw-w-head" cx="60" cy="42" r="13" fill="#D9B38C"/>' +
+              '<g id="hw-w-spikes" style="opacity:0; transition: opacity 0.3s;">' +
+                '<path d="M50 33l-6-8 8 2zM58 29l-2-9 6 5zM66 30l4-8 2 9z" fill="var(--accent)"/></g>' +
+              '<circle cx="55" cy="40" r="1.8" fill="#222"/><circle cx="65" cy="40" r="1.8" fill="#222"/>' +
+              '<circle id="hw-w-eye3" cx="60" cy="33" r="2.2" fill="#222" style="opacity:0; transition: opacity 0.3s;"/>' +
+              '<rect x="48" y="55" width="24" height="34" rx="5" fill="#4A5568"/>' +
+              '<polygon id="hw-w-tie" points="60,55 64,65 60,80 56,65" fill="#C53030" style="transform-origin: 60px 60px;"/>' +
+            '</g>' +
+            '<polyline id="hw-w-chart" points="105,58 120,50 135,52 150,44 165,46 180,38" fill="none" stroke="#718096" stroke-width="2.5" style="transform-origin: 142px 48px;"/>' +
+            '<g id="hw-w-plant" style="transform-origin: 25px 95px;">' +
+              '<rect x="20" y="88" width="10" height="10" fill="#A0785A"/>' +
+              '<path d="M25 88c-6-8-2-16 0-18 2 2 6 10 0 18z" fill="#48885C"/></g>' +
+            '<text id="hw-w-caption" x="100" y="103" text-anchor="middle" font-size="9" font-weight="bold" fill="#718096" letter-spacing="2">SYNERGY</text>' +
+          '</svg>' +
+          '<p class="hw-hint">click it weirder — <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
+        '</div>';
+      $("hw-w-frame").addEventListener("pointerdown", function () {
+        if (ctx.done) return;
+        var fn = ctx.state.order[ctx.state.count % ctx.state.order.length];
+        try { fn(); } catch (e) {}
         sfx("tick");
         ctx.state.count++;
-        var label = $("hw-weird-count"), plain = $("hw-poster-label");
+        var label = $("hw-weird-count");
         if (label) label.textContent = ctx.state.count;
-        if (plain && ctx.state.count > 3) plain.style.opacity = "0";
         if (ctx.state.count >= ctx.params.target) ctx.win("Perfectly optimized for our strategy.", 0);
       });
     },
-    onTimeout: function (ctx) { ctx.fail("Only " + ctx.state.count + " weird. Not weird enough."); }
+    onTimeout: function (ctx) { ctx.fail("Still " + (ctx.params.target - ctx.state.count) + " notches too normal."); }
   };
 
   /* ---- 4. WHY NOT NOW? — "SHIP IT!" (click) ---- */
@@ -236,7 +296,8 @@
     setup: function (ctx) {
       ctx.state.lastSpawn = 0;
       ctx.state.spawned = 0;
-      scene.innerHTML = '<button id="hw-ship-btn" class="hw-btn">SHIP</button>';
+      scene.innerHTML = '<button id="hw-ship-btn" class="hw-btn">SHIP</button>' +
+        '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the meetings — just hit SHIP</p>';
       $("hw-ship-btn").addEventListener("pointerdown", function () {
         ctx.win("Shipped. Today.", ctx.state.spawned >= 5 ? 1 : 0);
       });
@@ -249,13 +310,13 @@
       var el = document.createElement("div");
       el.className = "hw-popup";
       el.innerHTML = "<b>" + p[0] + "</b><span>" + p[1] + "</span>";
-      // Aim popups at a jittered ring around the button so they bury it over time.
+      // Aim popups at a daily-seeded jittered ring around the button so they bury it over time.
       var cx = box.width * 0.5, cy = box.height * 0.55;
-      var jx = cx + (Math.random() - 0.5) * box.width * 0.34;
-      var jy = cy + (Math.random() - 0.5) * box.height * 0.34;
+      var jx = cx + (run.rng() - 0.5) * box.width * 0.34;
+      var jy = cy + (run.rng() - 0.5) * box.height * 0.34;
       el.style.left = Math.max(4, Math.min(box.width - 130, jx - 60)) + "px";
       el.style.top = Math.max(30, Math.min(box.height - 70, jy - 30)) + "px";
-      el.style.transform = "rotate(" + (Math.random() * 10 - 5) + "deg)";
+      el.style.transform = "rotate(" + (run.rng() * 10 - 5) + "deg)";
       scene.appendChild(el);
       ctx.state.spawned++;
     },
@@ -349,11 +410,15 @@
 
   function newRun() {
     var startSpeed = paceVariant === "brisk" ? 0.85 : 1.0;
-    return { score: 0, cleared: 0, loop: 1, speed: startSpeed, order: shuffle(GAMES.slice()), idx: 0, phase: "verb" };
+    var rng = mulberry32(DAY_NUM * 2654435761); // daily seed: same gauntlet for everyone today
+    return {
+      score: 0, cleared: 0, loop: 1, speed: startSpeed, lives: LIVES,
+      trail: [], rng: rng, order: shuffle(GAMES.slice(), rng), idx: 0, phase: "verb"
+    };
   }
-  function shuffle(a) {
+  function shuffle(a, rng) {
     for (var i = a.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t;
+      var j = Math.floor(rng() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t;
     }
     return a;
   }
@@ -361,6 +426,10 @@
   function updateHud() {
     $("hw-hud-score").textContent = "Score " + run.score;
     $("hw-hud-loop").textContent = "Loop " + run.loop;
+    var icons = document.querySelectorAll("#hw-hud-lives .hw-life");
+    icons.forEach(function (img, i) {
+      img.classList.toggle("hw-life-lost", i >= run.lives);
+    });
   }
 
   function startRun() {
@@ -428,9 +497,12 @@
     if (pass) {
       run.cleared++;
       run.score += 1 + bonus;
+      run.trail.push("🟩");
       sfx("pass");
       capture("hogware_microgame_cleared", { game: game.id, value: game.value, loop: run.loop, bonus: bonus });
     } else {
+      run.lives--;
+      run.trail.push("🟥");
       sfx("fail");
       shake();
     }
@@ -440,17 +512,18 @@
     var word = $("hw-result-word");
     word.textContent = pass ? (bonus > 0 ? "CLEARED +" + bonus : "CLEARED") : "MISSED";
     word.className = "hw-result-word " + (pass ? "hw-pass" : "hw-fail");
-    $("hw-result-flavor").textContent = flavor || "";
+    $("hw-result-flavor").textContent = (flavor || "") +
+      (!pass && run.lives > 0 ? " (" + run.lives + (run.lives === 1 ? " life" : " lives") + " left)" : "");
     show(screens.result);
 
     setTimeout(function () {
-      if (!pass) return gameOver();
+      if (!pass && run.lives <= 0) return gameOver();
       run.idx++;
       if (run.idx >= run.order.length) {
         run.idx = 0;
         run.loop++;
         run.speed = Math.max(SPEED_FLOOR, run.speed * SPEED_DECAY);
-        run.order = shuffle(run.order);
+        run.order = shuffle(run.order, run.rng);
         showQuote();
       } else {
         nextGame();
@@ -479,6 +552,10 @@
   }
 
   /* ---- Game over + leaderboard ---- */
+  function resultString() {
+    return "HogWare #" + DAY_NUM + " " + run.trail.join("") + " · " + run.score +
+      "\nhttps://whoischrislam.github.io/hogware.html";
+  }
   function gameOver() {
     hide(hud);
     hideAllScreens();
@@ -491,9 +568,21 @@
     $("hw-final-score").textContent = run.score;
     $("hw-final-stats").textContent =
       run.cleared + " cleared · loop " + run.loop + (isBest ? " · new personal best" : best ? " · best " + best : "");
+    $("hw-trail").textContent = "HogWare #" + DAY_NUM + "  " + run.trail.join("");
+
+    var copyBtn = $("hw-copy");
+    copyBtn.textContent = "COPY RESULT";
+    copyBtn.onclick = function () {
+      var done = function () { copyBtn.textContent = "COPIED — go start a leaderboard war"; };
+      capture("hogware_result_copied", { day: DAY_NUM, score: run.score });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(resultString()).then(done, done);
+      } else { done(); }
+    };
 
     capture("hogware_run_completed", {
-      score: run.score, stages_cleared: run.cleared, loops_reached: run.loop, pace_variant: paceVariant
+      day: DAY_NUM, score: run.score, stages_cleared: run.cleared, loops_reached: run.loop,
+      lives_lost: LIVES - run.lives, pace_variant: paceVariant
     });
 
     // reset submit UI
@@ -511,7 +600,7 @@
     var handle = (initials.value || "HOG").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3) || "HOG";
     try { localStorage.setItem("hogware_handle", handle); } catch (e) {}
     capture("hogware_score_submitted", {
-      handle: handle, score: run.score, stages_cleared: run.cleared, loops_reached: run.loop
+      handle: handle, day: DAY_NUM, score: run.score, stages_cleared: run.cleared, loops_reached: run.loop
     });
     hide($("hw-submit-row"));
     var note = $("hw-submitted-note");
