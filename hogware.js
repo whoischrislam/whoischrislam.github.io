@@ -361,7 +361,8 @@
       // Density is the difficulty lever: a more cramped list = smaller targets,
       // and it reads MORE like corporate software, not less.
       var dens = ["", " hw-toggles-snug", " hw-toggles-dense"][ctx.params.density] || "";
-      scene.innerHTML = '<div class="hw-screen"><div class="hw-toggles' + dens + '" style="gap:0.45em;">' + rows + '</div></div>';
+      scene.innerHTML = '<div class="hw-screen"><div class="hw-toggles' + dens + '" style="gap:0.45em;">' + rows + '</div>' +
+        '<p class="hw-hint">take it ALL public — flip every toggle</p></div>';
       function setState(el, isPublic) {
         el.classList.toggle("hw-public", isPublic);
         el.querySelector(".hw-pill").textContent = isPublic ? "PUBLIC" : "PRIVATE";
@@ -822,6 +823,7 @@
      ============================================================ */
   var gameBossHedgehog = {
     id: "boss-curl", value: "BOSS", verb: "HEDGEHOG MODE!", input: "space", boss: true,
+    instruction: "charge the launch, hop the rocks, stop in the glow",
     baseDurationMs: 30000, // invisible safety net, not a visible timer
     params: { chargeMs: 1600, hopMs: 420, zone: [0.72, 0.98] },
     setup: function (ctx) {
@@ -950,6 +952,7 @@
      ============================================================ */
   var gameBossIncident = {
     id: "boss-incident", value: "BOSS", verb: "THE INCIDENT!", input: "click", boss: true,
+    instruction: "errors are spiking — find the bad deploy, then mash ROLLBACK",
     baseDurationMs: 30000,
     params: { climbPerSec: 0.055, wrongSpike: 0.18, mashGain: 0.055, decayPerSec: 0.05 },
     _commits: [
@@ -973,7 +976,7 @@
             '<line x1="0" y1="3" x2="200" y2="3" stroke="#E5484D" stroke-width="1" stroke-dasharray="3 2"/>' +
             '<rect id="hw-err-fill" x="0" y="24" width="200" height="0" fill="#E5484D" opacity="0.55"/>' +
           '</svg>' +
-          '<p class="hw-hint" id="hw-incident-hint" style="color:#E5484D;">errors climbing — which commit did this?</p>' +
+          '<p class="hw-hint" id="hw-incident-hint" style="color:#E5484D;">errors climbing! click the commit that broke prod — before the graph tops out</p>' +
           '<div class="hw-frag-tray">' + rows + '</div>' +
         '</div>';
       scene.querySelectorAll(".hw-commit").forEach(function (btn) {
@@ -999,7 +1002,7 @@
         '<div id="hw-incident-scene" class="hw-screen" style="gap:0.7em;">' +
           graph +
           '<button id="hw-rollback" class="hw-btn" style="font-size:1.2em; padding:0.75em 2.2em;">ROLLBACK</button>' +
-          '<p class="hw-hint" id="hw-incident-hint">mash it — rewind the deploy: <span id="hw-rb-pct">0</span>%</p>' +
+          '<p class="hw-hint" id="hw-incident-hint">found it! now MASH — rewind the deploy to 100%: <span id="hw-rb-pct">0</span>%</p>' +
         '</div>';
       $("hw-rollback").addEventListener("pointerdown", function () {
         if (ctx.done) return;
@@ -1039,6 +1042,7 @@
      ============================================================ */
   var gameBossFunnel = {
     id: "boss-funnel", value: "BOSS", verb: "FUNNEL RESCUE!", input: "space", boss: true,
+    instruction: "6 users are falling — catch at least 4 in the funnel",
     baseDurationMs: 30000,
     params: { users: 6, need: 4, spawnGapMs: 1400, fallMs: 2100, funnelSpeed: 0.6, mouth: 0.09 },
     setup: function (ctx) {
@@ -1063,7 +1067,7 @@
               '<text id="hw-funnel-label" y="107" font-size="9" fill="var(--accent)" text-anchor="middle">retained: 0/' + ctx.params.need + '</text>' +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press = slide right · release = drift left — catch the users</p>' +
+          '<p class="hw-hint">catch <b>4 of 6</b> falling users — hold <span class="hw-kbd">space</span> / press = slide right · release = drift left</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -1183,10 +1187,14 @@
       timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
       $("hw-verb-word").textContent = game.verb;
       $("hw-verb-value").textContent = game.value;
+      var instr = $("hw-verb-instr");
+      instr.textContent = game.instruction || "";
+      instr.classList.toggle("hw-hidden", !game.instruction);
       renderVerbStatus();
     }, function () {
       sfx("verb");
-      setTimeout(function () { playGame(game); }, VERB_MS);
+      // Bosses carry an instruction line — a noun card alone teaches nothing, so they hold longer.
+      setTimeout(function () { playGame(game); }, game.boss ? VERB_MS * 2.2 : VERB_MS);
     });
   }
 

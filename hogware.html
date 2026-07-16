@@ -283,6 +283,7 @@
             animation: hw-verb-pop 0.35s cubic-bezier(0.2, 1.6, 0.4, 1);
           }
           .hw-verb-value { color: var(--muted); font-size: 0.9em; margin: 0; letter-spacing: 0.08em; text-transform: uppercase; }
+          .hw-verb-instr { color: var(--text); font-size: 1.02em; margin: 0.2em 0 0; max-width: 34ch; }
           @keyframes hw-verb-pop {
             from { transform: scale(0.4) rotate(-3deg); opacity: 0; }
             to   { transform: scale(1) rotate(0); opacity: 1; }
@@ -646,6 +647,7 @@
                 <div id="hw-verb" class="hw-screen hw-hidden">
                     <p class="hw-verb-value" id="hw-verb-value"></p>
                     <p class="hw-verb-word" id="hw-verb-word"></p>
+                    <p class="hw-verb-instr hw-hidden" id="hw-verb-instr"></p>
                     <div class="hw-verb-status">
                         <span id="hw-verb-lives" aria-label="Lives remaining"></span>
                         <span class="hw-stat-tile" id="hw-verb-tile"></span>
