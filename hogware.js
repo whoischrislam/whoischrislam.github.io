@@ -85,6 +85,46 @@
     Object.keys(screens).forEach(function (k) { hide(screens[k]); });
     hide(scene);
   }
+  function visibleScreen() {
+    if (!scene.classList.contains("hw-hidden")) return scene;
+    for (var k in screens) { if (!screens[k].classList.contains("hw-hidden")) return screens[k]; }
+    return null;
+  }
+
+  /* ---- WarioWare-style zoom swap, quantized to the next beat ----
+     Dramatic on purpose (Chris: start extreme, dial back) — tune these two.
+     prefers-reduced-motion gets the old instant cut. Feedback screens never
+     route through here; only forward-looking starts do. */
+  var ZOOM_MS = 240; // per half (out, then in)
+  var transitioning = false;
+  function swapScreens(toEl, prep, done) {
+    var fromEl = visibleScreen();
+    if (reducedMotion) {
+      hideAllScreens();
+      if (prep) prep();
+      show(toEl);
+      if (done) done();
+      return;
+    }
+    transitioning = true;
+    conductor.nextBeat(function () {
+      if (fromEl) fromEl.classList.add("hw-zoom-out");
+      setTimeout(function () {
+        hideAllScreens();
+        if (fromEl) fromEl.classList.remove("hw-zoom-out");
+        if (prep) prep();
+        show(toEl);
+        toEl.classList.add("hw-zoom-in");
+        void toEl.offsetWidth; // commit start state before animating to identity
+        toEl.classList.add("hw-zoom-in-go");
+        setTimeout(function () {
+          toEl.classList.remove("hw-zoom-in", "hw-zoom-in-go");
+          transitioning = false;
+          if (done) done();
+        }, ZOOM_MS);
+      }, ZOOM_MS);
+    });
+  }
 
   var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function shake() {
@@ -94,11 +134,69 @@
     stage.classList.add("hw-shaking");
   }
 
+  /* ---------------- Conductor ----------------
+     The beat clock behind the seamless feel. It aligns STARTS (next verb card
+     lands on a beat) — it never stretches durations and never gates feedback
+     (adversarial-review finding: beat-gating the result flash created dead air
+     and broke tuned timings). Runs off the audio clock when unlocked, falls
+     back to performance.now() when muted/locked — gameplay is identical either
+     way because no game logic listens to it. */
+  var audioCtx = null;
+  var conductor = (function () {
+    var BPM = 120, baseBeatMs = 60000 / BPM; // 500ms at rate 1
+    var rate = 1, anchor = 0, timer = null, subs = [];
+    var unlocked = false, muted = false;
+    try { muted = localStorage.getItem("hogware_muted") === "1"; } catch (e) {}
+    function now() { return (unlocked && audioCtx) ? audioCtx.currentTime * 1000 : performance.now(); }
+    function beatMs() { return baseBeatMs / rate; }
+    function nextBeatAt() {
+      var t = now(), b = beatMs();
+      return anchor + Math.ceil((t - anchor) / b + 1e-6) * b;
+    }
+    function tick() {
+      var t = now();
+      for (var i = subs.length - 1; i >= 0; i--) {
+        if (t >= subs[i].at) { var fn = subs[i].fn; subs.splice(i, 1); try { fn(); } catch (e) {} }
+      }
+    }
+    return {
+      start: function (r) { // new run: fresh anchor, fresh subscriptions, scheduler on
+        rate = Math.min(2, Math.max(1, r || 1));
+        subs = [];
+        anchor = now();
+        if (!timer) timer = setInterval(tick, 25);
+      },
+      stop: function () { subs = []; if (timer) { clearInterval(timer); timer = null; } },
+      setRate: function (r) { anchor = nextBeatAt(); rate = Math.min(2, Math.max(1, r)); }, // re-anchor forward, no jump
+      nextBeat: function (fn) { if (!timer) return fn(); subs.push({ at: nextBeatAt(), fn: fn }); },
+      beatMs: beatMs,
+      unlock: function () { // must come from a user gesture (iOS: touchend/click, not touchstart)
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          audioCtx.resume().then(function () { unlocked = true; anchor = now(); });
+        } catch (e) {}
+      },
+      resumeIfInterrupted: function () { // iOS moves the ctx to "interrupted" on tab-away
+        if (audioCtx && unlocked && audioCtx.state !== "running") {
+          try { audioCtx.resume().then(function () { anchor = now(); }); } catch (e) {} // drop missed beats, never replay
+        }
+      },
+      isMuted: function () { return muted; },
+      setMuted: function (m) {
+        muted = m;
+        try { localStorage.setItem("hogware_muted", m ? "1" : "0"); } catch (e) {}
+      }
+    };
+  })();
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) conductor.resumeIfInterrupted();
+  });
+
   /* ---------------- Tiny SFX stub ----------------
      Placeholder blips until the ElevenLabs files land in /audio/hogware/.
-     Swap the synth body for Audio(src).play() then. */
-  var audioCtx = null;
+     Swap the synth body for buffer playback then (slots: pass/fail/tick/verb/over/level/whiff). */
   function sfx(kind) {
+    if (conductor.isMuted()) return;
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       var o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -469,6 +567,7 @@
         d.style.top = dpos.top + "%";
         d.addEventListener("pointerdown", function (e) {
           e.stopPropagation();
+          if (ctx.done || !ctx.live) return; // never touch run.rng() after resolve — it would shift the daily seed stream
           ctx.state.lockedUntil = ctx.elapsed + ctx.params.decoyLockMs; // you're in the meeting now
           d.style.transform = "rotate(" + (run.rng() > 0.5 ? 8 : -8) + "deg)";
           d.textContent = "in a meeting…";
@@ -671,30 +770,33 @@
       livesEl.appendChild(img);
     }
     capture("hogware_run_started", { pace_variant: paceVariant, lives: LIVES });
+    conductor.unlock(); // we're inside a user gesture here (START click or space)
+    conductor.start(1 / run.speed); // fresh anchor + rate; brisk variant starts faster, music will too
     show(hud); updateHud();
     nextGame();
   }
 
   function nextGame() {
     var game = run.order[run.idx];
-    hideAllScreens();
-    updateHud(); // loop counter can change between games
-    timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
-    $("hw-verb-word").textContent = game.verb;
-    $("hw-verb-value").textContent = game.value;
-    show(screens.verb);
-    sfx("verb");
-    setTimeout(function () { playGame(game); }, VERB_MS);
+    swapScreens(screens.verb, function () {
+      updateHud(); // loop counter can change between games
+      timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
+      $("hw-verb-word").textContent = game.verb;
+      $("hw-verb-value").textContent = game.value;
+    }, function () {
+      sfx("verb");
+      setTimeout(function () { playGame(game); }, VERB_MS);
+    });
   }
 
   function playGame(game) {
-    hideAllScreens();
     // Difficulty level: loop 1 = L1, loop 2 = L2, loop 3+ = L3 (speed takes over from loop 4).
     var levelIdx = Math.min(run.loop - 1, 2);
     var levelParams = (game.levels && game.levels[levelIdx]) || {};
     // Levels that add a time-costing mechanic (e.g. the stall stop) can buy more clock.
     var duration = (levelParams.durationMs || game.baseDurationMs) * run.speed;
     stage.dataset.level = levelIdx + 1; // exposed for tests/debugging
+    stage.dataset.live = "0";
     active = {
       game: game,
       params: Object.assign({}, game.params, levelParams),
@@ -702,20 +804,33 @@
       elapsed: 0,
       duration: duration,
       done: false,
+      live: false, // activation barrier: no clock, no input until the zoom lands
       win: function (flavor, bonus) { settle(true, flavor, bonus || 0); },
       fail: function (flavor) { settle(false, flavor, 0); }
     };
-    scene.innerHTML = "";
-    show(scene);
-    game.setup(active);
-    // Pre-held input counts: if the player is already holding when a hold-input
-    // game starts, deliver the press now instead of demanding a re-press.
-    if (game.input === "space" && game.onPress && holdActive()) game.onPress(active);
+    var thisActive = active;
+    swapScreens(scene, function () {
+      scene.innerHTML = "";
+      scene.style.pointerEvents = "none"; // a fading-in scene is never clickable
+      game.setup(thisActive);
+    }, function () {
+      if (active !== thisActive || active.done) return;
+      active.live = true;
+      stage.dataset.live = "1"; // exposed for the headless test to wait on
+      scene.style.pointerEvents = "";
+      // Pre-held input counts: if the player is already holding when a hold-input
+      // game starts, deliver the press now instead of demanding a re-press.
+      if (game.input === "space" && game.onPress && holdActive()) game.onPress(active);
+      startClock(game);
+    });
+  }
+
+  function startClock(game) {
     timerFill.classList.remove("hw-timer-hot");
     var last = performance.now();
     (function tick(now) {
       if (!active || active.done) return;
-      var dt = now - last; last = now;
+      var dt = Math.min(now - last, 100); last = now; // clamp: a backgrounded tab must not dump one giant dt and drain the game
       active.elapsed += dt;
       var frac = Math.max(0, 1 - active.elapsed / active.duration);
       timerFill.style.transform = "scaleX(" + frac + ")";
@@ -737,6 +852,8 @@
     if (rafId) cancelAnimationFrame(rafId);
     var game = active.game;
     active = null;
+    stage.dataset.live = "0";
+    scene.style.pointerEvents = "none"; // outgoing scene is inert the instant the game resolves
 
     if (pass) {
       run.cleared++;
@@ -772,6 +889,7 @@
           showAnnounce("LEVEL UP!", "new complications");
         } else {
           run.speed = Math.max(SPEED_FLOOR, run.speed * SPEED_DECAY);
+          conductor.setRate(1 / run.speed); // music/beat tempo mirrors the game clock, brisk variant included
           showAnnounce("SPEED UP!", "same games. less time.");
         }
         run.order = shuffle(run.order, run.rng);
@@ -784,22 +902,24 @@
   /* ---- Interstitial: escalation announcement + a real value quote (skippable) ---- */
   var quoteTimer = null;
   function showAnnounce(word, axisNote) {
-    hideAllScreens();
-    var pool = QUOTES.slice();
-    if (ph()) pool.push(REPLAY_QUOTE);
-    var q = pool[Math.floor(Math.random() * pool.length)];
-    var wordEl = $("hw-announce-word");
-    wordEl.textContent = word;
-    wordEl.classList.toggle("hw-announce-speed", word === "SPEED UP!");
-    $("hw-announce-axis").textContent = axisNote || "";
-    $("hw-quote-text").textContent = q.text;
-    $("hw-quote-source").textContent = q.value + " — posthog.com/handbook/values";
-    show(screens.quote);
-    sfx("level");
     run.phase = "quote";
-    quoteTimer = setTimeout(endQuote, QUOTE_MS);
+    swapScreens(screens.quote, function () {
+      var pool = QUOTES.slice();
+      if (ph()) pool.push(REPLAY_QUOTE);
+      var q = pool[Math.floor(Math.random() * pool.length)];
+      var wordEl = $("hw-announce-word");
+      wordEl.textContent = word;
+      wordEl.classList.toggle("hw-announce-speed", word === "SPEED UP!");
+      $("hw-announce-axis").textContent = axisNote || "";
+      $("hw-quote-text").textContent = q.text;
+      $("hw-quote-source").textContent = q.value + " — posthog.com/handbook/values";
+    }, function () {
+      sfx("level");
+      quoteTimer = setTimeout(endQuote, QUOTE_MS);
+    });
   }
   function endQuote() {
+    if (transitioning) return; // a press mid-swap must not double-advance the phase machine
     if (quoteTimer) { clearTimeout(quoteTimer); quoteTimer = null; }
     if (!run || run.phase !== "quote") return;
     run.phase = "verb";
@@ -813,7 +933,7 @@
   }
   function gameOver() {
     hide(hud);
-    hideAllScreens();
+    conductor.stop(); // scheduler only runs during an active run
     sfx("over");
     var best = 0;
     try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
@@ -846,8 +966,7 @@
     var initials = $("hw-initials");
     try { initials.value = localStorage.getItem("hogware_handle") || ""; } catch (e) {}
 
-    show(screens.gameover);
-    renderLeaderboard();
+    swapScreens(screens.gameover, null, renderLeaderboard);
   }
 
   function submitScore() {
@@ -890,7 +1009,7 @@
      'click' games handle their own element listeners; stray stage presses are ignored. */
   function pressActive(e) {
     if (run && run.phase === "quote") return endQuote();
-    if (!active || active.done) return;
+    if (!active || active.done || !active.live) return; // activation barrier: zooming-in games don't hear input
     var g = active.game;
     if (g.input === "space" && g.onPress) g.onPress(active, e);
   }
@@ -923,7 +1042,7 @@
   stage.addEventListener("pointerdown", function (e) {
     pointerHeld = true;
     // For space-input games, any tap on the stage is the button.
-    if (active && !active.done && active.game.input === "space") { e.preventDefault(); pressActive(e); }
+    if (active && !active.done && active.live && active.game.input === "space") { e.preventDefault(); pressActive(e); }
     else if (run && run.phase === "quote") endQuote();
   });
   stage.addEventListener("pointerup", function () { pointerHeld = false; releaseActive(); });
@@ -940,8 +1059,28 @@
     }
     $("hw-start").addEventListener("click", startRun);
     $("hw-again").addEventListener("click", function () {
-      hideAllScreens();
       startRun();
+    });
+
+    // Audio unlock: one-time, gesture-driven (iOS wants touchend/click, not touchstart).
+    var unlockOnce = function () {
+      conductor.unlock();
+      document.removeEventListener("pointerup", unlockOnce);
+      document.removeEventListener("keydown", unlockOnce);
+    };
+    document.addEventListener("pointerup", unlockOnce);
+    document.addEventListener("keydown", unlockOnce);
+
+    // Mute toggle. blur() after click is load-bearing: the keydown handler
+    // ignores Space when a BUTTON has focus, so a focused mute button would
+    // silently kill DRIVE/AIM (adversarial-review catch).
+    var muteBtn = $("hw-mute");
+    var muteLabel = function () { muteBtn.textContent = conductor.isMuted() ? "sound: off" : "sound: on"; };
+    muteLabel();
+    muteBtn.addEventListener("click", function () {
+      conductor.setMuted(!conductor.isMuted());
+      muteLabel();
+      muteBtn.blur();
     });
     $("hw-submit").addEventListener("click", submitScore);
     $("hw-initials").addEventListener("keydown", function (e) {
