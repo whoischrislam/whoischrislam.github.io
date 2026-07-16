@@ -550,8 +550,10 @@
       ctx.state.nextGap = ctx.params.spawnEveryMs;
       ctx.state.lockedUntil = 0;
       ctx.state.shipShown = false;
-      // Seeded random spot each play, near-edge to near-edge — no safe central habit.
-      ctx.state.shipPos = { left: 4 + run.rng() * 68, top: 16 + run.rng() * 50 };
+      // Seeded random spot each play, edge-BIASED: uniform draws feel center-heavy
+      // (most of the probability mass is mid-range), so push toward the extremes.
+      var edgy = function () { var u = run.rng(); return u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u); };
+      ctx.state.shipPos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
       scene.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
         '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the meetings — just hit SHIP</p>';
       if (ctx.params.decoy) {
@@ -561,9 +563,9 @@
         d.textContent = "SHIP LATER";
         d.style.position = "absolute";
         d.style.zIndex = "12";
-        var dpos = { left: 4 + run.rng() * 68, top: 16 + run.rng() * 50 };
+        var dpos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
         // keep decoy and real button visibly apart
-        if (Math.abs(dpos.left - ctx.state.shipPos.left) < 18) dpos.left = (dpos.left + 34) % 68 + 4;
+        if (Math.abs(dpos.left - ctx.state.shipPos.left) < 18) dpos.left = (dpos.left + 37) % 74 + 3;
         d.style.left = dpos.left + "%";
         d.style.top = dpos.top + "%";
         d.addEventListener("pointerdown", function (e) {
@@ -1450,7 +1452,9 @@
     $("hw-final-score").textContent = run.score;
     $("hw-final-stats").textContent =
       run.cleared + " cleared · loop " + run.loop + (isBest ? " · new personal best" : best ? " · best " + best : "");
-    $("hw-trail").textContent = trailGrid();
+    var trailEl = $("hw-trail");
+    trailEl.textContent = trailGrid();
+    trailEl.classList.toggle("hw-trail-deep", run.trail.length > 36); // 6+ loops: compress so the score stays on-frame
 
     var copyBtn = $("hw-copy");
     copyBtn.textContent = "COPY RESULT";
