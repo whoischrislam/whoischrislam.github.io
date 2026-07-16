@@ -1042,19 +1042,39 @@
      ============================================================ */
   var gameBossFunnel = {
     id: "boss-funnel", value: "BOSS", verb: "FUNNEL RESCUE!", input: "space", boss: true,
-    instruction: "6 users are falling — catch at least 4 in the funnel",
+    instruction: "users are falling — retain 4 (the whale counts double)",
     baseDurationMs: 30000,
-    params: { users: 6, need: 4, spawnGapMs: 1400, fallMs: 2100, funnelSpeed: 0.6, mouth: 0.09 },
+    params: { need: 4, funnelSpeed: 0.68, mouth: 0.09 },
+    /* Wave of 8, realistic retention math (need 4 pts of 9 possible ≈ 44%):
+       normals, fast fallers, floaters, and one whale worth 2 — net revenue
+       retention as a game rule. The wave escalates: later users spawn
+       closer together and fall faster. */
     setup: function (ctx) {
       var s = ctx.state;
       s.holding = false;
       s.fx = 0.5;
       s.retained = 0;
       s.resolved = 0;
+      s.total = 0;
+      s.caught = 0;
+      s.effects = [];
+      var types = shuffle(["n", "n", "n", "n", "fast", "fast", "float", "whale"], run.rng);
       s.users = [];
-      for (var i = 0; i < ctx.params.users; i++) {
-        s.users.push({ x: 0.1 + run.rng() * 0.8, bornAt: 600 + i * ctx.params.spawnGapMs, y: -0.1, done: false });
+      var born = 600;
+      for (var i = 0; i < types.length; i++) {
+        var t = types[i];
+        var speedUp = 1 - i * 0.035; // escalation: later users fall faster
+        s.users.push({
+          type: t,
+          x: 0.1 + run.rng() * 0.8,
+          bornAt: born,
+          fallMs: (t === "fast" ? 1500 : t === "float" ? 2600 : t === "whale" ? 2900 : 2100) * speedUp,
+          worth: t === "whale" ? 2 : 1,
+          y: -0.1, done: false, bounced: false
+        });
+        born += 1500 - i * 90; // escalation: the wave crowds up
       }
+      s.total = types.length;
       scene.innerHTML =
         '<div id="hw-funnel-scene" class="hw-screen" style="justify-content:flex-end; padding-bottom:1.6em;">' +
           '<svg id="hw-funnel-rink" width="100%" height="210" viewBox="0 0 400 110" preserveAspectRatio="none">' +
@@ -1067,7 +1087,7 @@
               '<text id="hw-funnel-label" y="107" font-size="9" fill="var(--accent)" text-anchor="middle">retained: 0/' + ctx.params.need + '</text>' +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint">catch <b>4 of 6</b> falling users — hold <span class="hw-kbd">space</span> / press = slide right · release = drift left</p>' +
+          '<p class="hw-hint">retain <b>4</b> — the <b>$</b> whale counts double · hold <span class="hw-kbd">space</span> / press = right · release = left</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -1085,29 +1105,62 @@
       for (var i = 0; i < s.users.length; i++) {
         var u = s.users[i];
         if (u.done || ctx.elapsed < u.bornAt) continue;
-        u.y = (ctx.elapsed - u.bornAt) / p.fallMs;
-        if (u.y >= 0.82 && u.y < 1 && Math.abs(u.x - s.fx) < p.mouth) {
-          u.done = true; s.resolved++; s.retained++;
+        u.y = (ctx.elapsed - u.bornAt) / u.fallMs;
+        var ux = 14 + u.x * 372, uy = u.y * 92;
+        if (u.y >= 0.82 && u.y < 1 && !u.bounced && Math.abs(u.x - s.fx) < p.mouth) {
+          u.done = true; s.resolved++; s.caught++; s.retained += u.worth;
+          s.effects.push({ kind: "catch", x: fpx, y: 84, worth: u.worth, until: ctx.elapsed + 500 });
           sfx("pass");
           continue;
         }
+        // Near miss: clip the funnel rim — bounce sideways and churn in full view.
+        if (u.y >= 0.82 && !u.bounced && Math.abs(u.x - s.fx) < p.mouth + 0.055) {
+          u.bounced = true;
+          u.bounceDir = u.x < s.fx ? -1 : 1;
+        }
+        if (u.bounced) u.x = Math.max(0.03, Math.min(0.97, u.x + u.bounceDir * 0.28 * dt / 1000));
         if (u.y >= 1) {
           u.done = true; s.resolved++;
+          s.effects.push({ kind: "churn", x: ux, y: 100, until: ctx.elapsed + 600 });
           sfx("whiff");
           continue;
         }
-        dotsSvg += '<circle cx="' + (14 + u.x * 372) + '" cy="' + (u.y * 92) + '" r="5" fill="var(--text)" opacity="0.85"/>' +
-          '<circle cx="' + (12 + u.x * 372) + '" cy="' + (u.y * 92 - 2) + '" r="1.2" fill="var(--bg)"/>';
-        if (lowest === null || u.y > lowest.y) lowest = u;
+        // Draw by type: whale is big with a ring, fast has a streak, floater is airy.
+        if (u.type === "whale") {
+          dotsSvg += '<circle cx="' + ux + '" cy="' + uy + '" r="8.5" fill="var(--text)" opacity="0.9"/>' +
+            '<circle cx="' + ux + '" cy="' + uy + '" r="11.5" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>' +
+            '<text x="' + ux + '" y="' + (uy + 3) + '" font-size="8" text-anchor="middle" fill="var(--bg)" font-weight="bold">$</text>';
+        } else if (u.type === "fast") {
+          dotsSvg += '<line x1="' + ux + '" y1="' + (uy - 12) + '" x2="' + ux + '" y2="' + (uy - 5) + '" stroke="var(--muted)" stroke-width="2" opacity="0.6"/>' +
+            '<circle cx="' + ux + '" cy="' + uy + '" r="4.2" fill="var(--text)" opacity="0.9"/>';
+        } else if (u.type === "float") {
+          dotsSvg += '<path d="M' + (ux - 7) + ' ' + (uy - 8) + ' Q' + ux + ' ' + (uy - 15) + ' ' + (ux + 7) + ' ' + (uy - 8) + '" fill="none" stroke="var(--muted)" stroke-width="1.5"/>' +
+            '<circle cx="' + ux + '" cy="' + uy + '" r="5" fill="var(--text)" opacity="0.7"/>';
+        } else {
+          dotsSvg += '<circle cx="' + ux + '" cy="' + uy + '" r="5" fill="var(--text)" opacity="0.85"/>' +
+            '<circle cx="' + (ux - 2) + '" cy="' + (uy - 2) + '" r="1.2" fill="var(--bg)"/>';
+        }
+        if (!u.bounced && (lowest === null || u.y > lowest.y)) lowest = u;
       }
+      // Transient juice: "+1"/"+2" popping from the funnel, churn puffs at the floor.
+      s.effects = s.effects.filter(function (e) { return ctx.elapsed < e.until; });
+      s.effects.forEach(function (e) {
+        var lifeFrac = 1 - (e.until - ctx.elapsed) / (e.kind === "catch" ? 500 : 600);
+        if (e.kind === "catch") {
+          dotsSvg += '<text x="' + e.x + '" y="' + (e.y - lifeFrac * 16) + '" font-size="10" font-weight="bold" text-anchor="middle" fill="var(--accent)" opacity="' + (1 - lifeFrac) + '">+' + e.worth + '</text>';
+        } else {
+          dotsSvg += '<circle cx="' + e.x + '" cy="' + e.y + '" r="' + (4 + lifeFrac * 5) + '" fill="none" stroke="var(--muted)" stroke-width="1.5" opacity="' + (0.6 * (1 - lifeFrac)) + '"/>';
+        }
+      });
       if (usersG) usersG.innerHTML = dotsSvg;
       if (rink) {
         rink.dataset.fx = s.fx.toFixed(3);
         rink.dataset.nextx = lowest ? lowest.x.toFixed(3) : "-1";
       }
-      if (s.resolved >= p.users) {
-        if (s.retained >= p.need) return ctx.win("Retained " + s.retained + "/" + p.users + ". The funnel forgives. +1 life.", 1);
-        return ctx.fail("Only " + s.retained + " retained. The churn report writes itself.");
+      if (s.resolved >= s.total && s.effects.length === 0) {
+        var pctRet = Math.round(s.caught / s.total * 100);
+        if (s.retained >= p.need) return ctx.win(pctRet + "% retained — suspiciously good. +1 life.", 1);
+        return ctx.fail(pctRet + "% retention. The churn postmortem writes itself.");
       }
     },
     onPress: function (ctx) { ctx.state.holding = true; },
