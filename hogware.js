@@ -1115,12 +1115,15 @@
     onTimeout: function (ctx) { ctx.fail("Everyone churned while you watched."); }
   };
 
-  var BOSSES = [gameBossHedgehog, gameBossIncident, gameBossFunnel]; // daily rotation via DAY_NUM. RUN THE QUERY (gameBossQuery) shelved after playtest: quiz, not game.
-  // ?boss=curl|incident|funnel forces a boss — playtest all three without waiting three days.
-  var BOSS_OVERRIDE = -1;
+  // Rotation pool: FUNNEL only, per playtest — CURL and INCIDENT shelved (need more
+  // love), QUERY shelved earlier (quiz, not game). Shelved bosses stay summonable
+  // via ?boss= for future rework; they're just out of the daily rotation.
+  var BOSSES = [gameBossFunnel];
+  var SHELVED_BOSSES = [gameBossHedgehog, gameBossIncident, gameBossQuery];
+  var BOSS_FORCED = null;
   try {
     var bq = new URLSearchParams(location.search).get("boss");
-    if (bq) BOSSES.forEach(function (b, i) { if (b.id.indexOf(bq) >= 0) BOSS_OVERRIDE = i; });
+    if (bq) BOSSES.concat(SHELVED_BOSSES).forEach(function (b) { if (b.id.indexOf(bq) >= 0) BOSS_FORCED = b; });
   } catch (e) {}
 
   var GAMES = [gameDrive, gamePublish, gameWeird, gameShip, gameAim];
@@ -1178,7 +1181,7 @@
   function nextGame() {
     // The slot after the last regular game is the boss — daily seed picks which one (pool of 1, for now).
     var game = run.idx >= run.order.length
-      ? BOSSES[BOSS_OVERRIDE >= 0 ? BOSS_OVERRIDE : DAY_NUM % BOSSES.length]
+      ? (BOSS_FORCED || BOSSES[DAY_NUM % BOSSES.length])
       : run.order[run.idx];
     screens.verb.classList.toggle("hw-verb-boss", !!game.boss);
     hud.classList.toggle("hw-hud-boss", !!game.boss);
