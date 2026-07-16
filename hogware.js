@@ -102,7 +102,7 @@
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       var o = audioCtx.createOscillator(), g = audioCtx.createGain();
-      var f = { pass: 660, fail: 140, tick: 880, verb: 440, over: 220 }[kind] || 440;
+      var f = { pass: 660, fail: 140, tick: 880, verb: 440, over: 220, level: 990 }[kind] || 440;
       o.frequency.value = f;
       o.type = kind === "fail" ? "sawtooth" : "sine";
       g.gain.setValueAtTime(0.06, audioCtx.currentTime);
@@ -140,7 +140,12 @@
   var gameDrive = {
     id: "drive", value: "You're the driver", verb: "DRIVE!", input: "space",
     baseDurationMs: 4200,
-    params: { travelMs: 2600, obstacles: [0.3, 0.55, 0.78] },
+    params: { travelMs: 2600, obstacles: [0.3, 0.55, 0.78], hesitateIdx: -1 },
+    levels: [
+      {},
+      { travelMs: 3000, obstacles: [0.25, 0.45, 0.65, 0.82] },
+      { travelMs: 3000, obstacles: [0.25, 0.45, 0.65, 0.82], hesitateIdx: 2 } // one car holds its nerve longer than you'd like
+    ],
     setup: function (ctx) {
       ctx.state.holding = false;
       ctx.state.x = 0; // 0..1 progress toward the flag
@@ -170,10 +175,11 @@
       var car = $("hw-car");
       if (car) car.style.transform = "translate(" + (6 + ctx.state.x * 348) + "px, 30px)";
       // Traffic bails out of the lane just before you reach it — that's the whole joke.
-      scene.querySelectorAll(".hw-traffic").forEach(function (t) {
+      scene.querySelectorAll(".hw-traffic").forEach(function (t, ti) {
         if (t.dataset.dodged) return;
         var frac = parseFloat(t.dataset.frac);
-        if (ctx.state.x > frac - 0.14) {
+        var margin = (ti === ctx.params.hesitateIdx) ? 0.055 : 0.14; // the hesitant one waits until the last moment
+        if (ctx.state.x > frac - margin) {
           t.dataset.dodged = "1";
           if (!reducedMotion) t.style.transition = "transform 0.35s ease-out, opacity 0.35s";
           t.style.transform = "translate(" + (40 + frac * 300) + "px, " + (frac > 0.5 ? -30 : 78) + "px)";
@@ -191,30 +197,59 @@
     onTimeout: function (ctx) { ctx.fail("The road was empty and you hesitated."); }
   };
 
-  /* ---- 2. MAKE IT PUBLIC — "PUBLISH!" (click) ---- */
+  /* ---- 2. MAKE IT PUBLIC — "PUBLISH!" (click) ----
+     L3: one toggle re-locks itself once ("legal had concerns") and needs
+     a second flip — state is a set, not a countdown, so it survives that. */
   var gamePublish = {
     id: "publish", value: "Make it public", verb: "PUBLISH!", input: "click",
     baseDurationMs: 4200,
-    params: { items: ["the code", "the roadmap", "the salaries"] },
+    params: { items: ["the code", "the roadmap", "the salaries"], relocks: 0 },
+    levels: [
+      {},
+      { items: ["the code", "the roadmap", "the salaries", "the finances"] },
+      { items: ["the code", "the roadmap", "the salaries", "the finances", "the incident report"], relocks: 1 }
+    ],
     setup: function (ctx) {
-      ctx.state.left = ctx.params.items.length;
-      var rows = ctx.params.items.map(function (label, i) {
+      var items = ctx.params.items;
+      ctx.state.pub = {};
+      ctx.state.relocksLeft = ctx.params.relocks;
+      ctx.state.relockIdx = Math.floor(run.rng() * items.length);
+      var rows = items.map(function (label, i) {
         return '<div class="hw-toggle" data-i="' + i + '" role="button" tabindex="-1">' +
           '<span>' + label + '</span><span class="hw-pill">PRIVATE</span></div>';
       }).join("");
-      scene.innerHTML = '<div class="hw-screen"><div class="hw-toggles">' + rows + '</div></div>';
+      scene.innerHTML = '<div class="hw-screen"><div class="hw-toggles" style="gap:0.45em;">' + rows + '</div></div>';
+      function setState(el, isPublic) {
+        el.classList.toggle("hw-public", isPublic);
+        el.querySelector(".hw-pill").textContent = isPublic ? "PUBLIC" : "PRIVATE";
+      }
       scene.querySelectorAll(".hw-toggle").forEach(function (el) {
+        var i = parseInt(el.dataset.i, 10);
         el.addEventListener("pointerdown", function () {
-          if (el.classList.contains("hw-public")) return;
-          el.classList.add("hw-public");
-          el.querySelector(".hw-pill").textContent = "PUBLIC";
+          if (ctx.done || ctx.state.pub[i]) return;
+          ctx.state.pub[i] = true;
+          setState(el, true);
           sfx("tick");
-          ctx.state.left--;
-          if (ctx.state.left === 0) ctx.win("Everything's out in the open.", 0);
+          if (ctx.state.relocksLeft > 0 && i === ctx.state.relockIdx) {
+            ctx.state.relocksLeft--;
+            setTimeout(function () {
+              if (ctx.done) return;
+              ctx.state.pub[i] = false;
+              setState(el, false);
+              el.querySelector("span").textContent = items[i] + " (legal had concerns)";
+              sfx("fail");
+            }, 550);
+          }
+          if (Object.keys(ctx.state.pub).filter(function (k) { return ctx.state.pub[k]; }).length === items.length) {
+            ctx.win("Everything's out in the open.", 0);
+          }
         });
       });
     },
-    onTimeout: function (ctx) { ctx.fail("Still " + ctx.state.left + " thing" + (ctx.state.left > 1 ? "s" : "") + " behind closed doors."); }
+    onTimeout: function (ctx) {
+      var left = ctx.params.items.length - Object.keys(ctx.state.pub).filter(function (k) { return ctx.state.pub[k]; }).length;
+      ctx.fail("Still " + left + " thing" + (left > 1 ? "s" : "") + " behind closed doors.");
+    }
   };
 
   /* ---- 3. DO MORE WEIRD — "WEIRD!" (mash) ----
@@ -224,7 +259,12 @@
   var gameWeird = {
     id: "weird", value: "Do more weird", verb: "WEIRD!", input: "click",
     baseDurationMs: 4200,
-    params: { target: 10 },
+    params: { target: 10, drift: false },
+    levels: [
+      {},
+      { target: 12 },
+      { target: 14, drift: true } // the photo starts wandering; normalcy resists
+    ],
     _mutations: [
       function () { var e = $("hw-w-bg"); e.setAttribute("fill", "#B043D1"); },                                  // beige wall goes purple
       function () { var e = $("hw-w-chart"); e.setAttribute("points", "10,58 25,20 40,55 55,8 70,40 85,4"); e.setAttribute("stroke", "var(--accent)"); }, // chart becomes a rollercoaster
@@ -244,7 +284,8 @@
       ctx.state.order = shuffle(gameWeird._mutations.slice(), run.rng);
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:center;">' +
-          '<svg id="hw-w-frame" width="min(70%, 340px)" viewBox="0 0 200 110" style="background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="A perfectly normal stock photo">' +
+          '<div class="hw-w-wrap' + (ctx.params.drift ? ' hw-anim-wander' : '') + '" style="width:min(70%, 340px);">' +
+          '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="A perfectly normal stock photo">' +
             '<rect id="hw-w-bg" x="0" y="0" width="200" height="110" fill="#E8E0D0"/>' +
             '<circle id="hw-w-sun" cx="170" cy="20" r="12" fill="#FFC53D" style="opacity:0; transition: opacity 0.3s;"/>' +
             '<g id="hw-w-person" style="transform-origin: 60px 70px;">' +
@@ -261,7 +302,7 @@
               '<rect x="20" y="88" width="10" height="10" fill="#A0785A"/>' +
               '<path d="M25 88c-6-8-2-16 0-18 2 2 6 10 0 18z" fill="#48885C"/></g>' +
             '<text id="hw-w-caption" x="100" y="103" text-anchor="middle" font-size="9" font-weight="bold" fill="#718096" letter-spacing="2">SYNERGY</text>' +
-          '</svg>' +
+          '</svg></div>' +
           '<p class="hw-hint">click it weirder — <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
         '</div>';
       $("hw-w-frame").addEventListener("pointerdown", function () {
@@ -282,8 +323,14 @@
   var gameShip = {
     id: "ship", value: "Why not now?", verb: "SHIP IT!", input: "click",
     baseDurationMs: 4600,
+    levels: [
+      {},
+      { spawnEveryMs: 380 },
+      { spawnEveryMs: 420, decoy: true } // a "SHIP LATER" button appears; reading is the skill
+    ],
     params: {
       spawnEveryMs: 520,
+      decoy: false,
       popups: [
         ["Quick sync?", "just 30 min"],
         ["Loop in legal", "before we do anything"],
@@ -301,6 +348,23 @@
       $("hw-ship-btn").addEventListener("pointerdown", function () {
         ctx.win("Shipped. Today.", ctx.state.spawned >= 5 ? 1 : 0);
       });
+      if (ctx.params.decoy) {
+        var d = document.createElement("button");
+        d.className = "hw-btn";
+        d.id = "hw-decoy-btn";
+        d.textContent = "SHIP LATER";
+        d.style.position = "absolute";
+        d.style.zIndex = "12";
+        d.style.left = (28 + run.rng() * 20) + "%";
+        d.style.top = (24 + run.rng() * 14) + "%";
+        d.addEventListener("pointerdown", function (e) {
+          e.stopPropagation();
+          d.style.transform = "rotate(" + (run.rng() > 0.5 ? 8 : -8) + "deg)";
+          d.textContent = "later?!";
+          sfx("fail");
+        });
+        scene.appendChild(d);
+      }
     },
     update: function (ctx) {
       if (ctx.elapsed - ctx.state.lastSpawn < ctx.params.spawnEveryMs) return;
@@ -337,6 +401,11 @@
         [999, "…overboard.", 0, false]
       ]
     },
+    levels: [
+      {},
+      { zones: [[35, "TIMID.", 0, true], [70, "SAFE.", 0, true], [93, "BOLD!", 1, true], [100, "MOONSHOT!!", 2, true], [999, "…overboard.", 0, false]] },
+      { chargeMs: 1050, zones: [[35, "TIMID.", 0, true], [70, "SAFE.", 0, true], [93, "BOLD!", 1, true], [100, "MOONSHOT!!", 2, true], [999, "…overboard.", 0, false]] }
+    ],
     setup: function (ctx) {
       ctx.state.holding = false;
       ctx.state.power = 0;
@@ -425,7 +494,7 @@
 
   function updateHud() {
     $("hw-hud-score").textContent = "Score " + run.score;
-    $("hw-hud-loop").textContent = "Loop " + run.loop;
+    $("hw-hud-loop").textContent = "Loop " + run.loop + " · Lv" + Math.min(run.loop, 3);
     var icons = document.querySelectorAll("#hw-hud-lives .hw-life");
     icons.forEach(function (img, i) {
       img.classList.toggle("hw-life-lost", i >= run.lives);
@@ -454,9 +523,13 @@
   function playGame(game) {
     hideAllScreens();
     var duration = game.baseDurationMs * run.speed;
+    // Difficulty level: loop 1 = L1, loop 2 = L2, loop 3+ = L3 (speed takes over from loop 4).
+    var levelIdx = Math.min(run.loop - 1, 2);
+    var levelParams = (game.levels && game.levels[levelIdx]) || {};
+    stage.dataset.level = levelIdx + 1; // exposed for tests/debugging
     active = {
       game: game,
-      params: game.params,
+      params: Object.assign({}, game.params, levelParams),
       state: {},
       elapsed: 0,
       duration: duration,
@@ -522,25 +595,34 @@
       if (run.idx >= run.order.length) {
         run.idx = 0;
         run.loop++;
-        run.speed = Math.max(SPEED_FLOOR, run.speed * SPEED_DECAY);
+        // Escalation, WarioWare-style: difficulty levels first (loops 2-3, gentle
+        // speed), then pure speed-ups once every game is already at L3.
+        if (run.loop <= 3) {
+          run.speed = Math.max(SPEED_FLOOR, run.speed * 0.95);
+          showAnnounce("LEVEL UP!");
+        } else {
+          run.speed = Math.max(SPEED_FLOOR, run.speed * SPEED_DECAY);
+          showAnnounce("SPEED UP!");
+        }
         run.order = shuffle(run.order, run.rng);
-        showQuote();
       } else {
         nextGame();
       }
     }, RESULT_MS);
   }
 
-  /* ---- Interstitial: a real value quote between loops (skippable) ---- */
+  /* ---- Interstitial: escalation announcement + a real value quote (skippable) ---- */
   var quoteTimer = null;
-  function showQuote() {
+  function showAnnounce(word) {
     hideAllScreens();
     var pool = QUOTES.slice();
     if (ph()) pool.push(REPLAY_QUOTE);
     var q = pool[Math.floor(Math.random() * pool.length)];
+    $("hw-announce-word").textContent = word;
     $("hw-quote-text").textContent = q.text;
     $("hw-quote-source").textContent = q.value + " — posthog.com/handbook/values";
     show(screens.quote);
+    sfx("level");
     run.phase = "quote";
     quoteTimer = setTimeout(endQuote, QUOTE_MS);
   }
