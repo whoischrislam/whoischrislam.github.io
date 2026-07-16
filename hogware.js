@@ -304,11 +304,11 @@
   var gameWeird = {
     id: "weird", value: "Do more weird", verb: "WEIRD!", input: "click",
     baseDurationMs: 4200,
-    params: { target: 5, radius: 34, drift: false, decayMs: 0 },
+    params: { target: 5, radius: 40, drift: false, decayMs: 0 },
     levels: [
       {},
-      { target: 6, radius: 27, durationMs: 4800 },
-      { target: 7, radius: 22, drift: true, decayMs: 1500, durationMs: 4800 } // normalcy fights back: idle too long and progress reverts
+      { target: 6, radius: 32, durationMs: 4800 },
+      { target: 7, radius: 27, drift: true, decayMs: 1500, durationMs: 4800 } // normalcy fights back: idle too long and progress reverts
     ],
     /* Each mutation lives somewhere — a pulsing ring marks the next thing to
        weirdify, and only clicks near it count. Aim is the skill, not mashing. */
@@ -544,48 +544,34 @@
     id: "aim", value: "Optimistic by default", verb: "AIM!", input: "space",
     baseDurationMs: 5200,
     params: {
-      chargeMs: 1400,        // full bar fill time
-      zones: [               // [maxPct, label, bonus, pass]
-        [35, "TIMID.", 0, true],
-        [70, "SAFE.", 0, true],
-        [90, "BOLD!", 1, true],
-        [100, "MOONSHOT!!", 2, true],
-        [999, "…overboard.", 0, false]
-      ]
+      chargeMs: 1400,   // full bar fill time
+      bandHalf: 12,     // half-width of the target band, in power %
+      strict: false     // L1: anywhere on the rink lands; band is pure upside
     },
     levels: [
       {},
-      { varyBands: true, failBelowMin: 30, failBelowMax: 50 },
-      { chargeMs: 1050, varyBands: true, failBelowMin: 45, failBelowMax: 68 }
+      { bandHalf: 9, strict: true },
+      { chargeMs: 1050, bandHalf: 7, strict: true }
     ],
     setup: function (ctx) {
       ctx.state.holding = false;
       ctx.state.power = 0;
       ctx.state.launched = false;
-      // L2+: the moonshot edge moves per play (seeded variance), and a fail floor
-      // rises with level — under-charging stops being safe. Thematically exact:
-      // "never trying" is the only real failure this value recognizes.
-      var moonStart = ctx.params.varyBands ? 88 + run.rng() * 6 : 90;
-      // The fail floor itself varies per play (seeded) — the passing window is a
-      // fresh read off the rink every time, never a memorized number.
-      var floor = ctx.params.failBelowMin != null
-        ? ctx.params.failBelowMin + run.rng() * (ctx.params.failBelowMax - ctx.params.failBelowMin)
-        : 0;
-      ctx.state.zones = [
-        [35, "TIMID.", 0], [70, "SAFE.", 0], [moonStart, "BOLD!", 1], [100, "MOONSHOT!!", 2]
-      ].map(function (z) { return [z[0], z[1], z[2], z[0] > floor]; });
-      ctx.state.zones.push([999, "…overboard.", 0, false]);
-      ctx.state.floor = floor;
-      // Rink bands drawn from the REAL zones so the shrinking safe area is visible.
+      // The target band lands ANYWHERE on the rink per play (seeded) — short chip,
+      // center lob, or a deep moonshot. Read the rink, then commit to the charge.
+      var range = ctx.params.strict ? [25, 90] : [30, 80];
+      ctx.state.band = range[0] + run.rng() * (range[1] - range[0]);
+      ctx.state.moonshot = ctx.state.band >= 78; // deep placements keep the name
       var px = function (pct) { return 6 + (pct / 100) * 372 + 10; };
+      var b0 = ctx.state.band - ctx.params.bandHalf, b1 = ctx.state.band + ctx.params.bandHalf;
+      var g0 = Math.max(0, b0 - 6), g1 = Math.min(100, b1 + 6); // "close" grace halo
       var bands =
-        (floor > 0 ? '<rect x="' + px(0) + '" y="36" width="' + (px(floor) - px(0)) + '" height="10" rx="5" fill="var(--chip-bg)" stroke="var(--border-strong)" stroke-dasharray="3 3"/>' : '') +
-        '<rect x="' + px(Math.max(floor, 35)) + '" y="36" width="' + (px(70) - px(Math.max(floor, 35))) + '" height="10" rx="5" fill="var(--accent-soft)"/>' +
-        '<rect x="' + px(70) + '" y="34" width="' + (px(moonStart) - px(70)) + '" height="14" rx="7" fill="var(--accent-soft)"/>' +
-        '<rect x="' + px(moonStart) + '" y="32" width="' + (px(100) - px(moonStart)) + '" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>';
+        '<rect x="' + px(g0) + '" y="35" width="' + (px(g1) - px(g0)) + '" height="12" rx="6" fill="var(--accent-soft)"/>' +
+        '<rect x="' + px(Math.max(0, b0)) + '" y="32" width="' + (px(Math.min(100, b1)) - px(Math.max(0, b0))) + '" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>';
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2.2em;">' +
-          '<svg id="hw-rink" width="100%" height="120" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">' +
+          '<svg id="hw-rink" width="100%" height="120" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true" ' +
+            'data-band="' + ctx.state.band.toFixed(1) + '" data-chargems="' + ctx.params.chargeMs + '">' +
             '<rect x="0" y="38" width="400" height="6" rx="3" fill="var(--chip-bg)"/>' +
             bands +
             '<line x1="' + px(100) + '" y1="20" x2="' + px(100) + '" y2="56" stroke="var(--accent-strong)" stroke-width="2.5" stroke-dasharray="3 3"/>' +
@@ -596,7 +582,7 @@
             '</g>' +
           '</svg>' +
           '<div style="width:min(70%,320px); height:12px; border-radius:999px; background:var(--chip-bg); overflow:hidden;"><div id="hw-power-fill" style="height:100%; width:0%; border-radius:999px; background:var(--accent);"></div></div>' +
-          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press — release to launch. far edge pays. past it drowns.</p>' +
+          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press — release to land on the glow. past the edge drowns.</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -626,18 +612,14 @@
         if (!reducedMotion) puck.style.transition = "transform 0.7s cubic-bezier(0.1, 0.6, 0.3, 1)";
         requestAnimationFrame(function () { puck.style.transform = "translate(" + x + "px, 26px)"; });
       }
-      var zones = ctx.state.zones;
       setTimeout(function () {
-        // Exact-landing floor check first — a 38% shot under a 42% floor fails
-        // even though the "SAFE" zone extends past it.
-        if (pct < ctx.state.floor) return ctx.fail("Short of the line. That wasn't even trying.");
-        for (var i = 0; i < zones.length; i++) {
-          if (pct <= zones[i][0]) {
-            if (zones[i][3]) return ctx.win(zones[i][1], zones[i][2]);
-            var why = i === zones.length - 1 ? " Right past the edge." : " That wasn't even trying.";
-            return ctx.fail(zones[i][1] + why);
-          }
-        }
+        if (pct > 100) return ctx.fail("…overboard. Right past the edge.");
+        var d = Math.abs(pct - ctx.state.band);
+        var big = ctx.state.moonshot ? "MOONSHOT!!" : "BULLSEYE!";
+        if (d <= ctx.params.bandHalf) return ctx.win(big, 2);
+        if (d <= ctx.params.bandHalf + 6) return ctx.win("CLOSE.", 1);
+        if (!ctx.params.strict) return ctx.win("…landed. Nothing gained.", 0);
+        return ctx.fail(pct < ctx.state.band ? "Short of the brief." : "Sailed right past it.");
       }, reducedMotion ? 150 : 720);
     },
     onTimeout: function (ctx) { ctx.fail("Never even took the shot."); }
