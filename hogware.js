@@ -304,27 +304,29 @@
   var gameWeird = {
     id: "weird", value: "Do more weird", verb: "WEIRD!", input: "click",
     baseDurationMs: 4200,
-    params: { target: 10, drift: false, decayMs: 0 },
+    params: { target: 6, radius: 26, drift: false, decayMs: 0 },
     levels: [
       {},
-      { target: 12 },
-      { target: 14, drift: true, decayMs: 1100 } // normalcy fights back: idle too long and progress reverts
+      { target: 8, radius: 20, durationMs: 4800 },
+      { target: 9, radius: 16, drift: true, decayMs: 1100, durationMs: 4800 } // normalcy fights back: idle too long and progress reverts
     ],
+    /* Each mutation lives somewhere — a pulsing ring marks the next thing to
+       weirdify, and only clicks near it count. Aim is the skill, not mashing. */
     _mutations: [
-      function () { var e = $("hw-w-bg"); e.setAttribute("fill", "#B043D1"); },                                  // beige wall goes purple
-      function () { var e = $("hw-w-chart"); e.setAttribute("points", "10,58 25,20 40,55 55,8 70,40 85,4"); e.setAttribute("stroke", "var(--accent)"); }, // chart becomes a rollercoaster
-      function () { var e = $("hw-w-tie"); e.classList.add("hw-anim-spin"); },                                    // tie becomes a propeller
-      function () { var e = $("hw-w-caption"); e.textContent = "SYNERWEIRD"; },
-      function () { var e = $("hw-w-head"); e.setAttribute("fill", "var(--accent)"); $("hw-w-spikes").style.opacity = "1"; }, // person hedgehogs
-      function () { var e = $("hw-w-plant"); e.classList.add("hw-anim-grow"); },                                  // plant refuses to stay decorative
-      function () { var e = $("hw-w-eye3"); e.style.opacity = "1"; },                                             // third eye opens
-      function () { var e = $("hw-w-person"); e.classList.add("hw-anim-float"); },                                // levitation unlocked
-      function () { var e = $("hw-w-caption"); e.textContent = "WHY NOT NOW"; e.setAttribute("fill", "var(--accent)"); },
-      function () { var e = $("hw-w-frame"); e.style.transform = "rotate(3deg) scale(1.04)"; },                   // reality tilts
-      function () { var e = $("hw-w-sun"); e.style.opacity = "1"; },                                              // indoor sun
-      function () { var e = $("hw-w-chart"); e.classList.add("hw-anim-spin"); },                                  // the chart has had enough
-      function () { document.querySelectorAll("#hw-w-person circle").forEach(function (c) { var r = parseFloat(c.getAttribute("r")); if (r < 3) c.setAttribute("r", r * 2.2); }); }, // googly eyes
-      function () { var e = $("hw-w-chart"); e.setAttribute("stroke-width", "6"); e.setAttribute("stroke-linecap", "round"); } // the chart thickens
+      { at: [170, 78], fn: function () { var e = $("hw-w-bg"); e.setAttribute("fill", "#B043D1"); } },            // beige wall goes purple
+      { at: [142, 48], fn: function () { var e = $("hw-w-chart"); e.setAttribute("points", "105,58 120,20 135,55 150,8 165,40 180,4"); e.setAttribute("stroke", "var(--accent)"); } }, // chart becomes a rollercoaster
+      { at: [60, 64], fn: function () { var e = $("hw-w-tie"); e.classList.add("hw-anim-spin"); } },              // tie becomes a propeller
+      { at: [100, 101], fn: function () { var e = $("hw-w-caption"); e.textContent = "SYNERWEIRD"; } },
+      { at: [60, 40], fn: function () { var e = $("hw-w-head"); e.setAttribute("fill", "var(--accent)"); $("hw-w-spikes").style.opacity = "1"; } }, // person hedgehogs
+      { at: [25, 88], fn: function () { var e = $("hw-w-plant"); e.classList.add("hw-anim-grow"); } },            // plant refuses to stay decorative
+      { at: [60, 33], fn: function () { var e = $("hw-w-eye3"); e.style.opacity = "1"; } },                       // third eye opens
+      { at: [60, 72], fn: function () { var e = $("hw-w-person"); e.classList.add("hw-anim-float"); } },          // levitation unlocked
+      { at: [100, 101], fn: function () { var e = $("hw-w-caption"); e.textContent = "WHY NOT NOW"; e.setAttribute("fill", "var(--accent)"); } },
+      { at: [16, 12], fn: function () { var e = $("hw-w-frame"); e.style.transform = "rotate(3deg) scale(1.04)"; } }, // reality tilts
+      { at: [170, 20], fn: function () { var e = $("hw-w-sun"); e.style.opacity = "1"; } },                       // indoor sun
+      { at: [142, 48], fn: function () { var e = $("hw-w-chart"); e.classList.add("hw-anim-spin"); } },           // the chart has had enough
+      { at: [58, 40], fn: function () { document.querySelectorAll("#hw-w-person circle").forEach(function (c) { var r = parseFloat(c.getAttribute("r")); if (r < 3) c.setAttribute("r", r * 2.2); }); } }, // googly eyes
+      { at: [142, 48], fn: function () { var e = $("hw-w-chart"); e.setAttribute("stroke-width", "6"); e.setAttribute("stroke-linecap", "round"); } } // the chart thickens
     ],
     setup: function (ctx) {
       ctx.state.count = 0;
@@ -354,20 +356,48 @@
               '<path d="M25 88c-6-8-2-16 0-18 2 2 6 10 0 18z" fill="#48885C"/></g>' +
             '<text id="hw-w-caption" x="100" y="103" text-anchor="middle" font-size="9" font-weight="bold" fill="#718096" letter-spacing="2">SYNERGY</text>' +
           '</svg></div>' +
-          '<p class="hw-hint">click it weirder — <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
+          '<p class="hw-hint">click the glowing bits weirder — <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
         '</div>';
-      $("hw-w-frame").addEventListener("pointerdown", function () {
+      // Pulsing ring marks the next target; move it to the first one.
+      var svg = $("hw-w-frame");
+      var ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      ring.setAttribute("id", "hw-w-ring");
+      ring.setAttribute("r", ctx.params.radius);
+      ring.setAttribute("fill", "none");
+      ring.setAttribute("stroke", "var(--accent)");
+      ring.setAttribute("stroke-width", "2.5");
+      ring.setAttribute("stroke-dasharray", "6 4");
+      ring.classList.add("hw-w-ring-pulse");
+      svg.appendChild(ring);
+      gameWeird._moveRing(ctx);
+
+      svg.addEventListener("pointerdown", function (e) {
         if (ctx.done) return;
-        var fn = ctx.state.order[ctx.state.applied % ctx.state.order.length];
-        try { fn(); } catch (e) {}
+        var m = ctx.state.order[ctx.state.applied % ctx.state.order.length];
+        // Convert the click into viewBox coords and demand real aim.
+        var r = svg.getBoundingClientRect();
+        var cx = (e.clientX - r.left) / r.width * 200;
+        var cy = (e.clientY - r.top) / r.height * 110;
+        var dx = cx - m.at[0], dy = cy - m.at[1];
+        if (Math.sqrt(dx * dx + dy * dy) > ctx.params.radius) {
+          sfx("fail"); // whiff — no progress, keep aiming
+          return;
+        }
+        try { m.fn(); } catch (err) {}
         sfx("tick");
         ctx.state.count++;
         ctx.state.applied++;
         ctx.state.lastClick = ctx.elapsed;
         var label = $("hw-weird-count");
         if (label) label.textContent = ctx.state.count;
-        if (ctx.state.count >= ctx.params.target) ctx.win("Perfectly optimized for our strategy.", 0);
+        if (ctx.state.count >= ctx.params.target) return ctx.win("Perfectly optimized for our strategy.", 0);
+        gameWeird._moveRing(ctx);
       });
+    },
+    _moveRing: function (ctx) {
+      var ring = $("hw-w-ring");
+      var m = ctx.state.order[ctx.state.applied % ctx.state.order.length];
+      if (ring && m) { ring.setAttribute("cx", m.at[0]); ring.setAttribute("cy", m.at[1]); }
     },
     update: function (ctx) {
       // L3: normal creeps back in — idle too long between clicks and progress reverts.
@@ -395,14 +425,16 @@
     baseDurationMs: 4600,
     levels: [
       {},
-      { spawnEveryMs: 380, shipDelayMs: 450 },                                        // the button isn't there yet — find it when it lands
-      { spawnEveryMs: 420, decoy: true, shipDelayMs: 700, decoyLockMs: 600, durationMs: 5200 } // SHIP LATER shows first; falling for it costs time
+      { spawnEveryMs: 380, shipDelayMs: 450, driftSpeed: 46 },                                        // the button isn't there yet — find it when it lands
+      { spawnEveryMs: 420, decoy: true, shipDelayMs: 700, decoyLockMs: 600, durationMs: 5200, driftSpeed: 42 } // SHIP LATER shows first; falling for it costs time
     ],
     params: {
       spawnEveryMs: 520,
       shipDelayMs: 0,
       decoy: false,
       decoyLockMs: 0,
+      driftSpeed: 30, // px/s — meetings creep toward your maker time
+
       popups: [
         ["Quick sync?", "just 30 min"],
         ["Loop in legal", "before we do anything"],
@@ -463,7 +495,7 @@
       });
       $("hw-ship-zone").appendChild(b);
     },
-    update: function (ctx) {
+    update: function (ctx, dt) {
       if (!ctx.state.shipShown && ctx.elapsed >= ctx.params.shipDelayMs) gameShip._showShip(ctx);
       var ship = $("hw-ship-btn");
       if (ship) {
@@ -471,22 +503,37 @@
         ship.style.opacity = locked ? "0.35" : "";
         ship.style.cursor = locked ? "not-allowed" : "";
       }
+      var box = stage.getBoundingClientRect();
+      var cx = box.width * (ctx.state.shipPos.left / 100) + 40, cy = box.height * (ctx.state.shipPos.top / 100) + 20;
+      // Meetings creep toward your maker time: every popup drifts at the ship
+      // button and piles onto it — the click window shrinks in real time.
+      if (!ctx.state.popupEls) ctx.state.popupEls = [];
+      ctx.state.popupEls.forEach(function (pu) {
+        var dx = cx - pu.x - 60, dy = cy - pu.y - 25;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 10) return; // parked on your calendar
+        var step = pu.speed * dt / 1000;
+        pu.x += dx / dist * step;
+        pu.y += dy / dist * step;
+        pu.el.style.left = pu.x + "px";
+        pu.el.style.top = pu.y + "px";
+      });
       if (ctx.elapsed - ctx.state.lastSpawn < ctx.state.nextGap) return;
       ctx.state.lastSpawn = ctx.elapsed;
       ctx.state.nextGap = ctx.params.spawnEveryMs + (run.rng() - 0.5) * 160; // irregular cadence reads more human
-      var box = stage.getBoundingClientRect();
       var p = ctx.state.popupOrder[ctx.state.spawned % ctx.state.popupOrder.length];
       var el = document.createElement("div");
       el.className = "hw-popup";
       el.innerHTML = "<b>" + p[0] + "</b><span>" + p[1] + "</span>";
-      // Aim popups at a daily-seeded jittered ring around the button's REAL spot so they bury it over time.
-      var cx = box.width * (ctx.state.shipPos.left / 100) + 40, cy = box.height * (ctx.state.shipPos.top / 100) + 20;
-      var jx = cx + (run.rng() - 0.5) * box.width * 0.34;
-      var jy = cy + (run.rng() - 0.5) * box.height * 0.34;
-      el.style.left = Math.max(4, Math.min(box.width - 130, jx - 60)) + "px";
-      el.style.top = Math.max(30, Math.min(box.height - 70, jy - 30)) + "px";
+      // Spawn at a random edge (seeded) and slide in — readable approach, shrinking window.
+      var side = Math.floor(run.rng() * 4), along = run.rng();
+      var sx = side === 0 ? along * box.width : (side === 1 ? box.width - 10 : (side === 2 ? along * box.width : -110));
+      var sy = side === 0 ? -50 : (side === 1 ? along * box.height : (side === 2 ? box.height - 20 : along * box.height));
+      el.style.left = sx + "px";
+      el.style.top = sy + "px";
       el.style.transform = "rotate(" + (run.rng() * 10 - 5) + "deg)";
       $("hw-ship-zone").appendChild(el);
+      ctx.state.popupEls.push({ el: el, x: sx, y: sy, speed: ctx.params.driftSpeed * (0.8 + run.rng() * 0.5) });
       ctx.state.spawned++;
     },
     onTimeout: function (ctx) { ctx.fail("Buried in meetings. Classic."); }
@@ -508,8 +555,8 @@
     },
     levels: [
       {},
-      { varyBands: true, failBelow: 35 },
-      { chargeMs: 1050, varyBands: true, failBelow: 55 }
+      { varyBands: true, failBelowMin: 30, failBelowMax: 50 },
+      { chargeMs: 1050, varyBands: true, failBelowMin: 45, failBelowMax: 68 }
     ],
     setup: function (ctx) {
       ctx.state.holding = false;
@@ -519,7 +566,11 @@
       // rises with level — under-charging stops being safe. Thematically exact:
       // "never trying" is the only real failure this value recognizes.
       var moonStart = ctx.params.varyBands ? 88 + run.rng() * 6 : 90;
-      var floor = ctx.params.failBelow || 0;
+      // The fail floor itself varies per play (seeded) — the passing window is a
+      // fresh read off the rink every time, never a memorized number.
+      var floor = ctx.params.failBelowMin != null
+        ? ctx.params.failBelowMin + run.rng() * (ctx.params.failBelowMax - ctx.params.failBelowMin)
+        : 0;
       ctx.state.zones = [
         [35, "TIMID.", 0], [70, "SAFE.", 0], [moonStart, "BOLD!", 1], [100, "MOONSHOT!!", 2]
       ].map(function (z) { return [z[0], z[1], z[2], z[0] > floor]; });
@@ -577,6 +628,9 @@
       }
       var zones = ctx.state.zones;
       setTimeout(function () {
+        // Exact-landing floor check first — a 38% shot under a 42% floor fails
+        // even though the "SAFE" zone extends past it.
+        if (pct < ctx.state.floor) return ctx.fail("Short of the line. That wasn't even trying.");
         for (var i = 0; i < zones.length; i++) {
           if (pct <= zones[i][0]) {
             if (zones[i][3]) return ctx.win(zones[i][1], zones[i][2]);

@@ -303,7 +303,9 @@
           }
           .hw-anim-wander { animation: hw-wander 3.2s ease-in-out infinite; }
           .hw-anim-wander-fast { animation: hw-wander 1.9s ease-in-out infinite; }
-          @media (prefers-reduced-motion: reduce) { .hw-anim-wander, .hw-anim-wander-fast { animation: none; } }
+          @keyframes hw-ring-pulse { 0%, 100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.35; } }
+          .hw-w-ring-pulse { animation: hw-ring-pulse 0.7s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) { .hw-anim-wander, .hw-anim-wander-fast, .hw-w-ring-pulse { animation: none; } }
 
           #hw-quote .hw-quote-text {
             font-family: var(--header-font);
