@@ -64,19 +64,38 @@ function log(name, ok, detail) {
     await maybeSkipQuote();
     const game = await waitForScene();
     if (game === 'boss') {
+      // HEDGEHOG MODE: charge to the exposed target power, then hop rocks by polling position.
+      const info = await page.evaluate(() => {
+        const r = document.getElementById('hw-curl-rink');
+        return {
+          target: parseFloat(r.dataset.targetpower),
+          charge: parseFloat(r.dataset.chargems),
+          rocks: r.dataset.rocks.split(',').map(Number)
+        };
+      });
       if (deliberateFail) {
-        // bosses have no idle timeout worth waiting for — burn 3 syntax errors instead
-        for (let i = 0; i < 3; i++) {
-          await (await page.$('.hw-frag[data-ord="3"]')).dispatchEvent('pointerdown');
-          await page.waitForTimeout(120);
-        }
+        // a feeble 20% launch stops far short of the zone — fast, deterministic fail
+        await page.keyboard.down('Space');
+        await page.waitForTimeout(0.2 * info.charge);
+        await page.keyboard.up('Space');
       } else {
-        for (let ord = 0; ord < 4; ord++) {
-          await (await page.$(`.hw-frag[data-ord="${ord}"]`)).dispatchEvent('pointerdown');
-          await page.waitForTimeout(100);
+        await page.keyboard.down('Space');
+        await page.waitForTimeout(info.target / 100 * info.charge - 40);
+        await page.keyboard.up('Space');
+        // roll phase: hop each rock as it approaches
+        let hopped = 0;
+        for (let t = 0; t < 80 && hopped < info.rocks.length; t++) {
+          const st = await page.evaluate(() => ({
+            x: parseFloat(document.getElementById('hw-curl-rink')?.dataset.hogx || '0'),
+            res: !document.getElementById('hw-result').classList.contains('hw-hidden')
+          }));
+          if (st.res) break;
+          if (st.x > info.rocks[hopped] - 0.075) { // wide lookahead: poll+evaluate overhead eats ~0.03/cycle at speed
+            await page.keyboard.press('Space');
+            hopped++;
+          }
+          await page.waitForTimeout(25);
         }
-        await page.waitForSelector('.hw-chart[data-correct="1"]', { timeout: 4000 });
-        await (await page.$('.hw-chart[data-correct="1"]')).dispatchEvent('pointerdown');
       }
       const r = await waitResult();
       return { game, ...r };
@@ -188,7 +207,7 @@ function log(name, ok, detail) {
   // --- BOSS after the 5th game: RUN THE QUERY, clearing it restores a life ---
   const boss = await playOne(false);
   log('boss appears after loop 1', boss.game === 'boss', boss.game);
-  log('boss cleared (assemble + pick DESC chart)', boss.passed, boss.flavor);
+  log('boss cleared (charge, roll, hop the rocks)', boss.passed, boss.flavor);
   const livesAfterBoss = await page.evaluate(() =>
     3 - document.querySelectorAll('#hw-hud-lives .hw-life-lost').length);
   log('boss restored the lost life', livesAfterBoss === 3, 'lives=' + livesAfterBoss);

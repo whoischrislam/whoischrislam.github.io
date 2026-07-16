@@ -59,6 +59,14 @@ After v1 shipped, two things happened before any polish: real research into how 
 
 Also for the record, the panel got things wrong: it assumed the game was keyboard-only (touch worked from day one) and unsanitized (initials were already clamped to A-Z0-9). Spec-only reviews infer; the code is the ground truth. Both kinds of findings are part of an honest review story.
 
+## The boss that got cut
+
+Bosses arrived (longer stage after every loop, no timer, clearing one restores a life — the WarioWare structure that lets good runs go deep). The first one I built was RUN THE QUERY: assemble the leaderboard's actual HogQL query from fragments, then pick which chart `ORDER BY score DESC` returns. Maximum product-literacy signal. I playtested it once and cut it the same day.
+
+It wasn't fun. Every engineer already knows SELECT comes before FROM, so phase one was data entry; phase two was one obvious click. After five four-second adrenaline hits, an untimed quiz is a pacing crater. I'd optimized for signal and forgotten to build a game — the cleverness ("the boss is literally the scoreboard's source code!") was a narrative joke, not a mechanic. Narrative jokes belong in this document. Mechanics belong in the game.
+
+The boss that shipped instead is HEDGEHOG MODE — the original curling concept from this project's first hour, finally home: charge the launch, then hop rocks while rolling, land in the glow. Power is the bet, hops are the skill, and building it surfaced a real game-feel lesson: hop presses that land mid-air now buffer and fire on landing, because punishing a player for pressing 80ms early is how games feel broken without anyone knowing why.
+
 ## Status
 
 Building in the open in `whoischrislam.github.io` as `hogware.html` / `hogware.js`. Iteration 2 (lives, daily seed, the two mechanic swaps, copyable results) is in. Next gate is playtesting with real humans — mechanics don't get polish until strangers confirm they're fun. After that: the leaderboard Worker (with score validation designed in from the start), a feature flag experiment that actually decides something (3 vs 4 lives against completion rate), audio, and my own hedgehog. The page stays unlisted until it earns the link.

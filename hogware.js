@@ -813,7 +813,127 @@
     },
     onTimeout: function (ctx) { ctx.fail("The query is still running somewhere."); }
   };
-  var BOSSES = [gameBossQuery]; // grows into a pool; daily seed picks the day's boss
+  /* ============================================================
+     BOSS: HEDGEHOG MODE — the original Hedgehog Curl, resurrected.
+     Phase 1: hold to charge, release to launch the curled hog down
+     a long rink. Phase 2: while rolling, hop the rocks (tap/space).
+     Land in the glow = +1 life. Stop short, eat a rock, or fly off
+     the end = a life gone. Power is the bet; hops are the skill.
+     ============================================================ */
+  var gameBossHedgehog = {
+    id: "boss-curl", value: "BOSS", verb: "HEDGEHOG MODE!", input: "space", boss: true,
+    baseDurationMs: 30000, // invisible safety net, not a visible timer
+    params: { chargeMs: 1600, hopMs: 420, zone: [0.72, 0.98] },
+    setup: function (ctx) {
+      ctx.state.phase = "charge";
+      ctx.state.holding = false;
+      ctx.state.power = 0;
+      ctx.state.x = 0;          // 0..1+ rink progress
+      ctx.state.v = 0;
+      ctx.state.airUntil = 0;
+      // Rocks at seeded spots; the hog must hop each one it reaches.
+      ctx.state.rocks = [0.3, 0.5, 0.66].map(function (f) {
+        return Math.min(0.68, Math.max(0.22, f + (run.rng() - 0.5) * 0.1)); // clamped below the zone — never land ON a rock
+      });
+      var z = ctx.params.zone;
+      // power needed to coast to mid-zone: p = 100·√(2·friction·D)/k  (friction 0.22, k 0.814)
+      var targetPower = 100 * Math.sqrt(0.44 * (z[0] + z[1]) / 2) / 0.814;
+      var px = function (f) { return 8 + f * 372; };
+      var rocksSvg = ctx.state.rocks.map(function (f) {
+        return '<polygon points="' + (px(f) - 7) + ',64 ' + px(f) + ',52 ' + (px(f) + 7) + ',64" fill="var(--chip-text)"/>';
+      }).join("");
+      scene.innerHTML =
+        '<div id="hw-boss-scene" class="hw-screen" style="justify-content:flex-end; padding-bottom:2em;">' +
+          '<svg id="hw-curl-rink" width="100%" height="150" viewBox="0 0 400 78" preserveAspectRatio="none" aria-hidden="true" ' +
+            'data-chargems="' + ctx.params.chargeMs + '" data-targetpower="' + targetPower.toFixed(1) + '" data-rocks="' + ctx.state.rocks.join(",") + '">' +
+            '<rect x="0" y="62" width="400" height="8" rx="4" fill="var(--chip-bg)"/>' +
+            '<rect x="' + px(z[0]) + '" y="58" width="' + (px(z[1]) - px(z[0])) + '" height="16" rx="7" fill="var(--accent)" opacity="0.45"/>' +
+            '<line x1="' + px(1) + '" y1="40" x2="' + px(1) + '" y2="76" stroke="var(--accent-strong)" stroke-width="2.5" stroke-dasharray="3 3"/>' +
+            rocksSvg +
+            '<g id="hw-curl-hog" style="transform: translate(8px, 50px);">' +
+              '<circle cx="0" cy="0" r="11" fill="var(--accent)"/>' +
+              '<path d="M-8 -7l-4 -6 7 1zM0 -10l1 -8 4 6zM8 -6l7 -3-3 7z" fill="var(--accent)"/>' +
+              '<circle cx="-4" cy="-2" r="1.6" fill="var(--bg)"/><circle cx="3" cy="-2" r="1.6" fill="var(--bg)"/>' +
+            '</g>' +
+          '</svg>' +
+          '<div style="width:min(70%,320px); height:12px; border-radius:999px; background:var(--chip-bg); overflow:hidden;"><div id="hw-curl-power" style="height:100%; width:0%; border-radius:999px; background:var(--accent);"></div></div>' +
+          '<p class="hw-hint" id="hw-curl-hint">hold <span class="hw-kbd">space</span> to charge, release to roll — then hop the rocks</p>' +
+        '</div>';
+    },
+    update: function (ctx, dt) {
+      var s = ctx.state;
+      if (s.phase === "charge" && s.holding) {
+        s.power = Math.min(110, s.power + (dt / ctx.params.chargeMs) * 100);
+        var fill = $("hw-curl-power");
+        if (fill) {
+          fill.style.width = Math.min(100, s.power) + "%";
+          if (s.power > 90) fill.style.background = "var(--accent-strong)";
+        }
+        if (s.power >= 110) gameBossHedgehog._launch(ctx); // greed launches itself
+      }
+      if (s.phase === "roll") {
+        s.x += s.v * dt / 1000;
+        s.v = Math.max(0, s.v - 0.22 * dt / 1000); // friction
+        var airborne = ctx.elapsed < s.airUntil;
+        // Input buffering: a hop pressed mid-air fires the moment we land —
+        // standard platformer forgiveness, and mashy players earn it constantly.
+        if (!airborne && s.wasAirborne && s.hopQueued) {
+          s.hopQueued = false;
+          s.airUntil = ctx.elapsed + ctx.params.hopMs;
+          airborne = true;
+          sfx("tick");
+        }
+        s.wasAirborne = airborne;
+        var hog = $("hw-curl-hog");
+        if (hog) {
+          var y = airborne ? 50 - 16 * Math.sin(Math.PI * (1 - (s.airUntil - ctx.elapsed) / ctx.params.hopMs)) : 50;
+          hog.style.transform = "translate(" + (8 + Math.min(1.04, s.x) * 372) + "px, " + y + "px) rotate(" + (s.x * 900) + "deg)";
+        }
+        var rink = $("hw-curl-rink");
+        if (rink) rink.dataset.hogx = s.x.toFixed(3); // live position for the headless player
+        // rock collisions — only on the ground
+        if (!airborne) {
+          for (var i = 0; i < s.rocks.length; i++) {
+            if (Math.abs(s.x - s.rocks[i]) < 0.024) return ctx.fail("Rolled straight into a rock. Curl harder.");
+          }
+        }
+        if (s.x > 1.02) return ctx.fail("…right off the end of the rink.");
+        if (s.v <= 0) {
+          var z = ctx.params.zone;
+          if (s.x >= z[0] && s.x <= z[1]) return ctx.win("Stuck the landing. +1 life.", 1);
+          return ctx.fail(s.x < z[0] ? "Stopped short of the glow." : "A hair too far.");
+        }
+      }
+    },
+    onPress: function (ctx) {
+      var s = ctx.state;
+      if (s.phase === "charge") { s.holding = true; return; }
+      if (s.phase === "roll") {
+        if (ctx.elapsed >= s.airUntil) {
+          s.airUntil = ctx.elapsed + ctx.params.hopMs; // hop!
+          sfx("tick");
+        } else {
+          s.hopQueued = true; // mid-air press: buffered for landing
+        }
+      }
+    },
+    onRelease: function (ctx) {
+      if (ctx.state.phase === "charge" && ctx.state.holding) gameBossHedgehog._launch(ctx);
+    },
+    _launch: function (ctx) {
+      var s = ctx.state;
+      s.phase = "roll";
+      s.holding = false;
+      // power → initial speed; with friction 0.22 this puts ~69-81% power in the zone
+      s.v = (s.power / 100) * 0.814;
+      var hint = $("hw-curl-hint");
+      if (hint) hint.innerHTML = 'hop the rocks — <span class="hw-kbd">space</span> / tap';
+      sfx("verb");
+    },
+    onTimeout: function (ctx) { ctx.fail("Never left the starting line."); }
+  };
+
+  var BOSSES = [gameBossHedgehog]; // daily rotation pool. RUN THE QUERY (gameBossQuery) shelved after playtest: quiz, not game — kept for a possible real-time rework.
 
   var GAMES = [gameDrive, gamePublish, gameWeird, gameShip, gameAim];
 
