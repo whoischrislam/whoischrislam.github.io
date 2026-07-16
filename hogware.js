@@ -889,7 +889,7 @@
     if (pass) {
       run.cleared++;
       run.score += 1 + bonus;
-      run.trail.push("🟩");
+      run.trail.push(bonus > 0 ? "🟨" : "🟩"); // gold = cleared with style; left unexplained on purpose
       sfx("pass");
       capture("hogware_microgame_cleared", { game: game.id, value: game.value, loop: run.loop, bonus: bonus });
     } else {
@@ -959,9 +959,14 @@
   }
 
   /* ---- Game over + leaderboard ---- */
+  function trailGrid() {
+    // Wordle's trick: rows = loops, so survival depth reads at a glance in Slack.
+    var rows = [];
+    for (var i = 0; i < run.trail.length; i += 5) rows.push(run.trail.slice(i, i + 5).join(""));
+    return "🦔 HogWare #" + DAY_NUM + " · " + run.score + "\n" + rows.join("\n");
+  }
   function resultString() {
-    return "HogWare #" + DAY_NUM + " " + run.trail.join("") + " · " + run.score +
-      "\nhttps://whoischrislam.github.io/hogware.html";
+    return trailGrid() + "\nhttps://whoischrislam.github.io/hogware.html";
   }
   function gameOver() {
     hide(hud);
@@ -975,7 +980,7 @@
     $("hw-final-score").textContent = run.score;
     $("hw-final-stats").textContent =
       run.cleared + " cleared · loop " + run.loop + (isBest ? " · new personal best" : best ? " · best " + best : "");
-    $("hw-trail").textContent = "HogWare #" + DAY_NUM + "  " + run.trail.join("");
+    $("hw-trail").textContent = trailGrid();
 
     var copyBtn = $("hw-copy");
     copyBtn.textContent = "COPY RESULT";
