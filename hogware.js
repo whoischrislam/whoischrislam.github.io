@@ -738,7 +738,7 @@
     var rng = mulberry32(DAY_NUM * 2654435761); // daily seed: same gauntlet for everyone today
     return {
       score: 0, cleared: 0, loop: 1, speed: startSpeed, lives: LIVES,
-      trail: [], rng: rng, order: shuffle(GAMES.slice(), rng), idx: 0, phase: "verb"
+      trail: [], history: [0], rng: rng, order: shuffle(GAMES.slice(), rng), idx: 0, phase: "verb"
     };
   }
   function shuffle(a, rng) {
@@ -783,10 +783,41 @@
       timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
       $("hw-verb-word").textContent = game.verb;
       $("hw-verb-value").textContent = game.value;
+      renderVerbStatus();
     }, function () {
       sfx("verb");
       setTimeout(function () { playGame(game); }, VERB_MS);
     });
+  }
+
+  /* The verb card doubles as the WarioWare "home scene": big Max lives bouncing
+     on the beat, a stat tile, and the run's score drawn as a tiny insights-style
+     sparkline — status as furniture, not chrome. */
+  function renderVerbStatus() {
+    stage.style.setProperty("--beat", conductor.beatMs() + "ms");
+    var livesEl = $("hw-verb-lives");
+    livesEl.innerHTML = "";
+    for (var i = 0; i < run.lives; i++) {
+      var img = document.createElement("img");
+      img.className = "hw-life-big";
+      img.src = "images/hogware/max-life.png";
+      img.alt = "";
+      livesEl.appendChild(img);
+    }
+    $("hw-verb-tile").textContent =
+      "LOOP " + run.loop + " · Lv" + Math.min(run.loop, 3) + " · " + (1 / run.speed).toFixed(1) + "×";
+    // Sparkline: score after each game, scaled into an 86×30 box.
+    var h = run.history, maxY = Math.max(4, h[h.length - 1]);
+    var pts = h.map(function (s, i) {
+      var x = 4 + (h.length === 1 ? 0 : (i / (h.length - 1)) * 74);
+      var y = 26 - (s / maxY) * 20;
+      return x.toFixed(1) + "," + y.toFixed(1);
+    });
+    $("hw-spark-line").setAttribute("points", pts.join(" "));
+    var lastPt = pts[pts.length - 1].split(",");
+    var dot = $("hw-spark-dot");
+    dot.setAttribute("cx", lastPt[0]);
+    dot.setAttribute("cy", lastPt[1]);
   }
 
   function playGame(game) {
@@ -867,6 +898,7 @@
       sfx("fail");
       shake();
     }
+    run.history.push(run.score); // feeds the verb-card sparkline
     updateHud();
 
     hideAllScreens();
