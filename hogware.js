@@ -524,15 +524,17 @@
     baseDurationMs: 4600,
     levels: [
       {},
-      { spawnEveryMs: 300, shipDelayMs: 750, driftSpeed: 95 },                                         // the button isn't there yet — find it under the pile
-      { spawnEveryMs: 330, decoy: true, shipDelayMs: 1100, decoyLockMs: 600, durationMs: 5400, driftSpeed: 88 } // SHIP LATER sits alone longer; falling for it costs time
+      { spawnEveryMs: 240, shipDelayMs: 750, driftSpeed: 170, burst: 5 },                                          // the button isn't there yet — find it under the pile
+      { spawnEveryMs: 260, decoy: true, shipDelayMs: 1100, decoyLockMs: 600, durationMs: 5400, driftSpeed: 160, burst: 6 } // SHIP LATER sits alone longer; falling for it costs time
     ],
     params: {
-      spawnEveryMs: 420,
+      spawnEveryMs: 340,
       shipDelayMs: 0,
       decoy: false,
       decoyLockMs: 0,
-      driftSpeed: 62, // px/s — the distractions actively hunt your maker time
+      driftSpeed: 115,  // px/s — hunters dive at your button; wanderers careen everywhere
+      wanderFrac: 0.45, // slice of the swarm that roams the frame instead of hunting
+      burst: 4,         // popups already in the frame at t=0 — no clean opening beat
 
       popups: [
         ["Quick sync?", "just 30 min"],
@@ -605,6 +607,26 @@
       });
       $("hw-ship-zone").appendChild(b);
     },
+    _spawn: function (ctx, box) {
+      var p = ctx.state.popupOrder[ctx.state.spawned % ctx.state.popupOrder.length];
+      var el = document.createElement("div");
+      el.className = "hw-popup";
+      el.innerHTML = "<b>" + p[0] + "</b><span>" + p[1] + "</span>";
+      // Spawn ANYWHERE in the frame (seeded) — there is no clean corner to rest your eyes.
+      var sx = run.rng() * (box.width - 130), sy = 30 + run.rng() * (box.height - 100);
+      el.style.left = sx + "px";
+      el.style.top = sy + "px";
+      el.style.transform = "rotate(" + (run.rng() * 10 - 5) + "deg)";
+      $("hw-ship-zone").appendChild(el);
+      var wander = run.rng() < ctx.params.wanderFrac;
+      var ang = run.rng() * Math.PI * 2;
+      ctx.state.popupEls.push({
+        el: el, x: sx, y: sy, kind: wander ? "wander" : "hunt",
+        vx: Math.cos(ang), vy: Math.sin(ang),
+        speed: ctx.params.driftSpeed * (0.75 + run.rng() * 0.55)
+      });
+      ctx.state.spawned++;
+    },
     update: function (ctx, dt) {
       if (!ctx.state.shipShown && ctx.elapsed >= ctx.params.shipDelayMs) gameShip._showShip(ctx);
       var ship = $("hw-ship-btn");
@@ -615,36 +637,35 @@
       }
       var box = stage.getBoundingClientRect();
       var cx = box.width * (ctx.state.shipPos.left / 100) + 40, cy = box.height * (ctx.state.shipPos.top / 100) + 20;
-      // Meetings creep toward your maker time: every popup drifts at the ship
-      // button and piles onto it — the click window shrinks in real time.
       if (!ctx.state.popupEls) ctx.state.popupEls = [];
+      // No clean opening beat: part of the pile is already here at t=0.
+      if (!ctx.state.burstDone) {
+        ctx.state.burstDone = true;
+        for (var b = 0; b < (ctx.params.burst || 0); b++) gameShip._spawn(ctx, box);
+      }
       ctx.state.popupEls.forEach(function (pu) {
-        var dx = cx - pu.x - 60, dy = cy - pu.y - 25;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 10) return; // parked on your calendar
         var step = pu.speed * dt / 1000;
-        pu.x += dx / dist * step;
-        pu.y += dy / dist * step;
+        if (pu.kind === "hunt") {
+          // Hunters dive at the button and pile on.
+          var dx = cx - pu.x - 60, dy = cy - pu.y - 25;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 10) return; // parked on your calendar
+          pu.x += dx / dist * step;
+          pu.y += dy / dist * step;
+        } else {
+          // Wanderers careen across the frame and bounce — ambient chaos.
+          pu.x += pu.vx * step;
+          pu.y += pu.vy * step;
+          if (pu.x < -20 || pu.x > box.width - 90) pu.vx *= -1;
+          if (pu.y < 20 || pu.y > box.height - 60) pu.vy *= -1;
+        }
         pu.el.style.left = pu.x + "px";
         pu.el.style.top = pu.y + "px";
       });
       if (ctx.elapsed - ctx.state.lastSpawn < ctx.state.nextGap) return;
       ctx.state.lastSpawn = ctx.elapsed;
-      ctx.state.nextGap = ctx.params.spawnEveryMs + (run.rng() - 0.5) * 160; // irregular cadence reads more human
-      var p = ctx.state.popupOrder[ctx.state.spawned % ctx.state.popupOrder.length];
-      var el = document.createElement("div");
-      el.className = "hw-popup";
-      el.innerHTML = "<b>" + p[0] + "</b><span>" + p[1] + "</span>";
-      // Spawn at a random edge (seeded) and slide in — readable approach, shrinking window.
-      var side = Math.floor(run.rng() * 4), along = run.rng();
-      var sx = side === 0 ? along * box.width : (side === 1 ? box.width - 10 : (side === 2 ? along * box.width : -110));
-      var sy = side === 0 ? -50 : (side === 1 ? along * box.height : (side === 2 ? box.height - 20 : along * box.height));
-      el.style.left = sx + "px";
-      el.style.top = sy + "px";
-      el.style.transform = "rotate(" + (run.rng() * 10 - 5) + "deg)";
-      $("hw-ship-zone").appendChild(el);
-      ctx.state.popupEls.push({ el: el, x: sx, y: sy, speed: ctx.params.driftSpeed * (0.8 + run.rng() * 0.5) });
-      ctx.state.spawned++;
+      ctx.state.nextGap = ctx.params.spawnEveryMs + (run.rng() - 0.5) * 120; // irregular cadence reads more human
+      gameShip._spawn(ctx, box);
     },
     onTimeout: function (ctx) { ctx.fail("Buried in meetings. Classic."); }
   };
