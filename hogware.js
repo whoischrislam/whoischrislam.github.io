@@ -724,6 +724,97 @@
     onTimeout: function (ctx) { ctx.fail("Never even took the shot."); }
   };
 
+  /* ============================================================
+     BOSS: RUN THE QUERY — longer, two phases, no visible timer.
+     Appears after every full loop; clearing it restores one lost
+     life (max LIVES) and gates the LEVEL UP!, WarioWare-style.
+     Phase 1: assemble a HogQL query by clicking fragments in order
+     (3 syntax errors = the query never ships). Phase 2: it "runs" —
+     pick which of three charts ORDER BY score DESC actually returns.
+     ============================================================ */
+  var gameBossQuery = {
+    id: "boss-query", value: "BOSS", verb: "RUN THE QUERY!", input: "click", boss: true,
+    baseDurationMs: 30000, // invisible safety net so an abandoned run still ends; not a displayed timer
+    params: { maxErrors: 3 },
+    _frags: [
+      { ord: 0, text: "SELECT handle, max(score)" },
+      { ord: 1, text: "FROM events" },
+      { ord: 2, text: "WHERE event = 'hogware_score_submitted'" },
+      { ord: 3, text: "ORDER BY score DESC" }
+    ],
+    setup: function (ctx) {
+      ctx.state.step = 0;
+      ctx.state.errors = 0;
+      var frags = shuffle(gameBossQuery._frags.slice(), run.rng);
+      var chips = frags.map(function (f) {
+        return '<button class="hw-frag" data-ord="' + f.ord + '">' + f.text + '</button>';
+      }).join("");
+      scene.innerHTML =
+        '<div id="hw-boss-scene" class="hw-screen" style="gap:0.9em;">' +
+          '<pre id="hw-terminal">hogql&gt; <span class="hw-caret">▋</span></pre>' +
+          '<div class="hw-frag-tray">' + chips + '</div>' +
+          '<p class="hw-hint">assemble the leaderboard query — this is literally how the scoreboard works · ' +
+            '<span id="hw-boss-errors">' + ctx.params.maxErrors + '</span> errors left</p>' +
+        '</div>';
+      scene.querySelectorAll(".hw-frag").forEach(function (chip) {
+        chip.addEventListener("pointerdown", function () {
+          if (ctx.done || !ctx.live || chip.disabled) return;
+          if (parseInt(chip.dataset.ord, 10) === ctx.state.step) {
+            chip.disabled = true;
+            chip.classList.add("hw-frag-used");
+            ctx.state.step++;
+            sfx("tick");
+            var term = $("hw-terminal");
+            term.innerHTML = "hogql&gt; " + gameBossQuery._frags.slice(0, ctx.state.step).map(function (f) { return f.text; }).join("<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ") +
+              (ctx.state.step < 4 ? ' <span class="hw-caret">▋</span>' : "");
+            if (ctx.state.step === 4) setTimeout(function () { gameBossQuery._phase2(ctx); }, 500);
+          } else {
+            ctx.state.errors++;
+            sfx("whiff");
+            chip.classList.add("hw-frag-err");
+            setTimeout(function () { chip.classList.remove("hw-frag-err"); }, 300);
+            var left = ctx.params.maxErrors - ctx.state.errors;
+            var el = $("hw-boss-errors");
+            if (el) el.textContent = left;
+            if (ctx.state.errors >= ctx.params.maxErrors) ctx.fail("Syntax errors. The intern has questions.");
+          }
+        });
+      });
+    },
+    _phase2: function (ctx) {
+      if (ctx.done) return;
+      sfx("verb");
+      // Three candidate results; only descending bars match ORDER BY score DESC.
+      var bars = function (heights, correct) {
+        var rects = heights.map(function (h, i) {
+          return '<rect x="' + (6 + i * 13) + '" y="' + (40 - h) + '" width="9" height="' + h + '" rx="2" fill="var(--accent)" opacity="0.8"/>';
+        }).join("");
+        return '<button class="hw-chart" data-correct="' + (correct ? 1 : 0) + '">' +
+          '<svg width="76" height="46" viewBox="0 0 76 46">' + rects + '<line x1="4" y1="41" x2="72" y2="41" stroke="var(--border-strong)"/></svg></button>';
+      };
+      var charts = shuffle([
+        bars([32, 25, 18, 12, 7], true),   // DESC — the right answer
+        bars([7, 12, 18, 25, 32], false),  // ASC — reading it backwards
+        bars([18, 30, 9, 24, 14], false)   // chaos — no ORDER BY at all
+      ], run.rng).join("");
+      scene.innerHTML =
+        '<div id="hw-boss-scene" class="hw-screen" style="gap:1em;">' +
+          '<pre id="hw-terminal">hogql&gt; running… returned 3 candidates</pre>' +
+          '<div class="hw-chart-tray">' + charts + '</div>' +
+          '<p class="hw-hint">which one is ORDER BY score DESC?</p>' +
+        '</div>';
+      scene.querySelectorAll(".hw-chart").forEach(function (btn) {
+        btn.addEventListener("pointerdown", function () {
+          if (ctx.done) return;
+          if (btn.dataset.correct === "1") ctx.win("The query returned. +1 life.", 1);
+          else ctx.fail("That's… not what DESC means.");
+        });
+      });
+    },
+    onTimeout: function (ctx) { ctx.fail("The query is still running somewhere."); }
+  };
+  var BOSSES = [gameBossQuery]; // grows into a pool; daily seed picks the day's boss
+
   var GAMES = [gameDrive, gamePublish, gameWeird, gameShip, gameAim];
 
   /* ============================================================
@@ -777,7 +868,10 @@
   }
 
   function nextGame() {
-    var game = run.order[run.idx];
+    // The slot after the last regular game is the boss — daily seed picks which one (pool of 1, for now).
+    var game = run.idx >= run.order.length ? BOSSES[DAY_NUM % BOSSES.length] : run.order[run.idx];
+    screens.verb.classList.toggle("hw-verb-boss", !!game.boss);
+    hud.classList.toggle("hw-hud-boss", !!game.boss);
     swapScreens(screens.verb, function () {
       updateHud(); // loop counter can change between games
       timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
@@ -889,7 +983,8 @@
     if (pass) {
       run.cleared++;
       run.score += 1 + bonus;
-      run.trail.push(bonus > 0 ? "🟨" : "🟩"); // gold = cleared with style; left unexplained on purpose
+      if (game.boss) run.lives = Math.min(LIVES, run.lives + 1); // the boss gives a life back — that's what lets good runs go deep
+      run.trail.push(game.boss ? "🟪" : (bonus > 0 ? "🟨" : "🟩")); // purple = boss; gold = style bonus; both unexplained on purpose
       sfx("pass");
       capture("hogware_microgame_cleared", { game: game.id, value: game.value, loop: run.loop, bonus: bonus });
     } else {
@@ -912,7 +1007,8 @@
     setTimeout(function () {
       if (!pass && run.lives <= 0) return gameOver();
       run.idx++;
-      if (run.idx >= run.order.length) {
+      if (run.idx > run.order.length) {
+        // Boss is done (win or survive-the-fail): the loop closes and the level-up unlocks.
         run.idx = 0;
         run.loop++;
         // Pure axes, like real WarioWare: LEVEL UP changes only the game configs
@@ -926,7 +1022,7 @@
         }
         run.order = shuffle(run.order, run.rng);
       } else {
-        nextGame();
+        nextGame(); // idx === order.length lands on the boss slot
       }
     }, RESULT_MS);
   }
@@ -960,9 +1056,9 @@
 
   /* ---- Game over + leaderboard ---- */
   function trailGrid() {
-    // Wordle's trick: rows = loops, so survival depth reads at a glance in Slack.
+    // Wordle's trick: rows = loops (5 games + the boss), so survival depth reads at a glance in Slack.
     var rows = [];
-    for (var i = 0; i < run.trail.length; i += 5) rows.push(run.trail.slice(i, i + 5).join(""));
+    for (var i = 0; i < run.trail.length; i += 6) rows.push(run.trail.slice(i, i + 6).join(""));
     return "🦔 HogWare #" + DAY_NUM + " · " + run.score + "\n" + rows.join("\n");
   }
   function resultString() {

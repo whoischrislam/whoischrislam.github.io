@@ -29,6 +29,7 @@ function log(name, ok, detail) {
   async function currentGame() {
     return page.evaluate(() => {
       const s = document.getElementById('hw-scene');
+      if (s.querySelector('#hw-boss-scene')) return 'boss';
       if (s.querySelector('#hw-car')) return 'drive';
       if (s.querySelector('.hw-toggles')) return 'publish';
       if (s.querySelector('#hw-w-frame')) return 'weird';
@@ -62,6 +63,24 @@ function log(name, ok, detail) {
   async function playOne(deliberateFail) {
     await maybeSkipQuote();
     const game = await waitForScene();
+    if (game === 'boss') {
+      if (deliberateFail) {
+        // bosses have no idle timeout worth waiting for — burn 3 syntax errors instead
+        for (let i = 0; i < 3; i++) {
+          await (await page.$('.hw-frag[data-ord="3"]')).dispatchEvent('pointerdown');
+          await page.waitForTimeout(120);
+        }
+      } else {
+        for (let ord = 0; ord < 4; ord++) {
+          await (await page.$(`.hw-frag[data-ord="${ord}"]`)).dispatchEvent('pointerdown');
+          await page.waitForTimeout(100);
+        }
+        await page.waitForSelector('.hw-chart[data-correct="1"]', { timeout: 4000 });
+        await (await page.$('.hw-chart[data-correct="1"]')).dispatchEvent('pointerdown');
+      }
+      const r = await waitResult();
+      return { game, ...r };
+    }
     if (deliberateFail) {
       // do nothing; wait for timeout fail
       const r = await waitResult();
@@ -165,6 +184,14 @@ function log(name, ok, detail) {
     log('cleared ' + r.game, r.passed, r.flavor);
   }
   log('all 5 distinct games seen despite the fail', played.size === 5, [...played].join(','));
+
+  // --- BOSS after the 5th game: RUN THE QUERY, clearing it restores a life ---
+  const boss = await playOne(false);
+  log('boss appears after loop 1', boss.game === 'boss', boss.game);
+  log('boss cleared (assemble + pick DESC chart)', boss.passed, boss.flavor);
+  const livesAfterBoss = await page.evaluate(() =>
+    3 - document.querySelectorAll('#hw-hud-lives .hw-life-lost').length);
+  log('boss restored the lost life', livesAfterBoss === 3, 'lives=' + livesAfterBoss);
 
   // --- loop 1 done: LEVEL UP! announcement, then loop 2 runs at L2 ---
   const announceWord = await page.waitForFunction(

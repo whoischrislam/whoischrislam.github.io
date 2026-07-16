@@ -177,6 +177,54 @@
           }
           .hw-btn--ghost:hover { background: var(--chip-bg); color: var(--text); }
 
+          /* ---- Boss: RUN THE QUERY ---- */
+          .hw-verb-boss { background: radial-gradient(ellipse 120% 90% at 50% 110%, rgba(176, 67, 209, 0.18), transparent 60%), var(--bg-alt); }
+          .hw-verb-boss .hw-verb-word { color: #B043D1; }
+          .hw-hud-boss #hw-timer-track { opacity: 0; } /* bosses have no visible clock */
+          #hw-terminal {
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 0.82em;
+            text-align: left;
+            color: var(--text);
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            border-radius: 0.5em;
+            padding: 0.8em 1em;
+            margin: 0;
+            width: min(88%, 460px);
+            min-height: 3.2em;
+            white-space: pre-wrap;
+          }
+          .hw-caret { animation: hw-caret-blink 0.9s step-end infinite; color: var(--accent); }
+          @keyframes hw-caret-blink { 50% { opacity: 0; } }
+          .hw-frag-tray { display: flex; flex-wrap: wrap; gap: 0.5em; justify-content: center; max-width: 88%; }
+          .hw-frag {
+            width: auto;
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 0.78em;
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border-strong);
+            border-radius: 0.45em;
+            padding: 0.5em 0.9em;
+            cursor: pointer;
+            transition: transform 0.15s ease, opacity 0.2s ease, border-color 0.15s ease;
+          }
+          .hw-frag:hover { border-color: var(--accent); }
+          .hw-frag-used { opacity: 0.3; cursor: default; }
+          .hw-frag-err { transform: translateX(4px); border-color: #E5484D !important; }
+          .hw-chart-tray { display: flex; gap: 0.8em; justify-content: center; }
+          .hw-chart {
+            width: auto;
+            background: var(--surface);
+            border: 1px solid var(--border-strong);
+            border-radius: 0.5em;
+            padding: 0.5em;
+            cursor: pointer;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+          }
+          .hw-chart:hover { border-color: var(--accent); transform: translateY(-2px); }
+
           /* ---- Mute toggle ---- */
           .hw-mute {
             width: auto;
