@@ -102,7 +102,7 @@
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       var o = audioCtx.createOscillator(), g = audioCtx.createGain();
-      var f = { pass: 660, fail: 140, tick: 880, verb: 440, over: 220, level: 990 }[kind] || 440;
+      var f = { pass: 660, fail: 140, tick: 880, verb: 440, over: 220, level: 990, whiff: 260 }[kind] || 440;
       o.frequency.value = f;
       o.type = kind === "fail" ? "sawtooth" : "sine";
       g.gain.setValueAtTime(0.06, audioCtx.currentTime);
@@ -304,11 +304,11 @@
   var gameWeird = {
     id: "weird", value: "Do more weird", verb: "WEIRD!", input: "click",
     baseDurationMs: 4200,
-    params: { target: 6, radius: 26, drift: false, decayMs: 0 },
+    params: { target: 5, radius: 34, drift: false, decayMs: 0 },
     levels: [
       {},
-      { target: 8, radius: 20, durationMs: 4800 },
-      { target: 9, radius: 16, drift: true, decayMs: 1100, durationMs: 4800 } // normalcy fights back: idle too long and progress reverts
+      { target: 6, radius: 27, durationMs: 4800 },
+      { target: 7, radius: 22, drift: true, decayMs: 1500, durationMs: 4800 } // normalcy fights back: idle too long and progress reverts
     ],
     /* Each mutation lives somewhere — a pulsing ring marks the next thing to
        weirdify, and only clicks near it count. Aim is the skill, not mashing. */
@@ -363,7 +363,7 @@
       var ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       ring.setAttribute("id", "hw-w-ring");
       ring.setAttribute("r", ctx.params.radius);
-      ring.setAttribute("fill", "none");
+      ring.setAttribute("fill", "var(--accent-soft)"); // the whole clickable area reads as target, not just the outline
       ring.setAttribute("stroke", "var(--accent)");
       ring.setAttribute("stroke-width", "2.5");
       ring.setAttribute("stroke-dasharray", "6 4");
@@ -380,7 +380,7 @@
         var cy = (e.clientY - r.top) / r.height * 110;
         var dx = cx - m.at[0], dy = cy - m.at[1];
         if (Math.sqrt(dx * dx + dy * dy) > ctx.params.radius) {
-          sfx("fail"); // whiff — no progress, keep aiming
+          sfx("whiff"); // soft dud — a miss costs time, it shouldn't also scold
           return;
         }
         try { m.fn(); } catch (err) {}
