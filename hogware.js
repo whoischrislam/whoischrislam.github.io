@@ -524,15 +524,15 @@
     baseDurationMs: 4600,
     levels: [
       {},
-      { spawnEveryMs: 380, shipDelayMs: 750, driftSpeed: 62 },                                         // the button isn't there yet — find it under the pile
-      { spawnEveryMs: 420, decoy: true, shipDelayMs: 1100, decoyLockMs: 600, durationMs: 5400, driftSpeed: 58 } // SHIP LATER sits alone longer; falling for it costs time
+      { spawnEveryMs: 300, shipDelayMs: 750, driftSpeed: 95 },                                         // the button isn't there yet — find it under the pile
+      { spawnEveryMs: 330, decoy: true, shipDelayMs: 1100, decoyLockMs: 600, durationMs: 5400, driftSpeed: 88 } // SHIP LATER sits alone longer; falling for it costs time
     ],
     params: {
-      spawnEveryMs: 520,
+      spawnEveryMs: 420,
       shipDelayMs: 0,
       decoy: false,
       decoyLockMs: 0,
-      driftSpeed: 40, // px/s — meetings creep toward your maker time
+      driftSpeed: 62, // px/s — the distractions actively hunt your maker time
 
       popups: [
         ["Quick sync?", "just 30 min"],
@@ -540,7 +540,15 @@
         ["Circle back?", "next quarter maybe"],
         ["Add to agenda", "for the weekly"],
         ["Needs sign-off", "from 4 stakeholders"],
-        ["Align on this?", "let's workshop it"]
+        ["Align on this?", "let's workshop it"],
+        ["Mom", "2 missed calls"],
+        ["Dentist @ 3pm", "reply C to confirm"],
+        ["Screen time report", "up 43% this week"],
+        ["Your car's warranty", "final notice!!"],
+        ["Package delivered", "photo attached"],
+        ["The dog", "knows it's walk time"],
+        ["1,024 unread", "inbox zero someday"],
+        ["Laundry's done", "it will wrinkle"]
       ]
     },
     setup: function (ctx) {
@@ -672,7 +680,8 @@
       var bands =
         '<rect x="' + px(g0) + '" y="35" width="' + (px(g1) - px(g0)) + '" height="12" rx="6" fill="var(--accent-soft)"/>' +
         '<rect x="' + px(Math.max(0, b0)) + '" y="32" width="' + (px(Math.min(100, b1)) - px(Math.max(0, b0))) + '" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>' +
-        '<rect x="' + px(100) + '" y="34" width="' + (px(105) - px(100)) + '" height="14" fill="#E5484D" opacity="0.25"/>';
+        // THE LEDGE: a sliver of maximum upside at the very end — nearly frame-perfect, pays triple.
+        '<rect x="' + px(102) + '" y="30" width="' + (px(106) - px(102)) + '" height="22" rx="3" fill="var(--accent-strong)" opacity="0.85"/>';
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2.2em;">' +
           '<svg id="hw-rink" width="100%" height="120" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true" ' +
@@ -686,14 +695,14 @@
               '<circle cx="13" cy="12" r="1.4" fill="var(--bg)"/>' +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint"><span class="hw-kbd">space</span> / tap to STOP the hedgehog on the glow — past the edge drowns</p>' +
+          '<p class="hw-hint"><span class="hw-kbd">space</span> / tap to STOP the hedgehog on the glow — the far ledge pays triple</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
       var s = ctx.state;
       if (s.stopped) return;
       s.pos += s.dir * ctx.params.slideSpeed * dt / 1000;
-      if (s.pos >= 105) { s.pos = 105; s.dir = -1; }
+      if (s.pos >= 106) { s.pos = 106; s.dir = -1; }
       if (s.pos <= 0) { s.pos = 0; s.dir = 1; }
       var puck = $("hw-puck");
       if (puck) puck.style.transform = "translate(" + (6 + (s.pos / 100) * 372) + "px, 26px)";
@@ -708,7 +717,7 @@
       var pct = s.pos;
       setTimeout(function () {
         if (ctx.done) return;
-        if (pct > 100) return ctx.fail("…overboard. Right past the edge.");
+        if (pct >= 102) return ctx.win("THE LEDGE. Maximum upside.", 3); // the best possible outcome, barely possible
         var d = Math.abs(pct - s.band);
         var big = s.moonshot ? "MOONSHOT!!" : "BULLSEYE!";
         if (d <= ctx.params.bandHalf) return ctx.win(big, 2);
