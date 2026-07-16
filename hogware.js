@@ -1529,7 +1529,9 @@
 
   function renderLeaderboard() {
     var el = $("hw-leaderboard");
-    if (!WORKER_URL) {
+    // file:// (local dev, headless tests) has origin "null" — the Worker's CORS
+    // rightly rejects it, so don't fetch at all; show the local-best fallback.
+    if (!WORKER_URL || location.protocol === "file:") {
       var best = 0;
       try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
       el.innerHTML = best ? "personal best on this browser: <b>" + best + "</b> · global leaderboard: wiring in progress" : "";
