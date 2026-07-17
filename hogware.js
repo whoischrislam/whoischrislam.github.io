@@ -97,6 +97,14 @@
      route through here; only forward-looking starts do. */
   var ZOOM_MS = 240; // per half (out, then in)
   var transitioning = false;
+  function crtBlip(kind) { // "hw-blip" channel change · "hw-poweron" CRT turn-on line
+    if (reducedMotion) return;
+    var f = $("hw-flash");
+    if (!f) return;
+    f.classList.remove("hw-blip", "hw-poweron");
+    void f.offsetWidth;
+    f.classList.add(kind);
+  }
   function swapScreens(toEl, prep, done) {
     var fromEl = visibleScreen();
     if (reducedMotion) {
@@ -112,6 +120,7 @@
       setTimeout(function () {
         hideAllScreens();
         if (fromEl) fromEl.classList.remove("hw-zoom-out");
+        crtBlip("hw-blip"); // channel-change flash at the cut — the CRT swallowing you into the next game
         if (prep) prep();
         show(toEl);
         toEl.classList.add("hw-zoom-in");
@@ -1343,6 +1352,7 @@
     conductor.start(1 / run.speed); // fresh anchor + rate; brisk variant starts faster, music will too
     conductor.loadAssets(); // lazy, once; game plays with synth blips until buffers land
     conductor.startMusic();
+    crtBlip("hw-poweron"); // the monitor wakes up
     show(hud); updateHud();
     nextGame();
   }
