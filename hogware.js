@@ -1389,7 +1389,12 @@
       updateHud(); // loop counter can change between games
       timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
       $("hw-verb-word").textContent = game.verb;
-      $("hw-appwin-title").textContent = (game.boss ? game.id.replace("boss-", "") : game.id) + ".exe";
+      // A: the window IS the value's program — its title is the actual handbook value.
+      $("hw-appwin-title").textContent = game.boss ? "BOSS · " + game.verb.replace("!", "") : game.value;
+      // C: light up this value's app icon on the desktop (bosses light none).
+      document.querySelectorAll("#hw-desk-icons .hw-desk-icon").forEach(function (el) {
+        el.classList.toggle("hw-desk-active", !game.boss && el.dataset.id === game.id);
+      });
       // One-second cards get ONE word; the value names live in the quotes and flavors.
       var valEl = $("hw-verb-value");
       valEl.textContent = game.boss ? game.value : "";
