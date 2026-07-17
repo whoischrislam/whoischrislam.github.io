@@ -853,29 +853,54 @@
           .hw-toggles-dense .hw-toggle { padding: 0.28em 0.7em; font-size: 0.85em; }
 
           /* ---- SHIP IT microgame ---- */
-          #hw-ship-btn {
-            position: absolute;
-            left: 50%; top: 55%;
-            transform: translate(-50%, -50%);
-            z-index: 12;
-            font-size: 1.25em;
-            padding: 0.8em 2.4em;
+          /* SHIP target: a green Win95 'deploy' button you hunt for in the noise */
+          .hw-ship-btn95 {
+            width: auto;
+            font-family: var(--body-font);
+            font-weight: 800;
+            font-size: 0.92em;
+            color: #fff;
+            background: #46A758;
+            border: 2px solid;
+            border-color: #7BD98C #2E6E3B #2E6E3B #7BD98C; /* Win95 outset, green */
+            border-radius: 2px;
+            padding: 0.5em 1.1em;
+            cursor: pointer;
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
           }
-          .hw-popup {
+          .hw-ship-btn95:active { border-color: #2E6E3B #7BD98C #7BD98C #2E6E3B; }
+          .hw-ship-decoy { background: #C7A83E; border-color: #E6CE7A #8A6E1C #8A6E1C #E6CE7A; } /* tempting look-alike */
+          /* Win95 notification windows — the moving distractions */
+          .hw-notif {
             position: absolute;
-            z-index: 14;
-            background: var(--surface);
-            border: 1px solid var(--border-strong);
-            border-radius: 0.5em;
-            padding: 0.6em 0.9em;
-            font-size: 0.82em;
-            color: var(--text);
-            box-shadow: var(--drop-shadow);
-            max-width: 15em;
-            cursor: not-allowed;
+            z-index: 11;
+            background: #DCD6C8;
+            border: 1px solid;
+            border-color: #fff #7A7568 #7A7568 #fff;
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.28);
+            color: #151515;
+            overflow: hidden;
+            cursor: default;
           }
-          .hw-popup b { display: block; font-size: 0.9em; }
-          .hw-popup span { color: var(--muted); font-size: 0.85em; }
+          .hw-notif-bar {
+            display: flex; align-items: center; gap: 3px;
+            padding: 1px 2px 1px 4px;
+            background: linear-gradient(90deg, #1D4AFF, #5B80FF);
+          }
+          .hw-notif-icon { font-size: 0.66em; }
+          .hw-notif-app { font-family: ui-monospace, Menlo, monospace; font-size: 0.56em; color: #fff; font-weight: 600; flex: 1; white-space: nowrap; overflow: hidden; }
+          .hw-notif-x {
+            font-style: normal; font-size: 0.5em; font-weight: 700;
+            width: 12px; height: 11px; display: grid; place-items: center;
+            background: #DCD6C8; border: 1px solid; border-color: #fff #7A7568 #7A7568 #fff;
+          }
+          .hw-notif-body { padding: 4px 7px 6px; }
+          .hw-notif-body b { display: block; font-size: 0.72em; line-height: 1.15; }
+          .hw-notif-body span { display: block; color: #5A554A; font-size: 0.66em; line-height: 1.2; }
+          .hw-notif-email { width: 152px; }
+          .hw-notif-cal   { width: 130px; }
+          .hw-notif-chat  { width: 116px; }
+          .hw-notif-sys   { width: 120px; }
 
           /* ---- WEIRD microgame ---- */
           .hw-poster {
