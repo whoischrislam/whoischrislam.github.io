@@ -520,24 +520,38 @@
             overflow: hidden;
             animation: hw-verb-pop 0.3s cubic-bezier(0.2, 1.5, 0.4, 1);
           }
-          .hw-appwin-bar {
-            display: flex; align-items: center; gap: 0.7em;
-            padding: 0.45em 0.8em;
-            background: var(--bg-alt);
-            border-bottom: 1px solid var(--border);
+          /* ---- Win95 title bar: navy-blue active bar, title left, beveled controls right ---- */
+          .hw-appwin-bar, .hw-dialog-bar {
+            display: flex; align-items: center; gap: 0.5em;
+            padding: 3px 4px 3px 8px;
+            background: linear-gradient(90deg, #1D4AFF, #5B80FF);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
           }
-          .hw-dots { display: flex; gap: 5px; }
-          .hw-dots span { width: 9px; height: 9px; border-radius: 50%; border: 1px solid rgba(21,21,21,0.25); }
-          .hw-dots span:nth-child(1) { background: #F5655D; }
-          .hw-dots span:nth-child(2) { background: #F5BD4F; }
-          .hw-dots span:nth-child(3) { background: #61C454; }
-          .hw-appwin-title {
+          .hw-appwin-title, .hw-dialog-title {
             font-family: ui-monospace, Menlo, monospace;
             font-size: 0.72em;
-            color: var(--muted);
+            font-weight: 600;
+            color: #fff;
             flex: 1;
-            text-align: center;
+            text-align: left;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
           }
+          .hw-tbar-controls { display: flex; gap: 2px; flex: none; }
+          .hw-tbar-controls b {
+            width: 17px; height: 15px;
+            display: grid; place-items: center;
+            font-style: normal; font-weight: 700; font-size: 0.62em; line-height: 1;
+            color: #151515;
+            background: #DCD6C8;
+            border: 1px solid;
+            border-color: #fff #7A7568 #7A7568 #fff; /* Win95 outset bevel */
+            cursor: default;
+          }
+          .hw-tbar-controls b.hw-close { cursor: pointer; }
+          .hw-tbar-controls b.hw-close:active { border-color: #7A7568 #fff #fff #7A7568; }
+          /* gameover.exe is a hung/fatal window: greyed 'inactive' bar, no way to close it */
+          .hw-dialog-bar.hw-tbar-fatal { background: #9A958A; }
+          .hw-dialog-bar.hw-tbar-fatal .hw-dialog-title { color: #EEEBE3; }
           .hw-appwin-body {
             display: flex; flex-direction: column; align-items: center; gap: 0.4em;
             padding: 1.1em 1.2em 1.4em;
@@ -916,20 +930,7 @@
             line-height: 1.4;
           }
           .hw-valwin-src { font-size: 0.68em; color: var(--muted); margin: 0; }
-          .hw-win-close {
-            width: auto; margin-left: auto;
-            background: none; border: none; color: var(--muted);
-            font-size: 1.1em; line-height: 1; padding: 0 0.2em; cursor: pointer;
-          }
-          .hw-win-close:hover { color: var(--accent); }
-          .hw-dialog-bar {
-            display: flex; align-items: center; gap: 0.7em;
-            padding: 0.45em 0.8em;
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            flex: none;
-          }
-          .hw-dialog-title { font-family: ui-monospace, Menlo, monospace; font-size: 0.72em; color: var(--muted); flex: 1; text-align: center; }
+          .hw-dialog-bar { flex: none; } /* shares the Win95 title-bar look defined above */
           .hw-dialog-body {
             display: flex; flex-direction: column; align-items: center; gap: 0.7em;
             padding: 1.1em 1.2em 1.3em;
@@ -1029,8 +1030,8 @@
                     </div>
                     <div class="hw-appwin">
                         <div class="hw-appwin-bar">
-                            <span class="hw-dots" aria-hidden="true"><span></span><span></span><span></span></span>
                             <span class="hw-appwin-title" id="hw-appwin-title">game.exe</span>
+                            <span class="hw-tbar-controls" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
                         </div>
                         <div class="hw-appwin-body">
                             <p class="hw-verb-value" id="hw-verb-value"></p>
@@ -1076,9 +1077,8 @@
                     </div>
                     <p class="hw-go-desktop-hint">double-click a value to read it · drag any window</p>
                     <div class="hw-dialog hw-win" id="hw-go-dialog">
-                        <div class="hw-dialog-bar hw-win-bar">
-                            <span class="hw-dots" aria-hidden="true"><span></span><span></span><span></span></span>
-                            <span class="hw-dialog-title">gameover.exe</span>
+                        <div class="hw-dialog-bar hw-win-bar hw-tbar-fatal">
+                            <span class="hw-dialog-title">gameover.exe — (not responding)</span>
                         </div>
                         <div class="hw-dialog-body">
                             <div class="hw-go-head">

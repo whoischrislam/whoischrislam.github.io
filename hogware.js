@@ -1642,7 +1642,7 @@
   function focusWin(win) { win.style.zIndex = ++zTop; }
   function makeDraggable(win, bar) {
     bar.addEventListener("pointerdown", function (e) {
-      if (e.target.closest("button, input, a")) return; // grabbing a control, not the bar
+      if (e.target.closest("button, input, a, .hw-tbar-controls")) return; // grabbing a control, not the bar
       e.preventDefault();
       var host = screens.gameover.getBoundingClientRect();
       // Lazily pop out of flex-center into an absolute float at its current spot.
@@ -1682,9 +1682,8 @@
     win.id = "valwin-" + slug;
     win.innerHTML =
       '<div class="hw-dialog-bar hw-win-bar">' +
-        '<span class="hw-dots" aria-hidden="true"><span></span><span></span><span></span></span>' +
         '<span class="hw-dialog-title">' + slug + '.exe</span>' +
-        '<button class="hw-win-close" aria-label="Close">×</button>' +
+        '<span class="hw-tbar-controls"><b>_</b><b>□</b><b class="hw-close" role="button" aria-label="Close">×</b></span>' +
       '</div>' +
       '<div class="hw-valwin-body">' +
         '<p class="hw-valwin-quote">' + q.text + '</p>' +
@@ -1697,7 +1696,7 @@
     win.style.top = (16 + n * 10) + "%";
     focusWin(win);
     makeDraggable(win, win.querySelector(".hw-win-bar"));
-    win.querySelector(".hw-win-close").addEventListener("click", function () { win.remove(); });
+    win.querySelector(".hw-close").addEventListener("click", function () { win.remove(); });
     capture("hogware_value_opened", { value: q.value });
   }
   var goDeskWired = false;
