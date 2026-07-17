@@ -1709,17 +1709,15 @@
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", function () {
-    // The monitor powers on when the page loads: the title starts collapsed to the
-    // CRT line (hw-crt-bloom in the markup) and unfolds — nothing shows before boot.
-    var title = $("hw-titlescreen");
+    // Cold boot: the tube stays dark (hw-booting) while the power-on line does the
+    // geometry, then the title snaps in crisp when it locks — never a gradual fade.
     if (reducedMotion) {
-      title.classList.remove("hw-crt-bloom");
+      stage.classList.remove("hw-booting");
     } else {
       setTimeout(function () {
         crtBlip("hw-poweron");
-        title.classList.add("hw-crt-bloom-go");
-        setTimeout(function () { title.classList.remove("hw-crt-bloom", "hw-crt-bloom-go"); }, BLOOM_MS);
-      }, 180);
+        setTimeout(function () { stage.classList.remove("hw-booting"); }, 430); // reveal as the line blooms full
+      }, 200);
     }
     var best = 0;
     try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
