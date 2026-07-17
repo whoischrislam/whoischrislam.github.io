@@ -671,24 +671,35 @@
       decoy: false,
       decoyLockMs: 0,
       driftSpeed: 115,  // px/s — everything keeps moving; ~half launch aimed across the button
-      burst: 4,         // popups already in the frame at t=0 — no clean opening beat
-
+      burst: 4,         // notifications already in the frame at t=0 — no clean opening beat
+      // Win95 chrome, modern remote-work content: form stays in-world, the joke stays now.
       popups: [
-        ["Quick sync?", "just 30 min"],
-        ["Loop in legal", "before we do anything"],
-        ["Circle back?", "next quarter maybe"],
-        ["Add to agenda", "for the weekly"],
-        ["Needs sign-off", "from 4 stakeholders"],
-        ["Align on this?", "let's workshop it"],
-        ["Mom", "2 missed calls"],
-        ["Dentist @ 3pm", "reply C to confirm"],
-        ["Screen time report", "up 43% this week"],
-        ["Your car's warranty", "final notice!!"],
-        ["Package delivered", "photo attached"],
-        ["The dog", "knows it's walk time"],
-        ["1,024 unread", "inbox zero someday"],
-        ["Laundry's done", "it will wrinkle"]
+        { t: "cal",   title: "Standup",             body: "starts in 5 min" },
+        { t: "cal",   title: "Quick sync?",         body: "“just 30 min” (it's 60)" },
+        { t: "cal",   title: "Retro",               body: "what went well: this popup" },
+        { t: "cal",   title: "1:1 w/ your skip",    body: "no agenda, as usual" },
+        { t: "cal",   title: "Lunch",               body: "you forgot to eat again" },
+        { t: "email", title: "re: re: re: quick q", body: "6 people replied-all" },
+        { t: "email", title: "Your car's warranty", body: "FINAL notice!!" },
+        { t: "email", title: "1,024 unread",        body: "inbox zero is a myth" },
+        { t: "email", title: "Payment received",    body: "you spent $340 on… things" },
+        { t: "chat",  title: "Mom",                 body: "you never call anymore" },
+        { t: "chat",  title: "@you in #general",    body: "thoughts? 👀" },
+        { t: "chat",  title: "the group chat",      body: "247 unread" },
+        { t: "chat",  title: "landlord",            body: "rent's due btw" },
+        { t: "chat",  title: "your PM",             body: "got a sec? 👀" },
+        { t: "sys",   title: "The dog",             body: "is staring at the leash" },
+        { t: "sys",   title: "Low battery",         body: "10%, no charger in sight" },
+        { t: "sys",   title: "Laundry's done",      body: "it will wrinkle" },
+        { t: "sys",   title: "Focus time",          body: "lol" },
+        { t: "sys",   title: "Hydrate?",            body: "you haven't. today." }
       ]
+    },
+    _ntype: {
+      email: { icon: "📧", app: "Inbox" },
+      cal:   { icon: "📅", app: "Reminder" },
+      chat:  { icon: "💬", app: "Messenger" },
+      sys:   { icon: "⚠️", app: "Alert" }
     },
     setup: function (ctx) {
       ctx.state.lastSpawn = -ctx.params.spawnEveryMs; // first meeting invite lands immediately
@@ -702,12 +713,12 @@
       var edgy = function () { var u = run.rng(); return u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u); };
       ctx.state.shipPos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
       scene.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
-        '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the meetings — just hit SHIP</p>';
+        '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the noise — find and hit SHIP</p>';
       if (ctx.params.decoy) {
         var d = document.createElement("button");
-        d.className = "hw-btn";
+        d.className = "hw-ship-btn95 hw-ship-decoy";
         d.id = "hw-decoy-btn";
-        d.textContent = "SHIP LATER";
+        d.innerHTML = "▶ SHIP LATER";
         d.style.position = "absolute";
         d.style.zIndex = "12";
         var dpos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
@@ -729,14 +740,13 @@
     _showShip: function (ctx) {
       ctx.state.shipShown = true;
       var b = document.createElement("button");
-      b.className = "hw-btn";
+      b.className = "hw-ship-btn95"; // the green 'deploy' button you're hunting for
       b.id = "hw-ship-btn";
-      b.textContent = "SHIP";
+      b.innerHTML = "▶ SHIP IT";
       b.style.position = "absolute";
       b.style.zIndex = "12";
       b.style.left = ctx.state.shipPos.left + "%";
       b.style.top = ctx.state.shipPos.top + "%";
-      b.style.transform = "none"; // pin the anchor: the shared #hw-ship-btn CSS centers via translate, which would fight the pop animation
       if (!reducedMotion) { b.style.animation = "hw-verb-pop 0.25s cubic-bezier(0.2, 1.6, 0.4, 1)"; }
       b.addEventListener("pointerdown", function () {
         if (ctx.elapsed < ctx.state.lockedUntil) return; // still stuck in the meeting you clicked into
@@ -746,11 +756,15 @@
     },
     _spawn: function (ctx, box) {
       var p = ctx.state.popupOrder[ctx.state.spawned % ctx.state.popupOrder.length];
+      var nt = gameShip._ntype[p.t];
       var el = document.createElement("div");
-      el.className = "hw-popup";
-      el.innerHTML = "<b>" + p[0] + "</b><span>" + p[1] + "</span>";
+      el.className = "hw-notif hw-notif-" + p.t;
+      el.innerHTML =
+        '<div class="hw-notif-bar"><span class="hw-notif-icon">' + nt.icon + '</span>' +
+          '<span class="hw-notif-app">' + nt.app + '</span><b class="hw-notif-x">×</b></div>' +
+        '<div class="hw-notif-body"><b>' + p.title + '</b><span>' + p.body + '</span></div>';
       // Spawn ANYWHERE in the frame (seeded) — there is no clean corner to rest your eyes.
-      var sx = run.rng() * (box.width - 130), sy = 30 + run.rng() * (box.height - 100);
+      var sx = run.rng() * (box.width - 150), sy = 30 + run.rng() * (box.height - 90);
       el.style.left = sx + "px";
       el.style.top = sy + "px";
       el.style.transform = "rotate(" + (run.rng() * 10 - 5) + "deg)";
@@ -794,8 +808,8 @@
         var step = pu.speed * dt / 1000;
         pu.x += pu.vx * step;
         pu.y += pu.vy * step;
-        if (pu.x < -20 || pu.x > box.width - 90) pu.vx *= -1;
-        if (pu.y < 20 || pu.y > box.height - 60) pu.vy *= -1;
+        if (pu.x < -20 || pu.x > box.width - 120) pu.vx *= -1;
+        if (pu.y < 20 || pu.y > box.height - 70) pu.vy *= -1;
         pu.el.style.left = pu.x + "px";
         pu.el.style.top = pu.y + "px";
       });
