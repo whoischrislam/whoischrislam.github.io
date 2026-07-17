@@ -33,30 +33,27 @@ export default {
     if (cached) return cached;
 
     /* Plausibility gate lives IN the query: a submitted score only counts if that
-       same person's cleared-events trail that day backs at least half of it.
-       Forged posthog.capture('hogware_score_submitted', {score: 9999}) calls have
-       no trail, so they aggregate to nothing. (Scores also sanity-clamp at 400 —
-       nobody legitimate is close.) */
+       same person's cleared-events trail backs at least half of it. Forged
+       posthog.capture('hogware_score_submitted', {score: 9999}) calls have no
+       trail, so they aggregate to nothing. Single scan with conditional
+       aggregates — the original events-JOIN-events version 504'd PostHog's sync
+       query window. Time-bounded to 3 days so the scan never grows with history. */
+    const submitted = `event = 'hogware_score_submitted' AND toInt(properties.day) = ${day} AND toInt(properties.score) BETWEEN 0 AND 400`;
     const hogql = `
-      SELECT s.handle AS handle, max(s.score) AS best
+      SELECT handle, max(raw_best) AS best
       FROM (
         SELECT
           distinct_id,
-          toString(properties.handle) AS handle,
-          toInt(properties.score) AS score
+          argMaxIf(toString(properties.handle), toInt(properties.score), ${submitted}) AS handle,
+          maxIf(toInt(properties.score), ${submitted}) AS raw_best,
+          countIf(event = 'hogware_microgame_cleared') AS raw_cleared
         FROM events
-        WHERE event = 'hogware_score_submitted'
-          AND toInt(properties.day) = ${day}
-          AND toInt(properties.score) BETWEEN 0 AND 400
-      ) s
-      JOIN (
-        SELECT distinct_id, count() AS cleared
-        FROM events
-        WHERE event = 'hogware_microgame_cleared'
+        WHERE event IN ('hogware_score_submitted', 'hogware_microgame_cleared')
+          AND timestamp > now() - INTERVAL 3 DAY
         GROUP BY distinct_id
-      ) c ON c.distinct_id = s.distinct_id
-      WHERE c.cleared * 2 >= s.score
-      GROUP BY s.handle
+      )
+      WHERE raw_best > 0 AND raw_cleared * 2 >= raw_best
+      GROUP BY handle
       ORDER BY best DESC
       LIMIT 20
     `;
