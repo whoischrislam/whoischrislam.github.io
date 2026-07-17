@@ -147,6 +147,24 @@
     var rate = 1, anchor = 0, timer = null, subs = [];
     var unlocked = false, muted = false;
     try { muted = localStorage.getItem("hogware_muted") === "1"; } catch (e) {}
+    /* Real audio: ElevenLabs assets decoded to buffers. Music is a sample-exact
+       16.000s WAV loop (8 bars @ 120 BPM); playbackRate mirrors game speed, so
+       SPEED UP! pitches it up — the WarioWare chipmunk effect, for free. Stings
+       replace the synth blips when loaded; the synth stays as fallback. */
+    var buffers = {}, masterGain = null, musicGain = null, sfxGain = null, musicSrc = null, loadKicked = false;
+    var STING_NAMES = ["pass", "fail", "tick", "verb", "over", "level", "whiff"];
+    function ensureGraph() {
+      if (!audioCtx || masterGain) return;
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = muted ? 0 : 1;
+      masterGain.connect(audioCtx.destination);
+      musicGain = audioCtx.createGain();
+      musicGain.gain.value = 0.45;
+      musicGain.connect(masterGain);
+      sfxGain = audioCtx.createGain();
+      sfxGain.gain.value = 0.9;
+      sfxGain.connect(masterGain);
+    }
     function now() { return (unlocked && audioCtx) ? audioCtx.currentTime * 1000 : performance.now(); }
     function beatMs() { return baseBeatMs / rate; }
     function nextBeatAt() {
@@ -167,7 +185,11 @@
         if (!timer) timer = setInterval(tick, 25);
       },
       stop: function () { subs = []; if (timer) { clearInterval(timer); timer = null; } },
-      setRate: function (r) { anchor = nextBeatAt(); rate = Math.min(2, Math.max(1, r)); }, // re-anchor forward, no jump
+      setRate: function (r) {
+        anchor = nextBeatAt();
+        rate = Math.min(2, Math.max(1, r));
+        conductor.syncMusicRate(); // the loop pitches up with the game — the chipmunk speed-up
+      },
       nextBeat: function (fn) { if (!timer) return fn(); subs.push({ at: nextBeatAt(), fn: fn }); },
       beatMs: beatMs,
       unlock: function () { // must come from a user gesture (iOS: touchend/click, not touchstart)
@@ -185,11 +207,78 @@
       setMuted: function (m) {
         muted = m;
         try { localStorage.setItem("hogware_muted", m ? "1" : "0"); } catch (e) {}
-      }
+        if (masterGain) masterGain.gain.value = m ? 0 : 1;
+        if (!m && run && !musicSrc) conductor.startMusic(); // unmuting mid-run brings the band back in
+      },
+      loadAssets: function () {
+        // Lazy, once, post-gesture, http(s) only (file:// fetches just error-spam the console).
+        if (loadKicked || !audioCtx || location.protocol === "file:") return;
+        loadKicked = true;
+        ensureGraph();
+        var load = function (name, url) {
+          fetch(url).then(function (r) { return r.arrayBuffer(); })
+            .then(function (ab) { return audioCtx.decodeAudioData(ab); })
+            .then(function (buf) {
+              buffers[name] = buf;
+              // If the music arrives mid-run, join in without waiting for the next run.
+              if (name === "music" && run && !musicSrc) conductor.startMusic();
+            })
+            .catch(function () {}); // failed load = synth blips keep covering; never breaks the game
+        };
+        load("music", "audio/hogware/music.wav");
+        STING_NAMES.forEach(function (n) { load(n, "audio/hogware/" + n + ".m4a"); });
+      },
+      playSting: function (kind) {
+        if (muted || !audioCtx || !buffers[kind]) return false;
+        ensureGraph();
+        var src = audioCtx.createBufferSource();
+        src.buffer = buffers[kind];
+        src.connect(sfxGain);
+        src.start();
+        // Duck the music a touch so stings read over it, then recover.
+        if (musicSrc && musicGain) {
+          var t = audioCtx.currentTime;
+          musicGain.gain.setTargetAtTime(0.28, t, 0.02);
+          musicGain.gain.setTargetAtTime(0.45, t + 0.15, 0.08);
+        }
+        return true;
+      },
+      startMusic: function () {
+        if (muted || !audioCtx || !buffers.music || musicSrc) return;
+        ensureGraph();
+        musicGain.gain.cancelScheduledValues(0);
+        musicGain.gain.value = 0.45; // instant PLAY AGAIN mustn't inherit the previous fade-out
+        musicSrc = audioCtx.createBufferSource();
+        musicSrc.buffer = buffers.music;
+        musicSrc.loop = true;
+        musicSrc.loopStart = 0;
+        musicSrc.loopEnd = 16.0; // 8 bars @ 120 BPM, sample-exact
+        musicSrc.playbackRate.value = rate;
+        musicSrc.connect(musicGain);
+        musicSrc.start();
+      },
+      stopMusic: function () {
+        if (!musicSrc) return;
+        var src = musicSrc;
+        musicSrc = null;
+        try {
+          if (musicGain && audioCtx) {
+            musicGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.08); // brief fade, no click
+            setTimeout(function () { try { src.stop(); } catch (e) {} if (musicGain) musicGain.gain.value = 0.45; }, 350);
+          } else { src.stop(); }
+        } catch (e) {}
+      },
+      syncMusicRate: function () { if (musicSrc) musicSrc.playbackRate.value = rate; }
     };
   })();
   document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) conductor.resumeIfInterrupted();
+    if (document.hidden) {
+      // Pause the whole audio graph with the tab: the game's rAF clock freezes, and
+      // music playing over a frozen game reads as broken. Resume re-anchors the beat.
+      if (audioCtx && audioCtx.state === "running") { try { audioCtx.suspend(); } catch (e) {} }
+    } else {
+      conductor.resumeIfInterrupted();
+    }
   });
 
   /* ---------------- Tiny SFX stub ----------------
@@ -197,6 +286,7 @@
      Swap the synth body for buffer playback then (slots: pass/fail/tick/verb/over/level/whiff). */
   function sfx(kind) {
     if (conductor.isMuted()) return;
+    if (conductor.playSting(kind)) return; // real ElevenLabs sting when loaded; synth below as fallback
     try {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       var o = audioCtx.createOscillator(), g = audioCtx.createGain();
@@ -1251,6 +1341,8 @@
     capture("hogware_run_started", { pace_variant: paceVariant, lives: LIVES });
     conductor.unlock(); // we're inside a user gesture here (START click or space)
     conductor.start(1 / run.speed); // fresh anchor + rate; brisk variant starts faster, music will too
+    conductor.loadAssets(); // lazy, once; game plays with synth blips until buffers land
+    conductor.startMusic();
     show(hud); updateHud();
     nextGame();
   }
@@ -1474,6 +1566,7 @@
   function gameOver() {
     hide(hud);
     conductor.stop(); // scheduler only runs during an active run
+    conductor.stopMusic();
     sfx("over");
     var best = 0;
     try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
