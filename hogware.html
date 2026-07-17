@@ -460,36 +460,48 @@
             background-size: 22px 22px;
           }
           .hw-desktop { position: absolute; inset: 0; z-index: 0; }
+          /* Win95 desktop icons: stacked (glyph over label), centered, with the
+             classic dotted selection rectangle + highlighted label when launched. */
           .hw-desk-icons {
             position: absolute;
-            top: 5%; left: 2.5%;
+            top: 4%; left: 2%;
             display: flex;
             flex-direction: column;
-            gap: 0.5em;
+            gap: 0.6em;
           }
           .hw-desk-icon {
-            display: flex; align-items: center; gap: 0.4em;
-            font-size: 1.05em;
-            padding: 0.2em 0.4em;
-            border-radius: 6px;
-            border: 1px solid transparent;
-            opacity: 0.42; /* dimmed apps — set dressing until one launches */
-            transition: opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+            display: flex; flex-direction: column; align-items: center;
+            width: 5.6em;
+            gap: 3px;
+            padding: 3px 2px;
+            font-size: 1.7em;     /* the app glyph */
+            line-height: 1;
+            border: 1px dotted transparent;
+            cursor: default;
+            transition: opacity 0.15s ease;
+            opacity: 0.72;
           }
           .hw-desk-icon i {
             font-style: normal;
-            font-family: ui-monospace, Menlo, monospace;
-            font-size: 0.42em;
-            color: var(--muted);
-            letter-spacing: 0.01em;
+            font-family: var(--body-font);
+            font-size: 0.32em;
+            font-weight: 500;
+            color: var(--text);
+            text-align: center;
+            line-height: 1.15;
+            padding: 0 3px;
           }
-          /* the launching value's app: selected + brought forward */
+          /* the launching value's app: classic selected-icon look */
           .hw-desk-icon.hw-desk-active {
             opacity: 1;
-            background: var(--accent-soft);
-            border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+            border-color: color-mix(in srgb, var(--text) 55%, transparent);
           }
-          .hw-desk-icon.hw-desk-active i { color: var(--accent); font-weight: 700; }
+          .hw-desk-icon.hw-desk-active i {
+            background: var(--ph-blue);
+            color: #fff;
+            font-weight: 600;
+            border-radius: 1px;
+          }
           .hw-buddy {
             position: absolute;
             right: 7%;
