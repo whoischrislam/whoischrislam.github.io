@@ -1709,6 +1709,8 @@
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", function () {
+    // The monitor powers on when the page loads — the title screen boots up on the tube.
+    setTimeout(function () { crtBlip("hw-poweron"); }, 120);
     var best = 0;
     try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
     if (best) {

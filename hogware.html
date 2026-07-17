@@ -162,6 +162,27 @@
             background:
               radial-gradient(ellipse 130% 110% at 50% 45%, transparent 60%, rgba(0, 0, 0, 0.18) 100%),
               repeating-linear-gradient(0deg, rgba(21, 21, 21, 0.11) 0px, rgba(21, 21, 21, 0.11) 1.5px, transparent 1.5px, transparent 4px);
+            animation: hw-crt-flicker 5.5s steps(1) infinite; /* the tube is alive: faint brightness breathing */
+          }
+          @keyframes hw-crt-flicker {
+            0%, 97%, 100% { opacity: 1; }
+            97.5% { opacity: 0.86; }
+            98%   { opacity: 1; }
+            98.6% { opacity: 0.9; }
+          }
+          /* A soft highlight band sweeps down the tube like a slow refresh roll */
+          .hw-crt-glass::after {
+            content: "";
+            position: absolute;
+            left: 0; right: 0;
+            height: 40%;
+            background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.035), transparent);
+            animation: hw-crt-roll 7s linear infinite;
+          }
+          @keyframes hw-crt-roll { 0% { top: -40%; } 100% { top: 100%; } }
+          @media (prefers-reduced-motion: reduce) {
+            .hw-crt-glass { animation: none; }
+            .hw-crt-glass::after { animation: none; display: none; }
           }
           #hw-flash {
             position: absolute;
