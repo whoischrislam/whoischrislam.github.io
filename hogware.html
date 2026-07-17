@@ -392,32 +392,84 @@
             .hw-zoom-out, .hw-zoom-in, .hw-zoom-in-go { transition: none; transform: none; opacity: 1; }
           }
 
-          /* ---- Verb card: the WarioWare sunburst, rotating on the beat clock ---- */
-          #hw-verb, #hw-quote { overflow: hidden; }
-          #hw-verb::before, #hw-quote::before {
+          /* ---- Announce card keeps the WarioWare sunburst, on the beat clock ---- */
+          #hw-quote { overflow: hidden; }
+          #hw-quote::before {
             content: "";
             position: absolute;
             inset: -45%;
             background: repeating-conic-gradient(from 0deg, var(--accent-soft) 0deg 11deg, transparent 11deg 30deg);
             -webkit-mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 60%);
             mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 60%);
-            animation: hw-sunburst calc(var(--beat, 500ms) * 24) linear infinite;
+            animation: hw-sunburst calc(var(--beat, 500ms) * 14) linear infinite;
             z-index: 0;
           }
-          #hw-quote::before { animation-duration: calc(var(--beat, 500ms) * 14); } /* announcements spin hungrier */
-          #hw-verb > *, #hw-quote > * { position: relative; z-index: 1; }
+          #hw-quote > * { position: relative; z-index: 1; }
           @keyframes hw-sunburst { to { transform: rotate(360deg); } }
           .hw-verb-word { animation: hw-verb-pop 0.35s cubic-bezier(0.2, 1.6, 0.4, 1), hw-beat-throb calc(var(--beat, 500ms) * 2) ease-in-out 0.4s infinite; }
           @keyframes hw-beat-throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+
+          /* ---- The hedgehog commute: the looping host scene between games ----
+             Same grass world as outside the monitor, on purpose. Ground scrolls
+             on the beat, the hog rolls in place, Max lives trot behind, the loop
+             number stands on a roadside sign. */
+          #hw-verb { overflow: hidden; justify-content: center; padding-bottom: 20%; }
+          .hw-commute { position: absolute; inset: 0; z-index: 0; }
+          .hw-scene-ground {
+            position: absolute;
+            left: 0; right: 0; bottom: 0;
+            height: 26%;
+            background-color: #94B975;
+            border-top: 2.5px solid #6E9552;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='60' viewBox='0 0 140 60'%3E%3Cg fill='none' stroke='%23151515' stroke-opacity='0.18' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M25 34 q2 -10 5 -13 M31 34 q0 -8 -2 -11'/%3E%3Cpath d='M95 50 q2 -10 5 -13 M101 50 q0 -8 -2 -11'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 140px 60px;
+            animation: hw-ground-scroll calc(var(--beat, 500ms) * 3) linear infinite;
+          }
+          @keyframes hw-ground-scroll { to { background-position-x: -140px; } }
+          [data-theme="dark"] .hw-scene-ground { background-color: #2E3C25; border-top-color: #4A5C3B; }
+          .hw-cloud {
+            position: absolute;
+            width: 90px; height: 26px;
+            border-radius: 999px;
+            background: var(--chip-bg);
+            opacity: 0.8;
+          }
+          .hw-cloud-1 { top: 12%; animation: hw-cloud-drift calc(var(--beat, 500ms) * 40) linear infinite; }
+          .hw-cloud-2 { top: 24%; width: 60px; height: 18px; animation: hw-cloud-drift calc(var(--beat, 500ms) * 26) linear infinite; animation-delay: calc(var(--beat, 500ms) * -12); }
+          @keyframes hw-cloud-drift { from { left: 104%; } to { left: -14%; } }
+          .hw-roller {
+            position: absolute;
+            left: 58%;
+            bottom: calc(26% - 7px);
+            animation: hw-roll calc(var(--beat, 500ms) * 2) linear infinite;
+          }
+          @keyframes hw-roll { to { transform: rotate(360deg); } }
+          #hw-verb-lives { position: absolute; bottom: calc(26% - 3px); left: 26%; display: flex; gap: 0.55em; align-items: flex-end; }
+          #hw-verb-lives .hw-life-big {
+            width: 30px; height: 30px;
+            animation: hw-beat-bounce var(--beat, 500ms) ease-in-out infinite alternate;
+          }
+          .hw-signpost {
+            position: absolute;
+            right: 4%;
+            bottom: 26%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+          }
+          .hw-signpost .hw-stat-tile { box-shadow: 0 2px 0 rgba(21,21,21,0.15); }
+          .hw-signpost-pole { width: 5px; height: 26px; background: #8F7B54; border-radius: 2px; }
+          #hw-verb-spark { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 5px; padding: 1px 3px; }
+          #hw-verb > p { position: relative; z-index: 1; }
           @media (prefers-reduced-motion: reduce) {
-            #hw-verb::before, #hw-quote::before { animation: none; }
-            .hw-verb-word { animation: none; }
+            #hw-quote::before, .hw-verb-word, .hw-scene-ground, .hw-cloud, .hw-roller { animation: none; }
           }
           #hw-verb {
             background:
-              radial-gradient(ellipse 120% 90% at 50% 110%, var(--accent-soft), transparent 60%),
-              var(--bg-alt);
+              linear-gradient(180deg, #E8F0E3 0%, var(--bg-alt) 70%);
           }
+          [data-theme="dark"] body.hogware #hw-verb { background: linear-gradient(180deg, #23282B 0%, var(--bg-alt) 70%); }
           .hw-verb-word {
             font-family: var(--body-font);
             font-weight: 800;
@@ -791,19 +843,32 @@
                     <p id="hw-best-line" class="hw-hint hw-hidden"></p>
                 </div>
 
-                <!-- Verb card / home scene: instruction + diegetic run status (lives, loop tile, score sparkline) -->
+                <!-- Verb card / host scene: the hedgehog commute — a looping world
+                     between games where lives and status live inside the fiction -->
                 <div id="hw-verb" class="hw-screen hw-hidden">
+                    <div class="hw-commute" aria-hidden="true">
+                        <div class="hw-cloud hw-cloud-1"></div>
+                        <div class="hw-cloud hw-cloud-2"></div>
+                        <div class="hw-scene-ground"></div>
+                        <svg class="hw-roller" width="52" height="52" viewBox="0 0 40 40">
+                            <path d="M20 6l3 6-6 0zM11 9l4 4-6 2zM29 9l2 6-6-2zM6 17l6 1-4 5zM34 17l-2 6-4-5z" fill="var(--accent)"/>
+                            <circle cx="20" cy="22" r="12" fill="var(--accent)"/>
+                            <circle cx="16" cy="20" r="1.8" fill="var(--surface)"/>
+                            <circle cx="24" cy="20" r="1.8" fill="var(--surface)"/>
+                        </svg>
+                        <span id="hw-verb-lives" aria-label="Lives remaining"></span>
+                        <div class="hw-signpost">
+                            <span class="hw-stat-tile" id="hw-verb-tile"></span>
+                            <svg id="hw-verb-spark" width="72" height="24" viewBox="0 0 86 30" aria-label="Score so far">
+                                <polyline id="hw-spark-line" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points=""/>
+                                <circle id="hw-spark-dot" r="3" fill="var(--accent-strong)"/>
+                            </svg>
+                            <span class="hw-signpost-pole"></span>
+                        </div>
+                    </div>
                     <p class="hw-verb-value" id="hw-verb-value"></p>
                     <p class="hw-verb-word" id="hw-verb-word"></p>
                     <p class="hw-verb-instr hw-hidden" id="hw-verb-instr"></p>
-                    <div class="hw-verb-status">
-                        <span id="hw-verb-lives" aria-label="Lives remaining"></span>
-                        <span class="hw-stat-tile" id="hw-verb-tile"></span>
-                        <svg id="hw-verb-spark" width="86" height="30" viewBox="0 0 86 30" aria-label="Score so far">
-                            <polyline id="hw-spark-line" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" points=""/>
-                            <circle id="hw-spark-dot" r="2.6" fill="var(--accent-strong)"/>
-                        </svg>
-                    </div>
                 </div>
 
                 <!-- Live microgame scene -->
