@@ -611,14 +611,16 @@
           .hw-verb-word {
             font-family: var(--body-font);
             font-weight: 800;
-            font-size: clamp(3.4em, 13vw, 6.2em);
+            font-size: clamp(3em, 11vw, 5.4em);
+            line-height: 0.92; /* multi-word verbs (FUNNEL RESCUE!) must wrap tight, not cavernous */
             letter-spacing: -0.02em;
             color: var(--accent);
             margin: 0;
+            text-wrap: balance;
             animation: hw-verb-pop 0.35s cubic-bezier(0.2, 1.6, 0.4, 1);
           }
           .hw-verb-value { color: var(--muted); font-size: 0.9em; margin: 0; letter-spacing: 0.08em; text-transform: uppercase; }
-          .hw-verb-instr { color: var(--text); font-size: 1.2em; margin: 0.2em 0 0; max-width: 30ch; line-height: 1.4; }
+          .hw-verb-instr { color: var(--text); font-size: 1.1em; margin: 0.35em 0 0; max-width: 30ch; line-height: 1.35; }
           @keyframes hw-verb-pop {
             from { transform: scale(0.4) rotate(-3deg); opacity: 0; }
             to   { transform: scale(1) rotate(0); opacity: 1; }
