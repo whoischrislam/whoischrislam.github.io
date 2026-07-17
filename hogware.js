@@ -1631,7 +1631,96 @@
     var initials = $("hw-initials");
     try { initials.value = localStorage.getItem("hogware_handle") || ""; } catch (e) {}
 
-    swapScreens(screens.gameover, null, renderLeaderboard);
+    swapScreens(screens.gameover, null, function () {
+      renderLeaderboard();
+      resetGameoverDesktop();
+    });
+  }
+
+  /* ---------------- Game-over desktop: draggable windows + clickable value apps ---------------- */
+  var zTop = 20;
+  function focusWin(win) { win.style.zIndex = ++zTop; }
+  function makeDraggable(win, bar) {
+    bar.addEventListener("pointerdown", function (e) {
+      if (e.target.closest("button, input, a")) return; // grabbing a control, not the bar
+      e.preventDefault();
+      var host = screens.gameover.getBoundingClientRect();
+      // Lazily pop out of flex-center into an absolute float at its current spot.
+      if (!win.classList.contains("hw-floating")) {
+        var wr0 = win.getBoundingClientRect();
+        win.style.left = (wr0.left - host.left) + "px";
+        win.style.top = (wr0.top - host.top) + "px";
+        win.classList.add("hw-floating");
+      }
+      focusWin(win);
+      var wr = win.getBoundingClientRect();
+      var offX = e.clientX - wr.left, offY = e.clientY - wr.top;
+      try { bar.setPointerCapture(e.pointerId); } catch (er) {}
+      function move(ev) {
+        var x = Math.max(0, Math.min(host.width - wr.width, ev.clientX - host.left - offX));
+        var y = Math.max(0, Math.min(host.height - wr.height, ev.clientY - host.top - offY));
+        win.style.left = x + "px"; win.style.top = y + "px";
+      }
+      function up() { bar.removeEventListener("pointermove", move); bar.removeEventListener("pointerup", up); }
+      bar.addEventListener("pointermove", move);
+      bar.addEventListener("pointerup", up);
+    });
+    win.addEventListener("pointerdown", function () { focusWin(win); });
+  }
+  function valueQuoteFor(vphrase) {
+    for (var i = 0; i < QUOTES.length; i++) if (QUOTES[i].value === vphrase) return QUOTES[i];
+    return null;
+  }
+  function openValueWindow(vphrase) {
+    var q = valueQuoteFor(vphrase);
+    if (!q) return;
+    var slug = valueSlug(vphrase);
+    var existing = document.getElementById("valwin-" + slug);
+    if (existing) { focusWin(existing); return; } // already open — just raise it
+    var win = document.createElement("div");
+    win.className = "hw-win hw-floating hw-valwin hw-dialog"; // value windows float from birth
+    win.id = "valwin-" + slug;
+    win.innerHTML =
+      '<div class="hw-dialog-bar hw-win-bar">' +
+        '<span class="hw-dots" aria-hidden="true"><span></span><span></span><span></span></span>' +
+        '<span class="hw-dialog-title">' + slug + '.exe</span>' +
+        '<button class="hw-win-close" aria-label="Close">×</button>' +
+      '</div>' +
+      '<div class="hw-valwin-body">' +
+        '<p class="hw-valwin-quote">' + q.text + '</p>' +
+        '<p class="hw-valwin-src">— ' + q.value + ' · posthog.com/handbook/values</p>' +
+      '</div>';
+    screens.gameover.appendChild(win);
+    // cascade so stacked windows don't hide each other
+    var n = document.querySelectorAll(".hw-valwin").length;
+    win.style.left = (18 + n * 22) + "%";
+    win.style.top = (16 + n * 10) + "%";
+    focusWin(win);
+    makeDraggable(win, win.querySelector(".hw-win-bar"));
+    win.querySelector(".hw-win-close").addEventListener("click", function () { win.remove(); });
+    capture("hogware_value_opened", { value: q.value });
+  }
+  var goDeskWired = false;
+  function resetGameoverDesktop() {
+    // Fresh run: clear any value windows, un-float the hero dialog so flex re-centers it.
+    document.querySelectorAll(".hw-valwin").forEach(function (w) { w.remove(); });
+    var dlg = $("hw-go-dialog");
+    dlg.classList.remove("hw-floating");
+    dlg.style.left = ""; dlg.style.top = ""; dlg.style.zIndex = "";
+    document.querySelectorAll("#hw-go-icons .hw-desk-icon").forEach(function (o) { o.classList.remove("hw-desk-active"); });
+    if (goDeskWired) return;
+    goDeskWired = true;
+    makeDraggable(dlg, dlg.querySelector(".hw-win-bar"));
+    document.querySelectorAll("#hw-go-icons .hw-desk-icon").forEach(function (icon) {
+      var vphrase = icon.querySelector("i").textContent;
+      var select = function () {
+        document.querySelectorAll("#hw-go-icons .hw-desk-icon").forEach(function (o) { o.classList.remove("hw-desk-active"); });
+        icon.classList.add("hw-desk-active");
+      };
+      icon.addEventListener("click", select);
+      icon.addEventListener("dblclick", function () { openValueWindow(vphrase); });
+      icon.addEventListener("keydown", function (e) { if (e.key === "Enter") { select(); openValueWindow(vphrase); } });
+    });
   }
 
   function submitScore() {

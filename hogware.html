@@ -873,8 +873,21 @@
           }
 
           /* ---- Gameover ---- */
-          /* ---- Game over: a system dialog. Contained, prioritized, screenshot-ready ---- */
-          #hw-gameover { justify-content: center; padding: 0; }
+          /* ---- Game over: a desktop with a hero dialog you can drag; value apps open ---- */
+          #hw-gameover {
+            justify-content: center; padding: 0;
+            background: var(--bg-alt);
+            background-image: radial-gradient(rgba(21, 21, 21, 0.07) 1.2px, transparent 1.2px);
+            background-size: 22px 22px;
+          }
+          .hw-go-icons { pointer-events: auto; z-index: 1; }
+          .hw-go-icons .hw-desk-icon { cursor: pointer; }
+          .hw-go-icons .hw-desk-icon:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+          .hw-go-desktop-hint {
+            position: absolute; bottom: 0.6em; left: 0; right: 0;
+            text-align: center; font-size: 0.66em; color: var(--muted);
+            margin: 0; pointer-events: none; z-index: 1;
+          }
           .hw-dialog {
             width: min(80%, 400px);
             max-height: 94%;
@@ -887,6 +900,28 @@
             flex-direction: column;
             animation: hw-verb-pop 0.3s cubic-bezier(0.2, 1.5, 0.4, 1);
           }
+          /* draggable window: flex-centered until grabbed, then floats absolute */
+          .hw-win.hw-floating { position: absolute; z-index: 10; margin: 0; }
+          .hw-win-bar { cursor: grab; touch-action: none; user-select: none; }
+          .hw-win-bar:active { cursor: grabbing; }
+          /* value quote windows */
+          .hw-valwin { width: min(60%, 300px); }
+          .hw-valwin-body { padding: 1em 1.1em 1.2em; }
+          .hw-valwin-quote {
+            font-family: var(--header-font);
+            font-style: italic;
+            font-size: 1.02em;
+            color: var(--text);
+            margin: 0 0 0.6em;
+            line-height: 1.4;
+          }
+          .hw-valwin-src { font-size: 0.68em; color: var(--muted); margin: 0; }
+          .hw-win-close {
+            width: auto; margin-left: auto;
+            background: none; border: none; color: var(--muted);
+            font-size: 1.1em; line-height: 1; padding: 0 0.2em; cursor: pointer;
+          }
+          .hw-win-close:hover { color: var(--accent); }
           .hw-dialog-bar {
             display: flex; align-items: center; gap: 0.7em;
             padding: 0.45em 0.8em;
@@ -1031,8 +1066,17 @@
 
                 <!-- Game over -->
                 <div id="hw-gameover" class="hw-screen hw-hidden">
-                    <div class="hw-dialog">
-                        <div class="hw-dialog-bar">
+                    <!-- The desktop stays live behind the dialog: value apps are clickable now -->
+                    <div class="hw-desk-icons hw-go-icons" id="hw-go-icons">
+                        <span class="hw-desk-icon" data-id="drive" role="button" tabindex="0">🚗<i>You're the driver</i></span>
+                        <span class="hw-desk-icon" data-id="publish" role="button" tabindex="0">🌐<i>Make it public</i></span>
+                        <span class="hw-desk-icon" data-id="weird" role="button" tabindex="0">🌀<i>Do more weird</i></span>
+                        <span class="hw-desk-icon" data-id="ship" role="button" tabindex="0">🚀<i>Why not now?</i></span>
+                        <span class="hw-desk-icon" data-id="aim" role="button" tabindex="0">🎯<i>Optimistic by default</i></span>
+                    </div>
+                    <p class="hw-go-desktop-hint">double-click a value to read it · drag any window</p>
+                    <div class="hw-dialog hw-win" id="hw-go-dialog">
+                        <div class="hw-dialog-bar hw-win-bar">
                             <span class="hw-dots" aria-hidden="true"><span></span><span></span><span></span></span>
                             <span class="hw-dialog-title">gameover.exe</span>
                         </div>
