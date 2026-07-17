@@ -78,6 +78,9 @@
 
   /* ---------------- DOM handles ---------------- */
   var $ = function (id) { return document.getElementById(id); };
+  function valueSlug(s) { // "Why not now?" -> "why-not-now"
+    return s.toLowerCase().replace(/'/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
   var stage = $("hw-stage"), scene = $("hw-scene"), hud = $("hw-hud");
   var timerFill = $("hw-timer-fill");
   var screens = {
@@ -1389,8 +1392,8 @@
       updateHud(); // loop counter can change between games
       timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
       $("hw-verb-word").textContent = game.verb;
-      // A: the window IS the value's program — its title is the actual handbook value.
-      $("hw-appwin-title").textContent = game.boss ? "BOSS · " + game.verb.replace("!", "") : game.value;
+      // A: the window is the value's program — titled as its .exe (the desktop icon carries the phrase).
+      $("hw-appwin-title").textContent = game.boss ? valueSlug(game.verb) + ".exe" : valueSlug(game.value) + ".exe";
       // C: light up this value's app icon on the desktop (bosses light none).
       document.querySelectorAll("#hw-desk-icons .hw-desk-icon").forEach(function (el) {
         el.classList.toggle("hw-desk-active", !game.boss && el.dataset.id === game.id);
