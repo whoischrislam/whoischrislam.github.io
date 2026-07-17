@@ -126,37 +126,51 @@
       return;
     }
     transitioning = true;
-    // Launching a program (desktop → game) first maximizes the window; every
-    // transition then collapses the tube to a line and blooms the next screen open.
-    var launching = fromEl === screens.verb;
-    // Booting from the title screen: the power-on IS the transition, so the title
-    // just vanishes under it — no collapse to fight the flash (was the jank).
-    var booting = fromEl === screens.title;
+    // Two transition vocabularies:
+    //  • MAXIMIZE / RESTORE  — launching a program (desktop⇄microgame): the window
+    //    grows to fill the screen, the game plays inside it, then restores back.
+    //  • CRT power-cycle      — the machine changing state (boot, announcements,
+    //    game over): the tube collapses to a line and blooms the next screen open.
+    var effect =
+      fromEl === screens.title ? "boot" :
+      (fromEl === screens.verb && toEl === scene) ? "maximize" :
+      (toEl === screens.verb) ? "restore" : "crt";
+
     conductor.nextBeat(function () {
-      var appwin = launching ? screens.verb.querySelector(".hw-appwin") : null;
-      if (appwin) appwin.classList.add("hw-appwin-maximize");
-      var doBloom = function () {
+      var reveal = function (inClass, inMs) {
         hideAllScreens();
-        if (fromEl) fromEl.classList.remove("hw-crt-collapse");
+        if (fromEl) fromEl.classList.remove("hw-crt-collapse", "hw-shrink-out");
+        var appwin = screens.verb.querySelector(".hw-appwin");
         if (appwin) appwin.classList.remove("hw-appwin-maximize");
         if (prep) prep();
         show(toEl);
-        toEl.classList.add("hw-crt-bloom");
+        toEl.classList.add(inClass);
         void toEl.offsetWidth;
-        toEl.classList.add("hw-crt-bloom-go");
+        toEl.classList.add(inClass + "-go");
         setTimeout(function () {
-          toEl.classList.remove("hw-crt-bloom", "hw-crt-bloom-go");
+          toEl.classList.remove(inClass, inClass + "-go");
           transitioning = false;
           if (done) done();
-        }, BLOOM_MS);
+        }, inMs);
       };
-      if (booting) { doBloom(); return; }
-      var startCollapse = function () {
-        if (fromEl) fromEl.classList.add("hw-crt-collapse");
-        setTimeout(doBloom, COLLAPSE_MS);
-      };
-      if (launching) setTimeout(startCollapse, 160); // let the window pop toward you first
-      else startCollapse();
+
+      if (effect === "boot") { reveal("hw-crt-bloom", BLOOM_MS); return; }
+
+      if (effect === "maximize") {
+        // The program window rushes up to fill the screen, then the game blooms in inside it.
+        screens.verb.querySelector(".hw-appwin").classList.add("hw-appwin-maximize");
+        setTimeout(function () { reveal("hw-scale-in", 300); }, 240);
+        return;
+      }
+      if (effect === "restore") {
+        // The game shrinks back down and the desktop restores.
+        if (fromEl) fromEl.classList.add("hw-shrink-out");
+        setTimeout(function () { reveal("hw-restore-in", 300); }, 200);
+        return;
+      }
+      // crt: collapse the tube to a line, bloom the next screen open
+      if (fromEl) fromEl.classList.add("hw-crt-collapse");
+      setTimeout(function () { reveal("hw-crt-bloom", BLOOM_MS); }, COLLAPSE_MS);
     });
   }
 
@@ -1430,6 +1444,8 @@
     // One honest number: LOOP N, gaining a "· FAST" only once speed-ups begin (loop 4+).
     // Level tier is communicated by the LEVEL UP! cards as events, not a persistent token.
     $("hw-verb-tile").textContent = "LOOP " + run.loop + (run.loop >= 4 ? " · FAST" : "");
+    // The relocated flavor line: what just happened, in the window's status bar.
+    $("hw-appwin-status").textContent = run.lastStatus || "ready.";
   }
 
   function playGame(game) {
@@ -1516,12 +1532,15 @@
     }
     updateHud();
 
+    // The wit doesn't fit a 0.8s flash — the flash is just the verdict + bonus;
+    // the flavor line relocates to the desktop status bar, which has reading time.
+    run.lastStatus = (pass ? "✓ " : "✗ ") + (flavor || "") +
+      (!pass && run.lives > 0 ? " (" + run.lives + (run.lives === 1 ? " life" : " lives") + " left)" : "");
     hideAllScreens();
     var word = $("hw-result-word");
     word.textContent = pass ? (bonus > 0 ? "CLEARED +" + bonus : "CLEARED") : "MISSED";
     word.className = "hw-result-word " + (pass ? "hw-pass" : "hw-fail");
-    $("hw-result-flavor").textContent = (flavor || "") +
-      (!pass && run.lives > 0 ? " (" + run.lives + (run.lives === 1 ? " life" : " lives") + " left)" : "");
+    $("hw-result-flavor").textContent = ""; // moved to the desktop status bar
     show(screens.result);
 
     setTimeout(function () {
