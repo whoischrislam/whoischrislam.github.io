@@ -1338,7 +1338,7 @@
     var rng = mulberry32(DAY_NUM * 2654435761); // daily seed: same gauntlet for everyone today
     return {
       score: 0, cleared: 0, loop: 1, speed: startSpeed, lives: LIVES,
-      trail: [], history: [0], rng: rng, order: shuffle(GAMES.slice(), rng), idx: 0, phase: "verb"
+      trail: [], rng: rng, order: shuffle(GAMES.slice(), rng), idx: 0, phase: "verb"
     };
   }
   function shuffle(a, rng) {
@@ -1349,10 +1349,8 @@
   }
 
   function updateHud() {
-    $("hw-hud-score").textContent = "Score " + run.score;
-    $("hw-hud-loop").textContent = "Loop " + run.loop + " · Lv" + Math.min(run.loop, 3);
-    var icons = document.querySelectorAll("#hw-hud-lives .hw-life");
-    icons.forEach(function (img, i) {
+    // Microgame HUD is just hero-timer + lives now; loop/level live on the desktop + announce cards.
+    document.querySelectorAll("#hw-hud-lives .hw-life").forEach(function (img, i) {
       img.classList.toggle("hw-life-lost", i >= run.lives);
     });
   }
@@ -1421,20 +1419,9 @@
       img.alt = "";
       livesEl.appendChild(img);
     }
-    $("hw-verb-tile").textContent =
-      "LOOP " + run.loop + " · Lv" + Math.min(run.loop, 3) + " · " + (1 / run.speed).toFixed(1) + "×";
-    // Sparkline: score after each game, scaled into an 86×30 box.
-    var h = run.history, maxY = Math.max(4, h[h.length - 1]);
-    var pts = h.map(function (s, i) {
-      var x = 4 + (h.length === 1 ? 0 : (i / (h.length - 1)) * 74);
-      var y = 26 - (s / maxY) * 20;
-      return x.toFixed(1) + "," + y.toFixed(1);
-    });
-    $("hw-spark-line").setAttribute("points", pts.join(" "));
-    var lastPt = pts[pts.length - 1].split(",");
-    var dot = $("hw-spark-dot");
-    dot.setAttribute("cx", lastPt[0]);
-    dot.setAttribute("cy", lastPt[1]);
+    // One honest number: LOOP N, gaining a "· FAST" only once speed-ups begin (loop 4+).
+    // Level tier is communicated by the LEVEL UP! cards as events, not a persistent token.
+    $("hw-verb-tile").textContent = "LOOP " + run.loop + (run.loop >= 4 ? " · FAST" : "");
   }
 
   function playGame(game) {
@@ -1476,7 +1463,7 @@
   }
 
   function startClock(game) {
-    timerFill.classList.remove("hw-timer-hot");
+    timerFill.classList.remove("hw-timer-warm", "hw-timer-hot");
     var last = performance.now();
     (function tick(now) {
       if (!active || active.done) return;
@@ -1484,7 +1471,8 @@
       active.elapsed += dt;
       var frac = Math.max(0, 1 - active.elapsed / active.duration);
       timerFill.style.transform = "scaleX(" + frac + ")";
-      if (frac < 0.3) timerFill.classList.add("hw-timer-hot");
+      timerFill.classList.toggle("hw-timer-warm", frac <= 0.6 && frac > 0.3); // green → yellow → red
+      timerFill.classList.toggle("hw-timer-hot", frac <= 0.3);
       if (game.update) game.update(active, dt);
       if (!active || active.done) return; // a game can resolve inside update()
       if (active.elapsed >= active.duration) {
@@ -1518,7 +1506,6 @@
       sfx("fail");
       shake();
     }
-    run.history.push(run.score); // feeds the verb-card sparkline
     updateHud();
 
     hideAllScreens();
@@ -1610,10 +1597,10 @@
 
     $("hw-final-score").textContent = run.score;
     $("hw-final-stats").textContent =
-      run.cleared + " cleared · loop " + run.loop + (isBest ? " · new personal best" : best ? " · best " + best : "");
+      (isBest ? "new best · " : "") + "loop " + run.loop + " · " + run.cleared + " cleared";
     var trailEl = $("hw-trail");
     trailEl.textContent = trailGrid();
-    trailEl.classList.toggle("hw-trail-deep", run.trail.length > 36); // 6+ loops: compress so the score stays on-frame
+    trailEl.classList.toggle("hw-trail-deep", run.trail.length > 42); // deep runs compress so the dialog stays contained
 
     var copyBtn = $("hw-copy");
     copyBtn.textContent = "COPY RESULT";
