@@ -160,8 +160,8 @@
             pointer-events: none;
             z-index: 90;
             background:
-              radial-gradient(ellipse 130% 110% at 50% 45%, transparent 62%, rgba(0, 0, 0, 0.14) 100%),
-              repeating-linear-gradient(0deg, rgba(21, 21, 21, 0.05) 0px, rgba(21, 21, 21, 0.05) 1px, transparent 1px, transparent 3px);
+              radial-gradient(ellipse 130% 110% at 50% 45%, transparent 60%, rgba(0, 0, 0, 0.18) 100%),
+              repeating-linear-gradient(0deg, rgba(21, 21, 21, 0.11) 0px, rgba(21, 21, 21, 0.11) 1.5px, transparent 1.5px, transparent 4px);
           }
           #hw-flash {
             position: absolute;
@@ -172,14 +172,16 @@
             background: #fff;
             opacity: 0;
           }
-          #hw-flash.hw-blip { animation: hw-channel-blip 0.14s ease-out; }
-          @keyframes hw-channel-blip { 0% { opacity: 0.65; } 100% { opacity: 0; } }
-          #hw-flash.hw-poweron { animation: hw-crt-poweron 0.5s cubic-bezier(0.2, 0.8, 0.3, 1); }
+          #hw-flash.hw-blip { animation: hw-channel-blip 0.13s ease-out; }
+          @keyframes hw-channel-blip { 0% { opacity: 0.18; } 100% { opacity: 0; } } /* a felt cut, not a strobe */
+          /* Power-on, the full ritual: dot → horizontal line → the picture blooms open */
+          #hw-flash.hw-poweron { animation: hw-crt-poweron 0.68s cubic-bezier(0.25, 0.7, 0.3, 1); }
           @keyframes hw-crt-poweron {
-            0% { opacity: 1; transform: scaleY(0.006); }
-            35% { opacity: 1; transform: scaleY(0.006); }
-            75% { opacity: 0.9; transform: scaleY(1); }
-            100% { opacity: 0; transform: scaleY(1); }
+            0%   { opacity: 1; transform: scale(0.03, 0.008); }
+            28%  { opacity: 1; transform: scale(1, 0.008); }
+            55%  { opacity: 1; transform: scale(1, 0.012); }
+            80%  { opacity: 0.85; transform: scale(1, 1); }
+            100% { opacity: 0; transform: scale(1, 1); }
           }
           @media (prefers-reduced-motion: reduce) {
             #hw-flash.hw-blip, #hw-flash.hw-poweron { animation: none; opacity: 0; }
@@ -390,7 +392,27 @@
             .hw-zoom-out, .hw-zoom-in, .hw-zoom-in-go { transition: none; transform: none; opacity: 1; }
           }
 
-          /* ---- Verb card ---- */
+          /* ---- Verb card: the WarioWare sunburst, rotating on the beat clock ---- */
+          #hw-verb, #hw-quote { overflow: hidden; }
+          #hw-verb::before, #hw-quote::before {
+            content: "";
+            position: absolute;
+            inset: -45%;
+            background: repeating-conic-gradient(from 0deg, var(--accent-soft) 0deg 11deg, transparent 11deg 30deg);
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 60%);
+            mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 60%);
+            animation: hw-sunburst calc(var(--beat, 500ms) * 24) linear infinite;
+            z-index: 0;
+          }
+          #hw-quote::before { animation-duration: calc(var(--beat, 500ms) * 14); } /* announcements spin hungrier */
+          #hw-verb > *, #hw-quote > * { position: relative; z-index: 1; }
+          @keyframes hw-sunburst { to { transform: rotate(360deg); } }
+          .hw-verb-word { animation: hw-verb-pop 0.35s cubic-bezier(0.2, 1.6, 0.4, 1), hw-beat-throb calc(var(--beat, 500ms) * 2) ease-in-out 0.4s infinite; }
+          @keyframes hw-beat-throb { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.035); } }
+          @media (prefers-reduced-motion: reduce) {
+            #hw-verb::before, #hw-quote::before { animation: none; }
+            .hw-verb-word { animation: none; }
+          }
           #hw-verb {
             background:
               radial-gradient(ellipse 120% 90% at 50% 110%, var(--accent-soft), transparent 60%),
