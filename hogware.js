@@ -115,11 +115,14 @@
       return;
     }
     transitioning = true;
+    // Leaving the desktop reads as pushing INTO the program window; everything
+    // else pulls back. Two directions, one metaphor: the machine swallows you.
+    var outClass = fromEl === screens.verb ? "hw-zoom-into" : "hw-zoom-out";
     conductor.nextBeat(function () {
-      if (fromEl) fromEl.classList.add("hw-zoom-out");
+      if (fromEl) fromEl.classList.add(outClass);
       setTimeout(function () {
         hideAllScreens();
-        if (fromEl) fromEl.classList.remove("hw-zoom-out");
+        if (fromEl) fromEl.classList.remove(outClass);
         crtBlip("hw-blip"); // channel-change flash at the cut — the CRT swallowing you into the next game
         if (prep) prep();
         show(toEl);
@@ -1368,6 +1371,7 @@
       updateHud(); // loop counter can change between games
       timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
       $("hw-verb-word").textContent = game.verb;
+      $("hw-appwin-title").textContent = (game.boss ? game.id.replace("boss-", "") : game.id) + ".exe";
       // One-second cards get ONE word; the value names live in the quotes and flavors.
       var valEl = $("hw-verb-value");
       valEl.textContent = game.boss ? game.value : "";
