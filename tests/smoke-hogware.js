@@ -19,9 +19,10 @@ function log(name, ok, detail) {
   page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
   page.on('dialog', d => d.accept());
 
+  // Pin the seed so the suite is deterministic regardless of the real date.
   // optional argv[2] forces a boss, e.g. `node tests/smoke-hogware.js incident`
   const bossArg = process.argv[2] ? '&boss=' + process.argv[2] : '';
-  await page.goto('file://' + path.join(SITE, 'hogware.html') + '?notrack=1' + bossArg);
+  await page.goto('file://' + path.join(SITE, 'hogware.html') + '?notrack=1&day=1' + bossArg);
   await page.reload();
   await page.waitForTimeout(400);
 
