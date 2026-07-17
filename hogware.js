@@ -95,13 +95,15 @@
      Dramatic on purpose (Chris: start extreme, dial back) — tune these two.
      prefers-reduced-motion gets the old instant cut. Feedback screens never
      route through here; only forward-looking starts do. */
-  var ZOOM_MS = 240; // per half (out, then in)
+  // Cinematic CRT transition: outgoing image collapses to a bright horizontal
+  // line (tube powering down), swap at the line, incoming blooms back open.
+  var COLLAPSE_MS = 230, BLOOM_MS = 400;
   var transitioning = false;
-  function crtBlip(kind) { // "hw-blip" channel change · "hw-poweron" CRT turn-on line
+  function crtBlip(kind) { // "hw-poweron" only now — the run-start tube wake-up
     if (reducedMotion) return;
     var f = $("hw-flash");
     if (!f) return;
-    f.classList.remove("hw-blip", "hw-poweron");
+    f.classList.remove("hw-poweron");
     void f.offsetWidth;
     f.classList.add(kind);
   }
@@ -115,26 +117,32 @@
       return;
     }
     transitioning = true;
-    // Leaving the desktop reads as pushing INTO the program window; everything
-    // else pulls back. Two directions, one metaphor: the machine swallows you.
-    var outClass = fromEl === screens.verb ? "hw-zoom-into" : "hw-zoom-out";
+    // Launching a program (desktop → game) first maximizes the window; every
+    // transition then collapses the tube to a line and blooms the next screen open.
+    var launching = fromEl === screens.verb;
     conductor.nextBeat(function () {
-      if (fromEl) fromEl.classList.add(outClass);
-      setTimeout(function () {
-        hideAllScreens();
-        if (fromEl) fromEl.classList.remove(outClass);
-        crtBlip("hw-blip"); // channel-change flash at the cut — the CRT swallowing you into the next game
-        if (prep) prep();
-        show(toEl);
-        toEl.classList.add("hw-zoom-in");
-        void toEl.offsetWidth; // commit start state before animating to identity
-        toEl.classList.add("hw-zoom-in-go");
+      var appwin = launching ? screens.verb.querySelector(".hw-appwin") : null;
+      if (appwin) appwin.classList.add("hw-appwin-maximize");
+      var startCollapse = function () {
+        if (fromEl) fromEl.classList.add("hw-crt-collapse");
         setTimeout(function () {
-          toEl.classList.remove("hw-zoom-in", "hw-zoom-in-go");
-          transitioning = false;
-          if (done) done();
-        }, ZOOM_MS);
-      }, ZOOM_MS);
+          hideAllScreens();
+          if (fromEl) fromEl.classList.remove("hw-crt-collapse");
+          if (appwin) appwin.classList.remove("hw-appwin-maximize");
+          if (prep) prep();
+          show(toEl);
+          toEl.classList.add("hw-crt-bloom");
+          void toEl.offsetWidth;
+          toEl.classList.add("hw-crt-bloom-go");
+          setTimeout(function () {
+            toEl.classList.remove("hw-crt-bloom", "hw-crt-bloom-go");
+            transitioning = false;
+            if (done) done();
+          }, BLOOM_MS);
+        }, COLLAPSE_MS);
+      };
+      if (launching) setTimeout(startCollapse, 160); // let the window pop toward you first
+      else startCollapse();
     });
   }
 
