@@ -38,6 +38,12 @@
   var _now = new Date();
   var _todayMidnight = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate());
   var DAY_NUM = Math.max(1, Math.round((_todayMidnight - HW_EPOCH) / 86400000) + 1);
+  // ?day=N pins the seed (deterministic tests, replaying a past day) — harmless: it
+  // only picks which daily gauntlet you play, and the leaderboard is already per-day.
+  try {
+    var _dq = parseInt(new URLSearchParams(location.search).get("day"), 10);
+    if (_dq >= 1 && _dq <= 100000) DAY_NUM = _dq;
+  } catch (e) {}
   function mulberry32(a) {
     return function () {
       a |= 0; a = a + 0x6D2B79F5 | 0;
@@ -120,26 +126,31 @@
     // Launching a program (desktop → game) first maximizes the window; every
     // transition then collapses the tube to a line and blooms the next screen open.
     var launching = fromEl === screens.verb;
+    // Booting from the title screen: the power-on IS the transition, so the title
+    // just vanishes under it — no collapse to fight the flash (was the jank).
+    var booting = fromEl === screens.title;
     conductor.nextBeat(function () {
       var appwin = launching ? screens.verb.querySelector(".hw-appwin") : null;
       if (appwin) appwin.classList.add("hw-appwin-maximize");
+      var doBloom = function () {
+        hideAllScreens();
+        if (fromEl) fromEl.classList.remove("hw-crt-collapse");
+        if (appwin) appwin.classList.remove("hw-appwin-maximize");
+        if (prep) prep();
+        show(toEl);
+        toEl.classList.add("hw-crt-bloom");
+        void toEl.offsetWidth;
+        toEl.classList.add("hw-crt-bloom-go");
+        setTimeout(function () {
+          toEl.classList.remove("hw-crt-bloom", "hw-crt-bloom-go");
+          transitioning = false;
+          if (done) done();
+        }, BLOOM_MS);
+      };
+      if (booting) { doBloom(); return; }
       var startCollapse = function () {
         if (fromEl) fromEl.classList.add("hw-crt-collapse");
-        setTimeout(function () {
-          hideAllScreens();
-          if (fromEl) fromEl.classList.remove("hw-crt-collapse");
-          if (appwin) appwin.classList.remove("hw-appwin-maximize");
-          if (prep) prep();
-          show(toEl);
-          toEl.classList.add("hw-crt-bloom");
-          void toEl.offsetWidth;
-          toEl.classList.add("hw-crt-bloom-go");
-          setTimeout(function () {
-            toEl.classList.remove("hw-crt-bloom", "hw-crt-bloom-go");
-            transitioning = false;
-            if (done) done();
-          }, BLOOM_MS);
-        }, COLLAPSE_MS);
+        setTimeout(doBloom, COLLAPSE_MS);
       };
       if (launching) setTimeout(startCollapse, 160); // let the window pop toward you first
       else startCollapse();
@@ -1375,6 +1386,7 @@
       : run.order[run.idx];
     screens.verb.classList.toggle("hw-verb-boss", !!game.boss);
     hud.classList.toggle("hw-hud-boss", !!game.boss);
+    hide(hud); // desktop shows its taskbar; the gameplay HUD is for inside a program
     swapScreens(screens.verb, function () {
       updateHud(); // loop counter can change between games
       timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
@@ -1449,6 +1461,7 @@
     swapScreens(scene, function () {
       scene.innerHTML = "";
       scene.style.pointerEvents = "none"; // a fading-in scene is never clickable
+      show(hud); // back inside a program: the gameplay HUD returns
       game.setup(thisActive);
     }, function () {
       if (active !== thisActive || active.done) return;
