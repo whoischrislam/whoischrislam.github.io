@@ -1709,8 +1709,18 @@
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", function () {
-    // The monitor powers on when the page loads — the title screen boots up on the tube.
-    setTimeout(function () { crtBlip("hw-poweron"); }, 120);
+    // The monitor powers on when the page loads: the title starts collapsed to the
+    // CRT line (hw-crt-bloom in the markup) and unfolds — nothing shows before boot.
+    var title = $("hw-titlescreen");
+    if (reducedMotion) {
+      title.classList.remove("hw-crt-bloom");
+    } else {
+      setTimeout(function () {
+        crtBlip("hw-poweron");
+        title.classList.add("hw-crt-bloom-go");
+        setTimeout(function () { title.classList.remove("hw-crt-bloom", "hw-crt-bloom-go"); }, BLOOM_MS);
+      }, 180);
+    }
     var best = 0;
     try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
     if (best) {
