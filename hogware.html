@@ -429,11 +429,12 @@
             will-change: transform, opacity;
           }
           @keyframes hw-appwin-maximize { to { transform: scale(2.6); opacity: 0.4; } }
-          .hw-scale-in { transform: scale(0.9); opacity: 0; will-change: transform, opacity; }
+          .hw-scale-in { transform: scale(0.72); opacity: 0; will-change: transform, opacity; }
           .hw-scale-in-go { animation: hw-scale-in 300ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards; }
           @keyframes hw-scale-in { to { transform: scale(1); opacity: 1; } }
-          .hw-shrink-out { animation: hw-shrink-out 200ms cubic-bezier(0.4, 0, 0.7, 0.5) forwards; }
-          @keyframes hw-shrink-out { to { transform: scale(0.82); opacity: 0; } }
+          /* exit = minimize: the window shrinks down toward the taskbar */
+          .hw-shrink-out { animation: hw-shrink-out 220ms cubic-bezier(0.4, 0, 0.7, 0.5) forwards; transform-origin: 50% 100%; }
+          @keyframes hw-shrink-out { to { transform: translateY(30%) scale(0.14); opacity: 0; } }
           .hw-restore-in { transform: scale(1.06); opacity: 0; will-change: transform, opacity; }
           .hw-restore-in-go { animation: hw-restore-in 300ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards; }
           @keyframes hw-restore-in { to { transform: scale(1); opacity: 1; } }
@@ -668,8 +669,8 @@
           /* ---- HUD: timer bar + score/loop ---- */
           #hw-hud {
             position: absolute;
-            top: 0; left: 0; right: 0;
-            padding: 0.6em 0.8em 0;
+            top: 1.75em; left: 0; right: 0; /* clear the game window's title bar */
+            padding: 0.5em 0.8em 0;
             display: flex;
             flex-direction: column;
             gap: 0.4em;
@@ -804,7 +805,9 @@
           #hw-quote .hw-quote-source { color: var(--muted); font-size: 0.8em; margin: 0; }
 
           /* ---- Game scene container ---- */
-          #hw-scene { position: absolute; inset: 0; z-index: 10; }
+          #hw-scene { position: absolute; inset: 0; z-index: 10; display: flex; flex-direction: column; }
+          #hw-scene .hw-gamewin-bar { flex: none; }        /* title bar rides the top of the maximized window */
+          #hw-scene-body { position: relative; flex: 1 1 auto; overflow: hidden; }
           #hw-scene svg { display: block; }
 
           /* Shake on fail (skipped under reduced motion) */
@@ -1150,8 +1153,14 @@
                     </div>
                 </div>
 
-                <!-- Live microgame scene -->
-                <div id="hw-scene" class="hw-hidden"></div>
+                <!-- Live microgame scene: a maximized Win95 window (title bar names the value) -->
+                <div id="hw-scene" class="hw-hidden">
+                    <div class="hw-appwin-bar hw-gamewin-bar">
+                        <span class="hw-appwin-title"><span id="hw-gamewin-icon">🦔</span> <span id="hw-gamewin-title-text">game</span></span>
+                        <span class="hw-tbar-controls" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
+                    </div>
+                    <div id="hw-scene-body"></div>
+                </div>
 
                 <!-- Result flash -->
                 <div id="hw-result" class="hw-screen hw-hidden">
