@@ -855,23 +855,25 @@
           .hw-toggles-dense .hw-toggle { padding: 0.28em 0.7em; font-size: 0.85em; }
 
           /* ---- SHIP IT microgame ---- */
-          /* SHIP target: a green Win95 'deploy' button you hunt for in the noise */
+          /* SHIP target: a PostHog-orange Win95 'deploy' button — complementary to the
+             blue notification pile, so it pops once you spot it in the noise */
           .hw-ship-btn95 {
             width: auto;
             font-family: var(--body-font);
             font-weight: 800;
             font-size: 0.92em;
             color: #fff;
-            background: #46A758;
+            background: #F54E00;
             border: 2px solid;
-            border-color: #7BD98C #2E6E3B #2E6E3B #7BD98C; /* Win95 outset, green */
+            border-color: #FF8A5C #A83400 #A83400 #FF8A5C; /* Win95 outset, orange */
             border-radius: 2px;
             padding: 0.5em 1.1em;
             cursor: pointer;
             box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
           }
-          .hw-ship-btn95:active { border-color: #2E6E3B #7BD98C #7BD98C #2E6E3B; }
-          .hw-ship-decoy { background: #C7A83E; border-color: #E6CE7A #8A6E1C #8A6E1C #E6CE7A; } /* tempting look-alike */
+          .hw-ship-btn95:active { border-color: #A83400 #FF8A5C #FF8A5C #A83400; }
+          /* decoy: PostHog yellow — warm and tempting, but a read-the-label tell */
+          .hw-ship-decoy { background: #F1A82C; color: #151515; border-color: #FFCE7A #B17816 #B17816 #FFCE7A; }
           /* Win95 notification windows — the moving distractions */
           .hw-notif {
             position: absolute;
