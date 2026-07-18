@@ -34,7 +34,7 @@ function log(name, ok, detail) {
       const s = document.getElementById('hw-scene');
       if (document.getElementById('hw-stage').dataset.boss === '1') return 'boss';
       if (s.querySelector('#hw-car')) return 'drive';
-      if (s.querySelector('.hw-toggles')) return 'publish';
+      if (s.querySelector('.hw-pubpanel')) return 'publish';
       if (s.querySelector('#hw-w-frame')) return 'weird';
       if (s.querySelector('#hw-ship-zone')) return 'ship';
       if (s.querySelector('#hw-puck')) return 'aim';
@@ -172,7 +172,12 @@ function log(name, ok, detail) {
       await page.waitForFunction(() => document.getElementById('hw-result').classList.contains('hw-hidden'), { timeout: 6000 });
       return { game, passed, flavor };
     } else if (game === 'publish') {
-      for (const t of await page.$$('.hw-toggle')) await t.dispatchEvent('pointerdown');
+      for (const t of await page.$$('.hw-pubrow')) {
+        await t.dispatchEvent('pointerdown');
+        // L3 salary row pops a confirm — click Yes to commit
+        const yes = await page.$('.hw-pubyes');
+        if (yes) { await yes.dispatchEvent('pointerdown'); await page.waitForTimeout(40); }
+      }
     } else if (game === 'weird') {
       // Aim at the pulsing ring — clicks now need real coordinates, not just any hit.
       for (let i = 0; i < 16; i++) {

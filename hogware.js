@@ -482,50 +482,75 @@
   var gamePublish = {
     id: "publish", value: "Make it public", verb: "PUBLISH!", input: "click",
     baseDurationMs: 4200,
-    params: { count: 3, relocks: 0, density: 0 },
-    levels: [{}, { count: 4, density: 1 }, { count: 5, relocks: 1, density: 2 }],
-    _pool: ["the code", "the roadmap", "the salaries", "the finances", "the incident report", "the board deck", "the pricing model", "the postmortem"],
+    params: { count: 3, density: 0, confirm: false },
+    levels: [{}, { count: 4, density: 1 }, { count: 5, density: 2, confirm: true }],
+    // A Win95 "Sharing" control panel: click a whole row to make it public. Fitts-safe
+    // (the row is the target, the tiny checkbox is just the look). Content = radical
+    // transparency, real items + a couple cheeky ones.
+    _pool: ["Source code", "Product roadmap", "Company handbook", "Q3 financials",
+            "Incident reports", "The postmortem", "Pricing model", "Your search history", "That 2am Slack"],
+    _sensitive: "Salaries", // the one that needs a confirm at L3 — of course it does
     setup: function (ctx) {
-      // Draw this play's secrets from the pool (seeded) — different docs each loop.
       var items = shuffle(gamePublish._pool.slice(), run.rng).slice(0, ctx.params.count);
+      if (ctx.params.confirm) { // guarantee the sensitive row is present as the confirm target
+        if (items.indexOf(gamePublish._sensitive) === -1) items[items.length - 1] = gamePublish._sensitive;
+        ctx.state.confirmLabel = gamePublish._sensitive;
+      }
       ctx.state.items = items;
       ctx.state.pub = {};
-      ctx.state.relocksLeft = ctx.params.relocks;
-      ctx.state.relockIdx = Math.floor(run.rng() * items.length);
+      var dens = ["", " hw-pub-snug", " hw-pub-dense"][ctx.params.density] || "";
       var rows = items.map(function (label, i) {
-        return '<div class="hw-toggle" data-i="' + i + '" role="button" tabindex="-1">' +
-          '<span>' + label + '</span><span class="hw-pill">PRIVATE</span></div>';
+        return '<button class="hw-pubrow" data-i="' + i + '">' +
+          '<span class="hw-pubcheck"></span>' +
+          '<span class="hw-publabel">' + label + '</span>' +
+          '<span class="hw-pubstate">Private</span></button>';
       }).join("");
-      // Density is the difficulty lever: a more cramped list = smaller targets,
-      // and it reads MORE like corporate software, not less.
-      var dens = ["", " hw-toggles-snug", " hw-toggles-dense"][ctx.params.density] || "";
-      scene.innerHTML = '<div class="hw-screen"><div class="hw-toggles' + dens + '" style="gap:0.45em;">' + rows + '</div>' +
-        '<p class="hw-hint">take it ALL public — flip every toggle</p></div>';
-      function setState(el, isPublic) {
-        el.classList.toggle("hw-public", isPublic);
-        el.querySelector(".hw-pill").textContent = isPublic ? "PUBLIC" : "PRIVATE";
-      }
-      scene.querySelectorAll(".hw-toggle").forEach(function (el) {
+      scene.innerHTML =
+        '<div class="hw-screen"><div class="hw-pubpanel">' +
+          '<fieldset class="hw-pubgroup"><legend>Make public:</legend>' +
+            '<div class="hw-publist' + dens + '">' + rows + '</div>' +
+          '</fieldset>' +
+          '<p class="hw-hint">click each row to make it public</p>' +
+        '</div></div>';
+
+      var publish = function (el, i) {
+        ctx.state.pub[i] = true;
+        el.classList.add("hw-public");
+        el.querySelector(".hw-pubstate").textContent = "Public";
+        sfx("tick");
+        if (Object.keys(ctx.state.pub).filter(function (k) { return ctx.state.pub[k]; }).length === items.length) {
+          ctx.win("Everything's out in the open.", 0);
+        }
+      };
+      scene.querySelectorAll(".hw-pubrow").forEach(function (el) {
         var i = parseInt(el.dataset.i, 10);
         el.addEventListener("pointerdown", function () {
-          if (ctx.done || ctx.state.pub[i]) return;
-          ctx.state.pub[i] = true;
-          setState(el, true);
-          sfx("tick");
-          if (ctx.state.relocksLeft > 0 && i === ctx.state.relockIdx) {
-            ctx.state.relocksLeft--;
-            setTimeout(function () {
-              if (ctx.done) return;
-              ctx.state.pub[i] = false;
-              setState(el, false);
-              el.querySelector("span").textContent = items[i] + " (legal had concerns)";
-              sfx("fail");
-            }, 550);
-          }
-          if (Object.keys(ctx.state.pub).filter(function (k) { return ctx.state.pub[k]; }).length === items.length) {
-            ctx.win("Everything's out in the open.", 0);
-          }
+          if (ctx.done || !ctx.live || ctx.state.pub[i] || ctx.state.confirmOpen) return;
+          // The sensitive row (L3) needs a "are you sure?" — of course salaries does.
+          if (items[i] === ctx.state.confirmLabel) { gamePublish._askConfirm(ctx, el, i, publish); return; }
+          publish(el, i);
         });
+      });
+    },
+    _askConfirm: function (ctx, rowEl, i, publish) {
+      ctx.state.confirmOpen = true;
+      var dlg = document.createElement("div");
+      dlg.className = "hw-pub-confirm hw-dialog";
+      dlg.innerHTML =
+        '<div class="hw-dialog-bar hw-tbar-fatal"><span class="hw-dialog-title">⚠ Confirm</span></div>' +
+        '<div class="hw-pub-confirm-body"><p>Make <b>Salaries</b> public?<br><span>everyone. yes, you too.</span></p>' +
+          '<div class="hw-pub-confirm-btns"><button class="hw-btn hw-pubyes">Yes</button>' +
+          '<button class="hw-btn hw-btn--ghost hw-pubno">No</button></div></div>';
+      scene.querySelector(".hw-pubpanel").appendChild(dlg);
+      var close = function () { ctx.state.confirmOpen = false; dlg.remove(); };
+      dlg.querySelector(".hw-pubyes").addEventListener("pointerdown", function (e) {
+        e.stopPropagation();
+        if (ctx.done) return;
+        close(); publish(rowEl, i);
+      });
+      dlg.querySelector(".hw-pubno").addEventListener("pointerdown", function (e) {
+        e.stopPropagation();
+        close(); sfx("whiff");
       });
     },
     onTimeout: function (ctx) {
