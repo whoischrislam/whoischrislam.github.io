@@ -755,7 +755,8 @@
             '<g id="hw-tm-group">' +
               '<g id="hw-tm-f1">' +
                 '<path d="M20 90 L22 70 Q24 62 34 61 L44 61 Q52 62 54 70 L56 90 Z" fill="#3B4A6B"/>' +
-                '<path d="M48 68 Q56 56 58 46 L63 49 Q59 60 53 72 Z" fill="#3B4A6B"/><circle cx="61" cy="45" r="3" fill="#E0B088"/>' +
+                '<path d="M26 68 L31 68 L27 47 L22 47 Z" fill="#3B4A6B"/><ellipse cx="24" cy="45" rx="3.4" ry="4" fill="#E0B088"/>' + // left arm up + hand
+                '<path d="M43 68 L48 68 L52 47 L47 47 Z" fill="#3B4A6B"/><ellipse cx="50" cy="45" rx="3.4" ry="4" fill="#E0B088"/>' + // right arm up + hand
                 '<rect x="34" y="52" width="6" height="10" fill="#E0B088"/>' +
                 '<circle id="hw-tm-h1" cx="37" cy="44" r="9" fill="#E0B088"/>' +
                 '<path d="M28 43 Q37 29 46 43 Q46 35 37 32 Q28 35 28 43 Z" fill="#5A4632"/>' +
@@ -763,8 +764,8 @@
               '</g>' +
               '<g id="hw-tm-f2">' +
                 '<path d="M80 92 L82 70 Q84 61 100 60 Q116 61 118 70 L120 92 Z" fill="#7B3B47"/>' +
-                '<path d="M88 67 Q82 55 80 44 L85 43 Q90 55 93 68 Z" fill="#7B3B47"/><path d="M112 67 Q118 55 120 44 L115 43 Q110 55 107 68 Z" fill="#7B3B47"/>' +
-                '<circle cx="82" cy="43" r="3" fill="#C68642"/><circle cx="118" cy="43" r="3" fill="#C68642"/>' +
+                '<path d="M89 68 L94 68 L90 47 L85 47 Z" fill="#7B3B47"/><ellipse cx="87" cy="45" rx="3.4" ry="4" fill="#C68642"/>' + // left arm up + hand
+                '<path d="M106 68 L111 68 L115 47 L110 47 Z" fill="#7B3B47"/><ellipse cx="113" cy="45" rx="3.4" ry="4" fill="#C68642"/>' + // right arm up + hand
                 '<rect x="96" y="49" width="8" height="11" fill="#C68642"/>' +
                 '<circle id="hw-tm-h2" cx="100" cy="40" r="10" fill="#C68642"/>' +
                 '<path d="M90 39 Q100 24 110 39 Q110 30 100 26 Q90 30 90 39 Z" fill="#1e1e1e"/>' +
@@ -772,7 +773,8 @@
               '</g>' +
               '<g id="hw-tm-f3">' +
                 '<path d="M144 90 L146 70 Q148 62 158 61 L168 61 Q176 62 178 70 L180 90 Z" fill="#6B7280"/>' +
-                '<path d="M152 68 Q144 56 142 46 L147 43 Q152 55 158 68 Z" fill="#6B7280"/><circle cx="144" cy="45" r="3" fill="#8D5524"/>' +
+                '<path d="M150 68 L155 68 L151 47 L146 47 Z" fill="#6B7280"/><ellipse cx="148" cy="45" rx="3.4" ry="4" fill="#8D5524"/>' + // left arm up + hand
+                '<path d="M167 68 L172 68 L176 47 L171 47 Z" fill="#6B7280"/><ellipse cx="174" cy="45" rx="3.4" ry="4" fill="#8D5524"/>' + // right arm up + hand
                 '<rect x="158" y="52" width="6" height="10" fill="#8D5524"/>' +
                 '<circle id="hw-tm-h3" cx="161" cy="44" r="9" fill="#8D5524"/>' +
                 '<path d="M152 43 Q161 29 170 43 Q170 35 161 32 Q152 35 152 43 Z" fill="#1e1e1e"/>' +
