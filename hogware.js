@@ -1188,7 +1188,8 @@
         var big = s.moonshot ? "MOONSHOT!!" : "BULLSEYE!";
         if (d <= ctx.params.bandHalf) return ctx.win(big, 2);
         if (d <= ctx.params.bandHalf + 6) return ctx.win("CLOSE.", 1);
-        if (!ctx.params.strict) return ctx.win("…landed. Nothing gained.", 0);
+        // Land off the glow (and short of the ledge) and it's a MISS — the verdict
+        // must be honest: no more "cleared with 0" for a landing nowhere near the target.
         return ctx.fail(pct < s.band ? "Short of the brief." : "Sailed right past it.");
       }, reducedMotion ? 120 : 320);
     },
@@ -1863,6 +1864,7 @@
     active = null;
     stage.dataset.live = "0";
     scene.style.pointerEvents = "none"; // outgoing scene is inert the instant the game resolves
+    sceneBody.innerHTML = ""; // clear the game asset so the CLEARED/MISSED verdict owns the window
 
     if (pass) {
       run.cleared++;

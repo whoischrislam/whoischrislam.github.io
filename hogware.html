@@ -870,6 +870,7 @@
             display: grid; place-items: center;
             font-size: 0.7em; color: #151515; line-height: 1;
           }
+          .hw-pubrow.hw-public { pointer-events: none; background: #F2F5EC; } /* published = done, ignore re-clicks (no :active jank) */
           .hw-pubrow.hw-public .hw-pubcheck::after { content: "✔"; }
           .hw-publabel { flex: 1; font-size: 0.82em; color: #151515; }
           .hw-pubstate { font-family: ui-monospace, Menlo, monospace; font-size: 0.66em; color: #7A7568; }
