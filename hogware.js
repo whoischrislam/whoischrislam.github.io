@@ -720,7 +720,7 @@
         d.id = "hw-decoy-btn";
         d.textContent = "SHIP LATER";
         d.style.position = "absolute";
-        d.style.zIndex = "12";
+        d.style.zIndex = "5"; // below the notifications (11) — they must be able to bury it
         var dpos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
         // keep decoy and real button visibly apart
         if (Math.abs(dpos.left - ctx.state.shipPos.left) < 18) dpos.left = (dpos.left + 37) % 74 + 3;
@@ -744,7 +744,7 @@
       b.id = "hw-ship-btn";
       b.textContent = "SHIP IT";
       b.style.position = "absolute";
-      b.style.zIndex = "12";
+      b.style.zIndex = "5"; // below the notifications (11) — the pile must be able to bury it
       b.style.left = ctx.state.shipPos.left + "%";
       b.style.top = ctx.state.shipPos.top + "%";
       if (!reducedMotion) { b.style.animation = "hw-verb-pop 0.25s cubic-bezier(0.2, 1.6, 0.4, 1)"; }
