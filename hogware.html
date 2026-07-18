@@ -867,33 +867,36 @@
           .hw-pub-snug .hw-pubrow { padding: 0.36em 0.7em; }
           .hw-pub-dense .hw-pubrow { padding: 0.26em 0.7em; }
           .hw-pub-dense .hw-publabel { font-size: 0.76em; }
-          /* the L3 "are you sure?" confirm popover — self-contained so its entrance
-             animation keeps the -50% centering (was flickering off-center via .hw-dialog) */
+          /* L3 "are you sure?" confirm — flex-centered overlay (no transform race) with
+             a dim backdrop so the grey dialog separates from the grey panel behind it */
+          .hw-pub-confirm-overlay {
+            position: absolute; inset: 0; z-index: 20;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(21, 21, 21, 0.35);
+          }
           .hw-pub-confirm {
-            position: absolute; left: 50%; top: 50%;
-            transform: translate(-50%, -50%);
-            width: 82%; z-index: 20;
+            width: 80%;
             background: #DCD6C8;
             border: 2px solid; border-color: #fff #7A7568 #7A7568 #fff;
-            box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.5);
             animation: hw-confirm-pop 0.16s cubic-bezier(0.2, 1.5, 0.4, 1);
           }
           @keyframes hw-confirm-pop {
-            from { transform: translate(-50%, -50%) scale(0.82); opacity: 0; }
-            to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            from { transform: scale(0.8); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
           }
           @media (prefers-reduced-motion: reduce) { .hw-pub-confirm { animation: none; } }
           .hw-pub-confirm-bar {
             background: #1D4AFF; color: #fff;
-            font-family: ui-monospace, Menlo, monospace; font-weight: 700; font-size: 0.7em;
-            padding: 3px 8px;
+            font-family: ui-monospace, Menlo, monospace; font-weight: 700; font-size: 0.72em;
+            padding: 4px 8px;
           }
-          .hw-pub-confirm-body { padding: 0.9em 1em 1em; color: #151515; }
-          .hw-pub-confirm-body p { margin: 0 0 0.8em; font-size: 0.86em; color: #151515; line-height: 1.4; }
-          .hw-pub-confirm-body b { font-size: 1.02em; }
-          .hw-pub-confirm-body span { color: #443F35; font-size: 0.86em; }
+          .hw-pub-confirm-body { padding: 1em 1.1em; color: #000; background: #DCD6C8; }
+          .hw-pub-confirm-body p { margin: 0 0 0.9em; font-size: 0.9em; color: #000; line-height: 1.4; }
+          .hw-pub-confirm-body b { font-size: 1.05em; color: #000; }
+          .hw-pub-confirm-body span { color: #2A2620; font-size: 0.88em; }
           .hw-pub-confirm-btns { display: flex; gap: 0.5em; justify-content: flex-end; }
-          .hw-pub-confirm-btns .hw-btn { font-size: 0.74em; padding: 0.4em 1.3em; }
+          .hw-pub-confirm-btns .hw-btn { font-size: 0.76em; padding: 0.4em 1.4em; }
 
           /* ---- SHIP IT microgame ---- */
           /* SHIP target: a PostHog-orange Win95 'deploy' button — complementary to the
