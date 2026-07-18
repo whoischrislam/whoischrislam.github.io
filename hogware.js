@@ -781,17 +781,20 @@
                 '<g id="hw-tm-e3"><circle cx="158" cy="44" r="1.4" fill="#222"/><circle cx="164" cy="44" r="1.4" fill="#222"/></g><path d="M158 48 Q161 51 164 48" fill="none" stroke-width="1.1"/>' +
               '</g>' +
             '</g>' +
-            '<g id="hw-tm-laptop">' +
-              '<path d="M82 86 L118 86 L114 92 L86 92 Z" fill="#C9C9C9"/>' +       // keyboard deck
-              '<rect x="88" y="70" width="24" height="16" rx="1" fill="#2b2b2b"/>' + // screen bezel
-              '<rect id="hw-tm-screen" x="90.5" y="72" width="19" height="11" fill="#9AD1B0"/>' + // display
+            '<g id="hw-tm-trophy">' +
+              '<path d="M89 71 Q82 71 83 76 Q84 80 90 79" fill="none" stroke="#2b2b2b" stroke-width="2"/>' +  // left handle
+              '<path d="M111 71 Q118 71 117 76 Q116 80 110 79" fill="none" stroke="#2b2b2b" stroke-width="2"/>' + // right handle
+              '<path id="hw-tm-cup" d="M89 69 L111 69 L108 79 Q100 85 92 79 Z" fill="#E6B325"/>' +  // cup bowl
+              '<rect x="97" y="84" width="6" height="4" fill="#C9972B"/>' +  // stem
+              '<path d="M90 88 L110 88 L112 93 L88 93 Z" fill="#C9972B"/>' +  // base
+              '<path d="M100 71 l1.3 2.7 2.9 .3 -2.2 2 .7 2.9 -2.7 -1.5 -2.7 1.5 .7 -2.9 -2.2 -2 2.9 -.3 z" fill="#fff"/>' +  // star
             '</g>' +
           '</g>' +
           '<text id="hw-tm-caption" x="100" y="104" text-anchor="middle" font-size="11" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1.5">TEAMWORK</text>',
         mutations: [
           { at: [100, 16], fn: function () { var e = $("hw-tm-confetti"); e.innerHTML = '<rect x="58" y="16" width="6" height="6" fill="var(--accent)"/><rect x="100" y="10" width="6" height="6" fill="#E6B325"/><rect x="142" y="16" width="6" height="6" fill="#1D4AFF"/><rect x="78" y="12" width="6" height="6" fill="#F1A82C"/><rect x="122" y="14" width="6" height="6" fill="var(--accent)"/><rect x="40" y="20" width="6" height="6" fill="#1D4AFF"/><rect x="160" y="22" width="6" height="6" fill="#E6B325"/>'; e.style.opacity = "1"; e.classList.add("hw-anim-float"); } }, // confetti erupts
           { at: [100, 40], fn: function () { var e = $("hw-tm-h2"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M90 30l-6-6 8 1zM97 26l-2-8 5 4zM105 26l2-8 3 7zM112 30l7-5-1 8z"/></g>'); } }, // center teammate hedgehogs
-          { at: [100, 77], fn: function () { $("hw-tm-screen").setAttribute("fill", "var(--accent)"); $("hw-tm-laptop").insertAdjacentHTML("beforeend", '<g><circle cx="100" cy="77" r="3.8" fill="#fff" stroke="#111" stroke-width="0.8"/><circle cx="100" cy="78.4" r="1.9" fill="#111"/></g>'); } }, // the laptop screen stares back
+          { at: [100, 74], fn: function () { $("hw-tm-cup").setAttribute("fill", "var(--accent)"); $("hw-tm-trophy").insertAdjacentHTML("beforeend", '<g><circle cx="96" cy="75" r="2.6" fill="#fff" stroke="#111" stroke-width="0.7"/><circle cx="104" cy="75" r="2.6" fill="#fff" stroke="#111" stroke-width="0.7"/><circle cx="96" cy="76" r="1.2" fill="#111"/><circle cx="104" cy="76" r="1.2" fill="#111"/></g>'); } }, // the trophy comes alive
           { at: [182, 14], fn: function () { $("hw-tm-bg").setAttribute("fill", "#B043D1"); } }, // wall goes purple
           { at: [37, 44], fn: function () { $("hw-tm-e1").innerHTML = '<circle cx="34" cy="44" r="3.2" fill="#fff" stroke="#222" stroke-width="0.7"/><circle cx="40" cy="44" r="3.2" fill="#fff" stroke="#222" stroke-width="0.7"/><circle cx="35" cy="45" r="1.4" fill="#222"/><circle cx="41" cy="45" r="1.4" fill="#222"/>'; } }, // googly pop
           { at: [100, 103], fn: function () { var e = $("hw-tm-caption"); e.textContent = "SYNERGY!!!"; e.setAttribute("fill", "var(--accent)"); } },
