@@ -658,7 +658,7 @@
           // left guy: googly eyes
           { at: [46, 34], fn: function () { document.querySelectorAll("#hw-hs-leyes circle").forEach(function (c) { c.setAttribute("r", "3.6"); }); } },
           // right guy hedgehogs out
-          { at: [156, 30], fn: function () { var e = $("hw-hs-rhead"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M145 21l-7-6 9 0zM152 17l-3-8 6 4zM162 17l3-8 3 8zM169 21l7-5-1 8z"/></g>'); } },
+          { at: [156, 30], fn: function () { var e = $("hw-hs-rhead"); e.setAttribute("fill", "#5FB84B"); e.insertAdjacentHTML("beforebegin", '<g stroke="#101010" stroke-width="1.3" fill="#5FB84B"><line x1="151" y1="20" x2="148" y2="11"/><circle cx="147" cy="10" r="2.2"/><line x1="161" y1="20" x2="164" y2="11"/><circle cx="165" cy="10" r="2.2"/></g>'); $("hw-hs-reyes").innerHTML = '<ellipse cx="152" cy="30" rx="2.6" ry="3.4" fill="#111"/><ellipse cx="160" cy="30" rx="2.6" ry="3.4" fill="#111"/>'; } },
           // beige wall goes electric purple
           { at: [175, 18], fn: function () { $("hw-hs-bg").setAttribute("fill", "#B043D1"); } },
           // left tie becomes a propeller
@@ -708,7 +708,7 @@
           '<text id="hw-ch-caption" x="100" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1.5">Q3 GROWTH</text>',
         mutations: [
           { at: [148, 38], fn: function () { var e = $("hw-ch-line"); e.setAttribute("points", "108,56 126,22 144,62 162,18 178,48"); e.setAttribute("stroke", "var(--accent)"); e.setAttribute("stroke-width", "3.5"); } }, // chart becomes a rollercoaster
-          { at: [38, 30], fn: function () { var e = $("hw-ch-head"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M27 20l-8-7 10 0zM34 15l-3-9 6 4zM45 15l3-9 3 9zM52 20l8-6-1 9z"/></g>'); } }, // presenter hedgehogs
+          { at: [38, 30], fn: function () { $("hw-ch-eyes").innerHTML = '<circle cx="38" cy="30" r="4.4" fill="#fff" stroke="#111" stroke-width="0.8"/><circle cx="38" cy="31" r="2.1" fill="#111"/>'; } }, // presenter goes cyclops
           { at: [140, 50], fn: function () { var bs = document.querySelectorAll("#hw-ch-bars rect"); var tops = [30, 60, 22, 64]; bs.forEach(function (r, i) { r.setAttribute("y", tops[i]); r.setAttribute("height", 74 - tops[i]); }); $("hw-ch-bars").classList.add("hw-anim-float"); } }, // the bars jump up and dance
           { at: [180, 12], fn: function () { $("hw-ch-bg").setAttribute("fill", "#B043D1"); } }, // wall goes purple
           { at: [116, 38], fn: function () { var e = $("hw-ch-rod"); e.setAttribute("stroke", "var(--accent)"); e.setAttribute("stroke-width", "5"); e.insertAdjacentHTML("afterend", '<line x1="83" y1="45" x2="150" y2="32" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>'); } }, // pointer becomes a lightsaber
@@ -798,12 +798,12 @@
           '<text id="hw-tm-caption" x="100" y="104" text-anchor="middle" font-size="11" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1.5">TEAMWORK</text>',
         mutations: [
           { at: [100, 16], fn: function () { var e = $("hw-tm-confetti"); e.innerHTML = '<rect x="58" y="16" width="6" height="6" fill="var(--accent)"/><rect x="100" y="10" width="6" height="6" fill="#E6B325"/><rect x="142" y="16" width="6" height="6" fill="#1D4AFF"/><rect x="78" y="12" width="6" height="6" fill="#F1A82C"/><rect x="122" y="14" width="6" height="6" fill="var(--accent)"/><rect x="40" y="20" width="6" height="6" fill="#1D4AFF"/><rect x="160" y="22" width="6" height="6" fill="#E6B325"/>'; e.style.opacity = "1"; e.classList.add("hw-anim-float"); } }, // confetti erupts
-          { at: [100, 40], fn: function () { var e = $("hw-tm-h2"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M90 30l-6-6 8 1zM97 26l-2-8 5 4zM105 26l2-8 3 7zM112 30l7-5-1 8z"/></g>'); } }, // center teammate hedgehogs
+          { at: [100, 40], fn: function () { var e = $("hw-tm-h2"); e.setAttribute("fill", "#5FB84B"); e.insertAdjacentHTML("beforebegin", '<g stroke="#101010" stroke-width="1.3" fill="#5FB84B"><line x1="95" y1="31" x2="92" y2="22"/><circle cx="91" cy="21" r="2"/><line x1="105" y1="31" x2="108" y2="22"/><circle cx="109" cy="21" r="2"/></g>'); $("hw-tm-e2").innerHTML = '<ellipse cx="96" cy="40" rx="2.4" ry="3.1" fill="#111"/><ellipse cx="104" cy="40" rx="2.4" ry="3.1" fill="#111"/>'; } }, // center goes alien
           { at: [100, 74], fn: function () { $("hw-tm-cup").setAttribute("fill", "var(--accent)"); $("hw-tm-trophy").insertAdjacentHTML("beforeend", '<g><circle cx="96" cy="75" r="2.6" fill="#fff" stroke="#111" stroke-width="0.7"/><circle cx="104" cy="75" r="2.6" fill="#fff" stroke="#111" stroke-width="0.7"/><circle cx="96" cy="76" r="1.2" fill="#111"/><circle cx="104" cy="76" r="1.2" fill="#111"/></g>'); } }, // the trophy comes alive
           { at: [182, 14], fn: function () { $("hw-tm-bg").setAttribute("fill", "#B043D1"); } }, // wall goes purple
           { at: [37, 44], fn: function () { $("hw-tm-e1").innerHTML = '<circle cx="34" cy="44" r="3.2" fill="#fff" stroke="#222" stroke-width="0.7"/><circle cx="40" cy="44" r="3.2" fill="#fff" stroke="#222" stroke-width="0.7"/><circle cx="35" cy="45" r="1.4" fill="#222"/><circle cx="41" cy="45" r="1.4" fill="#222"/>'; } }, // googly pop
           { at: [100, 103], fn: function () { var e = $("hw-tm-caption"); e.textContent = "SYNERGY!!!"; e.setAttribute("fill", "var(--accent)"); } },
-          { at: [161, 44], fn: function () { var e = $("hw-tm-h3"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M152 36l-5-6 7 1zM158 33l-2-7 4 3zM165 33l2-7 3 6zM171 36l6-4-1 7z"/></g>'); } }, // and another hedgehogs
+          { at: [161, 44], fn: function () { $("hw-tm-e3").innerHTML = '<circle cx="161" cy="44" r="3.8" fill="#fff" stroke="#111" stroke-width="0.8"/><circle cx="161" cy="45" r="1.8" fill="#111"/>'; } }, // f3 goes cyclops
           { at: [100, 70], fn: function () { $("hw-tm-group").classList.add("hw-anim-float"); } } // the whole team lifts off
         ]
       }
@@ -1124,11 +1124,11 @@
             bands +
             '<line x1="' + px(100) + '" y1="20" x2="' + px(100) + '" y2="56" stroke="var(--accent-strong)" stroke-width="2.5" stroke-dasharray="3 3"/>' +
             '<g id="hw-puck" style="transform: translate(6px, 26px);">' +
-              // placeholder crude hedgehog — swap in the hand-drawn one later
-              '<g fill="var(--accent)" stroke="#101010" stroke-width="1">' +
+              // placeholder crude hedgehog (brown, not the accent) — swap in the hand-drawn one later
+              '<g fill="#8A5A2B" stroke="#101010" stroke-width="1">' +
                 '<path d="M1 13 l-3 -2 3 -1 z"/><path d="M2 7 l-3 -3 4 0 z"/><path d="M7 4 l-2 -4 4 1 z"/><path d="M13 3 l0 -4 3 3 z"/><path d="M18 6 l3 -3 0 4 z"/>' +
               '</g>' +
-              '<circle cx="11" cy="14" r="9" fill="var(--accent)" stroke="#101010" stroke-width="1.6"/>' +
+              '<circle cx="11" cy="14" r="9" fill="#8A5A2B" stroke="#101010" stroke-width="1.6"/>' +
               '<path d="M19 13 q5 0 5 3 q0 3 -5 2.5 z" fill="#F2C892" stroke="#101010" stroke-width="1"/>' +
               '<circle cx="23.5" cy="15.5" r="1.1" fill="#111"/>' +
               '<circle cx="13" cy="12" r="1.7" fill="#111"/>' +
