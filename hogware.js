@@ -406,25 +406,30 @@
           dodged: false
         };
       });
+      var trafColors = ["#2438C0", "#2E8B57", "#8C8C8C", "#C9972B"];
+      var carSvg = function (fill) {
+        return '<path d="M1 12 L1 6 L7 6 L11 1 L23 1 L27 6 L33 6 L33 12 Z" fill="' + fill + '" stroke="#101010" stroke-width="1.4" stroke-linejoin="round"/>' +
+          '<rect x="12" y="2.4" width="4.6" height="3.4" fill="#CDEAF5" stroke="#101010" stroke-width="0.6"/>' +
+          '<rect x="18" y="2.4" width="4.6" height="3.4" fill="#CDEAF5" stroke="#101010" stroke-width="0.6"/>' +
+          '<circle cx="8" cy="12.5" r="3.4" fill="#111"/><circle cx="8" cy="12.5" r="1.2" fill="#999"/>' +
+          '<circle cx="26" cy="12.5" r="3.4" fill="#111"/><circle cx="26" cy="12.5" r="1.2" fill="#999"/>';
+      };
       var carsSvg = ctx.state.cars.map(function (c, i) {
-        var fill = c.type === "stall" ? "var(--accent-strong)" : "var(--chip-text)";
+        var fill = c.type === "stall" ? "#D01E1E" : trafColors[i % trafColors.length];
         return '<g class="hw-traffic" data-i="' + i + '" style="transform: translate(' + (40 + c.frac * 300) + 'px, 30px);">' +
-          '<rect x="0" y="0" width="26" height="14" rx="4" fill="' + fill + '" opacity="0.85"/>' +
-          '<circle cx="6" cy="15" r="3.5" fill="var(--muted)"/><circle cx="20" cy="15" r="3.5" fill="var(--muted)"/>' +
-          (c.type === "stall" ? '<text class="hw-stall-warn" x="8" y="-6" font-size="14" font-weight="bold" fill="var(--accent-strong)" opacity="0">!</text>' : '') +
+          carSvg(fill) +
+          (c.type === "stall" ? '<text class="hw-stall-warn" x="14" y="-3" font-size="13" font-weight="bold" fill="#D01E1E" opacity="0">!</text>' : '') +
           '</g>';
       }).join("");
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2em;">' +
           '<svg width="100%" height="140" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true">' +
-            '<rect x="0" y="26" width="400" height="26" rx="4" fill="var(--chip-bg)"/>' +
-            '<line x1="0" y1="39" x2="400" y2="39" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="10 8"/>' +
-            '<text x="382" y="22" font-size="16">🏁</text>' +
+            '<rect x="0" y="24" width="400" height="30" fill="#8C8C8C" stroke="#101010" stroke-width="1.4"/>' +   // road
+            '<line x1="0" y1="39" x2="400" y2="39" stroke="#FCFBF5" stroke-width="2" stroke-dasharray="12 9"/>' + // centreline
+            '<text x="380" y="20" font-size="17">🏁</text>' +
             carsSvg +
             '<g id="hw-car" style="transform: translate(6px, 30px);">' +
-              '<rect x="0" y="0" width="30" height="14" rx="5" fill="var(--accent)"/>' +
-              '<circle cx="7" cy="15" r="3.5" fill="var(--text)"/><circle cx="23" cy="15" r="3.5" fill="var(--text)"/>' +
-              '<circle cx="24" cy="4" r="5" fill="var(--accent-strong)"/>' +
+              carSvg("var(--accent)") +
             '</g>' +
           '</svg>' +
           '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press — everyone gets out of your way' +
@@ -1119,9 +1124,14 @@
             bands +
             '<line x1="' + px(100) + '" y1="20" x2="' + px(100) + '" y2="56" stroke="var(--accent-strong)" stroke-width="2.5" stroke-dasharray="3 3"/>' +
             '<g id="hw-puck" style="transform: translate(6px, 26px);">' +
-              '<circle cx="10" cy="14" r="10" fill="var(--accent)"/>' +
-              '<circle cx="7" cy="12" r="1.4" fill="var(--bg)"/>' +
-              '<circle cx="13" cy="12" r="1.4" fill="var(--bg)"/>' +
+              // placeholder crude hedgehog — swap in the hand-drawn one later
+              '<g fill="var(--accent)" stroke="#101010" stroke-width="1">' +
+                '<path d="M1 13 l-3 -2 3 -1 z"/><path d="M2 7 l-3 -3 4 0 z"/><path d="M7 4 l-2 -4 4 1 z"/><path d="M13 3 l0 -4 3 3 z"/><path d="M18 6 l3 -3 0 4 z"/>' +
+              '</g>' +
+              '<circle cx="11" cy="14" r="9" fill="var(--accent)" stroke="#101010" stroke-width="1.6"/>' +
+              '<path d="M19 13 q5 0 5 3 q0 3 -5 2.5 z" fill="#F2C892" stroke="#101010" stroke-width="1"/>' +
+              '<circle cx="23.5" cy="15.5" r="1.1" fill="#111"/>' +
+              '<circle cx="13" cy="12" r="1.7" fill="#111"/>' +
             '</g>' +
           '</svg>' +
           '<p class="hw-hint"><span class="hw-kbd">space</span> / tap to STOP the hedgehog on the glow — the far ledge pays triple</p>' +
