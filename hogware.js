@@ -117,6 +117,18 @@
     void f.offsetWidth;
     f.classList.add(kind);
   }
+  // Where the maximize should grow from: the launching desktop app icon (so the
+  // window unfolds out of the icon like clicking an app). Boss/absent → screen centre.
+  function launchOrigin() {
+    var icon = document.querySelector("#hw-desk-icons .hw-desk-active");
+    if (!icon || !stage) return "50% 60%";
+    var ir = icon.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+    if (!sr.width || !ir.width) return "50% 60%";
+    var x = (ir.left + ir.width / 2 - sr.left) / sr.width * 100;
+    var y = (ir.top + ir.height / 2 - sr.top) / sr.height * 100;
+    return x.toFixed(1) + "% " + y.toFixed(1) + "%";
+  }
+
   function swapScreens(toEl, prep, done) {
     var fromEl = visibleScreen();
     if (reducedMotion) {
@@ -138,9 +150,22 @@
       (toEl === screens.verb) ? "restore" : "crt";
 
     conductor.nextBeat(function () {
+      // The verdict flash rides ON TOP of the window, so it leaves WITH the window
+      // (minimizes/collapses together) and is hidden by reveal — not early, which
+      // would race the run-over path.
+      var resEl = screens.result.classList.contains("hw-hidden") ? null : screens.result;
+      var applyLeave = function (cls, origin) {
+        [fromEl, resEl].forEach(function (el) {
+          if (!el) return;
+          if (origin) el.style.transformOrigin = origin;
+          el.classList.add(cls);
+        });
+      };
       var reveal = function (inClass, inMs) {
         hideAllScreens();
-        if (fromEl) fromEl.classList.remove("hw-crt-collapse", "hw-shrink-out");
+        [fromEl, screens.result].forEach(function (el) {
+          if (el) { el.classList.remove("hw-crt-collapse", "hw-minimize-out"); el.style.transformOrigin = ""; }
+        });
         var appwin = screens.verb.querySelector(".hw-appwin");
         if (appwin) appwin.classList.remove("hw-appwin-maximize");
         if (prep) prep();
@@ -150,6 +175,7 @@
         toEl.classList.add(inClass + "-go");
         setTimeout(function () {
           toEl.classList.remove(inClass, inClass + "-go");
+          toEl.style.transformOrigin = "";
           transitioning = false;
           if (done) done();
         }, inMs);
@@ -158,19 +184,19 @@
       if (effect === "boot") { reveal("hw-crt-bloom", BLOOM_MS); return; }
 
       if (effect === "maximize") {
-        // The program window rushes up to fill the screen, then the game blooms in inside it.
-        screens.verb.querySelector(".hw-appwin").classList.add("hw-appwin-maximize");
-        setTimeout(function () { reveal("hw-scale-in", 300); }, 240);
+        // One motion: the window opens out of the launching app icon and fills the screen.
+        scene.style.transformOrigin = launchOrigin();
+        reveal("hw-maximize-in", 300);
         return;
       }
       if (effect === "restore") {
-        // The game shrinks back down and the desktop restores.
-        if (fromEl) fromEl.classList.add("hw-shrink-out");
-        setTimeout(function () { reveal("hw-restore-in", 300); }, 200);
+        // The window (+ its verdict flash) minimizes toward the taskbar, then the desktop restores.
+        applyLeave("hw-minimize-out", "12% 98%");
+        setTimeout(function () { reveal("hw-restore-in", 260); }, 200);
         return;
       }
       // crt: collapse the tube to a line, bloom the next screen open
-      if (fromEl) fromEl.classList.add("hw-crt-collapse");
+      applyLeave("hw-crt-collapse");
       setTimeout(function () { reveal("hw-crt-bloom", BLOOM_MS); }, COLLAPSE_MS);
     });
   }
@@ -1857,7 +1883,9 @@
     // the flavor line relocates to the desktop status bar, which has reading time.
     run.lastStatus = (pass ? "✓ " : "✗ ") + (flavor || "") +
       (!pass && run.lives > 0 ? " (" + run.lives + (run.lives === 1 ? " life" : " lives") + " left)" : "");
-    hideAllScreens();
+    // Verdict flashes OVER the still-open game window — the chrome stays up until
+    // the window minimizes on the next transition (was: hideAllScreens swapped to a
+    // bare result screen, so the title bar vanished the instant you cleared/missed).
     var word = $("hw-result-word");
     word.textContent = pass ? (bonus > 0 ? "CLEARED +" + bonus : "CLEARED") : "MISSED";
     word.className = "hw-result-word " + (pass ? "hw-pass" : "hw-fail");
