@@ -738,8 +738,11 @@
           /* every weirdify jolts the whole drawing so the change always registers */
           @keyframes hw-weird-jolt { 0% { transform: scale(1) rotate(0deg); } 25% { transform: scale(1.05) rotate(-1.8deg); } 55% { transform: scale(0.975) rotate(1.3deg); } 100% { transform: scale(1) rotate(0deg); } }
           .hw-jolt { animation: hw-weird-jolt 0.26s ease-out; }
+          /* funnel squashes when it catches a user */
+          @keyframes hw-funnel-squash { 0% { transform: scaleY(1) scaleX(1); } 35% { transform: scaleY(0.82) scaleX(1.14); } 100% { transform: scaleY(1) scaleX(1); } }
+          .hw-funnel-squash { animation: hw-funnel-squash 0.2s ease-out; transform-origin: 0px 103px; }
           @media (prefers-reduced-motion: reduce) {
-            .hw-anim-spin, .hw-anim-grow, .hw-anim-float, .hw-jolt { animation: none; }
+            .hw-anim-spin, .hw-anim-grow, .hw-anim-float, .hw-jolt, .hw-funnel-squash { animation: none; }
           }
 
           /* ---- Result flash ---- */

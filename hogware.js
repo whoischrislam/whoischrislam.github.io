@@ -1492,6 +1492,36 @@
        normals, fast fallers, floaters, and one whale worth 2 — net revenue
        retention as a game rule. The wave escalates: later users spawn
        closer together and fall faster. */
+    // A "user" glyph (head + shoulders) drawn at local origin, differentiated by
+    // silhouette per the small-sprite research: whale=crown+$, float=balloon,
+    // fast=speed streaks, normal=plain. Readable with colour stripped out.
+    _userGlyph: function (type) {
+      var skin = { n: "#E0B088", fast: "#C68642", float: "#E0B088", whale: "#F2C892" }[type] || "#E0B088";
+      var shirt = { n: "#3B4A6B", fast: "#2E8B57", float: "#7B3B47", whale: "#E6B325" }[type] || "#3B4A6B";
+      var extra = "";
+      if (type === "whale") extra = '<path d="M-5 -4 l1 -5 3 3 1 -5 1 5 3 -3 1 5 z" fill="#E6B325" stroke="#101010" stroke-width="1"/><text x="0" y="11" font-size="6.5" text-anchor="middle" fill="#111" font-weight="bold">$</text>';
+      else if (type === "fast") extra = '<line x1="-3" y1="-9" x2="-3" y2="-14" stroke="#6b6b63" stroke-width="1.4"/><line x1="3" y1="-9" x2="3" y2="-14" stroke="#6b6b63" stroke-width="1.4"/>';
+      else if (type === "float") extra = '<line x1="0" y1="-5" x2="0" y2="-13" stroke="#101010" stroke-width="1"/><ellipse cx="0" cy="-17" rx="5" ry="6" fill="#1D4AFF" stroke="#101010" stroke-width="1.2"/>';
+      return '<g stroke="#101010" stroke-width="1.4" stroke-linejoin="round">' + extra +
+        '<path d="M-7 13 Q-7 4 0 4 Q7 4 7 13 Z" fill="' + shirt + '"/>' +
+        '<circle cx="0" cy="0" r="5" fill="' + skin + '"/>' +
+        '<circle cx="-1.8" cy="-0.3" r="0.9" fill="#111"/><circle cx="1.8" cy="-0.3" r="0.9" fill="#111"/>' +
+      '</g>';
+    },
+    _meter: function (retained, need) {
+      var out = '<text x="120" y="17" font-size="9" font-weight="bold" fill="#151515">RETAINED</text>';
+      for (var i = 0; i < need; i++) {
+        var sx = 170 + i * 17, filled = i < Math.min(retained, need);
+        out += '<rect x="' + sx + '" y="7" width="14" height="14" rx="3" fill="' + (filled ? "#EAF3E0" : "#f3f2ec") + '" stroke="#101010" stroke-width="1.2"/>';
+        if (filled) out += '<circle cx="' + (sx + 7) + '" cy="13" r="3.4" fill="#C68642" stroke="#101010" stroke-width="1"/>';
+      }
+      return out;
+    },
+    _squash: function () {
+      var inner = $("hw-funnel-inner");
+      if (!inner) return;
+      inner.classList.remove("hw-funnel-squash"); void inner.offsetWidth; inner.classList.add("hw-funnel-squash");
+    },
     setup: function (ctx) {
       var s = ctx.state;
       s.holding = false;
@@ -1521,14 +1551,15 @@
       scene.innerHTML =
         '<div id="hw-funnel-scene" class="hw-screen" style="justify-content:flex-end; padding-bottom:1.6em;">' +
           '<svg id="hw-funnel-rink" width="100%" height="210" viewBox="0 0 400 110" preserveAspectRatio="none">' +
-            '<rect x="0" y="104" width="400" height="6" fill="var(--chip-bg)"/>' +
-            '<text x="12" y="100" font-size="9" fill="var(--muted)">churned</text>' +
-            '<text x="352" y="100" font-size="9" fill="var(--muted)">churned</text>' +
+            '<rect x="0" y="0" width="400" height="110" fill="#FCFBF5"/>' +
+            '<rect x="0" y="104" width="400" height="6" fill="#dcdcd4"/>' +
+            '<g id="hw-funnel-meter"></g>' +
             '<g id="hw-funnel-users"></g>' +
-            '<g id="hw-funnel">' +
-              '<path id="hw-funnel-path" d="" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>' +
-              '<text id="hw-funnel-label" y="107" font-size="9" fill="var(--accent)" text-anchor="middle">retained: 0/' + ctx.params.need + '</text>' +
-            '</g>' +
+            '<g id="hw-funnel" style="transform:translate(200px,0)"><g id="hw-funnel-inner">' +
+              '<ellipse cx="0" cy="74" rx="26" ry="5" fill="#B23800" stroke="#101010" stroke-width="1.6"/>' +
+              '<path d="M-26 74 L-6 94 L-6 103 L6 103 L6 94 L26 74" fill="var(--accent)" stroke="#101010" stroke-width="1.6" stroke-linejoin="round"/>' +
+              '<ellipse cx="0" cy="74" rx="21" ry="3.5" fill="#7A2600"/>' +
+            '</g></g>' +
           '</svg>' +
           '<p class="hw-hint">retain <b>4</b> — the <b>$</b> whale counts double · hold <span class="hw-kbd">space</span> / press = right · release = left</p>' +
         '</div>';
@@ -1537,10 +1568,10 @@
       var s = ctx.state, p = ctx.params;
       s.fx = Math.max(0.08, Math.min(0.92, s.fx + (s.holding ? 1 : -1) * p.funnelSpeed * dt / 1000));
       var fpx = 14 + s.fx * 372;
-      var path = $("hw-funnel-path");
-      if (path) path.setAttribute("d", "M" + (fpx - 26) + " 78 L" + (fpx - 8) + " 96 L" + (fpx + 8) + " 96 L" + (fpx + 26) + " 78");
-      var label = $("hw-funnel-label");
-      if (label) { label.setAttribute("x", fpx); label.textContent = "retained: " + s.retained + "/" + p.need; }
+      var fg = $("hw-funnel");
+      if (fg) fg.style.transform = "translate(" + fpx + "px,0)";
+      var mg = $("hw-funnel-meter");
+      if (mg) mg.innerHTML = gameBossFunnel._meter(s.retained, p.need);
       var rink = $("hw-funnel-rink");
       var lowest = null;
       var usersG = $("hw-funnel-users");
@@ -1553,6 +1584,7 @@
         if (u.y >= 0.82 && u.y < 1 && !u.bounced && Math.abs(u.x - s.fx) < p.mouth) {
           u.done = true; s.resolved++; s.caught++; s.retained += u.worth;
           s.effects.push({ kind: "catch", x: fpx, y: 84, worth: u.worth, until: ctx.elapsed + 500 });
+          gameBossFunnel._squash();
           sfx("pass");
           continue;
         }
@@ -1564,35 +1596,25 @@
         if (u.bounced) u.x = Math.max(0.03, Math.min(0.97, u.x + u.bounceDir * 0.28 * dt / 1000));
         if (u.y >= 1) {
           u.done = true; s.resolved++;
-          s.effects.push({ kind: "churn", x: ux, y: 100, until: ctx.elapsed + 600 });
+          s.effects.push({ kind: "churn", x: ux, y: 94, type: u.type, dir: (u.x < 0.5 ? -1 : 1), until: ctx.elapsed + 650 });
           sfx("whiff");
           continue;
         }
-        // Draw by type: whale is big with a ring, fast has a streak, floater is airy.
-        if (u.type === "whale") {
-          dotsSvg += '<circle cx="' + ux + '" cy="' + uy + '" r="8.5" fill="var(--text)" opacity="0.9"/>' +
-            '<circle cx="' + ux + '" cy="' + uy + '" r="11.5" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>' +
-            '<text x="' + ux + '" y="' + (uy + 3) + '" font-size="8" text-anchor="middle" fill="var(--bg)" font-weight="bold">$</text>';
-        } else if (u.type === "fast") {
-          dotsSvg += '<line x1="' + ux + '" y1="' + (uy - 12) + '" x2="' + ux + '" y2="' + (uy - 5) + '" stroke="var(--muted)" stroke-width="2" opacity="0.6"/>' +
-            '<circle cx="' + ux + '" cy="' + uy + '" r="4.2" fill="var(--text)" opacity="0.9"/>';
-        } else if (u.type === "float") {
-          dotsSvg += '<path d="M' + (ux - 7) + ' ' + (uy - 8) + ' Q' + ux + ' ' + (uy - 15) + ' ' + (ux + 7) + ' ' + (uy - 8) + '" fill="none" stroke="var(--muted)" stroke-width="1.5"/>' +
-            '<circle cx="' + ux + '" cy="' + uy + '" r="5" fill="var(--text)" opacity="0.7"/>';
-        } else {
-          dotsSvg += '<circle cx="' + ux + '" cy="' + uy + '" r="5" fill="var(--text)" opacity="0.85"/>' +
-            '<circle cx="' + (ux - 2) + '" cy="' + (uy - 2) + '" r="1.2" fill="var(--bg)"/>';
-        }
+        var sy = 1 + Math.min(0.26, Math.max(0, u.y) * 0.18); // fall-stretch reads as weight
+        dotsSvg += '<g transform="translate(' + ux.toFixed(1) + ',' + uy.toFixed(1) + ') scale(1,' + sy.toFixed(2) + ')">' + gameBossFunnel._userGlyph(u.type) + '</g>';
         if (!u.bounced && (lowest === null || u.y > lowest.y)) lowest = u;
       }
       // Transient juice: "+1"/"+2" popping from the funnel, churn puffs at the floor.
       s.effects = s.effects.filter(function (e) { return ctx.elapsed < e.until; });
       s.effects.forEach(function (e) {
-        var lifeFrac = 1 - (e.until - ctx.elapsed) / (e.kind === "catch" ? 500 : 600);
         if (e.kind === "catch") {
-          dotsSvg += '<text x="' + e.x + '" y="' + (e.y - lifeFrac * 16) + '" font-size="10" font-weight="bold" text-anchor="middle" fill="var(--accent)" opacity="' + (1 - lifeFrac) + '">+' + e.worth + '</text>';
+          var lifeFrac = 1 - (e.until - ctx.elapsed) / 500;
+          dotsSvg += '<text x="' + e.x + '" y="' + (e.y - lifeFrac * 16) + '" font-size="11" font-weight="bold" text-anchor="middle" fill="var(--accent)" opacity="' + (1 - lifeFrac).toFixed(2) + '">+' + e.worth + '</text>';
         } else {
-          dotsSvg += '<circle cx="' + e.x + '" cy="' + e.y + '" r="' + (4 + lifeFrac * 5) + '" fill="none" stroke="var(--muted)" stroke-width="1.5" opacity="' + (0.6 * (1 - lifeFrac)) + '"/>';
+          // canned ragdoll flop: tumble + squash + grey + fade (deterministic)
+          var lf = 1 - (e.until - ctx.elapsed) / 650;
+          dotsSvg += '<g transform="translate(' + e.x.toFixed(1) + ',' + e.y + ') rotate(' + (e.dir * lf * 80).toFixed(0) + ')" opacity="' + (1 - lf).toFixed(2) + '" style="filter:grayscale(1)">' +
+            '<g transform="translate(0,-9) scale(' + (1 + lf * 0.25).toFixed(2) + ',' + Math.max(0.3, 1 - lf * 0.6).toFixed(2) + ')">' + gameBossFunnel._userGlyph(e.type) + '</g></g>';
         }
       });
       if (usersG) usersG.innerHTML = dotsSvg;
@@ -2085,6 +2107,7 @@
   try {
     window.HogWareScenes = gameWeird._scenes;
     window.HogWareRenderScene = function (svg, uid) { return gameWeird._render(svg, uid); };
+    window.HogWareBoss = gameBossFunnel; // debug: render funnel glyphs/meter in the preview harness
   } catch (e) {}
 
   // Guard: on a host page without the game DOM (e.g. the scene preview page)
