@@ -574,51 +574,98 @@
       { target: 6, radius: 32, durationMs: 4800 },
       { target: 7, radius: 27, drift: true, decayMs: 1500, durationMs: 4800 } // normalcy fights back: idle too long and progress reverts
     ],
-    /* Each mutation lives somewhere — a pulsing ring marks the next thing to
-       weirdify, and only clicks near it count. Aim is the skill, not mashing. */
-    _mutations: [
-      { at: [170, 78], fn: function () { var e = $("hw-w-bg"); e.setAttribute("fill", "#B043D1"); } },            // beige wall goes purple
-      { at: [142, 48], fn: function () { var e = $("hw-w-chart"); e.setAttribute("points", "105,58 120,20 135,55 150,8 165,40 180,4"); e.setAttribute("stroke", "var(--accent)"); } }, // chart becomes a rollercoaster
-      { at: [60, 64], fn: function () { var e = $("hw-w-tie"); e.classList.add("hw-anim-spin"); } },              // tie becomes a propeller
-      { at: [100, 101], fn: function () { var e = $("hw-w-caption"); e.textContent = "SYNERWEIRD"; } },
-      { at: [60, 40], fn: function () { var e = $("hw-w-head"); e.setAttribute("fill", "var(--accent)"); $("hw-w-spikes").style.opacity = "1"; } }, // person hedgehogs
-      { at: [25, 88], fn: function () { var e = $("hw-w-plant"); e.classList.add("hw-anim-grow"); } },            // plant refuses to stay decorative
-      { at: [60, 33], fn: function () { var e = $("hw-w-eye3"); e.style.opacity = "1"; } },                       // third eye opens
-      { at: [60, 72], fn: function () { var e = $("hw-w-person"); e.classList.add("hw-anim-float"); } },          // levitation unlocked
-      { at: [100, 101], fn: function () { var e = $("hw-w-caption"); e.textContent = "WHY NOT NOW"; e.setAttribute("fill", "var(--accent)"); } },
-      { at: [16, 12], fn: function () { var e = $("hw-w-frame"); e.style.transform = "rotate(3deg) scale(1.04)"; } }, // reality tilts
-      { at: [170, 20], fn: function () { var e = $("hw-w-sun"); e.style.opacity = "1"; } },                       // indoor sun
-      { at: [142, 48], fn: function () { var e = $("hw-w-chart"); e.classList.add("hw-anim-spin"); } },           // the chart has had enough
-      { at: [58, 40], fn: function () { document.querySelectorAll("#hw-w-person circle").forEach(function (c) { var r = parseFloat(c.getAttribute("r")); if (r < 3) c.setAttribute("r", r * 2.2); }); } }, // googly eyes
-      { at: [142, 48], fn: function () { var e = $("hw-w-chart"); e.setAttribute("stroke-width", "6"); e.setAttribute("stroke-linecap", "round"); } } // the chart thickens
+    /* Scenes are stock-photo clichés rendered as cheesy 90s corporate clip-art
+       (Office-97 CD-ROM energy) — the "boring photo" is unmistakably intentional,
+       not generic. Each play picks one; each carries its own tailored mutations.
+       A pulsing ring marks the next thing to weirdify; only clicks inside count.
+       Aim is the skill, not mashing. */
+    _scenes: [
+      {
+        id: "handshake",
+        aria: "A stock photo of two businessmen shaking hands",
+        // 90s clip-art: thick unifying outline, muted-corporate palette, a gold
+        // "deal achieved" sunburst. Every mutable element carries an id.
+        svg:
+          '<rect id="hw-hs-bg" x="0" y="0" width="200" height="110" fill="#E3DAC6"/>' +
+          '<rect x="0" y="84" width="200" height="26" fill="#CBBE9E"/>' +
+          '<g stroke="#2b2b2b" stroke-width="1.1" stroke-linejoin="round">' +
+            '<rect x="12" y="15" width="30" height="22" fill="#F4EFE2"/>' +
+            '<polyline points="17,32 24,25 30,28 39,18" fill="none" stroke="#7B3B47" stroke-width="1.6"/>' +
+          '</g>' +
+          // gold sunburst behind the clasp — starts faint, a mutation cranks it
+          '<g id="hw-hs-sun" style="opacity:0.22; transform-origin:100px 60px; transition:opacity .3s;">' +
+            '<g stroke="#E6B325" stroke-width="4" stroke-linecap="round">' +
+              '<line x1="100" y1="60" x2="146" y2="60"/><line x1="100" y1="60" x2="140" y2="82"/>' +
+              '<line x1="100" y1="60" x2="123" y2="98"/><line x1="100" y1="60" x2="100" y2="106"/>' +
+              '<line x1="100" y1="60" x2="77" y2="98"/><line x1="100" y1="60" x2="60" y2="82"/>' +
+              '<line x1="100" y1="60" x2="54" y2="60"/><line x1="100" y1="60" x2="60" y2="38"/>' +
+              '<line x1="100" y1="60" x2="77" y2="22"/><line x1="100" y1="60" x2="100" y2="14"/>' +
+              '<line x1="100" y1="60" x2="123" y2="22"/><line x1="100" y1="60" x2="140" y2="38"/>' +
+            '</g>' +
+          '</g>' +
+          '<g stroke="#2b2b2b" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">' +
+            // right potted plant (drawn under figures' right edge)
+            '<g><rect x="176" y="72" width="15" height="15" fill="#B5713B"/>' +
+              '<path d="M183 72c-7-9-3-19 0-22 3 3 7 13 0 22z" fill="#4B7A4E"/>' +
+              '<path d="M184 74c6-6 14-4 17-1-4 5-11 8-17 1z" fill="#5C8C5A"/></g>' +
+            // LEFT figure
+            '<g id="hw-hs-lfig">' +
+              '<path d="M20 88 Q22 60 46 58 Q70 60 72 88 Z" fill="#3B4A6B"/>' +
+              '<path d="M64 62 Q82 59 94 66" fill="none" stroke="#3B4A6B" stroke-width="8" stroke-linecap="round"/>' +
+              '<circle id="hw-hs-lhead" cx="46" cy="34" r="12" fill="#E0B088"/>' +
+              '<path d="M34 31 Q46 15 58 31 Q58 22 46 18 Q34 22 34 31 Z" fill="#5A4632"/>' +
+              '<g id="hw-hs-leyes"><circle cx="42" cy="34" r="1.6" fill="#222"/><circle cx="50" cy="34" r="1.6" fill="#222"/></g>' +
+              '<path d="M42 40 Q46 43 50 40" fill="none" stroke-width="1.2"/>' +
+              '<polygon id="hw-hs-ltie" points="46,46 49,56 46,66 43,56" fill="#7B3B47" style="transform-origin:46px 50px;"/>' +
+            '</g>' +
+            // RIGHT figure
+            '<g id="hw-hs-rfig">' +
+              '<path d="M128 88 Q130 60 154 58 Q178 60 180 88 Z" fill="#6B7280"/>' +
+              '<path d="M136 62 Q118 59 106 66" fill="none" stroke="#6B7280" stroke-width="8" stroke-linecap="round"/>' +
+              '<circle id="hw-hs-rhead" cx="154" cy="34" r="12" fill="#C68642"/>' +
+              '<path d="M142 30 Q154 16 166 30 Q166 20 154 17 Q142 20 142 30 Z" fill="#2B2B2B"/>' +
+              '<g id="hw-hs-reyes"><circle cx="150" cy="34" r="1.6" fill="#222"/><circle cx="158" cy="34" r="1.6" fill="#222"/></g>' +
+              '<path d="M150 40 Q154 43 158 40" fill="none" stroke-width="1.2"/>' +
+              '<polygon points="154,46 157,56 154,64 151,56" fill="#3B4A6B" style="transform-origin:154px 50px;"/>' +
+            '</g>' +
+            // clasped hands, dead center
+            '<g id="hw-hs-hands"><ellipse cx="100" cy="66" rx="10" ry="7.5" fill="#E0B088"/>' +
+              '<path d="M92 64 Q100 61 108 64" fill="none" stroke-width="1.2"/></g>' +
+          '</g>' +
+          '<text id="hw-hs-caption" x="100" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1.5">SYNERGY</text>',
+        mutations: [
+          // the clasp detonates into a fist-bump explosion
+          { at: [100, 66], fn: function () { var e = $("hw-hs-hands"); e.innerHTML = '<g stroke="#2b2b2b" stroke-width="1.2" stroke-linejoin="round"><polygon points="100,50 104,62 116,60 106,68 111,80 100,72 89,80 94,68 84,60 96,62" fill="var(--accent)"/></g><text x="100" y="70" text-anchor="middle" font-size="7" font-weight="bold" fill="#fff">POW</text>'; } },
+          // left guy: googly eyes
+          { at: [46, 34], fn: function () { document.querySelectorAll("#hw-hs-leyes circle").forEach(function (c) { c.setAttribute("r", "3.6"); }); } },
+          // right guy hedgehogs out
+          { at: [154, 34], fn: function () { var e = $("hw-hs-rhead"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M142 26l-7-6 9 0zM149 22l-3-8 6 4zM159 22l3-8 3 8zM166 26l7-5-1 8z"/></g>'); } },
+          // beige wall goes electric purple
+          { at: [175, 18], fn: function () { $("hw-hs-bg").setAttribute("fill", "#B043D1"); } },
+          // left tie becomes a propeller
+          { at: [46, 58], fn: function () { $("hw-hs-ltie").classList.add("hw-anim-spin"); } },
+          // caption defects
+          { at: [100, 101], fn: function () { var e = $("hw-hs-caption"); e.textContent = "SYNERWEIRD"; e.setAttribute("fill", "var(--accent)"); } },
+          // the deal ascends — sunburst blazes and rotates
+          { at: [100, 44], fn: function () { var e = $("hw-hs-sun"); e.style.opacity = "1"; e.classList.add("hw-anim-spin"); } },
+          // right guy achieves liftoff
+          { at: [154, 72], fn: function () { $("hw-hs-rfig").classList.add("hw-anim-float"); } }
+        ]
+      }
     ],
     setup: function (ctx) {
       ctx.state.count = 0;
       ctx.state.applied = 0;
       ctx.state.lastClick = 0;
-      ctx.state.order = shuffle(gameWeird._mutations.slice(), run.rng);
+      var scn = gameWeird._scenes[Math.floor(run.rng() * gameWeird._scenes.length)];
+      ctx.state.order = shuffle(scn.mutations.slice(), run.rng);
       // Random starting spot (seeded) so the photo isn't always dead center.
       var ox = Math.round((run.rng() - 0.5) * 90), oy = Math.round((run.rng() - 0.5) * 40);
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:center;">' +
           '<div class="hw-w-wrap' + (ctx.params.drift ? ' hw-anim-wander-fast' : '') + '" style="width:min(70%, 340px); position:relative; margin:' + (20 + oy) + 'px 0 0 ' + ox + 'px;">' +
-          '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="A perfectly normal stock photo">' +
-            '<rect id="hw-w-bg" x="0" y="0" width="200" height="110" fill="#E8E0D0"/>' +
-            '<circle id="hw-w-sun" cx="170" cy="20" r="12" fill="#FFC53D" style="opacity:0; transition: opacity 0.3s;"/>' +
-            '<g id="hw-w-person" style="transform-origin: 60px 70px;">' +
-              '<circle id="hw-w-head" cx="60" cy="42" r="13" fill="#D9B38C"/>' +
-              '<g id="hw-w-spikes" style="opacity:0; transition: opacity 0.3s;">' +
-                '<path d="M50 33l-6-8 8 2zM58 29l-2-9 6 5zM66 30l4-8 2 9z" fill="var(--accent)"/></g>' +
-              '<circle cx="55" cy="40" r="1.8" fill="#222"/><circle cx="65" cy="40" r="1.8" fill="#222"/>' +
-              '<circle id="hw-w-eye3" cx="60" cy="33" r="2.2" fill="#222" style="opacity:0; transition: opacity 0.3s;"/>' +
-              '<rect x="48" y="55" width="24" height="34" rx="5" fill="#4A5568"/>' +
-              '<polygon id="hw-w-tie" points="60,55 64,65 60,80 56,65" fill="#C53030" style="transform-origin: 60px 60px;"/>' +
-            '</g>' +
-            '<polyline id="hw-w-chart" points="105,58 120,50 135,52 150,44 165,46 180,38" fill="none" stroke="#718096" stroke-width="2.5" style="transform-origin: 142px 48px;"/>' +
-            '<g id="hw-w-plant" style="transform-origin: 25px 95px;">' +
-              '<rect x="20" y="88" width="10" height="10" fill="#A0785A"/>' +
-              '<path d="M25 88c-6-8-2-16 0-18 2 2 6 10 0 18z" fill="#48885C"/></g>' +
-            '<text id="hw-w-caption" x="100" y="103" text-anchor="middle" font-size="9" font-weight="bold" fill="#718096" letter-spacing="2">SYNERGY</text>' +
+          '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="' + scn.aria + '">' +
+            scn.svg +
           '</svg></div>' +
           '<p class="hw-hint">click the glowing bits weirder — <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
         '</div>';
