@@ -1498,14 +1498,17 @@
     _userGlyph: function (type) {
       var skin = { n: "#E0B088", fast: "#C68642", float: "#E0B088", whale: "#F2C892" }[type] || "#E0B088";
       var shirt = { n: "#3B4A6B", fast: "#2E8B57", float: "#7B3B47", whale: "#E6B325" }[type] || "#3B4A6B";
+      // Drawn feet-at-origin (body above y=0) so the reference point is the user's
+      // BOTTOM — the leading edge as it falls. It touches the funnel's top rim
+      // exactly at the catch line, so the rim reads as the thing that catches.
       var extra = "";
-      if (type === "whale") extra = '<path d="M-5 -4 l1 -5 3 3 1 -5 1 5 3 -3 1 5 z" fill="#E6B325" stroke="#101010" stroke-width="1"/><text x="0" y="11" font-size="6.5" text-anchor="middle" fill="#111" font-weight="bold">$</text>';
-      else if (type === "fast") extra = '<line x1="-3" y1="-9" x2="-3" y2="-14" stroke="#6b6b63" stroke-width="1.4"/><line x1="3" y1="-9" x2="3" y2="-14" stroke="#6b6b63" stroke-width="1.4"/>';
-      else if (type === "float") extra = '<line x1="0" y1="-5" x2="0" y2="-13" stroke="#101010" stroke-width="1"/><ellipse cx="0" cy="-17" rx="5" ry="6" fill="#1D4AFF" stroke="#101010" stroke-width="1.2"/>';
+      if (type === "whale") extra = '<path d="M-5 -18 l1 -5 3 3 1 -5 1 5 3 -3 1 5 z" fill="#E6B325" stroke="#101010" stroke-width="1"/><text x="0" y="-3" font-size="6.5" text-anchor="middle" fill="#111" font-weight="bold">$</text>';
+      else if (type === "fast") extra = '<line x1="-3" y1="-23" x2="-3" y2="-28" stroke="#6b6b63" stroke-width="1.4"/><line x1="3" y1="-23" x2="3" y2="-28" stroke="#6b6b63" stroke-width="1.4"/>';
+      else if (type === "float") extra = '<line x1="0" y1="-19" x2="0" y2="-27" stroke="#101010" stroke-width="1"/><ellipse cx="0" cy="-31" rx="5" ry="6" fill="#1D4AFF" stroke="#101010" stroke-width="1.2"/>';
       return '<g stroke="#101010" stroke-width="1.4" stroke-linejoin="round">' + extra +
-        '<path d="M-7 13 Q-7 4 0 4 Q7 4 7 13 Z" fill="' + shirt + '"/>' +
-        '<circle cx="0" cy="0" r="5" fill="' + skin + '"/>' +
-        '<circle cx="-1.8" cy="-0.3" r="0.9" fill="#111"/><circle cx="1.8" cy="-0.3" r="0.9" fill="#111"/>' +
+        '<path d="M-7 -1 Q-7 -10 0 -10 Q7 -10 7 -1 Z" fill="' + shirt + '"/>' +
+        '<circle cx="0" cy="-14" r="5" fill="' + skin + '"/>' +
+        '<circle cx="-1.8" cy="-14.3" r="0.9" fill="#111"/><circle cx="1.8" cy="-14.3" r="0.9" fill="#111"/>' +
       '</g>';
     },
     _meter: function (retained, need) {
@@ -1599,7 +1602,7 @@
         if (u.bounced) u.x = Math.max(0.03, Math.min(0.97, u.x + u.bounceDir * 0.28 * dt / 1000));
         if (u.y >= 1) {
           u.done = true; s.resolved++;
-          s.effects.push({ kind: "churn", x: ux, y: 94, type: u.type, dir: (u.x < 0.5 ? -1 : 1), until: ctx.elapsed + 650 });
+          s.effects.push({ kind: "churn", x: ux, y: 101, type: u.type, dir: (u.x < 0.5 ? -1 : 1), until: ctx.elapsed + 650 });
           sfx("whiff");
           continue;
         }
@@ -1614,7 +1617,7 @@
           var lf2 = 1 - (e.until - ctx.elapsed) / 420;
           if (lf2 < 0.62) { // swallow: user slides to the (live) funnel centre and shrinks down into the spout, in full view
             var t = lf2 / 0.62;
-            var sx = e.x0 + (fpx - e.x0) * t, syy = 71 + 25 * t, sc = Math.max(0.12, 1 - 0.88 * t);
+            var sx = e.x0 + (fpx - e.x0) * t, syy = 74 + 22 * t, sc = Math.max(0.12, 1 - 0.88 * t);
             dotsSvg += '<g transform="translate(' + sx.toFixed(1) + ',' + syy.toFixed(1) + ') scale(' + sc.toFixed(2) + ')">' + gameBossFunnel._userGlyph(e.type) + '</g>';
           }
           if (lf2 > 0.4) { // +worth rises out ABOVE the mouth where it's visible
@@ -1624,8 +1627,7 @@
         } else {
           // canned ragdoll flop: tumble + squash + grey + fade (deterministic)
           var lf = 1 - (e.until - ctx.elapsed) / 650;
-          dotsSvg += '<g transform="translate(' + e.x.toFixed(1) + ',' + e.y + ') rotate(' + (e.dir * lf * 80).toFixed(0) + ')" opacity="' + (1 - lf).toFixed(2) + '" style="filter:grayscale(1)">' +
-            '<g transform="translate(0,-9) scale(' + (1 + lf * 0.25).toFixed(2) + ',' + Math.max(0.3, 1 - lf * 0.6).toFixed(2) + ')">' + gameBossFunnel._userGlyph(e.type) + '</g></g>';
+          dotsSvg += '<g transform="translate(' + e.x.toFixed(1) + ',' + e.y + ') rotate(' + (e.dir * lf * 80).toFixed(0) + ') scale(' + (1 + lf * 0.25).toFixed(2) + ',' + Math.max(0.3, 1 - lf * 0.6).toFixed(2) + ')" opacity="' + (1 - lf).toFixed(2) + '" style="filter:grayscale(1)">' + gameBossFunnel._userGlyph(e.type) + '</g>';
         }
       });
       if (usersG) usersG.innerHTML = dotsSvg;
