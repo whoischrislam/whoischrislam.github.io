@@ -82,6 +82,7 @@
     return s.toLowerCase().replace(/'/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   }
   var stage = $("hw-stage"), scene = $("hw-scene"), hud = $("hw-hud");
+  var sceneBody = $("hw-scene-body"); // games render here; #hw-scene is the window (title bar + body)
   var timerFill = $("hw-timer-fill");
   var screens = {
     title: $("hw-titlescreen"), verb: $("hw-verb"), result: $("hw-result"),
@@ -421,7 +422,7 @@
           (c.type === "stall" ? '<text class="hw-stall-warn" x="14" y="-3" font-size="13" font-weight="bold" fill="#D01E1E" opacity="0">!</text>' : '') +
           '</g>';
       }).join("");
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2em;">' +
           '<svg width="100%" height="140" viewBox="0 0 400 70" preserveAspectRatio="none" aria-hidden="true">' +
             '<rect x="0" y="24" width="400" height="30" fill="#8C8C8C" stroke="#101010" stroke-width="1.4"/>' +   // road
@@ -449,7 +450,7 @@
       if (ctx.state.holding) ctx.state.x = Math.min(1, ctx.state.x + dt / ctx.state.travelMs);
       var car = $("hw-car");
       if (car) car.style.transform = "translate(" + (6 + ctx.state.x * 348) + "px, 30px)";
-      var els = scene.querySelectorAll(".hw-traffic");
+      var els = sceneBody.querySelectorAll(".hw-traffic");
       for (var i = 0; i < ctx.state.cars.length; i++) {
         var c = ctx.state.cars[i], el = els[i];
         if (!el || c.dodged) continue;
@@ -510,7 +511,7 @@
           '<span class="hw-publabel">' + label + '</span>' +
           '<span class="hw-pubstate">Private</span></button>';
       }).join("");
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div class="hw-screen"><div class="hw-pubpanel">' +
           '<fieldset class="hw-pubgroup"><legend>Make public:</legend>' +
             '<div class="hw-publist' + dens + '">' + rows + '</div>' +
@@ -527,7 +528,7 @@
           ctx.win("Everything's out in the open.", 0);
         }
       };
-      scene.querySelectorAll(".hw-pubrow").forEach(function (el) {
+      sceneBody.querySelectorAll(".hw-pubrow").forEach(function (el) {
         var i = parseInt(el.dataset.i, 10);
         el.addEventListener("pointerdown", function () {
           if (ctx.done || !ctx.live || ctx.state.pub[i] || ctx.state.confirmOpen) return;
@@ -548,7 +549,7 @@
             '<div class="hw-pub-confirm-btns"><button class="hw-btn hw-pubyes">Yes</button>' +
             '<button class="hw-btn hw-btn--ghost hw-pubno">No</button></div></div>' +
         '</div>';
-      scene.querySelector(".hw-pubpanel").appendChild(overlay);
+      sceneBody.querySelector(".hw-pubpanel").appendChild(overlay);
       var close = function () { ctx.state.confirmOpen = false; overlay.remove(); };
       overlay.querySelector(".hw-pubyes").addEventListener("pointerdown", function (e) {
         e.stopPropagation();
@@ -843,7 +844,7 @@
       ctx.state.order = shuffle(scn.mutations.slice(), run.rng);
       // Random starting spot (seeded) so the photo isn't always dead center.
       var ox = Math.round((run.rng() - 0.5) * 90), oy = Math.round((run.rng() - 0.5) * 40);
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div class="hw-screen" style="justify-content:center;">' +
           '<div class="hw-w-wrap' + (ctx.params.drift ? ' hw-anim-wander-fast' : '') + '" style="width:min(70%, 340px); position:relative; margin:' + (20 + oy) + 'px 0 0 ' + ox + 'px;">' +
           '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:#FCFBF5; border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="' + scn.aria + '">' +
@@ -974,7 +975,7 @@
       // (most of the probability mass is mid-range), so push toward the extremes.
       var edgy = function () { var u = run.rng(); return u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u); };
       ctx.state.shipPos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
-      scene.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
+      sceneBody.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
         '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the noise — find and hit SHIP</p>';
       if (ctx.params.decoy) {
         var d = document.createElement("button");
@@ -1116,7 +1117,7 @@
         '<rect x="' + px(Math.max(0, b0)) + '" y="32" width="' + (px(Math.min(100, b1)) - px(Math.max(0, b0))) + '" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>' +
         // THE LEDGE: a sliver of maximum upside at the very end — nearly frame-perfect, pays triple.
         '<rect x="' + px(102) + '" y="30" width="' + (px(106) - px(102)) + '" height="22" rx="3" fill="var(--accent-strong)" opacity="0.85"/>';
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2.2em;">' +
           '<svg id="hw-rink" width="100%" height="120" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true" ' +
             'data-band="' + s.band.toFixed(1) + '" data-speed="' + ctx.params.slideSpeed + '">' +
@@ -1193,14 +1194,14 @@
       var chips = frags.map(function (f) {
         return '<button class="hw-frag" data-ord="' + f.ord + '">' + f.text + '</button>';
       }).join("");
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div id="hw-boss-scene" class="hw-screen" style="gap:0.9em;">' +
           '<pre id="hw-terminal">hogql&gt; <span class="hw-caret">▋</span></pre>' +
           '<div class="hw-frag-tray">' + chips + '</div>' +
           '<p class="hw-hint">assemble the leaderboard query — this is literally how the scoreboard works · ' +
             '<span id="hw-boss-errors">' + ctx.params.maxErrors + '</span> errors left</p>' +
         '</div>';
-      scene.querySelectorAll(".hw-frag").forEach(function (chip) {
+      sceneBody.querySelectorAll(".hw-frag").forEach(function (chip) {
         chip.addEventListener("pointerdown", function () {
           if (ctx.done || !ctx.live || chip.disabled) return;
           if (parseInt(chip.dataset.ord, 10) === ctx.state.step) {
@@ -1241,13 +1242,13 @@
         bars([7, 12, 18, 25, 32], false),  // ASC — reading it backwards
         bars([18, 30, 9, 24, 14], false)   // chaos — no ORDER BY at all
       ], run.rng).join("");
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div id="hw-boss-scene" class="hw-screen" style="gap:1em;">' +
           '<pre id="hw-terminal">hogql&gt; running… returned 3 candidates</pre>' +
           '<div class="hw-chart-tray">' + charts + '</div>' +
           '<p class="hw-hint">which one is ORDER BY score DESC?</p>' +
         '</div>';
-      scene.querySelectorAll(".hw-chart").forEach(function (btn) {
+      sceneBody.querySelectorAll(".hw-chart").forEach(function (btn) {
         btn.addEventListener("pointerdown", function () {
           if (ctx.done) return;
           if (btn.dataset.correct === "1") ctx.win("The query returned. +1 life.", 1);
@@ -1289,7 +1290,7 @@
       var rocksSvg = ctx.state.rocks.map(function (f) {
         return '<polygon points="' + (px(f) - 7) + ',64 ' + px(f) + ',52 ' + (px(f) + 7) + ',64" fill="var(--chip-text)"/>';
       }).join("");
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div id="hw-boss-scene" class="hw-screen" style="justify-content:flex-end; padding-bottom:2em;">' +
           '<svg id="hw-curl-rink" width="100%" height="150" viewBox="0 0 400 78" preserveAspectRatio="none" aria-hidden="true" ' +
             'data-chargems="' + ctx.params.chargeMs + '" data-targetpower="' + targetPower.toFixed(1) + '" data-rocks="' + ctx.state.rocks.join(",") + '">' +
@@ -1412,7 +1413,7 @@
       var rows = commits.map(function (c) {
         return '<button class="hw-commit" data-bad="' + c.bad + '">' + c.text + '</button>';
       }).join("");
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div id="hw-incident-scene" class="hw-screen" style="gap:0.7em;">' +
           '<svg id="hw-err-graph" width="min(88%, 460px)" height="54" viewBox="0 0 200 24" preserveAspectRatio="none">' +
             '<rect x="0" y="0" width="200" height="24" fill="var(--surface)" stroke="var(--border-strong)"/>' +
@@ -1422,7 +1423,7 @@
           '<p class="hw-hint" id="hw-incident-hint" style="color:#E5484D;">errors climbing! click the commit that broke prod — before the graph tops out</p>' +
           '<div class="hw-frag-tray">' + rows + '</div>' +
         '</div>';
-      scene.querySelectorAll(".hw-commit").forEach(function (btn) {
+      sceneBody.querySelectorAll(".hw-commit").forEach(function (btn) {
         btn.addEventListener("pointerdown", function () {
           if (ctx.done || !ctx.live || ctx.state.phase !== 1 || btn.disabled) return;
           if (btn.dataset.bad === "1") {
@@ -1441,7 +1442,7 @@
       ctx.state.phase = 2;
       sfx("verb");
       var graph = $("hw-err-graph").outerHTML;
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div id="hw-incident-scene" class="hw-screen" style="gap:0.7em;">' +
           graph +
           '<button id="hw-rollback" class="hw-btn" style="font-size:1.2em; padding:0.75em 2.2em;">ROLLBACK</button>' +
@@ -1551,7 +1552,7 @@
         born += 1500 - i * 90; // escalation: the wave crowds up
       }
       s.total = types.length;
-      scene.innerHTML =
+      sceneBody.innerHTML =
         '<div id="hw-funnel-scene" class="hw-screen" style="justify-content:flex-end; padding-bottom:1.6em;">' +
           '<svg id="hw-funnel-rink" width="100%" height="210" viewBox="0 0 400 110" preserveAspectRatio="none">' +
             '<rect x="0" y="0" width="400" height="110" fill="#FCFBF5"/>' +
@@ -1786,8 +1787,12 @@
     };
     var thisActive = active;
     swapScreens(scene, function () {
-      scene.innerHTML = "";
+      sceneBody.innerHTML = "";
       scene.style.pointerEvents = "none"; // a fading-in scene is never clickable
+      // Name the maximized window after the value (boss = its verb) + the app icon.
+      var titleEl = $("hw-gamewin-title-text"), iconEl = $("hw-gamewin-icon");
+      if (titleEl) titleEl.textContent = game.boss ? game.verb.replace(/!+$/, "") : game.value;
+      if (iconEl) iconEl.textContent = ({ drive: "🚗", publish: "🌐", weird: "🌀", ship: "🚀", aim: "🎯" })[game.id] || "📉";
       show(hud); // back inside a program: the gameplay HUD returns
       game.setup(thisActive);
     }, function () {
