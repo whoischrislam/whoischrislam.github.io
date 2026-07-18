@@ -429,18 +429,19 @@
             will-change: transform, opacity;
           }
           @keyframes hw-appwin-maximize { to { transform: scale(2.6); opacity: 0.4; } }
-          .hw-scale-in { transform: scale(0.72); opacity: 0; will-change: transform, opacity; }
-          .hw-scale-in-go { animation: hw-scale-in 300ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards; }
-          @keyframes hw-scale-in { to { transform: scale(1); opacity: 1; } }
-          /* exit = minimize: the window shrinks down toward the taskbar */
-          .hw-shrink-out { animation: hw-shrink-out 220ms cubic-bezier(0.4, 0, 0.7, 0.5) forwards; transform-origin: 50% 100%; }
-          @keyframes hw-shrink-out { to { transform: translateY(30%) scale(0.14); opacity: 0; } }
+          /* launch = maximize: the window grows out of the launching icon (origin set in JS) */
+          .hw-maximize-in { opacity: 0; will-change: transform, opacity; }
+          .hw-maximize-in-go { animation: hw-maximize-in 300ms cubic-bezier(0.18, 0.9, 0.32, 1.03) forwards; }
+          @keyframes hw-maximize-in { 0% { transform: scale(0.1); opacity: 0; } 55% { opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+          /* exit = minimize: the window shrinks toward the taskbar (origin set in JS) */
+          .hw-minimize-out { animation: hw-minimize-out 200ms cubic-bezier(0.5, 0, 0.8, 0.4) forwards; }
+          @keyframes hw-minimize-out { to { transform: scale(0.06); opacity: 0; } }
           .hw-restore-in { transform: scale(1.06); opacity: 0; will-change: transform, opacity; }
           .hw-restore-in-go { animation: hw-restore-in 300ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards; }
           @keyframes hw-restore-in { to { transform: scale(1); opacity: 1; } }
           @media (prefers-reduced-motion: reduce) {
             .hw-crt-collapse, .hw-crt-bloom, .hw-crt-bloom-go, .hw-appwin-maximize,
-            .hw-scale-in, .hw-scale-in-go, .hw-shrink-out, .hw-restore-in, .hw-restore-in-go { animation: none; transform: none; opacity: 1; filter: none; }
+            .hw-maximize-in, .hw-maximize-in-go, .hw-minimize-out, .hw-restore-in, .hw-restore-in-go { animation: none; transform: none; opacity: 1; filter: none; }
           }
 
           /* ---- Announce card keeps the WarioWare sunburst, on the beat clock ---- */
