@@ -534,21 +534,23 @@
     },
     _askConfirm: function (ctx, rowEl, i, publish) {
       ctx.state.confirmOpen = true;
-      var dlg = document.createElement("div");
-      dlg.className = "hw-pub-confirm";
-      dlg.innerHTML =
-        '<div class="hw-pub-confirm-bar">⚠ Confirm</div>' +
-        '<div class="hw-pub-confirm-body"><p><b>Make Salaries public?</b><br><span>everyone. yes, you too.</span></p>' +
-          '<div class="hw-pub-confirm-btns"><button class="hw-btn hw-pubyes">Yes</button>' +
-          '<button class="hw-btn hw-btn--ghost hw-pubno">No</button></div></div>';
-      scene.querySelector(".hw-pubpanel").appendChild(dlg);
-      var close = function () { ctx.state.confirmOpen = false; dlg.remove(); };
-      dlg.querySelector(".hw-pubyes").addEventListener("pointerdown", function (e) {
+      var overlay = document.createElement("div");
+      overlay.className = "hw-pub-confirm-overlay"; // flex-centers the dialog — no transform race
+      overlay.innerHTML =
+        '<div class="hw-pub-confirm">' +
+          '<div class="hw-pub-confirm-bar">⚠ Confirm</div>' +
+          '<div class="hw-pub-confirm-body"><p><b>Make Salaries public?</b><br><span>everyone. yes, you too.</span></p>' +
+            '<div class="hw-pub-confirm-btns"><button class="hw-btn hw-pubyes">Yes</button>' +
+            '<button class="hw-btn hw-btn--ghost hw-pubno">No</button></div></div>' +
+        '</div>';
+      scene.querySelector(".hw-pubpanel").appendChild(overlay);
+      var close = function () { ctx.state.confirmOpen = false; overlay.remove(); };
+      overlay.querySelector(".hw-pubyes").addEventListener("pointerdown", function (e) {
         e.stopPropagation();
         if (ctx.done) return;
         close(); publish(rowEl, i);
       });
-      dlg.querySelector(".hw-pubno").addEventListener("pointerdown", function (e) {
+      overlay.querySelector(".hw-pubno").addEventListener("pointerdown", function (e) {
         e.stopPropagation();
         close(); sfx("whiff");
       });
