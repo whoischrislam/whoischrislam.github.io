@@ -56,6 +56,8 @@
   .empty { max-width: 1080px; margin: 40px auto; color: #a7a79c; }
   @keyframes ringpulse { 0%,100% { opacity: .35; } 50% { opacity: .9; } }
   .prev-ring { animation: ringpulse 1s ease-in-out infinite; pointer-events: none; }
+  @keyframes hw-weird-jolt { 0% { transform: scale(1) rotate(0deg); } 25% { transform: scale(1.05) rotate(-1.8deg); } 55% { transform: scale(0.975) rotate(1.3deg); } 100% { transform: scale(1) rotate(0deg); } }
+  svg.frame.hw-jolt { animation: hw-weird-jolt 0.26s ease-out; }
 </style>
 </head>
 <body>
@@ -130,6 +132,7 @@
         function step() {
           if (idx >= scn.mutations.length) return;
           try { scn.mutations[idx].fn(); } catch (e) { console.error(scn.id + " mutation " + idx, e); }
+          svg.classList.remove("hw-jolt"); void svg.offsetWidth; svg.classList.add("hw-jolt");
           idx++; moveRing();
         }
         function reset() { idx = 0; draw(); moveRing(); }
