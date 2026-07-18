@@ -629,8 +629,11 @@
               '<polygon points="154,46 157,56 154,64 151,56" fill="#3B4A6B" style="transform-origin:154px 50px;"/>' +
             '</g>' +
             // clasped hands, dead center
-            '<g id="hw-hs-hands"><ellipse cx="100" cy="66" rx="10" ry="7.5" fill="#E0B088"/>' +
-              '<path d="M92 64 Q100 61 108 64" fill="none" stroke-width="1.2"/></g>' +
+            '<g id="hw-hs-hands">' +
+              '<path d="M89 66 Q89 59 97 59 L103 59 Q111 59 111 66 Q111 73 103 73 L97 73 Q89 73 89 66 Z" fill="#E0B088"/>' +
+              '<path d="M90 62 Q95 59 100 61" fill="none" stroke-width="1.2"/>' +
+              '<line x1="96" y1="59.5" x2="95" y2="72.5" stroke-width="1"/><line x1="100" y1="59" x2="99" y2="73" stroke-width="1"/><line x1="104" y1="59.5" x2="103" y2="72.5" stroke-width="1"/>' +
+            '</g>' +
           '</g>' +
           '<text id="hw-hs-caption" x="100" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1.5">SYNERGY</text>',
         mutations: [
@@ -651,13 +654,116 @@
           // right guy achieves liftoff
           { at: [154, 72], fn: function () { $("hw-hs-rfig").classList.add("hw-anim-float"); } }
         ]
+      },
+      {
+        id: "chart",
+        aria: "A stock photo of a presenter pointing at a growth chart",
+        svg:
+          '<rect id="hw-ch-bg" x="0" y="0" width="200" height="110" fill="#E3DAC6"/>' +
+          '<rect x="0" y="84" width="200" height="26" fill="#CBBE9E"/>' +
+          '<g stroke="#2b2b2b" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">' +
+            '<rect x="90" y="14" width="98" height="64" fill="#F4EFE2"/>' +
+            '<line x1="112" y1="78" x2="104" y2="97" stroke-width="2"/><line x1="168" y1="78" x2="176" y2="97" stroke-width="2"/>' +
+            '<g id="hw-ch-bars" style="transform-origin:140px 72px;">' +
+              '<rect x="102" y="56" width="13" height="18" fill="#9AA6B8"/>' +
+              '<rect x="122" y="48" width="13" height="26" fill="#7B8AA0"/>' +
+              '<rect x="142" y="38" width="13" height="36" fill="#5B6B85"/>' +
+              '<rect x="162" y="26" width="13" height="48" fill="#3B4A6B"/>' +
+            '</g>' +
+            '<polyline id="hw-ch-line" points="108,56 128,48 148,38 172,24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>' +
+            '<g id="hw-ch-rocket" style="opacity:0; transform-origin:178px 22px; transition:opacity .3s;"><path d="M175 24 l3 -9 3 9 -3 3z" fill="var(--accent)"/><path d="M176 27 l-2 5 4 -2 4 2 -2 -5z" fill="#E6B325"/></g>' +
+          '</g>' +
+          '<g stroke="#2b2b2b" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">' +
+            '<g id="hw-ch-fig">' +
+              '<path d="M12 96 Q14 62 38 60 Q62 62 64 96 Z" fill="#3B4A6B"/>' +
+              '<path d="M54 60 Q72 50 84 45" fill="none" stroke="#3B4A6B" stroke-width="7" stroke-linecap="round"/>' +
+              '<line id="hw-ch-rod" x1="82" y1="46" x2="148" y2="34" stroke="#6B4A2B" stroke-width="2" stroke-linecap="round"/>' +
+              '<circle id="hw-ch-head" cx="38" cy="34" r="12" fill="#8D5524"/>' +
+              '<path d="M26 31 Q38 15 50 31 Q50 22 38 18 Q26 22 26 31 Z" fill="#1e1e1e"/>' +
+              '<g id="hw-ch-eyes"><circle cx="34" cy="34" r="1.6" fill="#222"/><circle cx="42" cy="34" r="1.6" fill="#222"/></g>' +
+              '<path d="M34 40 Q38 43 42 40" fill="none" stroke-width="1.2"/>' +
+              '<polygon id="hw-ch-tie" points="38,46 41,55 38,64 35,55" fill="#7B3B47" style="transform-origin:38px 50px;"/>' +
+            '</g>' +
+          '</g>' +
+          '<text id="hw-ch-caption" x="100" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1.5">Q3 GROWTH</text>',
+        mutations: [
+          { at: [148, 38], fn: function () { var e = $("hw-ch-line"); e.setAttribute("points", "108,56 126,26 144,60 162,20 178,46"); e.setAttribute("stroke", "var(--accent)"); } }, // chart becomes a rollercoaster
+          { at: [38, 34], fn: function () { var e = $("hw-ch-head"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M26 27l-6-6 8 1zM33 23l-2-8 5 4zM43 23l2-8 3 7zM51 27l7-5-1 8z"/></g>'); } }, // presenter hedgehogs
+          { at: [140, 60], fn: function () { $("hw-ch-bars").classList.add("hw-anim-grow"); } }, // the bars start dancing
+          { at: [180, 12], fn: function () { $("hw-ch-bg").setAttribute("fill", "#B043D1"); } }, // wall goes purple
+          { at: [116, 40], fn: function () { var e = $("hw-ch-rod"); e.setAttribute("stroke", "var(--accent)"); e.setAttribute("stroke-width", "4"); } }, // pointer becomes a lightsaber
+          { at: [100, 101], fn: function () { var e = $("hw-ch-caption"); e.textContent = "TO THE MOON"; e.setAttribute("fill", "var(--accent)"); } },
+          { at: [178, 22], fn: function () { var e = $("hw-ch-rocket"); e.style.opacity = "1"; e.classList.add("hw-anim-float"); } }, // the chart literally takes off
+          { at: [38, 56], fn: function () { $("hw-ch-tie").classList.add("hw-anim-spin"); } } // tie propeller
+        ]
+      },
+      {
+        id: "headset",
+        aria: "A stock photo of a smiling support agent in a headset",
+        svg:
+          '<rect id="hw-hd-bg" x="0" y="0" width="200" height="110" fill="#E3DAC6"/>' +
+          '<rect x="0" y="84" width="200" height="26" fill="#CBBE9E"/>' +
+          '<g stroke="#2b2b2b" stroke-width="1.1" stroke-linejoin="round"><rect x="150" y="14" width="36" height="22" fill="#F4EFE2"/><text x="168" y="28" text-anchor="middle" font-size="7" fill="#9AA6B8" font-family="Georgia,serif" letter-spacing="1">SMILE!</text></g>' +
+          '<g stroke="#2b2b2b" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">' +
+            '<g id="hw-hd-fig">' +
+              '<path d="M58 96 Q60 60 96 58 Q132 60 134 96 Z" fill="#7B8AA0"/>' +
+              '<g id="hw-hd-thumb"><path d="M126 66 q11 -1 13 -8 q1 -5 5 -4 q4 1 2 6 l-2 5 q7 0 7 3 q0 4 -8 5 l-14 1 z" fill="#C68642"/></g>' +
+              '<circle id="hw-hd-head" cx="96" cy="34" r="15" fill="#E0B088"/>' +
+              '<path d="M80 30 Q96 11 112 30 Q112 19 96 15 Q80 19 80 30 Z" fill="#5A4632"/>' +
+              '<g id="hw-hd-set"><path d="M79 24 Q96 6 113 24" fill="none" stroke="#2b2b2b" stroke-width="3"/><rect x="77" y="30" width="6" height="11" rx="2" fill="#2b2b2b"/><path d="M80 38 Q69 46 84 47" fill="none" stroke="#2b2b2b" stroke-width="2"/><circle cx="85" cy="47" r="2.6" fill="#2b2b2b"/></g>' +
+              '<g id="hw-hd-eyes"><circle cx="90" cy="33" r="1.8" fill="#222"/><circle cx="102" cy="33" r="1.8" fill="#222"/></g>' +
+              '<path id="hw-hd-smile" d="M88 40 Q96 47 104 40" fill="none" stroke-width="1.6"/>' +
+            '</g>' +
+          '</g>' +
+          '<text id="hw-hd-caption" x="96" y="102" text-anchor="middle" font-size="11" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1">HOW CAN I HELP!</text>',
+        mutations: [
+          { at: [96, 44], fn: function () { $("hw-hd-smile").setAttribute("d", "M79 38 Q96 59 113 38"); } }, // the smile goes too wide
+          { at: [96, 33], fn: function () { document.querySelectorAll("#hw-hd-eyes circle").forEach(function (c) { c.setAttribute("r", "3.6"); }); } }, // googly
+          { at: [96, 12], fn: function () { $("hw-hd-fig").insertAdjacentHTML("beforeend", '<g style="transform-origin:96px 11px;" class="hw-anim-spin"><rect x="95" y="7" width="3" height="9" fill="#2b2b2b"/><rect x="82" y="5" width="28" height="3" rx="1.5" fill="var(--accent)" stroke="#2b2b2b" stroke-width="0.8"/></g>'); } }, // propeller beanie
+          { at: [26, 16], fn: function () { $("hw-hd-bg").setAttribute("fill", "#B043D1"); } }, // wall goes purple
+          { at: [140, 60], fn: function () { var e = $("hw-hd-thumb"); e.querySelector("path").setAttribute("fill", "var(--accent)"); e.style.transformOrigin = "138px 62px"; e.style.transform = "scale(1.6)"; } }, // giant orange thumbs-up
+          { at: [96, 101], fn: function () { var e = $("hw-hd-caption"); e.textContent = "HELP ME"; e.setAttribute("fill", "var(--accent)"); } },
+          { at: [96, 26], fn: function () { $("hw-hd-eyes").insertAdjacentHTML("beforeend", '<circle cx="96" cy="25" r="2.4" fill="#222"/>'); } }, // third eye
+          { at: [96, 72], fn: function () { $("hw-hd-fig").classList.add("hw-anim-float"); } } // liftoff
+        ]
+      },
+      {
+        id: "team",
+        aria: "A stock photo of a diverse team celebrating around a laptop",
+        svg:
+          '<rect id="hw-tm-bg" x="0" y="0" width="200" height="110" fill="#E3DAC6"/>' +
+          '<rect x="0" y="88" width="200" height="22" fill="#CBBE9E"/>' +
+          '<g id="hw-tm-confetti" style="opacity:0; transition:opacity .3s;"><rect x="60" y="18" width="4" height="4" fill="var(--accent)"/><rect x="100" y="12" width="4" height="4" fill="#E6B325"/><rect x="140" y="18" width="4" height="4" fill="#1D4AFF"/><rect x="80" y="14" width="4" height="4" fill="#F1A82C"/><rect x="120" y="16" width="4" height="4" fill="var(--accent)"/></g>' +
+          '<g stroke="#2b2b2b" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">' +
+            '<g id="hw-tm-group">' +
+              '<g id="hw-tm-f1"><path d="M18 88 Q20 66 38 65 Q56 66 58 88 Z" fill="#3B4A6B"/><path d="M50 66 Q58 54 60 44" fill="none" stroke="#3B4A6B" stroke-width="6"/><circle id="hw-tm-h1" cx="38" cy="44" r="10" fill="#E0B088"/><g id="hw-tm-e1"><circle cx="35" cy="44" r="1.4" fill="#222"/><circle cx="41" cy="44" r="1.4" fill="#222"/></g><path d="M35 48 Q38 51 41 48" fill="none" stroke-width="1.1"/></g>' +
+              '<g id="hw-tm-f2"><path d="M76 90 Q78 63 100 62 Q122 63 124 90 Z" fill="#7B3B47"/><path d="M88 65 Q82 52 80 42" fill="none" stroke="#7B3B47" stroke-width="6"/><path d="M112 65 Q118 52 120 42" fill="none" stroke="#7B3B47" stroke-width="6"/><circle id="hw-tm-h2" cx="100" cy="40" r="11" fill="#C68642"/><path d="M89 37 Q100 22 111 37 Q111 28 100 24 Q89 28 89 37 Z" fill="#1e1e1e"/><g id="hw-tm-e2"><circle cx="96" cy="40" r="1.5" fill="#222"/><circle cx="104" cy="40" r="1.5" fill="#222"/></g><path d="M96 44 Q100 47 104 44" fill="none" stroke-width="1.2"/></g>' +
+              '<g id="hw-tm-f3"><path d="M142 88 Q144 66 162 65 Q180 66 182 88 Z" fill="#6B7280"/><path d="M150 66 Q142 54 140 44" fill="none" stroke="#6B7280" stroke-width="6"/><circle id="hw-tm-h3" cx="162" cy="44" r="10" fill="#8D5524"/><path d="M152 41 Q162 27 172 41 Q172 32 162 30 Q152 32 152 41 Z" fill="#1e1e1e"/><g id="hw-tm-e3"><circle cx="159" cy="44" r="1.4" fill="#222"/><circle cx="165" cy="44" r="1.4" fill="#222"/></g><path d="M159 48 Q162 51 165 48" fill="none" stroke-width="1.1"/></g>' +
+            '</g>' +
+            '<g id="hw-tm-laptop"><rect x="86" y="74" width="28" height="16" rx="1" fill="#3b3b3b"/><rect id="hw-tm-screen" x="89" y="77" width="22" height="10" fill="#9AD1B0"/></g>' +
+          '</g>' +
+          '<text id="hw-tm-caption" x="100" y="104" text-anchor="middle" font-size="11" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1.5">TEAMWORK</text>',
+        mutations: [
+          { at: [100, 16], fn: function () { var e = $("hw-tm-confetti"); e.style.opacity = "1"; e.classList.add("hw-anim-float"); } }, // confetti erupts
+          { at: [100, 40], fn: function () { var e = $("hw-tm-h2"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M89 33l-6-6 8 1zM96 29l-2-8 5 4zM104 29l2-8 3 7zM111 33l7-5-1 8z"/></g>'); } }, // center teammate hedgehogs
+          { at: [100, 82], fn: function () { $("hw-tm-screen").setAttribute("fill", "var(--accent)"); } }, // the laptop screen goes rogue
+          { at: [182, 14], fn: function () { $("hw-tm-bg").setAttribute("fill", "#B043D1"); } }, // wall goes purple
+          { at: [38, 44], fn: function () { document.querySelectorAll("#hw-tm-e1 circle").forEach(function (c) { c.setAttribute("r", "3"); }); } }, // googly
+          { at: [100, 103], fn: function () { var e = $("hw-tm-caption"); e.textContent = "SYNERGY!!!"; e.setAttribute("fill", "var(--accent)"); } },
+          { at: [162, 44], fn: function () { $("hw-tm-h3").setAttribute("fill", "var(--accent)"); } }, // and another
+          { at: [100, 70], fn: function () { $("hw-tm-group").classList.add("hw-anim-float"); } } // the whole team lifts off
+        ]
       }
     ],
     setup: function (ctx) {
       ctx.state.count = 0;
       ctx.state.applied = 0;
       ctx.state.lastClick = 0;
-      var scn = gameWeird._scenes[Math.floor(run.rng() * gameWeird._scenes.length)];
+      var pool = gameWeird._scenes;
+      var forced = null;
+      try { forced = new URLSearchParams(location.search).get("weird"); } catch (e) {}
+      var scn = (forced && pool.filter(function (s) { return s.id === forced; })[0]) ||
+                pool[Math.floor(run.rng() * pool.length)];
       ctx.state.order = shuffle(scn.mutations.slice(), run.rng);
       // Random starting spot (seeded) so the photo isn't always dead center.
       var ox = Math.round((run.rng() - 0.5) * 90), oy = Math.round((run.rng() - 0.5) * 40);
@@ -1887,6 +1993,14 @@
   var spaceHeld = false, pointerHeld = false;
   function holdActive() { return spaceHeld || pointerHeld; }
 
+  // Debug hook: expose the WEIRD scene definitions so hogware-scenes.html can
+  // render/step every scene without playing the gauntlet. Read-only data.
+  try { window.HogWareScenes = gameWeird._scenes; } catch (e) {}
+
+  // Guard: on a host page without the game DOM (e.g. the scene preview page)
+  // stage is null — skip the top-level game wiring so the script still loads
+  // and the debug hook above stays available.
+  if (stage) {
   document.addEventListener("keydown", function (e) {
     if (e.code !== "Space") return;
     var t = e.target;
@@ -1909,9 +2023,11 @@
   });
   stage.addEventListener("pointerup", function () { pointerHeld = false; releaseActive(); });
   stage.addEventListener("pointercancel", function () { pointerHeld = false; releaseActive(); });
+  }
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", function () {
+    if (!stage) return; // no game DOM (scene preview page) — nothing to boot
     // Cold boot: the tube stays dark (hw-booting) while the power-on line does the
     // geometry, then the title snaps in crisp when it locks — never a gradual fade.
     if (reducedMotion) {
