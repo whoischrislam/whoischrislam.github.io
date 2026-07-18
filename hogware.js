@@ -535,10 +535,10 @@
     _askConfirm: function (ctx, rowEl, i, publish) {
       ctx.state.confirmOpen = true;
       var dlg = document.createElement("div");
-      dlg.className = "hw-pub-confirm hw-dialog";
+      dlg.className = "hw-pub-confirm";
       dlg.innerHTML =
-        '<div class="hw-dialog-bar hw-tbar-fatal"><span class="hw-dialog-title">⚠ Confirm</span></div>' +
-        '<div class="hw-pub-confirm-body"><p>Make <b>Salaries</b> public?<br><span>everyone. yes, you too.</span></p>' +
+        '<div class="hw-pub-confirm-bar">⚠ Confirm</div>' +
+        '<div class="hw-pub-confirm-body"><p><b>Make Salaries public?</b><br><span>everyone. yes, you too.</span></p>' +
           '<div class="hw-pub-confirm-btns"><button class="hw-btn hw-pubyes">Yes</button>' +
           '<button class="hw-btn hw-btn--ghost hw-pubno">No</button></div></div>';
       scene.querySelector(".hw-pubpanel").appendChild(dlg);
