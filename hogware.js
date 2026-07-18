@@ -718,7 +718,7 @@
         var d = document.createElement("button");
         d.className = "hw-ship-btn95 hw-ship-decoy";
         d.id = "hw-decoy-btn";
-        d.innerHTML = "▶ SHIP LATER";
+        d.textContent = "SHIP LATER";
         d.style.position = "absolute";
         d.style.zIndex = "12";
         var dpos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
@@ -740,9 +740,9 @@
     _showShip: function (ctx) {
       ctx.state.shipShown = true;
       var b = document.createElement("button");
-      b.className = "hw-ship-btn95"; // the green 'deploy' button you're hunting for
+      b.className = "hw-ship-btn95"; // the 'deploy' button you're hunting for
       b.id = "hw-ship-btn";
-      b.innerHTML = "▶ SHIP IT";
+      b.textContent = "SHIP IT";
       b.style.position = "absolute";
       b.style.zIndex = "12";
       b.style.left = ctx.state.shipPos.left + "%";
