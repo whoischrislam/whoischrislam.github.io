@@ -118,7 +118,8 @@
         ring.setAttribute("class", "prev-ring");
 
         var idx = 0;
-        function draw() { svg.innerHTML = scn.svg; svg.appendChild(ring); }
+        function render() { return window.HogWareRenderScene ? window.HogWareRenderScene(scn.svg, scn.id) : scn.svg; }
+        function draw() { svg.innerHTML = render(); svg.appendChild(ring); }
         function moveRing() {
           if (idx < scn.mutations.length) {
             var a = scn.mutations[idx].at;

@@ -766,6 +766,29 @@
         ]
       }
     ],
+    /* ---- MS-Paint treatment ----
+       One central pass turns the "competent clip-art" scenes into a
+       deliberately-crude MS-Paint doodle: flat loud palette on a white
+       canvas, thick black outlines, and a hand-drawn wobble filter on every
+       edge. Crudeness becomes the joke, and it's native to the Win95 world.
+       Central so the whole look is one dial (palette + wobble scale). */
+    _paint: function (svg) {
+      return svg
+        .replace(/#E3DAC6/g, "#FCFBF5").replace(/#CBBE9E/g, "#BFE3A0") // canvas white, crude green ground
+        .replace(/#F4EFE2/g, "#FFFFFF")                                 // boards go pure white
+        .replace(/stroke="#2b2b2b"/g, 'stroke="#101010"')               // outlines go full black
+        .replace(/stroke-width="1.5"/g, 'stroke-width="2.4"')           // ...and thicker
+        .replace(/#3B4A6B/g, "#2438C0").replace(/#6B7280/g, "#8C8C8C")  // MS-paint blue / grey suits
+        .replace(/#7B3B47/g, "#D01E1E").replace(/#5A4632/g, "#7A4A16")  // red tie / brown hair
+        .replace(/#E0B088/g, "#F2C892").replace(/#C68642/g, "#D89A54")  // flat skins
+        .replace(/#8D5524/g, "#B87333").replace(/#7B8AA0/g, "#57A0DC"); // deeper skin / support-blue shirt
+    },
+    _render: function (svg, uid) {
+      return '<defs><filter id="pw-' + uid + '" x="-6%" y="-6%" width="112%" height="112%">' +
+        '<feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="2" seed="7" result="n"/>' +
+        '<feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>' +
+        '</filter></defs><g filter="url(#pw-' + uid + ')">' + gameWeird._paint(svg) + '</g>';
+    },
     setup: function (ctx) {
       ctx.state.count = 0;
       ctx.state.applied = 0;
@@ -781,8 +804,8 @@
       scene.innerHTML =
         '<div class="hw-screen" style="justify-content:center;">' +
           '<div class="hw-w-wrap' + (ctx.params.drift ? ' hw-anim-wander-fast' : '') + '" style="width:min(70%, 340px); position:relative; margin:' + (20 + oy) + 'px 0 0 ' + ox + 'px;">' +
-          '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:var(--surface); border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="' + scn.aria + '">' +
-            scn.svg +
+          '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:#FCFBF5; border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="' + scn.aria + '">' +
+            gameWeird._render(scn.svg, scn.id) +
           '</svg></div>' +
           '<p class="hw-hint">click the glowing bits weirder — <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
         '</div>';
@@ -2006,7 +2029,10 @@
 
   // Debug hook: expose the WEIRD scene definitions so hogware-scenes.html can
   // render/step every scene without playing the gauntlet. Read-only data.
-  try { window.HogWareScenes = gameWeird._scenes; } catch (e) {}
+  try {
+    window.HogWareScenes = gameWeird._scenes;
+    window.HogWareRenderScene = function (svg, uid) { return gameWeird._render(svg, uid); };
+  } catch (e) {}
 
   // Guard: on a host page without the game DOM (e.g. the scene preview page)
   // stage is null — skip the top-level game wiring so the script still loads
