@@ -1553,15 +1553,16 @@
           '<svg id="hw-funnel-rink" width="100%" height="210" viewBox="0 0 400 110" preserveAspectRatio="none">' +
             '<rect x="0" y="0" width="400" height="110" fill="#FCFBF5"/>' +
             '<rect x="0" y="104" width="400" height="6" fill="#dcdcd4"/>' +
-            '<g id="hw-funnel-meter"></g>' +
-            '<g id="hw-funnel-users"></g>' +
+            // Layer order: funnel (back) → users (front, so catches are visible) → meter (top).
             // mouth rx (33) matches the catch half-width (0.09 * 372 ≈ 33px) so the
-            // graphic's bounds equal the real catch zone — no more clipping past the lip
+            // graphic's bounds equal the real catch zone — no clipping past the lip.
             '<g id="hw-funnel" style="transform:translate(200px,0)"><g id="hw-funnel-inner">' +
               '<ellipse cx="0" cy="74" rx="33" ry="5.5" fill="#B23800" stroke="#101010" stroke-width="1.6"/>' +
               '<path d="M-33 74 L-6 94 L-6 103 L6 103 L6 94 L33 74" fill="var(--accent)" stroke="#101010" stroke-width="1.6" stroke-linejoin="round"/>' +
               '<ellipse cx="0" cy="74" rx="28" ry="4" fill="#7A2600"/>' +
             '</g></g>' +
+            '<g id="hw-funnel-users"></g>' +
+            '<g id="hw-funnel-meter"></g>' +
           '</svg>' +
           '<p class="hw-hint">retain <b>4</b> — the <b>$</b> whale counts double · hold <span class="hw-kbd">space</span> / press = right · release = left</p>' +
         '</div>';
@@ -1585,7 +1586,7 @@
         var ux = 14 + u.x * 372, uy = u.y * 92;
         if (u.y >= 0.82 && u.y < 1 && !u.bounced && Math.abs(u.x - s.fx) < p.mouth) {
           u.done = true; s.resolved++; s.caught++; s.retained += u.worth;
-          s.effects.push({ kind: "catch", x: fpx, y: 84, worth: u.worth, until: ctx.elapsed + 500 });
+          s.effects.push({ kind: "catch", x0: ux, fx: fpx, worth: u.worth, type: u.type, until: ctx.elapsed + 420 });
           gameBossFunnel._squash();
           sfx("pass");
           continue;
@@ -1610,8 +1611,16 @@
       s.effects = s.effects.filter(function (e) { return ctx.elapsed < e.until; });
       s.effects.forEach(function (e) {
         if (e.kind === "catch") {
-          var lifeFrac = 1 - (e.until - ctx.elapsed) / 500;
-          dotsSvg += '<text x="' + e.x + '" y="' + (e.y - lifeFrac * 16) + '" font-size="11" font-weight="bold" text-anchor="middle" fill="var(--accent)" opacity="' + (1 - lifeFrac).toFixed(2) + '">+' + e.worth + '</text>';
+          var lf2 = 1 - (e.until - ctx.elapsed) / 420;
+          if (lf2 < 0.62) { // swallow: user slides to the (live) funnel centre and shrinks down into the spout, in full view
+            var t = lf2 / 0.62;
+            var sx = e.x0 + (fpx - e.x0) * t, syy = 71 + 25 * t, sc = Math.max(0.12, 1 - 0.88 * t);
+            dotsSvg += '<g transform="translate(' + sx.toFixed(1) + ',' + syy.toFixed(1) + ') scale(' + sc.toFixed(2) + ')">' + gameBossFunnel._userGlyph(e.type) + '</g>';
+          }
+          if (lf2 > 0.4) { // +worth rises out ABOVE the mouth where it's visible
+            var t2 = (lf2 - 0.4) / 0.6;
+            dotsSvg += '<text x="' + fpx + '" y="' + (70 - t2 * 18).toFixed(1) + '" font-size="11" font-weight="bold" text-anchor="middle" fill="var(--accent)" opacity="' + (1 - t2).toFixed(2) + '">+' + e.worth + '</text>';
+          }
         } else {
           // canned ragdoll flop: tumble + squash + grey + fade (deterministic)
           var lf = 1 - (e.until - ctx.elapsed) / 650;
