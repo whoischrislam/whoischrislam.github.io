@@ -1555,10 +1555,12 @@
             '<rect x="0" y="104" width="400" height="6" fill="#dcdcd4"/>' +
             '<g id="hw-funnel-meter"></g>' +
             '<g id="hw-funnel-users"></g>' +
+            // mouth rx (33) matches the catch half-width (0.09 * 372 ≈ 33px) so the
+            // graphic's bounds equal the real catch zone — no more clipping past the lip
             '<g id="hw-funnel" style="transform:translate(200px,0)"><g id="hw-funnel-inner">' +
-              '<ellipse cx="0" cy="74" rx="26" ry="5" fill="#B23800" stroke="#101010" stroke-width="1.6"/>' +
-              '<path d="M-26 74 L-6 94 L-6 103 L6 103 L6 94 L26 74" fill="var(--accent)" stroke="#101010" stroke-width="1.6" stroke-linejoin="round"/>' +
-              '<ellipse cx="0" cy="74" rx="21" ry="3.5" fill="#7A2600"/>' +
+              '<ellipse cx="0" cy="74" rx="33" ry="5.5" fill="#B23800" stroke="#101010" stroke-width="1.6"/>' +
+              '<path d="M-33 74 L-6 94 L-6 103 L6 103 L6 94 L33 74" fill="var(--accent)" stroke="#101010" stroke-width="1.6" stroke-linejoin="round"/>' +
+              '<ellipse cx="0" cy="74" rx="28" ry="4" fill="#7A2600"/>' +
             '</g></g>' +
           '</svg>' +
           '<p class="hw-hint">retain <b>4</b> — the <b>$</b> whale counts double · hold <span class="hw-kbd">space</span> / press = right · release = left</p>' +
