@@ -610,29 +610,40 @@
               '<path d="M184 74c6-6 14-4 17-1-4 5-11 8-17 1z" fill="#5C8C5A"/></g>' +
             // LEFT figure
             '<g id="hw-hs-lfig">' +
-              '<path d="M20 88 Q22 60 46 58 Q70 60 72 88 Z" fill="#3B4A6B"/>' +
-              '<path d="M64 62 Q82 59 94 66" fill="none" stroke="#3B4A6B" stroke-width="8" stroke-linecap="round"/>' +
-              '<circle id="hw-hs-lhead" cx="46" cy="34" r="12" fill="#E0B088"/>' +
-              '<path d="M34 31 Q46 15 58 31 Q58 22 46 18 Q34 22 34 31 Z" fill="#5A4632"/>' +
-              '<g id="hw-hs-leyes"><circle cx="42" cy="34" r="1.6" fill="#222"/><circle cx="50" cy="34" r="1.6" fill="#222"/></g>' +
-              '<path d="M42 40 Q46 43 50 40" fill="none" stroke-width="1.2"/>' +
-              '<polygon id="hw-hs-ltie" points="46,46 49,56 46,66 43,56" fill="#7B3B47" style="transform-origin:46px 50px;"/>' +
+              // jacket body: sloped shoulders down to waist (not a dome)
+              '<path d="M22 90 L25 58 Q27 49 37 48 L51 48 Q61 49 63 58 L66 90 Z" fill="#3B4A6B"/>' +
+              // reaching forearm: a tapered, outlined sleeve
+              '<path d="M56 56 Q76 60 92 65 L91 71 Q74 67 53 62 Z" fill="#3B4A6B"/>' +
+              // neck cylinder anchoring head to torso
+              '<rect x="40" y="39" width="8" height="10" fill="#E0B088"/>' +
+              // shirt collar V + lapels + tie = a real suit
+              '<polygon points="44,47 36,50 44,61 52,50" fill="#F4EFE2"/>' +
+              '<path d="M36 50 L44 61 L44 49 Z" fill="#32405c"/><path d="M52 50 L44 61 L44 49 Z" fill="#32405c"/>' +
+              '<polygon id="hw-hs-ltie" points="44,50 47,59 44,69 41,59" fill="#7B3B47" style="transform-origin:44px 53px;"/>' +
+              '<circle id="hw-hs-lhead" cx="44" cy="30" r="11" fill="#E0B088"/>' +
+              '<path d="M33 29 Q44 13 55 29 Q55 20 44 16 Q33 20 33 29 Z" fill="#5A4632"/>' +
+              '<g id="hw-hs-leyes"><circle cx="40" cy="30" r="1.5" fill="#222"/><circle cx="48" cy="30" r="1.5" fill="#222"/></g>' +
+              '<path d="M40 35 Q44 38 48 35" fill="none" stroke-width="1.2"/>' +
             '</g>' +
             // RIGHT figure
             '<g id="hw-hs-rfig">' +
-              '<path d="M128 88 Q130 60 154 58 Q178 60 180 88 Z" fill="#6B7280"/>' +
-              '<path d="M136 62 Q118 59 106 66" fill="none" stroke="#6B7280" stroke-width="8" stroke-linecap="round"/>' +
-              '<circle id="hw-hs-rhead" cx="154" cy="34" r="12" fill="#C68642"/>' +
-              '<path d="M142 30 Q154 16 166 30 Q166 20 154 17 Q142 20 142 30 Z" fill="#2B2B2B"/>' +
-              '<g id="hw-hs-reyes"><circle cx="150" cy="34" r="1.6" fill="#222"/><circle cx="158" cy="34" r="1.6" fill="#222"/></g>' +
-              '<path d="M150 40 Q154 43 158 40" fill="none" stroke-width="1.2"/>' +
-              '<polygon points="154,46 157,56 154,64 151,56" fill="#3B4A6B" style="transform-origin:154px 50px;"/>' +
+              '<path d="M134 90 L137 58 Q139 49 149 48 L163 48 Q173 49 175 58 L178 90 Z" fill="#6B7280"/>' +
+              '<path d="M144 56 Q124 60 108 65 L109 71 Q126 67 147 62 Z" fill="#6B7280"/>' +
+              '<rect x="152" y="39" width="8" height="10" fill="#C68642"/>' +
+              '<polygon points="156,47 148,50 156,61 164,50" fill="#F4EFE2"/>' +
+              '<path d="M148 50 L156 61 L156 49 Z" fill="#59606b"/><path d="M164 50 L156 61 L156 49 Z" fill="#59606b"/>' +
+              '<polygon points="156,50 159,59 156,69 153,59" fill="#3B4A6B"/>' +
+              '<circle id="hw-hs-rhead" cx="156" cy="30" r="11" fill="#C68642"/>' +
+              '<path d="M145 29 Q156 13 167 29 Q167 20 156 16 Q145 20 145 29 Z" fill="#2B2B2B"/>' +
+              '<g id="hw-hs-reyes"><circle cx="152" cy="30" r="1.5" fill="#222"/><circle cx="160" cy="30" r="1.5" fill="#222"/></g>' +
+              '<path d="M152 35 Q156 38 160 35" fill="none" stroke-width="1.2"/>' +
             '</g>' +
-            // clasped hands, dead center
+            // two mitten hands clasped, thumbs over — a real grip
             '<g id="hw-hs-hands">' +
-              '<path d="M89 66 Q89 59 97 59 L103 59 Q111 59 111 66 Q111 73 103 73 L97 73 Q89 73 89 66 Z" fill="#E0B088"/>' +
-              '<path d="M90 62 Q95 59 100 61" fill="none" stroke-width="1.2"/>' +
-              '<line x1="96" y1="59.5" x2="95" y2="72.5" stroke-width="1"/><line x1="100" y1="59" x2="99" y2="73" stroke-width="1"/><line x1="104" y1="59.5" x2="103" y2="72.5" stroke-width="1"/>' +
+              '<path d="M88 67 Q88 60 95 60 L100 61 Q104 63 104 67 Q104 72 99 72 L94 72 Q88 73 88 67 Z" fill="#E0B088"/>' +
+              '<path d="M112 67 Q112 60 105 60 L100 61 Q96 63 96 67 Q96 72 101 72 L106 72 Q112 73 112 67 Z" fill="#C68642"/>' +
+              '<path d="M94 61 Q98 57 102 61 Q100 64 96 63 Z" fill="#E0B088"/>' +
+              '<line x1="101" y1="62" x2="100" y2="71" stroke-width="0.8"/><line x1="104" y1="63" x2="103" y2="71" stroke-width="0.8"/>' +
             '</g>' +
           '</g>' +
           '<text id="hw-hs-caption" x="100" y="102" text-anchor="middle" font-size="12" font-weight="bold" fill="#3B4A6B" font-family="Georgia,\'Times New Roman\',serif" letter-spacing="1.5">SYNERGY</text>',
@@ -642,7 +653,7 @@
           // left guy: googly eyes
           { at: [46, 34], fn: function () { document.querySelectorAll("#hw-hs-leyes circle").forEach(function (c) { c.setAttribute("r", "3.6"); }); } },
           // right guy hedgehogs out
-          { at: [154, 34], fn: function () { var e = $("hw-hs-rhead"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M142 26l-7-6 9 0zM149 22l-3-8 6 4zM159 22l3-8 3 8zM166 26l7-5-1 8z"/></g>'); } },
+          { at: [156, 30], fn: function () { var e = $("hw-hs-rhead"); e.setAttribute("fill", "var(--accent)"); e.insertAdjacentHTML("beforebegin", '<g fill="var(--accent)" stroke="#2b2b2b" stroke-width="1"><path d="M145 21l-7-6 9 0zM152 17l-3-8 6 4zM162 17l3-8 3 8zM169 21l7-5-1 8z"/></g>'); } },
           // beige wall goes electric purple
           { at: [175, 18], fn: function () { $("hw-hs-bg").setAttribute("fill", "#B043D1"); } },
           // left tie becomes a propeller
