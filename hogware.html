@@ -565,8 +565,10 @@
             border-color: #fff #7A7568 #7A7568 #fff; /* Win95 outset bevel */
             cursor: default;
           }
-          .hw-tbar-controls b.hw-close { cursor: pointer; }
-          .hw-tbar-controls b.hw-close:active { border-color: #7A7568 #fff #fff #7A7568; }
+          /* functional buttons (close, maximize=fullscreen) look clickable; the rest are inert chrome */
+          .hw-tbar-controls b.hw-close, .hw-tbar-controls b.hw-max { cursor: pointer; }
+          .hw-tbar-controls b.hw-close:active, .hw-tbar-controls b.hw-max:active { border-color: #7A7568 #fff #fff #7A7568; }
+          .hw-tbar-controls b.hw-close:focus-visible, .hw-tbar-controls b.hw-max:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 1px; }
           /* gameover.exe is a hung/fatal window: greyed 'inactive' bar, no way to close it */
           .hw-dialog-bar.hw-tbar-fatal { background: #9A958A; }
           .hw-dialog-bar.hw-tbar-fatal .hw-dialog-title { color: #EEEBE3; }
@@ -1212,7 +1214,7 @@
                 <div id="hw-scene" class="hw-hidden">
                     <div class="hw-appwin-bar hw-gamewin-bar">
                         <span class="hw-appwin-title"><span id="hw-gamewin-icon">🦔</span> <span id="hw-gamewin-title-text">game</span></span>
-                        <span class="hw-tbar-controls" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
+                        <span class="hw-tbar-controls"><b class="hw-min">_</b><b class="hw-max" role="button" tabindex="0" aria-label="Fullscreen">□</b><b>×</b></span>
                     </div>
                     <div id="hw-scene-body"></div>
                 </div>
@@ -1247,7 +1249,7 @@
                     <div class="hw-dialog hw-win hw-go-win" id="hw-go-results">
                         <div class="hw-dialog-bar hw-win-bar hw-tbar-fatal">
                             <span class="hw-dialog-title">gameover.exe — (not responding)</span>
-                            <span class="hw-tbar-controls" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
+                            <span class="hw-tbar-controls"><b class="hw-min">_</b><b class="hw-max" role="button" tabindex="0" aria-label="Fullscreen">□</b><b>×</b></span>
                         </div>
                         <div class="hw-dialog-body">
                             <div class="hw-go-head">
@@ -1266,7 +1268,7 @@
                     <div class="hw-dialog hw-win hw-go-win" id="hw-go-leaderboard">
                         <div class="hw-dialog-bar hw-win-bar">
                             <span class="hw-dialog-title" id="hw-lb-title">🏆 leaderboard.exe · today</span>
-                            <span class="hw-tbar-controls" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
+                            <span class="hw-tbar-controls"><b class="hw-min">_</b><b class="hw-max" role="button" tabindex="0" aria-label="Fullscreen">□</b><b>×</b></span>
                         </div>
                         <div class="hw-dialog-body">
                             <div id="hw-leaderboard"></div>
