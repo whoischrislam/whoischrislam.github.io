@@ -1752,6 +1752,7 @@
 
   function startRun() {
     run = newRun();
+    myPending = null; // clear last run's optimistic leaderboard row
     // Life icons rendered from LIVES so the count stays a one-line change (and flag-testable later).
     var livesEl = $("hw-hud-lives");
     livesEl.innerHTML = "";
@@ -2167,20 +2168,65 @@
     });
   }
 
+  // Optimistic: the score just posted, shown on the board until the real query catches up.
+  var myPending = null;
+
+  // A stable per-browser id so a player's replays dedup to one leaderboard row. Not tied to
+  // posthog's distinct_id, so it works even when an ad blocker suppresses posthog-js entirely.
+  function leaderboardUid() {
+    var id = "";
+    try { id = localStorage.getItem("hogware_uid") || ""; } catch (e) {}
+    if (!id) {
+      id = (self.crypto && crypto.randomUUID) ? crypto.randomUUID()
+        : ("hw-" + Math.random().toString(36).slice(2) + "-" + Date.now().toString(36));
+      try { localStorage.setItem("hogware_uid", id); } catch (e) {}
+    }
+    return id;
+  }
+
   function submitScore() {
     var initials = $("hw-initials");
     var handle = (initials.value || "HOG").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3) || "HOG";
     try { localStorage.setItem("hogware_handle", handle); } catch (e) {}
-    capture("hogware_score_submitted", {
-      handle: handle, day: DAY_NUM, score: run.score, stages_cleared: run.cleared, loops_reached: run.loop
-    });
     hide($("hw-submit-row"));
     var note = $("hw-submitted-note");
-    note.textContent = ph()
-      ? handle + " → beamed to PostHog. The leaderboard is literally a HogQL query."
-      : "Analytics is off on this browser (?notrack=1), so this score stays between us.";
     show(note);
-    renderLeaderboard();
+
+    // Explicit opt-out: they chose privacy, so the score stays on this device only.
+    if (window.__phDisabled) {
+      note.textContent = "Analytics is off on this browser (?notrack=1), so this score stays between us.";
+      renderLeaderboard();
+      return;
+    }
+    // No global board on file:// (local dev): CORS blocks it. Keep a local best instead.
+    if (location.protocol === "file:" || !WORKER_URL) {
+      try { var b = parseInt(localStorage.getItem("hogware_best") || "0", 10); if (run.score > b) localStorage.setItem("hogware_best", String(run.score)); } catch (e) {}
+      note.textContent = "Saved on this browser. The global board posts from the live site.";
+      renderLeaderboard();
+      return;
+    }
+
+    // Route the submit through the Worker (this same domain). Ad blockers kill posthog-js in
+    // the page but let this call through, and the Worker forwards it to PostHog server-side,
+    // so the score lands for everyone. The board reads it back as a HogQL query.
+    note.textContent = "posting " + handle + " to the board…";
+    var body = JSON.stringify({
+      handle: handle, day: DAY_NUM, score: run.score,
+      stages_cleared: run.cleared, loops_reached: run.loop, uid: leaderboardUid()
+    });
+    fetch(WORKER_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: body })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.ok) {
+          myPending = { handle: handle, best: run.score };
+          note.textContent = handle + " is on the board. It's a HogQL query in PostHog, so give it a few seconds to catch up.";
+          renderLeaderboard();                  // optimistic: show their row immediately
+          setTimeout(renderLeaderboard, 60000); // the real board, after ingestion + the 60s cache
+        } else {
+          note.textContent = "Couldn't post the score (" + ((res && res.error) || "unknown") + "). Your run still counted.";
+        }
+      })
+      .catch(function () { note.textContent = "Board unreachable right now. Your run still counted."; });
   }
 
   function renderLeaderboard() {
@@ -2199,7 +2245,19 @@
     }
     el.innerHTML = '<p class="hw-lb-note">loading today’s board…</p>';
     fetch(WORKER_URL + "?day=" + DAY_NUM).then(function (r) { return r.json(); }).then(function (rows) {
-      if (!rows || !rows.length) { el.innerHTML = '<p class="hw-lb-note">No scores yet today. Be the first. 🦔</p>'; return; }
+      rows = (rows && rows.length) ? rows.slice() : [];
+      // Optimistic row: show the just-posted score until the real query catches up (ingestion
+      // + 60s cache). Once the board returns a row that meets or beats it, drop the placeholder.
+      if (myPending) {
+        var landed = rows.some(function (r) { return String(r.handle).toUpperCase() === myPending.handle && Number(r.best) >= myPending.best; });
+        if (landed) { myPending = null; }
+        else {
+          rows = rows.filter(function (r) { return String(r.handle).toUpperCase() !== myPending.handle; });
+          rows.push({ handle: myPending.handle, best: myPending.best });
+          rows.sort(function (a, b) { return Number(b.best) - Number(a.best); });
+        }
+      }
+      if (!rows.length) { el.innerHTML = '<p class="hw-lb-note">No scores yet today. Be the first. 🦔</p>'; return; }
       var head = '<div class="hw-lb-row hw-lb-head"><span>#</span><span>who</span><span>score</span></div>';
       var body = rows.slice(0, 10).map(function (row, i) {
         var who = String(row.handle || "???").slice(0, 3);
