@@ -8,3 +8,8 @@ compatibility_date = "2026-07-01"
 POSTHOG_HOST = "https://us.posthog.com"
 POSTHOG_PROJECT_ID = "515955"
 ALLOWED_ORIGIN = "https://whoischrislam.github.io"
+# Ingestion (capture) host + PUBLIC project write key (safe in config — it's already in the
+# client HTML). The Worker forwards score submits here server-side, so ad blockers that kill
+# posthog-js in the browser can't stop a score from landing.
+POSTHOG_INGEST_HOST = "https://us.i.posthog.com"
+POSTHOG_PUBLIC_KEY = "phc_AvaTqVmvXedfuPjQKwHVwez5x9nZ6yXxCzegLvt5Bikd"
