@@ -40,7 +40,7 @@
           })();
         </script>
 
-        <!-- PostHog product analytics — DEDICATED HogWare project (separate from the portfolio's,
+        <!-- PostHog product analytics - DEDICATED HogWare project (separate from the portfolio's,
              so the leaderboard Worker's read key can only ever see game events). Same ?notrack=1
              self-exclusion. The game plays fine with analytics off; it just goes quiet. -->
         <script>
@@ -72,11 +72,11 @@
         </script>
 
         <style>
-          /* ============ HogWare — PostHog-homage skin ============
+          /* ============ HogWare - PostHog-homage skin ============
              The whole page reads as one app window left open on their
              grassy desktop: verified brand palette (#F54E00 / #F1A82C /
              #EEEFE9 / #151515), cream window chrome, chunky buttons.
-             Their logo and Max's design stay untouched — homage, not
+             Their logo and Max's design stay untouched - homage, not
              costume; the credit footer does the disclosure. */
           body.hogware {
             /* PostHog-light is the brand statement, in both site themes */
@@ -133,7 +133,7 @@
             flex-direction: column;
             align-items: center;
           }
-          /* ---- The 90s CRT monitor (beige stays beige in both themes — plastic doesn't theme) ---- */
+          /* ---- The 90s CRT monitor (beige stays beige in both themes - plastic doesn't theme) ---- */
           .hw-crt {
             width: 100%;
             background: linear-gradient(180deg, #DCD6C8 0%, #CFC8B8 70%, #C2BAA8 100%);
@@ -258,7 +258,7 @@
           }
           #hw-stage:focus-visible { outline: none; } /* input is document-level; a stage ring reads as a rendering bug */
           /* CRT cold-boot: the tube is dark and the picture hidden until the power-on
-             line finishes; then the title snaps in crisp — never fades in gradually. */
+             line finishes; then the title snaps in crisp - never fades in gradually. */
           #hw-stage.hw-booting { background: #0a0a0a; }
           #hw-stage.hw-booting #hw-titlescreen { opacity: 0; }
           .hw-screen {
@@ -565,7 +565,7 @@
             border-color: #fff #7A7568 #7A7568 #fff; /* Win95 outset bevel */
             cursor: default;
           }
-          /* the ONLY live chrome button: Close on the value-quote windows — reads clickable */
+          /* the ONLY live chrome button: Close on the value-quote windows - reads clickable */
           .hw-tbar-controls b.hw-close { cursor: pointer; }
           .hw-tbar-controls b.hw-close:active { border-color: #7A7568 #fff #fff #7A7568; }
           .hw-tbar-controls b.hw-close:focus-visible { outline: 1.5px solid var(--accent); outline-offset: 1px; }
@@ -647,9 +647,9 @@
           /* In the launch window the verb is CALM: a gentle fade, no bounce, no beat-throb
              (the throb + the window scale-in together read as jittery/frantic). */
           .hw-verbsplash .hw-verb-word { animation: hw-fade-calm 0.45s ease both; }
-          /* Fast between-games verb (window already open, no scale to compound) — it can POP. */
+          /* Fast between-games verb (window already open, no scale to compound) - it can POP. */
           .hw-verb-punchy .hw-verb-word { animation: hw-verb-pop 0.34s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
-          /* App-switch: the whole verb card swipes in from the side — "now you're in a new program". */
+          /* App-switch: the whole verb card swipes in from the side - "now you're in a new program". */
           .hw-verbsplash.hw-appswitch { animation: hw-appswitch 0.22s cubic-bezier(0.2, 0.75, 0.3, 1) both; }
           @keyframes hw-appswitch { from { transform: translateX(36px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
           .hw-verbsplash.hw-appswitch .hw-verb-word { animation: none; } /* the swipe is the motion */
@@ -659,7 +659,7 @@
           @media (prefers-reduced-motion: reduce) { .hw-verbsplash.hw-appswitch, .hw-gamewin-bar.hw-switch { animation: none; } }
           .hw-verbsplash .hw-verb-flavor, .hw-verbsplash .hw-verb-value, .hw-verbsplash .hw-verb-instr { animation: hw-fade-calm 0.45s ease both; }
           @keyframes hw-fade-calm { from { opacity: 0; } to { opacity: 1; } }
-          /* Win95 segmented "loading" progress bar — the get-ready beat, on theme */
+          /* Win95 segmented "loading" progress bar - the get-ready beat, on theme */
           .hw-loadbar {
             width: 62%; max-width: 340px; height: 15px; margin-top: 1.1em;
             background: #fff; border: 1px solid; border-color: #7A7568 #fff #fff #7A7568;
@@ -779,7 +779,7 @@
             text-align: center;
             line-height: 1.45;
           }
-          /* Deep runs produce tall grids — compress instead of clipping the score off-frame */
+          /* Deep runs produce tall grids - compress instead of clipping the score off-frame */
           .hw-trail.hw-trail-deep { font-size: 0.72em; line-height: 1.25; }
 
           /* ---- WEIRD! mutation animations ---- */
@@ -930,7 +930,7 @@
           .hw-pub-snug .hw-pubrow { padding: 0.36em 0.7em; }
           .hw-pub-dense .hw-pubrow { padding: 0.26em 0.7em; }
           .hw-pub-dense .hw-publabel { font-size: 0.76em; }
-          /* L3 "are you sure?" confirm — flex-centered overlay (no transform race) with
+          /* L3 "are you sure?" confirm - flex-centered overlay (no transform race) with
              a dim backdrop so the grey dialog separates from the grey panel behind it */
           .hw-pub-confirm-overlay {
             position: absolute; inset: 0; z-index: 20;
@@ -962,7 +962,7 @@
           .hw-pub-confirm-btns .hw-btn { font-size: 0.76em; padding: 0.4em 1.4em; }
 
           /* ---- SHIP IT microgame ---- */
-          /* SHIP target: a PostHog-orange Win95 'deploy' button — complementary to the
+          /* SHIP target: a PostHog-orange Win95 'deploy' button - complementary to the
              blue notification pile, so it pops once you spot it in the noise */
           .hw-ship-btn95 {
             width: auto;
@@ -979,9 +979,9 @@
             box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
           }
           .hw-ship-btn95:active { border-color: #A83400 #FF8A5C #FF8A5C #A83400; }
-          /* decoy: PostHog yellow — warm and tempting, but a read-the-label tell */
+          /* decoy: PostHog yellow - warm and tempting, but a read-the-label tell */
           .hw-ship-decoy { background: #F1A82C; color: #151515; border-color: #FFCE7A #B17816 #B17816 #FFCE7A; }
-          /* Win95 notification windows — the moving distractions */
+          /* Win95 notification windows - the moving distractions */
           .hw-notif {
             position: absolute;
             z-index: 11;
@@ -1104,7 +1104,7 @@
             font-variant-numeric: tabular-nums;
           }
           .hw-go-stats { color: var(--muted); font-size: 0.8em; }
-          .hw-go-copy { font-size: 1.05em; padding: 0.65em 2.4em; } /* the loud primary action — the share */
+          .hw-go-copy { font-size: 1.05em; padding: 0.65em 2.4em; } /* the loud primary action - the share */
           .hw-initials-row { display: flex; gap: 0.4em; align-items: center; }
           #hw-initials {
             width: 4.4em;
@@ -1203,7 +1203,7 @@
                         </div>
                         <!-- desktop buddy goes here once Chris's real hedgehog is drawn -->
                     </div>
-                    <!-- The verb no longer lives here — it opens INSIDE the app window (see playGame).
+                    <!-- The verb no longer lives here - it opens INSIDE the app window (see playGame).
                          The desktop keeps only the icons + the Win95 taskbar (status/lives/loop). -->
                     <div class="hw-taskbar">
                         <span class="hw-task-start">🦔 <b>HOGWARE</b></span>

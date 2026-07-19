@@ -7,14 +7,14 @@
    - POST /  → submit a score. The Worker validates it and forwards it to
      PostHog's ingestion API SERVER-SIDE. The browser only ever talks to this
      Worker, never to PostHog directly, so a content blocker can't stop a
-     score from landing. Scores still live in PostHog — the story holds.
+     score from landing. Scores still live in PostHog - the story holds.
 
    - GET /?day=N → read today's top 20 via one HogQL query. Reads off the
      submit event alone (its own stages_cleared property), so it doesn't
      depend on the per-clear events, which ad blockers also suppress.
 
    The personal API key (Query Read scope) is a Worker secret and never
-   reaches a browser. Returns handle+score only — nothing else leaves here. */
+   reaches a browser. Returns handle+score only - nothing else leaves here. */
 
 function corsHeaders(origin) {
   return {
@@ -49,7 +49,7 @@ export default {
       // Validate + sanity-gate server-side. A cleared game is worth up to 4 points
       // (1 base + up to +3 bonus), so score must not exceed stages_cleared*4. This
       // won't stop a determined forger hitting the endpoint directly, but it kills
-      // casual nonsense — and for a portfolio board that's the right trade: a board
+      // casual nonsense - and for a portfolio board that's the right trade: a board
       // that works for everyone beats a locked one that's empty for half the audience.
       const day = clampInt(body.day, 1, 100000);
       const score = clampInt(body.score, 0, 400);
