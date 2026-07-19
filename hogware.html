@@ -1339,83 +1339,23 @@
           .hw-submitted-note { color: var(--accent); font-size: 0.82em; margin: 0; text-align: center; }
 
           .hw-footer {
-            width: min(92%, 680px);
-            margin: 1.35em 0 2.4em;
-            color: #151515;
-            background: #DCD6C8;
-            border: 2px solid;
-            border-color: #fff #6E675A #6E675A #fff;
-            box-shadow: 5px 6px 0 rgba(0, 0, 0, 0.55), 0 14px 32px rgba(0, 0, 0, 0.4);
-            font-size: 0.72em;
-            line-height: 1.4;
-            text-align: left;
+            width: min(88%, 700px);
+            margin: 1.4em 0 2.5em;
+            padding-top: 1.05em;
+            border-top: 1px solid rgba(238, 239, 233, 0.2);
+            color: #EEEFE9;
+            font-size: 0.74em;
+            line-height: 1.55;
+            text-align: center;
           }
-          .hw-footer-bar {
-            display: flex;
-            align-items: center;
-            min-height: 1.65em;
-            padding: 0.18em 0.35em 0.18em 0.5em;
-            color: #fff;
-            background: #1D4AFF;
-            font-family: ui-monospace, Menlo, monospace;
-            font-weight: 700;
-          }
-          .hw-footer-bar .hw-tbar-controls { margin-left: auto; }
-          .hw-footer-body { padding: 1em 1.15em 1.1em; }
-          .hw-footer-intro { display: flex; align-items: flex-start; gap: 0.85em; }
-          .hw-footer-icon {
-            display: grid;
-            place-items: center;
-            flex: 0 0 auto;
-            width: 3em;
-            height: 3em;
-            color: #fff;
-            background: #F54E00;
-            border: 1px solid;
-            border-color: #fff #6E675A #6E675A #fff;
-            font-family: ui-monospace, Menlo, monospace;
-            font-weight: 900;
-          }
-          .hw-footer-title { margin: 0 0 0.18em; font-size: 1.12em; font-weight: 800; }
-          .hw-footer-copy { margin: 0; color: #4B4943; }
-          .hw-footer-facts {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.55em;
-            margin: 0.9em 0;
-          }
-          .hw-footer-fact {
-            min-width: 0;
-            padding: 0.58em 0.65em;
-            background: #EEEFE9;
-            border: 1px solid;
-            border-color: #7A7568 #fff #fff #7A7568;
-          }
-          .hw-footer-fact b {
-            display: block;
-            margin-bottom: 0.14em;
-            color: #F54E00;
-            font-family: ui-monospace, Menlo, monospace;
-            font-size: 0.78em;
-            letter-spacing: 0.05em;
-          }
-          .hw-footer-note { margin: 0; color: #5E5A52; font-size: 0.92em; }
-          .hw-footer-note + .hw-footer-note { margin-top: 0.18em; }
-          .hw-footer-links { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: 0.8em; }
-          .hw-footer a { color: #151515; font-weight: 700; }
-          .hw-footer-links a {
-            padding: 0.3em 0.65em;
-            background: #DCD6C8;
-            border: 1px solid;
-            border-color: #fff #6E675A #6E675A #fff;
-            text-decoration: none;
-          }
-          .hw-footer-links a:active { border-color: #6E675A #fff #fff #6E675A; }
+          .hw-footer-title { margin: 0; font-size: 1.08em; font-weight: 700; color: #EEEFE9; }
+          .hw-footer-summary { margin: 0.34em 0 0; color: #BDBEB8; }
+          .hw-footer-note { margin: 0.55em 0 0; color: #9B9C94; font-size: 0.9em; }
+          .hw-footer-links { margin-top: 0.55em; color: #555750; }
+          .hw-footer a { color: #BDBEB8; font-weight: 600; text-underline-offset: 2px; }
           .hw-footer a:hover { color: #F54E00; }
           @media (max-width: 560px) {
-            .hw-footer { width: 96%; font-size: 0.66em; }
-            .hw-footer-body { padding: 0.8em; }
-            .hw-footer-facts { grid-template-columns: 1fr; gap: 0.35em; }
+            .hw-footer { width: 92%; margin-top: 1.15em; font-size: 0.65em; }
           }
         </style>
     </head>
@@ -1586,31 +1526,16 @@
             <div class="hw-crt-base" aria-hidden="true"></div>
 
             <footer class="hw-footer">
-                <div class="hw-footer-bar">
-                    <span>about_hogware.txt</span>
-                    <span class="hw-tbar-controls hw-controls-dead" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
-                </div>
-                <div class="hw-footer-body">
-                    <div class="hw-footer-intro">
-                        <span class="hw-footer-icon" aria-hidden="true">HW</span>
-                        <div>
-                            <p class="hw-footer-title">Built by <a href="index.html">Chris Lam</a> for PostHog's Technical Ex-Founder application.</p>
-                            <p class="hw-footer-copy">A browser microgame gauntlet built around how PostHog works.</p>
-                        </div>
-                    </div>
-                    <div class="hw-footer-facts">
-                        <div class="hw-footer-fact"><b>VALUES</b>Five real handbook values</div>
-                        <div class="hw-footer-fact"><b>DATA</b>Scores stored in PostHog</div>
-                        <div class="hw-footer-fact"><b>QUERY</b>HogQL leaderboard</div>
-                    </div>
-                    <p class="hw-footer-note">Fan tribute. Not an official PostHog product.</p>
-                    <p class="hw-footer-note">Max life icons use PostHog's press assets.</p>
-                    <nav class="hw-footer-links" aria-label="HogWare project links">
-                        <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">HOW THIS WAS MADE</a>
-                        <a href="https://posthog.com/handbook/values" target="_blank" rel="noopener">VALUE SOURCE</a>
-                        <a href="https://posthog.com/media" target="_blank" rel="noopener">ASSET SOURCE</a>
-                    </nav>
-                </div>
+                <p class="hw-footer-title">Built by <a href="index.html">Chris Lam</a> for PostHog's Technical Ex-Founder application.</p>
+                <p class="hw-footer-summary">Five handbook values turned into five microgames. Scores are stored in PostHog and ranked with HogQL.</p>
+                <p class="hw-footer-note">Fan tribute, not an official PostHog product. Max life icons use PostHog's press assets.</p>
+                <nav class="hw-footer-links" aria-label="HogWare project links">
+                    <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">How this was made</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="https://posthog.com/handbook/values" target="_blank" rel="noopener">Value source</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="https://posthog.com/media" target="_blank" rel="noopener">Asset source</a>
+                </nav>
             </footer>
         </div>
 
