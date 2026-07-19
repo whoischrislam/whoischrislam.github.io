@@ -248,10 +248,10 @@ function log(name, ok, detail) {
   // --- deliberately fail game 1: run must CONTINUE with a life lost ---
   const f = await playOne(true);
   log('deliberate fail does not end the run', true, f.game + ' failed');
-  // the flavor + lives-left relocated to the desktop window status bar (real reading time)
-  await page.waitForFunction(() => !document.getElementById('hw-verb').classList.contains('hw-hidden'), { timeout: 6000 });
+  // the flavor + lives-left ride in the next app window's verb splash (real reading time)
+  await page.waitForFunction(() => { var e = document.getElementById('hw-appwin-status'); return e && /li(fe|ves) left/.test(e.textContent); }, { timeout: 9000 });
   const statusText = await page.textContent('#hw-appwin-status');
-  log('status bar shows fail flavor + lives left', /li(fe|ves) left/.test(statusText), statusText);
+  log('recap shows fail flavor + lives left', /li(fe|ves) left/.test(statusText), statusText);
   const livesAfterFail = await page.evaluate(() =>
     3 - document.querySelectorAll('#hw-hud-lives .hw-life-lost').length);
   log('one Max icon dimmed after fail', livesAfterFail === 2, 'lives=' + livesAfterFail);
