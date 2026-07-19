@@ -23,7 +23,8 @@
   var WORKER_URL = "https://hogware-leaderboard.whoischrislam.workers.dev";
 
   /* ---------------- Tunables ---------------- */
-  var VERB_MS = 1100;          // verb sits in the settled open window (processing time before the game)
+  var VERB_MS = 750;           // the loading bar fills over this (the "get ready" beat)
+  var READ_MS = 420;           // the verb sits STILL first (read it) before the loading starts
   var DESKTOP_MS = 150;        // barely-there "clicked the app icon" beat before the window opens
   var RESULT_MS = 850;         // pass/fail flash
   var QUOTE_MS = 2600;         // interstitial quote (press to skip)
@@ -207,9 +208,9 @@
       if (effect === "boot") { reveal("hw-crt-bloom", BLOOM_MS); return; }
 
       if (effect === "maximize") {
-        // One motion: the window opens out of the launching app icon and fills the screen (snappy).
+        // One motion: the window opens out of the launching app icon and fills the screen (calm).
         scene.style.transformOrigin = launchOrigin();
-        reveal("hw-maximize-in", 240);
+        reveal("hw-maximize-in", 300);
         return;
       }
       if (effect === "restore") {
@@ -1849,27 +1850,31 @@
         '</div>';
       scene.style.pointerEvents = "none";
     }, function () {
-      // Window is settled open with the verb — now a Win95 "loading" bar fills; the app
-      // runs the instant it completes. The load bar IS the get-ready beat.
+      // Sequenced so it never feels crammed: the window is open with the STILL verb; after a
+      // read beat the Win95 loading bar fills; the app runs the instant it completes.
       if (active !== thisActive || active.done) return;
       sfx("verb");
+      var loadMs = holdMs;
       var splash = sceneBody.querySelector(".hw-verbsplash");
-      if (splash) splash.insertAdjacentHTML("beforeend",
-        '<div class="hw-loadbar"><div class="hw-loadbar-fill" style="animation-duration:' + Math.round(holdMs) + 'ms"></div></div>' +
-        '<p class="hw-loadlabel">Loading' + (game.boss ? '' : " " + valueSlug(game.value) + ".exe") + '…</p>');
-      setTimeout(function () {
+      setTimeout(function () { // 1) still verb (READ_MS), then 2) the loading bar appears + fills
         if (active !== thisActive || active.done) return;
-        sceneBody.innerHTML = "";
-        show(hud); // gameplay HUD returns
-        game.setup(thisActive);
-        active.live = true;
-        stage.dataset.live = "1"; // exposed for the headless test to wait on
-        scene.style.pointerEvents = "";
-        // Pre-held input counts for HOLD games (DRIVE, boss charge) — never for
-        // press-to-stop games (AIM), where a carried-over hold would fire instantly.
-        if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(thisActive);
-        startClock(game);
-      }, holdMs);
+        if (splash) splash.insertAdjacentHTML("beforeend",
+          '<div class="hw-loadbar"><div class="hw-loadbar-fill" style="animation-duration:' + Math.round(loadMs) + 'ms"></div></div>' +
+          '<p class="hw-loadlabel">Loading' + (game.boss ? '' : " " + valueSlug(game.value) + ".exe") + '…</p>');
+        setTimeout(function () { // 3) loading complete -> run the app
+          if (active !== thisActive || active.done) return;
+          sceneBody.innerHTML = "";
+          show(hud); // gameplay HUD returns
+          game.setup(thisActive);
+          active.live = true;
+          stage.dataset.live = "1"; // exposed for the headless test to wait on
+          scene.style.pointerEvents = "";
+          // Pre-held input counts for HOLD games (DRIVE, boss charge) — never for
+          // press-to-stop games (AIM), where a carried-over hold would fire instantly.
+          if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(thisActive);
+          startClock(game);
+        }, loadMs);
+      }, READ_MS);
     });
   }
 
