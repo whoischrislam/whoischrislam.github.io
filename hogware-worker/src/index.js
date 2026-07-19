@@ -33,9 +33,11 @@ export default {
     if (cached) return cached;
 
     /* Plausibility gate lives IN the query: a submitted score only counts if that
-       same person's cleared-events trail backs at least half of it. Forged
-       posthog.capture('hogware_score_submitted', {score: 9999}) calls have no
-       trail, so they aggregate to nothing. Single scan with conditional
+       same person's cleared-events trail backs it. Max points per cleared game is 4
+       (1 base + up to +3 style bonus), so the gate is cleared*4 >= score — tight
+       enough to kill trailless forgeries, loose enough never to reject a real
+       high-skill run. Forged posthog.capture('hogware_score_submitted', {score: 9999})
+       calls have no trail, so they aggregate to nothing. Single scan with conditional
        aggregates — the original events-JOIN-events version 504'd PostHog's sync
        query window. Time-bounded to 3 days so the scan never grows with history. */
     const submitted = `event = 'hogware_score_submitted' AND toInt(properties.day) = ${day} AND toInt(properties.score) BETWEEN 0 AND 400`;
@@ -52,7 +54,7 @@ export default {
           AND timestamp > now() - INTERVAL 3 DAY
         GROUP BY distinct_id
       )
-      WHERE raw_best > 0 AND raw_cleared * 2 >= raw_best
+      WHERE raw_best > 0 AND raw_cleared * 4 >= raw_best
       GROUP BY handle
       ORDER BY best DESC
       LIMIT 20
