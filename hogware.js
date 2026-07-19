@@ -2244,7 +2244,20 @@
       return;
     }
     el.innerHTML = '<p class="hw-lb-note">loading today’s board…</p>';
-    fetch(WORKER_URL + "?day=" + DAY_NUM).then(function (r) { return r.json(); }).then(function (rows) {
+    // Never let the board hang on "loading": abort after 8s so a dead connection fails to a
+    // clear, retryable message instead of an endless spinner. Any HTTP response (even a 502)
+    // resolves normally and degrades to "no scores yet" — only a true network stall lands here.
+    var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+    var to = ctrl ? setTimeout(function () { ctrl.abort(); }, 8000) : null;
+    var fail = function () {
+      el.innerHTML = '<p class="hw-lb-note">board didn’t load. <button type="button" class="hw-lb-retry">retry</button></p>';
+      var b = el.querySelector(".hw-lb-retry");
+      if (b) b.addEventListener("click", renderLeaderboard);
+    };
+    fetch(WORKER_URL + "?day=" + DAY_NUM, ctrl ? { signal: ctrl.signal } : undefined).then(function (r) {
+      if (to) clearTimeout(to);
+      return r.json();
+    }).then(function (rows) {
       rows = (rows && rows.length) ? rows.slice() : [];
       // Optimistic row: show the just-posted score until the real query catches up (ingestion
       // + 60s cache). Once the board returns a row that meets or beats it, drop the placeholder.

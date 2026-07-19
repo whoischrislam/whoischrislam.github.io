@@ -1136,17 +1136,25 @@
             padding: 0.32em 0.7em; font-size: 0.9em; font-variant-numeric: tabular-nums;
           }
           .hw-lb-row + .hw-lb-row { border-top: 1px solid #EAE6DC; }
+          /* The list is a fixed white Win95 surface (both themes), so its text is fixed
+             dark — NOT the theme vars, which are light on dark and vanish on white. */
           .hw-lb-head {
-            background: var(--bg-alt); color: var(--muted);
+            background: #C9C4B7; color: #33302A;
             font-size: 0.6em; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
           }
-          .hw-lb-row span:first-child { color: var(--muted); font-weight: 700; }
-          .hw-lb-row span:nth-child(2) { font-family: ui-monospace, Menlo, monospace; font-weight: 700; color: var(--text); letter-spacing: 0.12em; }
-          .hw-lb-row span:last-child { text-align: right; font-weight: 800; color: var(--text); }
+          .hw-lb-row span:first-child { color: #6E6A5E; font-weight: 700; }                                          /* rank */
+          .hw-lb-row span:nth-child(2) { font-family: ui-monospace, Menlo, monospace; font-weight: 700; color: #151515; letter-spacing: 0.12em; }  /* handle */
+          .hw-lb-row span:last-child { text-align: right; font-weight: 800; color: #111; }                            /* score */
           .hw-lb-me { background: #1D4AFF; }               /* Win95 selection = your row */
           .hw-lb-me span { color: #fff !important; }
           .hw-lb-note { color: var(--muted); font-size: 0.8em; text-align: center; margin: 0.3em 0; line-height: 1.45; }
           .hw-lb-note span { font-size: 0.85em; opacity: 0.75; }
+          .hw-lb-retry {
+            font: inherit; font-size: 0.95em; cursor: pointer; margin-left: 0.35em;
+            background: #DCD6C8; color: #151515; padding: 0.1em 0.7em;
+            border: 1px solid; border-color: #fff #7A7568 #7A7568 #fff;
+          }
+          .hw-lb-retry:active { border-color: #7A7568 #fff #fff #7A7568; }
           .hw-submitted-note { color: var(--accent); font-size: 0.82em; margin: 0; text-align: center; }
 
           .hw-footer {
