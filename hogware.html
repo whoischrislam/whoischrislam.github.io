@@ -643,6 +643,14 @@
           .hw-verbsplash .hw-verb-word { animation: hw-fade-calm 0.45s ease both; }
           /* Fast between-games verb (window already open, no scale to compound) — it can POP. */
           .hw-verb-punchy .hw-verb-word { animation: hw-verb-pop 0.34s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+          /* App-switch: the whole verb card swipes in from the side — "now you're in a new program". */
+          .hw-verbsplash.hw-appswitch { animation: hw-appswitch 0.22s cubic-bezier(0.2, 0.75, 0.3, 1) both; }
+          @keyframes hw-appswitch { from { transform: translateX(36px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+          .hw-verbsplash.hw-appswitch .hw-verb-word { animation: none; } /* the swipe is the motion */
+          /* the title bar flashes as the app changes, drawing the eye to the new value */
+          .hw-gamewin-bar.hw-switch { animation: hw-titleflash 0.42s ease; }
+          @keyframes hw-titleflash { 0% { filter: brightness(1.7); } 100% { filter: brightness(1); } }
+          @media (prefers-reduced-motion: reduce) { .hw-verbsplash.hw-appswitch, .hw-gamewin-bar.hw-switch { animation: none; } }
           .hw-verbsplash .hw-verb-flavor, .hw-verbsplash .hw-verb-value, .hw-verbsplash .hw-verb-instr { animation: hw-fade-calm 0.45s ease both; }
           @keyframes hw-fade-calm { from { opacity: 0; } to { opacity: 1; } }
           /* Win95 segmented "loading" progress bar — the get-ready beat, on theme */

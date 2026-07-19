@@ -1808,10 +1808,10 @@
     if (titleEl) titleEl.textContent = game.boss ? game.verb.replace(/!+$/, "") : game.value;
     if (iconEl) iconEl.textContent = GAME_ICONS[game.id] || "📉";
   }
-  function renderVerbCard(game, punchy) {
+  function renderVerbCard(game, entrance) {
     hide(screens.result); // clear the verdict flash (the flavor now lives ON the verdict)
     sceneBody.innerHTML =
-      '<div class="hw-screen hw-verbsplash' + (game.boss ? " hw-verb-boss" : "") + (punchy ? " hw-verb-punchy" : "") + '">' +
+      '<div class="hw-screen hw-verbsplash' + (game.boss ? " hw-verb-boss" : "") + (entrance ? " " + entrance : "") + '">' +
         (game.boss ? '<p class="hw-verb-value">' + game.value + '</p>' : '') +
         '<p class="hw-verb-word">' + game.verb + '</p>' +
         (game.instruction ? '<p class="hw-verb-instr">' + game.instruction + '</p>' : '') +
@@ -1856,8 +1856,12 @@
   function quickVerb(game, thisActive) {
     if (active !== thisActive || active.done) return;
     setWinTitle(game);
+    // App-switch feel: the window switches to the next value's program — the verb card
+    // swipes in and the title bar flashes. No open/close, just "now you're in a new app".
+    var bar = scene.querySelector(".hw-gamewin-bar");
+    if (bar) { bar.classList.remove("hw-switch"); void bar.offsetWidth; bar.classList.add("hw-switch"); }
     hide(hud);
-    renderVerbCard(game, true); // punchy — it's the only motion now, so it can pop
+    renderVerbCard(game, "hw-appswitch");
     scene.style.pointerEvents = "none";
     sfx("verb");
     conductor.afterBeats(game.boss ? VERB_BEATS_BOSS : VERB_BEATS, function () { runGame(game, thisActive); });
@@ -1881,7 +1885,7 @@
         swapScreens(scene, function () { // 2) the window opens (from the icon) with the verb
           setWinTitle(game);
           hide(hud);
-          renderVerbCard(game, false); // calm — it compounds with the window scale-in
+          renderVerbCard(game, ""); // calm fade — it compounds with the window scale-in
           scene.style.pointerEvents = "none";
         }, function () { // 3) still verb -> Win95 loading bar -> game
           if (active !== thisActive || active.done) return;
