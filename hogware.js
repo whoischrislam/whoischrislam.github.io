@@ -2100,6 +2100,19 @@
   /* ---------------- Game-over desktop: draggable windows + clickable value apps ---------------- */
   var zTop = 20;
   function focusWin(win) { win.style.zIndex = ++zTop; }
+  function placeWinInDesktop(win, x, y) {
+    var host = screens.gameover.getBoundingClientRect();
+    var wr = win.getBoundingClientRect();
+    var maxX = Math.max(0, host.width - wr.width);
+    var maxY = Math.max(0, host.height - wr.height);
+    win.style.left = Math.max(0, Math.min(maxX, x)) + "px";
+    win.style.top = Math.max(0, Math.min(maxY, y)) + "px";
+  }
+  function keepWinInDesktop(win) {
+    var host = screens.gameover.getBoundingClientRect();
+    var wr = win.getBoundingClientRect();
+    placeWinInDesktop(win, wr.left - host.left, wr.top - host.top);
+  }
   function makeDraggable(win, bar) {
     bar.addEventListener("pointerdown", function (e) {
       if (e.target.closest("button, input, a, .hw-tbar-controls")) return; // grabbing a control, not the bar
@@ -2117,9 +2130,7 @@
       var offX = e.clientX - wr.left, offY = e.clientY - wr.top;
       try { bar.setPointerCapture(e.pointerId); } catch (er) {}
       function move(ev) {
-        var x = Math.max(0, Math.min(host.width - wr.width, ev.clientX - host.left - offX));
-        var y = Math.max(0, Math.min(host.height - wr.height, ev.clientY - host.top - offY));
-        win.style.left = x + "px"; win.style.top = y + "px";
+        placeWinInDesktop(win, ev.clientX - host.left - offX, ev.clientY - host.top - offY);
       }
       function up() { bar.removeEventListener("pointermove", move); bar.removeEventListener("pointerup", up); }
       bar.addEventListener("pointermove", move);
@@ -2136,7 +2147,7 @@
     if (!q) return;
     var slug = valueSlug(vphrase);
     var existing = document.getElementById("valwin-" + slug);
-    if (existing) { focusWin(existing); return; } // already open - just raise it
+    if (existing) { keepWinInDesktop(existing); focusWin(existing); return; } // raise it and recover it after a resize
     var win = document.createElement("div");
     win.className = "hw-win hw-floating hw-valwin hw-dialog"; // value windows float from birth
     win.id = "valwin-" + slug;
@@ -2150,15 +2161,39 @@
         '<p class="hw-valwin-src">' + q.value + ' · posthog.com/handbook/values</p>' +
       '</div>';
     screens.gameover.appendChild(win);
-    // cascade so stacked windows don't hide each other
+    // Five staggered slots keep every title bar and close button inside the desktop.
     var n = document.querySelectorAll(".hw-valwin").length;
-    win.style.left = (18 + n * 22) + "%";
-    win.style.top = (16 + n * 10) + "%";
+    var slots = [
+      { x: 0.20, y: 0.16 }, { x: 0.39, y: 0.27 }, { x: 0.26, y: 0.43 },
+      { x: 0.48, y: 0.13 }, { x: 0.36, y: 0.52 }
+    ];
+    var slot = slots[(n - 1) % slots.length];
+    var host = screens.gameover.getBoundingClientRect();
+    placeWinInDesktop(win, host.width * slot.x, host.height * slot.y);
+    win.addEventListener("animationend", function settleWindow(e) {
+      if (e.target !== win) return;
+      win.removeEventListener("animationend", settleWindow);
+      keepWinInDesktop(win);
+    });
     focusWin(win);
     makeDraggable(win, win.querySelector(".hw-win-bar"));
     win.querySelector(".hw-close").addEventListener("click", function () { win.remove(); });
     capture("hogware_value_opened", { value: q.value });
   }
+  var desktopFitFrame = 0;
+  function fitOpenWindows() {
+    desktopFitFrame = 0;
+    document.querySelectorAll("#hw-gameover .hw-floating").forEach(keepWinInDesktop);
+  }
+  function scheduleWindowFit() {
+    if (desktopFitFrame) cancelAnimationFrame(desktopFitFrame);
+    desktopFitFrame = requestAnimationFrame(function () {
+      desktopFitFrame = requestAnimationFrame(fitOpenWindows); // wait for responsive text to finish wrapping
+    });
+  }
+  window.addEventListener("resize", scheduleWindowFit);
+  var gameoverResizeObserver = window.ResizeObserver ? new ResizeObserver(scheduleWindowFit) : null;
+  if (gameoverResizeObserver) gameoverResizeObserver.observe(screens.gameover);
   var goDeskWired = false;
   function resetGameoverDesktop() {
     // Fresh game over: clear value windows, re-place the two hero windows side by side.
