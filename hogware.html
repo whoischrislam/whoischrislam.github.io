@@ -294,39 +294,47 @@
             text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.28);
           }
           #hw-titlescreen .hw-title-dot { color: var(--ph-yellow); }
-          .hw-title-pitch { display: flex; flex-direction: column; align-items: center; gap: 0.26em; }
+          .hw-title-pitch { display: flex; flex-direction: column; align-items: center; gap: 0.24em; }
           #hw-titlescreen .hw-tagline {
             max-width: 46ch;
             color: rgba(255, 255, 255, 0.94);
             font-size: 0.92em;
             line-height: 1.25;
           }
-          .hw-title-lives { display: flex; align-items: center; justify-content: center; gap: 0.42em; }
+          .hw-title-rules {
+            margin: 0;
+            color: #fff;
+            font-size: 0.82em;
+            font-weight: 700;
+            line-height: 1.25;
+          }
+          .hw-title-lives { display: flex; align-items: center; justify-content: center; gap: 0.36em; margin-top: 0.08em; }
+          .hw-title-lives-label {
+            margin-right: 0.12em;
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 0.66em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: rgba(255, 255, 255, 0.9);
+          }
           .hw-title-life {
             width: 31px;
             height: 31px;
             object-fit: contain;
             animation: hw-title-life-bob 1.2s ease-in-out infinite alternate;
           }
-          .hw-title-life:nth-child(2) { animation-delay: 140ms; }
-          .hw-title-life:nth-child(3) { animation-delay: 280ms; }
+          .hw-title-life:nth-of-type(2) { animation-delay: 140ms; }
+          .hw-title-life:nth-of-type(3) { animation-delay: 280ms; }
           @keyframes hw-title-life-bob { to { transform: translateY(-4px); } }
           @media (prefers-reduced-motion: reduce) { .hw-title-life { animation: none; } }
-          .hw-title-speed { margin: 0; color: #fff; font-size: 0.86em; font-weight: 700; }
-          .hw-title-support { display: flex; flex-direction: column; align-items: center; gap: 0.18em; }
-          .hw-title-start-help,
-          .hw-title-prompt { margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 0.72em; }
+          .hw-title-support { display: flex; align-items: center; justify-content: center; }
+          .hw-title-start-help { margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 0.72em; }
           .hw-title-best {
-            margin: 0.05em 0 0;
-            padding: 0.24em 0.65em;
+            margin: 0.08em 0 0;
             font-family: ui-monospace, Menlo, monospace;
-            font-size: 0.68em;
-            font-weight: 700;
-            color: #151515;
-            background: #DCD6C8;
-            border: 1px solid;
-            border-color: #fff #6E675A #6E675A #fff;
-            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+            font-size: 0.62em;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.76);
           }
           #hw-titlescreen .hw-kbd {
             color: #151515;
@@ -339,14 +347,13 @@
             #hw-titlescreen .hw-title { font-size: 2em; }
             .hw-title-pitch { gap: 0.1em; }
             #hw-titlescreen .hw-tagline { max-width: 42ch; font-size: 0.54em; line-height: 1.15; }
+            .hw-title-rules { font-size: 0.52em; line-height: 1.15; }
             .hw-title-lives { gap: 0.3em; }
             .hw-title-life { width: 20px; height: 20px; }
-            .hw-title-speed { font-size: 0.56em; }
-            .hw-title-support { gap: 0.08em; }
-            .hw-title-start-help, .hw-title-prompt { font-size: 0.5em; line-height: 1.15; }
+            .hw-title-start-help { font-size: 0.5em; line-height: 1.15; }
             #hw-titlescreen .hw-kbd { font-size: 0.9em; padding: 0 0.35em; }
             #hw-titlescreen .hw-btn { font-size: 0.64em; padding: 0.3em 1.5em; border-bottom-width: 2px; }
-            .hw-title-best { font-size: 0.5em; padding: 0.18em 0.5em; }
+            .hw-title-best { font-size: 0.48em; }
           }
 
           /* ---- START opens an OS session. The CRT only power-cycles on page load. ---- */
@@ -1012,7 +1019,10 @@
           .hw-gamehint {
             position: relative;
             z-index: 20;
+            box-sizing: border-box;
             max-width: min(92%, 560px);
+            margin-left: auto;
+            margin-right: auto;
             padding: 0.32em 0.68em;
             color: #151515;
             background: rgba(238, 239, 233, 0.96);
@@ -1022,6 +1032,7 @@
             font-size: 0.76em;
             font-weight: 700;
             line-height: 1.25;
+            text-align: center;
           }
           .hw-gamehint-overlay {
             position: absolute;
@@ -1365,17 +1376,17 @@
                     <h1 class="hw-title">HogWare<span class="hw-title-dot">.</span></h1>
                     <div class="hw-title-pitch">
                         <p class="hw-tagline">Five PostHog values. Five microgames. One boss.</p>
+                        <p class="hw-title-rules">Follow each prompt. It only gets faster.</p>
                         <div class="hw-title-lives" aria-label="Three lives">
+                            <span class="hw-title-lives-label">3 LIVES</span>
                             <img class="hw-title-life" src="images/hogware/max-life.png" alt="" />
                             <img class="hw-title-life" src="images/hogware/max-life.png" alt="" />
                             <img class="hw-title-life" src="images/hogware/max-life.png" alt="" />
                         </div>
-                        <p class="hw-title-speed">It only gets faster.</p>
                     </div>
                     <button id="hw-start" class="hw-btn">START</button>
                     <div class="hw-title-support">
                         <p class="hw-title-start-help">or press <span class="hw-kbd">space</span></p>
-                        <p class="hw-title-prompt">Follow each game's prompt.</p>
                     </div>
                     <p id="hw-best-line" class="hw-title-best hw-hidden"></p>
                 </div>
