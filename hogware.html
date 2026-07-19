@@ -13,7 +13,7 @@
         <!-- Open Graph / Twitter -->
         <meta property="og:type" content="website" />
         <meta property="og:title" content="HogWare · Five PostHog values, five microgames, one run" />
-        <meta property="og:description" content="DRIVE! PUBLISH! WEIRD! SHIP IT! AIM! A WarioWare built out of PostHog's own handbook — three lives, a daily gauntlet, and scores that land in PostHog itself." />
+        <meta property="og:description" content="DRIVE! PUBLISH! WEIRD! SHIP IT! AIM! A WarioWare built out of PostHog's own handbook. Three lives, a daily gauntlet, and scores that land in PostHog itself." />
         <meta property="og:url" content="https://whoischrislam.github.io/hogware.html" />
         <meta property="og:site_name" content="Chris Lam" />
         <meta name="twitter:card" content="summary" />
@@ -50,7 +50,7 @@
             if (KEY.indexOf("YOUR_") === 0) { window.__phDisabled = true; return; }
             try {
               var qp = new URLSearchParams(location.search);
-              if (qp.get("notrack") === "1") { localStorage.setItem("ph_optout", "1"); alert("Analytics is now OFF on this browser — your visits won't be recorded."); }
+              if (qp.get("notrack") === "1") { localStorage.setItem("ph_optout", "1"); alert("Analytics is now OFF on this browser. Your visits won't be recorded."); }
               if (qp.get("track") === "1") { localStorage.removeItem("ph_optout"); alert("Analytics is now ON for this browser."); }
               if (localStorage.getItem("ph_optout") === "1") { window.__phDisabled = true; return; }
             } catch (e) {}
@@ -1183,8 +1183,8 @@
                 <!-- Title screen -->
                 <div id="hw-titlescreen" class="hw-screen">
                     <h1 class="hw-title">HogWare<span style="color: var(--accent);">.</span></h1>
-                    <p class="hw-tagline">Five PostHog values. Five microgames. A boss. Three lives — it gets harder, then faster, until they're gone.</p>
-                    <p class="hw-hint"><span class="hw-kbd">click</span> or <span class="hw-kbd">space</span> — that's the whole manual.</p>
+                    <p class="hw-tagline">Five PostHog values. Five microgames. A boss. Three lives. It gets harder, then faster, until they're gone.</p>
+                    <p class="hw-hint"><span class="hw-kbd">click</span> or <span class="hw-kbd">space</span>. That's the whole manual.</p>
                     <button id="hw-start" class="hw-btn">START</button>
                     <p id="hw-best-line" class="hw-hint hw-hidden"></p>
                 </div>
@@ -1252,7 +1252,7 @@
                     <!-- results.exe: your run, the crashed program -->
                     <div class="hw-dialog hw-win hw-go-win" id="hw-go-results">
                         <div class="hw-dialog-bar hw-win-bar hw-tbar-fatal">
-                            <span class="hw-dialog-title">gameover.exe — (not responding)</span>
+                            <span class="hw-dialog-title">gameover.exe (not responding)</span>
                             <span class="hw-tbar-controls hw-controls-dead" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
                         </div>
                         <div class="hw-dialog-body">
@@ -1303,9 +1303,9 @@
             <div class="hw-crt-base" aria-hidden="true"></div>
 
             <p class="hw-footer">
-                Built by <a href="index.html">Chris Lam</a> for PostHog's Technical Ex-Founder application — a fan tribute, not an official PostHog product.
+                Built by <a href="index.html">Chris Lam</a> for PostHog's Technical Ex-Founder application. A fan tribute, not an official PostHog product.
                 The five microgames are PostHog's five real <a href="https://posthog.com/handbook/values" target="_blank" rel="noopener">handbook values</a>;
-                scores land in PostHog itself — the leaderboard is a HogQL query.
+                scores land in PostHog itself. The leaderboard is a HogQL query.
                 <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">How this was made</a>.
                 Life icons: Max, PostHog's mascot, from their <a href="https://posthog.com/media" target="_blank" rel="noopener">press assets</a>.
             </p>

@@ -82,7 +82,7 @@
     { value: "Optimistic by default", text: "“Aiming for the best possible upside and sometimes missing is much better than never trying.”" }
   ];
   /* Session-replay nod — only shown when analytics is actually on. */
-  var REPLAY_QUOTE = { value: "Make it public", text: "psst — this run is being session-replayed. Transparency goes both ways." };
+  var REPLAY_QUOTE = { value: "Make it public", text: "psst, this run is being session-replayed. Transparency goes both ways." };
 
   /* ---------------- DOM handles ---------------- */
   var $ = function (id) { return document.getElementById(id); };
@@ -492,7 +492,7 @@
               carSvg("var(--accent)") +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press — everyone gets out of your way' +
+          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press · everyone gets out of your way' +
           (ctx.params.stallIdx >= 0 ? ' <span style="color:var(--accent-strong)">(almost everyone)</span>' : '') + '</p>' +
         '</div>';
     },
@@ -909,7 +909,7 @@
           '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:#FCFBF5; border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="' + scn.aria + '">' +
             gameWeird._render(scn.svg, scn.id) +
           '</svg></div>' +
-          '<p class="hw-hint">click the glowing bits weirder — <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
+          '<p class="hw-hint">click the glowing bits weirder · <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
         '</div>';
       // Pulsing ring marks the next target; move it to the first one.
       var svg = $("hw-w-frame");
@@ -1035,7 +1035,7 @@
       var edgy = function () { var u = run.rng(); return u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u); };
       ctx.state.shipPos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
       sceneBody.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
-        '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the noise — find and hit SHIP</p>';
+        '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the noise · find and hit SHIP</p>';
       if (ctx.params.decoy) {
         var d = document.createElement("button");
         d.className = "hw-ship-btn95 hw-ship-decoy";
@@ -1194,7 +1194,7 @@
               '<circle cx="13" cy="12" r="1.7" fill="#111"/>' +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint"><span class="hw-kbd">space</span> / tap to STOP the hedgehog on the glow — the far ledge pays triple</p>' +
+          '<p class="hw-hint"><span class="hw-kbd">space</span> / tap to STOP the hedgehog on the glow · the far ledge pays triple</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -1258,7 +1258,7 @@
         '<div id="hw-boss-scene" class="hw-screen" style="gap:0.9em;">' +
           '<pre id="hw-terminal">hogql&gt; <span class="hw-caret">▋</span></pre>' +
           '<div class="hw-frag-tray">' + chips + '</div>' +
-          '<p class="hw-hint">assemble the leaderboard query — this is literally how the scoreboard works · ' +
+          '<p class="hw-hint">assemble the leaderboard query · this is literally how the scoreboard works · ' +
             '<span id="hw-boss-errors">' + ctx.params.maxErrors + '</span> errors left</p>' +
         '</div>';
       sceneBody.querySelectorAll(".hw-frag").forEach(function (chip) {
@@ -1365,7 +1365,7 @@
             '</g>' +
           '</svg>' +
           '<div style="width:min(70%,320px); height:12px; border-radius:999px; background:var(--chip-bg); overflow:hidden;"><div id="hw-curl-power" style="height:100%; width:0%; border-radius:999px; background:var(--accent);"></div></div>' +
-          '<p class="hw-hint" id="hw-curl-hint">hold <span class="hw-kbd">space</span> to charge, release to roll — then hop the rocks</p>' +
+          '<p class="hw-hint" id="hw-curl-hint">hold <span class="hw-kbd">space</span> to charge, release to roll · then hop the rocks</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -1441,7 +1441,7 @@
       s.targetX = (s.power / 100) * 1.1;
       s.v = 1;
       var hint = $("hw-curl-hint");
-      if (hint) hint.innerHTML = 'hop the rocks — <span class="hw-kbd">space</span> / tap';
+      if (hint) hint.innerHTML = 'hop the rocks · <span class="hw-kbd">space</span> / tap';
       sfx("verb");
     },
     onTimeout: function (ctx) { ctx.fail("Never left the starting line."); }
@@ -1480,7 +1480,7 @@
             '<line x1="0" y1="3" x2="200" y2="3" stroke="#E5484D" stroke-width="1" stroke-dasharray="3 2"/>' +
             '<rect id="hw-err-fill" x="0" y="24" width="200" height="0" fill="#E5484D" opacity="0.55"/>' +
           '</svg>' +
-          '<p class="hw-hint" id="hw-incident-hint" style="color:#E5484D;">errors climbing! click the commit that broke prod — before the graph tops out</p>' +
+          '<p class="hw-hint" id="hw-incident-hint" style="color:#E5484D;">errors climbing! click the commit that broke prod · before the graph tops out</p>' +
           '<div class="hw-frag-tray">' + rows + '</div>' +
         '</div>';
       sceneBody.querySelectorAll(".hw-commit").forEach(function (btn) {
@@ -1506,7 +1506,7 @@
         '<div id="hw-incident-scene" class="hw-screen" style="gap:0.7em;">' +
           graph +
           '<button id="hw-rollback" class="hw-btn" style="font-size:1.2em; padding:0.75em 2.2em;">ROLLBACK</button>' +
-          '<p class="hw-hint" id="hw-incident-hint">found it! now MASH — rewind the deploy to 100%: <span id="hw-rb-pct">0</span>%</p>' +
+          '<p class="hw-hint" id="hw-incident-hint">found it! now MASH · rewind the deploy to 100%: <span id="hw-rb-pct">0</span>%</p>' +
         '</div>';
       $("hw-rollback").addEventListener("pointerdown", function () {
         if (ctx.done) return;
@@ -1628,7 +1628,7 @@
             '<g id="hw-funnel-users"></g>' +
             '<g id="hw-funnel-meter"></g>' +
           '</svg>' +
-          '<p class="hw-hint">retain <b>4</b> — the <b>$</b> whale counts double · hold <span class="hw-kbd">space</span> / press = right · release = left</p>' +
+          '<p class="hw-hint">retain <b>4</b> · the <b>$</b> whale counts double · hold <span class="hw-kbd">space</span> / press = right · release = left</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -1698,7 +1698,7 @@
       }
       if (s.resolved >= s.total && s.effects.length === 0) {
         var pctRet = Math.round(s.caught / s.total * 100);
-        if (s.retained >= p.need) return ctx.win(pctRet + "% retained — suspiciously good. +1 life.", 1);
+        if (s.retained >= p.need) return ctx.win(pctRet + "% retained, suspiciously good. +1 life.", 1);
         return ctx.fail(pctRet + "% retention. The churn postmortem writes itself.");
       }
     },
@@ -2003,7 +2003,7 @@
       wordEl.classList.toggle("hw-announce-speed", word === "SPEED UP!");
       $("hw-announce-axis").textContent = axisNote || "";
       $("hw-quote-text").textContent = q.text;
-      $("hw-quote-source").textContent = q.value + " — posthog.com/handbook/values";
+      $("hw-quote-source").textContent = q.value + " · posthog.com/handbook/values";
     }, function () {
       sfx("level");
       quoteTimer = setTimeout(endQuote, QUOTE_MS);
@@ -2056,7 +2056,7 @@
     var copyBtn = $("hw-copy");
     copyBtn.textContent = "COPY RESULT";
     copyBtn.onclick = function () {
-      var done = function () { copyBtn.textContent = "COPIED — go start a leaderboard war"; };
+      var done = function () { copyBtn.textContent = "COPIED. Go start a leaderboard war"; };
       capture("hogware_result_copied", { day: DAY_NUM, score: run.score });
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(resultString()).then(done, done);
@@ -2130,7 +2130,7 @@
       '</div>' +
       '<div class="hw-valwin-body">' +
         '<p class="hw-valwin-quote">' + q.text + '</p>' +
-        '<p class="hw-valwin-src">— ' + q.value + ' · posthog.com/handbook/values</p>' +
+        '<p class="hw-valwin-src">' + q.value + ' · posthog.com/handbook/values</p>' +
       '</div>';
     screens.gameover.appendChild(win);
     // cascade so stacked windows don't hide each other
@@ -2199,7 +2199,7 @@
     }
     el.innerHTML = '<p class="hw-lb-note">loading today’s board…</p>';
     fetch(WORKER_URL + "?day=" + DAY_NUM).then(function (r) { return r.json(); }).then(function (rows) {
-      if (!rows || !rows.length) { el.innerHTML = '<p class="hw-lb-note">No scores yet today — be the first. 🦔</p>'; return; }
+      if (!rows || !rows.length) { el.innerHTML = '<p class="hw-lb-note">No scores yet today. Be the first. 🦔</p>'; return; }
       var head = '<div class="hw-lb-row hw-lb-head"><span>#</span><span>who</span><span>score</span></div>';
       var body = rows.slice(0, 10).map(function (row, i) {
         var who = String(row.handle || "???").slice(0, 3);
@@ -2208,7 +2208,7 @@
       }).join("");
       el.innerHTML = '<div class="hw-lb-list">' + head + body + '</div>';
     }).catch(function () {
-      el.innerHTML = '<p class="hw-lb-note">board unreachable — your run still counted.</p>';
+      el.innerHTML = '<p class="hw-lb-note">board unreachable · your run still counted.</p>';
     });
   }
 
