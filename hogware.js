@@ -2373,7 +2373,7 @@
     try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
     if (best) {
       var line = $("hw-best-line");
-      line.textContent = "YOUR BEST " + best;
+      line.textContent = "Your best: " + best;
       show(line);
     }
     $("hw-start").addEventListener("click", startRun);
