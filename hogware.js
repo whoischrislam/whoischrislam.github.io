@@ -1,5 +1,5 @@
 /* ============================================================
-   HogWare — five PostHog values, five microgames, one run.
+   HogWare - five PostHog values, five microgames, one run.
    One shared engine; each microgame is a config object so future
    variants (cosmetic or mechanic) are params + a small delta,
    never a rewrite. Vanilla JS, DOM/SVG scenes, no build step.
@@ -40,13 +40,13 @@
 
   /* ---------------- Daily seed ----------------
      Everyone gets the same gauntlet on the same (local) day, so scores are
-     comparable and the emoji result reads like "today's run" — the Wordle
+     comparable and the emoji result reads like "today's run" - the Wordle
      mechanic. Retrying the same day replays the same seed on purpose. */
   var HW_EPOCH = new Date(2026, 6, 15); // launch day = HogWare #1 (local time)
   var _now = new Date();
   var _todayMidnight = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate());
   var DAY_NUM = Math.max(1, Math.round((_todayMidnight - HW_EPOCH) / 86400000) + 1);
-  // ?day=N pins the seed (deterministic tests, replaying a past day) — harmless: it
+  // ?day=N pins the seed (deterministic tests, replaying a past day) - harmless: it
   // only picks which daily gauntlet you play, and the leaderboard is already per-day.
   try {
     var _dq = parseInt(new URLSearchParams(location.search).get("day"), 10);
@@ -61,7 +61,7 @@
     };
   }
 
-  /* Feature-flag hook (flag not created in the dashboard yet — safe default until it is).
+  /* Feature-flag hook (flag not created in the dashboard yet - safe default until it is).
      'brisk' variant starts runs 15% faster; controls nothing else. */
   var paceVariant = "default";
   (function () {
@@ -81,7 +81,7 @@
     { value: "Why not now?", text: "“You do not need consensus to do things.”" },
     { value: "Optimistic by default", text: "“Aiming for the best possible upside and sometimes missing is much better than never trying.”" }
   ];
-  /* Session-replay nod — only shown when analytics is actually on. */
+  /* Session-replay nod - only shown when analytics is actually on. */
   var REPLAY_QUOTE = { value: "Make it public", text: "psst, this run is being session-replayed. Transparency goes both ways." };
 
   /* ---------------- DOM handles ---------------- */
@@ -110,14 +110,14 @@
   }
 
   /* ---- WarioWare-style zoom swap, quantized to the next beat ----
-     Dramatic on purpose (Chris: start extreme, dial back) — tune these two.
+     Dramatic on purpose (Chris: start extreme, dial back) - tune these two.
      prefers-reduced-motion gets the old instant cut. Feedback screens never
      route through here; only forward-looking starts do. */
   // Cinematic CRT transition: outgoing image collapses to a bright horizontal
   // line (tube powering down), swap at the line, incoming blooms back open.
   var COLLAPSE_MS = 230, BLOOM_MS = 400;
   var transitioning = false;
-  function crtBlip(kind) { // "hw-poweron" only now — the run-start tube wake-up
+  function crtBlip(kind) { // "hw-poweron" only now - the run-start tube wake-up
     if (reducedMotion) return;
     var f = $("hw-flash");
     if (!f) return;
@@ -170,9 +170,9 @@
     }
     transitioning = true;
     // Two transition vocabularies:
-    //  • MAXIMIZE / RESTORE  — launching a program (desktop⇄microgame): the window
+    //  • MAXIMIZE / RESTORE  - launching a program (desktop⇄microgame): the window
     //    grows to fill the screen, the game plays inside it, then restores back.
-    //  • CRT power-cycle      — the machine changing state (boot, announcements,
+    //  • CRT power-cycle      - the machine changing state (boot, announcements,
     //    game over): the tube collapses to a line and blooms the next screen open.
     var effect =
       fromEl === screens.title ? "boot" :
@@ -181,7 +181,7 @@
 
     conductor.nextBeat(function () {
       // The verdict flash rides ON TOP of the window, so it leaves WITH the window
-      // (minimizes/collapses together) and is hidden by reveal — not early, which
+      // (minimizes/collapses together) and is hidden by reveal - not early, which
       // would race the run-over path.
       var resEl = screens.result.classList.contains("hw-hidden") ? null : screens.result;
       var applyLeave = function (cls, origin) {
@@ -242,10 +242,10 @@
 
   /* ---------------- Conductor ----------------
      The beat clock behind the seamless feel. It aligns STARTS (next verb card
-     lands on a beat) — it never stretches durations and never gates feedback
+     lands on a beat) - it never stretches durations and never gates feedback
      (adversarial-review finding: beat-gating the result flash created dead air
      and broke tuned timings). Runs off the audio clock when unlocked, falls
-     back to performance.now() when muted/locked — gameplay is identical either
+     back to performance.now() when muted/locked - gameplay is identical either
      way because no game logic listens to it. */
   var audioCtx = null;
   var conductor = (function () {
@@ -255,7 +255,7 @@
     try { muted = localStorage.getItem("hogware_muted") === "1"; } catch (e) {}
     /* Real audio: ElevenLabs assets decoded to buffers. Music is a sample-exact
        16.000s WAV loop (8 bars @ 120 BPM); playbackRate mirrors game speed, so
-       SPEED UP! pitches it up — the WarioWare chipmunk effect, for free. Stings
+       SPEED UP! pitches it up - the WarioWare chipmunk effect, for free. Stings
        replace the synth blips when loaded; the synth stays as fallback. */
     var buffers = {}, masterGain = null, musicGain = null, sfxGain = null, musicSrc = null, loadKicked = false;
     var STING_NAMES = ["pass", "fail", "tick", "verb", "over", "level", "whiff"];
@@ -294,7 +294,7 @@
       setRate: function (r) {
         anchor = nextBeatAt();
         rate = Math.min(2, Math.max(1, r));
-        conductor.syncMusicRate(); // the loop pitches up with the game — the chipmunk speed-up
+        conductor.syncMusicRate(); // the loop pitches up with the game - the chipmunk speed-up
       },
       nextBeat: function (fn) { if (!timer) return fn(); subs.push({ at: nextBeatAt(), fn: fn }); },
       // Fire fn N beats from now, landed on the beat grid (rhythm-locked transitions).
@@ -423,14 +423,14 @@
      THE FIVE MICROGAMES
      Contract: { id, value, verb, input, baseDurationMs, params,
                  setup(ctx), update(ctx, dt), onPress(ctx, e), onRelease(ctx),
-                 onTimeout(ctx) }  — win/lose by calling ctx.win(flavor, bonus)
+                 onTimeout(ctx) }  - win/lose by calling ctx.win(flavor, bonus)
      or ctx.fail(flavor). `input` is documentation + router hint:
      'click' games get pointer events on scene elements; 'space'
      games get a unified press (spacebar OR tap) via onPress/onRelease.
      ============================================================ */
 
-  /* ---- 1. YOU'RE THE DRIVER — "DRIVE!" (hold space) ----
-     The quote is "we get out of their way" — traffic bails out of your lane
+  /* ---- 1. YOU'RE THE DRIVER - "DRIVE!" (hold space) ----
+     The quote is "we get out of their way" - traffic bails out of your lane
      before you reach it. From L2, one STALL car only notices you once you
      stop: hold into it and you crash; release, let it clear, resume. Obstacle
      positions are seeded-jittered per play so no two loops read identical. */
@@ -447,10 +447,10 @@
       ctx.state.holding = false;
       ctx.state.x = 0; // 0..1 progress toward the flag
       ctx.state.noticeAt = null;
-      // Your car speeds up with the run's speed-ups (half-rate) — the clock shrinks,
+      // Your car speeds up with the run's speed-ups (half-rate) - the clock shrinks,
       // so travel must too, or deep loops become mathematically unwinnable.
       ctx.state.travelMs = ctx.params.travelMs * (0.55 + 0.45 * run.speed);
-      // Stall car takes a random slot (never the first — no time to react to it),
+      // Stall car takes a random slot (never the first - no time to react to it),
       // so knowing "it's always the middle one" stops working after loop 2.
       var stallAt = ctx.params.stallIdx >= 0 ? 1 + Math.floor(run.rng() * (ctx.params.obstacles.length - 1)) : -1;
       var hesitateAt = -1;
@@ -541,9 +541,9 @@
     onTimeout: function (ctx) { ctx.fail("The road was empty and you hesitated."); }
   };
 
-  /* ---- 2. MAKE IT PUBLIC — "PUBLISH!" (click) ----
+  /* ---- 2. MAKE IT PUBLIC - "PUBLISH!" (click) ----
      L3: one toggle re-locks itself once ("legal had concerns") and needs
-     a second flip — state is a set, not a countdown, so it survives that. */
+     a second flip - state is a set, not a countdown, so it survives that. */
   var gamePublish = {
     id: "publish", value: "Make it public", verb: "PUBLISH!", input: "click",
     baseDurationMs: 4200,
@@ -554,7 +554,7 @@
     // transparency, real items + a couple cheeky ones.
     _pool: ["Source code", "Product roadmap", "Company handbook", "Q3 financials",
             "Incident reports", "The postmortem", "Pricing model", "Your search history", "That 2am Slack"],
-    _sensitive: "Salaries", // the one that needs a confirm at L3 — of course it does
+    _sensitive: "Salaries", // the one that needs a confirm at L3 - of course it does
     setup: function (ctx) {
       var items = shuffle(gamePublish._pool.slice(), run.rng).slice(0, ctx.params.count);
       if (ctx.params.confirm) { // guarantee the sensitive row is present as the confirm target
@@ -591,7 +591,7 @@
         var i = parseInt(el.dataset.i, 10);
         el.addEventListener("pointerdown", function () {
           if (ctx.done || !ctx.live || ctx.state.pub[i] || ctx.state.confirmOpen) return;
-          // The sensitive row (L3) needs a "are you sure?" — of course salaries does.
+          // The sensitive row (L3) needs a "are you sure?" - of course salaries does.
           if (items[i] === ctx.state.confirmLabel) { gamePublish._askConfirm(ctx, el, i, publish); return; }
           publish(el, i);
         });
@@ -600,7 +600,7 @@
     _askConfirm: function (ctx, rowEl, i, publish) {
       ctx.state.confirmOpen = true;
       var overlay = document.createElement("div");
-      overlay.className = "hw-pub-confirm-overlay"; // flex-centers the dialog — no transform race
+      overlay.className = "hw-pub-confirm-overlay"; // flex-centers the dialog - no transform race
       overlay.innerHTML =
         '<div class="hw-pub-confirm">' +
           '<div class="hw-pub-confirm-bar">⚠ Confirm</div>' +
@@ -626,8 +626,8 @@
     }
   };
 
-  /* ---- 3. DO MORE WEIRD — "WEIRD!" (mash) ----
-     A boring corporate stock photo mutates one notch weirder per click —
+  /* ---- 3. DO MORE WEIRD - "WEIRD!" (mash) ----
+     A boring corporate stock photo mutates one notch weirder per click -
      transformation of one scene, not decoration on top of it. Mutation
      order is daily-seeded so everyone's photo gets weird the same way. */
   var gameWeird = {
@@ -640,7 +640,7 @@
       { target: 7, radius: 27, drift: true, decayMs: 1500, durationMs: 4800 } // normalcy fights back: idle too long and progress reverts
     ],
     /* Scenes are stock-photo clichés rendered as cheesy 90s corporate clip-art
-       (Office-97 CD-ROM energy) — the "boring photo" is unmistakably intentional,
+       (Office-97 CD-ROM energy) - the "boring photo" is unmistakably intentional,
        not generic. Each play picks one; each carries its own tailored mutations.
        A pulsing ring marks the next thing to weirdify; only clicks inside count.
        Aim is the skill, not mashing. */
@@ -657,7 +657,7 @@
             '<rect x="12" y="15" width="30" height="22" fill="#F4EFE2"/>' +
             '<polyline points="17,32 24,25 30,28 39,18" fill="none" stroke="#7B3B47" stroke-width="1.6"/>' +
           '</g>' +
-          // gold sunburst behind the clasp — starts faint, a mutation cranks it
+          // gold sunburst behind the clasp - starts faint, a mutation cranks it
           '<g id="hw-hs-sun" style="opacity:0.22; transform-origin:100px 60px; transition:opacity .3s;">' +
             '<g stroke="#E6B325" stroke-width="4" stroke-linecap="round">' +
               '<line x1="100" y1="60" x2="146" y2="60"/><line x1="100" y1="60" x2="140" y2="82"/>' +
@@ -703,7 +703,7 @@
               '<g id="hw-hs-reyes"><circle cx="152" cy="30" r="1.5" fill="#222"/><circle cx="160" cy="30" r="1.5" fill="#222"/></g>' +
               '<path d="M152 35 Q156 38 160 35" fill="none" stroke-width="1.2"/>' +
             '</g>' +
-            // two mitten hands clasped, thumbs over — a real grip
+            // two mitten hands clasped, thumbs over - a real grip
             '<g id="hw-hs-hands">' +
               '<path d="M88 67 Q88 60 95 60 L100 61 Q104 63 104 67 Q104 72 99 72 L94 72 Q88 73 88 67 Z" fill="#E0B088"/>' +
               '<path d="M112 67 Q112 60 105 60 L100 61 Q96 63 96 67 Q96 72 101 72 L106 72 Q112 73 112 67 Z" fill="#C68642"/>' +
@@ -725,7 +725,7 @@
           { at: [46, 58], fn: function () { $("hw-hs-ltie").classList.add("hw-anim-spin"); } },
           // caption defects
           { at: [100, 101], fn: function () { var e = $("hw-hs-caption"); e.textContent = "SYNERWEIRD"; e.setAttribute("fill", "var(--accent)"); } },
-          // the deal ascends — sunburst blazes and rotates
+          // the deal ascends - sunburst blazes and rotates
           { at: [100, 44], fn: function () { var e = $("hw-hs-sun"); e.style.opacity = "1"; e.classList.add("hw-anim-spin"); } },
           // right guy achieves liftoff
           { at: [154, 72], fn: function () { $("hw-hs-rfig").classList.add("hw-anim-float"); } }
@@ -933,7 +933,7 @@
         var cy = (e.clientY - r.top) / r.height * 110;
         var dx = cx - m.at[0], dy = cy - m.at[1];
         if (Math.sqrt(dx * dx + dy * dy) > ctx.params.radius) {
-          sfx("whiff"); // soft dud — a miss costs time, it shouldn't also scold
+          sfx("whiff"); // soft dud - a miss costs time, it shouldn't also scold
           return;
         }
         try { m.fn(); } catch (err) {}
@@ -959,7 +959,7 @@
       if (ring && m) { ring.setAttribute("cx", m.at[0]); ring.setAttribute("cy", m.at[1]); }
     },
     update: function (ctx) {
-      // L3: normal creeps back in — idle too long between clicks and progress reverts.
+      // L3: normal creeps back in - idle too long between clicks and progress reverts.
       if (!ctx.params.decayMs || ctx.state.count === 0) return;
       var since = ctx.elapsed - Math.max(ctx.state.lastClick, ctx.state.lastDecay || 0);
       if (since > ctx.params.decayMs) {
@@ -978,13 +978,13 @@
     onTimeout: function (ctx) { ctx.fail("Still " + (ctx.params.target - ctx.state.count) + " notches too normal."); }
   };
 
-  /* ---- 4. WHY NOT NOW? — "SHIP IT!" (click) ---- */
+  /* ---- 4. WHY NOT NOW? - "SHIP IT!" (click) ---- */
   var gameShip = {
     id: "ship", value: "Why not now?", verb: "SHIP IT!", input: "click",
     baseDurationMs: 4600,
     levels: [
       {},
-      { spawnEveryMs: 240, shipDelayMs: 750, driftSpeed: 170, burst: 5 },                                          // the button isn't there yet — find it under the pile
+      { spawnEveryMs: 240, shipDelayMs: 750, driftSpeed: 170, burst: 5 },                                          // the button isn't there yet - find it under the pile
       { spawnEveryMs: 260, decoy: true, shipDelayMs: 1100, decoyLockMs: 600, durationMs: 5400, driftSpeed: 160, burst: 6 } // SHIP LATER sits alone longer; falling for it costs time
     ],
     params: {
@@ -992,8 +992,8 @@
       shipDelayMs: 0,
       decoy: false,
       decoyLockMs: 0,
-      driftSpeed: 115,  // px/s — everything keeps moving; ~half launch aimed across the button
-      burst: 4,         // notifications already in the frame at t=0 — no clean opening beat
+      driftSpeed: 115,  // px/s - everything keeps moving; ~half launch aimed across the button
+      burst: 4,         // notifications already in the frame at t=0 - no clean opening beat
       // Win95 chrome, modern remote-work content: form stays in-world, the joke stays now.
       popups: [
         { t: "cal",   title: "Standup",             body: "starts in 5 min" },
@@ -1042,7 +1042,7 @@
         d.id = "hw-decoy-btn";
         d.textContent = "SHIP LATER";
         d.style.position = "absolute";
-        d.style.zIndex = "5"; // below the notifications (11) — they must be able to bury it
+        d.style.zIndex = "5"; // below the notifications (11) - they must be able to bury it
         var dpos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
         // keep decoy and real button visibly apart
         if (Math.abs(dpos.left - ctx.state.shipPos.left) < 18) dpos.left = (dpos.left + 37) % 74 + 3;
@@ -1050,7 +1050,7 @@
         d.style.top = dpos.top + "%";
         d.addEventListener("pointerdown", function (e) {
           e.stopPropagation();
-          if (ctx.done || !ctx.live) return; // never touch run.rng() after resolve — it would shift the daily seed stream
+          if (ctx.done || !ctx.live) return; // never touch run.rng() after resolve - it would shift the daily seed stream
           ctx.state.lockedUntil = ctx.elapsed + ctx.params.decoyLockMs; // you're in the meeting now
           d.style.transform = "rotate(" + (run.rng() > 0.5 ? 8 : -8) + "deg)";
           d.textContent = "in a meeting…";
@@ -1066,7 +1066,7 @@
       b.id = "hw-ship-btn";
       b.textContent = "SHIP IT";
       b.style.position = "absolute";
-      b.style.zIndex = "5"; // below the notifications (11) — the pile must be able to bury it
+      b.style.zIndex = "5"; // below the notifications (11) - the pile must be able to bury it
       b.style.left = ctx.state.shipPos.left + "%";
       b.style.top = ctx.state.shipPos.top + "%";
       if (!reducedMotion) { b.style.animation = "hw-verb-pop 0.25s cubic-bezier(0.2, 1.6, 0.4, 1)"; }
@@ -1085,7 +1085,7 @@
         '<div class="hw-notif-bar"><span class="hw-notif-icon">' + nt.icon + '</span>' +
           '<span class="hw-notif-app">' + nt.app + '</span><b class="hw-notif-x">×</b></div>' +
         '<div class="hw-notif-body"><b>' + p.title + '</b><span>' + p.body + '</span></div>';
-      // Spawn ANYWHERE in the frame (seeded) — there is no clean corner to rest your eyes.
+      // Spawn ANYWHERE in the frame (seeded) - there is no clean corner to rest your eyes.
       var sx = run.rng() * (box.width - 150), sy = 30 + run.rng() * (box.height - 90);
       el.style.left = sx + "px";
       el.style.top = sy + "px";
@@ -1143,12 +1143,12 @@
     onTimeout: function (ctx) { ctx.fail("Buried in meetings. Classic."); }
   };
 
-  /* ---- 5. OPTIMISTIC BY DEFAULT — "AIM!" (hold + release) ---- */
+  /* ---- 5. OPTIMISTIC BY DEFAULT - "AIM!" (hold + release) ---- */
   var gameAim = {
     id: "aim", value: "Optimistic by default", verb: "AIM!", input: "space", preHold: false,
     baseDurationMs: 5200,
     params: {
-      slideSpeed: 66,   // %/s — the hedgehog paces the rink on its own; you STOP it
+      slideSpeed: 66,   // %/s - the hedgehog paces the rink on its own; you STOP it
       bandHalf: 12,     // half-width of the target band
       strict: false     // L1: anywhere on the rink lands; band is pure upside
     },
@@ -1163,7 +1163,7 @@
       s.dir = 1;
       s.stopped = false;
       // The target band lands ANYWHERE per play (seeded); the slider ping-pongs
-      // 0..105 — the sliver past the edge is the drowning zone, so late greed
+      // 0..105 - the sliver past the edge is the drowning zone, so late greed
       // still exists even without a charge meter.
       var range = ctx.params.strict ? [25, 90] : [30, 80];
       s.band = range[0] + run.rng() * (range[1] - range[0]);
@@ -1174,7 +1174,7 @@
       var bands =
         '<rect x="' + px(g0) + '" y="35" width="' + (px(g1) - px(g0)) + '" height="12" rx="6" fill="var(--accent-soft)"/>' +
         '<rect x="' + px(Math.max(0, b0)) + '" y="32" width="' + (px(Math.min(100, b1)) - px(Math.max(0, b0))) + '" height="18" rx="6" fill="var(--accent)" opacity="0.55"/>' +
-        // THE LEDGE: a sliver of maximum upside at the very end — nearly frame-perfect, pays triple.
+        // THE LEDGE: a sliver of maximum upside at the very end - nearly frame-perfect, pays triple.
         '<rect x="' + px(102) + '" y="30" width="' + (px(106) - px(102)) + '" height="22" rx="3" fill="var(--accent-strong)" opacity="0.85"/>';
       sceneBody.innerHTML =
         '<div class="hw-screen" style="justify-content:flex-end; padding-bottom:2.2em;">' +
@@ -1184,7 +1184,7 @@
             bands +
             '<line x1="' + px(100) + '" y1="20" x2="' + px(100) + '" y2="56" stroke="var(--accent-strong)" stroke-width="2.5" stroke-dasharray="3 3"/>' +
             '<g id="hw-puck" style="transform: translate(6px, 26px);">' +
-              // placeholder crude hedgehog (brown, not the accent) — swap in the hand-drawn one later
+              // placeholder crude hedgehog (brown, not the accent) - swap in the hand-drawn one later
               '<g fill="#8A5A2B" stroke="#101010" stroke-width="1">' +
                 '<path d="M1 13 l-3 -2 3 -1 z"/><path d="M2 7 l-3 -3 4 0 z"/><path d="M7 4 l-2 -4 4 1 z"/><path d="M13 3 l0 -4 3 3 z"/><path d="M18 6 l3 -3 0 4 z"/>' +
               '</g>' +
@@ -1221,7 +1221,7 @@
         var big = s.moonshot ? "MOONSHOT!!" : "BULLSEYE!";
         if (d <= ctx.params.bandHalf) return ctx.win(big, 2);
         if (d <= ctx.params.bandHalf + 6) return ctx.win("CLOSE.", 1);
-        // Land off the glow (and short of the ledge) and it's a MISS — the verdict
+        // Land off the glow (and short of the ledge) and it's a MISS - the verdict
         // must be honest: no more "cleared with 0" for a landing nowhere near the target.
         return ctx.fail(pct < s.band ? "Short of the brief." : "Sailed right past it.");
       }, reducedMotion ? 120 : 320);
@@ -1230,11 +1230,11 @@
   };
 
   /* ============================================================
-     BOSS: RUN THE QUERY — longer, two phases, no visible timer.
+     BOSS: RUN THE QUERY - longer, two phases, no visible timer.
      Appears after every full loop; clearing it restores one lost
      life (max LIVES) and gates the LEVEL UP!, WarioWare-style.
      Phase 1: assemble a HogQL query by clicking fragments in order
-     (3 syntax errors = the query never ships). Phase 2: it "runs" —
+     (3 syntax errors = the query never ships). Phase 2: it "runs" -
      pick which of three charts ORDER BY score DESC actually returns.
      ============================================================ */
   var gameBossQuery = {
@@ -1298,9 +1298,9 @@
           '<svg width="76" height="46" viewBox="0 0 76 46">' + rects + '<line x1="4" y1="41" x2="72" y2="41" stroke="var(--border-strong)"/></svg></button>';
       };
       var charts = shuffle([
-        bars([32, 25, 18, 12, 7], true),   // DESC — the right answer
-        bars([7, 12, 18, 25, 32], false),  // ASC — reading it backwards
-        bars([18, 30, 9, 24, 14], false)   // chaos — no ORDER BY at all
+        bars([32, 25, 18, 12, 7], true),   // DESC - the right answer
+        bars([7, 12, 18, 25, 32], false),  // ASC - reading it backwards
+        bars([18, 30, 9, 24, 14], false)   // chaos - no ORDER BY at all
       ], run.rng).join("");
       sceneBody.innerHTML =
         '<div id="hw-boss-scene" class="hw-screen" style="gap:1em;">' +
@@ -1319,7 +1319,7 @@
     onTimeout: function (ctx) { ctx.fail("The query is still running somewhere."); }
   };
   /* ============================================================
-     BOSS: HEDGEHOG MODE — the original Hedgehog Curl, resurrected.
+     BOSS: HEDGEHOG MODE - the original Hedgehog Curl, resurrected.
      Phase 1: hold to charge, release to launch the curled hog down
      a long rink. Phase 2: while rolling, hop the rocks (tap/space).
      Land in the glow = +1 life. Stop short, eat a rock, or fly off
@@ -1339,10 +1339,10 @@
       ctx.state.airUntil = 0;
       // Rocks at seeded spots; the hog must hop each one it reaches.
       ctx.state.rocks = [0.3, 0.5, 0.66].map(function (f) {
-        return Math.min(0.68, Math.max(0.22, f + (run.rng() - 0.5) * 0.1)); // clamped below the zone — never land ON a rock
+        return Math.min(0.68, Math.max(0.22, f + (run.rng() - 0.5) * 0.1)); // clamped below the zone - never land ON a rock
       });
       var z = ctx.params.zone;
-      // Linear power→distance (D = power/100 · 1.1), same readable mapping as AIM! —
+      // Linear power→distance (D = power/100 · 1.1), same readable mapping as AIM! -
       // the original quadratic physics made "half power = half distance" false, which
       // played as unfair, not hard. Friction stays visual (the ease-out), not physical.
       var targetPower = 100 * ((z[0] + z[1]) / 2) / 1.1;
@@ -1388,7 +1388,7 @@
         s.x = Math.min(s.targetX, s.x + step);
         s.v = remain > 0.004 ? 1 : 0; // "still moving" flag for the settle check
         var airborne = ctx.elapsed < s.airUntil;
-        // Input buffering: a hop pressed mid-air fires the moment we land —
+        // Input buffering: a hop pressed mid-air fires the moment we land -
         // standard platformer forgiveness, and mashy players earn it constantly.
         if (!airborne && s.wasAirborne && s.hopQueued) {
           s.hopQueued = false;
@@ -1404,7 +1404,7 @@
         }
         var rink = $("hw-curl-rink");
         if (rink) rink.dataset.hogx = s.x.toFixed(3); // live position for the headless player
-        // rock collisions — only on the ground
+        // rock collisions - only on the ground
         if (!airborne) {
           for (var i = 0; i < s.rocks.length; i++) {
             if (Math.abs(s.x - s.rocks[i]) < 0.024) return ctx.fail("Rolled straight into a rock. Curl harder.");
@@ -1448,11 +1448,11 @@
   };
 
   /* ============================================================
-     BOSS: THE INCIDENT — the error graph is climbing RIGHT NOW.
+     BOSS: THE INCIDENT - the error graph is climbing RIGHT NOW.
      Phase 1: spot the bad commit while errors rise (wrong click =
      spike; graph tops out = escalated = fail). Phase 2: mash
      ROLLBACK to rewind the deploy faster than the decay. A scan
-     under pressure, then a race — not a quiz.
+     under pressure, then a race - not a quiz.
      ============================================================ */
   var gameBossIncident = {
     id: "boss-incident", value: "BOSS", verb: "THE INCIDENT!", input: "click", boss: true,
@@ -1514,7 +1514,7 @@
         sfx("tick");
         var pct = $("hw-rb-pct");
         if (pct) pct.textContent = Math.round(ctx.state.progress * 100);
-        // Win at the peak, in the same click — checking in update() ran after decay,
+        // Win at the peak, in the same click - checking in update() ran after decay,
         // so 100% could never survive to the test (mash to full, nothing happens).
         if (ctx.state.progress >= 1) ctx.win("Rolled back. The graph is green again. +1 life.", 1);
       });
@@ -1540,7 +1540,7 @@
   };
 
   /* ============================================================
-     BOSS: FUNNEL RESCUE — users are falling; steer the funnel.
+     BOSS: FUNNEL RESCUE - users are falling; steer the funnel.
      One input: hold to slide right, release to drift left. Catch
      4 of 6 in the funnel mouth = retained = +1 life.
      ============================================================ */
@@ -1550,7 +1550,7 @@
     baseDurationMs: 30000,
     params: { need: 4, funnelSpeed: 0.68, mouth: 0.09 },
     /* Wave of 8, realistic retention math (need 4 pts of 9 possible ≈ 44%):
-       normals, fast fallers, floaters, and one whale worth 2 — net revenue
+       normals, fast fallers, floaters, and one whale worth 2 - net revenue
        retention as a game rule. The wave escalates: later users spawn
        closer together and fall faster. */
     // A "user" glyph (head + shoulders) drawn at local origin, differentiated by
@@ -1560,7 +1560,7 @@
       var skin = { n: "#E0B088", fast: "#C68642", float: "#E0B088", whale: "#F2C892" }[type] || "#E0B088";
       var shirt = { n: "#3B4A6B", fast: "#2E8B57", float: "#7B3B47", whale: "#E6B325" }[type] || "#3B4A6B";
       // Drawn feet-at-origin (body above y=0) so the reference point is the user's
-      // BOTTOM — the leading edge as it falls. It touches the funnel's top rim
+      // BOTTOM - the leading edge as it falls. It touches the funnel's top rim
       // exactly at the catch line, so the rim reads as the thing that catches.
       var extra = "";
       if (type === "whale") extra = '<path d="M-5 -18 l1 -5 3 3 1 -5 1 5 3 -3 1 5 z" fill="#E6B325" stroke="#101010" stroke-width="1"/><text x="0" y="-3" font-size="6.5" text-anchor="middle" fill="#111" font-weight="bold">$</text>';
@@ -1619,7 +1619,7 @@
             '<rect x="0" y="104" width="400" height="6" fill="#dcdcd4"/>' +
             // Layer order: funnel (back) → users (front, so catches are visible) → meter (top).
             // mouth rx (33) matches the catch half-width (0.09 * 372 ≈ 33px) so the
-            // graphic's bounds equal the real catch zone — no clipping past the lip.
+            // graphic's bounds equal the real catch zone - no clipping past the lip.
             '<g id="hw-funnel" style="transform:translate(200px,0)"><g id="hw-funnel-inner">' +
               '<ellipse cx="0" cy="74" rx="33" ry="5.5" fill="#B23800" stroke="#101010" stroke-width="1.6"/>' +
               '<path d="M-33 74 L-6 94 L-6 103 L6 103 L6 94 L33 74" fill="var(--accent)" stroke="#101010" stroke-width="1.6" stroke-linejoin="round"/>' +
@@ -1655,7 +1655,7 @@
           sfx("pass");
           continue;
         }
-        // Near miss: clip the funnel rim — bounce sideways and churn in full view.
+        // Near miss: clip the funnel rim - bounce sideways and churn in full view.
         if (u.y >= 0.82 && !u.bounced && Math.abs(u.x - s.fx) < p.mouth + 0.055) {
           u.bounced = true;
           u.bounceDir = u.x < s.fx ? -1 : 1;
@@ -1707,7 +1707,7 @@
     onTimeout: function (ctx) { ctx.fail("Everyone churned while you watched."); }
   };
 
-  // Rotation pool: FUNNEL only, per playtest — CURL and INCIDENT shelved (need more
+  // Rotation pool: FUNNEL only, per playtest - CURL and INCIDENT shelved (need more
   // love), QUERY shelved earlier (quiz, not game). Shelved bosses stay summonable
   // via ?boss= for future rework; they're just out of the daily rotation.
   var BOSSES = [gameBossFunnel];
@@ -1721,7 +1721,7 @@
   var GAMES = [gameDrive, gamePublish, gameWeird, gameShip, gameAim];
 
   /* ============================================================
-     ENGINE — state machine + timer + input routing
+     ENGINE - state machine + timer + input routing
      ============================================================ */
   var run = null;      // active run state
   var active = null;   // active microgame ctx
@@ -1774,7 +1774,7 @@
   }
 
   function nextGame() {
-    // The slot after the last regular game is the boss — daily seed picks which one (pool of 1, for now).
+    // The slot after the last regular game is the boss - daily seed picks which one (pool of 1, for now).
     var game = run.idx >= run.order.length
       ? (BOSS_FORCED || BOSSES[DAY_NUM % BOSSES.length])
       : run.order[run.idx];
@@ -1784,7 +1784,7 @@
 
   /* The verb card doubles as the WarioWare "home scene": big Max lives bouncing
      on the beat, a stat tile, and the run's score drawn as a tiny insights-style
-     sparkline — status as furniture, not chrome. */
+     sparkline - status as furniture, not chrome. */
   function renderVerbStatus() {
     stage.style.setProperty("--beat", conductor.beatMs() + "ms");
     var livesEl = $("hw-verb-lives");
@@ -1799,7 +1799,7 @@
     // One honest number: LOOP N, gaining a "· FAST" only once speed-ups begin (loop 4+).
     // Level tier is communicated by the LEVEL UP! cards as events, not a persistent token.
     $("hw-verb-tile").textContent = "LOOP " + run.loop + (run.loop >= 4 ? " · FAST" : "");
-    // The flavor ("what just happened") no longer lives in the taskbar — it rides in the
+    // The flavor ("what just happened") no longer lives in the taskbar - it rides in the
     // app window's verb splash on the next launch (see playGame), a calmer, contextual home.
   }
 
@@ -1826,7 +1826,7 @@
     active.live = true;
     stage.dataset.live = "1"; // exposed for the headless test to wait on
     scene.style.pointerEvents = "";
-    // Pre-held input counts for HOLD games (DRIVE, boss charge) — never for
+    // Pre-held input counts for HOLD games (DRIVE, boss charge) - never for
     // press-to-stop games (AIM), where a carried-over hold would fire instantly.
     if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(thisActive);
     startClock(game);
@@ -1852,12 +1852,12 @@
     else quickVerb(game, thisActive);                                    // frequent: every microgame
   }
 
-  // FREQUENT path — window already open: the verb lands ON the beat (settle scheduled us on
+  // FREQUENT path - window already open: the verb lands ON the beat (settle scheduled us on
   // one), holds N beats, then the game starts on a beat. Rhythm-locked, no window animation.
   function quickVerb(game, thisActive) {
     if (active !== thisActive || active.done) return;
     setWinTitle(game);
-    // App-switch feel: the window switches to the next value's program — the verb card
+    // App-switch feel: the window switches to the next value's program - the verb card
     // swipes in and the title bar flashes. No open/close, just "now you're in a new app".
     var bar = scene.querySelector(".hw-gamewin-bar");
     if (bar) { bar.classList.remove("hw-switch"); void bar.offsetWidth; bar.classList.add("hw-switch"); }
@@ -1868,7 +1868,7 @@
     conductor.afterBeats(game.boss ? VERB_BEATS_BOSS : VERB_BEATS, function () { runGame(game, thisActive); });
   }
 
-  // RARE path (start of each loop) — the drama: desktop, then the app window opens from its
+  // RARE path (start of each loop) - the drama: desktop, then the app window opens from its
   // icon with the Win95 loading bar. Costly, but only once per ~6 games.
   function openApp(game, thisActive) {
     screens.verb.classList.toggle("hw-verb-boss", !!game.boss);
@@ -1886,7 +1886,7 @@
         swapScreens(scene, function () { // 2) the window opens (from the icon) with the verb
           setWinTitle(game);
           hide(hud);
-          renderVerbCard(game, ""); // calm fade — it compounds with the window scale-in
+          renderVerbCard(game, ""); // calm fade - it compounds with the window scale-in
           scene.style.pointerEvents = "none";
         }, function () { // 3) still verb -> Win95 loading bar -> game
           if (active !== thisActive || active.done) return;
@@ -1940,7 +1940,7 @@
     if (pass) {
       run.cleared++;
       run.score += 1 + bonus;
-      if (game.boss) run.lives = Math.min(LIVES, run.lives + 1); // the boss gives a life back — that's what lets good runs go deep
+      if (game.boss) run.lives = Math.min(LIVES, run.lives + 1); // the boss gives a life back - that's what lets good runs go deep
       run.trail.push(game.boss ? "🟪" : (bonus > 0 ? "🟨" : "🟩")); // purple = boss; gold = style bonus; both unexplained on purpose
       sfx("pass");
       capture("hogware_microgame_cleared", { game: game.id, value: game.value, loop: run.loop, bonus: bonus });
@@ -1952,11 +1952,11 @@
     }
     updateHud();
 
-    // The wit doesn't fit a 0.8s flash — the flash is just the verdict + bonus;
+    // The wit doesn't fit a 0.8s flash - the flash is just the verdict + bonus;
     // the flavor line relocates to the desktop status bar, which has reading time.
     run.lastStatus = (pass ? "✓ " : "✗ ") + (flavor || "") +
       (!pass && run.lives > 0 ? " (" + run.lives + (run.lives === 1 ? " life" : " lives") + " left)" : "");
-    // Verdict flashes OVER the still-open game window — the chrome stays up until
+    // Verdict flashes OVER the still-open game window - the chrome stays up until
     // the window minimizes on the next transition (was: hideAllScreens swapped to a
     // bare result screen, so the title bar vanished the instant you cleared/missed).
     var word = $("hw-result-word");
@@ -2120,7 +2120,7 @@
     if (!q) return;
     var slug = valueSlug(vphrase);
     var existing = document.getElementById("valwin-" + slug);
-    if (existing) { focusWin(existing); return; } // already open — just raise it
+    if (existing) { focusWin(existing); return; } // already open - just raise it
     var win = document.createElement("div");
     win.className = "hw-win hw-floating hw-valwin hw-dialog"; // value windows float from birth
     win.id = "valwin-" + slug;
@@ -2233,7 +2233,7 @@
     var el = $("hw-leaderboard");
     var myHandle = "";
     try { myHandle = (localStorage.getItem("hogware_handle") || "").toUpperCase(); } catch (e) {}
-    // file:// (local dev, headless tests) has origin "null" — the Worker's CORS
+    // file:// (local dev, headless tests) has origin "null" - the Worker's CORS
     // rightly rejects it, so don't fetch at all; show the local-best fallback.
     if (!WORKER_URL || location.protocol === "file:") {
       var best = 0;
@@ -2286,7 +2286,7 @@
   }
 
   /* Real held-state tracking: players pre-hold space/touch before a game starts
-     (especially DRIVE), and a "fresh press only" model reads that as no input —
+     (especially DRIVE), and a "fresh press only" model reads that as no input -
      an unfair fail. playGame() consults holdActive() to synthesize the press. */
   var spaceHeld = false, pointerHeld = false;
   function holdActive() { return spaceHeld || pointerHeld; }
@@ -2300,7 +2300,7 @@
   } catch (e) {}
 
   // Guard: on a host page without the game DOM (e.g. the scene preview page)
-  // stage is null — skip the top-level game wiring so the script still loads
+  // stage is null - skip the top-level game wiring so the script still loads
   // and the debug hook above stays available.
   if (stage) {
   document.addEventListener("keydown", function (e) {
@@ -2329,9 +2329,9 @@
 
   /* ---------------- Boot ---------------- */
   document.addEventListener("DOMContentLoaded", function () {
-    if (!stage) return; // no game DOM (scene preview page) — nothing to boot
+    if (!stage) return; // no game DOM (scene preview page) - nothing to boot
     // Cold boot: the tube stays dark (hw-booting) while the power-on line does the
-    // geometry, then the title snaps in crisp when it locks — never a gradual fade.
+    // geometry, then the title snaps in crisp when it locks - never a gradual fade.
     if (reducedMotion) {
       stage.classList.remove("hw-booting");
     } else {
