@@ -23,8 +23,8 @@
   var WORKER_URL = "https://hogware-leaderboard.whoischrislam.workers.dev";
 
   /* ---------------- Tunables ---------------- */
-  var VERB_MS = 950;           // verb hold (now shown INSIDE the maximized app window)
-  var DESKTOP_MS = 300;        // brief "clicked the app icon" beat before the window opens
+  var VERB_MS = 1100;          // verb sits in the settled open window (processing time before the game)
+  var DESKTOP_MS = 150;        // barely-there "clicked the app icon" beat before the window opens
   var RESULT_MS = 850;         // pass/fail flash
   var QUOTE_MS = 2600;         // interstitial quote (press to skip)
   var SPEED_DECAY = 0.86;      // per-loop timer multiplier
@@ -207,9 +207,9 @@
       if (effect === "boot") { reveal("hw-crt-bloom", BLOOM_MS); return; }
 
       if (effect === "maximize") {
-        // One motion: the window opens out of the launching app icon and fills the screen.
+        // One motion: the window opens out of the launching app icon and fills the screen (snappy).
         scene.style.transformOrigin = launchOrigin();
-        reveal("hw-maximize-in", 300);
+        reveal("hw-maximize-in", 240);
         return;
       }
       if (effect === "restore") {
@@ -1801,8 +1801,8 @@
     // One honest number: LOOP N, gaining a "· FAST" only once speed-ups begin (loop 4+).
     // Level tier is communicated by the LEVEL UP! cards as events, not a persistent token.
     $("hw-verb-tile").textContent = "LOOP " + run.loop + (run.loop >= 4 ? " · FAST" : "");
-    // The relocated flavor line: what just happened, in the window's status bar.
-    $("hw-appwin-status").textContent = run.lastStatus || "ready.";
+    // The flavor ("what just happened") no longer lives in the taskbar — it rides in the
+    // app window's verb splash on the next launch (see playGame), a calmer, contextual home.
   }
 
   function playGame(game) {
@@ -1827,6 +1827,7 @@
     };
     var thisActive = active;
     var ICONS = { drive: "🚗", publish: "🌐", weird: "🌀", ship: "🚀", aim: "🎯" };
+    var holdMs = game.boss ? VERB_MS * 2.2 : VERB_MS; // the "loading" beat before the app runs
     // The ONE app window opens (from its icon) showing the VERB, then — same window —
     // maximized, it swaps the verb for the game. Verb card + game are one window now.
     swapScreens(scene, function () {
@@ -1834,17 +1835,28 @@
       if (titleEl) titleEl.textContent = game.boss ? game.verb.replace(/!+$/, "") : game.value;
       if (iconEl) iconEl.textContent = ICONS[game.id] || "📉";
       hide(hud); // the HUD comes in WITH the game, not during the verb
+      // Recap of the last game (the wit + lives) rides here now, not the taskbar — a calm
+      // "what just happened -> here's the next verb" beat while the window sits open.
+      var recap = run.lastStatus
+        ? '<p class="hw-verb-flavor" id="hw-appwin-status">' + run.lastStatus + '</p>'
+        : '<p id="hw-appwin-status" class="hw-hidden"></p>';
       sceneBody.innerHTML =
         '<div class="hw-screen hw-verbsplash' + (game.boss ? " hw-verb-boss" : "") + '">' +
+          recap +
           (game.boss ? '<p class="hw-verb-value">' + game.value + '</p>' : '') +
           '<p class="hw-verb-word">' + game.verb + '</p>' +
           (game.instruction ? '<p class="hw-verb-instr">' + game.instruction + '</p>' : '') +
         '</div>';
       scene.style.pointerEvents = "none";
     }, function () {
-      // Window is maximized and the verb is showing — hold the beat, then load the game.
+      // Window is settled open with the verb — now a Win95 "loading" bar fills; the app
+      // runs the instant it completes. The load bar IS the get-ready beat.
       if (active !== thisActive || active.done) return;
       sfx("verb");
+      var splash = sceneBody.querySelector(".hw-verbsplash");
+      if (splash) splash.insertAdjacentHTML("beforeend",
+        '<div class="hw-loadbar"><div class="hw-loadbar-fill" style="animation-duration:' + Math.round(holdMs) + 'ms"></div></div>' +
+        '<p class="hw-loadlabel">Loading' + (game.boss ? '' : " " + valueSlug(game.value) + ".exe") + '…</p>');
       setTimeout(function () {
         if (active !== thisActive || active.done) return;
         sceneBody.innerHTML = "";
@@ -1857,7 +1869,7 @@
         // press-to-stop games (AIM), where a carried-over hold would fire instantly.
         if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(thisActive);
         startClock(game);
-      }, game.boss ? VERB_MS * 2.2 : VERB_MS);
+      }, holdMs);
     });
   }
 
