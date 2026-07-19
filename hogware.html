@@ -122,9 +122,7 @@
             justify-content: flex-start;
             min-height: 100vh;
             overflow-x: hidden;
-            /* the grassy desktop: flat-illustrated tufts, evoked not copied */
-            background-color: var(--bg);
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='280' viewBox='0 0 360 280'%3E%3Cg fill='none' stroke='%23151515' stroke-opacity='0.14' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M40 70 q2 -12 6 -16 M46 70 q0 -9 -2 -13 M52 70 q-1 -11 3 -15'/%3E%3Cpath d='M250 40 q2 -10 5 -13 M256 40 q0 -8 -2 -11'/%3E%3Cpath d='M140 160 q2 -12 6 -16 M146 160 q0 -9 -2 -13 M152 160 q-1 -11 3 -15'/%3E%3Cpath d='M310 200 q2 -10 5 -13 M316 200 q0 -8 -2 -11'/%3E%3Cpath d='M70 240 q2 -12 6 -16 M76 240 q0 -9 -2 -13'/%3E%3Cpath d='M210 260 q2 -10 5 -14 M216 260 q-1 -8 2 -12'/%3E%3C/g%3E%3C/svg%3E");
+            background: #000;
           }
           .hw-page {
             width: min(94vw, 860px);
@@ -1341,20 +1339,84 @@
           .hw-submitted-note { color: var(--accent); font-size: 0.82em; margin: 0; text-align: center; }
 
           .hw-footer {
-            margin: 1.2em 0 2em;
+            width: min(92%, 680px);
+            margin: 1.35em 0 2.4em;
+            color: #151515;
+            background: #DCD6C8;
+            border: 2px solid;
+            border-color: #fff #6E675A #6E675A #fff;
+            box-shadow: 5px 6px 0 rgba(0, 0, 0, 0.55), 0 14px 32px rgba(0, 0, 0, 0.4);
             font-size: 0.72em;
-            color: var(--muted);
-            text-align: center;
-            line-height: 1.7;
-            max-width: 64ch;
-            background: var(--bg-alt);
-            border: 1px solid rgba(21, 21, 21, 0.2);
-            border-radius: 10px;
-            padding: 0.8em 1.2em;
-            box-shadow: 0 6px 18px rgba(21, 21, 21, 0.18);
+            line-height: 1.4;
+            text-align: left;
           }
-          .hw-footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
-          .hw-footer a:hover { color: var(--accent); }
+          .hw-footer-bar {
+            display: flex;
+            align-items: center;
+            min-height: 1.65em;
+            padding: 0.18em 0.35em 0.18em 0.5em;
+            color: #fff;
+            background: #1D4AFF;
+            font-family: ui-monospace, Menlo, monospace;
+            font-weight: 700;
+          }
+          .hw-footer-bar .hw-tbar-controls { margin-left: auto; }
+          .hw-footer-body { padding: 1em 1.15em 1.1em; }
+          .hw-footer-intro { display: flex; align-items: flex-start; gap: 0.85em; }
+          .hw-footer-icon {
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            width: 3em;
+            height: 3em;
+            color: #fff;
+            background: #F54E00;
+            border: 1px solid;
+            border-color: #fff #6E675A #6E675A #fff;
+            font-family: ui-monospace, Menlo, monospace;
+            font-weight: 900;
+          }
+          .hw-footer-title { margin: 0 0 0.18em; font-size: 1.12em; font-weight: 800; }
+          .hw-footer-copy { margin: 0; color: #4B4943; }
+          .hw-footer-facts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.55em;
+            margin: 0.9em 0;
+          }
+          .hw-footer-fact {
+            min-width: 0;
+            padding: 0.58em 0.65em;
+            background: #EEEFE9;
+            border: 1px solid;
+            border-color: #7A7568 #fff #fff #7A7568;
+          }
+          .hw-footer-fact b {
+            display: block;
+            margin-bottom: 0.14em;
+            color: #F54E00;
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 0.78em;
+            letter-spacing: 0.05em;
+          }
+          .hw-footer-note { margin: 0; color: #5E5A52; font-size: 0.92em; }
+          .hw-footer-note + .hw-footer-note { margin-top: 0.18em; }
+          .hw-footer-links { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: 0.8em; }
+          .hw-footer a { color: #151515; font-weight: 700; }
+          .hw-footer-links a {
+            padding: 0.3em 0.65em;
+            background: #DCD6C8;
+            border: 1px solid;
+            border-color: #fff #6E675A #6E675A #fff;
+            text-decoration: none;
+          }
+          .hw-footer-links a:active { border-color: #6E675A #fff #fff #6E675A; }
+          .hw-footer a:hover { color: #F54E00; }
+          @media (max-width: 560px) {
+            .hw-footer { width: 96%; font-size: 0.66em; }
+            .hw-footer-body { padding: 0.8em; }
+            .hw-footer-facts { grid-template-columns: 1fr; gap: 0.35em; }
+          }
         </style>
     </head>
 
@@ -1523,13 +1585,33 @@
             <div class="hw-crt-stand" aria-hidden="true"></div>
             <div class="hw-crt-base" aria-hidden="true"></div>
 
-            <p class="hw-footer">
-                Built by <a href="index.html">Chris Lam</a> for PostHog's Technical Ex-Founder application. A fan tribute, not an official PostHog product.
-                The five microgames are PostHog's five real <a href="https://posthog.com/handbook/values" target="_blank" rel="noopener">handbook values</a>;
-                scores land in PostHog itself. The leaderboard is a HogQL query.
-                <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">How this was made</a>.
-                Life icons: Max, PostHog's mascot, from their <a href="https://posthog.com/media" target="_blank" rel="noopener">press assets</a>.
-            </p>
+            <footer class="hw-footer">
+                <div class="hw-footer-bar">
+                    <span>about_hogware.txt</span>
+                    <span class="hw-tbar-controls hw-controls-dead" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
+                </div>
+                <div class="hw-footer-body">
+                    <div class="hw-footer-intro">
+                        <span class="hw-footer-icon" aria-hidden="true">HW</span>
+                        <div>
+                            <p class="hw-footer-title">Built by <a href="index.html">Chris Lam</a> for PostHog's Technical Ex-Founder application.</p>
+                            <p class="hw-footer-copy">A browser microgame gauntlet built around how PostHog works.</p>
+                        </div>
+                    </div>
+                    <div class="hw-footer-facts">
+                        <div class="hw-footer-fact"><b>VALUES</b>Five real handbook values</div>
+                        <div class="hw-footer-fact"><b>DATA</b>Scores stored in PostHog</div>
+                        <div class="hw-footer-fact"><b>QUERY</b>HogQL leaderboard</div>
+                    </div>
+                    <p class="hw-footer-note">Fan tribute. Not an official PostHog product.</p>
+                    <p class="hw-footer-note">Max life icons use PostHog's press assets.</p>
+                    <nav class="hw-footer-links" aria-label="HogWare project links">
+                        <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">HOW THIS WAS MADE</a>
+                        <a href="https://posthog.com/handbook/values" target="_blank" rel="noopener">VALUE SOURCE</a>
+                        <a href="https://posthog.com/media" target="_blank" rel="noopener">ASSET SOURCE</a>
+                    </nav>
+                </div>
+            </footer>
         </div>
 
         <script src="hogware.js" defer></script>
