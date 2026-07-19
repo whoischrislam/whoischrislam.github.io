@@ -159,16 +159,6 @@
     }
   }
 
-  // The □ (maximize) chrome button toggles real browser fullscreen — "maximize the window".
-  function toggleFullscreen() {
-    var d = document, el = d.documentElement;
-    var fs = d.fullscreenElement || d.webkitFullscreenElement;
-    try {
-      if (!fs) { (el.requestFullscreen || el.webkitRequestFullscreen || function () {}).call(el); }
-      else { (d.exitFullscreen || d.webkitExitFullscreen || function () {}).call(d); }
-    } catch (e) {}
-  }
-
   function swapScreens(toEl, prep, done) {
     var fromEl = visibleScreen();
     if (reducedMotion) {
@@ -2136,7 +2126,7 @@
     win.innerHTML =
       '<div class="hw-dialog-bar hw-win-bar">' +
         '<span class="hw-dialog-title">' + slug + '.exe</span>' +
-        '<span class="hw-tbar-controls"><b class="hw-min">_</b><b class="hw-max" role="button" tabindex="0" aria-label="Fullscreen">□</b><b class="hw-close" role="button" tabindex="0" aria-label="Close">×</b></span>' +
+        '<span class="hw-tbar-controls"><b class="hw-ctl-dead">_</b><b class="hw-ctl-dead">□</b><b class="hw-close" role="button" tabindex="0" aria-label="Close">×</b></span>' +
       '</div>' +
       '<div class="hw-valwin-body">' +
         '<p class="hw-valwin-quote">' + q.text + '</p>' +
@@ -2255,17 +2245,6 @@
   // stage is null — skip the top-level game wiring so the script still loads
   // and the debug hook above stays available.
   if (stage) {
-  // The □ (maximize) button toggles fullscreen, wherever it appears (game window, value
-  // windows, game-over windows). Close/minimize are wired per-window or are decorative.
-  document.addEventListener("click", function (e) {
-    var mx = e.target && e.target.closest && e.target.closest(".hw-max");
-    if (mx) { e.preventDefault(); toggleFullscreen(); }
-  });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" && e.target && e.target.classList && e.target.classList.contains("hw-max")) {
-      e.preventDefault(); toggleFullscreen(); // Enter only — Space is the game's input
-    }
-  });
   document.addEventListener("keydown", function (e) {
     if (e.code !== "Space") return;
     var t = e.target;
