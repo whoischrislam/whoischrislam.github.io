@@ -1802,14 +1802,9 @@
     if (iconEl) iconEl.textContent = GAME_ICONS[game.id] || "📉";
   }
   function renderVerbCard(game, punchy) {
-    hide(screens.result); // clear any lingering verdict flash
-    // Recap of the last game (the wit + lives) rides above the verb.
-    var recap = run.lastStatus
-      ? '<p class="hw-verb-flavor" id="hw-appwin-status">' + run.lastStatus + '</p>'
-      : '<p id="hw-appwin-status" class="hw-hidden"></p>';
+    hide(screens.result); // clear the verdict flash (the flavor now lives ON the verdict)
     sceneBody.innerHTML =
       '<div class="hw-screen hw-verbsplash' + (game.boss ? " hw-verb-boss" : "") + (punchy ? " hw-verb-punchy" : "") + '">' +
-        recap +
         (game.boss ? '<p class="hw-verb-value">' + game.value + '</p>' : '') +
         '<p class="hw-verb-word">' + game.verb + '</p>' +
         (game.instruction ? '<p class="hw-verb-instr">' + game.instruction + '</p>' : '') +
@@ -1957,7 +1952,9 @@
     var word = $("hw-result-word");
     word.textContent = pass ? (bonus > 0 ? "CLEARED +" + bonus : "CLEARED") : "MISSED";
     word.className = "hw-result-word " + (pass ? "hw-pass" : "hw-fail");
-    $("hw-result-flavor").textContent = ""; // moved to the desktop status bar
+    // The status of the game you just finished belongs HERE, under the verdict.
+    $("hw-result-flavor").textContent = (flavor || "") +
+      (!pass && run.lives > 0 ? " · " + run.lives + (run.lives === 1 ? " life" : " lives") + " left" : "");
     show(screens.result);
 
     setTimeout(function () {
