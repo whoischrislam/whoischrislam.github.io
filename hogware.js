@@ -26,6 +26,7 @@
   var VERB_MS = 750;           // loop-launch only: the loading bar fills over this
   var READ_MS = 420;           // loop-launch only: still verb before the loading starts
   var DESKTOP_MS = 150;        // loop-launch only: brief desktop beat before the window opens
+  var STARTUP_MS = 700;        // OS session screen; holds long enough to read, then exits on a beat
   // BETWEEN games everything is RHYTHM-LOCKED to the music beat (WarioWare feel): the
   // verdict lands, holds N beats; the verb lands on a beat, holds N beats; the game starts
   // on a beat. The music's pulse carries you game-to-game instead of arbitrary timeouts.
@@ -93,7 +94,7 @@
   var sceneBody = $("hw-scene-body"); // games render here; #hw-scene is the window (title bar + body)
   var timerFill = $("hw-timer-fill");
   var screens = {
-    title: $("hw-titlescreen"), verb: $("hw-verb"), result: $("hw-result"),
+    title: $("hw-titlescreen"), startup: $("hw-startup"), verb: $("hw-verb"), result: $("hw-result"),
     quote: $("hw-quote"), gameover: $("hw-gameover")
   };
 
@@ -169,13 +170,15 @@
       return;
     }
     transitioning = true;
-    // Two transition vocabularies:
+    // Three transition vocabularies:
     //  • MAXIMIZE / RESTORE  - launching a program (desktop⇄microgame): the window
     //    grows to fill the screen, the game plays inside it, then restores back.
+    //  • SESSION              - START logs into PostHog OS and reveals the desktop.
     //  • CRT power-cycle      - the machine changing state (boot, announcements,
     //    game over): the tube collapses to a line and blooms the next screen open.
     var effect =
       fromEl === screens.title ? "boot" :
+      (fromEl === screens.startup && toEl === screens.verb) ? "session" :
       (fromEl === screens.verb && toEl === scene) ? "maximize" :
       (toEl === screens.verb) ? "restore" : "crt";
 
@@ -212,6 +215,8 @@
       };
 
       if (effect === "boot") { reveal("hw-crt-bloom", BLOOM_MS); return; }
+
+      if (effect === "session") { reveal("hw-session-in", 200); return; }
 
       if (effect === "maximize") {
         // One motion: the window opens out of the launching app icon and fills the screen (calm).
@@ -1752,6 +1757,7 @@
 
   function startRun() {
     run = newRun();
+    var thisRun = run;
     myPending = null; // clear last run's optimistic leaderboard row
     // Life icons rendered from LIVES so the count stays a one-line change (and flag-testable later).
     var livesEl = $("hw-hud-lives");
@@ -1768,9 +1774,14 @@
     conductor.start(1 / run.speed); // fresh anchor + rate; brisk variant starts faster, music will too
     conductor.loadAssets(); // lazy, once; game plays with synth blips until buffers land
     conductor.startMusic();
-    crtBlip("hw-poweron"); // the monitor wakes up
-    show(hud); updateHud();
-    nextGame();
+    hide(hud);
+    updateHud();
+    hideAllScreens();
+    show(screens.startup);
+    stage.dataset.live = "0";
+    setTimeout(function () {
+      if (run === thisRun) nextGame();
+    }, STARTUP_MS);
   }
 
   function nextGame() {
@@ -2246,7 +2257,7 @@
     el.innerHTML = '<p class="hw-lb-note">loading today’s board…</p>';
     // Never let the board hang on "loading": abort after 8s so a dead connection fails to a
     // clear, retryable message instead of an endless spinner. Any HTTP response (even a 502)
-    // resolves normally and degrades to "no scores yet" — only a true network stall lands here.
+    // resolves normally and degrades to "no scores yet". Only a true network stall lands here.
     var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
     var to = ctrl ? setTimeout(function () { ctrl.abort(); }, 8000) : null;
     var fail = function () {
