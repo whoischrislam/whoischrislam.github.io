@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1200, initial-scale=1">
+  <title>HogWare social image</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 1200px; height: 630px; margin: 0; overflow: hidden; }
+    body {
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(255, 112, 89, 0.08), transparent 40%),
+        #050505;
+      color: #f7f6f2;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .composition {
+      width: 1120px;
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      gap: 54px;
+      align-items: center;
+    }
+    .copy { padding-bottom: 12px; }
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 22px;
+      color: #ff7059;
+      font: 800 20px/1 Arial, Helvetica, sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0 0 20px;
+      font-size: 104px;
+      line-height: 0.86;
+      letter-spacing: -0.07em;
+    }
+    h1 span { color: #f2b444; }
+    .pitch {
+      max-width: 430px;
+      margin: 0;
+      color: #d9d7d0;
+      font-size: 30px;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+    }
+    .maker {
+      margin: 28px 0 0;
+      color: #8f8d86;
+      font-size: 19px;
+      font-weight: 700;
+    }
+    .monitor-wrap { position: relative; height: 530px; }
+    .monitor {
+      position: absolute;
+      inset: 4px 0 86px;
+      padding: 24px 26px 42px;
+      border: 3px solid #827f72;
+      border-radius: 25px 25px 18px 18px;
+      background: #d9d4c5;
+      box-shadow: inset 4px 4px #f8f5e8, inset -6px -6px #aaa594, 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .screen {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border: 8px solid #17191a;
+      border-radius: 18px;
+      background: #397f7d;
+      box-shadow: inset 0 0 42px rgba(0,0,0,0.45);
+    }
+    .screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(to bottom, transparent 0 4px, rgba(0,0,0,0.15) 5px 6px);
+    }
+    .screen-copy { position: relative; z-index: 1; transform: translateY(-2px); }
+    .screen-name {
+      margin: 0 0 10px;
+      color: #fff;
+      font-size: 68px;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+      text-shadow: 3px 4px rgba(0,0,0,0.35);
+    }
+    .screen-name span { color: #f2b444; }
+    .screen-line { margin: 0 0 18px; color: #f5f4ed; font-size: 20px; }
+    .lives {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      margin-bottom: 18px;
+    }
+    .lives img { width: 48px; height: 48px; object-fit: contain; image-rendering: auto; }
+    .button {
+      display: inline-block;
+      padding: 12px 42px;
+      border: 3px solid #9d7224;
+      border-radius: 10px;
+      background: #f2b444;
+      color: #111;
+      font-size: 25px;
+      font-weight: 900;
+      box-shadow: inset 0 3px rgba(255,255,255,0.25), 0 5px #8c651f;
+    }
+    .brand {
+      position: absolute;
+      left: 33px;
+      bottom: 13px;
+      color: #6f6b61;
+      font: 800 12px/1 monospace;
+      letter-spacing: 0.18em;
+    }
+    .led {
+      position: absolute;
+      left: 155px;
+      bottom: 12px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #74d55b;
+      box-shadow: 0 0 9px #74d55b;
+    }
+    .neck {
+      position: absolute;
+      left: 50%;
+      bottom: 42px;
+      width: 124px;
+      height: 60px;
+      transform: translateX(-50%);
+      border: 3px solid #827f72;
+      background: linear-gradient(90deg, #b7b2a4, #ded9ca 45%, #aaa596);
+    }
+    .foot {
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      width: 250px;
+      height: 25px;
+      transform: translateX(-50%);
+      border: 3px solid #827f72;
+      border-radius: 50% 50% 8px 8px;
+      background: #d9d4c5;
+      box-shadow: inset 3px 3px #f8f5e8, 0 12px 22px rgba(0,0,0,0.45);
+    }
+  </style>
+</head>
+<body>
+  <main class="composition">
+    <section class="copy">
+      <div class="eyebrow">A browser microgame gauntlet</div>
+      <h1>HogWare<span>.</span></h1>
+      <p class="pitch">Five PostHog values.<br>Five microgames.<br>One boss.</p>
+      <p class="maker">Built by Chris Lam</p>
+    </section>
+    <section class="monitor-wrap" aria-label="HogWare running on the HOGWARE 3000">
+      <div class="monitor">
+        <div class="screen">
+          <div class="screen-copy">
+            <div class="screen-name">HogWare<span>.</span></div>
+            <p class="screen-line">Follow each game's prompt.</p>
+            <div class="lives">
+              <img src="hogware/max-life.png" alt="">
+              <img src="hogware/max-life.png" alt="">
+              <img src="hogware/max-life.png" alt="">
+            </div>
+            <div class="button">START</div>
+          </div>
+        </div>
+        <span class="brand">HOGWARE 3000</span><span class="led"></span>
+      </div>
+      <div class="neck"></div><div class="foot"></div>
+    </section>
+  </main>
+</body>
+</html>

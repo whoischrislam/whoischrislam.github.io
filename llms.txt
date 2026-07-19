@@ -9,6 +9,8 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 ## Key pages
 - [Portfolio](https://whoischrislam.github.io): the full site, with selected work, the y30 and PlaySesh case studies, recommendations, and an interactive AI hiring guide.
 - [Candidate fact sheet](https://whoischrislam.github.io/candidate.html): a plain, machine-readable summary of role targets, outcomes, skills, and common questions.
+- [HogWare](https://whoischrislam.github.io/hogware.html): a daily browser microgame gauntlet built from PostHog's five handbook values for the Technical Ex-Founder application, with scores stored in PostHog and ranked through HogQL.
+- [HogWare build notes](https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md): product decisions, technical architecture, leaderboard design, and verification.
 - [Resume (PDF)](https://whoischrislam.github.io/chris-lam-resume.pdf)
 - [Resume (JSON Resume)](https://whoischrislam.github.io/resume.json): machine-readable structured resume.
 
