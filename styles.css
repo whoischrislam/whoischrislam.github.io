@@ -1202,6 +1202,7 @@ button:active { transform: translateY(1px); }
     background-color: #000;
     border-bottom: 1px solid var(--border);
 }
+.project-banner--hogware { object-position: center top; }
 .project-card h3 { font-size: 1.9em; color: var(--text); }
 .project-card > p { font-size: 0.98em; color: var(--muted); }
 .project-card .keyword-container { margin: auto 0 1.2em 0; }

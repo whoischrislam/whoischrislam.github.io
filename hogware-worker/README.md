@@ -1,25 +1,83 @@
 # HogWare leaderboard Worker
 
-PostHog is the database: scores write in via `posthog.capture()` from the game, and this Worker reads them back with one HogQL query. The personal API key never leaves the Worker.
+This Cloudflare Worker gives HogWare a leaderboard whose source of truth is PostHog.
 
-## Chris's setup checklist (~10 min, in order)
+The browser talks only to the Worker for leaderboard reads and writes. That keeps the board working when a content blocker prevents the PostHog browser library from loading.
 
-1. **Create a DEDICATED PostHog project** (e.g. "HogWare") — do not reuse the portfolio project. The API key below can read *everything* in its project; a dedicated project means it can only ever read game events. Copy the new project's **API token** (`phc_…`) and **project ID** (the number in the URL).
-2. **Swap the game's token**: in `hogware.html`, replace the `KEY` in the PostHog init snippet with the new project's token, so game events land in the dedicated project. (Portfolio analytics stays on the old token, untouched.)
-3. **Create a personal API key**: PostHog → Settings → Personal API keys → scope it to **Query Read only**, and only the HogWare project.
-4. **Fill in `wrangler.toml`**: set `POSTHOG_PROJECT_ID` to the project ID.
-5. **Deploy** (needs a Cloudflare account + `npx wrangler login` once):
-   ```
-   cd hogware-worker
-   npx wrangler secret put POSTHOG_API_KEY   # paste the personal key
-   npx wrangler deploy
-   ```
-6. **Wire the game**: paste the deployed Worker URL into `WORKER_URL` at the top of `hogware.js` (the game calls `WORKER_URL + "?day=" + DAY_NUM`).
-7. **Verify before trusting**: play a run, submit a score, then hit the Worker URL in a browser — your handle should appear. Also try forging one in the console (`posthog.capture('hogware_score_submitted', {handle:'HAX', score: 9999, day: <today>})`) and confirm it does NOT appear (no cleared-events trail backs it).
+## Request flow
 
-## Design notes
+### Submit a score
 
-- **Leaderboards are per-day**, matching the daily seed — same gauntlet, same board.
-- **Plausibility gate in the query**: a score only counts if the same `distinct_id` has cleared-microgame events backing at least half of it. Console-forged captures have no trail and aggregate to nothing. This is heuristic, not cryptographic — the audience is PostHog employees, and session replay is on. They know we can see them.
-- **60s edge cache** per day: a reshare spike costs one PostHog query per minute, not one per viewer. PostHog's published query rate limits should be re-checked against [their current docs](https://posthog.com/docs/api/queries) before assuming headroom — figures floating around (240/min, 2,400/hr) came from an unverified research pass.
-- **The response is `[{handle, best}]` only** — no distinct_ids or event payloads leave the Worker.
+`POST /` accepts:
+
+```json
+{
+  "handle": "HOG",
+  "day": 12,
+  "score": 24,
+  "stages_cleared": 9,
+  "loops_reached": 2,
+  "uid": "browser-stable-id"
+}
+```
+
+The Worker:
+
+1. normalizes the handle to three uppercase letters or numbers
+2. validates numeric ranges and requires a browser ID
+3. rejects a score above `stages_cleared * 4`, the game's scoring ceiling
+4. sends `hogware_score_submitted` to PostHog's ingestion API from the server
+
+The plausibility rule is intentionally lightweight. It prevents casual forged scores but is not a cryptographic proof of play.
+
+### Read a daily board
+
+`GET /?day=N` runs one HogQL query and returns:
+
+```json
+[
+  { "handle": "HOG", "best": 24 }
+]
+```
+
+The query keeps the best score for each browser ID, applies the same scoring ceiling, returns the top 20, and scans only the last three days. Results are cached at the edge for 60 seconds.
+
+Only the handle and score leave the Worker. Browser IDs and event payloads are not included in the response.
+
+## Configuration
+
+Public configuration lives in `wrangler.toml`:
+
+- `POSTHOG_HOST`: PostHog app host used for HogQL queries
+- `POSTHOG_PROJECT_ID`: dedicated HogWare project ID
+- `ALLOWED_ORIGIN`: production GitHub Pages origin
+- `POSTHOG_INGEST_HOST`: PostHog event ingestion host
+- `POSTHOG_PUBLIC_KEY`: public, write-only project token
+
+The personal API key must be stored as a Worker secret:
+
+```sh
+cd hogware-worker
+npx wrangler secret put POSTHOG_API_KEY
+```
+
+Use a dedicated PostHog project and scope the personal key to Query Read for that project only. Never put the personal key in HTML, JavaScript, documentation, or `wrangler.toml`.
+
+## Deploy
+
+```sh
+cd hogware-worker
+npx wrangler deploy
+```
+
+The deployed URL is configured as `WORKER_URL` in `hogware.js`.
+
+## Verify
+
+1. Play a real run and submit a score.
+2. Open `https://hogware-leaderboard.whoischrislam.workers.dev/?day=<current-day-number>` and confirm the handle appears.
+3. Send a test POST whose score exceeds `stages_cleared * 4` and confirm the Worker returns HTTP 422 with `implausible score`.
+4. Confirm the browser still receives `[{handle, best}]` when the PostHog browser script is blocked.
+5. Visit the game with `?notrack=1` and confirm the UI explains that the score will not be submitted.
+
+Rotate the Query Read personal key after the application package ships.
