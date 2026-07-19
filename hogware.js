@@ -2144,15 +2144,17 @@
   }
   var goDeskWired = false;
   function resetGameoverDesktop() {
-    // Fresh run: clear any value windows, un-float the hero dialog so flex re-centers it.
+    // Fresh game over: clear value windows, re-place the two hero windows side by side.
     document.querySelectorAll(".hw-valwin").forEach(function (w) { w.remove(); });
-    var dlg = $("hw-go-dialog");
-    dlg.classList.remove("hw-floating");
-    dlg.style.left = ""; dlg.style.top = ""; dlg.style.zIndex = "";
+    var results = $("hw-go-results"), lb = $("hw-go-leaderboard");
+    [results, lb].forEach(function (w) { w.classList.add("hw-floating"); w.style.zIndex = ""; });
+    results.style.left = "17%"; results.style.top = "13%";  // your run (clear of the value icons on the left)
+    lb.style.left = "57%"; lb.style.top = "13%";            // the board, right (the star)
     document.querySelectorAll("#hw-go-icons .hw-desk-icon").forEach(function (o) { o.classList.remove("hw-desk-active"); });
     if (goDeskWired) return;
     goDeskWired = true;
-    makeDraggable(dlg, dlg.querySelector(".hw-win-bar"));
+    makeDraggable(results, results.querySelector(".hw-win-bar"));
+    makeDraggable(lb, lb.querySelector(".hw-win-bar"));
     document.querySelectorAll("#hw-go-icons .hw-desk-icon").forEach(function (icon) {
       var vphrase = icon.querySelector("i").textContent;
       var select = function () {
@@ -2183,22 +2185,30 @@
 
   function renderLeaderboard() {
     var el = $("hw-leaderboard");
+    var myHandle = "";
+    try { myHandle = (localStorage.getItem("hogware_handle") || "").toUpperCase(); } catch (e) {}
     // file:// (local dev, headless tests) has origin "null" — the Worker's CORS
     // rightly rejects it, so don't fetch at all; show the local-best fallback.
     if (!WORKER_URL || location.protocol === "file:") {
       var best = 0;
       try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
-      el.innerHTML = best ? "personal best on this browser: <b>" + best + "</b> · global leaderboard: wiring in progress" : "";
+      el.innerHTML = '<p class="hw-lb-note">' +
+        (best ? "your best on this browser: <b>" + best + "</b>" : "finish a run to make the board") +
+        '<br><span>the global board loads on the live site</span></p>';
       return;
     }
-    el.textContent = "loading leaderboard…";
+    el.innerHTML = '<p class="hw-lb-note">loading today’s board…</p>';
     fetch(WORKER_URL + "?day=" + DAY_NUM).then(function (r) { return r.json(); }).then(function (rows) {
-      if (!rows || !rows.length) { el.textContent = "no scores yet — be the first."; return; }
-      el.innerHTML = "<table>" + rows.slice(0, 10).map(function (row, i) {
-        return "<tr><td>" + (i + 1) + "</td><td>" + String(row.handle || "???").slice(0, 3) + "</td><td>" + row.best + "</td></tr>";
-      }).join("") + "</table>";
+      if (!rows || !rows.length) { el.innerHTML = '<p class="hw-lb-note">No scores yet today — be the first. 🦔</p>'; return; }
+      var head = '<div class="hw-lb-row hw-lb-head"><span>#</span><span>who</span><span>score</span></div>';
+      var body = rows.slice(0, 10).map(function (row, i) {
+        var who = String(row.handle || "???").slice(0, 3);
+        var mine = myHandle && who === myHandle;
+        return '<div class="hw-lb-row' + (mine ? " hw-lb-me" : "") + '"><span>' + (i + 1) + '</span><span>' + who + '</span><span>' + row.best + '</span></div>';
+      }).join("");
+      el.innerHTML = '<div class="hw-lb-list">' + head + body + '</div>';
     }).catch(function () {
-      el.textContent = "leaderboard unreachable — your run still counted.";
+      el.innerHTML = '<p class="hw-lb-note">board unreachable — your run still counted.</p>';
     });
   }
 
