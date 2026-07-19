@@ -641,6 +641,8 @@
           /* In the launch window the verb is CALM: a gentle fade, no bounce, no beat-throb
              (the throb + the window scale-in together read as jittery/frantic). */
           .hw-verbsplash .hw-verb-word { animation: hw-fade-calm 0.45s ease both; }
+          /* Fast between-games verb (window already open, no scale to compound) — it can POP. */
+          .hw-verb-punchy .hw-verb-word { animation: hw-verb-pop 0.34s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
           .hw-verbsplash .hw-verb-flavor, .hw-verbsplash .hw-verb-value, .hw-verbsplash .hw-verb-instr { animation: hw-fade-calm 0.45s ease both; }
           @keyframes hw-fade-calm { from { opacity: 0; } to { opacity: 1; } }
           /* Win95 segmented "loading" progress bar — the get-ready beat, on theme */
