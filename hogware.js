@@ -26,7 +26,12 @@
   var VERB_MS = 750;           // loop-launch only: the loading bar fills over this
   var READ_MS = 420;           // loop-launch only: still verb before the loading starts
   var DESKTOP_MS = 150;        // loop-launch only: brief desktop beat before the window opens
-  var VERB_FAST = 700;         // BETWEEN games: a quick punchy verb flash inside the open window (WarioWare-fast)
+  // BETWEEN games everything is RHYTHM-LOCKED to the music beat (WarioWare feel): the
+  // verdict lands, holds N beats; the verb lands on a beat, holds N beats; the game starts
+  // on a beat. The music's pulse carries you game-to-game instead of arbitrary timeouts.
+  var RESULT_BEATS = 2;        // verdict holds this many beats, then the verb lands on a beat
+  var VERB_BEATS = 2;          // verb holds this many beats, then the game starts on a beat
+  var VERB_BEATS_BOSS = 4;     // the boss verb (with its instruction) holds longer
   var RESULT_MS = 850;         // pass/fail flash
   var QUOTE_MS = 2600;         // interstitial quote (press to skip)
   var SPEED_DECAY = 0.86;      // per-loop timer multiplier
@@ -292,6 +297,8 @@
         conductor.syncMusicRate(); // the loop pitches up with the game — the chipmunk speed-up
       },
       nextBeat: function (fn) { if (!timer) return fn(); subs.push({ at: nextBeatAt(), fn: fn }); },
+      // Fire fn N beats from now, landed on the beat grid (rhythm-locked transitions).
+      afterBeats: function (n, fn) { if (!timer) return fn(); subs.push({ at: nextBeatAt() + Math.max(0, n - 1) * beatMs(), fn: fn }); },
       beatMs: beatMs,
       unlock: function () { // must come from a user gesture (iOS: touchend/click, not touchstart)
         try {
@@ -1844,18 +1851,16 @@
     else quickVerb(game, thisActive);                                    // frequent: every microgame
   }
 
-  // FREQUENT path — the window is already open: a quick punchy verb flash, then the game.
-  // No per-game window animation. This is the WarioWare-fast beat.
+  // FREQUENT path — window already open: the verb lands ON the beat (settle scheduled us on
+  // one), holds N beats, then the game starts on a beat. Rhythm-locked, no window animation.
   function quickVerb(game, thisActive) {
+    if (active !== thisActive || active.done) return;
     setWinTitle(game);
-    conductor.nextBeat(function () {
-      if (active !== thisActive || active.done) return;
-      hide(hud);
-      renderVerbCard(game, true); // punchy — it's the only motion now, so it can pop
-      scene.style.pointerEvents = "none";
-      sfx("verb");
-      setTimeout(function () { runGame(game, thisActive); }, game.boss ? VERB_FAST * 1.9 : VERB_FAST);
-    });
+    hide(hud);
+    renderVerbCard(game, true); // punchy — it's the only motion now, so it can pop
+    scene.style.pointerEvents = "none";
+    sfx("verb");
+    conductor.afterBeats(game.boss ? VERB_BEATS_BOSS : VERB_BEATS, function () { runGame(game, thisActive); });
   }
 
   // RARE path (start of each loop) — the drama: desktop, then the app window opens from its
@@ -1957,7 +1962,7 @@
       (!pass && run.lives > 0 ? " · " + run.lives + (run.lives === 1 ? " life" : " lives") + " left" : "");
     show(screens.result);
 
-    setTimeout(function () {
+    conductor.afterBeats(RESULT_BEATS, function () { // verdict holds N beats, then we move on a beat
       if (!pass && run.lives <= 0) return gameOver();
       run.idx++;
       if (run.idx > run.order.length) {
@@ -1978,7 +1983,7 @@
       } else {
         nextGame(); // idx === order.length lands on the boss slot
       }
-    }, RESULT_MS);
+    });
   }
 
   /* ---- Interstitial: escalation announcement + a real value quote (skippable) ---- */
