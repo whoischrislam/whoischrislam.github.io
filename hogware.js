@@ -23,7 +23,8 @@
   var WORKER_URL = "https://hogware-leaderboard.whoischrislam.workers.dev";
 
   /* ---------------- Tunables ---------------- */
-  var VERB_MS = 950;           // verb card hold
+  var VERB_MS = 950;           // verb hold (now shown INSIDE the maximized app window)
+  var DESKTOP_MS = 300;        // brief "clicked the app icon" beat before the window opens
   var RESULT_MS = 850;         // pass/fail flash
   var QUOTE_MS = 2600;         // interstitial quote (press to skip)
   var SPEED_DECAY = 0.86;      // per-loop timer multiplier
@@ -1746,28 +1747,17 @@
     screens.verb.classList.toggle("hw-verb-boss", !!game.boss);
     hud.classList.toggle("hw-hud-boss", !!game.boss);
     hide(hud); // desktop shows its taskbar; the gameplay HUD is for inside a program
+    // Show the DESKTOP (the previous window minimized to the taskbar to reveal it);
+    // light this value's app icon. The verb itself now opens inside the app window.
     swapScreens(screens.verb, function () {
       updateHud(); // loop counter can change between games
-      timerFill.style.transform = "scaleX(1)"; // fresh bar behind the verb card
-      $("hw-verb-word").textContent = game.verb;
-      // A: the window is the value's program — titled as its .exe (the desktop icon carries the phrase).
-      $("hw-appwin-title").textContent = game.boss ? valueSlug(game.verb) + ".exe" : valueSlug(game.value) + ".exe";
-      // C: light up this value's app icon on the desktop (bosses light none).
+      timerFill.style.transform = "scaleX(1)"; // fresh timer bar for the game
       document.querySelectorAll("#hw-desk-icons .hw-desk-icon").forEach(function (el) {
         el.classList.toggle("hw-desk-active", !game.boss && el.dataset.id === game.id);
       });
-      // One-second cards get ONE word; the value names live in the quotes and flavors.
-      var valEl = $("hw-verb-value");
-      valEl.textContent = game.boss ? game.value : "";
-      valEl.classList.toggle("hw-hidden", !game.boss);
-      var instr = $("hw-verb-instr");
-      instr.textContent = game.instruction || "";
-      instr.classList.toggle("hw-hidden", !game.instruction);
       renderVerbStatus();
     }, function () {
-      sfx("verb");
-      // Bosses carry an instruction line — a noun card alone teaches nothing, so they hold longer.
-      setTimeout(function () { playGame(game); }, game.boss ? VERB_MS * 2.2 : VERB_MS);
+      setTimeout(function () { playGame(game); }, DESKTOP_MS); // then the app opens from its icon
     });
   }
 
@@ -1813,24 +1803,38 @@
       fail: function (flavor) { settle(false, flavor, 0); }
     };
     var thisActive = active;
+    var ICONS = { drive: "🚗", publish: "🌐", weird: "🌀", ship: "🚀", aim: "🎯" };
+    // The ONE app window opens (from its icon) showing the VERB, then — same window —
+    // maximized, it swaps the verb for the game. Verb card + game are one window now.
     swapScreens(scene, function () {
-      sceneBody.innerHTML = "";
-      scene.style.pointerEvents = "none"; // a fading-in scene is never clickable
-      // Name the maximized window after the value (boss = its verb) + the app icon.
       var titleEl = $("hw-gamewin-title-text"), iconEl = $("hw-gamewin-icon");
       if (titleEl) titleEl.textContent = game.boss ? game.verb.replace(/!+$/, "") : game.value;
-      if (iconEl) iconEl.textContent = ({ drive: "🚗", publish: "🌐", weird: "🌀", ship: "🚀", aim: "🎯" })[game.id] || "📉";
-      show(hud); // back inside a program: the gameplay HUD returns
-      game.setup(thisActive);
+      if (iconEl) iconEl.textContent = ICONS[game.id] || "📉";
+      hide(hud); // the HUD comes in WITH the game, not during the verb
+      sceneBody.innerHTML =
+        '<div class="hw-screen hw-verbsplash' + (game.boss ? " hw-verb-boss" : "") + '">' +
+          (game.boss ? '<p class="hw-verb-value">' + game.value + '</p>' : '') +
+          '<p class="hw-verb-word">' + game.verb + '</p>' +
+          (game.instruction ? '<p class="hw-verb-instr">' + game.instruction + '</p>' : '') +
+        '</div>';
+      scene.style.pointerEvents = "none";
     }, function () {
+      // Window is maximized and the verb is showing — hold the beat, then load the game.
       if (active !== thisActive || active.done) return;
-      active.live = true;
-      stage.dataset.live = "1"; // exposed for the headless test to wait on
-      scene.style.pointerEvents = "";
-      // Pre-held input counts for HOLD games (DRIVE, boss charge) — but never for
-      // press-to-stop games (AIM), where a carried-over hold would fire instantly.
-      if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(active);
-      startClock(game);
+      sfx("verb");
+      setTimeout(function () {
+        if (active !== thisActive || active.done) return;
+        sceneBody.innerHTML = "";
+        show(hud); // gameplay HUD returns
+        game.setup(thisActive);
+        active.live = true;
+        stage.dataset.live = "1"; // exposed for the headless test to wait on
+        scene.style.pointerEvents = "";
+        // Pre-held input counts for HOLD games (DRIVE, boss charge) — never for
+        // press-to-stop games (AIM), where a carried-over hold would fire instantly.
+        if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(thisActive);
+        startClock(game);
+      }, game.boss ? VERB_MS * 2.2 : VERB_MS);
     });
   }
 
