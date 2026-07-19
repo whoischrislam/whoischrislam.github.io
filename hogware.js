@@ -130,6 +130,28 @@
     return x.toFixed(1) + "% " + y.toFixed(1) + "%";
   }
 
+  // Win95/98 "animate windows" minimize: dashed wireframe rectangles telescope from
+  // the full window down to the taskbar's Start button (bottom-left), staggered.
+  function wireframeMinimize() {
+    if (reducedMotion) return;
+    var host = document.querySelector(".hw-crt-screen");
+    if (!host) return;
+    for (var k = 0; k < 3; k++) {
+      (function (i) {
+        var g = document.createElement("div");
+        g.className = "hw-mini-ghost";
+        g.style.cssText = "left:3%;top:2%;width:94%;height:90%;opacity:0.85;";
+        host.appendChild(g);
+        setTimeout(function () {
+          void g.offsetWidth;
+          g.style.transition = "all 190ms cubic-bezier(0.45,0,0.7,0.35)";
+          g.style.left = "3%"; g.style.top = "93%"; g.style.width = "15%"; g.style.height = "5%"; g.style.opacity = "0";
+          setTimeout(function () { g.remove(); }, 210);
+        }, i * 45);
+      })(k);
+    }
+  }
+
   function swapScreens(toEl, prep, done) {
     var fromEl = visibleScreen();
     if (reducedMotion) {
@@ -165,7 +187,7 @@
       var reveal = function (inClass, inMs) {
         hideAllScreens();
         [fromEl, screens.result].forEach(function (el) {
-          if (el) { el.classList.remove("hw-crt-collapse", "hw-minimize-out"); el.style.transformOrigin = ""; }
+          if (el) { el.classList.remove("hw-crt-collapse", "hw-minimize-fade"); el.style.transformOrigin = ""; }
         });
         var appwin = screens.verb.querySelector(".hw-appwin");
         if (appwin) appwin.classList.remove("hw-appwin-maximize");
@@ -191,8 +213,9 @@
         return;
       }
       if (effect === "restore") {
-        // The window (+ its verdict flash) minimizes toward the taskbar, then the desktop restores.
-        applyLeave("hw-minimize-out", "12% 98%");
+        // Minimize: the window (+verdict) fades fast while dashed wireframes zoom to the taskbar.
+        wireframeMinimize();
+        applyLeave("hw-minimize-fade");
         setTimeout(function () { reveal("hw-restore-in", 260); }, 200);
         return;
       }
