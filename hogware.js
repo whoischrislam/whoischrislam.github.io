@@ -23,9 +23,10 @@
   var WORKER_URL = "https://hogware-leaderboard.whoischrislam.workers.dev";
 
   /* ---------------- Tunables ---------------- */
-  var VERB_MS = 750;           // the loading bar fills over this (the "get ready" beat)
-  var READ_MS = 420;           // the verb sits STILL first (read it) before the loading starts
-  var DESKTOP_MS = 150;        // barely-there "clicked the app icon" beat before the window opens
+  var VERB_MS = 750;           // loop-launch only: the loading bar fills over this
+  var READ_MS = 420;           // loop-launch only: still verb before the loading starts
+  var DESKTOP_MS = 150;        // loop-launch only: brief desktop beat before the window opens
+  var VERB_FAST = 700;         // BETWEEN games: a quick punchy verb flash inside the open window (WarioWare-fast)
   var RESULT_MS = 850;         // pass/fail flash
   var QUOTE_MS = 2600;         // interstitial quote (press to skip)
   var SPEED_DECAY = 0.86;      // per-loop timer multiplier
@@ -1724,7 +1725,8 @@
     var rng = mulberry32(DAY_NUM * 2654435761); // daily seed: same gauntlet for everyone today
     return {
       score: 0, cleared: 0, loop: 1, speed: startSpeed, lives: LIVES,
-      trail: [], rng: rng, order: shuffle(GAMES.slice(), rng), idx: 0, phase: "verb"
+      trail: [], rng: rng, order: shuffle(GAMES.slice(), rng), idx: 0, phase: "verb",
+      winOpen: false // is the app window already open? (opens once per loop, not per game)
     };
   }
   function shuffle(a, rng) {
@@ -1768,21 +1770,8 @@
     var game = run.idx >= run.order.length
       ? (BOSS_FORCED || BOSSES[DAY_NUM % BOSSES.length])
       : run.order[run.idx];
-    screens.verb.classList.toggle("hw-verb-boss", !!game.boss);
     hud.classList.toggle("hw-hud-boss", !!game.boss);
-    hide(hud); // desktop shows its taskbar; the gameplay HUD is for inside a program
-    // Show the DESKTOP (the previous window minimized to the taskbar to reveal it);
-    // light this value's app icon. The verb itself now opens inside the app window.
-    swapScreens(screens.verb, function () {
-      updateHud(); // loop counter can change between games
-      timerFill.style.transform = "scaleX(1)"; // fresh timer bar for the game
-      document.querySelectorAll("#hw-desk-icons .hw-desk-icon").forEach(function (el) {
-        el.classList.toggle("hw-desk-active", !game.boss && el.dataset.id === game.id);
-      });
-      renderVerbStatus();
-    }, function () {
-      setTimeout(function () { playGame(game); }, DESKTOP_MS); // then the app opens from its icon
-    });
+    playGame(game); // playGame decides: launch the window (loop start) vs a fast in-window verb
   }
 
   /* The verb card doubles as the WarioWare "home scene": big Max lives bouncing
@@ -1806,75 +1795,108 @@
     // app window's verb splash on the next launch (see playGame), a calmer, contextual home.
   }
 
+  var GAME_ICONS = { drive: "🚗", publish: "🌐", weird: "🌀", ship: "🚀", aim: "🎯" };
+  function setWinTitle(game) {
+    var titleEl = $("hw-gamewin-title-text"), iconEl = $("hw-gamewin-icon");
+    if (titleEl) titleEl.textContent = game.boss ? game.verb.replace(/!+$/, "") : game.value;
+    if (iconEl) iconEl.textContent = GAME_ICONS[game.id] || "📉";
+  }
+  function renderVerbCard(game, punchy) {
+    hide(screens.result); // clear any lingering verdict flash
+    // Recap of the last game (the wit + lives) rides above the verb.
+    var recap = run.lastStatus
+      ? '<p class="hw-verb-flavor" id="hw-appwin-status">' + run.lastStatus + '</p>'
+      : '<p id="hw-appwin-status" class="hw-hidden"></p>';
+    sceneBody.innerHTML =
+      '<div class="hw-screen hw-verbsplash' + (game.boss ? " hw-verb-boss" : "") + (punchy ? " hw-verb-punchy" : "") + '">' +
+        recap +
+        (game.boss ? '<p class="hw-verb-value">' + game.value + '</p>' : '') +
+        '<p class="hw-verb-word">' + game.verb + '</p>' +
+        (game.instruction ? '<p class="hw-verb-instr">' + game.instruction + '</p>' : '') +
+      '</div>';
+  }
+  function runGame(game, thisActive) {
+    if (active !== thisActive || active.done) return;
+    sceneBody.innerHTML = "";
+    show(hud); // gameplay HUD returns
+    game.setup(thisActive);
+    active.live = true;
+    stage.dataset.live = "1"; // exposed for the headless test to wait on
+    scene.style.pointerEvents = "";
+    // Pre-held input counts for HOLD games (DRIVE, boss charge) — never for
+    // press-to-stop games (AIM), where a carried-over hold would fire instantly.
+    if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(thisActive);
+    startClock(game);
+  }
+
   function playGame(game) {
     // Difficulty level: loop 1 = L1, loop 2 = L2, loop 3+ = L3 (speed takes over from loop 4).
     var levelIdx = Math.min(run.loop - 1, 2);
     var levelParams = (game.levels && game.levels[levelIdx]) || {};
-    // Levels that add a time-costing mechanic (e.g. the stall stop) can buy more clock.
     var duration = (levelParams.durationMs || game.baseDurationMs) * run.speed;
-    stage.dataset.level = levelIdx + 1; // exposed for tests/debugging
+    stage.dataset.level = levelIdx + 1;
     stage.dataset.boss = game.boss ? "1" : "0";
     stage.dataset.live = "0";
     active = {
-      game: game,
-      params: Object.assign({}, game.params, levelParams),
-      state: {},
-      elapsed: 0,
-      duration: duration,
-      done: false,
-      live: false, // activation barrier: no clock, no input until the zoom lands
+      game: game, params: Object.assign({}, game.params, levelParams), state: {},
+      elapsed: 0, duration: duration, done: false,
+      live: false, // activation barrier: no clock, no input until the game actually starts
       win: function (flavor, bonus) { settle(true, flavor, bonus || 0); },
       fail: function (flavor) { settle(false, flavor, 0); }
     };
     var thisActive = active;
-    var ICONS = { drive: "🚗", publish: "🌐", weird: "🌀", ship: "🚀", aim: "🎯" };
-    var holdMs = game.boss ? VERB_MS * 2.2 : VERB_MS; // the "loading" beat before the app runs
-    // The ONE app window opens (from its icon) showing the VERB, then — same window —
-    // maximized, it swaps the verb for the game. Verb card + game are one window now.
-    swapScreens(scene, function () {
-      var titleEl = $("hw-gamewin-title-text"), iconEl = $("hw-gamewin-icon");
-      if (titleEl) titleEl.textContent = game.boss ? game.verb.replace(/!+$/, "") : game.value;
-      if (iconEl) iconEl.textContent = ICONS[game.id] || "📉";
-      hide(hud); // the HUD comes in WITH the game, not during the verb
-      // Recap of the last game (the wit + lives) rides here now, not the taskbar — a calm
-      // "what just happened -> here's the next verb" beat while the window sits open.
-      var recap = run.lastStatus
-        ? '<p class="hw-verb-flavor" id="hw-appwin-status">' + run.lastStatus + '</p>'
-        : '<p id="hw-appwin-status" class="hw-hidden"></p>';
-      sceneBody.innerHTML =
-        '<div class="hw-screen hw-verbsplash' + (game.boss ? " hw-verb-boss" : "") + '">' +
-          recap +
-          (game.boss ? '<p class="hw-verb-value">' + game.value + '</p>' : '') +
-          '<p class="hw-verb-word">' + game.verb + '</p>' +
-          (game.instruction ? '<p class="hw-verb-instr">' + game.instruction + '</p>' : '') +
-        '</div>';
-      scene.style.pointerEvents = "none";
-    }, function () {
-      // Sequenced so it never feels crammed: the window is open with the STILL verb; after a
-      // read beat the Win95 loading bar fills; the app runs the instant it completes.
+    if (!run.winOpen) { run.winOpen = true; openApp(game, thisActive); } // rare: once per loop
+    else quickVerb(game, thisActive);                                    // frequent: every microgame
+  }
+
+  // FREQUENT path — the window is already open: a quick punchy verb flash, then the game.
+  // No per-game window animation. This is the WarioWare-fast beat.
+  function quickVerb(game, thisActive) {
+    setWinTitle(game);
+    conductor.nextBeat(function () {
       if (active !== thisActive || active.done) return;
+      hide(hud);
+      renderVerbCard(game, true); // punchy — it's the only motion now, so it can pop
+      scene.style.pointerEvents = "none";
       sfx("verb");
-      var loadMs = holdMs;
-      var splash = sceneBody.querySelector(".hw-verbsplash");
-      setTimeout(function () { // 1) still verb (READ_MS), then 2) the loading bar appears + fills
+      setTimeout(function () { runGame(game, thisActive); }, game.boss ? VERB_FAST * 1.9 : VERB_FAST);
+    });
+  }
+
+  // RARE path (start of each loop) — the drama: desktop, then the app window opens from its
+  // icon with the Win95 loading bar. Costly, but only once per ~6 games.
+  function openApp(game, thisActive) {
+    screens.verb.classList.toggle("hw-verb-boss", !!game.boss);
+    hide(hud);
+    swapScreens(screens.verb, function () { // 1) desktop; light the launching icon
+      updateHud();
+      timerFill.style.transform = "scaleX(1)";
+      document.querySelectorAll("#hw-desk-icons .hw-desk-icon").forEach(function (el) {
+        el.classList.toggle("hw-desk-active", !game.boss && el.dataset.id === game.id);
+      });
+      renderVerbStatus();
+    }, function () {
+      setTimeout(function () {
         if (active !== thisActive || active.done) return;
-        if (splash) splash.insertAdjacentHTML("beforeend",
-          '<div class="hw-loadbar"><div class="hw-loadbar-fill" style="animation-duration:' + Math.round(loadMs) + 'ms"></div></div>' +
-          '<p class="hw-loadlabel">Loading' + (game.boss ? '' : " " + valueSlug(game.value) + ".exe") + '…</p>');
-        setTimeout(function () { // 3) loading complete -> run the app
+        swapScreens(scene, function () { // 2) the window opens (from the icon) with the verb
+          setWinTitle(game);
+          hide(hud);
+          renderVerbCard(game, false); // calm — it compounds with the window scale-in
+          scene.style.pointerEvents = "none";
+        }, function () { // 3) still verb -> Win95 loading bar -> game
           if (active !== thisActive || active.done) return;
-          sceneBody.innerHTML = "";
-          show(hud); // gameplay HUD returns
-          game.setup(thisActive);
-          active.live = true;
-          stage.dataset.live = "1"; // exposed for the headless test to wait on
-          scene.style.pointerEvents = "";
-          // Pre-held input counts for HOLD games (DRIVE, boss charge) — never for
-          // press-to-stop games (AIM), where a carried-over hold would fire instantly.
-          if (game.input === "space" && game.onPress && game.preHold !== false && holdActive()) game.onPress(thisActive);
-          startClock(game);
-        }, loadMs);
-      }, READ_MS);
+          sfx("verb");
+          var loadMs = game.boss ? VERB_MS * 2.2 : VERB_MS;
+          setTimeout(function () {
+            if (active !== thisActive || active.done) return;
+            var splash = sceneBody.querySelector(".hw-verbsplash");
+            if (splash) splash.insertAdjacentHTML("beforeend",
+              '<div class="hw-loadbar"><div class="hw-loadbar-fill" style="animation-duration:' + Math.round(loadMs) + 'ms"></div></div>' +
+              '<p class="hw-loadlabel">Loading ' + (game.boss ? "boss" : valueSlug(game.value) + ".exe") + '…</p>');
+            setTimeout(function () { runGame(game, thisActive); }, loadMs);
+          }, READ_MS);
+        });
+      }, DESKTOP_MS);
     });
   }
 
@@ -1945,6 +1967,7 @@
         // Boss is done (win or survive-the-fail): the loop closes and the level-up unlocks.
         run.idx = 0;
         run.loop++;
+        run.winOpen = false; // loop boundary: the app window re-opens (from its icon) next loop
         // Pure axes, like real WarioWare: LEVEL UP changes only the game configs
         // (new complications), SPEED UP changes only the clock. Never both at once.
         if (run.loop <= 3) {
