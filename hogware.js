@@ -26,7 +26,7 @@
   var VERB_MS = 750;           // loop-launch only: the loading bar fills over this
   var READ_MS = 420;           // loop-launch only: still verb before the loading starts
   var DESKTOP_MS = 150;        // loop-launch only: brief desktop beat before the window opens
-  var STARTUP_MS = 700;        // OS session screen; holds long enough to read, then exits on a beat
+  var STARTUP_MS = 1100;       // OS session screen; holds longer, then exits on a beat
   // BETWEEN games everything is RHYTHM-LOCKED to the music beat (WarioWare feel): the
   // verdict lands, holds N beats; the verb lands on a beat, holds N beats; the game starts
   // on a beat. The music's pulse carries you game-to-game instead of arbitrary timeouts.
