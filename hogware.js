@@ -441,6 +441,7 @@
      positions are seeded-jittered per play so no two loops read identical. */
   var gameDrive = {
     id: "drive", value: "You're the driver", verb: "DRIVE!", input: "space",
+    instruction: "HOLD TO DRIVE. RELEASE TO STOP.",
     baseDurationMs: 4200,
     params: { travelMs: 2600, obstacles: [0.3, 0.55, 0.78], hesitateIdx: -1, stallIdx: -1 },
     levels: [
@@ -497,7 +498,7 @@
               carSvg("var(--accent)") +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press · everyone gets out of your way' +
+          '<p class="hw-hint hw-gamehint">hold <span class="hw-kbd">space</span> or the screen to drive · release to stop' +
           (ctx.params.stallIdx >= 0 ? ' <span style="color:var(--accent-strong)">(almost everyone)</span>' : '') + '</p>' +
         '</div>';
     },
@@ -551,6 +552,7 @@
      a second flip - state is a set, not a countdown, so it survives that. */
   var gamePublish = {
     id: "publish", value: "Make it public", verb: "PUBLISH!", input: "click",
+    instruction: "MAKE EVERY ROW PUBLIC.",
     baseDurationMs: 4200,
     params: { count: 3, density: 0, confirm: false },
     levels: [{}, { count: 4, density: 1 }, { count: 5, density: 2, confirm: true }],
@@ -580,7 +582,7 @@
           '<fieldset class="hw-pubgroup"><legend>Make public:</legend>' +
             '<div class="hw-publist' + dens + '">' + rows + '</div>' +
           '</fieldset>' +
-          '<p class="hw-hint">click each row to make it public</p>' +
+          '<p class="hw-hint hw-gamehint">make every row <b>PUBLIC</b></p>' +
         '</div></div>';
 
       var publish = function (el, i) {
@@ -637,6 +639,7 @@
      order is daily-seeded so everyone's photo gets weird the same way. */
   var gameWeird = {
     id: "weird", value: "Do more weird", verb: "WEIRD!", input: "click",
+    instruction: "HIT EACH GLOWING TARGET.",
     baseDurationMs: 4200,
     params: { target: 5, radius: 40, drift: false, decayMs: 0 },
     levels: [
@@ -914,7 +917,7 @@
           '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:#FCFBF5; border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="' + scn.aria + '">' +
             gameWeird._render(scn.svg, scn.id) +
           '</svg></div>' +
-          '<p class="hw-hint">click the glowing bits weirder · <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
+          '<p class="hw-hint hw-gamehint">hit each glowing target · <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
         '</div>';
       // Pulsing ring marks the next target; move it to the first one.
       var svg = $("hw-w-frame");
@@ -986,6 +989,7 @@
   /* ---- 4. WHY NOT NOW? - "SHIP IT!" (click) ---- */
   var gameShip = {
     id: "ship", value: "Why not now?", verb: "SHIP IT!", input: "click",
+    instruction: "IGNORE THE NOISE. HIT SHIP IT.",
     baseDurationMs: 4600,
     levels: [
       {},
@@ -1040,7 +1044,7 @@
       var edgy = function () { var u = run.rng(); return u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u); };
       ctx.state.shipPos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
       sceneBody.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
-        '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the noise · find and hit SHIP</p>';
+        '<p class="hw-hint hw-gamehint hw-gamehint-overlay">ignore the noise · hit <b>SHIP IT</b></p>';
       if (ctx.params.decoy) {
         var d = document.createElement("button");
         d.className = "hw-ship-btn95 hw-ship-decoy";
@@ -1151,6 +1155,7 @@
   /* ---- 5. OPTIMISTIC BY DEFAULT - "AIM!" (hold + release) ---- */
   var gameAim = {
     id: "aim", value: "Optimistic by default", verb: "AIM!", input: "space", preHold: false,
+    instruction: "STOP ON THE GLOW. FAR LEDGE = 3X.",
     baseDurationMs: 5200,
     params: {
       slideSpeed: 66,   // %/s - the hedgehog paces the rink on its own; you STOP it
@@ -1199,7 +1204,7 @@
               '<circle cx="13" cy="12" r="1.7" fill="#111"/>' +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint"><span class="hw-kbd">space</span> / tap to STOP the hedgehog on the glow · the far ledge pays triple</p>' +
+          '<p class="hw-hint hw-gamehint">stop on the glow · <span class="hw-kbd">space</span> / tap · far ledge = 3x</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -1551,7 +1556,7 @@
      ============================================================ */
   var gameBossFunnel = {
     id: "boss-funnel", value: "BOSS", verb: "FUNNEL RESCUE!", input: "space", boss: true,
-    instruction: "catch falling users. retain 4.",
+    instruction: "HOLD TO MOVE RIGHT. RELEASE TO MOVE LEFT. RETAIN 4.",
     baseDurationMs: 30000,
     params: { need: 4, funnelSpeed: 0.68, mouth: 0.09 },
     /* Wave of 8, realistic retention math (need 4 pts of 9 possible ≈ 44%):
@@ -1633,7 +1638,7 @@
             '<g id="hw-funnel-users"></g>' +
             '<g id="hw-funnel-meter"></g>' +
           '</svg>' +
-          '<p class="hw-hint">retain <b>4</b> · the <b>$</b> whale counts double · hold <span class="hw-kbd">space</span> / press = right · release = left</p>' +
+          '<p class="hw-hint hw-gamehint">retain <b>4</b> · <b>$</b> whale = 2 · hold <span class="hw-kbd">space</span> or screen = right · release = left</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -2368,7 +2373,7 @@
     try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
     if (best) {
       var line = $("hw-best-line");
-      line.textContent = "personal best: " + best;
+      line.textContent = "YOUR BEST " + best;
       show(line);
     }
     $("hw-start").addEventListener("click", startRun);
