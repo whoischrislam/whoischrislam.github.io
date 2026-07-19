@@ -286,6 +286,30 @@
           .hw-tagline { color: var(--muted); font-size: 1.02em; max-width: 34ch; margin: 0; }
           .hw-hint { color: var(--muted); font-size: 0.85em; margin: 0; }
 
+          /* The title and startup screens share one PostHog OS desktop color. */
+          #hw-titlescreen { background: #008080; color: #fff; }
+          #hw-titlescreen .hw-title {
+            color: #fff;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.28);
+          }
+          #hw-titlescreen .hw-title-dot { color: var(--ph-yellow); }
+          #hw-titlescreen .hw-tagline,
+          #hw-titlescreen .hw-hint { color: rgba(255, 255, 255, 0.9); }
+          #hw-titlescreen .hw-kbd {
+            color: #151515;
+            background: #DCD6C8;
+            border-color: #fff #6E675A #6E675A #fff;
+            border-radius: 1px;
+          }
+          @media (max-width: 520px) {
+            #hw-titlescreen { gap: 0.35em; padding: 0.65em; }
+            #hw-titlescreen .hw-title { font-size: 2.25em; }
+            #hw-titlescreen .hw-tagline { max-width: 38ch; font-size: 0.65em; line-height: 1.2; }
+            #hw-titlescreen .hw-hint { font-size: 0.58em; line-height: 1.2; }
+            #hw-titlescreen .hw-kbd { font-size: 0.9em; padding: 0 0.35em; }
+            #hw-titlescreen .hw-btn { font-size: 0.7em; padding: 0.35em 1.5em; border-bottom-width: 2px; }
+          }
+
           /* ---- START opens an OS session. The CRT only power-cycles on page load. ---- */
           #hw-startup {
             overflow: hidden;
@@ -1262,7 +1286,7 @@
 
                 <!-- Title screen -->
                 <div id="hw-titlescreen" class="hw-screen">
-                    <h1 class="hw-title">HogWare<span style="color: var(--accent);">.</span></h1>
+                    <h1 class="hw-title">HogWare<span class="hw-title-dot">.</span></h1>
                     <p class="hw-tagline">Five PostHog values. Five microgames. A boss. Three lives. It gets harder, then faster, until they're gone.</p>
                     <p class="hw-hint"><span class="hw-kbd">click</span> or <span class="hw-kbd">space</span>. That's the whole manual.</p>
                     <button id="hw-start" class="hw-btn">START</button>
