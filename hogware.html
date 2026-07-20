@@ -122,9 +122,7 @@
             justify-content: flex-start;
             min-height: 100vh;
             overflow-x: hidden;
-            /* the grassy desktop: flat-illustrated tufts, evoked not copied */
-            background-color: var(--bg);
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='280' viewBox='0 0 360 280'%3E%3Cg fill='none' stroke='%23151515' stroke-opacity='0.14' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M40 70 q2 -12 6 -16 M46 70 q0 -9 -2 -13 M52 70 q-1 -11 3 -15'/%3E%3Cpath d='M250 40 q2 -10 5 -13 M256 40 q0 -8 -2 -11'/%3E%3Cpath d='M140 160 q2 -12 6 -16 M146 160 q0 -9 -2 -13 M152 160 q-1 -11 3 -15'/%3E%3Cpath d='M310 200 q2 -10 5 -13 M316 200 q0 -8 -2 -11'/%3E%3Cpath d='M70 240 q2 -12 6 -16 M76 240 q0 -9 -2 -13'/%3E%3Cpath d='M210 260 q2 -10 5 -14 M216 260 q-1 -8 2 -12'/%3E%3C/g%3E%3C/svg%3E");
+            background: #000;
           }
           .hw-page {
             width: min(94vw, 860px);
@@ -285,6 +283,142 @@
           }
           .hw-tagline { color: var(--muted); font-size: 1.02em; max-width: 34ch; margin: 0; }
           .hw-hint { color: var(--muted); font-size: 0.85em; margin: 0; }
+
+          /* The title and startup screens share one PostHog OS desktop color. */
+          #hw-titlescreen { gap: 0.48em; padding: 1em; background: #008080; color: #fff; }
+          #hw-titlescreen .hw-title {
+            font-size: clamp(2.8em, 8vw, 4em);
+            color: #fff;
+            text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.28);
+          }
+          #hw-titlescreen .hw-title-dot { color: var(--ph-yellow); }
+          .hw-title-pitch { display: flex; flex-direction: column; align-items: center; gap: 0.24em; }
+          #hw-titlescreen .hw-tagline {
+            max-width: 46ch;
+            color: rgba(255, 255, 255, 0.94);
+            font-size: 0.92em;
+            line-height: 1.25;
+          }
+          .hw-title-rules {
+            margin: 0;
+            color: #fff;
+            font-size: 0.82em;
+            font-weight: 700;
+            line-height: 1.25;
+          }
+          .hw-title-lives { display: flex; align-items: center; justify-content: center; gap: 0.36em; margin-top: 0.08em; }
+          .hw-title-lives-label {
+            margin-right: 0.12em;
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 0.66em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            color: rgba(255, 255, 255, 0.9);
+          }
+          .hw-title-life {
+            width: 31px;
+            height: 31px;
+            object-fit: contain;
+            animation: hw-title-life-bob 1.2s ease-in-out infinite alternate;
+          }
+          .hw-title-life:nth-of-type(2) { animation-delay: 140ms; }
+          .hw-title-life:nth-of-type(3) { animation-delay: 280ms; }
+          @keyframes hw-title-life-bob { to { transform: translateY(-4px); } }
+          @media (prefers-reduced-motion: reduce) { .hw-title-life { animation: none; } }
+          .hw-title-support { display: flex; align-items: center; justify-content: center; }
+          .hw-title-start-help { margin: 0; color: rgba(255, 255, 255, 0.9); font-size: 0.72em; }
+          .hw-title-best {
+            margin: 0.08em 0 0;
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 0.62em;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.76);
+          }
+          #hw-titlescreen .hw-kbd {
+            color: #151515;
+            background: #DCD6C8;
+            border-color: #fff #6E675A #6E675A #fff;
+            border-radius: 1px;
+          }
+          @media (max-width: 520px) {
+            #hw-titlescreen { gap: 0.22em; padding: 0.45em; }
+            #hw-titlescreen .hw-title { font-size: 2em; }
+            .hw-title-pitch { gap: 0.1em; }
+            #hw-titlescreen .hw-tagline { max-width: 42ch; font-size: 0.54em; line-height: 1.15; }
+            .hw-title-rules { font-size: 0.52em; line-height: 1.15; }
+            .hw-title-lives { gap: 0.3em; }
+            .hw-title-life { width: 20px; height: 20px; }
+            .hw-title-start-help { font-size: 0.5em; line-height: 1.15; }
+            #hw-titlescreen .hw-kbd { font-size: 0.9em; padding: 0 0.35em; }
+            #hw-titlescreen .hw-btn { font-size: 0.64em; padding: 0.3em 1.5em; border-bottom-width: 2px; }
+            .hw-title-best { font-size: 0.48em; }
+          }
+
+          /* ---- START opens an OS session. The CRT only power-cycles on page load. ---- */
+          #hw-startup {
+            overflow: hidden;
+            gap: 1.4em;
+            background: #008080;
+            color: #fff;
+            font-family: ui-monospace, Menlo, monospace;
+          }
+          .hw-startup-brand { text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.28); }
+          .hw-startup-title {
+            font-family: var(--header-font);
+            font-size: clamp(3em, 9vw, 4.8em);
+            line-height: 1;
+            margin: 0;
+            color: #fff;
+          }
+          .hw-startup-title span { color: var(--ph-yellow); }
+          .hw-startup-rule {
+            margin: 0.65em 0 0;
+            font-family: var(--body-font);
+            font-size: 0.88em;
+            font-weight: 600;
+            color: #fff;
+          }
+          .hw-startup-dialog {
+            width: min(72%, 350px);
+            color: #151515;
+            background: #DCD6C8;
+            border: 2px solid;
+            border-color: #fff #6E675A #6E675A #fff;
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.28);
+            animation: hw-startup-dialog 180ms ease-out both;
+          }
+          .hw-startup-dialog-body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8em;
+            min-height: 72px;
+            padding: 0.75em 1em;
+            font-size: 0.86em;
+            font-weight: 700;
+          }
+          .hw-startup-icon { font-size: 1.8em; line-height: 1; }
+          .hw-startup-dots {
+            display: inline-block;
+            width: 0;
+            overflow: hidden;
+            vertical-align: bottom;
+            animation: hw-startup-dots 700ms steps(4, end) infinite;
+          }
+          @keyframes hw-startup-dialog {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+          }
+          @keyframes hw-startup-dots { to { width: 3ch; } }
+          @media (max-width: 520px) {
+            #hw-startup { gap: 0.65em; padding: 0.7em; }
+            .hw-startup-title { font-size: 2.5em; }
+            .hw-startup-rule { margin-top: 0.35em; font-size: 0.7em; }
+            .hw-startup-dialog { width: 85%; }
+            .hw-startup-dialog-body { min-height: 44px; padding: 0.4em 0.6em; font-size: 0.72em; }
+            .hw-startup-icon { font-size: 1.4em; }
+          }
+
           .hw-kbd {
             display: inline-block;
             font-family: ui-monospace, Menlo, monospace;
@@ -445,9 +579,14 @@
           .hw-restore-in { transform: scale(1.06); opacity: 0; will-change: transform, opacity; }
           .hw-restore-in-go { animation: hw-restore-in 300ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards; }
           @keyframes hw-restore-in { to { transform: scale(1); opacity: 1; } }
+          .hw-session-in { opacity: 0; will-change: opacity; }
+          .hw-session-in-go { animation: hw-session-in 200ms ease-out forwards; }
+          @keyframes hw-session-in { to { opacity: 1; } }
           @media (prefers-reduced-motion: reduce) {
             .hw-crt-collapse, .hw-crt-bloom, .hw-crt-bloom-go, .hw-appwin-maximize,
-            .hw-maximize-in, .hw-maximize-in-go, .hw-minimize-fade, .hw-restore-in, .hw-restore-in-go { animation: none; transform: none; opacity: 1; filter: none; }
+            .hw-maximize-in, .hw-maximize-in-go, .hw-minimize-fade, .hw-restore-in, .hw-restore-in-go,
+            .hw-session-in, .hw-session-in-go, .hw-startup-dialog, .hw-startup-dots { animation: none; transform: none; opacity: 1; filter: none; }
+            .hw-startup-dots { width: 3ch; }
           }
 
           /* ---- Announce card keeps the WarioWare sunburst, on the beat clock ---- */
@@ -675,7 +814,19 @@
           .hw-loadlabel { font-family: ui-monospace, Menlo, monospace; font-size: 0.66em; color: var(--muted); margin: 0.55em 0 0; }
           @media (prefers-reduced-motion: reduce) { .hw-loadbar-fill { width: 100%; animation: none; } }
           .hw-verb-value { color: var(--muted); font-size: 0.9em; margin: 0; letter-spacing: 0.08em; text-transform: uppercase; }
-          .hw-verb-instr { color: var(--text); font-size: 1.1em; margin: 0.35em 0 0; max-width: 30ch; line-height: 1.35; }
+          .hw-verb-instr {
+            max-width: 34ch;
+            margin: 0.4em 0 0;
+            padding: 0.38em 0.72em;
+            font-family: ui-monospace, Menlo, monospace;
+            font-size: 0.88em;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #151515;
+            background: #EEEFE9;
+            border: 1px solid;
+            border-color: #fff #7A7568 #7A7568 #fff;
+          }
           @keyframes hw-verb-pop {
             from { transform: scale(0.4) rotate(-3deg); opacity: 0; }
             to   { transform: scale(1) rotate(0); opacity: 1; }
@@ -863,6 +1014,35 @@
           #hw-scene .hw-gamewin-bar { flex: none; }        /* title bar rides the top of the maximized window */
           #hw-scene-body { position: relative; flex: 1 1 auto; overflow: hidden; }
           #hw-scene svg { display: block; }
+          .hw-gamehint {
+            position: relative;
+            z-index: 20;
+            box-sizing: border-box;
+            max-width: min(92%, 560px);
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0.32em 0.68em;
+            color: #151515;
+            background: rgba(238, 239, 233, 0.96);
+            border: 1px solid;
+            border-color: #fff #7A7568 #7A7568 #fff;
+            box-shadow: 1px 1px 0 rgba(21, 21, 21, 0.2);
+            font-size: 0.76em;
+            font-weight: 700;
+            line-height: 1.25;
+            text-align: center;
+          }
+          .hw-gamehint-overlay {
+            position: absolute;
+            left: 50%;
+            bottom: 4%;
+            transform: translateX(-50%);
+            width: max-content;
+          }
+          @media (max-width: 520px) {
+            .hw-gamehint { font-size: 0.62em; padding: 0.25em 0.5em; }
+            .hw-gamehint-overlay { width: 90%; }
+          }
 
           /* Shake on fail (skipped under reduced motion) */
           @keyframes hw-shake {
@@ -1138,7 +1318,7 @@
           }
           .hw-lb-row + .hw-lb-row { border-top: 1px solid #EAE6DC; }
           /* The list is a fixed white Win95 surface (both themes), so its text is fixed
-             dark — NOT the theme vars, which are light on dark and vanish on white. */
+             dark, not the theme vars, which are light on dark and vanish on white. */
           .hw-lb-head {
             background: #C9C4B7; color: #33302A;
             font-size: 0.6em; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
@@ -1159,20 +1339,24 @@
           .hw-submitted-note { color: var(--accent); font-size: 0.82em; margin: 0; text-align: center; }
 
           .hw-footer {
-            margin: 1.2em 0 2em;
-            font-size: 0.72em;
-            color: var(--muted);
+            width: min(88%, 700px);
+            margin: 1.4em 0 2.5em;
+            padding-top: 1.05em;
+            border-top: 1px solid rgba(238, 239, 233, 0.2);
+            color: #EEEFE9;
+            font-size: 0.74em;
+            line-height: 1.55;
             text-align: center;
-            line-height: 1.7;
-            max-width: 64ch;
-            background: var(--bg-alt);
-            border: 1px solid rgba(21, 21, 21, 0.2);
-            border-radius: 10px;
-            padding: 0.8em 1.2em;
-            box-shadow: 0 6px 18px rgba(21, 21, 21, 0.18);
           }
-          .hw-footer a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
-          .hw-footer a:hover { color: var(--accent); }
+          .hw-footer-title { margin: 0; font-size: 1.08em; font-weight: 700; color: #EEEFE9; }
+          .hw-footer-summary { margin: 0.34em 0 0; color: #BDBEB8; }
+          .hw-footer-note { margin: 0.55em 0 0; color: #9B9C94; font-size: 0.9em; }
+          .hw-footer-links { margin-top: 0.55em; color: #555750; }
+          .hw-footer a { color: #BDBEB8; font-weight: 600; text-underline-offset: 2px; }
+          .hw-footer a:hover { color: #F54E00; }
+          @media (max-width: 560px) {
+            .hw-footer { width: 92%; margin-top: 1.15em; font-size: 0.65em; }
+          }
         </style>
     </head>
 
@@ -1191,11 +1375,41 @@
 
                 <!-- Title screen -->
                 <div id="hw-titlescreen" class="hw-screen">
-                    <h1 class="hw-title">HogWare<span style="color: var(--accent);">.</span></h1>
-                    <p class="hw-tagline">Five PostHog values. Five microgames. A boss. Three lives. It gets harder, then faster, until they're gone.</p>
-                    <p class="hw-hint"><span class="hw-kbd">click</span> or <span class="hw-kbd">space</span>. That's the whole manual.</p>
+                    <h1 class="hw-title">HogWare<span class="hw-title-dot">.</span></h1>
+                    <div class="hw-title-pitch">
+                        <p class="hw-tagline">Five PostHog values. Five microgames. One boss.</p>
+                        <p class="hw-title-rules">Follow each prompt. It only gets faster.</p>
+                        <div class="hw-title-lives" aria-label="Three lives">
+                            <span class="hw-title-lives-label">3 LIVES</span>
+                            <img class="hw-title-life" src="images/hogware/max-life.png" alt="" />
+                            <img class="hw-title-life" src="images/hogware/max-life.png" alt="" />
+                            <img class="hw-title-life" src="images/hogware/max-life.png" alt="" />
+                        </div>
+                    </div>
                     <button id="hw-start" class="hw-btn">START</button>
-                    <p id="hw-best-line" class="hw-hint hw-hidden"></p>
+                    <div class="hw-title-support">
+                        <p class="hw-title-start-help">or press <span class="hw-kbd">space</span></p>
+                    </div>
+                    <p id="hw-best-line" class="hw-title-best hw-hidden"></p>
+                </div>
+
+                <!-- Starting a run opens the OS session. This is intentionally separate
+                     from the physical CRT power-on used when the page first loads. -->
+                <div id="hw-startup" class="hw-screen hw-hidden" aria-live="polite">
+                    <div class="hw-startup-brand">
+                        <h2 class="hw-startup-title">HogWare<span>.</span></h2>
+                        <p class="hw-startup-rule">Five values. Three lives.</p>
+                    </div>
+                    <div class="hw-startup-dialog" role="status">
+                        <div class="hw-dialog-bar">
+                            <span class="hw-dialog-title">PostHog OS</span>
+                            <span class="hw-tbar-controls hw-controls-dead" aria-hidden="true"><b>_</b><b>□</b><b>×</b></span>
+                        </div>
+                        <div class="hw-startup-dialog-body">
+                            <span class="hw-startup-icon" aria-hidden="true">🦔</span>
+                            <span>Starting game<span class="hw-startup-dots">...</span></span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Verb card / host scene: the machine's DESKTOP. Each microgame is a
@@ -1311,13 +1525,18 @@
             <div class="hw-crt-stand" aria-hidden="true"></div>
             <div class="hw-crt-base" aria-hidden="true"></div>
 
-            <p class="hw-footer">
-                Built by <a href="index.html">Chris Lam</a> for PostHog's Technical Ex-Founder application. A fan tribute, not an official PostHog product.
-                The five microgames are PostHog's five real <a href="https://posthog.com/handbook/values" target="_blank" rel="noopener">handbook values</a>;
-                scores land in PostHog itself. The leaderboard is a HogQL query.
-                <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">How this was made</a>.
-                Life icons: Max, PostHog's mascot, from their <a href="https://posthog.com/media" target="_blank" rel="noopener">press assets</a>.
-            </p>
+            <footer class="hw-footer">
+                <p class="hw-footer-title">Built by <a href="index.html">Chris Lam</a> for PostHog's Technical Ex-Founder application.</p>
+                <p class="hw-footer-summary">Five handbook values turned into five microgames. Scores are stored in PostHog and ranked with HogQL.</p>
+                <p class="hw-footer-note">Fan tribute, not an official PostHog product. Max life icons use PostHog's press assets.</p>
+                <nav class="hw-footer-links" aria-label="HogWare project links">
+                    <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">How this was made</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="https://posthog.com/handbook/values" target="_blank" rel="noopener">Value source</a>
+                    <span aria-hidden="true"> · </span>
+                    <a href="https://posthog.com/media" target="_blank" rel="noopener">Asset source</a>
+                </nav>
+            </footer>
         </div>
 
         <script src="hogware.js" defer></script>
