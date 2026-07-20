@@ -83,6 +83,21 @@ The debugging gauntlet, kept here because pretending it was smooth would be agai
 
 Also live: a real multivariate feature flag (`hogware-share-taunt` — does a challenge line in the copied result raise share rates? the flag decides, the copy-event data answers), and a post-run survey asking the only question that matters: *how weird was that?* — Not weird → Very weird, five emoji. Zero code for the survey; it triggers on the game's own run-completed event. And PostHog's MCP server is now wired into the agent workflow that built this, so "did anyone play today?" is a question my tools can answer directly.
 
+## The role closed. Shipped it anyway.
+
+While this was mid-build, PostHog took the Technical Ex-Founder listing down. Not a rejection; the door closed before I got to knock. I checked their careers page twice: no ex-founder role, no product engineer roles at all right now.
+
+So the application this was built for no longer exists, and the game is finished anyway, because somewhere during the build it stopped being a cover letter and became the proof. Not proof for PostHog specifically. Proof of the job I actually do:
+
+- **Read the handbook, not just the careers page.** Every mechanic in this game traces back to a sentence PostHog wrote about themselves. The scoring rules *are* the values.
+- **Use the company's real product as load-bearing infrastructure, not decoration.** The leaderboard is a HogQL query. The A/B test is their flag product. The survey is their survey product. The cheat protection runs inside the query.
+- **Run a real process, solo.** An external adversarial review that blocked v1 and was right. Research-backed pacing fixes. A headless suite that plays every microgame and fights the boss. A public kill list for the darlings that weren't fun.
+- **Ship it fast without shipping it sloppy.** About a week from concept to a playtest-tuned game that works on a phone, with the analytics to know whether anyone plays.
+
+That generalizes to any company: hand me your handbook and your product, and in a week you get something your own team wants to pass around Slack. PostHog just happened to be the first handbook.
+
+And the fifth value was always going to get the last word. "Optimistic by default" means *aiming for the best possible upside and sometimes missing is much better than never trying.* I built a microgame out of that sentence, then the project got to live it.
+
 ## Status
 
-Building in the open in `whoischrislam.github.io` as `hogware.html` / `hogware.js`, with the headless test suite at `tests/smoke-hogware.js` (32 checks; it plays every microgame and fights the boss) and the leaderboard Worker at `hogware-worker/`. Gameplay is locked, the real audio is running through the beat clock, and every PostHog feature is live and verified: events, session replay, the HogQL leaderboard with its forge test passed, a running flag experiment, and a launched survey. What remains is the art and submission craft pass, now tracked in [`HOGWARE_ART_DIRECTION.md`](HOGWARE_ART_DIRECTION.md), followed by the OG image and the link into the site. The page stays unlisted until then.
+Finished and live at [whoischrislam.github.io/hogware.html](https://whoischrislam.github.io/hogware.html), built in the open in `whoischrislam.github.io` as `hogware.html` / `hogware.js`, with the headless test suite at `tests/smoke-hogware.js` (32 checks) and the leaderboard Worker at `hogware-worker/`. Every PostHog feature is live and verified: events, session replay, the HogQL leaderboard with its forge test passed, a running flag experiment, and a launched survey. One asset still owed: my hand-drawn hedgehog (tracked in [`HOGWARE_ART_DIRECTION.md`](HOGWARE_ART_DIRECTION.md)); the site links go live when it lands. The leaderboard resets daily. Go start a war.
