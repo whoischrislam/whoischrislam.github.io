@@ -26,6 +26,7 @@
   var VERB_MS = 750;           // loop-launch only: the loading bar fills over this
   var READ_MS = 420;           // loop-launch only: still verb before the loading starts
   var DESKTOP_MS = 150;        // loop-launch only: brief desktop beat before the window opens
+  var STARTUP_MS = 1100;       // OS session screen; holds longer, then exits on a beat
   // BETWEEN games everything is RHYTHM-LOCKED to the music beat (WarioWare feel): the
   // verdict lands, holds N beats; the verb lands on a beat, holds N beats; the game starts
   // on a beat. The music's pulse carries you game-to-game instead of arbitrary timeouts.
@@ -93,7 +94,7 @@
   var sceneBody = $("hw-scene-body"); // games render here; #hw-scene is the window (title bar + body)
   var timerFill = $("hw-timer-fill");
   var screens = {
-    title: $("hw-titlescreen"), verb: $("hw-verb"), result: $("hw-result"),
+    title: $("hw-titlescreen"), startup: $("hw-startup"), verb: $("hw-verb"), result: $("hw-result"),
     quote: $("hw-quote"), gameover: $("hw-gameover")
   };
 
@@ -169,13 +170,15 @@
       return;
     }
     transitioning = true;
-    // Two transition vocabularies:
+    // Three transition vocabularies:
     //  • MAXIMIZE / RESTORE  - launching a program (desktop⇄microgame): the window
     //    grows to fill the screen, the game plays inside it, then restores back.
+    //  • SESSION              - START logs into PostHog OS and reveals the desktop.
     //  • CRT power-cycle      - the machine changing state (boot, announcements,
     //    game over): the tube collapses to a line and blooms the next screen open.
     var effect =
       fromEl === screens.title ? "boot" :
+      (fromEl === screens.startup && toEl === screens.verb) ? "session" :
       (fromEl === screens.verb && toEl === scene) ? "maximize" :
       (toEl === screens.verb) ? "restore" : "crt";
 
@@ -212,6 +215,8 @@
       };
 
       if (effect === "boot") { reveal("hw-crt-bloom", BLOOM_MS); return; }
+
+      if (effect === "session") { reveal("hw-session-in", 200); return; }
 
       if (effect === "maximize") {
         // One motion: the window opens out of the launching app icon and fills the screen (calm).
@@ -436,6 +441,7 @@
      positions are seeded-jittered per play so no two loops read identical. */
   var gameDrive = {
     id: "drive", value: "You're the driver", verb: "DRIVE!", input: "space",
+    instruction: "HOLD TO DRIVE. RELEASE TO STOP.",
     baseDurationMs: 4200,
     params: { travelMs: 2600, obstacles: [0.3, 0.55, 0.78], hesitateIdx: -1, stallIdx: -1 },
     levels: [
@@ -492,7 +498,7 @@
               carSvg("var(--accent)") +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint">hold <span class="hw-kbd">space</span> / press · everyone gets out of your way' +
+          '<p class="hw-hint hw-gamehint">hold <span class="hw-kbd">space</span> or the screen to drive · release to stop' +
           (ctx.params.stallIdx >= 0 ? ' <span style="color:var(--accent-strong)">(almost everyone)</span>' : '') + '</p>' +
         '</div>';
     },
@@ -546,6 +552,7 @@
      a second flip - state is a set, not a countdown, so it survives that. */
   var gamePublish = {
     id: "publish", value: "Make it public", verb: "PUBLISH!", input: "click",
+    instruction: "MAKE EVERY ROW PUBLIC.",
     baseDurationMs: 4200,
     params: { count: 3, density: 0, confirm: false },
     levels: [{}, { count: 4, density: 1 }, { count: 5, density: 2, confirm: true }],
@@ -575,7 +582,7 @@
           '<fieldset class="hw-pubgroup"><legend>Make public:</legend>' +
             '<div class="hw-publist' + dens + '">' + rows + '</div>' +
           '</fieldset>' +
-          '<p class="hw-hint">click each row to make it public</p>' +
+          '<p class="hw-hint hw-gamehint">make every row <b>PUBLIC</b></p>' +
         '</div></div>';
 
       var publish = function (el, i) {
@@ -632,6 +639,7 @@
      order is daily-seeded so everyone's photo gets weird the same way. */
   var gameWeird = {
     id: "weird", value: "Do more weird", verb: "WEIRD!", input: "click",
+    instruction: "HIT EACH GLOWING TARGET.",
     baseDurationMs: 4200,
     params: { target: 5, radius: 40, drift: false, decayMs: 0 },
     levels: [
@@ -909,7 +917,7 @@
           '<svg id="hw-w-frame" width="100%" viewBox="0 0 200 110" style="background:#FCFBF5; border:1px solid var(--border-strong); border-radius:8px; cursor:crosshair; transition: transform 0.3s;" aria-label="' + scn.aria + '">' +
             gameWeird._render(scn.svg, scn.id) +
           '</svg></div>' +
-          '<p class="hw-hint">click the glowing bits weirder · <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
+          '<p class="hw-hint hw-gamehint">hit each glowing target · <span id="hw-weird-count">0</span>/' + ctx.params.target + '</p>' +
         '</div>';
       // Pulsing ring marks the next target; move it to the first one.
       var svg = $("hw-w-frame");
@@ -981,6 +989,7 @@
   /* ---- 4. WHY NOT NOW? - "SHIP IT!" (click) ---- */
   var gameShip = {
     id: "ship", value: "Why not now?", verb: "SHIP IT!", input: "click",
+    instruction: "IGNORE THE NOISE. HIT SHIP IT.",
     baseDurationMs: 4600,
     levels: [
       {},
@@ -1035,7 +1044,7 @@
       var edgy = function () { var u = run.rng(); return u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) * (1 - u); };
       ctx.state.shipPos = { left: 3 + edgy() * 74, top: 10 + edgy() * 62 };
       sceneBody.innerHTML = '<div id="hw-ship-zone" style="position:absolute; inset:0;"></div>' +
-        '<p class="hw-hint" style="position:absolute; bottom:5%; left:0; right:0; text-align:center;">ignore the noise · find and hit SHIP</p>';
+        '<p class="hw-hint hw-gamehint hw-gamehint-overlay">ignore the noise · hit <b>SHIP IT</b></p>';
       if (ctx.params.decoy) {
         var d = document.createElement("button");
         d.className = "hw-ship-btn95 hw-ship-decoy";
@@ -1146,6 +1155,7 @@
   /* ---- 5. OPTIMISTIC BY DEFAULT - "AIM!" (hold + release) ---- */
   var gameAim = {
     id: "aim", value: "Optimistic by default", verb: "AIM!", input: "space", preHold: false,
+    instruction: "STOP ON THE GLOW. FAR LEDGE = 3X.",
     baseDurationMs: 5200,
     params: {
       slideSpeed: 66,   // %/s - the hedgehog paces the rink on its own; you STOP it
@@ -1194,7 +1204,7 @@
               '<circle cx="13" cy="12" r="1.7" fill="#111"/>' +
             '</g>' +
           '</svg>' +
-          '<p class="hw-hint"><span class="hw-kbd">space</span> / tap to STOP the hedgehog on the glow · the far ledge pays triple</p>' +
+          '<p class="hw-hint hw-gamehint">stop on the glow · <span class="hw-kbd">space</span> / tap · far ledge = 3x</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -1546,7 +1556,7 @@
      ============================================================ */
   var gameBossFunnel = {
     id: "boss-funnel", value: "BOSS", verb: "FUNNEL RESCUE!", input: "space", boss: true,
-    instruction: "catch falling users. retain 4.",
+    instruction: "HOLD TO MOVE RIGHT. RELEASE TO MOVE LEFT. RETAIN 4.",
     baseDurationMs: 30000,
     params: { need: 4, funnelSpeed: 0.68, mouth: 0.09 },
     /* Wave of 8, realistic retention math (need 4 pts of 9 possible ≈ 44%):
@@ -1628,7 +1638,7 @@
             '<g id="hw-funnel-users"></g>' +
             '<g id="hw-funnel-meter"></g>' +
           '</svg>' +
-          '<p class="hw-hint">retain <b>4</b> · the <b>$</b> whale counts double · hold <span class="hw-kbd">space</span> / press = right · release = left</p>' +
+          '<p class="hw-hint hw-gamehint">retain <b>4</b> · <b>$</b> whale = 2 · hold <span class="hw-kbd">space</span> or screen = right · release = left</p>' +
         '</div>';
     },
     update: function (ctx, dt) {
@@ -1752,6 +1762,7 @@
 
   function startRun() {
     run = newRun();
+    var thisRun = run;
     myPending = null; // clear last run's optimistic leaderboard row
     // Life icons rendered from LIVES so the count stays a one-line change (and flag-testable later).
     var livesEl = $("hw-hud-lives");
@@ -1768,9 +1779,14 @@
     conductor.start(1 / run.speed); // fresh anchor + rate; brisk variant starts faster, music will too
     conductor.loadAssets(); // lazy, once; game plays with synth blips until buffers land
     conductor.startMusic();
-    crtBlip("hw-poweron"); // the monitor wakes up
-    show(hud); updateHud();
-    nextGame();
+    hide(hud);
+    updateHud();
+    hideAllScreens();
+    show(screens.startup);
+    stage.dataset.live = "0";
+    setTimeout(function () {
+      if (run === thisRun) nextGame();
+    }, STARTUP_MS);
   }
 
   function nextGame() {
@@ -2084,6 +2100,19 @@
   /* ---------------- Game-over desktop: draggable windows + clickable value apps ---------------- */
   var zTop = 20;
   function focusWin(win) { win.style.zIndex = ++zTop; }
+  function placeWinInDesktop(win, x, y) {
+    var host = screens.gameover.getBoundingClientRect();
+    var wr = win.getBoundingClientRect();
+    var maxX = Math.max(0, host.width - wr.width);
+    var maxY = Math.max(0, host.height - wr.height);
+    win.style.left = Math.max(0, Math.min(maxX, x)) + "px";
+    win.style.top = Math.max(0, Math.min(maxY, y)) + "px";
+  }
+  function keepWinInDesktop(win) {
+    var host = screens.gameover.getBoundingClientRect();
+    var wr = win.getBoundingClientRect();
+    placeWinInDesktop(win, wr.left - host.left, wr.top - host.top);
+  }
   function makeDraggable(win, bar) {
     bar.addEventListener("pointerdown", function (e) {
       if (e.target.closest("button, input, a, .hw-tbar-controls")) return; // grabbing a control, not the bar
@@ -2101,9 +2130,7 @@
       var offX = e.clientX - wr.left, offY = e.clientY - wr.top;
       try { bar.setPointerCapture(e.pointerId); } catch (er) {}
       function move(ev) {
-        var x = Math.max(0, Math.min(host.width - wr.width, ev.clientX - host.left - offX));
-        var y = Math.max(0, Math.min(host.height - wr.height, ev.clientY - host.top - offY));
-        win.style.left = x + "px"; win.style.top = y + "px";
+        placeWinInDesktop(win, ev.clientX - host.left - offX, ev.clientY - host.top - offY);
       }
       function up() { bar.removeEventListener("pointermove", move); bar.removeEventListener("pointerup", up); }
       bar.addEventListener("pointermove", move);
@@ -2120,7 +2147,7 @@
     if (!q) return;
     var slug = valueSlug(vphrase);
     var existing = document.getElementById("valwin-" + slug);
-    if (existing) { focusWin(existing); return; } // already open - just raise it
+    if (existing) { keepWinInDesktop(existing); focusWin(existing); return; } // raise it and recover it after a resize
     var win = document.createElement("div");
     win.className = "hw-win hw-floating hw-valwin hw-dialog"; // value windows float from birth
     win.id = "valwin-" + slug;
@@ -2134,15 +2161,39 @@
         '<p class="hw-valwin-src">' + q.value + ' · posthog.com/handbook/values</p>' +
       '</div>';
     screens.gameover.appendChild(win);
-    // cascade so stacked windows don't hide each other
+    // Five staggered slots keep every title bar and close button inside the desktop.
     var n = document.querySelectorAll(".hw-valwin").length;
-    win.style.left = (18 + n * 22) + "%";
-    win.style.top = (16 + n * 10) + "%";
+    var slots = [
+      { x: 0.20, y: 0.16 }, { x: 0.39, y: 0.27 }, { x: 0.26, y: 0.43 },
+      { x: 0.48, y: 0.13 }, { x: 0.36, y: 0.52 }
+    ];
+    var slot = slots[(n - 1) % slots.length];
+    var host = screens.gameover.getBoundingClientRect();
+    placeWinInDesktop(win, host.width * slot.x, host.height * slot.y);
+    win.addEventListener("animationend", function settleWindow(e) {
+      if (e.target !== win) return;
+      win.removeEventListener("animationend", settleWindow);
+      keepWinInDesktop(win);
+    });
     focusWin(win);
     makeDraggable(win, win.querySelector(".hw-win-bar"));
     win.querySelector(".hw-close").addEventListener("click", function () { win.remove(); });
     capture("hogware_value_opened", { value: q.value });
   }
+  var desktopFitFrame = 0;
+  function fitOpenWindows() {
+    desktopFitFrame = 0;
+    document.querySelectorAll("#hw-gameover .hw-floating").forEach(keepWinInDesktop);
+  }
+  function scheduleWindowFit() {
+    if (desktopFitFrame) cancelAnimationFrame(desktopFitFrame);
+    desktopFitFrame = requestAnimationFrame(function () {
+      desktopFitFrame = requestAnimationFrame(fitOpenWindows); // wait for responsive text to finish wrapping
+    });
+  }
+  window.addEventListener("resize", scheduleWindowFit);
+  var gameoverResizeObserver = window.ResizeObserver ? new ResizeObserver(scheduleWindowFit) : null;
+  if (gameoverResizeObserver) gameoverResizeObserver.observe(screens.gameover);
   var goDeskWired = false;
   function resetGameoverDesktop() {
     // Fresh game over: clear value windows, re-place the two hero windows side by side.
@@ -2246,7 +2297,7 @@
     el.innerHTML = '<p class="hw-lb-note">loading today’s board…</p>';
     // Never let the board hang on "loading": abort after 8s so a dead connection fails to a
     // clear, retryable message instead of an endless spinner. Any HTTP response (even a 502)
-    // resolves normally and degrades to "no scores yet" — only a true network stall lands here.
+    // resolves normally and degrades to "no scores yet". Only a true network stall lands here.
     var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
     var to = ctrl ? setTimeout(function () { ctrl.abort(); }, 8000) : null;
     var fail = function () {
@@ -2357,7 +2408,7 @@
     try { best = parseInt(localStorage.getItem("hogware_best") || "0", 10); } catch (e) {}
     if (best) {
       var line = $("hw-best-line");
-      line.textContent = "personal best: " + best;
+      line.textContent = "Your best: " + best;
       show(line);
     }
     $("hw-start").addEventListener("click", startRun);
