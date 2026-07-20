@@ -246,3 +246,21 @@ Do not start by polishing all six games.
 3. Build the AIM rink and effect assets around the existing mechanic.
 4. Test one full AIM pass, miss, and triple hit at desktop and phone widths.
 5. Decide whether the visual system is strong enough to propagate before touching DRIVE.
+
+## The flip (staged 2026-07-20)
+
+The game is content-complete and publicly framed for the closed role ("shipped it anyway" footer, HOGWARE.md ending chapter, OG card at `images/hogware/og.png`). Everything below is staged and waiting on one asset: Chris's hand-drawn hedgehog. When it lands, flip in this order.
+
+1. Swap the hedgehog into `hedgehogSVG()` in `hogware.js` (AIM puck `#hw-puck` + verb-card buddy). Original character, not Max-like, no AI-generated hedgehog art.
+2. Run `tests/smoke-hogware.js` (32 checks) plus one real-device playthrough.
+3. If the title screen changed, regenerate the OG card: 1200x630 screenshot of the loaded title screen, saved to `images/hogware/og.png`.
+4. Uncomment the HogWare case-card in `index.html` (marker: `HOGWARE (staged)`).
+5. Uncomment the HogWare list item in `candidate.html` (same marker).
+6. Add to `llms.txt` under Key pages:
+   `- [HogWare](https://whoischrislam.github.io/hogware.html): a playable WarioWare-style game built from PostHog's five company values in about a week, with PostHog itself as the backend. The role it was built for closed mid-build; he shipped it anyway. Build log: https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md`
+7. Add to `llms.txt` under Selected engineering:
+   `- HogWare (solo, 2026): a WarioWare-style microgame gauntlet built from PostHog's five handbook values in about a week. PostHog is the backend: a HogQL leaderboard with in-query cheat protection behind a Cloudflare Worker, a live flag experiment, and a survey; a 32-check headless suite plays the game end to end.`
+8. Add to `sitemap.xml`:
+   `<url><loc>https://whoischrislam.github.io/hogware.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>`
+9. Rotate the exposed PostHog personal API key (Query Read) and update the Worker secret. Use `printf '%s' "$KEY" | wrangler secret put ...`, never `echo` (the trailing-newline bug from the leaderboard night).
+10. Commit as `feat(hogware): go public`.
