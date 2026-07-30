@@ -1,5 +1,23 @@
-# Private job-hunt prep — local only, never commit or publish
+# Private job-hunt prep — local only, never commit or publish.
+# This repo is PUBLIC and is the source for whoischrislam.github.io.
+# Anything containing recruiter/HM names, comp figures, rejections,
+# interview transcripts, or submitted application answers lives here.
 .jobhunt/
+
+# Defensive: catch private docs if they ever land outside .jobhunt/ again.
+JOB_SEARCH_PRIORITY.md
+APPLICATION_GATE.md
+INTERVIEW_*.md
+INTERVIEW-*.md
+LINKEDIN_SOURCING_PASS.md
+PAIN_INVENTORY.md
+PORTFOLIO_CRAFT_REVIEW.md
+POST_WEDNESDAY_QUEUE.md
+RESUME_COMPILER_PLAN.md
+ADOBE_*.md
+CITIZEN_*.md
+DESCRIPT_*.md
+fixtures/
 
 # macOS
 .DS_Store
