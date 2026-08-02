@@ -1,8 +1,16 @@
 # Chris Lam
 
-> Product engineer and designer, 14 years. Designs, builds, and ships end to end with no handoff. Building voice AI at y30. Open to senior IC roles, full-time, on small, fast, AI-native teams in AI, voice, and product engineering.
+> Product Design Engineer for AI-native products, 14 years. "I design the product. I ship the code." Currently Co-Founder and CPTO at y30, voice AI for older adults and their caregivers. Open to senior or lead IC design-engineering roles, full-time, on small, fast, AI-native teams.
 
-Chris Lam (Christopher Lam) is a product engineer and designer based in Honolulu, remote-first, with Bay Area and Seattle availability when needed. He has spent 14 years as the first, sole, or early designer-engineer in the room across healthcare, marketplaces, and consumer software. He is AI-native: he steers product, architecture, and systems while using AI agents to implement, owning the judgment, code review, and safety gates. He is currently Co-Founder and CPTO at y30 (voice AI for older adults and their caregivers) and is open to senior IC roles, full-time, looking for a long-term home with depth and continuity over range.
+Chris Lam (Christopher Lam) is a product design engineer with 14 years shipping healthcare, creative, developer, and consumer software. He built his career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today he owns products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. He is seeking senior or lead IC design-engineering roles on AI-native teams.
+
+Role family for matching: Product Design Engineer, Design Engineer, Lead Design Engineer, Staff Design Engineer, UX Engineer, Design Systems Engineer, AI Product Engineer. These describe the shape of role he is targeting and the work he does, not official titles he has held.
+
+Location: remote in the US, based in Honolulu. He works West Coast hours and travels to the Bay Area or Seattle quarterly. He is not seeking relocation.
+
+He is AI-native in how he works: he steers product, architecture, and systems, directs AI agents through implementation, and owns the judgment, code review, and safety gates.
+
+He is currently Co-Founder and CPTO at y30, voice AI for older adults and their caregivers. y30 generates longitudinal conversational signals for clinician or caregiver review. It does not diagnose, screen for, or detect cognitive decline or any other condition, and it is not a medical device.
 
 His exits, framed honestly and never as a trophy count: he was early at Clover Health and GoodRx (both later IPO'd), a rescue hire at Sharecare during its acquisition (which then went public), and did the 2014 TaskRabbit rebrand before IKEA acquired it. The signal is repeated high ownership at early or critical stages, not an exit count.
 
@@ -18,6 +26,10 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 - [Dribbble](https://dribbble.com/whoischrislam)
 - [y30](https://y30.ai)
 
+## Education
+- University of Washington, BS Informatics (Human-Computer Interaction), 2010.
+- University of Washington, MS Human-Centered Design & Engineering, 2012.
+
 ## Selected outcomes
 - Clover Health (2nd designer, later IPO'd): ~7-8x lift in nurse visit-related revenue, ~2 hours saved per nurse per day.
 - GoodRx / Iodine (first full-time designer, later IPO'd): coupon conversion 2% to 5%; GoodRx Research dataviz referenced in the New York Times and on Good Morning America and ABC News; Webby 2018.
@@ -25,7 +37,8 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 - Amazon: prototyped the buy-and-gift Prime flow that contributed to 1M+ new subscribers.
 - Modus Create: shipped dark mode for JIRA and Confluence Cloud, 500K+ enterprise users.
 - y30: built the voice pipeline (multi-provider, deep fallback) and a model-independent safety floor; 1,389 commits, 127 test files.
-- PlaySesh: built 0 to 1 solo; 5,120 users across 121 Discord servers, 1,302 MAU, all organic.
+- PlaySesh (Co-Founder and CEO; company founded 2024, product shipped July 2025, ran to 2026): built 0 to 1 solo; 6,220 authorized Discord accounts, 138 Discord server installs, and 1,043 monthly active users at peak in January 2026, all organic.
+  - Measurement note: these are three different measurements and are never interchangeable. Authorized accounts are Discord OAuth authorizations, not users and not installs. Server installs count servers the app was added to. MAU is unique users in the peak calendar month, January 2026, from PlaySesh's own analytics. Discord counts as of August 1, 2026.
 
 ## Selected engineering (systems depth, not commit counts)
 - PlaySesh: authored the core real-time engine, a custom operation-based sync protocol on Cloudflare Durable Objects (authoritative ordering, hand-written WebSocket reconnection), after moving the product off an off-the-shelf canvas library. Primary engineer on the codebase.
