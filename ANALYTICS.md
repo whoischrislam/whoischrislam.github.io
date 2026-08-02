@@ -13,7 +13,7 @@ pageview  ->  engaged_view  ->  conversion
 
 - **pageview** — auto-captured. Carries UTM tags (see attribution) so I can split by outreach campaign.
 - **engaged_view** — fires once when a visitor both lingers (20s) and reads (50% scroll). This is the line between a drive-by and a real read. It's the single most useful signal on the site.
-- **conversion** — any of `resume_downloaded`, `clicked_email`, `opened_voice_agent`.
+- **conversion** — any of `clicked_booking`, `resume_downloaded`, `clicked_email`, `opened_voice_agent`. These are not equal. `clicked_booking` is the only one where someone has decided to talk; the rest are interest. Read it separately, never averaged into the others.
 
 The voice agent is the centerpiece work sample, so it has its own sub-funnel:
 
@@ -29,6 +29,7 @@ That tells me not just "did they click the agent" but "did they pick a lens, ask
 |---|---|---|
 | `$pageview` | auto | Volume + referrer + UTM attribution |
 | `engaged_view` | analytics.js | Real read vs bounce — mid-funnel |
+| `clicked_booking` | analytics.js | **Strongest conversion.** Picked a time, not just showed interest (`location`: hero/contact) |
 | `resume_downloaded` | analytics.js | Hard conversion |
 | `clicked_email` | analytics.js | Hard conversion (incl. demo-request buttons) |
 | `clicked_github` / `clicked_linkedin` | analytics.js | Credential checks |
@@ -86,6 +87,6 @@ For data already collected before you opted out (e.g. the Jun 13 setup tests), j
 1. After each batch of outreach, check the `utm_campaign` table 24–48h later — did the link actually land sessions? Zero sessions = fix the email/CTA, not the site.
 2. `engaged_view / pageview` low → the page isn't holding people; fix the hero.
 3. `opened_voice_agent` high but `voice_agent_first_message` low → people open the agent and bounce; fix the intro prompt.
-4. `resume_downloaded` happening but `clicked_email` near zero → they like the credentials but won't reach out; fix the contact CTA.
+4. `resume_downloaded` happening but `clicked_booking` near zero → they like the credentials but won't start a conversation; fix the contact CTA. This fired for real: over the 60 days to 2026-08-01, 16 people downloaded the resume and 2 clicked email. The booking link went in on 2026-08-01 as the response, so treat that date as the baseline for judging whether it worked.
 
 Don't let it become a side project. Five minutes, four checks.
