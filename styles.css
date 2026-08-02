@@ -210,7 +210,17 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 /* ---------- Hero ---------- */
 #introduction { padding-top: 6em; padding-bottom: 4em; }
 #introduction .section-content { display: flex; flex-direction: column; }
-#hero-line-1, #hero-line-2 { font-size: var(--h1-size); margin: 0; }
+/* Tag-agnostic: #hero-line-1 is a <p> and #hero-line-2 is the page's single <h1>,
+   so hero typography is declared here rather than inherited from the h1 rule. */
+#hero-line-1, #hero-line-2 {
+    font-family: var(--header-font);
+    font-weight: 400;
+    font-size: var(--h1-size);
+    line-height: 1.05;
+    letter-spacing: 0.4px;
+    text-wrap: balance;
+    margin: 0;
+}
 #hero-line-2 { margin-bottom: 0.1em; }
 .hero-claim {
     font-family: var(--header-font);
@@ -717,6 +727,15 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     font-size: 1.12em !important;
     font-style: italic;
     margin: 0.2em 0 0 0 !important;
+}
+
+/* Provenance line under a metrics creed. Deliberately quiet: the numbers above
+   are the evidence, this is only where they came from. */
+.featured-source {
+    color: var(--muted) !important;
+    font-size: 0.82em !important;
+    line-height: 1.5 !important;
+    margin: 0.5em 0 0 0 !important;
 }
 
 /* ---------- Section wayfinding label ---------- */

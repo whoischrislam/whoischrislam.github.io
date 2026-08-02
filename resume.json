@@ -2,10 +2,10 @@
     "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
     "basics": {
         "name": "Chris Lam",
-        "label": "Design-trained senior product engineer",
+        "label": "Product Design Engineer for AI-native products",
         "email": "whoischrislam@gmail.com",
         "url": "https://whoischrislam.github.io",
-        "summary": "Design-trained senior product engineer with 14 years shipping healthcare, marketplaces, game dev tools, and consumer software, usually as the first or second designer and building the implementation myself. Early at Clover Health and GoodRx, both of which later IPO'd; a rescue hire at Sharecare during its acquisition, which then went public; and part of the 2014 TaskRabbit rebrand before IKEA acquired it. Currently co-founding y30, a voice AI platform for older adults. Designs, builds, and ships end to end with no handoff. Open to senior IC roles in AI, voice, and product engineering, full-time, and looking for a long-term home with depth and continuity over range.",
+        "summary": "Product design engineer with 14 years shipping healthcare, creative, developer, and consumer software. Built my career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today I own products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. Recent work includes a voice-AI system with deterministic safety controls and collaborative game-development tooling with a custom real-time engine. Seeking senior or lead IC design-engineering roles on AI-native teams.",
         "location": { "city": "Honolulu", "region": "HI", "countryCode": "US" },
         "profiles": [
             { "network": "LinkedIn", "username": "whoischrislam", "url": "https://www.linkedin.com/in/whoischrislam/" },
@@ -38,7 +38,7 @@
             "highlights": [
                 "Shipped 0 to 1 alone in Vanilla JS, Express, and Supabase before recruiting co-founders; primary engineer who authored 1,147 of the project's 1,790 commits, with 291 passing tests and zero ad spend.",
                 "Authored the core real-time engine: a custom operation-based sync protocol on Cloudflare Durable Objects, including authoritative ordering and WebSocket reconnection logic, after moving off an off-the-shelf canvas library.",
-                "Grew to 5,120 users across 121 Discord servers, 1,302 MAU, 50-minute average sessions, all organic.",
+                "Grew organically to 6,220 authorized Discord accounts and 138 server installs, peaking at 1,043 monthly active users (January 2026). Discord counts as of August 1, 2026.",
                 "Pivoted from social gaming to game dev tooling based on user behavior signal."
             ]
         },
@@ -131,13 +131,13 @@
         }
     ],
     "education": [
-        { "institution": "University of Washington", "area": "Human Centered Design & Engineering", "studyType": "MS", "endDate": "2012" },
+        { "institution": "University of Washington", "area": "Human-Centered Design & Engineering", "studyType": "MS", "endDate": "2012" },
         { "institution": "University of Washington", "area": "Informatics, Human-Computer Interaction", "studyType": "BS", "endDate": "2010" }
     ],
     "skills": [
-        { "name": "AI & Voice", "keywords": ["Voice AI", "LLM orchestration", "Multi-agent orchestration", "Agentic systems", "Prompt & system-instruction design", "FSM/LLM safety", "Evals & evaluation UX", "Provenance & human-AI oversight", "Agent frameworks", "MCP", "LiveKit", "Real-time STT/TTS"] },
-        { "name": "Engineering", "keywords": ["React", "TypeScript", "Python", "Next.js", "Vanilla JS", "Supabase", "Firebase", "PostgreSQL", "Cloudflare Workers", "Docker", "CI/CD", "Test-driven development", "Telemetry & instrumentation"] },
-        { "name": "Design", "keywords": ["Product design (0 to 1)", "Design systems", "Design tokens", "Storybook & Chromatic", "UX research", "Prototyping", "Information architecture", "WCAG accessibility", "Elder-care UX"] }
+        { "name": "Product & Design", "keywords": ["Product design (0 to 1)", "Interaction design", "Design systems", "Design tokens", "Storybook & Chromatic", "UX research", "Prototyping", "Information architecture", "WCAG accessibility", "Product strategy", "Elder-care UX"] },
+        { "name": "Production Engineering", "keywords": ["React", "TypeScript", "Python", "Next.js", "HTML/CSS", "Vanilla JS", "Supabase", "Firebase", "PostgreSQL", "Cloudflare Workers", "Docker", "CI/CD", "Test-driven development", "Real-time systems", "Telemetry & instrumentation"] },
+        { "name": "AI-Native Systems", "keywords": ["Agent UX", "LLM orchestration", "Multi-agent orchestration", "Agentic systems", "Evals & evaluation UX", "Guardrails & deterministic safety control", "FSM/LLM safety", "Prompt & system-instruction design", "Provenance & human-AI oversight", "Agent frameworks", "MCP", "LiveKit", "Real-time STT/TTS", "Voice AI"] }
     ],
     "languages": [
         { "language": "English", "fluency": "Native or bilingual" },
@@ -147,6 +147,22 @@
     "meta": {
         "canonical": "https://whoischrislam.github.io/resume.json",
         "factSheet": "https://whoischrislam.github.io/candidate.html",
-        "note": "Open to senior IC roles in AI, voice, and product engineering, full-time. Remote-first from Honolulu, with Bay Area and Seattle availability."
+        "note": "Seeking senior or lead IC design-engineering roles, full-time. Remote US from Honolulu, working West Coast hours, with quarterly travel to the Bay Area or Seattle.",
+        "locationLine": "Remote US from Honolulu, HI · Works West Coast hours · Quarterly Bay Area and Seattle travel",
+        "variants": {
+            "_usage": "Role-family targeting for the PDF. Render with: python3 scripts/build-resume.py --variant <key>. Any empty field falls back to basics.label / basics.summary. Add a summary only when it is written in Chris's own voice.",
+            "product-design-engineer": {
+                "label": "Product Design Engineer for AI-native products",
+                "summary": ""
+            },
+            "design-engineer": {
+                "label": "Design Engineer",
+                "summary": ""
+            },
+            "ai-product-engineer": {
+                "label": "AI Product Engineer",
+                "summary": ""
+            }
+        }
     }
 }
