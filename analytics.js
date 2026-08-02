@@ -42,6 +42,15 @@
       });
     });
 
+    // Booking — the strongest conversion on the page. Someone picking a time
+    // has decided to talk, which email clicks only imply. Tracked separately so
+    // it never gets averaged into the weaker signals.
+    document.querySelectorAll('a[href*="cal.com/"]').forEach(function (el) {
+      el.addEventListener("click", function () {
+        capture("clicked_booking", { location: el.closest("#contact") ? "contact" : "hero" });
+      });
+    });
+
     /* ---- profile / external links ---- */
     document.querySelectorAll('a[href*="github.com/whoischrislam"], [onclick*="github.com/whoischrislam"]').forEach(function (el) {
       el.addEventListener("click", function () { capture("clicked_github"); });
