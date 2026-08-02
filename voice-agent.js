@@ -393,13 +393,18 @@
   if (dockClose) dockClose.addEventListener("click", closeDock);
 
   // --- recruiter brief (export artifact) ---
+  // Gate was 3 turns. In 60 days it never fired once: 23 people opened the agent,
+  // 8 sent a first message, nobody reached three turns. Two turns is enough
+  // receipts for a usable brief and puts the artifact within actual reach.
+  var BRIEF_MIN_TURNS = 2;
+
   function maybeShowBrief() {
-    if (briefCta && turnCount >= 3) briefCta.hidden = false;
+    if (briefCta && turnCount >= BRIEF_MIN_TURNS) briefCta.hidden = false;
   }
   if (briefCta) briefCta.addEventListener("click", requestBrief);
 
   function requestBrief() {
-    if (briefing || receipts.length < 3) return;
+    if (briefing || receipts.length < BRIEF_MIN_TURNS) return;
     briefing = true;
     if (window.phCapture) window.phCapture("voice_agent_brief_requested", { turns: turnCount });
     briefCta.disabled = true;
