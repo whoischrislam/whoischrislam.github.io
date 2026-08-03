@@ -5,6 +5,7 @@
 .jobhunt/
 
 # Defensive: catch private docs if they ever land outside .jobhunt/ again.
+CAREER_GTM_POSITIONING.md
 JOB_SEARCH_PRIORITY.md
 APPLICATION_GATE.md
 INTERVIEW_*.md
@@ -21,3 +22,8 @@ fixtures/
 
 # macOS
 .DS_Store
+
+# Local-only preview, never publish
+craft-preview.html
+craft-picker.html
+_pick

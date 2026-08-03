@@ -9,3 +9,13 @@ Do not expand a practice rep into a framework, platform, generalized engine, or 
 Outside an explicitly agreed training rep, follow the repository's normal task instructions.
 
 Before writing or changing any PlaySesh adoption claim, read `PLAYSESH_METRICS.md`. Treat it as the canonical interpretation of Discord authorization and install counts, and do not conflate them with active usage.
+
+## Private job-hunt workspace
+
+Before job-search, application, interview-prep, or career-positioning work, read `.jobhunt/README.md`.
+
+Keep all private job-hunt research and drafts in `.jobhunt/`, including JDs, interview material, recruiter or hiring-manager details, compensation, pipeline status, application drafts, career-GTM strategy, and agent prompts. Do not create those files at the public repository root, link them from the site, or commit them.
+
+Use `.jobhunt/CAREER_GTM_POSITIONING.md` as the working positioning source of truth. Extend existing material instead of creating duplicates. Only edit public resume, portfolio, and machine-readable surfaces outside `.jobhunt/` when Chris explicitly asks for a publishable update.
+
+After creating or moving private material, verify it is ignored and check `git status`. Gitignored files are not backed up by git.
