@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>A design system when half the contributors are machines · Chris Lam</title>
+<meta name="description" content="I wrote the same design-system rule twice, in two toolchains, eight months apart. At PlaySesh it was advisory and 171 hardcoded colors got past it. At y30 I made it block the commit. An interactive walkthrough by Chris Lam."/>
+<link rel="canonical" href="https://whoischrislam.github.io/work/design-systems-for-agents.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="A design system when half the contributors are machines"/>
+<meta property="og:description" content="I wrote the same design-system rule twice, eight months apart. At PlaySesh it was advisory and 171 hardcoded colors got past it. At y30 I made it block the commit."/>
+<meta property="og:url" content="https://whoischrislam.github.io/work/design-systems-for-agents.html"/>
+<meta property="og:image" content="https://whoischrislam.github.io/images/og-image.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="A design system when half the contributors are machines"/>
+<meta name="twitter:description" content="The same rule, written twice. Once as a doc an agent reads. Once as a hook that blocks the commit."/>
+<meta name="twitter:image" content="https://whoischrislam.github.io/images/og-image.png"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article",
+ "headline":"A design system when half the contributors are machines",
+ "about":"Design systems, AI coding agents, design tokens, enforcement",
+ "url":"https://whoischrislam.github.io/work/design-systems-for-agents.html",
+ "mainEntityOfPage":"https://whoischrislam.github.io/work/design-systems-for-agents.html",
+ "author":{"@type":"Person","name":"Chris Lam","url":"https://whoischrislam.github.io/"},
+ "publisher":{"@type":"Person","name":"Chris Lam","url":"https://whoischrislam.github.io/"},
+ "image":"https://whoischrislam.github.io/images/og-image.png"}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Open+Sans:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="case-study.css"/>
+<style>
+/* Page-local. The demo is the argument, so it gets to look like a tool rather
+   than like prose. Everything borrows case-study.css tokens. */
+:root{ --mono:'JetBrains Mono',SFMono-Regular,Menlo,monospace; }
+
+.demo{margin:44px 0;border:1px solid var(--border);border-radius:10px;
+  background:var(--surface);overflow:hidden}
+.demo-head{display:flex;flex-wrap:wrap;gap:2px;padding:10px 10px 0;
+  border-bottom:1px solid var(--border)}
+.demo-tab{appearance:none;border:1px solid transparent;border-bottom:none;
+  background:none;color:var(--muted);font-family:var(--sans);font-size:13.5px;
+  padding:9px 15px;border-radius:7px 7px 0 0;cursor:pointer;line-height:1.35}
+.demo-tab b{display:block;color:inherit;font-weight:600}
+.demo-tab[aria-selected="true"]{background:var(--bg);color:var(--text);
+  border-color:var(--border);margin-bottom:-1px}
+.demo-body{padding:22px}
+.demo-label{font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 9px}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px}
+.chip{appearance:none;font-family:var(--mono);font-size:12.5px;padding:6px 10px;
+  border-radius:5px;border:1px solid var(--border);background:var(--bg);
+  color:var(--text);cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+
+.editor{background:var(--bg);border:1px solid var(--border);border-radius:7px;
+  padding:14px 16px;font-family:var(--mono);font-size:13.5px;line-height:1.75}
+.editor .dim{color:var(--muted)}
+.editor input{font-family:var(--mono);font-size:13.5px;background:transparent;
+  color:var(--accent);border:none;border-bottom:1px dashed var(--accent);
+  padding:1px 2px;width:min(340px,72vw);outline:none}
+.run{margin-top:14px;appearance:none;font-family:var(--sans);font-size:14px;
+  font-weight:600;padding:9px 18px;border-radius:6px;border:none;
+  background:var(--accent);color:#fff;cursor:pointer}
+
+.stages{margin-top:20px;display:grid;gap:10px}
+.stage{border:1px solid var(--border);border-left:3px solid var(--border);
+  border-radius:0 7px 7px 0;padding:13px 16px;background:var(--bg);
+  opacity:0;transform:translateY(4px);transition:opacity .25s ease,transform .25s ease}
+.stage.on{opacity:1;transform:none}
+.stage.pass{border-left-color:#5B9E6B}
+.stage.warn{border-left-color:#C9973F}
+.stage.block{border-left-color:var(--accent)}
+.stage-when{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 6px}
+.stage p{margin:0 0 6px;font-size:14.5px;line-height:1.6}
+.stage p:last-child{margin:0}
+.stage code,.mono{font-family:var(--mono);font-size:13px}
+.stage .quote{color:var(--muted);font-style:italic}
+.verdict{margin-top:16px;font-size:14.5px;color:var(--muted)}
+.verdict b{color:var(--text)}
+
+.sim-note{margin:10px 0 0;font-size:12.5px;color:var(--muted)}
+
+/* Token render: the values are read straight from the real files. */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));
+  gap:10px;margin:20px 0}
+.sw{border:1px solid var(--border);border-radius:7px;overflow:hidden;background:var(--bg)}
+.sw i{display:block;height:46px}
+.sw span{display:block;padding:7px 9px;font-family:var(--mono);font-size:11px;
+  color:var(--muted);line-height:1.5}
+.sw b{display:block;color:var(--text);font-weight:600;font-size:11.5px}
+.scale{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin:20px 0}
+.scale div{text-align:center}
+.scale i{display:block;background:var(--accent);opacity:.75;border-radius:2px}
+.scale span{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:6px}
+.zstack{margin:20px 0;font-family:var(--mono);font-size:13px}
+.zstack li{margin:0 0 5px;color:var(--muted)}
+.zstack b{color:var(--text)}
+
+@media (max-width:640px){
+  .demo-body{padding:16px}
+  .editor input{width:100%}
+}
+</style>
+<script type="text/javascript" src="../analytics-init.js"></script>
+<script type="text/javascript" src="case-study.js" defer></script>
+</head><body>
+<nav class="nav"><a href="index.html">&larr; Case studies</a></nav>
+<article class="cs">
+
+<p class="eyebrow">PlaySesh &middot; y30</p>
+<h1>A design system when half the contributors are machines</h1>
+<p class="tagline">I wrote the same rule twice, in two toolchains, eight months apart. The first time it was a document. The second time it could stop me.</p>
+
+<dl class="facts">
+<div><dt>Where</dt><dd>PlaySesh (2025&ndash;2026) and y30 (2026)</dd></div>
+<div><dt>Role</dt><dd>Author of the tokens, the primitives, and the rules that govern them</dd></div>
+<div><dt>Contributors</dt><dd>Three humans and a coding agent, across 1,793 commits</dd></div>
+<div><dt>Stack</dt><dd>React, TypeScript, Radix, CSS custom properties, Cursor rules, Claude Code hooks</dd></div>
+</dl>
+
+<div class="outcome">
+<p>A design system's real test is <b>what happens when someone ignores it</b>. Increasingly that someone is a language model with no memory of why the rule exists.</p>
+<p>At PlaySesh I wrote the rule as a document the agent reads. <b>171 hardcoded colors got past it.</b> At y30 I made it block the commit.</p>
+</div>
+
+<h2>The problem, stated plainly</h2>
+<p>A design system has always depended on people choosing to follow it. Code review, taste, a shared sense that the thing should look like itself. That worked because contributors accumulate context: you learn where the tokens live, you get told off once, you stop reaching for hex.</p>
+<p>An agent accumulates nothing. Every session it arrives fresh, competent, fast, and completely unaware that <code class="mono">#3b82f6</code> already has a name. It will write plausible, working, off-system code all day, and it will do it faster than you can review.</p>
+<p>So the question stops being <em>is the system well designed</em> and becomes <em>is the system legible and enforceable to a reader with no memory</em>. Those are different problems, and only one of them is solved by a Figma library.</p>
+
+<h2>Try it</h2>
+<p>Below is what actually happens when a hardcoded value gets written into one of my repos. Pick a violation, or type your own, and switch between the two eras.</p>
+
+<div class="demo">
+  <div class="demo-head" role="tablist" aria-label="Which era">
+    <button class="demo-tab" role="tab" id="tab-ps" aria-selected="true" aria-controls="demo-out">
+      PlaySesh, 2025<b>An advisory rule</b></button>
+    <button class="demo-tab" role="tab" id="tab-y30" aria-selected="false" aria-controls="demo-out">
+      y30, 2026<b>An enforced gradient</b></button>
+  </div>
+  <div class="demo-body">
+    <p class="demo-label">Common violations</p>
+    <div class="chips" id="chips"></div>
+
+    <p class="demo-label">What the agent wrote</p>
+    <div class="editor">
+      <span class="dim">const Panel = styled.div`</span><br>
+      &nbsp;&nbsp;<input id="decl" value="padding: 16px" aria-label="CSS declaration the agent wrote" spellcheck="false"><br>
+      <span class="dim">`;</span>
+    </div>
+    <button class="run" id="run">Write it &rarr;</button>
+
+    <div class="stages" id="demo-out" role="region" aria-live="polite"></div>
+    <p class="sim-note">A faithful reproduction, not a live hook. The real gate runs in the repo: the token tables, substitutions, and rule text below are read verbatim from <code class="mono">client/design-tokens/index.ts</code>, <code class="mono">.cursor/rules/design-ux-patterns.mdc</code>, <code class="mono">docs/conventions/web-components.md</code>, and <code class="mono">.claude/hooks/</code>.</p>
+  </div>
+</div>
+
+<h2>What the demo is actually doing</h2>
+<p>The substitution is not a lookup table written for this page. It resolves your input against the real token scales &mdash; exact match first, then nearest value &mdash; the same way the hook does. Type <code class="mono">padding: 20px</code> and it will tell you the system has no 20, and offer you the 24 it does have. That is the interesting case, because it is where a system either bends or grows a one-off.</p>
+<p>My rule for that case, verbatim from the y30 conventions:</p>
+
+<div class="outcome">
+<p>If the token doesn't exist, do <b>not</b> add a one-off value. File an entry in <code class="mono">docs/design/inconsistencies.md</code> describing the gap, and either ask the user for direction, or pick the nearest existing token and live with the small visual delta.</p>
+<p><b>The design system is a contract. Every drift compounds.</b></p>
+</div>
+
+<h2>The system the rules protect</h2>
+<p>PlaySesh's tokens are the first thing in the repo. Commit <code class="mono">a812e20</code>, day one, before the canvas, before auth, before anything worth looking at. Semantic rather than raw, so a component asks for a role and not a colour.</p>
+
+<div class="swatches" id="sw-color"></div>
+<p style="font-size:14px;color:var(--muted);margin-top:-6px">Light theme. Every one has a dark counterpart, resolved through <code class="mono">getThemeColors(theme)</code> rather than a class swap.</p>
+
+<h3>Spacing, and the two systems that had to agree</h3>
+<div class="scale" id="sc-space"></div>
+<p>PlaySesh runs a seven-step named scale; y30 runs a ten-step 4px grid. Different products, different needs, same discipline: a component never states a number.</p>
+
+<h3>The layering contract</h3>
+<p>The token nobody thinks of as a design token, and the one that saves the most time. Six values, ordered once, so nobody ever argues about whether a tooltip goes above a modal.</p>
+<ul class="zstack" id="z-list"></ul>
+
+<h2>Where it held: two libraries down to one</h2>
+<p>The real test came from inside the team. A co-founder introduced <code class="mono">react-tooltip</code> for one panel while the rest of the app used the Radix tooltip I had built on top of the tokens. Two tooltip implementations, two visual languages, two things to maintain.</p>
+<p>I wrote the assessment, made the call, and did the migration:</p>
+
+<div class="outcome">
+<p><b>Issue:</b> UndoRedoPanel uses <code class="mono">react-tooltip</code> while the rest of the app uses Radix Tooltip.<br>
+<b>Impact:</b> Inconsistent styling &middot; different behavior &middot; maintenance overhead of two libraries &middot; hardcoded values, which violates the design tokens.</p>
+<p>&#10003; Removed <code class="mono">react-tooltip</code> &middot; &#10003; migrated the panel to the custom Tooltip &middot; &#10003; all tooltips now on one implementation.</p>
+</div>
+
+<p>The dependency came out of <code class="mono">package.json</code> in commit <code class="mono">4b02ae7</code>. That is the part I would point at: not that I wrote a standard, but that the standard survived someone else's reasonable decision and the losing library was actually deleted rather than left to rot alongside the winner.</p>
+<p>The same cycle ran on dropdowns, and ended in <code class="mono">client/utils/dropdownAnimations.ts</code> &mdash; three shared constants and three keyframes, now imported by eight components that each used to carry their own copy.</p>
+
+<h2>Where it failed, and what I did about it</h2>
+<p>At PlaySesh the rule was a document. Good writing, injected into every agent edit, unambiguous. And it did not hold: <b>171 hardcoded colour declarations</b> are still in that codebase, written past a rule that says in bold capitals never to write them.</p>
+<p>An advisory rule is a suggestion with extra steps. That is the lesson, and it cost a real number.</p>
+<p>So at y30 I built the version that can say no. It came out of a specific failure: an agent, working in a repo where the token file had never been wired into the Vite build, could not find any tokens &mdash; so it invented a parallel set, <code class="mono">web/src/care/tokens.ts</code>, with its own hex values. Entirely reasonable behaviour. Catastrophic for a design system.</p>
+<p>The fix is layered by cost, because the cheapest correction is the one that happens before anything is written:</p>
+
+<div class="outcome">
+<p><b>Read time.</b> <span class="quote">"Before writing or editing any file under <code class="mono">web/src/</code>, you MUST have read&hellip; If you cannot cite at least one existing CSS variable that applies to your work, you are not ready to write. Ask the user, or read more."</span></p>
+<p><b>Write time.</b> A PostToolUse hook scans the edit and names the exact substitution, so the agent self-corrects mid-task. Deliberately non-blocking &mdash; a warning it can act on beats a wall it has to argue with.</p>
+<p><b>Commit time.</b> A PreToolUse hook intercepts <code class="mono">git commit</code> and exits 2. This one is a wall.</p>
+</div>
+
+<p>Advisory, corrective, blocking. Most codebases have none of these. The useful insight is not that blocking works &mdash; it obviously does &mdash; it is that blocking alone is a bad experience, and the warning layer is what makes the wall rare enough to tolerate.</p>
+
+<h2>What is not true here</h2>
+<p>Every claim above has a commit behind it. These do not, and a system page that only lists wins is a system page nobody should trust.</p>
+<ul>
+<li><b>Neither system is fully adopted.</b> PlaySesh: 87 of 149 component files import the tokens, and those 171 hardcoded colours are still there. y30 is roughly half-migrated, 935 token references against 923 raw hex.</li>
+<li><b>There is no single source of truth.</b> Both repos carry two token layers &mdash; a TypeScript object and a CSS custom-property layer &mdash; that are not generated from each other, and in PlaySesh their primary blues do not even match. A build step should own this. None does.</li>
+<li><b>Accessibility is written down, not enforced.</b> WCAG AA is in the rules and the primitives implement focus-visible and real touch targets, but there is no axe, no jest-axe, no lint rule, and nothing in CI that could fail on a contrast regression. This is the first thing I would fix.</li>
+<li><b>No versioning, no changelog, no visual regression.</b> The system was never packaged or distributed, so there was nothing to version against.</li>
+<li><b>The blocking hook covers agent commits.</b> It fires when the commit runs through the agent's shell. A human committing in a terminal walks straight past it. A real git hook is the obvious next move.</li>
+<li><b>There is still a duplicate Button in PlaySesh.</b> A second implementation with hardcoded hex, added by a co-founder during a login push, shipping alongside mine. I never resolved it. It is the honest counterexample to the tooltip story directly above.</li>
+</ul>
+<p>Scale, stated accurately: one repo of about 1,800 commits with three humans and an agent, and one repo of about 1,400 that is me and agents. This is not a system that governs forty engineers. It is a system that held a small team and a machine to one visual language for six months, and I can show you every place it leaked.</p>
+
+</article>
+<div class="footer"><p><a href="index.html">All case studies</a> &nbsp;&middot;&nbsp; <a href="../index.html">Chris Lam</a> &nbsp;&middot;&nbsp; <a href="mailto:whoischrislam@gmail.com">whoischrislam@gmail.com</a></p></div>
+
+<script>
+/* The demo. Token tables are transcribed verbatim from the two repos:
+   playsesh-web/client/design-tokens/index.ts and
+   y30-voice/web/src/styles/y30-tokens.css.
+   The matcher resolves exact-then-nearest, which is what makes the
+   "the system has no 20px" case honest rather than staged. */
+(function () {
+  "use strict";
+
+  var PS = {
+    era: "PlaySesh", year: "2025", tool: "Cursor",
+    ruleFile: ".cursor/rules/design-ux-patterns.mdc",
+    rule: "⚠ CRITICAL: NO HARDCODED CSS VALUES. NEVER hardcode CSS values. Always use design tokens from client/design-tokens/index.ts.",
+    ref: function (k, n) { return "${tokens." + k + "." + n + "}"; },
+    space:  { xs:4, sm:8, md:16, lg:24, xl:32, "2xl":48, "3xl":64 },
+    radius: { none:0, xs:2, sm:4, md:8, lg:12, xl:16, full:9999 },
+    z:      { dropdown:1000, toast:1100, modal:1200, overlay:1250, tooltip:1300, popover:1350 },
+    color:  { primary:"#3b82f6", secondary:"#6b7280", success:"#10b981", warning:"#f59e0b",
+              error:"#ef4444", backgroundPrimary:"#ffffff", backgroundSecondary:"#f9fafb",
+              backgroundTertiary:"#f3f4f6", textPrimary:"#111827", textSecondary:"#6b7280",
+              textTertiary:"#9ca3af", borderPrimary:"#e5e7eb", borderSecondary:"#d1d5db",
+              primaryHover:"#2563eb", primaryActive:"#1d4ed8", brand:"#e48a47" },
+    colorKey: "colors.light"
+  };
+
+  var Y30 = {
+    era: "y30", year: "2026", tool: "Claude Code",
+    ruleFile: "docs/conventions/web-components.md",
+    rule: "If you cannot cite at least one existing CSS variable from colors_and_type.css that applies to your work, you are not ready to write. Ask the user, or read more.",
+    ref: function (k, n) { return "var(--" + n + ")"; },
+    space:  { "sp-1":4, "sp-2":8, "sp-3":12, "sp-4":16, "sp-5":24,
+              "sp-6":32, "sp-7":48, "sp-8":64, "sp-9":96, "sp-10":128 },
+    radius: { "r-xs":2, "r-sm":4, "r-md":8, "r-lg":12, "r-xl":16, "r-pill":999 },
+    z:      {},
+    color:  { paper:"#FAFAF8", "paper-2":"#F4F1EB", "paper-3":"#ECE7DD", ink:"#1C1C1C",
+              "ink-2":"#3A3A37", "ink-3":"#5C5C5C", "ink-4":"#8B857B", rule:"#E4E4DF",
+              accent:"#1A56A0", ochre:"#B8894A", sage:"#7A8F6E", clay:"#B85A3E" },
+    colorKey: null
+  };
+
+  var CHIPS = [
+    "padding: 16px", "color: '#3b82f6'", "border-radius: 12px",
+    "z-index: 1000", "padding: 20px", "background: #FAFAF8"
+  ];
+
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); };
+  var era = PS;
+
+  function hex2rgb(h) {
+    h = h.replace("#", "");
+    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    return [parseInt(h.slice(0,2),16), parseInt(h.slice(2,4),16), parseInt(h.slice(4,6),16)];
+  }
+  function nearestColor(hex, table) {
+    var t = hex2rgb(hex), best = null, bd = Infinity;
+    for (var k in table) {
+      var c = hex2rgb(table[k]);
+      var d = Math.pow(t[0]-c[0],2) + Math.pow(t[1]-c[1],2) + Math.pow(t[2]-c[2],2);
+      if (d < bd) { bd = d; best = k; }
+    }
+    return { name: best, exact: bd === 0, value: table[best] };
+  }
+  /* Ties are the interesting case: 20px sits exactly between the 16 and the 24,
+     and silently picking one hides the actual decision. Return both and make
+     the human choose, which is what the inconsistencies-log rule asks for. */
+  function nearestNum(n, table) {
+    var bd = Infinity, names = [];
+    for (var k in table) {
+      var d = Math.abs(table[k] - n);
+      if (d < bd) { bd = d; names = [k]; }
+      else if (d === bd) { names.push(k); }
+    }
+    return { name: names[0], names: names, exact: bd === 0, value: table[names[0]] };
+  }
+
+  /* Same order of checks the hook uses: colour, then radius, then z-index,
+     then any remaining px on a spacing property. */
+  function analyse(text) {
+    var hex = text.match(/#[0-9a-fA-F]{3,8}\b/);
+    if (hex) {
+      var m = nearestColor(hex[0], era.color);
+      return { kind:"colour", found:hex[0],
+               token: era.colorKey ? era.ref(era.colorKey, m.name) : era.ref(null, m.name),
+               exact:m.exact, near:m.value };
+    }
+    // Every numeric match carries its tied alternatives so the copy can say so.
+    function opts(res, group, table, unit) {
+      return res.names.map(function (n) {
+        return { token: era.ref(group, n), value: table[n] + (unit || "") };
+      });
+    }
+
+    var num = text.match(/(-?\d+(?:\.\d+)?)px/);
+    if (/radius/i.test(text) && num) {
+      var r = nearestNum(parseFloat(num[1]), era.radius);
+      return { kind:"radius", found:num[0], token: era.ref("borderRadius", r.name),
+               exact:r.exact, near:r.value + "px",
+               options: opts(r, "borderRadius", era.radius, "px") };
+    }
+    var zi = text.match(/z-index\s*:\s*(\d+)/i);
+    if (zi) {
+      if (!Object.keys(era.z).length) {
+        return { kind:"z-index", found:zi[1], token:null, exact:false,
+                 note:"y30 has no z-index scale. That is a real gap, not a trick question." };
+      }
+      var z = nearestNum(parseInt(zi[1],10), era.z);
+      return { kind:"z-index", found:zi[1], token: era.ref("zIndex", z.name),
+               exact:z.exact, near:z.value, options: opts(z, "zIndex", era.z) };
+    }
+    if (num) {
+      var sp = nearestNum(parseFloat(num[1]), era.space);
+      return { kind:"spacing", found:num[0], token: era.ref("spacing", sp.name),
+               exact:sp.exact, near:sp.value + "px",
+               options: opts(sp, "spacing", era.space, "px") };
+    }
+    return null;
+  }
+
+  function stage(cls, when, html) {
+    return '<div class="stage ' + cls + '"><p class="stage-when">' + when + "</p>" + html + "</div>";
+  }
+
+  function run() {
+    var text = $("decl").value.trim();
+    var a = analyse(text);
+    var out = $("demo-out"), html = "";
+
+    if (!a) {
+      html = stage("pass", "read time → write time → commit time",
+        "<p>Nothing to catch. No colour, size, radius, or z-index literal in that line, so all three layers pass it through.</p>");
+      out.innerHTML = html; reveal(); return;
+    }
+
+    var sub = a.token
+      ? "<code>" + esc(a.found) + "</code> &rarr; <code>" + esc(a.token) + "</code>"
+      : "<code>" + esc(a.found) + "</code> &rarr; <em>no token exists</em>";
+
+    html += stage("warn", "read time · " + esc(era.ruleFile),
+      '<p class="quote">' + esc(era.rule) + "</p>");
+
+    if (a.token && !a.exact) {
+      var tie = a.options && a.options.length > 1;
+      html += stage("warn", "write time · " + (tie ? "no nearest, it is a tie" : "nearest match"),
+        "<p>The system has no <code>" + esc(a.found) + "</code>. " +
+        (tie
+          ? "It sits exactly between " + a.options.map(function (o) {
+              return "<code>" + esc(o.token) + "</code> (" + esc(o.value) + ")";
+            }).join(" and ") + "."
+          : "Closest is <code>" + esc(a.near) + "</code>, which is " + sub + ".") + "</p>" +
+        "<p>" + (tie ? "Nothing can pick for you. " : "") +
+        "File the gap in <code>inconsistencies.md</code> or take an existing token and accept the delta. Do not add a one-off.</p>");
+    } else if (a.token) {
+      html += stage("warn", "write time · post-edit hook",
+        "<p>⚠ hardcoded " + esc(a.kind) + " in <code>web/src/</code>: " + sub + "</p>");
+    } else {
+      html += stage("warn", "write time · gap",
+        "<p>" + esc(a.note) + "</p>");
+    }
+
+    if (era === Y30) {
+      if (!a.token) {
+        // No token exists, so blocking with no way forward would just be a wall.
+        // This is the case the escape hatch is actually for.
+        html += stage("block", "commit time · pre-commit hook",
+          "<p><code>BLOCKED: y30 design-system violations in staged files.</code></p>" +
+          "<p>And here the gate is wrong, or at least useless: there is no token to switch to. " +
+          "This is what <code>--no-verify</code> exists for, paired with an entry in " +
+          "<code>inconsistencies.md</code> so the gap gets closed rather than bypassed twice.</p>");
+        html += '<p class="verdict"><b>A gate that cannot be satisfied is a bug in the gate.</b> ' +
+                'The honest answer is a documented override plus a logged gap, not a wall.</p>';
+      } else {
+        html += stage("block", "commit time · pre-commit hook",
+          "<p><code>BLOCKED: y30 design-system violations in staged files.</code></p>" +
+          "<p><code>exit 2</code> — the commit does not happen. Escape hatch is <code>--no-verify</code>, documented, and used about never.</p>");
+        html += '<p class="verdict"><b>Caught.</b> Three chances to fix it, and the last one is not optional.</p>';
+      }
+    } else {
+      html += stage("pass", "commit time",
+        "<p>Nothing runs. There is no hook here — the rule is a document.</p>");
+      html += '<p class="verdict">The agent may have read the rule, and it may have complied. Nothing checked. ' +
+              'This is how <b>171 hardcoded colours</b> ended up in a codebase whose own rules forbid them in bold capitals.</p>';
+    }
+    out.innerHTML = html;
+    reveal();
+
+    if (window.posthog && !window.__phDisabled) {
+      posthog.capture("design_system_demo_run", { era: era.era, kind: a.kind, exact: !!a.exact });
+    }
+  }
+
+  function reveal() {
+    var s = document.querySelectorAll("#demo-out .stage");
+    s.forEach(function (el, i) { setTimeout(function () { el.classList.add("on"); }, 90 * i); });
+  }
+
+  function setEra(next) {
+    era = next;
+    $("tab-ps").setAttribute("aria-selected", String(era === PS));
+    $("tab-y30").setAttribute("aria-selected", String(era === Y30));
+    run();
+  }
+
+  /* ---- static renders, from the same tables ---- */
+  function paint() {
+    $("chips").innerHTML = CHIPS.map(function (c) {
+      return '<button class="chip" type="button">' + esc(c) + "</button>";
+    }).join("");
+    $("chips").addEventListener("click", function (e) {
+      if (!e.target.classList.contains("chip")) return;
+      $("decl").value = e.target.textContent;
+      run();
+    });
+
+    var pick = ["primary","success","warning","error","brand","textPrimary","backgroundSecondary","borderPrimary"];
+    $("sw-color").innerHTML = pick.map(function (k) {
+      return '<div class="sw"><i style="background:' + PS.color[k] + '"></i>' +
+             "<span><b>" + k + "</b>" + PS.color[k] + "</span></div>";
+    }).join("");
+
+    $("sc-space").innerHTML = Object.keys(PS.space).map(function (k) {
+      var v = PS.space[k];
+      return "<div><i style=\"width:" + v + "px;height:" + v + 'px"></i><span>' + k + "<br>" + v + "</span></div>";
+    }).join("");
+
+    $("z-list").innerHTML = Object.keys(PS.z).map(function (k) {
+      return "<li><b>" + k + "</b> &middot; " + PS.z[k] + "</li>";
+    }).join("");
+  }
+
+  paint();
+  $("run").addEventListener("click", run);
+  $("decl").addEventListener("keydown", function (e) { if (e.key === "Enter") run(); });
+  $("tab-ps").addEventListener("click", function () { setEra(PS); });
+  $("tab-y30").addEventListener("click", function () { setEra(Y30); });
+  run();
+})();
+</script>
+</body></html>
