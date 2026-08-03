@@ -46,31 +46,24 @@
             ]
         },
         {
+            "name": "Blue Startups",
+            "position": "Entrepreneur in Residence",
+            "startDate": "2024-07",
+            "endDate": "2024-11",
+            "summary": "Concurrent with PlaySesh, during a pivot. Conducted design and product audits for 10 early-stage startups in cohort 16. Advised on product strategy, MVP scope, and design-to-engineering handoffs."
+        },
+        {
             "name": "PlaySesh",
             "position": "Co-Founder & CEO",
             "startDate": "2024-01",
             "endDate": "2026-03",
-            "summary": "Collaborative game development tools for indie developers, built inside Discord.",
+            "summary": "Collaborative game development tools for indie developers, built inside Discord. Started while finishing at Modus Create.",
             "highlights": [
                 "Shipped 0 to 1 alone in Vanilla JS, Express, and Supabase before recruiting co-founders; primary engineer who authored 1,147 of the project's 1,790 commits, with 291 passing tests and zero ad spend.",
                 "Authored the core real-time engine: a custom operation-based sync protocol on Cloudflare Durable Objects, including authoritative ordering and WebSocket reconnection logic, after moving off an off-the-shelf canvas library.",
                 "Grew organically to 6,220 authorized Discord accounts and 138 server installs, peaking at 1,043 monthly active users (January 2026). Discord counts as of August 1, 2026.",
                 "Pivoted from social gaming to game dev tooling based on user behavior signal."
             ]
-        },
-        {
-            "name": "CureWise",
-            "position": "Contract Software Engineer",
-            "startDate": "2025",
-            "endDate": "2026",
-            "summary": "Oncology AI platform. Shipped multi-agent features in Next.js and TypeScript on a Firebase/Fasten Health stack."
-        },
-        {
-            "name": "Blue Startups",
-            "position": "Entrepreneur in Residence",
-            "startDate": "2024-07",
-            "endDate": "2024-11",
-            "summary": "Conducted design and product audits for 10 early-stage startups in cohort 16. Advised on product strategy, MVP scope, and design-to-engineering handoffs."
         },
         {
             "name": "Modus Create",
@@ -91,23 +84,29 @@
             "position": "Lead Product Designer",
             "startDate": "2021-02",
             "endDate": "2021-10",
-            "summary": "Rescue hire during the doc.ai acquisition; Sharecare later went public (NASDAQ: SHCR, 2021). Redesigned a legacy clinical-studies product through user testing and competitive research."
+            "summary": "Hired by doc.ai; exited under Sharecare paperwork after the acquisition. Rescue hire brought in to ship a clinical-studies product through the acquisition. Sharecare later went public (NASDAQ: SHCR, 2021)."
         },
         {
             "name": "Pathstream",
-            "position": "Lead Product Designer",
+            "position": "Senior Product Design Manager",
             "startDate": "2019-06",
             "endDate": "2020-11",
-            "summary": "First design hire at a career-development and LMS platform. Shipped accessibility improvements, engagement features, and design-system foundations."
+            "summary": "Operated as lead designer. First design hire at a career-development and LMS platform.",
+            "highlights": [
+                "Shipped WCAG 2.1 AA accessibility across the student experience.",
+                "Built the design system in React with Storybook and Chromatic.",
+                "Ran the research: user interviews, synthesized design-partner sessions, and a competitive analysis that set the product direction."
+            ]
         },
         {
             "name": "Iodine (acquired by GoodRx)",
             "position": "Lead Product Designer",
             "startDate": "2017-04",
             "endDate": "2018-10",
-            "summary": "First full-time designer, pre-IPO; GoodRx later IPO'd (NASDAQ: GDRX). Iodine acquired by GoodRx (2017).",
+            "summary": "First full-time designer, on GoodRx's special research and experimentation team. Title was self-assigned. A contractor preceded him and never converted. GoodRx later IPO'd (NASDAQ: GDRX).",
             "highlights": [
                 "Redesigned the coupon redemption flow; conversion rate 2% to 5%.",
+                "Ran a series of conversion projects across the drug pages: 10% lift on mobile, 25% on desktop.",
                 "Contributed to GoodRx Research data visualizations referenced in the New York Times and on Good Morning America / ABC News.",
                 "Iodine.com won the Webby for Best Health Website (2018). I was the product's designer.",
                 "Built 50-state prescription-price fact sheets with GoodRx co-CEO Doug Hirsch, used in advocacy around S.2554 and S.2553 on drug price transparency."
@@ -115,12 +114,13 @@
         },
         {
             "name": "Clover Health",
-            "position": "Lead Product Designer",
+            "position": "Designer",
             "startDate": "2015-07",
             "endDate": "2016-09",
-            "summary": "2nd designer, pre-IPO; Clover Health later IPO'd (NYSE: CLOV).",
+            "summary": "Second designer, joined pre-seed when the title was deliberately broad. Operated as a product design lead. Clover later IPO'd (NYSE: CLOV).",
             "highlights": [
-                "Redesigned the nurse practitioner home-visit iPad web app end to end through contextual shadowing. ~7 to 8x lift in visit-related revenue; saved ~2 hours per nurse per day.",
+                "Helped build the design function as the second designer: established how design, engineering, and product worked together, sat in product development, and co-wrote PRDs with the product manager.",
+                "Redesigned the nurse practitioner home-visit iPad web app end to end through contextual shadowing. about 7-8x ROI on the increase in revenue; saved ~2 hours per nurse per day.",
                 "Led cross-functional alignment across design, engineering, product, data science, and medical."
             ]
         },
@@ -131,7 +131,7 @@
             "endDate": "2015-03",
             "summary": "Worked on the 2014 rebrand; TaskRabbit later acquired by IKEA (2017).",
             "highlights": [
-                "Owned the Tasker experience and helped across the 2014 rebrand with the PMs.",
+                "Hired by founder and CEO Leah Busque onto a new design team as TaskRabbit moved from bidding to direct hire. Owned the Tasker side of the experience outright and contributed to the consumer side.",
                 "Tasker NPS recovered from about -5 in mid-2014 to the mid-50s; Client NPS to the high-40s."
             ]
         },
@@ -141,7 +141,7 @@
             "startDate": "2012-04",
             "endDate": "2013-09",
             "highlights": [
-                "Prototyped the buy-and-gift Prime flow that contributed to 1M+ new subscribers.",
+                "Prototyped the buy-and-gift Prime flow, projected to drive 1M+ new subscribers.",
                 "Partnered with Samsung on the Amazon Prime Music app for the Samsung Shape wireless speaker."
             ]
         }
