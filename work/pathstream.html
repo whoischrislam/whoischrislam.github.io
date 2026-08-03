@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Pathstream · Chris Lam</title>
+<meta name="description" content="Redesigning the core lesson experience of a live learning platform, mid-cohort, without forcing a rewrite of 60-80 hours of existing course content. Case study by Chris Lam."/>
+<link rel="canonical" href="https://whoischrislam.github.io/work/pathstream.html"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="case-study.css"/>
+</head><body>
+<nav class="nav"><a href="../index.html">&larr; Chris Lam</a></nav>
+<article class="cs">
+
+<p class="eyebrow">Pathstream</p>
+<h1>Rebuilding the lesson, mid-flight</h1>
+<p class="tagline">Redesigning the core surface of a live learning platform, without breaking the sixty-plus hours of course content already running on it.</p>
+
+<dl class="facts">
+<div><dt>Role</dt><dd>Senior Product Design Manager, operating as lead designer. First design hire.</dd></div>
+<div><dt>Scope</dt><dd>Research, design, spec, and handoff across student, instructor, and course-author modes</dd></div>
+<div><dt>Platforms</dt><dd>Web, mobile</dd></div>
+<div><dt>When</dt><dd>2019&ndash;2020, seventeen months</dd></div>
+</dl>
+
+<div class="outcome">
+<p>Shipped to a live platform serving adult learners at partner colleges, <b>without forcing a rewrite of 60&ndash;80 hours of existing course content</b>.</p>
+<p>I never measured whether it worked. That was my mistake and it is the most useful thing in this case study.</p>
+</div>
+
+<h2>Week one</h2>
+<p>I was the first design hire, which meant nobody was going to tell me what to do. My first list was mostly questions:</p>
+<ul>
+<li>Audit the system, the website, the whole surface</li>
+<li>Map the customer journey and the ecosystem</li>
+<li>Read up on LTI, on SSO, on grade passback</li>
+<li>Look at how Blackboard, Canvas, Brightspace and Moodle solve this</li>
+</ul>
+<p>Two of those questions turned out to shape the next seventeen months. <em>How do you roll out design changes while courses are live?</em> And <em>how much of the LMS should we own versus inherit?</em></p>
+
+<figure>
+  <img loading="lazy" src="../images/craft/pathstream-pathstreamecosystem.webp" alt="Pathstream ecosystem diagram mapping colleges, instructors, students and employers">
+  <figcaption>The ecosystem map from week three. The question marks are where student job outcomes had no owner. Drawing that was more useful than any screen I made that month.</figcaption>
+</figure>
+
+<h2>The diagnosis</h2>
+<p>Three weeks in I audited twenty-six screens of the live product and scored it against its own model of how a student actually uses it. It failed at every stage:</p>
+
+<div class="outcome">
+<p><b>Our current lesson page design is bad at all stages.</b></p>
+<p><b>Browse</b> &mdash; we show total time and a student can scroll through to see what is included.<br>
+<b>Commit</b> &mdash; there is no active way to commit.<br>
+<b>Do</b> &mdash; the one long scroll of ~60 minutes of content is boring and easy to get lost.<br>
+<b>Complete</b> &mdash; there is no sense of accomplishment.</p>
+</div>
+
+<p>The research backed it up in the students' own language. They did not trust the time estimates and had learned to ignore them. One put the real problem plainly: <em>"60 minutes is too long. 30 minutes would be better. I want to know how to plan my time."</em></p>
+<p>These were working adults fitting coursework around jobs. A sixty-minute unlabelled scroll is not a content problem, it is a planning problem.</p>
+
+<h2>The constraint that shaped everything</h2>
+<p>This is the part that made it hard, and the part I would lead with if I were telling it out loud.</p>
+<p>The platform was live. Real students were mid-course. And every structural change I made created migration work for a course-author team I did not manage.</p>
+
+<div class="outcome">
+<p><b>A secondary goal is to minimize the amount of re-work course authors will need to do to accommodate the new designs.</b></p>
+<p>Timing is a challenge. We can't make major changes mid-cohort, and thus the window between December and January, and April and May, are our primary options.</p>
+</div>
+
+<p>So the design had to be backward compatible by default. Existing content had to land somewhere sensible with nobody touching it:</p>
+<ul>
+<li>Place all existing blocks in Part 1</li>
+<li>Add the lesson title as the Part 1 title</li>
+<li>If there is only one part, do not show the part number at all</li>
+</ul>
+<p>That last rule is the one I am proudest of. It means a course author who does nothing sees no change, and an author who opts in gets the new structure. The migration cost is zero until someone chooses to pay it.</p>
+
+<h2>Chunking the lesson</h2>
+<p>The fix was to break the single scroll into parts a student could see, choose, and finish. That meant a new level in the data model, not just a new layout &mdash; parts became a real entity with its own database record.</p>
+
+<figure>
+  <img loading="lazy" src="../images/craft/pathstream-menuscrolling.webp" alt="Animated prototype of the section carousel, showing lesson parts scrolling into view as the student progresses">
+  <figcaption>The section carousel. Scrolling drives the header state, so the student always knows which part they are in and what is left.</figcaption>
+</figure>
+
+<figure>
+  <img loading="lazy" src="../images/craft/pathstream-completelesson.webp" alt="Animated prototype of the lesson completion state">
+  <figcaption>Completion. The old design had no ending &mdash; you simply ran out of scroll. This was the answer to "there is no sense of accomplishment."</figcaption>
+</figure>
+
+<h3>Two treatments, tested against each other</h3>
+<p>I built the full lesson page twice to settle an argument about how much visual weight progress should carry.</p>
+<div class="pair">
+  <figure><img loading="lazy" src="../images/craft/pathstream-contrast.webp" alt="High contrast treatment of the lesson page"><figcaption>High contrast.</figcaption></figure>
+  <figure><img loading="lazy" src="../images/craft/pathstream-subtle.webp" alt="Subtle treatment of the lesson page"><figcaption>Subtle.</figcaption></figure>
+</div>
+
+<h2>Beyond the student</h2>
+<p>The same structure had to serve three audiences. Instructors needed to see who was falling behind, before the student dropped. I specified the dashboard in states, including the empty one, which is the state most specs forget.</p>
+<figure>
+  <img loading="lazy" src="../images/craft/pathstream-dashboardstates.webp" alt="Instructor dashboard specified across four states including empty">
+  <figcaption>Instructor dashboard, specified across four states. Browse by student, browse by assignment.</figcaption>
+</figure>
+
+<h2>The interface had drifted</h2>
+<p>Alongside the redesign I inventoried what the platform was already using, and annotated every value with where it appeared. The audit is the argument:</p>
+<ul>
+<li>Sixteen colours, of which <b>four different greys were all labelled "Text"</b></li>
+<li>Two different values both called <b>"Primary Button"</b></li>
+<li>Body copy set at four different sizes</li>
+<li>A <b>10.3px</b> type size, shipping to adult learners</li>
+</ul>
+<p>I built the system in React with Storybook on top of Ant Design. I also killed an icon-only progress timeline I liked, because it carried meaning in shape alone and would have failed anyone using a screen reader.</p>
+
+<h2>It shipped</h2>
+<p>Code merged. I wrote the implementation spec covering student, instructor and course-author modes, plus mobile, plus the backward-compatible defaults above.</p>
+
+<h2>What I got wrong</h2>
+<p>I ran a retro on myself, with dates:</p>
+<div class="outcome">
+<p>October 7: actual macro design decisions, <b>+17 days</b>.<br>
+October 30: actual initial design completion and handoff, <b>+13 days</b>.</p>
+<p>Challenges: aligning on macro design decisions, over-aggressive goals on polish.</p>
+</div>
+<p>Three things I would do differently, and I wrote them down at the time:</p>
+<ul>
+<li><b>Evaluate course-author impact sooner.</b> Biggest gotcha. I found the migration constraint after I had already committed to a direction.</li>
+<li><b>Be more in the understanding side before jumping to the design.</b></li>
+<li><b>We needed a design gate more formal than Slack.</b> Toward the end things sped up and nobody could tell when a decision was final.</li>
+</ul>
+
+<h2>The same problem, from the other side</h2>
+<p>Before the lesson work I spent months on Labs, the virtualised workspace where students actually did the thing they were learning &mdash; SQL in a real MySQL Workbench, Unity in a real editor, running in the browser. It was the platform's whole "learn by doing" premise and its clearest competitive differentiator.</p>
+<p>It served three audiences at once: students doing the work, instructors grading it, and course authors building it. I wrote the PRD for all three.</p>
+<p>The student problems rhymed with the lesson page. Labs were <em>static</em> &mdash; no feedback until an instructor looked, if ever. <em>Daunting</em> &mdash; every instruction dumped into one long sidebar. <em>Rigid</em> &mdash; no way to resize the tool against the instructions. And you could not tell where you had left off.</p>
+<p>The sharpest thing in the research was not from a student. It was a course author's own account of building a lab, step by step, in his words:</p>
+
+<div class="outcome">
+<p>Load lab to see what it looks like. <b>Get water, check slack, check phone, while lab is loading.</b></p>
+<p>Get excited if lab loads correctly. If not, send [our engineer] a message or troubleshoot on my own. Sometimes it doesn't load because I inputted the load file incorrectly; sometimes bad wifi; sometimes who knows why.</p>
+</div>
+
+<p>He had built a personal ritual around not knowing how long a machine would take, or whether it had worked. Nobody designed that ritual; the absence of a loading state did. And it is the same failure as the sixty-minute scroll, aimed at a different person. Nobody in this system &mdash; student, instructor, or author &mdash; could tell where they were or how long anything would take.</p>
+<p>That reframed Labs from an interface problem into a set of systems questions, which is what I ended up writing down: where does a student actually arrive from the LMS, and is that intentional? Should the lab preload while someone reads the introduction? Is work autosaved, and how does a student return to it? How is latency handled, and what does the interface say while it waits?</p>
+<p>One question in that PRD is the one I would still ask today: <em>how do we get students to be confident they know what they are doing, rather than figuring out what they are doing?</em> Micro-emotions, I called it. It is the difference between a tool that works and a tool someone trusts.</p>
+<p>Labs went to engineering as a handoff. I moved onto the lesson redesign before I saw it land.</p>
+
+<h2>The one that still bothers me</h2>
+<p>I wrote the success criteria &mdash; time on site, bounce rate, lesson completion &mdash; and the baseline analysis sat with the PM. It never came back, and I shipped anyway.</p>
+<p>So I have a redesign I believe in, built on real research, with a migration path that cost the content team nothing, and no idea whether it moved a number.</p>
+
+</article>
+<div class="footer"><p><a href="../index.html">More work</a> &nbsp;&middot;&nbsp; <a href="mailto:whoischrislam@gmail.com">whoischrislam@gmail.com</a></p></div>
+</body></html>
