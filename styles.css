@@ -1124,6 +1124,25 @@ button:active { transform: translateY(1px); }
 .case-outline strong { color: var(--accent); font-weight: 700; }
 .case-card .keyword-container { margin: auto 0 0 0; }
 
+/* Deliberately NOT a keyword pill. The pills are unclickable labels, so a case-study
+   link styled as one reads as scenery. This is the only in-card affordance that goes
+   somewhere, and it has to look like it. */
+/* .case-card is a flex column, so these blockify no matter what display we ask for.
+   They stack; give them a shared bottom margin and let the last one carry the gap
+   before the keyword pills. */
+.case-link {
+    align-self: flex-start;
+    margin: 0 0 0.35em 0;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s ease;
+}
+.case-link:hover, .case-link:focus-visible { border-bottom-color: var(--accent); }
+.case-link:last-of-type { margin-bottom: 1.1em; }
+
 /* Featured case with a data-visualization cluster (GoodRx) */
 .case-card--featured { grid-column: 1 / -1; }
 .case-card--featured .keyword-container { margin: 0 0 1.3em 0; }
