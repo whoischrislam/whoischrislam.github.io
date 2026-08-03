@@ -43,40 +43,7 @@
         <!-- PostHog product analytics. No DOM autocapture; session replay ON (enable it in
              project settings too); localStorage persistence (return-visit attribution, no
              third-party cookies). Stays fully dark until a real project key is set below. -->
-        <script>
-          !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-          (function () {
-            var KEY = "phc_wJ87u3UDqx4AokJzKguRM9jXR7YkQRJFKLoS6nPeEg5P"; // PostHog project token (public, write-only)
-            if (KEY.indexOf("YOUR_") === 0) { window.__phDisabled = true; return; } // not configured yet: stay dark
-            // Self-exclusion: visit ?notrack=1 once on any device to keep your own visits and
-            // tests out of the data (persists per browser); ?track=1 re-enables. Opted-out
-            // browsers never init PostHog at all: no pageview, no events, no recording.
-            try {
-              var qp = new URLSearchParams(location.search);
-              if (qp.get("notrack") === "1") { localStorage.setItem("ph_optout", "1"); alert("Analytics is now OFF on this browser. Your visits won't be recorded."); }
-              if (qp.get("track") === "1") { localStorage.removeItem("ph_optout"); alert("Analytics is now ON for this browser."); }
-              if (localStorage.getItem("ph_optout") === "1") { window.__phDisabled = true; return; }
-            } catch (e) {}
-            posthog.init(KEY, {
-              api_host: "https://us.i.posthog.com",
-              defaults: "2026-01-30",
-              autocapture: false,
-              disable_session_recording: false,
-              persistence: "localStorage"
-            });
-            // Register outbound campaign tags as super properties so EVERY event carries
-            // attribution. Person-property breakdowns don't work under identified_only
-            // (anonymous visitors get no person profile), so super properties are how a
-            // UTM-tagged outreach link stays attached through to the conversion event.
-            try {
-              var q = new URLSearchParams(window.location.search), utm = {};
-              ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"].forEach(function (k) {
-                var v = q.get(k); if (v) utm[k] = v;
-              });
-              if (Object.keys(utm).length) posthog.register(utm);
-            } catch (e) {}
-          })();
-        </script>
+        <script type="text/javascript" src="analytics-init.js"></script>
 
         <script type="text/javascript" src="script.js"></script>
         <script type="text/javascript" src="voice-agent.js" defer></script>
@@ -380,7 +347,7 @@
                         </div>
                         <h3>PlaySesh</h3>
                         <p class="featured-role">Co-Founder &amp; CEO · 2024–2026</p>
-                        <p>A collaborative game-thinking layer for indie devs, built inside Discord. I started it solo, proved the concept, then recruited <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> and Lawrence Kwok as co-founders. What began as a play against loneliness through gaming evolved into a real-time design and playtesting tool for small game teams. 1,790 commits. Zero ad spend.</p>
+                        <p>A collaborative game-thinking layer for indie devs, built inside Discord. I started it solo, proved the concept, then recruited <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> and Lawrence Kwok as co-founders. What began as a play against loneliness through gaming evolved into a real-time design and playtesting tool for small game teams. 1,793 commits. Zero ad spend.</p>
                         <p class="featured-creed">138 server installs · 6,220 authorized Discord accounts · 1,043 MAU at peak. All organic.</p>
                         <p class="featured-source">Discord counts as of August 1, 2026, and still climbing in maintenance mode. MAU is unique users in the peak calendar month, January 2026, measured in PlaySesh's own analytics.</p>
 
@@ -400,7 +367,7 @@
                                 </li>
                                 <li>
                                     <span class="featured-decision-title">Solo 0→1 build</span>
-                                    <span class="featured-decision-rationale">Designed and shipped the first version alone (Vanilla JS, Express, Supabase) before recruiting co-founders. No design-to-engineering handoff because I was both. I authored 1,147 of its 1,790 commits and 291 passing tests, primary engineer on the codebase.</span>
+                                    <span class="featured-decision-rationale">Designed and shipped the first version alone (Vanilla JS, Express, Supabase) before recruiting co-founders. No design-to-engineering handoff because I was both. I authored 1,147 of its 1,793 commits and 291 passing tests, primary engineer on the codebase.</span>
                                 </li>
                                 <li>
                                     <span class="featured-decision-title">A custom real-time engine</span>
@@ -566,6 +533,7 @@
                             </div>
                         </article>
                     </div>
+                    <p class="animation-appear"><a class="case-link" href="work/">All seven case studies, with a guide to which one to open first &rarr;</a></p>
                     <h3 class="work-subhead animation-appear">Additional experience</h3>
                     <ul class="work-list">
                         <li class="work-item animation-appear">
