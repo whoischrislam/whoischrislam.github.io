@@ -20,3 +20,13 @@ Normal project work does not automatically become a training exercise. Use this 
 ## Canonical career evidence
 
 Before writing or changing any PlaySesh adoption claim in the resume, portfolio, or application materials, read `PLAYSESH_METRICS.md`. Keep Discord authorizations, server installs, individual-user installs, and PostHog engagement metrics separately labeled. Do not describe OAuth authorizations as active users or installs.
+
+## Private job-hunt workspace
+
+Before job-search research, application work, interview preparation, or career-positioning work, read `.jobhunt/README.md`.
+
+Store private job-search material under `.jobhunt/`, never at the repository root or in public site directories. This includes job descriptions, recruiter or hiring-manager details, compensation, interview notes and transcripts, rejections, pipeline status, application drafts, career-GTM strategy, and recruiting-agent prompts.
+
+Use `.jobhunt/CAREER_GTM_POSITIONING.md` as the working source of truth for target roles, positioning, discovery strategy, and cross-surface copy. Check for and extend an existing file before creating a new one. Public resume and portfolio files belong outside `.jobhunt/` only when Chris explicitly asks to update material intended for publication.
+
+Never link `.jobhunt/` material from the public site or commit it. After creating or moving private material, verify the path is ignored and inspect `git status`. Remember that gitignored files are not backed up by git.
