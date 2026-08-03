@@ -54,6 +54,7 @@ Full write-ups with artifacts, outcomes, and what went wrong. Index: https://who
   - Measurement note: these are three different measurements and are never interchangeable. Authorized accounts are Discord OAuth authorizations, not users and not installs. Server installs count servers the app was added to. MAU is unique users in the peak calendar month, January 2026, from PlaySesh's own analytics. Discord counts as of August 1, 2026.
 
 ## Selected engineering (systems depth, not commit counts)
+- HogWare (solo, 2026): a WarioWare-style microgame gauntlet built from PostHog's five handbook values in about a week. PostHog is the backend: a HogQL leaderboard with in-query cheat protection behind a Cloudflare Worker, a live flag experiment, and a survey; a 32-check headless suite plays the game end to end.
 - PlaySesh: authored the core real-time engine, a custom operation-based sync protocol on Cloudflare Durable Objects (authoritative ordering, hand-written WebSocket reconnection), after moving the product off an off-the-shelf canvas library. Primary engineer on the codebase.
 - Evolve, Die, Repeat (solo Lua/Love2D game): a solver that proves every procedurally generated level is completable via a reachability search over the player's jump physics; from-scratch headless test harness, about 1,568 tests.
 - y30: conversation flow as a deterministic state machine with the language model scoped to phrasing and warmth, plus a model-independent rule-based safety floor; about half of routing resolves with no model call.
