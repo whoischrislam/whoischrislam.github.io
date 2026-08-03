@@ -6,11 +6,27 @@
         "email": "whoischrislam@gmail.com",
         "url": "https://whoischrislam.github.io",
         "summary": "Product design engineer with 14 years shipping healthcare, creative, developer, and consumer software. Built my career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today I own products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. Recent work includes a voice-AI system with deterministic safety controls and collaborative game-development tooling with a custom real-time engine. Seeking senior or lead IC design-engineering roles on AI-native teams.",
-        "location": { "city": "Honolulu", "region": "HI", "countryCode": "US" },
+        "location": {
+            "city": "Honolulu",
+            "region": "HI",
+            "countryCode": "US"
+        },
         "profiles": [
-            { "network": "LinkedIn", "username": "whoischrislam", "url": "https://www.linkedin.com/in/whoischrislam/" },
-            { "network": "GitHub", "username": "whoischrislam", "url": "https://github.com/whoischrislam" },
-            { "network": "Dribbble", "username": "whoischrislam", "url": "https://dribbble.com/whoischrislam" }
+            {
+                "network": "LinkedIn",
+                "username": "whoischrislam",
+                "url": "https://www.linkedin.com/in/whoischrislam/"
+            },
+            {
+                "network": "GitHub",
+                "username": "whoischrislam",
+                "url": "https://github.com/whoischrislam"
+            },
+            {
+                "network": "Dribbble",
+                "username": "whoischrislam",
+                "url": "https://dribbble.com/whoischrislam"
+            }
         ]
     },
     "work": [
@@ -71,7 +87,7 @@
             "summary": "First designer at a YC W20, a16z-backed seed-stage TTRPG marketplace. Redesigned the payment experience with Stripe for 100% on-time payouts; shipped a game master onboarding flow."
         },
         {
-            "name": "Sharecare",
+            "name": "doc.ai (acquired by Sharecare)",
             "position": "Lead Product Designer",
             "startDate": "2021-02",
             "endDate": "2021-10",
@@ -85,7 +101,7 @@
             "summary": "First design hire at a career-development and LMS platform. Shipped accessibility improvements, engagement features, and design-system foundations."
         },
         {
-            "name": "GoodRx / Iodine",
+            "name": "Iodine (acquired by GoodRx)",
             "position": "Lead Product Designer",
             "startDate": "2017-04",
             "endDate": "2018-10",
@@ -93,8 +109,8 @@
             "highlights": [
                 "Redesigned the coupon redemption flow; conversion rate 2% to 5%.",
                 "Contributed to GoodRx Research data visualizations referenced in the New York Times and on Good Morning America / ABC News.",
-                "Won a Webby Award (2018) for GoodRx Research data work.",
-                "Published 50-state health fact sheets contributing to S.2554 / S.2553 prescription drug price transparency legislation."
+                "Iodine.com won the Webby for Best Health Website (2018). I was the product's designer.",
+                "Built 50-state prescription-price fact sheets with GoodRx co-CEO Doug Hirsch, used in advocacy around S.2554 and S.2553 on drug price transparency."
             ]
         },
         {
@@ -131,18 +147,89 @@
         }
     ],
     "education": [
-        { "institution": "University of Washington", "area": "Human-Centered Design & Engineering", "studyType": "MS", "endDate": "2012" },
-        { "institution": "University of Washington", "area": "Informatics, Human-Computer Interaction", "studyType": "BS", "endDate": "2010" }
+        {
+            "institution": "University of Washington",
+            "area": "Human-Centered Design & Engineering",
+            "studyType": "MS",
+            "endDate": "2012"
+        },
+        {
+            "institution": "University of Washington",
+            "area": "Informatics, Human-Computer Interaction",
+            "studyType": "BS",
+            "endDate": "2010"
+        }
     ],
     "skills": [
-        { "name": "Product & Design", "keywords": ["Product design (0 to 1)", "Interaction design", "Design systems", "Design tokens", "Storybook & Chromatic", "UX research", "Prototyping", "Information architecture", "WCAG accessibility", "Product strategy", "Elder-care UX"] },
-        { "name": "Production Engineering", "keywords": ["React", "TypeScript", "Python", "Next.js", "HTML/CSS", "Vanilla JS", "Supabase", "Firebase", "PostgreSQL", "Cloudflare Workers", "Docker", "CI/CD", "Test-driven development", "Real-time systems", "Telemetry & instrumentation"] },
-        { "name": "AI-Native Systems", "keywords": ["Agent UX", "LLM orchestration", "Multi-agent orchestration", "Agentic systems", "Evals & evaluation UX", "Guardrails & deterministic safety control", "FSM/LLM safety", "Prompt & system-instruction design", "Provenance & human-AI oversight", "Agent frameworks", "MCP", "LiveKit", "Real-time STT/TTS", "Voice AI"] }
+        {
+            "name": "Product & Design",
+            "keywords": [
+                "Product design (0 to 1)",
+                "Interaction design",
+                "Design systems",
+                "Design tokens",
+                "Storybook & Chromatic",
+                "UX research",
+                "Prototyping",
+                "Information architecture",
+                "WCAG accessibility",
+                "Product strategy",
+                "Elder-care UX"
+            ]
+        },
+        {
+            "name": "Production Engineering",
+            "keywords": [
+                "React",
+                "TypeScript",
+                "Python",
+                "Next.js",
+                "HTML/CSS",
+                "Vanilla JS",
+                "Supabase",
+                "Firebase",
+                "PostgreSQL",
+                "Cloudflare Workers",
+                "Docker",
+                "CI/CD",
+                "Test-driven development",
+                "Real-time systems",
+                "Telemetry & instrumentation"
+            ]
+        },
+        {
+            "name": "AI-Native Systems",
+            "keywords": [
+                "Agent UX",
+                "LLM orchestration",
+                "Multi-agent orchestration",
+                "Agentic systems",
+                "Evals & evaluation UX",
+                "Guardrails & deterministic safety control",
+                "FSM/LLM safety",
+                "Prompt & system-instruction design",
+                "Provenance & human-AI oversight",
+                "Agent frameworks",
+                "MCP",
+                "LiveKit",
+                "Real-time STT/TTS",
+                "Voice AI"
+            ]
+        }
     ],
     "languages": [
-        { "language": "English", "fluency": "Native or bilingual" },
-        { "language": "Cantonese", "fluency": "Elementary" },
-        { "language": "Japanese", "fluency": "Limited working" }
+        {
+            "language": "English",
+            "fluency": "Native or bilingual"
+        },
+        {
+            "language": "Cantonese",
+            "fluency": "Elementary"
+        },
+        {
+            "language": "Japanese",
+            "fluency": "Limited working"
+        }
     ],
     "meta": {
         "canonical": "https://whoischrislam.github.io/resume.json",
