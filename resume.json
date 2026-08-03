@@ -59,7 +59,7 @@
             "endDate": "2026-03",
             "summary": "Collaborative game development tools for indie developers, built inside Discord. Started while finishing at Modus Create.",
             "highlights": [
-                "Shipped 0 to 1 alone in Vanilla JS, Express, and Supabase before recruiting co-founders; primary engineer who authored 1,147 of the project's 1,790 commits, with 291 passing tests and zero ad spend.",
+                "Shipped 0 to 1 alone in Vanilla JS, Express, and Supabase before recruiting co-founders; primary engineer who authored 1,147 of its 1,793 commits, with 291 passing tests and zero ad spend.",
                 "Authored the core real-time engine: a custom operation-based sync protocol on Cloudflare Durable Objects, including authoritative ordering and WebSocket reconnection logic, after moving off an off-the-shelf canvas library.",
                 "Grew organically to 6,220 authorized Discord accounts and 138 server installs, peaking at 1,043 monthly active users (January 2026). Discord counts as of August 1, 2026.",
                 "Pivoted from social gaming to game dev tooling based on user behavior signal."
