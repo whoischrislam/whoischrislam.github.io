@@ -32,7 +32,7 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 
 ## Selected outcomes
 - Clover Health (2nd designer, later IPO'd): ~7-8x lift in nurse visit-related revenue, ~2 hours saved per nurse per day.
-- GoodRx / Iodine (first full-time designer, later IPO'd): coupon conversion 2% to 5%; GoodRx Research dataviz referenced in the New York Times and on Good Morning America and ABC News; Webby 2018.
+- Iodine, acquired by GoodRx (first full-time designer): coupon conversion 2% to 5%. Iodine.com won the Webby for Best Health Website in 2018; he was the product's designer. On GoodRx Research he built data visualisations referenced in the New York Times and on Good Morning America and ABC News, and 50-state prescription-price fact sheets with co-CEO Doug Hirsch, used in advocacy around S.2554 and S.2553 on drug price transparency.
 - TaskRabbit (later acquired by IKEA): owned the Tasker experience; NPS recovered from about -5 to the mid-50s.
 - Amazon: prototyped the buy-and-gift Prime flow that contributed to 1M+ new subscribers.
 - Modus Create: shipped dark mode for JIRA and Confluence Cloud, 500K+ enterprise users.
