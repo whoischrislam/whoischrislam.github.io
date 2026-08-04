@@ -159,7 +159,7 @@
 </div>
 
 <h2>What the demo is actually doing</h2>
-<p>The substitution is not a lookup table written for this page. It resolves your input against the real token scales &mdash; exact match first, then nearest value &mdash; the same way the hook does. Type <code class="mono">padding: 20px</code> and it will tell you the system has no 20, and offer you the 24 it does have. That is the interesting case, because it is where a system either bends or grows a one-off.</p>
+<p>The substitution is not a lookup table written for this page. It resolves your input against the real token scales, exact match first and then nearest value, the same way the hook does. Type <code class="mono">padding: 20px</code> and it will tell you the system has no 20, and offer you the 24 it does have. That is the interesting case, because it is where a system either bends or grows a one-off.</p>
 <p>My rule for that case, verbatim from the y30 conventions:</p>
 
 <div class="outcome">
@@ -192,27 +192,27 @@
 </div>
 
 <p>The dependency came out of <code class="mono">package.json</code> in commit <code class="mono">4b02ae7</code>. That is the part I would point at: not that I wrote a standard, but that the standard survived someone else's reasonable decision and the losing library was actually deleted rather than left to rot alongside the winner.</p>
-<p>The same cycle ran on dropdowns, and ended in <code class="mono">client/utils/dropdownAnimations.ts</code> &mdash; three shared constants and three keyframes, now imported by eight components that each used to carry their own copy.</p>
+<p>The same cycle ran on dropdowns, and ended in <code class="mono">client/utils/dropdownAnimations.ts</code>: three shared constants and three keyframes, now imported by eight components that each used to carry their own copy.</p>
 
 <h2>Where it failed, and what I did about it</h2>
 <p>At PlaySesh the rule was a document. Good writing, injected into every agent edit, unambiguous. And it did not hold: <b>171 hardcoded colour declarations</b> are still in that codebase, written past a rule that says in bold capitals never to write them.</p>
 <p>An advisory rule is a suggestion with extra steps. That is the lesson, and it cost a real number.</p>
-<p>So at y30 I built the version that can say no. It came out of a specific failure: an agent, working in a repo where the token file had never been wired into the Vite build, could not find any tokens &mdash; so it invented a parallel set, <code class="mono">web/src/care/tokens.ts</code>, with its own hex values. Entirely reasonable behaviour. Catastrophic for a design system.</p>
+<p>So at y30 I built the version that can say no. It came out of a specific failure: an agent, working in a repo where the token file had never been wired into the Vite build, could not find any tokens, so it invented a parallel set, <code class="mono">web/src/care/tokens.ts</code>, with its own hex values. Entirely reasonable behavior. Catastrophic for a design system.</p>
 <p>The fix is layered by cost, because the cheapest correction is the one that happens before anything is written:</p>
 
 <div class="outcome">
 <p><b>Read time.</b> <span class="quote">"Before writing or editing any file under <code class="mono">web/src/</code>, you MUST have read&hellip; If you cannot cite at least one existing CSS variable that applies to your work, you are not ready to write. Ask the user, or read more."</span></p>
-<p><b>Write time.</b> A PostToolUse hook scans the edit and names the exact substitution, so the agent self-corrects mid-task. Deliberately non-blocking &mdash; a warning it can act on beats a wall it has to argue with.</p>
+<p><b>Write time.</b> A PostToolUse hook scans the edit and names the exact substitution, so the agent self-corrects mid-task. Deliberately non-blocking: a warning it can act on beats a wall it has to argue with.</p>
 <p><b>Commit time.</b> A PreToolUse hook intercepts <code class="mono">git commit</code> and exits 2. This one is a wall.</p>
 </div>
 
-<p>Advisory, corrective, blocking. Most codebases have none of these. The useful insight is not that blocking works &mdash; it obviously does &mdash; it is that blocking alone is a bad experience, and the warning layer is what makes the wall rare enough to tolerate.</p>
+<p>Advisory, corrective, blocking. Most codebases have none of these. The useful insight is not that blocking works, which it obviously does. It is that blocking alone is a bad experience, and the warning layer is what makes the wall rare enough to tolerate.</p>
 
 <h2>What is not true here</h2>
 <p>Every claim above has a commit behind it. These do not, and a system page that only lists wins is a system page nobody should trust.</p>
 <ul>
-<li><b>Neither system is fully adopted.</b> PlaySesh: 87 of 149 component files import the tokens, and those 171 hardcoded colours are still there. y30 is roughly half-migrated, 935 token references against 923 raw hex.</li>
-<li><b>There is no single source of truth.</b> Both repos carry two token layers &mdash; a TypeScript object and a CSS custom-property layer &mdash; that are not generated from each other, and in PlaySesh their primary blues do not even match. A build step should own this. None does.</li>
+<li><b>Neither system is fully adopted.</b> PlaySesh: 87 of 149 component files import the tokens, and those 171 hardcoded colors are still there. y30 is roughly half-migrated, 935 token references against 923 raw hex.</li>
+<li><b>There is no single source of truth.</b> Both repos carry two token layers, a TypeScript object and a CSS custom-property layer, that are not generated from each other, and in PlaySesh their primary blues do not even match. A build step should own this. None does.</li>
 <li><b>Accessibility is written down, not enforced.</b> WCAG AA is in the rules and the primitives implement focus-visible and real touch targets, but there is no axe, no jest-axe, no lint rule, and nothing in CI that could fail on a contrast regression. This is the first thing I would fix.</li>
 <li><b>No versioning, no changelog, no visual regression.</b> The system was never packaged or distributed, so there was nothing to version against.</li>
 <li><b>The blocking hook covers agent commits.</b> It fires when the commit runs through the agent's shell. A human committing in a terminal walks straight past it. A real git hook is the obvious next move.</li>
@@ -301,7 +301,7 @@
 
   /* Same order of checks the hook uses: colour, then radius, then z-index,
      then any remaining px on a spacing property. */
-  function analyse(text) {
+  function analyze(text) {
     var hex = text.match(/#[0-9a-fA-F]{3,8}\b/);
     if (hex) {
       var m = nearestColor(hex[0], era.color);
@@ -348,7 +348,7 @@
 
   function run() {
     var text = $("decl").value.trim();
-    var a = analyse(text);
+    var a = analyze(text);
     var out = $("demo-out"), html = "";
 
     if (!a) {
@@ -397,14 +397,14 @@
       } else {
         html += stage("block", "commit time · pre-commit hook",
           "<p><code>BLOCKED: y30 design-system violations in staged files.</code></p>" +
-          "<p><code>exit 2</code> — the commit does not happen. Escape hatch is <code>--no-verify</code>, documented, and used about never.</p>");
+          "<p><code>exit 2</code>. The commit does not happen. Escape hatch is <code>--no-verify</code>, documented, and used about never.</p>");
         html += '<p class="verdict"><b>Caught.</b> Three chances to fix it, and the last one is not optional.</p>';
       }
     } else {
       html += stage("pass", "commit time",
-        "<p>Nothing runs. There is no hook here — the rule is a document.</p>");
+        "<p>Nothing runs. There is no hook here. The rule is a document.</p>");
       html += '<p class="verdict">The agent may have read the rule, and it may have complied. Nothing checked. ' +
-              'This is how <b>171 hardcoded colours</b> ended up in a codebase whose own rules forbid them in bold capitals.</p>';
+              'This is how <b>171 hardcoded colors</b> ended up in a codebase whose own rules forbid them in bold capitals.</p>';
     }
     out.innerHTML = html;
     reveal();

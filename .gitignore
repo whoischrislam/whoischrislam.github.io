@@ -30,3 +30,10 @@ _pick
 
 # Evidence note, kept private (backed up in jobhunt-archive)
 PLAYSESH_METRICS.md
+
+# Screenshot sources, local only. The shipped derivatives ARE committed:
+#   images/companies/*.png  ->  images/co/*.webp  (8.3MB of PNG, 308KB of WebP)
+# Kept out of a public Pages repo so they are neither served nor cloned.
+# NOT backed up by git, so re-screenshot if lost.
+# images/logos/*.svg is NOT ignored: those are finished monochrome assets.
+images/companies/

@@ -97,7 +97,7 @@
                 "Redesigned the core lesson experience on a live platform, mid-cohort, without forcing a rewrite of 60-80 hours of existing course content.",
                 "Built the platform's design system in React with Storybook, on top of Ant Design.",
                 "Ran the research that set the direction: a 26-screen product audit in week three, three rounds of usability testing, five course-author co-design sessions, and instructor interviews.",
-                "Audited the interface library and found the drift: sixteen colours where four greys were all labelled Text, two different values both called Primary Button, body copy at four sizes, and a 10.3px type size shipping to adult learners."
+                "Audited the interface library and found the drift: sixteen colors where four grays were all labeled Text, two different values both called Primary Button, body copy at four sizes, and a 10.3px type size shipping to adult learners."
             ],
             "_unverified": "Storybook confirmed by Chris 2026-08-02; the repo is Pathstream's and he has no access, which is normal for employed work. WCAG 2.1 AA still unconfirmed: the archive shows accessibility judgement (killed an icon-only progress timeline on ADA grounds, flagged a ~1.7:1 contrast failure) but no audit, conformance report, or CI gate. Ask before restoring that one."
         },
