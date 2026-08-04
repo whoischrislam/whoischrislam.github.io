@@ -239,6 +239,12 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
   font-size:13.5px;line-height:1.4;color:#fff;text-align:left;pointer-events:none;
   background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
 .embed .facade:focus-visible{outline:none;box-shadow:inset 0 0 0 3px var(--accent)}
+/* The Loom facade has no thumbnail service, so it draws its own poster. */
+.embed .facade.loom{background:linear-gradient(150deg,var(--surface-2),var(--surface));
+  display:grid;place-items:center}
+.embed .facade.loom .cap{background:linear-gradient(180deg,transparent,rgba(0,0,0,.55))}
+:root[data-theme="light"] .embed .facade.loom .cap{color:var(--text);
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.10))}
 
 /* A recommendation is a person vouching. Give it a shape. */
 /* This is somebody else's voice. Quotation marks are the oldest signal for
@@ -440,6 +446,15 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
   </dl>
   <p class="ctx">Voice AI for older adults and their caregivers.</p>
+  <div class="vids">
+    <div class="embed">
+      <button class="facade loom" type="button" data-loom="eb44015201554d11ac841cd1700653ce"
+        aria-label="Play video: a real reminiscence call with the y30 voice agent">
+        <span class="play"></span>
+        <span class="cap">A real reminiscence call, and what it becomes</span>
+      </button>
+    </div>
+  </div>
   <p class="impact"><span class="fig">Zero LLM in the crisis path</span><span class="qual">Crisis responses are hard-coded strings that fire before any model call, because an eval caught the system classifying a heart attack as benign.</span></p>
   <p class="buyer"><b>If you ship AI people have to trust:</b> this is how I turn model uncertainty into behaviour a user can predict, test and override.</p>
   <p>Voice AI for elder care. Daily check-ins that keep older adults connected while giving
@@ -849,8 +864,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   document.querySelectorAll(".embed .facade").forEach(function(btn){
     btn.addEventListener("click", function(){
-      var id = btn.dataset.yt, f = document.createElement("iframe");
-      f.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&rel=0";
+      var f = document.createElement("iframe");
+      f.src = btn.dataset.loom
+        ? "https://www.loom.com/embed/" + btn.dataset.loom +
+          "?hide_owner=true&hide_share=true&hideEmbedTopBar=true&autoplay=1"
+        : "https://www.youtube-nocookie.com/embed/" + btn.dataset.yt + "?autoplay=1&rel=0";
       f.title = btn.getAttribute("aria-label").replace(/^Play video: /, "");
       f.allow = "accelerometer; autoplay; clipped-media; encrypted-media; picture-in-picture";
       f.referrerPolicy = "strict-origin-when-cross-origin";
