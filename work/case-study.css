@@ -61,6 +61,12 @@ p{margin:0 0 18px}
 .outcome p:last-child{margin:0}
 .outcome b{color:var(--accent);font-weight:600}
 
+.rec{margin:40px 0;padding:22px 26px;background:var(--surface);
+  border:1px solid var(--border);border-radius:8px}
+.rec p{margin:0;font-size:17px;line-height:1.6}
+.rec .who{margin-top:12px;font-size:14px;color:var(--muted)}
+.rec .who b{color:var(--text);font-weight:600}
+
 figure{margin:36px 0}
 figure img{width:100%;height:auto;border:1px solid var(--border);border-radius:6px;
   background:var(--surface)}
