@@ -71,14 +71,14 @@
 
 <div class="outcome">
 <p><b>Our current lesson page design is bad at all stages.</b></p>
-<p><b>Browse</b> &mdash; we show total time and a student can scroll through to see what is included.<br>
-<b>Commit</b> &mdash; there is no active way to commit.<br>
-<b>Do</b> &mdash; the one long scroll of ~60 minutes of content is boring and easy to get lost.<br>
-<b>Complete</b> &mdash; there is no sense of accomplishment.</p>
+<p><b>Browse</b>: we show total time and a student can scroll through to see what is included.<br>
+<b>Commit</b>: there is no active way to commit.<br>
+<b>Do</b>: the one long scroll of ~60 minutes of content is boring and easy to get lost.<br>
+<b>Complete</b>: there is no sense of accomplishment.</p>
 </div>
 
 <p>The research backed it up in the students' own language. They did not trust the time estimates and had learned to ignore them. One put the real problem plainly: <em>"60 minutes is too long. 30 minutes would be better. I want to know how to plan my time."</em></p>
-<p>These were working adults fitting coursework around jobs. A sixty-minute unlabelled scroll is not a content problem, it is a planning problem.</p>
+<p>These were working adults fitting coursework around jobs. A sixty-minute unlabeled scroll is not a content problem, it is a planning problem.</p>
 
 <h2>The constraint that shaped everything</h2>
 <p>This is the part that made it hard, and the part I would lead with if I were telling it out loud.</p>
@@ -98,7 +98,7 @@
 <p>That last rule is the one I am proudest of. It means a course author who does nothing sees no change, and an author who opts in gets the new structure. The migration cost is zero until someone chooses to pay it.</p>
 
 <h2>Chunking the lesson</h2>
-<p>The fix was to break the single scroll into parts a student could see, choose, and finish. That meant a new level in the data model, not just a new layout &mdash; parts became a real entity with its own database record.</p>
+<p>The fix was to break the single scroll into parts a student could see, choose, and finish. That meant a new level in the data model, not just a new layout. Parts became a real entity with its own database record.</p>
 
 <figure>
   <img loading="lazy" src="../images/craft/pathstream-menuscrolling.webp" alt="Animated prototype of the section carousel, showing lesson parts scrolling into view as the student progresses">
@@ -107,7 +107,7 @@
 
 <figure>
   <img loading="lazy" src="../images/craft/pathstream-completelesson.webp" alt="Animated prototype of the lesson completion state">
-  <figcaption>Completion. The old design had no ending &mdash; you simply ran out of scroll. This was the answer to "there is no sense of accomplishment."</figcaption>
+  <figcaption>Completion. The old design had no ending. You simply ran out of scroll. This was the answer to "there is no sense of accomplishment."</figcaption>
 </figure>
 
 <h3>Two treatments, tested against each other</h3>
@@ -127,7 +127,7 @@
 <h2>The interface had drifted</h2>
 <p>Alongside the redesign I inventoried what the platform was already using, and annotated every value with where it appeared. The audit is the argument:</p>
 <ul>
-<li>Sixteen colours, of which <b>four different greys were all labelled "Text"</b></li>
+<li>Sixteen colors, of which <b>four different grays were all labeled "Text"</b></li>
 <li>Two different values both called <b>"Primary Button"</b></li>
 <li>Body copy set at four different sizes</li>
 <li>A <b>10.3px</b> type size, shipping to adult learners</li>
@@ -152,9 +152,9 @@ October 30: actual initial design completion and handoff, <b>+13 days</b>.</p>
 </ul>
 
 <h2>The same problem, from the other side</h2>
-<p>Before the lesson work I spent months on Labs, the virtualised workspace where students actually did the thing they were learning &mdash; SQL in a real MySQL Workbench, Unity in a real editor, running in the browser. It was the platform's whole "learn by doing" premise and its clearest competitive differentiator.</p>
+<p>Before the lesson work I spent months on Labs, the virtualized workspace where students actually did the thing they were learning: SQL in a real MySQL Workbench, Unity in a real editor, running in the browser. It was the platform's whole "learn by doing" premise and its clearest competitive differentiator.</p>
 <p>It served three audiences at once: students doing the work, instructors grading it, and course authors building it. I wrote the PRD for all three.</p>
-<p>The student problems rhymed with the lesson page. Labs were <em>static</em> &mdash; no feedback until an instructor looked, if ever. <em>Daunting</em> &mdash; every instruction dumped into one long sidebar. <em>Rigid</em> &mdash; no way to resize the tool against the instructions. And you could not tell where you had left off.</p>
+<p>The student problems rhymed with the lesson page. Labs were <em>static</em>: no feedback until an instructor looked, if ever. <em>Daunting</em>: every instruction dumped into one long sidebar. <em>Rigid</em>: no way to resize the tool against the instructions. And you could not tell where you had left off.</p>
 <p>The sharpest thing in the research was not from a student. It was a course author's own account of building a lab, step by step, in his words:</p>
 
 <div class="outcome">
@@ -162,13 +162,13 @@ October 30: actual initial design completion and handoff, <b>+13 days</b>.</p>
 <p>Get excited if lab loads correctly. If not, send [our engineer] a message or troubleshoot on my own. Sometimes it doesn't load because I inputted the load file incorrectly; sometimes bad wifi; sometimes who knows why.</p>
 </div>
 
-<p>He had built a personal ritual around not knowing how long a machine would take, or whether it had worked. Nobody designed that ritual; the absence of a loading state did. And it is the same failure as the sixty-minute scroll, aimed at a different person. Nobody in this system &mdash; student, instructor, or author &mdash; could tell where they were or how long anything would take.</p>
+<p>He had built a personal ritual around not knowing how long a machine would take, or whether it had worked. Nobody designed that ritual; the absence of a loading state did. And it is the same failure as the sixty-minute scroll, aimed at a different person. Nobody in this system could tell where they were or how long anything would take. Not the student, not the instructor, not the author.</p>
 <p>That reframed Labs from an interface problem into a set of systems questions, which is what I ended up writing down: where does a student actually arrive from the LMS, and is that intentional? Should the lab preload while someone reads the introduction? Is work autosaved, and how does a student return to it? How is latency handled, and what does the interface say while it waits?</p>
 <p>One question in that PRD is the one I would still ask today: <em>how do we get students to be confident they know what they are doing, rather than figuring out what they are doing?</em> Micro-emotions, I called it. It is the difference between a tool that works and a tool someone trusts.</p>
 <p>Labs went to engineering as a handoff. I moved onto the lesson redesign before I saw it land.</p>
 
 <h2>The one that still bothers me</h2>
-<p>I wrote the success criteria &mdash; time on site, bounce rate, lesson completion &mdash; and the baseline analysis sat with the PM. It never came back, and I shipped anyway.</p>
+<p>I wrote the success criteria: time on site, bounce rate, lesson completion. The baseline analysis sat with the PM. It never came back, and I shipped anyway.</p>
 <p>So I have a redesign I believe in, built on real research, with a migration path that cost the content team nothing, and no idea whether it moved a number.</p>
 
 </article>

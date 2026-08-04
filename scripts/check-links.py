@@ -33,7 +33,11 @@ def main():
     bad = []
     with cf.ThreadPoolExecutor(8) as ex:
         for u, code in ex.map(check, urls):
-            ok = code in ("200", "301", "302", "403")   # 403 = bot-blocked, link is fine
+            # 403 and 999 are bot-blocks, not dead links. LinkedIn serves 999
+            # intermittently to the same URL that returns 200 on the next run,
+            # so treating it as dead produces false alarms, which is how a
+            # checker stops being trusted.
+            ok = code in ("200", "301", "302", "403", "999")
             print(f"  {'ok  ' if ok else 'DEAD'} {code:>4}  {u[:96]}")
             if not ok:
                 bad.append((code, u, sorted(urls[u])))

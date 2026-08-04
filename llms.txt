@@ -27,7 +27,7 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 Full write-ups with artifacts, outcomes, and what went wrong. Index: https://whoischrislam.github.io/work/
 - Pathstream (2019-2020, Senior Product Design Manager, first design hire): rebuilt the core lesson experience of a live learning platform mid-cohort without forcing a rewrite of 60-80 hours of existing course content; also the Labs PRD across students, instructors, and course authors. Success metrics were written but never measured, and the page says so. https://whoischrislam.github.io/work/pathstream.html
 - Iodine (2017-2018, Lead Product Designer, first full-time designer): coupon find-and-redeem flow, conversion 2% to 5%; Webby for Best Health Website 2018. https://whoischrislam.github.io/work/iodine.html
-- GoodRx Research (2017-2018): drug-page conversion, 10% lift mobile and 25% desktop; data visualisations referenced in the New York Times and on Good Morning America. https://whoischrislam.github.io/work/goodrx.html
+- GoodRx Research (2017-2018): drug-page conversion, 10% lift mobile and 25% desktop; data visualizations referenced in the New York Times and on Good Morning America. https://whoischrislam.github.io/work/goodrx.html
 - Clover Health Care Visit (2015-2016, Designer, second designer): nurse-practitioner home-visit app, about 7-8x ROI on visit-related revenue, 1-2 hours saved per nurse per night. https://whoischrislam.github.io/work/clover-care-visit.html
 - Clover Health website (2015-2016): first website, shipped ahead of 2016 enrollment, extended to out-of-home. https://whoischrislam.github.io/work/clover-health-website.html
 - TaskRabbit Tasker experience (2014-2015): owned the Tasker side through the 2014 rebrand; Tasker NPS recovered from about -5 to the mid-50s. https://whoischrislam.github.io/work/taskrabbit-tasker.html
@@ -45,7 +45,7 @@ Full write-ups with artifacts, outcomes, and what went wrong. Index: https://who
 
 ## Selected outcomes
 - Clover Health (Designer, the second designer, joined pre-seed; later IPO'd): ~7-8x lift in nurse visit-related revenue, ~2 hours saved per nurse per day.
-- Iodine, acquired by GoodRx (first full-time designer): coupon conversion 2% to 5%. Iodine.com won the Webby for Best Health Website in 2018; he was the product's designer. On GoodRx Research he built data visualisations referenced in the New York Times and on Good Morning America and ABC News, and 50-state prescription-price fact sheets with co-CEO Doug Hirsch, used in advocacy around S.2554 and S.2553 on drug price transparency.
+- Iodine, acquired by GoodRx (first full-time designer): coupon conversion 2% to 5%. Iodine.com won the Webby for Best Health Website in 2018; he was the product's designer. On GoodRx Research he built data visualizations referenced in the New York Times and on Good Morning America and ABC News, and 50-state prescription-price fact sheets with co-CEO Doug Hirsch, used in advocacy around S.2554 and S.2553 on drug price transparency.
 - TaskRabbit (later acquired by IKEA): owned the Tasker experience; NPS recovered from about -5 to the mid-50s.
 - Amazon: prototyped the buy-and-gift Prime flow projected to drive 1M+ new subscribers.
 - Modus Create: shipped dark mode for JIRA and Confluence Cloud, 500K+ enterprise users.
