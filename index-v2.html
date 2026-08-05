@@ -234,7 +234,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 /* The limit. Separated by a rule, NOT muted. It reads as a deliberate register
    change, not a footnote, because on these cards the honesty is the argument. */
 .limit{border-top:1px solid var(--border);margin-top:20px;padding-top:16px}
-.impact > div + div{margin-top:18px}
+
 .wslbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--muted);font-weight:600;margin-bottom:5px}
 .ruleslabel{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
@@ -257,9 +257,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .card--brief .facts > div{padding:2.5px 0}
 .card--brief .facts dd{font-size:14px}
 .card--brief .facts dt{font-size:10.5px}
-.card--brief .impact .fig{font-size:clamp(25px,3.4vw,31px)}
-.card--brief .impact{margin:16px 0 18px;padding:15px 0}
-.card--brief h4{font-size:16px;margin:16px 0 6px}
+.card--brief .card--brief h4{font-size:16px;margin:16px 0 6px}
 .card--brief .proj{margin:0}
 
 /* Draft-only. Nothing with this class ships. */
@@ -289,20 +287,23 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .facts dd{margin:0;font-size:14.5px;line-height:1.5;min-width:0}
 @media (max-width:460px){ .facts > div{grid-template-columns:1fr;gap:1px} }
 .facts dd.tech{color:var(--muted)}
+.facts dd b{font-family:var(--serif);font-weight:400;font-size:18px;color:var(--accent);
+  margin-right:5px;letter-spacing:-.01em}
+/* Sits with the company name, because it is a fact about the company. "Later"
+   does the honest work: it signals he was already gone. */
+.outcome{align-self:baseline;font-size:11.5px;letter-spacing:.03em;color:var(--muted);
+  font-variant-numeric:tabular-nums;
+  border:1px solid var(--border);border-radius:999px;padding:3px 10px;white-space:nowrap;
+  position:relative;top:-2px}
+.ch-top{row-gap:6px}
 .card p{margin:0 0 14px}
 
 /* The metric is the focal point. */
-.impact{margin:20px 0 22px;padding:19px 0;
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.impact .fig{font-family:var(--serif);font-weight:400;font-size:clamp(32px,5.2vw,46px);
-  line-height:1.02;color:var(--accent);font-variant-numeric:tabular-nums;display:block}
-.impact .qual{display:block;font-size:15px;line-height:1.5;color:var(--muted);margin-top:8px}
 /* Impact frame: the feedback is in the arrival and the stop, not in
    continuous movement. A number that counts up reads as trying to impress;
    a number that lands reads as stating a fact. Fires once. */
 @keyframes fig-land{from{transform:scale(.94)}to{transform:scale(1)}}
-.js .reveal.in .impact .fig{animation:fig-land .14s cubic-bezier(.34,1.56,.64,1) both}
-
+.js .reveal.in 
 .hl{list-style:none;padding:0;margin:16px 0 0}
 .hl li{position:relative;padding-left:20px;margin:0 0 9px;font-size:15.5px;line-height:1.55}
 .hl li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;
@@ -323,7 +324,8 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .proof .lbl::after{content:"";display:inline-block;width:14px;height:1px;
   background:var(--border);vertical-align:middle;margin-left:8px}
 /* One CTA pattern, one position, one verb shape. */
-.card-cta{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:20px}
+.card-cta{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:18px;
+  padding-top:15px;border-top:1px solid var(--border)}
 .card-cta a{font-size:15px;font-weight:600;color:var(--accent);text-decoration:none;
   display:inline-flex;align-items:center;gap:6px;min-height:40px}
 .card-cta a::after{content:"\2192";transition:transform .22s ease}
@@ -399,7 +401,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .proj h4{font-size:17px;margin:0 0 8px;font-weight:600}
 .proj .tag{font-weight:400;font-size:13px;color:var(--muted)}
 .proj .impact{margin:0 0 4px}
-.proj .impact .fig{font-size:clamp(24px,3.4vw,31px)}
+
 
 .want li{margin:0 0 10px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;align-items:center}
@@ -459,8 +461,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
   .js .reveal,.js .logo-row li{opacity:1!important;transform:none!important}
-  .js .reveal.in .impact .fig{animation:none!important;transform:none!important}
-  .story-panel,.story-panel::backdrop{transition:none!important}
+  .js .reveal.in   .story-panel,.story-panel::backdrop{transition:none!important}
   .story-panel:popover-open{opacity:1!important;transform:none!important}
   ::view-transition-group(*){animation:none!important}
 }
@@ -572,8 +573,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> (CEO) and me. Vijay owns fundraising, customer discovery, recruiting testers, sales, and building relationships with subject matter experts</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
+    <div class="wide"><dt>Tradeoff</dt><dd><b>3&times; slower, on purpose</b> People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</dd></div>
   </dl>
-  <p class="impact"><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
+  
   <p>The hardest part wasn't getting the AI to do more. It was deciding what it shouldn't get to
   decide. I let the model run the game sequence at first. After eight prompt revisions, guards and
   a watchdog, it still started the round only about 70% of the time. I moved that sequence into
@@ -621,10 +623,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>3 co-founders, <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> COO</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Cloudflare Workers · Durable Objects</dd></div>
+    <div class="wide"><dt>Adoption</dt><dd><b>6,220 authorized accounts</b> Discord reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026. Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</dd></div>
   </dl>
-  <p class="impact"><span class="fig">6,220 authorized accounts</span><span class="qual">Discord
-  reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026.
-  Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</span></p>
+  
   <p>Design lives in Figma, decisions in Notion, code in the engine, and feedback gets lost in Discord.</p>
   <p>PlaySesh connects that loop: a multiplayer canvas, IDE companion, and playtesting in one place.</p>
   <p>It wasn't the first product we set out to build. We started closer to social gaming. What people
@@ -669,8 +670,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>3–5 engineers, 1 PM, 1 designer (me)</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product design · Design system · Research · PRD · Front-end</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">React · Storybook · Design tokens · Ant Design</dd></div>
+    <div class="wide"><dt>Result</dt><dd><b>60–80 hours saved</b> Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</dd></div>
   </dl>
-  <p class="impact"><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
+  
   <p><b>Rebuilt the core lesson experience of a live learning platform while students were mid-course</b>,
   and wrote the PRD for Labs, the virtualized workspace where they did the actual work. Built the
   design system in React with Storybook on top of Ant Design.</p>
@@ -680,7 +682,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <article class="card card--brief reveal">
   <div class="card-head">
-    <div class="ch-top"><h3>GoodRx</h3><p class="when">2017 – 2018</p></div>
+    <div class="ch-top"><h3>GoodRx</h3><span class="outcome">IPO 2020</span><p class="when">2017 – 2018</p></div>
     <p class="role"><b>Lead Product Designer</b></p>
     <p class="ctx">Consumer healthcare: prescription drug information, then drug pricing.</p></div>
   <dl class="facts">
@@ -688,23 +690,15 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>6-person special-projects team in SF</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product design · Front-end · Data visualisation · Research · Conversion</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">D3 · Experimentation · Healthcare</dd></div>
+    <div class="wide"><dt>Iodine.com</dt><dd><b>2% &rarr; 5%</b> Coupon-flow conversion. Iodine.com won the Webby for Best Health Website.</dd></div>
+    <div class="wide"><dt>GoodRx Research</dt><dd><b>+10% mobile, +25% desktop</b> Referenced in the New York Times and used in federal drug-pricing debates.</dd></div>
   </dl>
-  <div class="impact">
-    <div>
-      <span class="wslbl">Iodine.com <span class="tag">first full-time designer</span></span>
-      <span class="fig">2% &rarr; 5%</span><span class="qual">Coupon-flow conversion.
-      Iodine.com won the Webby for Best Health Website.</span>
-    </div>
-    <div>
-      <span class="wslbl">GoodRx Research <span class="tag">research &amp; experimentation team</span></span>
-      <span class="fig">+10% mobile, +25% desktop</span><span class="qual">Referenced
-      in the New York Times and used in federal drug-pricing debates.</span>
-    </div>
-  </div>
+  
   <div class="todo"><b>Yours. One line, and the old one was false.</b>
   It said "GoodRx acquired us and I stayed through the integration." GoodRx was already your
   employer; you joined the special projects team that used to be Iodine. Say that relationship
   in your words: one team, two products, one of which still carried the Iodine name.</div>
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/goodrx.webp" alt="GoodRx data visualization work">
   <div class="proof"><span class="lbl">Receipts</span>
   <a href="https://www.goodrx.com/corporate/culture/iodine-com-wins-the-webby-for-best-health-website" target="_blank" rel="noopener">Webby 2018 announcement</a>
   <a href="https://web.archive.org/web/20180224101750/https://www.iodine.com/" target="_blank" rel="noopener">Iodine.com, archived Feb 2018</a>
@@ -720,7 +714,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <article class="card card--brief reveal">
   <div class="card-head">
-    <div class="ch-top"><h3>Clover Health</h3><p class="when">2015 – 2016</p></div>
+    <div class="ch-top"><h3>Clover Health</h3><span class="outcome">IPO 2021</span><p class="when">2015 – 2016</p></div>
     <p class="role"><b>Product Designer, second designer</b></p>
     <p class="ctx">A Medicare Advantage insurer using data to direct clinical care.</p></div>
   <dl class="facts">
@@ -728,10 +722,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>4–5 engineers, 1 PM</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Clinical tools · Field research · Brand · Front-end · Marketing site</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · CSS · Clinical workflow</dd></div>
+    <div class="wide"><dt>Result</dt><dd><b>~7–8× ROI</b> On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</dd></div>
   </dl>
-  <p class="impact"><span class="fig">~7–8× ROI</span><span class="qual">On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</span></p>
+  
   <p><b>Rebuilt the nurse-practitioner home-visit app after a week in New Jersey shadowing live
   visits</b>, and shipped the company&rsquo;s first branded website ahead of enrollment.</p>
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/clover.webp" alt="Clover Health care visit app">
   <div class="proof"><span class="lbl">Receipts</span>
   <a href="https://web.archive.org/web/20160220081453/https://www.cloverhealth.com/en/" target="_blank" rel="noopener">The site I shipped, archived Feb 2016</a></div>
   <div class="card-cta">
@@ -791,7 +787,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <article class="card card--brief reveal">
   <div class="card-head">
-    <div class="ch-top"><h3>doc.ai</h3><p class="when">2021</p></div>
+    <div class="ch-top"><h3>doc.ai</h3><span class="outcome">Sharecare 2021</span><p class="when">2021</p></div>
     <p class="role"><b>Lead Product Designer</b></p>
     <p class="ctx">An enterprise AI platform for healthcare, running clinical studies.</p></div>
   <dl class="facts">
@@ -806,7 +802,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <article class="card card--brief reveal">
   <div class="card-head">
-    <div class="ch-top"><h3>TaskRabbit</h3><p class="when">2014 – 2015</p></div>
+    <div class="ch-top"><h3>TaskRabbit</h3><span class="outcome">IKEA 2017</span><p class="when">2014 – 2015</p></div>
     <p class="role"><b>Product Designer</b></p>
     <p class="ctx">A two-sided marketplace for local help, mid-rebuild.</p></div>
   <dl class="facts">
@@ -814,10 +810,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>1 of 5 designers</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product design · iOS · Android · Marketplace · Rebrand</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Mobile · Two-sided</dd></div>
+    <div class="wide"><dt>Result</dt><dd><b>NPS −5 → mid-50s</b> Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</dd></div>
   </dl>
-  <p class="impact"><span class="fig">NPS −5 → mid-50s</span><span class="qual">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</span></p>
+  
   <p><b>Owned the Tasker side through the 2014 rebrand and the move from bidding to direct hire.</b>
   Later acquired by IKEA.</p>
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/taskrabbit.webp" alt="TaskRabbit Tasker experience">
   <div class="proof"><span class="lbl">Receipts</span>
   <a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild</a>
   <a href="https://web.archive.org/web/20150227060448/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Feb 2015</a></div>
