@@ -37,8 +37,8 @@ HERE = pathlib.Path(__file__).resolve().parent.parent
 ORDER = [
     "card-head",     # who, what title, when
     "ctx",           # what it was, for whom
-    "impact",        # the number that earns the next line
-    "facts",         # scale and ownership, for the now-interested reader
+    "facts",         # scale, so the number can be calibrated
+    "impact",        # the number, once the reader can size it
     "lineage",       # two-company continuity, GoodRx only
     "prose",         # the call
     "todo",          # a blank waiting on Chris, sits with what it is about
@@ -69,18 +69,18 @@ TIERS = {
 
 SPEC = {
     "lead": {
-        "required": {"card-head", "ctx", "impact"},
-        "allowed": {"facts", "prose", "ruleslabel", "hl", "limit",
+        "required": {"card-head", "ctx", "facts", "impact"},
+        "allowed": {"prose", "ruleslabel", "hl", "limit",
                     "vids", "shot", "proof", "card-cta", "ref-offer", "todo"},
         "prose_words": 180,
     },
     "proof": {
-        "required": {"card-head", "ctx", "impact", "proof"},
+        "required": {"card-head", "ctx", "facts", "impact", "proof"},
         "allowed": {"prose", "lineage", "vids", "shot", "card-cta", "todo"},
         "prose_words": 60,
     },
     "row": {
-        "required": {"card-head", "ctx"},
+        "required": {"card-head", "ctx", "facts"},
         "allowed": {"prose", "proof", "todo"},
         "prose_words": 45,
     },
@@ -99,7 +99,7 @@ ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx", "impact": "im
          "card-cta": "card-cta", "ref-offer": "ref-offer", "todo": "todo",
          "role": None, "fig": None, "qual": None, "tech": None, "wide": None,
          "who": None, "rec": None, "tag": None, "proj": "PROJ", "embed": None,
-         "facade": None, "play": None, "cap": None, "lbl": None, "card": None,
+         "facade": None, "play": None, "cap": None, "lbl": None, "card": None, "when": None, "ch-top": None,
          "reveal": None}
 
 
@@ -186,6 +186,24 @@ def check(path, quiet=False):
         if pw > spec["prose_words"]:
             fails.append((name, "%d words of prose, tier %s caps at %d"
                           % (pw, tier, spec["prose_words"])))
+
+        cm = re.search(r'<p class="ctx">(.*?)</p>', inner, re.S)
+        if cm:
+            cw = words(cm.group(1))
+            if cw == 0:
+                fails.append((name, "descriptor is empty. An empty slot passes the "
+                                    "presence check and fails the reader"))
+            elif cw > 20:
+                fails.append((name, "descriptor is %d words, cap is 20. It is a one-liner, "
+                                    "not a problem statement" % cw))
+
+        dl = re.search(r'<dl class="facts">(.*?)</dl>', inner, re.S)
+        if dl:
+            got = re.findall(r"<dt>([^<]+)</dt>", dl.group(1))
+            want = [f for f in ("Stage", "Team", "Owned", "Stack") if f in got]
+            if got != want:
+                fails.append((name, "meta order is %s, must be Stage, Team, Owned, Stack"
+                              % ", ".join(got)))
 
         if "todo" in seq:
             warns.append((name, "has an unfilled blank. Not publishable yet"))

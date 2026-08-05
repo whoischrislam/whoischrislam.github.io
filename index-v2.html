@@ -253,8 +253,12 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .card--brief .card-head .role{font-size:14.5px;margin-top:4px}
 .card--brief p{margin:0 0 10px;font-size:15.5px;line-height:1.55}
 .card--brief .proof{margin-top:10px}
+.card--brief .facts{padding:0;margin:0 0 2px}
+.card--brief .facts > div{padding:2.5px 0}
+.card--brief .facts dd{font-size:14px}
+.card--brief .facts dt{font-size:10.5px}
 .card--brief .impact .fig{font-size:clamp(25px,3.4vw,31px)}
-.card--brief .impact{margin-bottom:12px}
+.card--brief .impact{margin:16px 0 18px;padding:15px 0}
 .card--brief h4{font-size:16px;margin:16px 0 6px}
 .card--brief .proj{margin:0}
 
@@ -264,25 +268,32 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 [data-theme="light"] .todo{background:#fdf3d8;color:#6b4e11}
 .todo b{display:block;margin-bottom:3px}
 .card-head{margin-bottom:14px}
+.ch-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ch-top h3{flex:none}
+.ch-top .when{flex:none;margin:0 0 0 auto;font-size:14px;color:var(--muted);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:560px){ .ch-top .when{margin-left:0} }
 .card-head h3{font-family:var(--serif);font-weight:400;font-size:28px;margin:0}
 .card-head .role{margin:7px 0 0;font-size:15.5px;color:var(--muted);line-height:1.45}
 .card-head .role b{color:var(--text);font-weight:600}
 
 /* Dates, role and stack together at the top, same shape as the case studies. */
-/* Labels sit inline with values, so a long value takes a line instead of a
-   narrow column that wraps it four times. Short pairs share a row. */
-.facts{display:flex;flex-wrap:wrap;gap:9px 34px;margin:0 0 20px;padding:14px 0;
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.facts > div{display:flex;gap:9px;align-items:baseline;min-width:0}
-.facts .wide{flex:1 1 100%}
-.facts dt{flex:none;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--muted);margin:0;padding-top:1px}
+/* One field per line, labels in a fixed column so every value starts at the
+   same x. The alignment is what makes it scan as label / data: the eye drops
+   straight down the values without hunting for where each one begins. */
+.facts{display:block;margin:0 0 4px;padding:0}
+.facts > div{display:grid;grid-template-columns:64px 1fr;gap:0 16px;
+  align-items:baseline;padding:3.5px 0}
+.facts dt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:0;padding-top:2px}
 .facts dd{margin:0;font-size:14.5px;line-height:1.5;min-width:0}
+@media (max-width:460px){ .facts > div{grid-template-columns:1fr;gap:1px} }
 .facts dd.tech{color:var(--muted)}
 .card p{margin:0 0 14px}
 
 /* The metric is the focal point. */
-.impact{margin:0 0 20px}
+.impact{margin:20px 0 22px;padding:19px 0;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .impact .fig{font-family:var(--serif);font-weight:400;font-size:clamp(32px,5.2vw,46px);
   line-height:1.02;color:var(--accent);font-variant-numeric:tabular-nums;display:block}
 .impact .qual{display:block;font-size:15px;line-height:1.5;color:var(--muted);margin-top:8px}
@@ -321,6 +332,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 
 /* Context before impact: a reader may not know Iodine or Pathstream. */
 .ctx{font-size:14.5px;color:var(--muted);margin:0 0 16px;line-height:1.5}
+.card-head .ctx{margin:7px 0 0;max-width:62ch}
 /* What this means for the reader's team. Lead cards only. */
 /* Reads as an annotation on the metric, not a fifth container. No rule (the
    quotes own that) and no tint (the reference offer owns that). */
@@ -551,16 +563,17 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <div id="worklist">
 
 <article class="card reveal">
-  <div class="card-head"><h3>y30</h3>
-  <p class="role"><b>Co-founder, CPTO</b> · 2026 – now</p></div>
-  <p class="ctx">Voice AI for elders and support for longitudinal caregiving.</p>
-  <p class="impact"><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
+  <div class="card-head">
+    <div class="ch-top"><h3>y30</h3><p class="when">2026 – now</p></div>
+    <p class="role"><b>Co-founder, CPTO</b></p>
+    <p class="ctx">Voice AI for elders and support for longitudinal caregiving.</p></div>
   <dl class="facts">
-  <div class="wide"><dt>Team</dt><dd><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> (CEO) and me. Vijay owns fundraising, customer discovery, recruiting testers, sales, and building relationships with subject matter experts</dd></div>
-  <div><dt>Stage</dt><dd>Bootstrapped. Vijay and I are paying out of pocket for the costs and developing it. Deployed and actively hardening</dd></div>
-  <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
-  <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
+    <div><dt>Stage</dt><dd>Bootstrapped. Vijay and I are paying out of pocket for the costs and developing it. Deployed and actively hardening</dd></div>
+    <div><dt>Team</dt><dd><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> (CEO) and me. Vijay owns fundraising, customer discovery, recruiting testers, sales, and building relationships with subject matter experts</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
   </dl>
+  <p class="impact"><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
   <p>The hardest part wasn't getting the AI to do more. It was deciding what it shouldn't get to
   decide. I let the model run the game sequence at first. After eight prompt revisions, guards and
   a watchdog, it still started the round only about 70% of the time. I moved that sequence into
@@ -599,19 +612,20 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card reveal">
-  <div class="card-head"><h3>PlaySesh</h3>
-  <p class="role"><b>Co-founder, CEO</b> · 2024 – 2026</p></div>
-  <p class="ctx">Small indie game teams have no single source of truth. Design lives in Figma,
-  decisions in Notion, code in the engine, and feedback gets lost in Discord.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>PlaySesh</h3><p class="when">2024 – 2026</p></div>
+    <p class="role"><b>Co-founder, CEO</b></p>
+    <p class="ctx">Small indie game teams have no single source of truth.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Pre-seed, bootstrapped by choice</dd></div>
+    <div><dt>Team</dt><dd>3 co-founders, <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> COO</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Cloudflare Workers · Durable Objects</dd></div>
+  </dl>
   <p class="impact"><span class="fig">6,220 authorized accounts</span><span class="qual">Discord
   reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026.
   Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</span></p>
-  <dl class="facts">
-  <div><dt>Team</dt><dd>3 co-founders, <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> COO</dd></div>
-  <div><dt>Stage</dt><dd>Pre-seed, bootstrapped by choice</dd></div>
-  <div class="wide"><dt>Owned</dt><dd>Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</dd></div>
-  <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Cloudflare Workers · Durable Objects</dd></div>
-  </dl>
+  <p>Design lives in Figma, decisions in Notion, code in the engine, and feedback gets lost in Discord.</p>
   <p>PlaySesh connects that loop: a multiplayer canvas, IDE companion, and playtesting in one place.</p>
   <p>It wasn't the first product we set out to build. We started closer to social gaming. What people
   actually used pulled us toward making games together, so we changed the product around them.</p>
@@ -646,9 +660,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card reveal">
-  <div class="card-head"><h3>Pathstream</h3>
-  <p class="role"><b>Senior Product Design Manager</b> · 2019 – 2020</p></div>
-  <p class="ctx">A career-development and learning platform teaching job skills with real software.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>Pathstream</h3><p class="when">2019 – 2020</p></div>
+    <p class="role"><b>Senior Product Design Manager</b></p>
+    <p class="ctx">A career-development and learning platform teaching job skills with real software.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Series A</dd></div>
+    <div><dt>Team</dt><dd>3–5 engineers, 1 PM, 1 designer (me)</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · Design system · Research · PRD · Front-end</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">React · Storybook · Design tokens · Ant Design</dd></div>
+  </dl>
   <p class="impact"><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
   <p><b>Rebuilt the core lesson experience of a live learning platform while students were mid-course</b>,
   and wrote the PRD for Labs, the virtualized workspace where they did the actual work. Built the
@@ -658,9 +679,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>GoodRx</h3>
-  <p class="role"><b>Lead Product Designer</b> · 2017 – 2018</p></div>
-  <p class="ctx">Consumer healthcare: prescription drug information, then drug pricing.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>GoodRx</h3><p class="when">2017 – 2018</p></div>
+    <p class="role"><b>Lead Product Designer</b></p>
+    <p class="ctx">Consumer healthcare: prescription drug information, then drug pricing.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Profitable, PE-backed, pre-IPO</dd></div>
+    <div><dt>Team</dt><dd>6-person special-projects team in SF</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · Front-end · Data visualisation · Research · Conversion</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">D3 · Experimentation · Healthcare</dd></div>
+  </dl>
   <div class="impact">
     <div>
       <span class="wslbl">Iodine.com <span class="tag">first full-time designer</span></span>
@@ -691,9 +719,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>Clover Health</h3>
-  <p class="role"><b>Product Designer, second designer</b> · 2015 – 2016</p></div>
-  <p class="ctx">A Medicare Advantage insurer using data to direct clinical care. I joined at about 30 people, two months before the first $100M round.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>Clover Health</h3><p class="when">2015 – 2016</p></div>
+    <p class="role"><b>Product Designer, second designer</b></p>
+    <p class="ctx">A Medicare Advantage insurer using data to direct clinical care.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>About 30 people, founder-funded, months before the Series A</dd></div>
+    <div><dt>Team</dt><dd>4–5 engineers, 1 PM</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Clinical tools · Field research · Brand · Front-end · Marketing site</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · CSS · Clinical workflow</dd></div>
+  </dl>
   <p class="impact"><span class="fig">~7–8× ROI</span><span class="qual">On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</span></p>
   <p><b>Rebuilt the nurse-practitioner home-visit app after a week in New Jersey shadowing live
   visits</b>, and shipped the company&rsquo;s first branded website ahead of enrollment.</p>
@@ -706,17 +741,31 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>Blue Startups</h3>
-  <p class="role"><b>Entrepreneur in Residence</b> · 2024</p></div>
+  <div class="card-head">
+    <div class="ch-top"><h3>Blue Startups</h3><p class="when">2024</p></div>
+    <p class="role"><b>Entrepreneur in Residence</b></p>
+    <p class="ctx">A Honolulu accelerator.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Fixed-term, alongside PlaySesh</dd></div>
+    <div><dt>Team</dt><dd>Accelerator cohort</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Founder advising · Product review</dd></div>
+  </dl>
   <p>Entrepreneur in Residence at Hawaii's startup accelerator, alongside building PlaySesh.
   Advising founders on product and design in the earliest stage, where the question is usually
   what to build rather than how.</p>
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>Modus Create</h3>
-  <p class="role"><b>Software Engineer</b> · 2023 – 2024</p></div>
-  <p class="ctx">A product consultancy, delivering for client engineering teams.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>Modus Create</h3><p class="when">2023 – 2024</p></div>
+    <p class="role"><b>Software Engineer</b></p>
+    <p class="ctx">A product consultancy, delivering for client engineering teams.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Consultancy</dd></div>
+    <div><dt>Team</dt><dd>6 engineers</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Front-end · Client delivery · Atlassian ecosystem</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Atlassian Forge</dd></div>
+  </dl>
   <p>The chapter where I stopped handing designs over. Production front-end on client engagements,
   which is where the second half of the job got proven rather than claimed. I started PlaySesh
   while finishing here, so the two overlap by a couple of months.</p>
@@ -725,26 +774,47 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>StartPlaying</h3>
-  <p class="role"><b>Founding Product Designer</b> · 2022 – 2023</p></div>
-  <p class="ctx">A marketplace connecting tabletop players with paid game masters.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>StartPlaying</h3><p class="when">2022 – 2023</p></div>
+    <p class="role"><b>Founding Product Designer</b></p>
+    <p class="ctx">A marketplace connecting tabletop players with paid game masters.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Seed, a16z · YC company</dd></div>
+    <div><dt>Team</dt><dd>7 people, 1 designer (me)</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · Two-sided marketplace · Research · Front-end</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Consumer · Design systems</dd></div>
+  </dl>
   <p><b>First designer on a two-sided marketplace.</b> Two-sided
   by nature: the player picking a game has almost nothing in common with the GM running one as a
   business, and the same surfaces had to serve both.</p>
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>doc.ai</h3>
-  <p class="role"><b>Lead Product Designer</b> · 2021</p></div>
-  <p class="ctx">An enterprise AI platform for healthcare, running clinical studies.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>doc.ai</h3><p class="when">2021</p></div>
+    <p class="role"><b>Lead Product Designer</b></p>
+    <p class="ctx">An enterprise AI platform for healthcare, running clinical studies.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Series A · acquired mid-tenure</dd></div>
+    <div><dt>Team</dt><dd>5–6 people, 1 designer (me)</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Clinical studies product · Research · Design system · Front-end</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · React · Clinical data</dd></div>
+  </dl>
   <p>The nearest thing I did to y30 before y30. Health data, real participants, and a product where
   being wrong has a cost.</p>
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>TaskRabbit</h3>
-  <p class="role"><b>Product Designer</b> · 2014 – 2015</p></div>
-  <p class="ctx">A two-sided marketplace for local help, mid-rebuild.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>TaskRabbit</h3><p class="when">2014 – 2015</p></div>
+    <p class="role"><b>Product Designer</b></p>
+    <p class="ctx">A two-sided marketplace for local help, mid-rebuild.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Series C</dd></div>
+    <div><dt>Team</dt><dd>1 of 5 designers</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · iOS · Android · Marketplace · Rebrand</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Mobile · Two-sided</dd></div>
+  </dl>
   <p class="impact"><span class="fig">NPS −5 → mid-50s</span><span class="qual">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</span></p>
   <p><b>Owned the Tasker side through the 2014 rebrand and the move from bidding to direct hire.</b>
   Later acquired by IKEA.</p>
@@ -758,9 +828,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>Amazon</h3>
-  <p class="role"><b>User Experience Designer</b> · 2012 – 2013</p></div>
-  <p class="ctx">Amazon Music, when it was moving off the browser and onto devices.</p>
+  <div class="card-head">
+    <div class="ch-top"><h3>Amazon</h3><p class="when">2012 – 2013</p></div>
+    <p class="role"><b>User Experience Designer</b></p>
+    <p class="ctx">Amazon Music, when it was moving off the browser and onto devices.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Public company</dd></div>
+    <div><dt>Team</dt><dd>1 of 6 designers, Amazon Music</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Desktop client · Device integrations · Platform clients</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Music · Desktop · Cloud</dd></div>
+  </dl>
   <p>First job out of grad school. I started as an intern on the Prime team, working on checkout
   and the gift-purchase cases inside it, then moved over to Music.</p>
   <div class="proof"><span class="lbl">Receipts</span>
