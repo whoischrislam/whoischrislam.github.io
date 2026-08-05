@@ -230,6 +230,26 @@ details.more[open] summary::before{transform:rotate(90deg)}
 /* ── Work cards ───────────────────────────────────────────────── */
 h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26px}
 .card{border-top:1px solid var(--border);padding:34px 0}
+
+/* Tier divider. Marks where the argument ends and the record begins. */
+.tier-break{border-top:1px solid var(--border);margin:44px 0 0;padding:30px 0 0}
+.tier-break h3{font-family:var(--serif);font-weight:400;font-size:24px;margin:0 0 6px}
+.tier-break p{font-size:14.5px;color:var(--muted);margin:0;line-height:1.5}
+
+/* Brief cards. Same card, chrome removed: no facts dl, no image, no
+   multi-paragraph body. Receipts stay, because receipts are the point. */
+.card--brief{padding:22px 0}
+.card--brief .card-head{margin-bottom:8px}
+.card--brief .card-head h3{font-size:21px}
+.card--brief .card-head .role{font-size:14.5px;margin-top:4px}
+.card--brief p{margin:0 0 10px;font-size:15.5px;line-height:1.55}
+.card--brief .proof{margin-top:10px}
+
+/* Draft-only. Nothing with this class ships. */
+.todo{background:#3b2a10;color:#f0c674;padding:13px 16px;border-radius:6px;
+  margin:22px 0;font-size:14.5px;line-height:1.55}
+[data-theme="light"] .todo{background:#fdf3d8;color:#6b4e11}
+.todo b{display:block;margin-bottom:3px}
 .card-head{margin-bottom:14px}
 .card-head h3{font-family:var(--serif);font-weight:400;font-size:28px;margin:0}
 .card-head .role{margin:7px 0 0;font-size:15.5px;color:var(--muted);line-height:1.45}
@@ -527,6 +547,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
   </dl>
+  <div class="todo"><b>Yours. One word, and it is a factual claim.</b>
+  The Stage field says "early closed alpha." The alpha entry screen was cancelled
+  2026-07-24 and the L2/L3 tiers were never reached, so "alpha" overstates it. The
+  repo's own honest line is "Phase 1 pilot build, deployed and actively hardening."
+  Pick the wording you can defend when a hiring manager asks who is using it.</div>
   <p class="ctx">Voice AI for elders and support for longitudinal caregiving.</p>
   <div class="vids">
     <div class="embed">
@@ -606,6 +631,34 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card reveal">
+  <div class="card-head"><h3>Pathstream</h3>
+    <p class="role"><b>Senior Product Design Manager</b> · 2019 – 2020</p></div>
+  <dl class="facts">
+    <div><dt>Team</dt><dd>3–5 engineers, 1 PM, 1 designer (me)</dd></div>
+    <div><dt>Stage</dt><dd>Series A</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · Design system · Research · PRD · Front-end</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">React · Storybook · Design tokens · Ant Design</dd></div>
+  </dl>
+  <p class="ctx">A career-development and learning platform teaching job skills with real software.</p>
+  <p class="impact"><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
+  <p class="buyer"><b>If you are scaling a live product:</b> I improve it without forcing a migration nobody budgeted for.</p>
+  <p><b>Rebuilt the core lesson experience of a live learning platform while students were mid-course</b>,
+  and wrote the PRD for Labs, the virtualized workspace where they did the actual work. Built the
+  design system in React with Storybook on top of Ant Design.</p>
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/pathstream.webp" alt="Pathstream lesson experience">
+  <div class="card-cta"><a href="work/pathstream.html" target="_blank" rel="noopener">Read the case study</a></div>
+</article>
+
+<div class="tier-break reveal">
+  <div class="todo"><b>Yours. One heading, one line.</b>
+  Everything above is the argument: what you own now, and the craft receipt.
+  Everything below is the record. Name that turn in your own words. A reader who
+  stops here should know they can stop here.</div>
+  <h3>[HEADING]</h3>
+  <p>[ONE LINE]</p>
+</div>
+
+<article class="card reveal">
   <div class="card-head"><h3>Iodine, then GoodRx</h3>
     <p class="role"><b>Lead Product Designer</b> · 2017 – 2018</p></div>
   <dl class="facts">
@@ -663,25 +716,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card reveal">
-  <div class="card-head"><h3>Pathstream</h3>
-    <p class="role"><b>Senior Product Design Manager</b> · 2019 – 2020</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>3–5 engineers, 1 PM, 1 designer (me)</dd></div>
-    <div><dt>Stage</dt><dd>Series A</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Product design · Design system · Research · PRD · Front-end</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">React · Storybook · Design tokens · Ant Design</dd></div>
-  </dl>
-  <p class="ctx">A career-development and learning platform teaching job skills with real software.</p>
-  <p class="impact"><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
-  <p class="buyer"><b>If you are scaling a live product:</b> I improve it without forcing a migration nobody budgeted for.</p>
-  <p><b>Rebuilt the core lesson experience of a live learning platform while students were mid-course</b>,
-  and wrote the PRD for Labs, the virtualized workspace where they did the actual work. Built the
-  design system in React with Storybook on top of Ant Design.</p>
-  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/pathstream.webp" alt="Pathstream lesson experience">
-  <div class="card-cta"><a href="work/pathstream.html" target="_blank" rel="noopener">Read the case study</a></div>
-</article>
-
-<article class="card reveal">
   <div class="card-head"><h3>Clover Health</h3>
     <p class="role"><b>Product Designer, second designer</b> · 2015 – 2016</p></div>
   <dl class="facts">
@@ -710,36 +744,24 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </div>
 </article>
 
-<article class="card reveal">
+<article class="card card--brief reveal">
   <div class="card-head"><h3>Blue Startups</h3>
     <p class="role"><b>Entrepreneur in Residence</b> · 2024</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>Accelerator cohort</dd></div>
-    <div><dt>Stage</dt><dd>Fixed-term, alongside PlaySesh</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Founder advising · Product review</dd></div>
-  </dl>
   <p class="ctx">A Honolulu accelerator. Fixed-term, alongside PlaySesh.</p>
   <p>Entrepreneur in Residence at Hawaii's startup accelerator, alongside building PlaySesh.
   Advising founders on product and design in the earliest stage, where the question is usually
   what to build rather than how.</p>
 </article>
 
-<article class="card reveal">
+<article class="card card--brief reveal">
   <div class="card-head"><h3>Modus Create</h3>
     <p class="role"><b>Software Engineer</b> · 2023 – 2024</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>6 engineers</dd></div>
-    <div><dt>Stage</dt><dd>Consultancy</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Front-end · Client delivery · Atlassian ecosystem</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Atlassian Forge</dd></div>
-  </dl>
   <p class="ctx">A product consultancy, delivering for client engineering teams.</p>
   <p>The chapter where I stopped handing designs over. Production front-end on client engagements,
   which is where the second half of the job got proven rather than claimed. I started PlaySesh
   while finishing here, so the two overlap by a couple of months.</p>
   <div class="proof"><span class="lbl">Receipts</span>
     <a href="https://marketplace.atlassian.com/vendors/1212980/modus-create" target="_blank" rel="noopener">Atlassian Marketplace</a></div>
-  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/modus.webp" alt="Modus Create client work">
 </article>
 
 <article class="card reveal">
@@ -761,15 +783,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </div>
 </article>
 
-<article class="card reveal">
+<article class="card card--brief reveal">
   <div class="card-head"><h3>doc.ai</h3>
     <p class="role"><b>Lead Product Designer</b> · 2021</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>5–6 people, 1 designer (me)</dd></div>
-    <div><dt>Stage</dt><dd>Series A · acquired mid-tenure</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Clinical studies product · Research · Design system · Front-end</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · React · Clinical data</dd></div>
-  </dl>
   <p class="ctx">An enterprise AI platform for healthcare, running clinical studies.</p>
   <p>Omix, a study app for health research. Design across the participant experience: onboarding,
   consent, ongoing data capture, and the console researchers used to watch a study run. Sharecare
@@ -801,15 +817,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </div>
 </article>
 
-<article class="card reveal">
+<article class="card card--brief reveal">
   <div class="card-head"><h3>Amazon</h3>
     <p class="role"><b>User Experience Designer</b> · 2012 – 2013</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>1 of 6 designers, Amazon Music</dd></div>
-    <div><dt>Stage</dt><dd>Public company</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Desktop client · Device integrations · Platform clients</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">Music · Desktop · Cloud</dd></div>
-  </dl>
   <p class="ctx">Amazon Music, when it was moving off the browser and onto devices.</p>
   <p>First job out of grad school. I started as an intern on the Prime team, working on checkout
   and the gift-purchase cases inside it, then moved over to Music.</p>
