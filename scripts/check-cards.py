@@ -46,6 +46,7 @@ ORDER = [
     "limit",         # what was refused, and what refusing cost
     "vids",
     "shot",
+    "rec",           # third-party corroboration, after the artifact
     "proof",         # receipts
     "card-cta",      # case study
     "ref-offer",     # talk to someone
@@ -70,24 +71,27 @@ SPEC = {
     "lead": {
         "required": {"card-head", "ctx", "facts"},
         "allowed": {"prose", "ruleslabel", "hl", "limit",
-                    "vids", "shot", "proof", "card-cta", "ref-offer", "todo"},
+                    "vids", "shot", "rec", "proof", "card-cta", "ref-offer", "todo"},
         "prose_words": 180,
     },
     "proof": {
         "required": {"card-head", "ctx", "facts", "proof"},
-        "allowed": {"prose", "lineage", "vids", "shot", "card-cta", "todo"},
+        "allowed": {"prose", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
         "prose_words": 60,
     },
     "row": {
         "required": {"card-head", "ctx", "facts"},
-        "allowed": {"prose", "proof", "todo"},
+        "allowed": {"prose", "proof", "rec", "todo"},
         "prose_words": 45,
     },
 }
 
 # Slots that may appear at most once anywhere, in any tier. A card with two hooks
 # has no hook.
-SINGLETON = {"card-head", "ctx", "impact", "facts", "limit", "ruleslabel", "hl", "ref-offer"}
+SINGLETON = {"card-head", "ctx", "impact", "facts", "limit", "ruleslabel", "hl",
+             "ref-offer"}
+# Quotes may pair, never stack. Two is corroboration; three is a wall.
+MAX_RECS = 2
 
 CLASSED = re.compile(
     r'<(?:div|dl|p|ul|h4|img|a)\s[^>]*class="([a-z-]+)"[^>]*>|<p>'
@@ -96,9 +100,9 @@ ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx",          "buy
          "ruleslabel": "ruleslabel", "hl": "hl", "shot": "shot", "proof": "proof",
          "card-cta": "card-cta", "ref-offer": "ref-offer", "todo": "todo",
          "role": None, "fig": None, "qual": None, "tech": None, "wide": None,
-         "who": None, "rec": None, "tag": None, "proj": "PROJ", "embed": None,
+         "who": None, "rec": "rec", "tag": None, "proj": "PROJ", "embed": None,
          "facade": None, "play": None, "cap": None, "lbl": None, "card": None, "when": None, "ch-top": None,
-         "reveal": None}
+         "reveal": None, "reccluster": None}
 
 
 def slots(inner):
@@ -130,7 +134,7 @@ def prose_words(inner):
 def check(path, quiet=False):
     src = path.read_text(encoding="utf-8")
     try:
-        work = src.split('<h2 class="sec" id="work">')[1].split('<h2 class="sec">What they said')[0]
+        work = src.split('<h2 class="sec" id="work">')[1].split('<h2 class="sec">Side projects')[0]
     except IndexError:
         print("FAIL  cannot locate the work section in %s" % path.name)
         return 1
@@ -152,7 +156,18 @@ def check(path, quiet=False):
             fails.append((name, "no tier declared. Add it to TIERS in this script"))
             continue
         spec = SPEC[tier]
-        seq = slots(inner)
+
+        # A quote carries its own <p>. That is the recommender's sentence, not
+        # Chris's read layer, so it must not count as prose or shift the order.
+        recs = re.findall(r'<div class="rec">.*?<div class="who">.*?</div>\s*</div>',
+                          inner, re.S)
+        # Collapse each to an empty marker so the slot keeps its position in the
+        # sequence while its <p> stops counting as Chris's prose.
+        stripped = inner
+        for r in recs:
+            stripped = stripped.replace(r, '<div class="rec"></div>')
+
+        seq = slots(stripped)
 
         unknown = [s for s in seq if s.startswith("?")]
         for u in unknown:
@@ -170,6 +185,10 @@ def check(path, quiet=False):
         for got in sorted(set(seq) - spec["required"] - spec["allowed"]):
             fails.append((name, "tier %s does not allow %s" % (tier, got)))
 
+        if seq.count("rec") > MAX_RECS:
+            fails.append((name, "%d quotes. Two is corroboration, more is a wall"
+                          % seq.count("rec")))
+
         for s in sorted(SINGLETON):
             n = seq.count(s)
             if n > 1:
@@ -180,12 +199,12 @@ def check(path, quiet=False):
             out_of_order = [seq[i] for i in range(1, len(ranks)) if ranks[i] < ranks[i - 1]]
             fails.append((name, "out of canonical order at %s" % ", ".join(out_of_order)))
 
-        pw = prose_words(inner)
+        pw = prose_words(stripped)
         if pw > spec["prose_words"]:
             fails.append((name, "%d words of prose, tier %s caps at %d"
                           % (pw, tier, spec["prose_words"])))
 
-        cm = re.search(r'<p class="ctx">(.*?)</p>', inner, re.S)
+        cm = re.search(r'<p class="ctx">(.*?)</p>', stripped, re.S)
         if cm:
             cw = words(cm.group(1))
             if cw == 0:
@@ -224,7 +243,7 @@ def check(path, quiet=False):
                                        dl.group(1), re.S))
             terms = [t.strip().lower() for t in re.split(r"[\u00b7\u2022]", re.sub(r"<[^>]+>", "", vals))]
             terms = [t for t in terms if len(t) > 4]
-            prose = " ".join(re.findall(r"<p>(.*?)</p>", inner, re.S)).lower()
+            prose = " ".join(re.findall(r"<p>(.*?)</p>", stripped, re.S)).lower()
             prose = re.sub(r"<[^>]+>", " ", prose)
             hits = [t for t in terms if t in prose]
             DECIDED = ("instead", "rather than", "first", "tried", "chose", "could not",
