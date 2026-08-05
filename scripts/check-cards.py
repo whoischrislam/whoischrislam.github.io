@@ -40,6 +40,7 @@ ORDER = [
     "facts",         # scale, so the number can be calibrated
     "lineage",       # two-company continuity, GoodRx only
     "prose",         # the call
+    "buyer",         # what that decision means for the reader
     "todo",          # a blank waiting on Chris, sits with what it is about
     "ruleslabel",
     "hl",            # the enumerated calls
@@ -69,14 +70,14 @@ TIERS = {
 
 SPEC = {
     "lead": {
-        "required": {"card-head", "ctx", "facts"},
+        "required": {"card-head", "ctx", "facts", "buyer"},
         "allowed": {"prose", "ruleslabel", "hl", "limit",
                     "vids", "shot", "rec", "proof", "card-cta", "ref-offer", "todo"},
         "prose_words": 180,
     },
     "proof": {
         "required": {"card-head", "ctx", "facts", "proof"},
-        "allowed": {"prose", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
+        "allowed": {"prose", "buyer", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
         "prose_words": 60,
     },
     "row": {
@@ -88,7 +89,7 @@ SPEC = {
 
 # Slots that may appear at most once anywhere, in any tier. A card with two hooks
 # has no hook.
-SINGLETON = {"card-head", "ctx", "impact", "facts", "limit", "ruleslabel", "hl",
+SINGLETON = {"card-head", "ctx", "impact", "facts", "buyer", "limit", "ruleslabel", "hl",
              "ref-offer"}
 # Quotes may pair, never stack. Two is corroboration; three is a wall.
 MAX_RECS = 2
@@ -194,9 +195,10 @@ def check(path, quiet=False):
             if n > 1:
                 fails.append((name, "%d x %s. Allowed once" % (n, s)))
 
-        ranks = [RANK[s] for s in seq if s in RANK]
+        ranks = [RANK[s] for s in seq if s in RANK and s != "todo"]
         if ranks != sorted(ranks):
-            out_of_order = [seq[i] for i in range(1, len(ranks)) if ranks[i] < ranks[i - 1]]
+            ordered = [s for s in seq if s in RANK and s != "todo"]
+            out_of_order = [ordered[i] for i in range(1, len(ranks)) if ranks[i] < ranks[i - 1]]
             fails.append((name, "out of canonical order at %s" % ", ".join(out_of_order)))
 
         pw = prose_words(stripped)
@@ -222,7 +224,7 @@ def check(path, quiet=False):
             extra = [g for g in got if g not in ("Stage", "Team", "Owned", "Stack")]
             want = [f for f in ("Stage", "Team", "Owned", "Stack") if f in got] + extra
             if tier in ("lead", "proof") and not extra:
-                fails.append((name, "tier %s needs a result row after Stack, labelled "
+                fails.append((name, "tier %s needs a result row after Stack, labeled "
                                     "one of Result / Adoption / Tradeoff" % tier))
             for e in extra:
                 if e not in RESULT and name != "GoodRx":
@@ -253,6 +255,15 @@ def check(path, quiet=False):
                 warns.append((name, "read layer re-lists %d meta terms (%s) with no sign "
                                     "of a decision. Written for the recruiter, not the "
                                     "hiring manager" % (len(hits), ", ".join(hits[:3]))))
+
+        bm = re.search(r'<p class="buyer">(.*?)</p>', stripped, re.S)
+        if bm:
+            btxt = re.sub(r"<[^>]+>", " ", bm.group(1))
+            if not re.search(r"\byou\b|\byour\b", btxt, re.I):
+                fails.append((name, "buyer line does not address the reader. Its whole job "
+                                    "is to name their situation, so it needs you or your"))
+            if words(bm.group(1)) > 30:
+                fails.append((name, "buyer line is %d words, cap is 30" % words(bm.group(1))))
 
         if "todo" in seq:
             warns.append((name, "has an unfilled blank. Not publishable yet"))

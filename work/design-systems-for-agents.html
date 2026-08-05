@@ -168,7 +168,7 @@
 </div>
 
 <h2>The system the rules protect</h2>
-<p>PlaySesh's tokens are the first thing in the repo. Commit <code class="mono">a812e20</code>, day one, before the canvas, before auth, before anything worth looking at. Semantic rather than raw, so a component asks for a role and not a colour.</p>
+<p>PlaySesh's tokens are the first thing in the repo. Commit <code class="mono">a812e20</code>, day one, before the canvas, before auth, before anything worth looking at. Semantic rather than raw, so a component asks for a role and not a color.</p>
 
 <div class="swatches" id="sw-color"></div>
 <p style="font-size:14px;color:var(--muted);margin-top:-6px">Light theme. Every one has a dark counterpart, resolved through <code class="mono">getThemeColors(theme)</code> rather than a class swap.</p>
@@ -195,7 +195,7 @@
 <p>The same cycle ran on dropdowns, and ended in <code class="mono">client/utils/dropdownAnimations.ts</code>: three shared constants and three keyframes, now imported by eight components that each used to carry their own copy.</p>
 
 <h2>Where it failed, and what I did about it</h2>
-<p>At PlaySesh the rule was a document. Good writing, injected into every agent edit, unambiguous. And it did not hold: <b>171 hardcoded colour declarations</b> are still in that codebase, written past a rule that says in bold capitals never to write them.</p>
+<p>At PlaySesh the rule was a document. Good writing, injected into every agent edit, unambiguous. And it did not hold: <b>171 hardcoded color declarations</b> are still in that codebase, written past a rule that says in bold capitals never to write them.</p>
 <p>An advisory rule is a suggestion with extra steps. That is the lesson, and it cost a real number.</p>
 <p>So at y30 I built the version that can say no. It came out of a specific failure: an agent, working in a repo where the token file had never been wired into the Vite build, could not find any tokens, so it invented a parallel set, <code class="mono">web/src/care/tokens.ts</code>, with its own hex values. Entirely reasonable behavior. Catastrophic for a design system.</p>
 <p>The fix is layered by cost, because the cheapest correction is the one that happens before anything is written:</p>
@@ -299,13 +299,13 @@
     return { name: names[0], names: names, exact: bd === 0, value: table[names[0]] };
   }
 
-  /* Same order of checks the hook uses: colour, then radius, then z-index,
+  /* Same order of checks the hook uses: color, then radius, then z-index,
      then any remaining px on a spacing property. */
   function analyze(text) {
     var hex = text.match(/#[0-9a-fA-F]{3,8}\b/);
     if (hex) {
       var m = nearestColor(hex[0], era.color);
-      return { kind:"colour", found:hex[0],
+      return { kind:"color", found:hex[0],
                token: era.colorKey ? era.ref(era.colorKey, m.name) : era.ref(null, m.name),
                exact:m.exact, near:m.value };
     }
@@ -353,7 +353,7 @@
 
     if (!a) {
       html = stage("pass", "read time → write time → commit time",
-        "<p>Nothing to catch. No colour, size, radius, or z-index literal in that line, so all three layers pass it through.</p>");
+        "<p>Nothing to catch. No color, size, radius, or z-index literal in that line, so all three layers pass it through.</p>");
       out.innerHTML = html; reveal(); return;
     }
 

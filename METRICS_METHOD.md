@@ -104,7 +104,7 @@ counting method and no scope that reproduces them: "171 hardcoded colors" and
 "935 token references against 923 raw hex". Re-measuring the same scope today
 gives materially different values. That page is unlinked; the figures should be
 recomputed with a pinned command or softened to the claim they were making,
-which does survive: roughly one hardcoded colour for every token reference.
+which does survive: roughly one hardcoded color for every token reference.
 
 ---
 
