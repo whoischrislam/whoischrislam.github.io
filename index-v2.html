@@ -231,6 +231,15 @@ details.more[open] summary::before{transform:rotate(90deg)}
 h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26px}
 .card{border-top:1px solid var(--border);padding:34px 0}
 
+/* The limit. Separated by a rule, NOT muted. It reads as a deliberate register
+   change, not a footnote, because on these cards the honesty is the argument. */
+.limit{border-top:1px solid var(--border);margin-top:20px;padding-top:16px}
+.impact > div + div{margin-top:18px}
+.wslbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;margin-bottom:5px}
+.ruleslabel{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin:20px 0 10px}
+
 /* Recommendations, collected. Four quotes at full weight instead of four
    quotes buried one per card. */
 .reccluster{display:grid;gap:26px}
@@ -543,102 +552,104 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <article class="card reveal">
   <div class="card-head"><h3>y30</h3>
-    <p class="role"><b>Co-founder, CPTO</b> · 2026 – now</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> (CEO) and me</dd></div>
-    <div><dt>Stage</dt><dd>Pre-seed, bootstrapped. Deployed and actively hardening in early closed alpha</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
-  </dl>
-  <div class="todo"><b>Yours. One word, and it is a factual claim.</b>
-  The Stage field says "early closed alpha." The alpha entry screen was cancelled
-  2026-07-24 and the L2/L3 tiers were never reached, so "alpha" overstates it. The
-  repo's own honest line is "Phase 1 pilot build, deployed and actively hardening."
-  Pick the wording you can defend when a hiring manager asks who is using it.</div>
+  <p class="role"><b>Co-founder, CPTO</b> · 2026 – now</p></div>
   <p class="ctx">Voice AI for elders and support for longitudinal caregiving.</p>
-  <div class="vids">
-    <div class="embed">
-      <button class="facade loom" type="button" data-loom="eb44015201554d11ac841cd1700653ce"
-        aria-label="Play video: a real reminiscence call with the y30 voice agent">
-        <span class="play"></span>
-        <span class="cap">A real reminiscence call, and what it becomes</span>
-      </button>
-    </div>
-  </div>
   <p class="impact"><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
-  <p>I built the voice agent around the things that make a good listener for seniors,
-  based on what we learned from geriatric doctors and folks who work with elders on the regular.</p>
+  <dl class="facts">
+  <div class="wide"><dt>Team</dt><dd><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> (CEO) and me. Vijay owns fundraising, customer discovery, recruiting testers, sales, and building relationships with subject matter experts</dd></div>
+  <div><dt>Stage</dt><dd>Bootstrapped. Vijay and I are paying out of pocket for the costs and developing it. Deployed and actively hardening</dd></div>
+  <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
+  <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
+  </dl>
   <p>The hardest part wasn't getting the AI to do more. It was deciding what it shouldn't get to
   decide. I let the model run the game sequence at first. After eight prompt revisions, guards and
   a watchdog, it still started the round only about 70% of the time. I moved that sequence into
   code. Conversation stayed open-ended; the part that had to happen in order stopped being a
   request.</p>
+  <div class="todo"><b>Yours. Two or three words.</b> A label above these six so a skimmer
+  reads them as deliberate constraints rather than a feature list. Not "Interaction rules",
+  that is Perplexity's phrasing. Yours.</div>
+  <h4 class="ruleslabel">[LABEL]</h4>
   <ul class="hl">
-    <li><b>Pacing.</b> Waits longer for elders before deciding they're done, to make sure it's listening.</li>
-    <li><b>Interruptions.</b> Handles them, and never talks over the user.</li>
-    <li><b>Confirmation.</b> Never corrects a false memory. Some phrases are banned to prevent tone-deaf responses, enforced by a guard that checks every response before it's spoken.</li>
-    <li><b>Safety.</b> Emergency and crisis responses are recognized before any AI model is called.</li>
-    <li><b>Tangents.</b> Waits a few exchanges before offering to go back to the original topic, and never pressures.</li>
-    <li><b>Memory.</b> Remembers the last 20 sessions, and stops surfacing a follow-up if it goes unresolved after a few.</li>
+  <li><b>Pacing.</b> Waits longer for elders before deciding they're done, to make sure it's listening.</li>
+  <li><b>Interruptions.</b> Handles them, and never talks over the user.</li>
+  <li><b>Confirmation.</b> Never corrects a false memory. Some phrases are banned to prevent tone-deaf responses, enforced by a guard that checks every response before it's spoken.</li>
+  <li><b>Safety.</b> Emergency and crisis responses are recognized before any AI model is called.</li>
+  <li><b>Tangents.</b> Waits a few exchanges before offering to go back to the original topic, and never pressures.</li>
+  <li><b>Memory.</b> Remembers the last 20 sessions, and stops surfacing a follow-up if it goes unresolved after a few.</li>
   </ul>
-  <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
+  <p class="limit">We can't claim product market fit, we can only claim interest. We're actively
+  getting feedback from subject matter experts. We know it's engaging, but we haven't proven
+  clinical data and value yet. We decided to not log elder phone sessions to build their trust
+  and to focus on whether they would even bother to interact with y30. They are a vulnerable
+  population and they get taken advantage of, so we were very sensitive to the elders we talked
+  to. One of our primary motivations is building proper trust.</p>
+  <div class="vids">
+  <div class="embed">
+  <button class="facade loom" type="button" data-loom="eb44015201554d11ac841cd1700653ce"
+  aria-label="Play video: a real reminiscence call with the y30 voice agent">
+  <span class="play"></span>
+  <span class="cap">A real reminiscence call, and what it becomes</span>
+  </button>
+  </div>
+  </div>
   <div class="proof"><span class="lbl">Receipts</span>
-    <a href="https://y30.ai" target="_blank" rel="noopener">y30.ai</a></div>
+  <a href="https://y30.ai" target="_blank" rel="noopener">y30.ai</a></div>
+  <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
 </article>
 
 <article class="card reveal">
   <div class="card-head"><h3>PlaySesh</h3>
-    <p class="role"><b>Co-founder, CEO</b> · 2024 – 2026</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>3 co-founders, <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> COO</dd></div>
-    <div><dt>Stage</dt><dd>Pre-seed, bootstrapped by choice</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Cloudflare Workers · Durable Objects</dd></div>
-  </dl>
+  <p class="role"><b>Co-founder, CEO</b> · 2024 – 2026</p></div>
   <p class="ctx">Small indie game teams have no single source of truth. Design lives in Figma,
   decisions in Notion, code in the engine, and feedback gets lost in Discord.</p>
-  <p>PlaySesh connects that loop: a multiplayer canvas, IDE companion, and playtesting in one place.</p>
-  <p>It wasn't the first product we set out to build. We started closer to social gaming. What people
-  actually used pulled us toward making games together, so we changed the product around them.</p>
   <p class="impact"><span class="fig">6,220 authorized accounts</span><span class="qual">Discord
   reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026.
   Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</span></p>
+  <dl class="facts">
+  <div><dt>Team</dt><dd>3 co-founders, <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> COO</dd></div>
+  <div><dt>Stage</dt><dd>Pre-seed, bootstrapped by choice</dd></div>
+  <div class="wide"><dt>Owned</dt><dd>Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</dd></div>
+  <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Cloudflare Workers · Durable Objects</dd></div>
+  </dl>
+  <p>PlaySesh connects that loop: a multiplayer canvas, IDE companion, and playtesting in one place.</p>
+  <p>It wasn't the first product we set out to build. We started closer to social gaming. What people
+  actually used pulled us toward making games together, so we changed the product around them.</p>
   <p>I built the original version solo, then brought on two co-founders. When the canvas library
   couldn't carry real multiplayer, I replaced it with an operation-based sync engine on Durable
   Objects. The point wasn't to own unusual infrastructure. It was to make a remote team feel like
   it was in the same room.</p>
   <p>I authored 1,147 of the rebuild's 1,793 commits. 291 tests, still green.</p>
   <div class="vids">
-    <div class="embed">
-      <button class="facade" type="button" data-yt="Q0S-_WAea6Y"
-        aria-label="Play video: AI-assisted game prototyping, from prompt to playable">
-        <img loading="lazy" decoding="async" width="1280" height="720"
-          src="https://img.youtube.com/vi/Q0S-_WAea6Y/maxresdefault.jpg" alt="">
-        <span class="play"></span>
-        <span class="cap">Prompt to playable, AI-assisted prototyping</span>
-      </button>
-    </div>
-    <div class="embed">
-      <button class="facade" type="button" data-yt="Cuqu38j7-vQ"
-        aria-label="Play video: multiplayer game design workspace inside Discord">
-        <img loading="lazy" decoding="async" width="1280" height="720"
-          src="https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg" alt="">
-        <span class="play"></span>
-        <span class="cap">Multiplayer design workspace, inside Discord</span>
-      </button>
-    </div>
+  <div class="embed">
+  <button class="facade" type="button" data-yt="Q0S-_WAea6Y"
+  aria-label="Play video: AI-assisted game prototyping, from prompt to playable">
+  <img loading="lazy" decoding="async" width="1280" height="720"
+  src="https://img.youtube.com/vi/Q0S-_WAea6Y/maxresdefault.jpg" alt="">
+  <span class="play"></span>
+  <span class="cap">Prompt to playable, AI-assisted prototyping</span>
+  </button>
   </div>
-  <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
+  <div class="embed">
+  <button class="facade" type="button" data-yt="Cuqu38j7-vQ"
+  aria-label="Play video: multiplayer game design workspace inside Discord">
+  <img loading="lazy" decoding="async" width="1280" height="720"
+  src="https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg" alt="">
+  <span class="play"></span>
+  <span class="cap">Multiplayer design workspace, inside Discord</span>
+  </button>
+  </div>
+  </div>
   <div class="proof"><span class="lbl">Receipts</span>
-    <a href="https://discord.com/discovery/applications/1225184380419440810" target="_blank" rel="noopener">Discord App Directory</a></div>
+  <a href="https://discord.com/discovery/applications/1225184380419440810" target="_blank" rel="noopener">Discord App Directory</a></div>
+  <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
 </article>
 
 <article class="card reveal">
   <div class="card-head"><h3>Pathstream</h3>
-    <p class="role"><b>Senior Product Design Manager</b> · 2019 – 2020</p></div>
+  <p class="role"><b>Senior Product Design Manager</b> · 2019 – 2020</p></div>
   <p class="ctx">A career-development and learning platform teaching job skills with real software.</p>
   <p class="impact"><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
-  <p class="buyer"><b>If you are scaling a live product:</b> I improve it without forcing a migration nobody budgeted for.</p>
   <p><b>Rebuilt the core lesson experience of a live learning platform while students were mid-course</b>,
   and wrote the PRD for Labs, the virtualized workspace where they did the actual work. Built the
   design system in React with Storybook on top of Ant Design.</p>
@@ -647,55 +658,56 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </article>
 
 <article class="card card--brief reveal">
-  <div class="card-head"><h3>Iodine, then GoodRx</h3>
-    <p class="role"><b>Lead Product Designer</b> · 2017 – 2018</p></div>
+  <div class="card-head"><h3>GoodRx</h3>
+  <p class="role"><b>Lead Product Designer</b> · 2017 – 2018</p></div>
   <p class="ctx">Consumer healthcare: prescription drug information, then drug pricing.</p>
-  <p class="lineage">I joined <b>Iodine</b> as its first full-time designer. <b>GoodRx acquired
-  us</b>, and I stayed through the integration onto their research and experimentation team.
-  One continuous stretch, two companies, two products.</p>
-
-  <div class="proj">
-    <h4>Iodine <span class="tag">first full-time designer</span></h4>
-    <p class="impact"><span class="fig">2% → 5%</span><span class="qual">Coupon-flow conversion.
-    Iodine.com won the Webby for Best Health Website.</span></p>
-    <div class="proof"><span class="lbl">Receipts</span>
-      <a href="https://www.goodrx.com/corporate/culture/iodine-com-wins-the-webby-for-best-health-website" target="_blank" rel="noopener">Webby 2018 announcement</a>
-      <a href="https://web.archive.org/web/20180224101750/https://www.iodine.com/" target="_blank" rel="noopener">Iodine.com, archived Feb 2018</a></div>
-    <div class="card-cta"><a href="work/iodine.html" target="_blank" rel="noopener">Read the case study</a></div>
+  <div class="impact">
+    <div>
+      <span class="wslbl">Iodine.com <span class="tag">first full-time designer</span></span>
+      <span class="fig">2% &rarr; 5%</span><span class="qual">Coupon-flow conversion.
+      Iodine.com won the Webby for Best Health Website.</span>
+    </div>
+    <div>
+      <span class="wslbl">GoodRx Research <span class="tag">research &amp; experimentation team</span></span>
+      <span class="fig">+10% mobile, +25% desktop</span><span class="qual">Referenced
+      in the New York Times and used in federal drug-pricing debates.</span>
+    </div>
   </div>
-
-  <div class="proj">
-    <h4>GoodRx Research <span class="tag">research &amp; experimentation team</span></h4>
-    <p class="impact"><span class="fig">+10% mobile, +25% desktop</span><span class="qual">Referenced
-    in the New York Times and used in federal drug-pricing debates.</span></p>
-    <div class="proof"><span class="lbl">Receipts</span>
-      <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html" target="_blank" rel="noopener">New York Times</a>
-      <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554" target="_blank" rel="noopener">S.2554</a>
-      <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553" target="_blank" rel="noopener">S.2553</a>
-      <a href="https://abcnews.go.com/GMA/Wellness/video/flu-numbers-show-growing-outbreak-us-53014507" target="_blank" rel="noopener">Good Morning America</a>
-      <a href="https://web.archive.org/web/20180915114231/https://www.goodrx.com/atorvastatin" target="_blank" rel="noopener">A drug page, archived Sep 2018</a></div>
-    <div class="card-cta"><a href="work/goodrx.html" target="_blank" rel="noopener">Read the case study</a></div>
-  </div>
-
+  <div class="todo"><b>Yours. One line, and the old one was false.</b>
+  It said "GoodRx acquired us and I stayed through the integration." GoodRx was already your
+  employer; you joined the special projects team that used to be Iodine. Say that relationship
+  in your words: one team, two products, one of which still carried the Iodine name.</div>
+  <div class="proof"><span class="lbl">Receipts</span>
+  <a href="https://www.goodrx.com/corporate/culture/iodine-com-wins-the-webby-for-best-health-website" target="_blank" rel="noopener">Webby 2018 announcement</a>
+  <a href="https://web.archive.org/web/20180224101750/https://www.iodine.com/" target="_blank" rel="noopener">Iodine.com, archived Feb 2018</a>
+  <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html" target="_blank" rel="noopener">New York Times</a>
+  <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554" target="_blank" rel="noopener">S.2554</a>
+  <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553" target="_blank" rel="noopener">S.2553</a>
+  <a href="https://abcnews.go.com/GMA/Wellness/video/flu-numbers-show-growing-outbreak-us-53014507" target="_blank" rel="noopener">Good Morning America</a>
+  <a href="https://web.archive.org/web/20180915114231/https://www.goodrx.com/atorvastatin" target="_blank" rel="noopener">A drug page, archived Sep 2018</a></div>
+  <div class="card-cta">
+    <a href="work/iodine.html" target="_blank" rel="noopener">Iodine case study</a>
+    <a href="work/goodrx.html" target="_blank" rel="noopener">GoodRx Research case study</a></div>
 </article>
 
 <article class="card card--brief reveal">
   <div class="card-head"><h3>Clover Health</h3>
-    <p class="role"><b>Product Designer, second designer</b> · 2015 – 2016</p></div>
+  <p class="role"><b>Product Designer, second designer</b> · 2015 – 2016</p></div>
   <p class="ctx">A Medicare Advantage insurer using data to direct clinical care. I joined at about 30 people, two months before the first $100M round.</p>
   <p class="impact"><span class="fig">~7–8× ROI</span><span class="qual">On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</span></p>
-  <p class="buyer"><b>If your users are professionals with a job to finish:</b> I go where the work happens and design for the constraints I find there.</p>
+  <p><b>Rebuilt the nurse-practitioner home-visit app after a week in New Jersey shadowing live
+  visits</b>, and shipped the company&rsquo;s first branded website ahead of enrollment.</p>
   <div class="proof"><span class="lbl">Receipts</span>
-    <a href="https://web.archive.org/web/20160220081453/https://www.cloverhealth.com/en/" target="_blank" rel="noopener">The site I shipped, archived Feb 2016</a></div>
+  <a href="https://web.archive.org/web/20160220081453/https://www.cloverhealth.com/en/" target="_blank" rel="noopener">The site I shipped, archived Feb 2016</a></div>
   <div class="card-cta">
-    <a href="work/clover-care-visit.html" target="_blank" rel="noopener">Care Visit case study</a>
-    <a href="work/clover-health-website.html" target="_blank" rel="noopener">The website</a>
+  <a href="work/clover-care-visit.html" target="_blank" rel="noopener">Care Visit case study</a>
+  <a href="work/clover-health-website.html" target="_blank" rel="noopener">The website</a>
   </div>
 </article>
 
 <article class="card card--brief reveal">
   <div class="card-head"><h3>Blue Startups</h3>
-    <p class="role"><b>Entrepreneur in Residence</b> · 2024</p></div>
+  <p class="role"><b>Entrepreneur in Residence</b> · 2024</p></div>
   <p>Entrepreneur in Residence at Hawaii's startup accelerator, alongside building PlaySesh.
   Advising founders on product and design in the earliest stage, where the question is usually
   what to build rather than how.</p>
@@ -703,18 +715,18 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <article class="card card--brief reveal">
   <div class="card-head"><h3>Modus Create</h3>
-    <p class="role"><b>Software Engineer</b> · 2023 – 2024</p></div>
+  <p class="role"><b>Software Engineer</b> · 2023 – 2024</p></div>
   <p class="ctx">A product consultancy, delivering for client engineering teams.</p>
   <p>The chapter where I stopped handing designs over. Production front-end on client engagements,
   which is where the second half of the job got proven rather than claimed. I started PlaySesh
   while finishing here, so the two overlap by a couple of months.</p>
   <div class="proof"><span class="lbl">Receipts</span>
-    <a href="https://marketplace.atlassian.com/vendors/1212980/modus-create" target="_blank" rel="noopener">Atlassian Marketplace</a></div>
+  <a href="https://marketplace.atlassian.com/vendors/1212980/modus-create" target="_blank" rel="noopener">Atlassian Marketplace</a></div>
 </article>
 
 <article class="card card--brief reveal">
   <div class="card-head"><h3>StartPlaying</h3>
-    <p class="role"><b>Founding Product Designer</b> · 2022 – 2023</p></div>
+  <p class="role"><b>Founding Product Designer</b> · 2022 – 2023</p></div>
   <p class="ctx">A marketplace connecting tabletop players with paid game masters.</p>
   <p><b>First designer on a two-sided marketplace.</b> Two-sided
   by nature: the player picking a game has almost nothing in common with the GM running one as a
@@ -723,7 +735,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <article class="card card--brief reveal">
   <div class="card-head"><h3>doc.ai</h3>
-    <p class="role"><b>Lead Product Designer</b> · 2021</p></div>
+  <p class="role"><b>Lead Product Designer</b> · 2021</p></div>
   <p class="ctx">An enterprise AI platform for healthcare, running clinical studies.</p>
   <p>The nearest thing I did to y30 before y30. Health data, real participants, and a product where
   being wrong has a cost.</p>
@@ -731,29 +743,29 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 <article class="card card--brief reveal">
   <div class="card-head"><h3>TaskRabbit</h3>
-    <p class="role"><b>Product Designer</b> · 2014 – 2015</p></div>
+  <p class="role"><b>Product Designer</b> · 2014 – 2015</p></div>
   <p class="ctx">A two-sided marketplace for local help, mid-rebuild.</p>
   <p class="impact"><span class="fig">NPS −5 → mid-50s</span><span class="qual">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</span></p>
   <p><b>Owned the Tasker side through the 2014 rebrand and the move from bidding to direct hire.</b>
   Later acquired by IKEA.</p>
   <div class="proof"><span class="lbl">Receipts</span>
-    <a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild</a>
-    <a href="https://web.archive.org/web/20150227060448/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Feb 2015</a></div>
+  <a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild</a>
+  <a href="https://web.archive.org/web/20150227060448/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Feb 2015</a></div>
   <div class="card-cta">
-    <a href="work/taskrabbit-tasker.html" target="_blank" rel="noopener">Tasker case study</a>
-    <a href="work/taskrabbit-client.html" target="_blank" rel="noopener">Client redesign</a>
+  <a href="work/taskrabbit-tasker.html" target="_blank" rel="noopener">Tasker case study</a>
+  <a href="work/taskrabbit-client.html" target="_blank" rel="noopener">Client redesign</a>
   </div>
 </article>
 
 <article class="card card--brief reveal">
   <div class="card-head"><h3>Amazon</h3>
-    <p class="role"><b>User Experience Designer</b> · 2012 – 2013</p></div>
+  <p class="role"><b>User Experience Designer</b> · 2012 – 2013</p></div>
   <p class="ctx">Amazon Music, when it was moving off the browser and onto devices.</p>
   <p>First job out of grad school. I started as an intern on the Prime team, working on checkout
   and the gift-purchase cases inside it, then moved over to Music.</p>
   <div class="proof"><span class="lbl">Receipts</span>
-    <a href="https://press.aboutamazon.com/news-releases/news-release-details/updated-amazon-cloud-player-includes-new-scan-and-match">Scan and match, Amazon, July 2012</a>
-    <a href="https://www.engadget.com/2013-10-03-samsung-shape-wireless-audio-system.html">Samsung Shape launch, October 2013</a></div>
+  <a href="https://press.aboutamazon.com/news-releases/news-release-details/updated-amazon-cloud-player-includes-new-scan-and-match">Scan and match, Amazon, July 2012</a>
+  <a href="https://www.engadget.com/2013-10-03-samsung-shape-wireless-audio-system.html">Samsung Shape launch, October 2013</a></div>
 </article>
 
 <h2 class="sec">What they said</h2>
