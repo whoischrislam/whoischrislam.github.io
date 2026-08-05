@@ -526,7 +526,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
   </dl>
-  <p class="ctx">Voice AI for older adults and their caregivers.</p>
+  <p class="ctx">Voice AI for elders and support for longitudinal caregiving.</p>
   <div class="vids">
     <div class="embed">
       <button class="facade loom" type="button" data-loom="eb44015201554d11ac841cd1700653ce"
@@ -538,7 +538,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </div>
   <p class="impact"><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
   <p class="buyer"><b>If you're looking for someone that can orchestrate and direct an AI for people to trust,</b> I'm your product design engineer.</p>
-  <p>Outside the founding team we got feedback from folks who know voice AI, someone who runs an independent living facility for seniors, two geriatric doctors, and a senior rehabilitation specialist. We had people red-teaming and stress testing safety, trying to break it. The facility owner found two P0 safety failures, and we restructured the attention model around what he surfaced.</p>
+  <p>I built the voice AI agent to respect the things that make a good listener for seniors,
+  based on what we learned from activity coordinators and folks who work with elders on the regular.</p>
+  <ul class="hl">
+    <li><b>Pacing.</b> Waits longer for elders before deciding they're done, to make sure it's listening.</li>
+    <li><b>Interruptions.</b> Handles them, and never talks over the user.</li>
+    <li><b>Confirmation.</b> Never corrects a false memory. Some phrases are banned to prevent tone-deaf responses, enforced by a guard that checks every response before it's spoken.</li>
+    <li><b>Safety.</b> Emergency and crisis responses are recognized before any AI model is called.</li>
+    <li><b>Tangents.</b> Waits a few exchanges before offering to go back to the original topic, and never pressures.</li>
+    <li><b>Memory.</b> Remembers the last 20 sessions, and stops surfacing a follow-up if it goes unresolved after a few.</li>
+  </ul>
   <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
   <div class="proof"><span class="lbl">Receipts</span>
     <a href="https://y30.ai" target="_blank" rel="noopener">y30.ai</a></div>
