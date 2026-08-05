@@ -37,3 +37,6 @@ PLAYSESH_METRICS.md
 # NOT backed up by git, so re-screenshot if lost.
 # images/logos/*.svg is NOT ignored: those are finished monochrome assets.
 images/companies/
+
+# y30 case study draft: on disk, deliberately untracked
+work/y30.html
