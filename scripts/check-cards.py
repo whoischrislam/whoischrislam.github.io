@@ -38,7 +38,6 @@ ORDER = [
     "card-head",     # who, what title, when
     "ctx",           # what it was, for whom
     "facts",         # scale, so the number can be calibrated
-    "impact",        # the number, once the reader can size it
     "lineage",       # two-company continuity, GoodRx only
     "prose",         # the call
     "todo",          # a blank waiting on Chris, sits with what it is about
@@ -69,13 +68,13 @@ TIERS = {
 
 SPEC = {
     "lead": {
-        "required": {"card-head", "ctx", "facts", "impact"},
+        "required": {"card-head", "ctx", "facts"},
         "allowed": {"prose", "ruleslabel", "hl", "limit",
                     "vids", "shot", "proof", "card-cta", "ref-offer", "todo"},
         "prose_words": 180,
     },
     "proof": {
-        "required": {"card-head", "ctx", "facts", "impact", "proof"},
+        "required": {"card-head", "ctx", "facts", "proof"},
         "allowed": {"prose", "lineage", "vids", "shot", "card-cta", "todo"},
         "prose_words": 60,
     },
@@ -93,8 +92,7 @@ SINGLETON = {"card-head", "ctx", "impact", "facts", "limit", "ruleslabel", "hl",
 CLASSED = re.compile(
     r'<(?:div|dl|p|ul|h4|img|a)\s[^>]*class="([a-z-]+)"[^>]*>|<p>'
 )
-ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx", "impact": "impact",
-         "buyer": "buyer", "lineage": "lineage", "limit": "limit", "vids": "vids",
+ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx",          "buyer": "buyer", "impact": "impact", "outcome": None, "lineage": "lineage", "limit": "limit", "vids": "vids",
          "ruleslabel": "ruleslabel", "hl": "hl", "shot": "shot", "proof": "proof",
          "card-cta": "card-cta", "ref-offer": "ref-offer", "todo": "todo",
          "role": None, "fig": None, "qual": None, "tech": None, "wide": None,
@@ -200,10 +198,22 @@ def check(path, quiet=False):
         dl = re.search(r'<dl class="facts">(.*?)</dl>', inner, re.S)
         if dl:
             got = re.findall(r"<dt>([^<]+)</dt>", dl.group(1))
-            want = [f for f in ("Stage", "Team", "Owned", "Stack") if f in got]
+            RESULT = {"Result", "Adoption", "Tradeoff"}
+            fixed = [g for g in got if g in ("Stage", "Team", "Owned", "Stack")]
+            extra = [g for g in got if g not in ("Stage", "Team", "Owned", "Stack")]
+            want = [f for f in ("Stage", "Team", "Owned", "Stack") if f in got] + extra
+            if tier in ("lead", "proof") and not extra:
+                fails.append((name, "tier %s needs a result row after Stack, labelled "
+                                    "one of Result / Adoption / Tradeoff" % tier))
+            for e in extra:
+                if e not in RESULT and name != "GoodRx":
+                    fails.append((name, "result label %r not in Result / Adoption / Tradeoff" % e))
             if got != want:
                 fails.append((name, "meta order is %s, must be Stage, Team, Owned, Stack"
                               % ", ".join(got)))
+
+        if tier in ("lead", "proof") and not ("vids" in seq or "shot" in seq):
+            fails.append((name, "tier %s needs an artifact, a video or an image" % tier))
 
         if "todo" in seq:
             warns.append((name, "has an unfilled blank. Not publishable yet"))
