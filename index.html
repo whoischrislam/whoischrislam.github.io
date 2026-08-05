@@ -279,7 +279,7 @@
                             <ul class="featured-decisions">
                                 <li>
                                     <span class="featured-decision-title">Made it slower, on purpose</span>
-                                    <span class="featured-decision-rationale">Most pipelines fire at 200–400ms. For an 80-year-old, that's not fast. It's rude. y30 uses a 3.2-second patience window with a contextual turn-detector that holds longer when a sentence isn't finished, and I cover the wait with immediate non-verbal feedback so it reads as listening, not lag. One call wearing three hats: the product judgment to not rush them, the interaction design to make waiting feel like care, and the engineering to hold the turn.</span>
+                                    <span class="featured-decision-rationale">Answer too fast and you cut people off. For an 80-year-old, that's not fast. It's rude. y30 waits 800ms before deciding someone has finished, up from the 600ms it started with, because 600ms misfires on 70–80% of elder intra-sentence pauses, and I cover the wait with immediate non-verbal feedback so it reads as listening, not lag. One call wearing three hats: the product judgment to not rush them, the interaction design to make waiting feel like care, and the engineering to hold the turn.</span>
                                 </li>
                                 <li>
                                     <span class="featured-decision-title">An interface an 80-year-old never has to learn</span>
@@ -287,7 +287,7 @@
                                 </li>
                                 <li>
                                     <span class="featured-decision-title">Deterministic engine, warm LLM delivery</span>
-                                    <span class="featured-decision-rationale">Flow control runs on a finite-state machine. The LLM only owns phrasing, warmth, and repair. About 50% of routing decisions resolve in 0ms, no model call. LLM consulted only on ambiguity (p95 1.5s). Flow is engineering; warmth is the model. They don't bleed.</span>
+                                    <span class="featured-decision-rationale">Flow control runs on a finite-state machine. The LLM only owns phrasing, warmth, and repair. The model is never consulted for sequencing. Prompt-driven flow control worked about 70% of the time; code-driven works every time. Flow is engineering; warmth is the model. They don't bleed.</span>
                                 </li>
                                 <li>
                                     <span class="featured-decision-title">Safety that survives the model going down</span>
