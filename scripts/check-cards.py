@@ -215,6 +215,26 @@ def check(path, quiet=False):
         if tier in ("lead", "proof") and not ("vids" in seq or "shot" in seq):
             fails.append((name, "tier %s needs an artifact, a video or an image" % tier))
 
+        # Duty-list detector. The read layer exists for the decision; if a
+        # paragraph mostly re-lists the OWNED and STACK fields and shows no sign
+        # of a choice, it is written for the recruiter, who is already served by
+        # the scan layer two inches higher. Heuristic, so it warns.
+        if dl:
+            vals = " ".join(re.findall(r"<dt>(?:Owned|Stack)</dt><dd[^>]*>(.*?)</dd>",
+                                       dl.group(1), re.S))
+            terms = [t.strip().lower() for t in re.split(r"[\u00b7\u2022]", re.sub(r"<[^>]+>", "", vals))]
+            terms = [t for t in terms if len(t) > 4]
+            prose = " ".join(re.findall(r"<p>(.*?)</p>", inner, re.S)).lower()
+            prose = re.sub(r"<[^>]+>", " ", prose)
+            hits = [t for t in terms if t in prose]
+            DECIDED = ("instead", "rather than", "first", "tried", "chose", "could not",
+                       "couldn't", "wasn't", "so i ", "then i ", "moved", "replaced",
+                       "shut it down", "gave up", "stopped", "backward")
+            if len(hits) >= 3 and not any(d in prose for d in DECIDED):
+                warns.append((name, "read layer re-lists %d meta terms (%s) with no sign "
+                                    "of a decision. Written for the recruiter, not the "
+                                    "hiring manager" % (len(hits), ", ".join(hits[:3]))))
+
         if "todo" in seq:
             warns.append((name, "has an unfilled blank. Not publishable yet"))
 
@@ -234,11 +254,56 @@ def check(path, quiet=False):
     return 1 if fails else 0
 
 
+CARD_TEMPLATE = """<article class="card{brief} reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>COMPANY</h3><span class="outcome">IPO 2020</span><p class="when">2019 &ndash; 2020</p></div>
+    <p class="role"><b>OFFICIAL TITLE</b></p>
+    <p class="ctx">What the company was, for whom. One line, 20 words max, no adjectives.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>How big, how funded, when you joined relative to what</dd></div>
+    <div><dt>Team</dt><dd>Who else, and what they owned. Attribution lives here</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>What you personally did &middot; narrow enough to survive an audit</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Tools &middot; and &middot; domain</dd></div>
+    <div class="wide"><dt>Result</dt><dd><b>THE NUMBER</b> What it measured, and the honest qualifier</dd></div>
+  </dl>
+  <p>THE DECISION. Four beats, 50 to 70 words, written for a hiring manager:
+  the alternative that was live, the evidence it failed, the choice you made,
+  and what that choice cost. Do not re-list Owned or Stack here; the scan layer
+  above already has them. Test: does this leave the reader with a question, or
+  with an answer?</p>
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579"
+    src="images/co/FILE.webp" alt="">
+  <div class="proof"><span class="lbl">Receipts</span>
+    <a href="URL" target="_blank" rel="noopener">Label it with the proof itself, not "link"</a></div>
+  <div class="card-cta"><a href="work/SLUG.html" target="_blank" rel="noopener">Read the case study</a></div>
+</article>"""
+
+
+def template(tier):
+    body = CARD_TEMPLATE.format(brief="" if tier == "lead" else " card--brief")
+    notes = {
+        "lead": "current work and the craft receipt. Artifact required. Prose cap 180w.",
+        "proof": "a metric and a checkable receipt. Artifact and receipts required. Prose cap 60w.",
+        "row": "a role and a capability, nothing more. No metric, no artifact. Prose cap 45w.",
+    }[tier]
+    if tier == "row":
+        body = re.sub(r'    <div class="wide"><dt>Result</dt>.*?\n', "", body)
+        body = re.sub(r'  <img class="shot".*?>\n', "", body, flags=re.S)
+        body = re.sub(r'  <div class="card-cta">.*?</div>\n', "", body, flags=re.S)
+    print("# tier: %s -- %s" % (tier, notes))
+    print("# add the company to TIERS in this script, then run it to verify.")
+    print(body)
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--file", default="index-v2.html")
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--template", choices=("lead", "proof", "row"),
+                    help="print a blank card skeleton for a new company")
     a = ap.parse_args()
+    if a.template:
+        template(a.template)
+        sys.exit(0)
     sys.exit(check(HERE / a.file, a.quiet))
 
 
