@@ -231,10 +231,10 @@ details.more[open] summary::before{transform:rotate(90deg)}
 h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26px}
 .card{border-top:1px solid var(--border);padding:34px 0}
 
-/* Tier divider. Marks where the argument ends and the record begins. */
-.tier-break{border-top:1px solid var(--border);margin:44px 0 0;padding:30px 0 0}
-.tier-break h3{font-family:var(--serif);font-weight:400;font-size:24px;margin:0 0 6px}
-.tier-break p{font-size:14.5px;color:var(--muted);margin:0;line-height:1.5}
+/* Recommendations, collected. Four quotes at full weight instead of four
+   quotes buried one per card. */
+.reccluster{display:grid;gap:26px}
+@media (min-width:720px){ .reccluster{grid-template-columns:1fr 1fr;gap:30px 40px} }
 
 /* Brief cards. Same card, chrome removed: no facts dl, no image, no
    multi-paragraph body. Receipts stay, because receipts are the point. */
@@ -244,6 +244,10 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .card--brief .card-head .role{font-size:14.5px;margin-top:4px}
 .card--brief p{margin:0 0 10px;font-size:15.5px;line-height:1.55}
 .card--brief .proof{margin-top:10px}
+.card--brief .impact .fig{font-size:clamp(25px,3.4vw,31px)}
+.card--brief .impact{margin-bottom:12px}
+.card--brief h4{font-size:16px;margin:16px 0 6px}
+.card--brief .proj{margin:0}
 
 /* Draft-only. Nothing with this class ships. */
 .todo{background:#3b2a10;color:#f0c674;padding:13px 16px;border-radius:6px;
@@ -532,7 +536,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </ul>
 </section>
 
-<!-- 4. Arc -->
 
 <!-- 5. Work: no intro sentence -->
 <h2 class="sec" id="work">Work</h2>
@@ -633,12 +636,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <article class="card reveal">
   <div class="card-head"><h3>Pathstream</h3>
     <p class="role"><b>Senior Product Design Manager</b> · 2019 – 2020</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>3–5 engineers, 1 PM, 1 designer (me)</dd></div>
-    <div><dt>Stage</dt><dd>Series A</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Product design · Design system · Research · PRD · Front-end</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">React · Storybook · Design tokens · Ant Design</dd></div>
-  </dl>
   <p class="ctx">A career-development and learning platform teaching job skills with real software.</p>
   <p class="impact"><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
   <p class="buyer"><b>If you are scaling a live product:</b> I improve it without forcing a migration nobody budgeted for.</p>
@@ -649,24 +646,9 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <div class="card-cta"><a href="work/pathstream.html" target="_blank" rel="noopener">Read the case study</a></div>
 </article>
 
-<div class="tier-break reveal">
-  <div class="todo"><b>Yours. One heading, one line.</b>
-  Everything above is the argument: what you own now, and the craft receipt.
-  Everything below is the record. Name that turn in your own words. A reader who
-  stops here should know they can stop here.</div>
-  <h3>[HEADING]</h3>
-  <p>[ONE LINE]</p>
-</div>
-
-<article class="card reveal">
+<article class="card card--brief reveal">
   <div class="card-head"><h3>Iodine, then GoodRx</h3>
     <p class="role"><b>Lead Product Designer</b> · 2017 – 2018</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>6-person special-projects team in SF</dd></div>
-    <div><dt>Stage</dt><dd>Profitable, PE-backed, pre-IPO</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Product design · Front-end · Data visualisation · Research · Conversion</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">D3 · Experimentation · Healthcare</dd></div>
-  </dl>
   <p class="ctx">Consumer healthcare: prescription drug information, then drug pricing.</p>
   <p class="lineage">I joined <b>Iodine</b> as its first full-time designer. <b>GoodRx acquired
   us</b>, and I stayed through the integration onto their research and experimentation team.
@@ -674,22 +656,16 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
   <div class="proj">
     <h4>Iodine <span class="tag">first full-time designer</span></h4>
-    <p>Helping people make better decisions about prescription drugs. Everything design,
-    including product.</p>
     <p class="impact"><span class="fig">2% → 5%</span><span class="qual">Coupon-flow conversion.
     Iodine.com won the Webby for Best Health Website.</span></p>
     <div class="proof"><span class="lbl">Receipts</span>
       <a href="https://www.goodrx.com/corporate/culture/iodine-com-wins-the-webby-for-best-health-website" target="_blank" rel="noopener">Webby 2018 announcement</a>
       <a href="https://web.archive.org/web/20180224101750/https://www.iodine.com/" target="_blank" rel="noopener">Iodine.com, archived Feb 2018</a></div>
-    <img class="shot" loading="lazy" decoding="async" width="1544" height="579"
-      src="images/co/iodine.webp" alt="Iodine prescription drug product">
     <div class="card-cta"><a href="work/iodine.html" target="_blank" rel="noopener">Read the case study</a></div>
   </div>
 
   <div class="proj">
     <h4>GoodRx Research <span class="tag">research &amp; experimentation team</span></h4>
-    <p>Conversion work across the drug pages, plus data visualizations and fifty-state price fact
-    sheets built with the co-CEO.</p>
     <p class="impact"><span class="fig">+10% mobile, +25% desktop</span><span class="qual">Referenced
     in the New York Times and used in federal drug-pricing debates.</span></p>
     <div class="proof"><span class="lbl">Receipts</span>
@@ -698,44 +674,17 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553" target="_blank" rel="noopener">S.2553</a>
       <a href="https://abcnews.go.com/GMA/Wellness/video/flu-numbers-show-growing-outbreak-us-53014507" target="_blank" rel="noopener">Good Morning America</a>
       <a href="https://web.archive.org/web/20180915114231/https://www.goodrx.com/atorvastatin" target="_blank" rel="noopener">A drug page, archived Sep 2018</a></div>
-    <img class="shot" loading="lazy" decoding="async" width="1544" height="579"
-      src="images/co/goodrx.webp" alt="GoodRx data visualization work">
     <div class="card-cta"><a href="work/goodrx.html" target="_blank" rel="noopener">Read the case study</a></div>
   </div>
 
-  <div class="rec">
-    <p>“He is literate in code, engineers love working with him, and he is deeply attuned to the
-    needs of ordinary people.”</p>
-    <div class="who"><b>Thomas Goetz</b> · direct manager, Chief of Research, GoodRx</div>
-  </div>
-  <div class="rec">
-    <p>“Enough technical know-how and communication skills to effectively interact with members of
-    the team who oversee different aspects of the product, both business and technical.”</p>
-    <div class="who"><b>Marc Mendiola</b> · software engineer, Iodine</div>
-  </div>
 </article>
 
-<article class="card reveal">
+<article class="card card--brief reveal">
   <div class="card-head"><h3>Clover Health</h3>
     <p class="role"><b>Product Designer, second designer</b> · 2015 – 2016</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>4–5 engineers, 1 PM</dd></div>
-    <div><dt>Stage</dt><dd>~30 people, pre-$100M round</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Clinical tools · Field research · Brand · Front-end · Marketing site</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · CSS · Clinical workflow</dd></div>
-  </dl>
   <p class="ctx">A Medicare Advantage insurer using data to direct clinical care. I joined at about 30 people, two months before the first $100M round.</p>
   <p class="impact"><span class="fig">~7–8× ROI</span><span class="qual">On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</span></p>
   <p class="buyer"><b>If your users are professionals with a job to finish:</b> I go where the work happens and design for the constraints I find there.</p>
-  <p><b>Rebuilt the nurse-practitioner home-visit app after a week in New Jersey shadowing live
-  visits</b>, and shipped the company's first branded website ahead of enrollment.</p>
-  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/clover.webp" alt="Clover Health care visit app">
-  <div class="rec">
-    <p>“Chris completed each phase by himself, from user research to visual composition. Together,
-    we built software from scratch for users ranging from Nurse Practitioners to Customer Service
-    Representatives.”</p>
-    <div class="who"><b>Dan Lee</b> · lead engineer, Clover Health</div>
-  </div>
   <div class="proof"><span class="lbl">Receipts</span>
     <a href="https://web.archive.org/web/20160220081453/https://www.cloverhealth.com/en/" target="_blank" rel="noopener">The site I shipped, archived Feb 2016</a></div>
   <div class="card-cta">
@@ -747,7 +696,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <article class="card card--brief reveal">
   <div class="card-head"><h3>Blue Startups</h3>
     <p class="role"><b>Entrepreneur in Residence</b> · 2024</p></div>
-  <p class="ctx">A Honolulu accelerator. Fixed-term, alongside PlaySesh.</p>
   <p>Entrepreneur in Residence at Hawaii's startup accelerator, alongside building PlaySesh.
   Advising founders on product and design in the earliest stage, where the question is usually
   what to build rather than how.</p>
@@ -764,50 +712,30 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <a href="https://marketplace.atlassian.com/vendors/1212980/modus-create" target="_blank" rel="noopener">Atlassian Marketplace</a></div>
 </article>
 
-<article class="card reveal">
+<article class="card card--brief reveal">
   <div class="card-head"><h3>StartPlaying</h3>
     <p class="role"><b>Founding Product Designer</b> · 2022 – 2023</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>7 people, 1 designer (me)</dd></div>
-    <div><dt>Stage</dt><dd>Seed, a16z · YC company</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Product design · Two-sided marketplace · Research · Front-end</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Consumer · Design systems</dd></div>
-  </dl>
   <p class="ctx">A marketplace connecting tabletop players with paid game masters.</p>
   <p><b>First designer on a two-sided marketplace.</b> Two-sided
   by nature: the player picking a game has almost nothing in common with the GM running one as a
   business, and the same surfaces had to serve both.</p>
-  <div class="rec">
-    <p>&ldquo;He is constantly learning and his passion extends beyond work to things like building a board game, learning new dance moves, or rollerskating. Chris collaborates exceptionally well.&rdquo;</p>
-    <div class="who"><b>Nate Tucker</b> · direct manager, StartPlaying</div>
-  </div>
 </article>
 
 <article class="card card--brief reveal">
   <div class="card-head"><h3>doc.ai</h3>
     <p class="role"><b>Lead Product Designer</b> · 2021</p></div>
   <p class="ctx">An enterprise AI platform for healthcare, running clinical studies.</p>
-  <p>Omix, a study app for health research. Design across the participant experience: onboarding,
-  consent, ongoing data capture, and the console researchers used to watch a study run. Sharecare
-  acquired doc.ai while I was there and the product was wound down afterwards.</p>
   <p>The nearest thing I did to y30 before y30. Health data, real participants, and a product where
   being wrong has a cost.</p>
 </article>
 
-<article class="card reveal">
+<article class="card card--brief reveal">
   <div class="card-head"><h3>TaskRabbit</h3>
     <p class="role"><b>Product Designer</b> · 2014 – 2015</p></div>
-  <dl class="facts">
-    <div><dt>Team</dt><dd>1 of 5 designers</dd></div>
-    <div><dt>Stage</dt><dd>Series C</dd></div>
-    <div class="wide"><dt>Owned</dt><dd>Product design · iOS · Android · Marketplace · Rebrand</dd></div>
-    <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Mobile · Two-sided</dd></div>
-  </dl>
   <p class="ctx">A two-sided marketplace for local help, mid-rebuild.</p>
   <p class="impact"><span class="fig">NPS −5 → mid-50s</span><span class="qual">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</span></p>
   <p><b>Owned the Tasker side through the 2014 rebrand and the move from bidding to direct hire.</b>
   Later acquired by IKEA.</p>
-  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/taskrabbit.webp" alt="TaskRabbit Tasker experience">
   <div class="proof"><span class="lbl">Receipts</span>
     <a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild</a>
     <a href="https://web.archive.org/web/20150227060448/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Feb 2015</a></div>
@@ -823,19 +751,34 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <p class="ctx">Amazon Music, when it was moving off the browser and onto devices.</p>
   <p>First job out of grad school. I started as an intern on the Prime team, working on checkout
   and the gift-purchase cases inside it, then moved over to Music.</p>
-  <p>The one I'd still explain at a dinner table is <b>scan and match</b>. It read whatever was
-  already in your library, matched it against Amazon's twenty-million-song catalog, and handed
-  back a licensed 256&nbsp;Kbps copy of the real track. It did not care where your file came from.
-  Apple had shipped iTunes Match eight months earlier at the same price and the same bitrate;
-  Amazon's version held <b>250,000 songs against Apple's 25,000</b>. I worked on Amazon Music
-  Importer, the desktop client that did the scanning.</p>
-  <p>Then Cloud Player where it stopped being a website: the integration for Samsung's Shape
-  wireless speakers, and the Windows Phone and Windows 8 clients. I designed those end to
-  end and they never shipped, because the platform got deprioritized.</p>
   <div class="proof"><span class="lbl">Receipts</span>
     <a href="https://press.aboutamazon.com/news-releases/news-release-details/updated-amazon-cloud-player-includes-new-scan-and-match">Scan and match, Amazon, July 2012</a>
     <a href="https://www.engadget.com/2013-10-03-samsung-shape-wireless-audio-system.html">Samsung Shape launch, October 2013</a></div>
 </article>
+
+<h2 class="sec">What they said</h2>
+<div class="reccluster reveal">
+  <div class="rec">
+  <p>“He is literate in code, engineers love working with him, and he is deeply attuned to the
+  needs of ordinary people.”</p>
+  <div class="who"><b>Thomas Goetz</b> · direct manager, Chief of Research, GoodRx</div>
+  </div>
+  <div class="rec">
+  <p>“Enough technical know-how and communication skills to effectively interact with members of
+  the team who oversee different aspects of the product, both business and technical.”</p>
+  <div class="who"><b>Marc Mendiola</b> · software engineer, Iodine</div>
+  </div>
+  <div class="rec">
+  <p>“Chris completed each phase by himself, from user research to visual composition. Together,
+  we built software from scratch for users ranging from Nurse Practitioners to Customer Service
+  Representatives.”</p>
+  <div class="who"><b>Dan Lee</b> · lead engineer, Clover Health</div>
+  </div>
+  <div class="rec">
+  <p>&ldquo;He is constantly learning and his passion extends beyond work to things like building a board game, learning new dance moves, or rollerskating. Chris collaborates exceptionally well.&rdquo;</p>
+  <div class="who"><b>Nate Tucker</b> · direct manager, StartPlaying</div>
+  </div>
+</div>
 
 <h2 class="sec">Side projects</h2>
 
