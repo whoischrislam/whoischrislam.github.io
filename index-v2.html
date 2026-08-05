@@ -234,6 +234,8 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 /* The limit. Separated by a rule, NOT muted. It reads as a deliberate register
    change, not a footnote, because on these cards the honesty is the argument. */
 .limit{border-top:1px solid var(--border);margin-top:20px;padding-top:16px}
+.setup{margin:0 0 12px}
+.taught{margin:-2px 0 14px;padding-left:14px;border-left:2px solid var(--border)}
 
 .wslbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--muted);font-weight:600;margin-bottom:5px}
@@ -576,11 +578,17 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="wide"><dt>Tradeoff</dt><dd><b>3&times; slower, on purpose</b> People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</dd></div>
   </dl>
   
-  <p>The hardest part wasn't getting the AI to do more. It was deciding what it shouldn't get to
-  decide. I let the model run the game sequence at first. After eight prompt revisions, guards and
-  a watchdog, it still started the round only about 70% of the time. I moved that sequence into
+  <p class="setup">The hardest part wasn&rsquo;t getting the AI to do more. It was deciding what
+  it shouldn&rsquo;t get to decide.</p>
+  <p>I let the model run the game sequence at first. After eight prompt revisions, guards and a
+  watchdog, it still started the round only about 70% of the time. I moved that sequence into
   code. Conversation stayed open-ended; the part that had to happen in order stopped being a
   request.</p>
+  <div class="todo"><b>Yours. One sentence, what it taught you.</b> No archive for this one.
+  It has to be a change in how you work now, not a truth about AI. The shape of the real answer
+  is probably about where you draw the line between model and code before you start, rather than
+  discovering it at 70%.</div>
+  <p class="taught">[WHAT IT TAUGHT YOU]</p>
   <div class="todo"><b>DRAFT, and this one is 100% mine.</b> No archive to draw on, so there is
   no part of this sentence that is yours yet. It clears the bar (addresses you, points at what the
   card proves rather than restating it) but the voice is not. Most disposable line on the page.</div>
@@ -638,6 +646,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   couldn't carry real multiplayer, I replaced it with an operation-based sync engine on Durable
   Objects. The point wasn't to own unusual infrastructure. It was to make a remote team feel like
   it was in the same room.</p>
+  <div class="todo"><b>Yours. Two things here, and the first is a real choice.</b>
+  This card carries <b>two</b> decisions: the pivot away from social gaming, and replacing the canvas
+  library with your own sync engine. Neither says what it cost. Pick one to keep at full strength and
+  let the other go short, then add the cost. For the engine: weeks you did not have, a maintenance
+  burden you then owned, features that did not ship while you were doing infrastructure?
+  Then one sentence on what it taught you.</div>
+  <p class="taught">[WHAT IT TAUGHT YOU]</p>
   <div class="todo"><b>DRAFT, and this one is 100% mine.</b> No archive to draw on, so there is
   no part of this sentence that is yours yet. It clears the bar (addresses you, points at what the
   card proves rather than restating it) but the voice is not. Most disposable line on the page.</div>
@@ -683,11 +698,14 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <b>Yours:</b> &ldquo;How to roll out design changes while courses are live?&rdquo; (your week-one notes), &ldquo;Evaluate course author impact sooner, biggest gotcha&rdquo; and &ldquo;be more in the understanding side before jumping to the design&rdquo; (your Nov 12 retro), &ldquo;minimize the amount of re-work course authors will need to do&rdquo; and the December-January / April-May window (your PRD).
   <b>Mine:</b> The stitching, and &ldquo;I answered it in the wrong order.&rdquo;
   Source: .jobhunt/PATHSTREAM_CASE_STUDY_SOURCE.md, TIER 3 cleared. Rewrite freely; the point is to have something to push against.</div>
-  <p>In week one I wrote down the question: how do you roll out design changes while courses
-  are live? I answered it in the wrong order. I committed to a direction before I understood
-  course-author impact, which my own retro calls the biggest gotcha. Every structural change
-  created re-work for a team I didn&rsquo;t manage, so the design became backward compatible by
-  default. That cost me changes I wanted and narrowed the window to the gaps between cohorts.</p>
+  <p class="setup">In week one I wrote down the question: how do you roll out design changes
+  while courses are live?</p>
+  <p>I answered it in the wrong order. I committed to a direction before I understood
+  course-author impact. Every structural change created re-work for a team I didn&rsquo;t manage,
+  so the design became backward compatible by default. That cost me changes I wanted and
+  narrowed the window to the gaps between cohorts.</p>
+  <p class="taught">Be more in the understanding side before jumping to the design, and evaluate
+  course-author impact sooner.</p>
   
   <div class="todo"><b>DRAFT, and this one is 100% mine.</b> No archive to draw on, so there is
   no part of this sentence that is yours yet. It clears the bar (addresses you, points at what the
@@ -718,10 +736,15 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <b>Yours:</b> Sentences two and three are close to verbatim from your 2018 portfolio: &ldquo;the idea had much higher engagement than we anticipated&rdquo; and &ldquo;we ultimately decided to shut it down because we didn&rsquo;t have the full resources to respond within a guaranteed 48 hour period.&rdquo;
   <b>Mine:</b> The opening sentence and the closing line. The closing one is an interpretation, so it is the first thing to cut or replace.
   Source: old-portfolio harvest, iodine/_text.txt. Rewrite freely; the point is to have something to push against.</div>
-  <p>We built Ask a Pharmacist so people could get a real answer about their prescription. When we
-  shipped it, engagement was much higher than we anticipated. We shut it down anyway, because we
-  didn&rsquo;t have the resources to respond inside a guaranteed 48 hours. A feature that works is
-  still a promise, and we couldn&rsquo;t keep that one.</p>
+  <p class="setup">We built Ask a Pharmacist so people could get a real answer about their
+  prescription.</p>
+  <p>When we shipped it, engagement was much higher than we anticipated. We shut it down anyway,
+  because we didn&rsquo;t have the resources to respond inside a guaranteed 48 hours. A feature
+  that works is still a promise, and we couldn&rsquo;t keep that one.</p>
+  <div class="todo"><b>Yours. One sentence, what it taught you.</b> Not in the archive. The
+  through-line on this page suggests it is about not shipping a promise you cannot staff, which
+  is the same call as y30 not correcting a false memory. But that is my read, not your words.</div>
+  <p class="taught">[WHAT IT TAUGHT YOU]</p>
   
   <div class="todo"><b>Yours. One line, and the old one was false.</b>
   It said "GoodRx acquired us and I stayed through the integration." GoodRx was already your
@@ -765,10 +788,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <b>Yours:</b> &ldquo;I spent a week in New Jersey shadowing and interviewing Nurse Practitioners&rdquo;, &ldquo;Nurse Practitioners did not have a set flow in where they start when processing the form&rdquo;, and &ldquo;every night before visits, they would spend around 2 hours to pre-fill as much information as possible on paper forms.&rdquo;
   <b>Mine:</b> &ldquo;I went in expecting to design a form&rdquo; and the last two sentences. That is my inference about what the week changed. If it is wrong, this is the paragraph to rewrite.
   Source: old-portfolio harvest, clover-care-visit/_text.txt. Rewrite freely; the point is to have something to push against.</div>
-  <p>I spent a week in New Jersey shadowing nurse practitioners on live visits. I went in expecting
-  to design a form. They had no set flow, no fixed place they started, and every night they spent
-  about two hours pre-filling paper by hand. So the app couldn&rsquo;t have an order either. That
-  was harder to build than a wizard and it was the only version they would actually use.</p>
+  <p class="setup">I spent a week in New Jersey shadowing nurse practitioners on live visits. I
+  went in expecting to design a form.</p>
+  <p>They had no set flow, no fixed place they started, and every night they spent about two
+  hours pre-filling paper by hand. So the app couldn&rsquo;t have an order either. That was
+  harder to build than a wizard and it was the only version they would actually use.</p>
+  <p class="taught">Every single thing we produce to improve efficiency or workflow makes a
+  significant difference in improving health outcomes for the member.</p>
   
   <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/clover.webp" alt="Clover Health care visit app">
   <div class="rec">
@@ -867,11 +893,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <b>Yours:</b> Nearly all of it, close to verbatim: &ldquo;the Tasker app we shipped was painful to use&rdquo;, &ldquo;Taskers were more likely to pass on a task than to commit to one as they preferred to be able to view all of the tasks before selecting&rdquo;, &ldquo;seeing a schedule view was most important to them since they relied heavily on a calendar app&rdquo;, and &ldquo;even if the Client experience was designed well, the full experience would be incomplete because the rest of the experience is dependent on the Tasker.&rdquo;
   <b>Mine:</b> Compression only.
   Source: old-portfolio harvest, taskrabbit-tasker-experience/_text.txt. Rewrite freely; the point is to have something to push against.</div>
-  <p>We shipped the Tasker app and learned it was painful to use. Taskers were passing on tasks
-  rather than committing, because they wanted to see everything available before choosing. So we
-  rebuilt around what they already relied on: a schedule view, matching the calendar apps they
-  lived in. The client experience can be perfect and the service still fails, because the rest of
-  it depends on the Tasker.</p>
+  <p class="setup">We shipped the Tasker app and learned it was painful to use.</p>
+  <p>Taskers were passing on tasks rather than committing, because they wanted to see everything
+  available before choosing. So we rebuilt around what they already relied on: a schedule view,
+  matching the calendar apps they lived in. The client experience can be perfect and the service
+  still fails, because the rest of it depends on the Tasker.</p>
+  <p class="taught">When designing a service, all users of the system need to be accounted for,
+  since there are many moving parts to make it run smoothly.</p>
   
   <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/taskrabbit.webp" alt="TaskRabbit Tasker experience">
   <div class="rec">
