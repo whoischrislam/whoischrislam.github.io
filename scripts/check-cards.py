@@ -39,7 +39,9 @@ ORDER = [
     "ctx",           # what it was, for whom
     "facts",         # scale, so the number can be calibrated
     "lineage",       # two-company continuity, GoodRx only
-    "prose",         # the call
+    "setup",         # optional, only when what happened diverged from the brief
+    "prose",         # the decision: alternative, evidence, choice, cost
+    "taught",        # what it changed about how he works
     "buyer",         # what that decision means for the reader
     "todo",          # a blank waiting on Chris, sits with what it is about
     "ruleslabel",
@@ -70,14 +72,14 @@ TIERS = {
 
 SPEC = {
     "lead": {
-        "required": {"card-head", "ctx", "facts", "buyer"},
-        "allowed": {"prose", "ruleslabel", "hl", "limit",
+        "required": {"card-head", "ctx", "facts", "buyer", "taught"},
+        "allowed": {"prose", "setup", "ruleslabel", "hl", "limit",
                     "vids", "shot", "rec", "proof", "card-cta", "ref-offer", "todo"},
         "prose_words": 180,
     },
     "proof": {
-        "required": {"card-head", "ctx", "facts", "proof"},
-        "allowed": {"prose", "buyer", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
+        "required": {"card-head", "ctx", "facts", "proof", "taught"},
+        "allowed": {"prose", "setup", "buyer", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
         "prose_words": 75,   # a four-beat decision runs 50-70; 60 strangled it
     },
     "row": {
@@ -89,7 +91,7 @@ SPEC = {
 
 # Slots that may appear at most once anywhere, in any tier. A card with two hooks
 # has no hook.
-SINGLETON = {"card-head", "ctx", "impact", "facts", "buyer", "limit", "ruleslabel", "hl",
+SINGLETON = {"card-head", "ctx", "impact", "facts", "buyer", "setup", "taught", "limit", "ruleslabel", "hl",
              "ref-offer"}
 # Quotes may pair, never stack. Two is corroboration; three is a wall.
 MAX_RECS = 2
@@ -97,7 +99,7 @@ MAX_RECS = 2
 CLASSED = re.compile(
     r'<(?:div|dl|p|ul|h4|img|a)\s[^>]*class="([a-z-]+)"[^>]*>|<p>'
 )
-ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx",          "buyer": "buyer", "impact": "impact", "outcome": None, "lineage": "lineage", "limit": "limit", "vids": "vids",
+ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx",          "buyer": "buyer", "setup": "setup", "taught": "taught", "impact": "impact", "outcome": None, "lineage": "lineage", "limit": "limit", "vids": "vids",
          "ruleslabel": "ruleslabel", "hl": "hl", "shot": "shot", "proof": "proof",
          "card-cta": "card-cta", "ref-offer": "ref-offer", "todo": "todo",
          "role": None, "fig": None, "qual": None, "tech": None, "wide": None,
@@ -264,6 +266,19 @@ def check(path, quiet=False):
                                     "is to name their situation, so it needs you or your"))
             if words(bm.group(1)) > 30:
                 fails.append((name, "buyer line is %d words, cap is 30" % words(bm.group(1))))
+
+        tm = re.search(r'<p class="taught">(.*?)</p>', stripped, re.S)
+        if tm:
+            tw = words(tm.group(1))
+            if tw > 35:
+                fails.append((name, "taught line is %d words, cap is 35. One sentence" % tw))
+            flat = re.sub(r"<[^>]+>", " ", tm.group(1)).lower()
+            PLATITUDE = ("communication is", "is important", "teamwork", "always test",
+                         "users first", "iterate quickly", "fail fast", "collaboration is")
+            for ph in PLATITUDE:
+                if ph in flat:
+                    warns.append((name, "taught line reads as a platitude (%r). It has to name "
+                                        "something that changed how you work" % ph))
 
         if "todo" in seq:
             warns.append((name, "has an unfilled blank. Not publishable yet"))
