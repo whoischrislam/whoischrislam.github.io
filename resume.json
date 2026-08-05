@@ -42,7 +42,7 @@
                 "Scoped the language model to phrasing and warmth while conversation flow runs as a deterministic state machine; about half of routing decisions resolve with no model call.",
                 "Built the first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the state-machine architecture and safety model across the rewrite.",
                 "Designed elder-first voice UX: no app, no screen, no login, just a phone call.",
-                "1,389 commits, 127 test files."
+                "1,400 commits, 122 test files."
             ]
         },
         {
