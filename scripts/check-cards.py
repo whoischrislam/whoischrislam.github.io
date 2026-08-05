@@ -78,7 +78,7 @@ SPEC = {
     "proof": {
         "required": {"card-head", "ctx", "facts", "proof"},
         "allowed": {"prose", "buyer", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
-        "prose_words": 60,
+        "prose_words": 75,   # a four-beat decision runs 50-70; 60 strangled it
     },
     "row": {
         "required": {"card-head", "ctx", "facts"},
