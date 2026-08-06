@@ -136,9 +136,13 @@ def prose_words(inner):
 
 def check(path, quiet=False):
     src = path.read_text(encoding="utf-8")
+    # Regex, not string split: adding an id to either heading used to silently
+    # widen the audit to the side projects.
     try:
-        work = src.split('<h2 class="sec" id="work">')[1].split('<h2 class="sec">Side projects')[0]
-    except IndexError:
+        start = re.search(r'<h2[^>]*id="work"[^>]*>', src).end()
+        stop = re.search(r'<h2[^>]*>\s*Side projects', src[start:]).start() + start
+        work = src[start:stop]
+    except AttributeError:
         print("FAIL  cannot locate the work section in %s" % path.name)
         return 1
 
