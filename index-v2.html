@@ -88,12 +88,21 @@
 :root{
   --bg:#0F0F11; --surface:#17171A; --surface-2:#1E1E22; --text:#ECEAE4; --muted:#9A988F;
   --accent:#FF7059; --accent-soft:rgba(255,112,89,.13); --border:rgba(255,255,255,.10);
+  /* Agent token shim: the hiring guide's CSS was written against the old
+     stylesheet's names. Mapped onto v2's tokens rather than duplicating values. */
+  --accent-strong:#FF8A77; --border-strong:rgba(255,255,255,.18);
+  --chip-bg:rgba(255,255,255,.06); --drop-shadow:0 10px 30px rgba(0,0,0,.35);
+  --on-accent:#15110F; --surface-hover:var(--surface-2);
+  --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
   --serif:'Instrument Serif',Georgia,serif; --sans:'Open Sans',system-ui,sans-serif;
   --head-h:56px}
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
   --bg:#FBF8F4; --surface:#FFFFFF; --surface-2:#F4F1EB; --text:#1A1A18; --muted:#6A675F;
-  --accent:#B8401F; --accent-soft:rgba(184,64,31,.10); --border:rgba(0,0,0,.10)}
+  --accent:#B8401F; --accent-soft:rgba(184,64,31,.10); --border:rgba(0,0,0,.10)
+  --accent-strong:#B8431F; --border-strong:rgba(0,0,0,.16);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 10px 30px rgba(60,40,20,.10);
+  --on-accent:#FFFFFF; --surface-hover:var(--surface-2);}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
   font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
@@ -467,9 +476,217 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   .story-panel:popover-open{opacity:1!important;transform:none!important}
   ::view-transition-group(*){animation:none!important}
 }
+
+.va-ico{display:inline-block;vertical-align:-3px;flex:none}
+/* ── AI hiring guide, ported from styles.css ─────────────────────── */
+/* Work-sample framing under the hero CTA: tells a skimmer the agent is substantive
+   (fact-grounded, streaming, server-side safety) BEFORE they open it. */
+.hero-agent-note {
+    font-size: 0.95em;
+    color: var(--muted);
+    max-width: 560px;
+    margin: -0.4em 0 1.8em 0;
+    line-height: 1.55;
+}
+.hero-agent-note strong { color: var(--text); font-weight: 600; }
+/* ---------- Voice agent (AI hiring guide) ---------- */
+.voice-agent {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 0 1.8em 0;
+    padding: 1.3em 1.4em;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--border-radius);
+    box-shadow: var(--drop-shadow);
+}
+/* Reset the global full-width button rule inside the widget */
+.voice-agent button { width: auto; background: none; color: var(--text); padding: 0; border-radius: 2em; }
+.va-head { margin-bottom: 0.9em; }
+.va-title { display: flex; align-items: center; gap: 0.4em; font-size: 1.05em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
+.va-title-icon { font-size: 20px; color: var(--accent); }
+.va-scope { font-size: 0.82em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
+.va-disclosure { font-size: 0.66em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
+.va-modes { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
+.va-mode {
+    font-size: 0.82em; font-weight: 500;
+    padding: 0.42em 0.95em !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--muted) !important;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition), background-color var(--transition);
+}
+.va-mode:hover { color: var(--text) !important; border-color: var(--text) !important; }
+.va-mode.is-active {
+    color: var(--accent) !important;
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent) !important;
+    background: var(--accent-soft) !important;
+}
+.va-conversation { display: flex; flex-direction: column; gap: 0.9em; }
+.va-conversation:empty { display: none; }
+.va-turn { margin: 0 !important; white-space: pre-wrap; overflow-wrap: break-word; }
+.va-turn-you { align-self: flex-end; max-width: 82%; font-size: 0.84em !important; line-height: 1.45; padding: 0.45em 0.8em; border-radius: 0.9em; background: var(--chip-bg); color: var(--muted) !important; }
+.va-turn-agent { align-self: stretch; max-width: 100%; font-size: 0.95em !important; line-height: 1.62; padding: 0.1em 0 0.2em 0.95em; border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); color: var(--text) !important; }
+.va-status { font-size: 0.8em !important; color: var(--muted) !important; margin: 0 !important; }
+.va-status:empty { display: none; }
+/* Single-scroll dock frame: header (dock) / scrolling messages / pinned footer tray */
+.va-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 0.7em; padding: 1.1em 1.2em 0.5em; }
+.va-foot { flex-shrink: 0; display: flex; flex-direction: column; gap: 0.55em; padding: 0.7em 1.1em 0.85em; border-top: 1px solid var(--border); background: var(--surface); }
+.va-intro { display: flex; flex-direction: column; gap: 0.7em; }
+.va-intro-msg { display: flex; align-items: flex-start; gap: 0.45em; font-size: 0.9em !important; line-height: 1.55; color: var(--text) !important; margin: 0 !important; }
+.va-intro-msg .va-title-icon { position: relative; top: 2px; flex-shrink: 0; }
+.va-started .va-intro-msg, .va-role-chosen .va-intro-msg { display: none; }
+/* Radio behaviour: once a role is picked, collapse to just that choice + Change */
+.va-change { display: none; width: auto !important; font-size: 0.78em; color: var(--muted) !important; padding: 0.42em 0.6em !important; border: none !important; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.va-change:hover { color: var(--accent) !important; }
+.va-role-chosen .va-change { display: inline-flex; }
+.va-role-chosen .va-mode:not(.is-active) { display: none; }
+.va-flows { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
+.va-flows:empty { display: none; }
+.va-flow {
+    font-size: 0.8em;
+    padding: 0.3em 0.8em !important;
+    border: 1px solid var(--border) !important;
+    color: var(--muted) !important;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition);
+}
+.va-flow:hover { color: var(--accent) !important; border-color: color-mix(in srgb, var(--accent) 40%, transparent) !important; }
+.va-composer { display: flex; align-items: center; gap: 0.5em; }
+.va-input {
+    flex: 1; min-width: 0;
+    font-family: var(--body-font); font-size: 0.95em;
+    padding: 0.6em 0.9em;
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border-strong); border-radius: 2em;
+    outline: none;
+    transition: border-color var(--transition);
+}
+.va-input:focus { border-color: var(--accent); }
+.va-input::placeholder { color: var(--muted); }
+.va-send, .va-mic {
+    display: inline-flex !important; align-items: center; justify-content: center;
+    width: 2.4em !important; height: 2.4em;
+    border-radius: 50% !important;
+    cursor: pointer; flex-shrink: 0;
+    transition: background-color var(--transition), transform var(--transition);
+}
+.va-send { background: var(--chip-bg) !important; color: var(--text) !important; }
+.va-send:hover { background: var(--surface-hover) !important; }
+.va-mic { background: var(--accent) !important; color: var(--on-accent) !important; }
+.va-mic:hover { background: var(--accent-strong) !important; }
+.va-mic:disabled, .va-send:disabled { opacity: 0.5; cursor: default; }
+.va-send .va-ico, .va-mic .va-ico { width:20px; height:20px; }
+.va-stop {
+    padding: 0.5em 1em !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text) !important; font-size: 0.85em; cursor: pointer; flex-shrink: 0;
+}
+.va-stop:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
+/* States */
+.voice-agent[data-state="listening"] .va-mic { animation: pulse 1.3s ease-in-out infinite; }
+.voice-agent[data-state="processing"] .va-input { opacity: 0.6; }
+/* Floating launcher (persistent recall surface) */
+.va-launcher {
+    position: fixed; bottom: 1.4em; right: 1.4em; z-index: 200;
+    display: inline-flex; align-items: center; gap: 0.5em;
+    width: auto !important;
+    padding: 0.7em 1.1em !important;
+    background: var(--accent) !important; color: var(--on-accent) !important;
+    border: none !important; border-radius: 2em !important;
+    font-family: var(--body-font); font-size: 0.9em; font-weight: 600;
+    box-shadow: var(--drop-shadow); cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition);
+}
+.va-launcher[hidden] { display: none; }
+.va-launcher:hover { background: var(--accent-strong) !important; transform: translateY(-1px); }
+.va-launcher .va-ico { width:20px; height:20px; }
+.va-launcher-label { display: none; }
+.va-launcher { padding: 0.75em !important; }
+/* ---------- Recruiter brief (export artifact) ---------- */
+.va-brief-bar { display: contents; }
+.va-brief-cta {
+    width: auto !important;
+    font-size: 0.85em; font-weight: 600;
+    padding: 0.5em 1em !important;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent) !important;
+    background: var(--accent-soft) !important;
+    color: var(--accent) !important;
+    cursor: pointer;
+}
+.va-brief-cta[hidden] { display: none; }
+.va-brief-cta:hover { background: var(--accent) !important; color: var(--on-accent) !important; }
+.va-brief {
+    margin-top: 1em;
+    padding: 1.1em 1.2em;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--border-radius);
+}
+.va-brief[hidden] { display: none; }
+.va-brief h4 { font-family: var(--body-font); font-size: 0.72em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 1em 0 0.4em 0; }
+.va-brief-title { font-size: 1em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.2em 0 !important; }
+.va-brief p, .va-brief li { font-size: 0.88em !important; line-height: 1.55; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
+.va-brief ul { list-style: none; padding: 0; margin: 0; }
+.va-brief li { padding-left: 1em; position: relative; }
+.va-brief li::before { content: "\203A"; position: absolute; left: 0; color: var(--accent); }
+.va-brief-ev a { color: var(--accent); font-size: 0.82em; white-space: nowrap; }
+.va-brief-prov { font-size: 0.7em !important; color: var(--muted) !important; margin-top: 1em !important; padding-top: 0.7em; border-top: 1px solid var(--border); }
+.va-brief-actions { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: 1em; }
+.va-brief-actions button { width: auto !important; font-size: 0.82em; padding: 0.45em 0.9em !important; border-radius: 2em !important; cursor: pointer; }
+.va-brief-copy { background: var(--accent) !important; color: var(--on-accent) !important; }
+.va-brief-copy:hover { background: var(--accent-strong) !important; }
+.va-brief-print, .va-brief-close { border: 1px solid var(--border-strong) !important; color: var(--text) !important; }
+.va-brief-print:hover, .va-brief-close:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
+/* Build B: proof highlight pulse (the agent guiding you to evidence) */
+.va-proof-highlight { animation: va-proof-pulse 2.8s ease; border-radius: var(--border-radius); }
+/* Pinned dock: the agent stays put while the page scrolls and highlights */
+.va-dock {
+    position: fixed; z-index: 250;
+    bottom: 1.2em; right: 1.2em;
+    width: min(390px, calc(100vw - 2.4em));
+    max-height: min(82vh, 660px);
+    display: flex; flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--border-radius);
+    box-shadow: var(--drop-shadow);
+    overflow: hidden;
+}
+.va-dock[hidden] { display: none; }
+.va-dock-head { display: flex; align-items: center; justify-content: space-between; padding: 0.55em 0.9em; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.va-dock-title { font-size: 0.85em; font-weight: 600; color: var(--text); }
+.va-dock-close { width: auto !important; background: none !important; color: var(--muted) !important; padding: 0.1em 0.5em !important; font-size: 1.3em; line-height: 1; cursor: pointer; border-radius: 0.4em !important; }
+.va-dock-close:hover { color: var(--accent) !important; }
+.va-dock-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+/* Inside the dock, the agent drops its own card chrome (the dock provides it) and
+   fills the body as a flex column so only .va-scroll scrolls (no scroll-in-scroll) */
+.va-dock .voice-agent { margin: 0 !important; border: none !important; box-shadow: none !important; max-width: none !important; border-radius: 0 !important; padding: 0 !important; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.va-dock { left: 0.6em; right: 0.6em; bottom: 0.6em; width: auto; max-height: 80vh; }
+/* Print ONLY the recruiter brief. The page is long, so the rest must be REMOVED from
+       layout with display:none — not hidden with visibility:hidden, which keeps the space
+       and prints as blank trailing pages. display:none collapses the document to the
+       brief's height. (#va-dock is a direct child of body and holds the live interface.) */
+    body > *:not(#va-dock) { display: none !important; }
+#va-dock {
+        display: block !important; position: static !important; inset: auto !important;
+        width: auto !important; height: auto !important; max-height: none !important;
+        overflow: visible !important; margin: 0 !important; border: none !important;
+        box-shadow: none !important; background: #fff !important;
+    }
+/* Un-clip the interface containers so the brief flows at natural height. */
+    #voice-interface, .va-dock-body, .va-scroll {
+        display: block !important; position: static !important;
+        height: auto !important; max-height: none !important; overflow: visible !important;
+    }
+/* Hide dock chrome and the foot (CTA/composer), and the transcript — leave only the brief. */
+    .va-dock-head, .va-foot { display: none !important; }
+.va-scroll > *:not(#brief-print-root) { display: none !important; }
+#brief-print-root .va-brief-actions { display: none !important; }
 </style>
 <script type="text/javascript" src="analytics-init.js"></script>
 <script type="text/javascript" src="analytics.js" defer></script>
+<script type="text/javascript" src="voice-agent.js" defer></script>
 </head><body>
 
 <!-- 1. Sticky header -->
@@ -524,6 +741,39 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
       <span aria-hidden="true">&#9656;</span> The full story
     </button>
   </div>
+  <p class="hero-agent-note animation-appear">That's not a form. It's an AI hiring guide I built end to end on Cloudflare Workers and Claude: fact-grounded, streaming, with a server-side safety layer. <strong>The agent is the work sample.</strong></p>
+  <div id="voice-interface" class="voice-agent" data-state="idle" hidden>
+                        <div class="va-scroll">
+                            <div class="va-intro">
+                                <p class="va-intro-msg"><svg class="va-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><rect x="3" y="9" width="2" height="6" rx="1"/><rect x="7.5" y="5" width="2" height="14" rx="1"/><rect x="12" y="2" width="2" height="20" rx="1"/><rect x="16.5" y="5" width="2" height="14" rx="1"/><rect x="21" y="9" width="2" height="6" rx="1"/></svg> <span>I'm Chris's AI hiring guide. Ask by voice or text and I'll give you a fast read on fit, systems depth, and shipped outcomes. First, who's asking? I'll tailor what I show you.</span></p>
+                                <div class="va-modes" role="group" aria-label="Who's asking">
+                                    <button type="button" class="va-mode" data-lens="recruiter">Recruiter</button>
+                                    <button type="button" class="va-mode" data-lens="hiring_manager">Hiring manager</button>
+                                    <button type="button" class="va-mode" data-lens="founder">Founder / exec</button>
+                                    <button type="button" class="va-mode" data-lens="y30">Curious about y30</button>
+                                    <button type="button" class="va-change">Change</button>
+                                </div>
+                            </div>
+                            <div class="va-conversation" aria-live="polite"></div>
+                            <p class="va-status" role="status" aria-live="polite"></p>
+                            <div id="brief-print-root" class="va-brief" hidden></div>
+                        </div>
+                        <div class="va-foot">
+                            <div class="va-brief-bar"><button type="button" class="va-brief-cta" hidden>Get the recruiter brief</button></div>
+                            <div class="va-flows" aria-label="Suggested questions"></div>
+                            <div class="va-composer">
+                                <input type="text" class="va-input" placeholder="Type a question, or tap the mic" aria-label="Ask a question" autocomplete="off" />
+                                <button type="button" class="va-send" aria-label="Send question">
+                                    <svg class="va-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M12 4l7 7-1.4 1.4L13 7.8V20h-2V7.8L6.4 12.4 5 11z"/></svg>
+                                </button>
+                                <button type="button" class="va-mic" aria-label="Ask by voice">
+                                    <svg class="va-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M17.3 11a5.3 5.3 0 0 1-10.6 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg>
+                                </button>
+                                <button type="button" class="va-stop" hidden>Stop</button>
+                            </div>
+                            <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
+                        </div>
+                    </div>
   <div class="story-panel" id="story-panel" popover="auto" aria-labelledby="story-heading">
     <button class="story-close" type="button" popovertarget="story-panel"
             popovertargetaction="hide" aria-label="Close">&times;</button>
@@ -565,7 +815,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <h2 class="sec" id="work">Work</h2>
 <div id="worklist">
 
-<article class="card reveal">
+<article id="y30" class="card reveal">
   <div class="card-head">
     <div class="ch-top"><h3>y30</h3><p class="when">2026 – now</p></div>
     <p class="role"><b>Co-founder, CPTO</b></p>
@@ -625,7 +875,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
 </article>
 
-<article class="card reveal">
+<article id="playsesh" class="card reveal">
   <div class="card-head">
     <div class="ch-top"><h3>PlaySesh</h3><p class="when">2024 – 2026</p></div>
     <p class="role"><b>Co-founder, CEO</b></p>
@@ -943,7 +1193,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <a href="https://www.engadget.com/2013-10-03-samsung-shape-wireless-audio-system.html">Samsung Shape launch, October 2013</a></div>
 </article>
 
-<h2 class="sec">Side projects</h2>
+<h2 class="sec" id="play">Side projects</h2>
 
 <article class="card reveal">
   <div class="card-head"><h3>HogWare</h3>
@@ -1018,7 +1268,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </div>
 </article>
 
-<h2 class="sec">What I'm looking for</h2>
+<h2 class="sec" id="looking-for">What I'm looking for</h2>
 <p class="lede">I design and engineer the same product, research to ship. Design intent survives all the way to production. I use AI as an engineer, not a shortcut. I&rsquo;m at my best on hard, ambiguous problems where judgment decides the outcome, not headcount.</p>
 <ul class="want">
   <li>A small, high-output team, or a senior IC pocket inside a larger one, where I can go deep and stay. The work is the scoreboard.</li>
@@ -1033,10 +1283,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <span class="t">Remote US from Honolulu</span><span class="t">West Coast hours</span>
   <span class="t">Quarterly Bay Area / Seattle</span></div>
 
-<div class="refs">
+<div class="refs" id="contact">
   <p><b>Talk to people who've built with me.</b> <a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> and <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> are glad to get on
   a call and tell you what it's really like. Just ask.</p>
   <a class="btn" href="mailto:whoischrislam@gmail.com?subject=Reference%20call" target="_blank" rel="noopener">Talk to a reference</a>
+  <a class="btn" href="#" data-va-open role="button">Ask my AI hiring guide</a>
   <a class="btn primary" href="https://cal.com/whoischrislam/30min" target="_blank" rel="noopener">Book 30 minutes</a>
   <p class="links"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener">Or read what they already wrote &rarr;</a></p>
 </div>
@@ -1052,6 +1303,18 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 </div>
 
 </div>
+
+<button id="va-launcher" class="va-launcher" hidden aria-label="Open Chris's AI hiring guide">
+            <svg class="va-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><rect x="3" y="9" width="2" height="6" rx="1"/><rect x="7.5" y="5" width="2" height="14" rx="1"/><rect x="12" y="2" width="2" height="20" rx="1"/><rect x="16.5" y="5" width="2" height="14" rx="1"/><rect x="21" y="9" width="2" height="6" rx="1"/></svg>
+            <span class="va-launcher-label">Ask my AI guide</span>
+        </button>
+<div id="va-dock" class="va-dock" role="dialog" aria-label="Chris's AI hiring guide" hidden>
+            <div class="va-dock-head">
+                <span class="va-dock-title">Chris's AI hiring guide</span>
+                <button type="button" class="va-dock-close" aria-label="Minimize">&minus;</button>
+            </div>
+            <div class="va-dock-body"></div>
+        </div>
 
 <script>
 (function(){
