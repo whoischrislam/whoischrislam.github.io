@@ -290,9 +290,19 @@ def check(path, quiet=False):
     for missing in sorted(set(TIERS) - seen):
         warns.append((missing, "declared in TIERS but not on the page"))
 
-    for form, label in ((chr(8212), "em dash"), ("&mdash;", "&mdash;")):
-        if form in work:
-            fails.append(("(work section)", "contains %s x%d" % (label, work.count(form))))
+    # Sweep the WHOLE file, not just the work section. A scoped dash check passed
+    # while two sat in ported CSS comments, which is the false-confidence failure
+    # the external-AI-boundaries rule describes: test every form, everywhere.
+    for form, label in ((chr(8212), "em dash"), ("&mdash;", "&mdash;"),
+                        ("EN_PROSE", "en dash used as prose punctuation")):
+        if form == "EN_PROSE":
+            # Legitimate: numeric ranges (2024 - 2026, 60-80). Not legitimate: an
+            # en dash standing in for an em dash between words.
+            n = len(re.findall(r"[A-Za-z]\s*" + chr(8211) + r"\s*[A-Za-z]", src))
+        else:
+            n = src.count(form)
+        if n:
+            fails.append(("(whole file)", "contains %s x%d" % (label, n)))
 
     if not quiet:
         for name, msg in fails:

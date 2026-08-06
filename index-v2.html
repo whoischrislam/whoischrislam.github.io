@@ -664,7 +664,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .va-dock .voice-agent { margin: 0 !important; border: none !important; box-shadow: none !important; max-width: none !important; border-radius: 0 !important; padding: 0 !important; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .va-dock { left: 0.6em; right: 0.6em; bottom: 0.6em; width: auto; max-height: 80vh; }
 /* Print ONLY the recruiter brief. The page is long, so the rest must be REMOVED from
-       layout with display:none — not hidden with visibility:hidden, which keeps the space
+       layout with display:none, not hidden with visibility:hidden, which keeps the space
        and prints as blank trailing pages. display:none collapses the document to the
        brief's height. (#va-dock is a direct child of body and holds the live interface.) */
     body > *:not(#va-dock) { display: none !important; }
@@ -679,7 +679,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
         display: block !important; position: static !important;
         height: auto !important; max-height: none !important; overflow: visible !important;
     }
-/* Hide dock chrome and the foot (CTA/composer), and the transcript — leave only the brief. */
+/* Hide dock chrome and the foot (CTA/composer), and the transcript. Leave only the brief. */
     .va-dock-head, .va-foot { display: none !important; }
 .va-scroll > *:not(#brief-print-root) { display: none !important; }
 #brief-print-root .va-brief-actions { display: none !important; }
