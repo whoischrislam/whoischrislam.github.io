@@ -304,6 +304,28 @@ def check(path, quiet=False):
         if n:
             fails.append(("(whole file)", "contains %s x%d" % (label, n)))
 
+    # Renders-at-all check. Every other check in here passed while the page was a
+    # blank rectangle, because they all validate content and none of them asked
+    # whether the content is visible. A flat regex used to port CSS pulled
+    # body > *:not(#va-dock){display:none!important} out of its @media print
+    # wrapper, and that hides the entire site on screen.
+    style = re.search(r"<style>(.*?)</style>", src, re.S)
+    if style:
+        css = re.sub(r"/\*.*?\*/", "", style.group(1), flags=re.S)
+        screen = re.split(r"@media[^{]*\{", css)[0]
+        for pat, why in ((r"body\s*>\s*\*[^{]*\{[^}]*display:\s*none",
+                          "a rule hiding every direct child of body"),
+                         (r"(?:^|\})\s*(?:html|body)\s*\{[^}]*display:\s*none",
+                          "display:none on html or body")):
+            if re.search(pat, screen):
+                fails.append(("(renders)", "%s is active outside a media query. The page "
+                                           "will be blank" % why))
+        n = len(re.findall(r"display:\s*none\s*!important", screen))
+        if n:
+            warns.append(("(renders)", "%d display:none !important outside any media query. "
+                                       "Check none of them are print rules that lost their "
+                                       "@media wrapper" % n))
+
     if not quiet:
         for name, msg in fails:
             print("FAIL  %-20s %s" % (name[:20], msg))
