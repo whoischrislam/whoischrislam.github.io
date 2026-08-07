@@ -244,6 +244,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
    change, not a footnote, because on these cards the honesty is the argument. */
 .limit{border-top:1px solid var(--border);margin-top:20px;padding-top:16px}
 .setup{margin:0 0 12px}
+.aiwork{max-width:66ch;margin:0 0 16px;font-size:16.5px;line-height:1.62}
 .taught{margin:-2px 0 14px;padding-left:14px;border-left:2px solid var(--border)}
 
 .wslbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
@@ -827,6 +828,22 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 
 
 <!-- 5. Work: no intro sentence -->
+<h2 class="sec" id="stack">How I work with AI</h2>
+<p class="aiwork">I treat agents as tools, not autopilot. I set the architecture, the contracts and the acceptance criteria; AI implements inside them; and I own the code review, the tests and the safety gates. I incur comprehension debt deliberately, in prototypes, never in core or safety paths, and I keep it in check with pure-function extraction, regression tests tied to real incidents, adversarial multi-model reviews and staged rollout. The judgment is mine; the speed is the tool's.</p>
+<div class="todo"><b>Yours. One or two sentences: what does your AI workflow get wrong?</b>
+  The paragraph above says how you contain the risk. It does not name a failure, and that is the
+  question a 2026 hiring manager actually asks. Four candidates, all documented, all with a real cost:
+  <br>&nbsp;&nbsp;<b>A</b> AI prose fools the author. index-v2 was an AI rebuild, it passed your review,
+  a fresh reader said it did not make sense. You write your own copy now.
+  <br>&nbsp;&nbsp;<b>B</b> The 70% problem. Already told on the y30 card, so it would repeat.
+  <br>&nbsp;&nbsp;<b>C</b> Comprehension debt bit anyway. Three prepared documents would not retrieve
+  under pressure in the Descript interviews. Qualifies the sentence above, which is what makes it
+  credible rather than tidy.
+  <br>&nbsp;&nbsp;<b>D</b> An AI refactor cannot tell a decision from an accident. This rebuild silently
+  deleted your looking-for lede, three bullet halves, a fourth bullet, this very section, and the whole
+  hiring guide. Today it also blanked the page.</div>
+<p class="aiwork">[WHAT IT GETS WRONG]</p>
+
 <h2 class="sec" id="work">Work</h2>
 <div id="worklist">
 

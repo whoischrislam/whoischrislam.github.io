@@ -511,7 +511,7 @@
     { anchor: "#work", kw: ["goodrx", "good rx", "clover", "amazon", "taskrabbit", "task rabbit", "ipo", "acquisition", "acquired", "conversion", "revenue", "nurse", "coupon", "prime", "webby", "sharecare", "modus", "jira", "dark mode", "metric", "outcome", "nps"] },
     { anchor: "#looking-for", kw: ["looking for", "role", "remote", "relocat", "location", "honolulu", "bay area", "seniority", "level", "open to", "best fit", "best-fit"] },
     { anchor: "#stack", kw: ["how he works", "how does he work", "his stack", "ai-native", "ai native", "force multiplier", "how he builds"] },
-    { anchor: "#testimonials", kw: ["recommend", "reference", "vouch", "say about him", "testimonial"] },
+    { anchor: "#contact", kw: ["recommend", "reference", "vouch", "say about him", "testimonial"] },
     { anchor: "#play", kw: ["side project", "voice noir", "evolve die repeat", "board game", "for fun"] },
   ];
   function matchSection(text) {
@@ -551,7 +551,7 @@
     if (!target) return;
     // Attribution: make the agent's page navigation legible instead of a mystery scroll.
     // The status clears on its own when the turn ends (setState -> idle).
-    var PROOF_LABELS = { "#y30": "the y30 work", "#playsesh": "PlaySesh", "#work": "his work history", "#looking-for": "what he's looking for", "#stack": "how he works", "#testimonials": "the references", "#play": "his side projects" };
+    var PROOF_LABELS = { "#y30": "the y30 work", "#playsesh": "PlaySesh", "#work": "his work history", "#looking-for": "what he's looking for", "#stack": "how he works", "#contact": "who can vouch for him", "#play": "his side projects" };
     setStatus("Showing you " + (PROOF_LABELS[anchor] || "the proof") + " on the page…");
     highlightOnArrival(target);
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
