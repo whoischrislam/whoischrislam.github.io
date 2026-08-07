@@ -299,8 +299,14 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .facts dd{margin:0;font-size:14.5px;line-height:1.5;min-width:0}
 @media (max-width:460px){ .facts > div{grid-template-columns:1fr;gap:1px} }
 .facts dd.tech{color:var(--muted)}
-.facts dd b{font-family:var(--serif);font-weight:400;font-size:18px;color:var(--accent);
-  margin-right:5px;letter-spacing:-.01em}
+/* The result lands inside the story, not in the metadata. Situation, action,
+   result, meaning: the arc a hiring manager reads for. */
+.result{margin:0 0 14px}
+.rlbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:3px}
+.result .fig{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--accent);
+  margin-right:7px;letter-spacing:-.01em}
+.result .qual{font-size:15.5px;line-height:1.55}
 /* Sits with the company name, because it is a fact about the company. "Later"
    does the honest work: it signals he was already gone. */
 .outcome{align-self:baseline;font-size:11.5px;letter-spacing:.03em;color:var(--muted);
@@ -860,7 +866,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> (CEO) and me. Vijay owns fundraising, customer discovery, recruiting testers, sales, and building relationships with subject matter experts</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
-    <div class="wide"><dt>Tradeoff</dt><dd><b>3&times; slower, on purpose</b> People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</dd></div>
   </dl>
   
   <p class="setup">The hardest part wasn&rsquo;t getting the AI to do more. It was deciding what
@@ -874,6 +879,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   much the system and the AI get to own and call the shots versus what needs a guaranteed, consistent
   response. I kept the ownership framing and the up-front inversion, and cut "predictable and reliable
   versus room to flex" because the six rules below already show it.</div>
+    <p class="result"><span class="rlbl">Tradeoff</span><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
   <p class="taught">AI covers the edges I didn't anticipate. So I decide up front what the model gets
   to own and what has to be guaranteed, instead of finding the line at 70%.</p>
   <div class="todo"><b>DRAFT, and this one is 100% mine.</b> No archive to draw on, so there is
@@ -922,7 +928,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>3 co-founders, <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> COO. I authored 1,147 of the rebuild&rsquo;s 1,793 commits; 291 tests, still green</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Cloudflare Workers · Durable Objects</dd></div>
-    <div class="wide"><dt>Adoption</dt><dd><b>6,220 authorized accounts</b> Discord reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026. Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</dd></div>
   </dl>
   
   <p class="setup">It wasn't the first product we set out to build. We started closer to social
@@ -939,6 +944,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   You said: tradeoffs and the cost of reversing decisions, identifying directions for technical,
   product and design, weighing them quickly, and measuring progress to know whether to continue or
   reverse. I cut it to 32 words and kept all four moves. If the compression flattened it, expand it.</div>
+    <p class="result"><span class="rlbl">Adoption</span><span class="fig">6,220 authorized accounts</span><span class="qual">Discord reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026. Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</span></p>
   <p class="taught">Every direction has a reversal cost. I weigh technical, product and design paths by
   which one I can afford to be wrong about, then measure progress to know whether to keep going.</p>
   <div class="todo"><b>DRAFT, and this one is 100% mine.</b> No archive to draw on, so there is
@@ -980,7 +986,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>3–5 engineers, 1 PM, 1 designer (me)</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product design · Design system · Research · PRD · Front-end</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">React · Storybook · Design tokens · Ant Design</dd></div>
-    <div class="wide"><dt>Result</dt><dd><b>60–80 hours saved</b> Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</dd></div>
   </dl>
   <div class="todo"><b>DRAFT to react to, not finished copy.</b>
   <b>Yours:</b> &ldquo;How to roll out design changes while courses are live?&rdquo; (your week-one notes), &ldquo;Evaluate course author impact sooner, biggest gotcha&rdquo; and &ldquo;be more in the understanding side before jumping to the design&rdquo; (your Nov 12 retro), &ldquo;minimize the amount of re-work course authors will need to do&rdquo; and the December-January / April-May window (your PRD).
@@ -992,6 +997,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   course-author impact. Every structural change created re-work for a team I didn&rsquo;t manage,
   so the design became backward compatible by default. That cost me changes I wanted and
   narrowed the window to the gaps between cohorts.</p>
+    <p class="result"><span class="rlbl">Result</span><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
   <p class="taught">Be more in the understanding side before jumping to the design, and evaluate
   course-author impact sooner.</p>
   
@@ -1017,8 +1023,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>6-person special-projects team in SF</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product design · Front-end · Data visualization · Research · Conversion</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">D3 · Experimentation · Healthcare</dd></div>
-    <div class="wide"><dt>Iodine.com</dt><dd><b>2% &rarr; 5%</b> Coupon-flow conversion. Iodine.com won the Webby for Best Health Website.</dd></div>
-    <div class="wide"><dt>GoodRx Research</dt><dd><b>+10% mobile, +25% desktop</b> Referenced in the New York Times and used in federal drug-pricing debates.</dd></div>
   </dl>
   <p class="lineage">The Iodine acquisition closed while I was interviewing, so I came in
   officially as a GoodRx employee working two products. Iodine was the experimenting layer. GoodRx was
@@ -1037,6 +1041,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   operationally support it, and can you intelligently measure and grow at a pace you can sustain. Your
   second clause replaced "scale is a real thing", which said the same thing less precisely. Sits at the
   35-word cap, so anything you add has to push something out.</div>
+    <p class="result"><span class="rlbl">Iodine.com</span><span class="fig">2% &rarr; 5%</span><span class="qual">Coupon-flow conversion. Iodine.com won the Webby for Best Health Website.</span></p>
+  <p class="result"><span class="rlbl">GoodRx Research</span><span class="fig">+10% mobile, +25% desktop</span><span class="qual">Referenced in the New York Times and used in federal drug-pricing debates.</span></p>
   <p class="taught">Engagement validates the idea, not our ability to serve it. Before I ship now I
   ask what it commits us to operationally, and whether we can measure and grow at a pace we can
   sustain.</p>
@@ -1073,7 +1079,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>4–5 engineers, 1 PM</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Clinical tools · Field research · Brand · Front-end · Marketing site</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · CSS · Clinical workflow</dd></div>
-    <div class="wide"><dt>Result</dt><dd><b>~7–8× ROI</b> On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</dd></div>
   </dl>
   <div class="todo"><b>DRAFT to react to, not finished copy.</b>
   <b>Yours:</b> &ldquo;I spent a week in New Jersey shadowing and interviewing Nurse Practitioners&rdquo;, &ldquo;Nurse Practitioners did not have a set flow in where they start when processing the form&rdquo;, and &ldquo;every night before visits, they would spend around 2 hours to pre-fill as much information as possible on paper forms.&rdquo;
@@ -1084,6 +1089,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <p>They had no set flow, no fixed place they started, and every night they spent about two
   hours pre-filling paper by hand. So the app couldn&rsquo;t have an order either. That was
   harder to build than a wizard and it was the only version they would actually use.</p>
+    <p class="result"><span class="rlbl">Result</span><span class="fig">~7–8× ROI</span><span class="qual">On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</span></p>
   <p class="taught">Not just the end user, but the people who deliver the service and represent the
   company to them. At Clover the nurse practitioner was both.</p>
   
@@ -1178,7 +1184,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div><dt>Team</dt><dd>1 of 5 designers</dd></div>
     <div class="wide"><dt>Owned</dt><dd>Product design · iOS · Android · Marketplace · Rebrand</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Mobile · Two-sided</dd></div>
-    <div class="wide"><dt>Result</dt><dd><b>NPS −5 → mid-50s</b> Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</dd></div>
   </dl>
   <div class="todo"><b>DRAFT to react to, not finished copy.</b>
   <b>Yours:</b> Nearly all of it, close to verbatim: &ldquo;the Tasker app we shipped was painful to use&rdquo;, &ldquo;Taskers were more likely to pass on a task than to commit to one as they preferred to be able to view all of the tasks before selecting&rdquo;, &ldquo;seeing a schedule view was most important to them since they relied heavily on a calendar app&rdquo;, and &ldquo;even if the Client experience was designed well, the full experience would be incomplete because the rest of the experience is dependent on the Tasker.&rdquo;
@@ -1190,6 +1195,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   available before choosing. So we rebuilt around what they already relied on: a schedule view,
   matching the calendar apps they lived in. The client experience can be perfect and the service
   still fails, because the rest of it depends on the Tasker.</p>
+    <p class="result"><span class="rlbl">Result</span><span class="fig">NPS −5 → mid-50s</span><span class="qual">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</span></p>
   <p class="taught">People absorbing a change they didn't ask for have no appetite for a second one. So
   I build on what they already use instead of asking them to learn something new.</p>
   

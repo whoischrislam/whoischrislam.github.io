@@ -41,6 +41,7 @@ ORDER = [
     "lineage",       # two-company continuity, GoodRx only
     "setup",         # optional, only when what happened diverged from the brief
     "prose",         # the decision: alternative, evidence, choice, cost
+    "result",        # what happened. Inside the story, so the arc resolves
     "taught",        # what it changed about how he works
     "buyer",         # what that decision means for the reader
     "todo",          # a blank waiting on Chris, sits with what it is about
@@ -72,13 +73,13 @@ TIERS = {
 
 SPEC = {
     "lead": {
-        "required": {"card-head", "ctx", "facts", "buyer", "taught"},
+        "required": {"card-head", "ctx", "facts", "buyer", "taught", "result"},
         "allowed": {"prose", "setup", "ruleslabel", "hl", "limit",
                     "vids", "shot", "rec", "proof", "card-cta", "ref-offer", "todo"},
         "prose_words": 180,
     },
     "proof": {
-        "required": {"card-head", "ctx", "facts", "proof", "taught"},
+        "required": {"card-head", "ctx", "facts", "proof", "taught", "result"},
         "allowed": {"prose", "setup", "buyer", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
         "prose_words": 75,   # a four-beat decision runs 50-70; 60 strangled it
     },
@@ -95,11 +96,13 @@ SINGLETON = {"card-head", "ctx", "impact", "facts", "buyer", "setup", "taught", 
              "ref-offer"}
 # Quotes may pair, never stack. Two is corroboration; three is a wall.
 MAX_RECS = 2
+# Same for results: GoodRx has two workstreams. Nothing has three.
+MAX_RESULTS = 2
 
 CLASSED = re.compile(
     r'<(?:div|dl|p|ul|h4|img|a)\s[^>]*class="([a-z-]+)"[^>]*>|<p>'
 )
-ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx",          "buyer": "buyer", "setup": "setup", "taught": "taught", "impact": "impact", "outcome": None, "lineage": "lineage", "limit": "limit", "vids": "vids",
+ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx",          "buyer": "buyer", "setup": "setup", "taught": "taught", "result": "result", "rlbl": None, "impact": "impact", "outcome": None, "lineage": "lineage", "limit": "limit", "vids": "vids",
          "ruleslabel": "ruleslabel", "hl": "hl", "shot": "shot", "proof": "proof",
          "card-cta": "card-cta", "ref-offer": "ref-offer", "todo": "todo",
          "role": None, "fig": None, "qual": None, "tech": None, "wide": None,
@@ -192,6 +195,10 @@ def check(path, quiet=False):
         for got in sorted(set(seq) - spec["required"] - spec["allowed"]):
             fails.append((name, "tier %s does not allow %s" % (tier, got)))
 
+        if seq.count("result") > MAX_RESULTS:
+            fails.append((name, "%d result blocks. Two only, and only for a card with two "
+                                "workstreams" % seq.count("result")))
+
         if seq.count("rec") > MAX_RECS:
             fails.append((name, "%d quotes. Two is corroboration, more is a wall"
                           % seq.count("rec")))
@@ -225,16 +232,11 @@ def check(path, quiet=False):
         dl = re.search(r'<dl class="facts">(.*?)</dl>', inner, re.S)
         if dl:
             got = re.findall(r"<dt>([^<]+)</dt>", dl.group(1))
-            RESULT = {"Result", "Adoption", "Tradeoff"}
-            fixed = [g for g in got if g in ("Stage", "Team", "Owned", "Stack")]
             extra = [g for g in got if g not in ("Stage", "Team", "Owned", "Stack")]
-            want = [f for f in ("Stage", "Team", "Owned", "Stack") if f in got] + extra
-            if tier in ("lead", "proof") and not extra:
-                fails.append((name, "tier %s needs a result row after Stack, labeled "
-                                    "one of Result / Adoption / Tradeoff" % tier))
             for e in extra:
-                if e not in RESULT and name != "GoodRx":
-                    fails.append((name, "result label %r not in Result / Adoption / Tradeoff" % e))
+                fails.append((name, "meta row carries %r. The result moved into the read "
+                                    "layer so the story resolves" % e))
+            want = [f for f in ("Stage", "Team", "Owned", "Stack") if f in got]
             if got != want:
                 fails.append((name, "meta order is %s, must be Stage, Team, Owned, Stack"
                               % ", ".join(got)))
@@ -270,6 +272,12 @@ def check(path, quiet=False):
                                     "is to name their situation, so it needs you or your"))
             if words(bm.group(1)) > 30:
                 fails.append((name, "buyer line is %d words, cap is 30" % words(bm.group(1))))
+
+        for rm in re.finditer(r'<span class="rlbl">([^<]*)</span>', stripped):
+            lbl = rm.group(1).strip()
+            OK = {"Result", "Adoption", "Tradeoff"}
+            if lbl not in OK and name != "GoodRx":
+                fails.append((name, "result label %r not in Result / Adoption / Tradeoff" % lbl))
 
         tm = re.search(r'<p class="taught">(.*?)</p>', stripped, re.S)
         if tm:
