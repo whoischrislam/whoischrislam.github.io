@@ -830,19 +830,22 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <!-- 5. Work: no intro sentence -->
 <h2 class="sec" id="stack">How I work with AI</h2>
 <p class="aiwork">I treat agents as tools, not autopilot. I set the architecture, the contracts and the acceptance criteria; AI implements inside them; and I own the code review, the tests and the safety gates. I incur comprehension debt deliberately, in prototypes, never in core or safety paths, and I keep it in check with pure-function extraction, regression tests tied to real incidents, adversarial multi-model reviews and staged rollout. The judgment is mine; the speed is the tool's.</p>
-<div class="todo"><b>Yours. One or two sentences: what does your AI workflow get wrong?</b>
-  The paragraph above says how you contain the risk. It does not name a failure, and that is the
-  question a 2026 hiring manager actually asks. Four candidates, all documented, all with a real cost:
-  <br>&nbsp;&nbsp;<b>A</b> AI prose fools the author. index-v2 was an AI rebuild, it passed your review,
-  a fresh reader said it did not make sense. You write your own copy now.
-  <br>&nbsp;&nbsp;<b>B</b> The 70% problem. Already told on the y30 card, so it would repeat.
-  <br>&nbsp;&nbsp;<b>C</b> Comprehension debt bit anyway. Three prepared documents would not retrieve
-  under pressure in the Descript interviews. Qualifies the sentence above, which is what makes it
-  credible rather than tidy.
-  <br>&nbsp;&nbsp;<b>D</b> An AI refactor cannot tell a decision from an accident. This rebuild silently
-  deleted your looking-for lede, three bullet halves, a fourth bullet, this very section, and the whole
-  hiring guide. Today it also blanked the page.</div>
-<p class="aiwork">[WHAT IT GETS WRONG]</p>
+<div class="todo"><b>Your words, compressed by me. Two optional additions.</b>
+  You said: agents lack the experience, skill, judgment and taste to tell subtleties from deliberate
+  decisions, context is not easily accessible or persistent, they need guiding by what you know. You
+  catch it by checking an agent's context and memory, interviewing it, having it interview you, and
+  manually testing expectations against what actually happened. Anything you repeat, you codify.
+  <br>&nbsp;&nbsp;<b>1.</b> You did not name an instance. Optional, but the strongest one is on this
+  page: rebuilding it with an agent deleted your looking-for lede, truncated three bullets, removed a
+  fourth, dropped this whole section and the hiring guide, and blanked the page by moving print CSS out
+  of its media query. All found by re-reading, never by review.
+  <br>&nbsp;&nbsp;<b>2.</b> "Codify anything I catch twice" is checkable and nothing on the page proves
+  it. scripts/check-cards.py is that habit, built this week, and the footer already invites people to
+  read the source.</div>
+<p class="aiwork">Agents don't have the judgment to tell a subtlety from a deliberate decision, and
+  their context isn't persistent, so they have to be guided by what you already know. I check what an
+  agent actually has in context, interview it and let it interview me, test the result against what I
+  expected rather than what it claims, and codify anything I catch twice.</p>
 
 <h2 class="sec" id="work">Work</h2>
 <div id="worklist">
