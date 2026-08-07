@@ -537,7 +537,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .va-intro-msg { display: flex; align-items: flex-start; gap: 0.45em; font-size: 0.9em !important; line-height: 1.55; color: var(--text) !important; margin: 0 !important; }
 .va-intro-msg .va-title-icon { position: relative; top: 2px; flex-shrink: 0; }
 .va-started .va-intro-msg, .va-role-chosen .va-intro-msg { display: none; }
-/* Radio behaviour: once a role is picked, collapse to just that choice + Change */
+/* Radio behavior: once a role is picked, collapse to just that choice + Change */
 .va-change { display: none; width: auto !important; font-size: 0.78em; color: var(--muted) !important; padding: 0.42em 0.6em !important; border: none !important; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 .va-change:hover { color: var(--accent) !important; }
 .va-role-chosen .va-change { display: inline-flex; }
@@ -830,22 +830,22 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <!-- 5. Work: no intro sentence -->
 <h2 class="sec" id="stack">How I work with AI</h2>
 <p class="aiwork">I treat agents as tools, not autopilot. I set the architecture, the contracts and the acceptance criteria; AI implements inside them; and I own the code review, the tests and the safety gates. I incur comprehension debt deliberately, in prototypes, never in core or safety paths, and I keep it in check with pure-function extraction, regression tests tied to real incidents, adversarial multi-model reviews and staged rollout. The judgment is mine; the speed is the tool's.</p>
-<div class="todo"><b>Your words, compressed by me. Two optional additions.</b>
-  You said: agents lack the experience, skill, judgment and taste to tell subtleties from deliberate
-  decisions, context is not easily accessible or persistent, they need guiding by what you know. You
-  catch it by checking an agent's context and memory, interviewing it, having it interview you, and
-  manually testing expectations against what actually happened. Anything you repeat, you codify.
-  <br>&nbsp;&nbsp;<b>1.</b> You did not name an instance. Optional, but the strongest one is on this
-  page: rebuilding it with an agent deleted your looking-for lede, truncated three bullets, removed a
-  fourth, dropped this whole section and the hiring guide, and blanked the page by moving print CSS out
-  of its media query. All found by re-reading, never by review.
-  <br>&nbsp;&nbsp;<b>2.</b> "Codify anything I catch twice" is checkable and nothing on the page proves
-  it. scripts/check-cards.py is that habit, built this week, and the footer already invites people to
-  read the source.</div>
+<div class="todo"><b>Your words. The instance is verbatim yours.</b>
+  "Worse than no automation because it creates false confidence" is lifted straight from
+  docs/plans/TASK-394 in y30-voice, as is the five-stage list and the Monday ritual. Mine: the joins
+  only. <br>&nbsp;&nbsp;Still optional: that same doc records three rounds of adversarial review with
+  five to six models per round, which is the concrete receipt for "adversarial multi-model reviews" in
+  the paragraph above. And scripts/check-cards.py in this repo is "codify anything I catch twice" made
+  executable, which the footer already invites people to go read.</div>
 <p class="aiwork">Agents don't have the judgment to tell a subtlety from a deliberate decision, and
   their context isn't persistent, so they have to be guided by what you already know. I check what an
   agent actually has in context, interview it and let it interview me, test the result against what I
   expected rather than what it claims, and codify anything I catch twice.</p>
+<p class="aiwork">At y30 I built a five-stage eval flywheel: session capture, auto-eval, failure
+  harvest, STT variants, CI regression detection. Then the automation was producing pull requests and
+  issues nobody had a ritual for reviewing, which is worse than no automation because it creates false
+  confidence. So I wrote the operating workflow too: fifteen minutes of triage every Monday, P0s
+  alerting to Slack the same day.</p>
 
 <h2 class="sec" id="work">Work</h2>
 <div id="worklist">
