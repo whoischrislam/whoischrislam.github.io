@@ -19,3 +19,13 @@ Keep all private job-hunt research and drafts in `.jobhunt/`, including JDs, int
 Use `.jobhunt/CAREER_GTM_POSITIONING.md` as the working positioning source of truth. Extend existing material instead of creating duplicates. Only edit public resume, portfolio, and machine-readable surfaces outside `.jobhunt/` when Chris explicitly asks for a publishable update.
 
 After creating or moving private material, verify it is ignored and check `git status`. Gitignored files are not backed up by git.
+
+## Content about Chris
+
+Never infer, assume, or fabricate facts about his experience: what the brief was, why
+something was built, what he believed beforehand, what a decision produced. **Ask him.**
+Labelling a guess as a guess is not sufficient, because the label protects the process
+and the reader still sees the content. Verbatim from an artifact is preferred, and verify
+the string against its source before calling it verbatim. If the raw material does not
+exist, say the slot cannot be filled yet rather than bridging it with something
+reasonable-sounding.
