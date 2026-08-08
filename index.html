@@ -99,8 +99,8 @@
   --head-h:56px;
   /* Type scale, seven steps. Was twenty-one sizes at half-pixel granularity,
      which is the granularity of a generator, not a decision. */
-  --t-xxl:32px; --t-xl:26px; --t-lg:21px; --t-md:19px;
-  --t-base:17px; --t-sm:15px; --t-xs:13px;
+  --t-xxl:38px; --t-xl:30px; --t-lg:24px; --t-md:21px;
+  --t-base:18px; --t-sm:16px; --t-xs:14px;
   /* Spacing. 4px base, doubling. Ported from his 2024 token set, which used the
      same shape in em: 0.2 / 0.4 / 0.8 / 1 / 1.6 / 2 / 4. */
   --sp-1:4px; --sp-2:8px; --sp-3:16px; --sp-4:24px; --sp-6:32px; --sp-8:44px; --sp-12:88px;
@@ -157,7 +157,7 @@ a:hover{text-decoration-color:var(--accent)}
 
 /* ── Hero ─────────────────────────────────────────────────────── */
 .hero{padding:34px 0 38px}
-.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,60px);
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(42px,6.4vw,68px);
   line-height:1.05;margin:0 0 16px;letter-spacing:.2px}
 .hero .sub{font-size:var(--t-md);line-height:1.65;color:var(--muted);margin:0 0 26px}
 .hero .sub b{font-weight:600;color:var(--text)}
@@ -250,15 +250,29 @@ details.more[open] summary::before{transform:rotate(90deg)}
 /* The header is sticky, so every anchor target landed underneath it: the nav links,
    the in-page CTAs, and all seven of the agent's navigation targets. scroll-padding
    on the scroll container fixes all of them at once. */
-html{scroll-padding-top:calc(var(--head-h) + 20px)}
+html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth}
+/* Read-progress, lifted from his own styles.css. Scroll-driven animation, no JS at all.
+   Browsers without animation-timeline never scale it up, so it stays invisible. */
+.read-progress{position:fixed;top:0;left:0;z-index:1000;width:100%;height:3px;
+  background:var(--accent);transform-origin:left;scale:0 1;
+  animation:read-progress linear;animation-timeline:scroll(root)}
+@keyframes read-progress{to{scale:1 1}}
 h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   /* Rule above the heading, not below it. It terminates the previous block and
      introduces this one, which is how his Squarespace case studies were built. */
   border-top:1px solid var(--border);padding-top:var(--sp-4);margin:var(--sp-12) 0 13px}
-/* ...so the first card must not draw a second line 13px under the first. */
-h2.sec + .card,
-h2.sec + #worklist > .card:first-child{border-top:0}   /* cards under "Work" are wrapped, so adjacency alone misses the first one */
-.card{border-top:1px solid var(--border);padding:var(--sp-4) 0}
+/* Card surfaces. The inline version read as one continuous document, so nothing told
+   the eye where a project began. This is his 2014 work list: a bordered block whose
+   LEFT edge carries the project colour. */
+.card{background:var(--surface);border:1px solid var(--border);
+  border-left:3px solid var(--proj-accent,var(--accent));
+  padding:var(--sp-4) 30px;margin:0 0 var(--sp-8)}
+/* Internal hierarchy. Every gap inside a card was the same 15px, so the card read as
+   one uniform drum with no beats. Blocks that OPEN a beat get 28px; paragraphs
+   continuing a beat keep 15px. 28 stays under the 44px card gap on purpose. */
+.card > .result,.card > .taught,.card > .transfers,.card > .ruleslabel,
+.card > .shot,.card > .rec,.card > .proof,.card > .card-cta,
+.card > .limit,.card > .vids,.card > .embed,.card > .lineage{margin-top:28px}
 
 /* The limit. Separated by a rule, NOT muted. It reads as a deliberate register
    change, not a footnote, because on these cards the honesty is the argument. */
@@ -281,7 +295,7 @@ h2.sec + #worklist > .card:first-child{border-top:0}   /* cards under "Work" are
    and hardened borders to "2px solid var(--primary)". Structure by line weight. */
 .shot,.proof a,.result > div{border-radius:0}
 .taught{border-left:2px solid var(--accent);padding-left:16px}
-.rec{border-left:2px solid var(--proj-accent,var(--accent))}
+.rec{border-left:2px solid var(--border-strong)}   /* the card edge and .taught already carry the accent */
 /* Per-project accent, revived from portfolio_v5 (2014), where the accent was the
    client's brand colour rather than his. Falls back to the green. */
 .card{--proj-accent:var(--accent)}
@@ -307,7 +321,7 @@ h2.sec + #worklist > .card:first-child{border-top:0}   /* cards under "Work" are
 
 /* Brief cards. Same card, chrome removed: no facts dl, no image, no
    multi-paragraph body. Receipts stay, because receipts are the point. */
-.card--brief{padding:var(--sp-3) 0}
+.card--brief{padding:22px 26px}
 .card--brief .card-head{margin-bottom:8px}
 .card--brief .card-head h3{font-size:var(--t-lg)}
 .card--brief .card-head .role{font-size:var(--t-sm);margin-top:4px}
@@ -513,16 +527,17 @@ h2.sec + #worklist > .card:first-child{border-top:0}   /* cards under "Work" are
 a:focus-visible,button:focus-visible,summary:focus-visible{
   outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent);border-radius:6px}
 
-/* (iv) Reveal. 8px, 450ms, fires once. Only armed when JS is present, so the
+/* (iv) Reveal. 14px, 520ms, fires once. Only armed when JS is present, so the
    page is never blank without it. */
-.js .reveal{opacity:0;transform:translateY(8px);
-  transition:opacity .45s ease,transform .45s ease}
+.js .reveal{opacity:0;transform:translateY(14px);
+  transition:opacity .52s ease,transform .52s ease}
 .js .reveal.in{opacity:1;transform:none}
 .js .logo-row li{opacity:0;transform:translateY(6px);
   transition:opacity .4s ease,transform .4s ease;transition-delay:calc(var(--i,0)*60ms)}
 .js .logos.in .logo-row li{opacity:1;transform:none}
 
 @media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
   *{animation:none!important;transition:none!important}
   .js .reveal,.js .logo-row li{opacity:1!important;transform:none!important}
   .js .reveal.in   .story-panel,.story-panel::backdrop{transition:none!important}
@@ -756,6 +771,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <script type="text/javascript" src="analytics.js" defer></script>
 <script type="text/javascript" src="voice-agent.js" defer></script>
 </head><body>
+<div class="read-progress" aria-hidden="true"></div>
 
 <!-- 1. Sticky header -->
 <header class="site-head">
