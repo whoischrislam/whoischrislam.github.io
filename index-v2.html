@@ -272,11 +272,6 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .card--brief .card--brief h4{font-size:16px;margin:16px 0 6px}
 .card--brief .proj{margin:0}
 
-/* Draft-only. Nothing with this class ships. */
-.todo{background:#3b2a10;color:#f0c674;padding:13px 16px;border-radius:6px;
-  margin:22px 0;font-size:14.5px;line-height:1.55}
-[data-theme="light"] .todo{background:#fdf3d8;color:#6b4e11}
-.todo b{display:block;margin-bottom:3px}
 .card-head{margin-bottom:14px}
 .ch-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
 .ch-top h3{flex:none}
@@ -840,13 +835,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <!-- 5. Work: no intro sentence -->
 <h2 class="sec" id="stack">How I work with AI</h2>
 <p class="aiwork">I treat agents as tools, not autopilot. I set the architecture, the contracts and the acceptance criteria; AI implements inside them; and I own the code review, the tests and the safety gates. I incur comprehension debt deliberately, in prototypes, never in core or safety paths, and I keep it in check with pure-function extraction, regression tests tied to real incidents, adversarial multi-model reviews and staged rollout. The judgment is mine; the speed is the tool's.</p>
-<div class="todo"><b>Your words. The instance is verbatim yours.</b>
-  "Worse than no automation because it creates false confidence" is lifted straight from
-  docs/plans/TASK-394 in y30-voice, as is the five-stage list and the Monday ritual. Mine: the joins
-  only. <br>&nbsp;&nbsp;Still optional: that same doc records three rounds of adversarial review with
-  five to six models per round, which is the concrete receipt for "adversarial multi-model reviews" in
-  the paragraph above. And scripts/check-cards.py in this repo is "codify anything I catch twice" made
-  executable, which the footer already invites people to go read.</div>
 <p class="aiwork">Agents don't have the judgment to tell a subtlety from a deliberate decision, and
   their context isn't persistent, so they have to be guided by what you already know. I check what an
   agent actually has in context, interview it and let it interview me, test the result against what I
@@ -881,18 +869,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   watchdog, it still started the round only about 70% of the time. I moved that sequence into
   code. Conversation stayed open-ended; the part that had to happen in order stopped being a
   request.</p>
-  <div class="todo"><b>Your words, compressed by me. Check it still sounds like you.</b>
-  You said: AI is powerful at handling gaps and edge cases you did not catch, but you have to weigh how
-  much the system and the AI get to own and call the shots versus what needs a guaranteed, consistent
-  response. I kept the ownership framing and the up-front inversion, and cut "predictable and reliable
-  versus room to flex" because the six rules below already show it.</div>
     <p class="result"><span class="rlbl">Tradeoff</span><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
   <p class="taught">AI covers the edges I didn't anticipate. So I decide up front what the model gets
   to own and what has to be guaranteed, instead of finding the line at 70%.</p>
   <p class="transfers"><span class="rlbl">Transfers to</span>Deciding which parts of a product a model is allowed to run.</p>
-  <div class="todo"><b>Yours. Two or three words.</b> A label above these six so a skimmer
-  reads them as deliberate constraints rather than a feature list. Not "Interaction rules",
-  that is Perplexity's phrasing. Yours.</div>
   <h4 class="ruleslabel">Conversation design</h4>
   <ul class="hl">
   <li><b>Pacing.</b> Waits longer for elders before deciding they're done, to make sure it's listening.</li>
@@ -944,10 +924,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   week. What it bought was total control of the canvas; what it cost was that we now maintained all of
   it ourselves. The point was never to own unusual infrastructure. It was to make a remote team feel
   like it was in the same room.</p>
-  <div class="todo"><b>Your words, compressed by me. Check it still sounds like you.</b>
-  You said: tradeoffs and the cost of reversing decisions, identifying directions for technical,
-  product and design, weighing them quickly, and measuring progress to know whether to continue or
-  reverse. I cut it to 32 words and kept all four moves. If the compression flattened it, expand it.</div>
     <p class="result"><span class="rlbl">Adoption</span><span class="fig">6,220 authorized accounts</span><span class="qual">Discord reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026. Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</span></p>
   <p class="taught">Every direction has a reversal cost. I weigh technical, product and design paths by
   which one I can afford to be wrong about, then measure progress to know whether to keep going.</p>
@@ -988,10 +964,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="wide"><dt>Owned</dt><dd>Product design · Design system · Research · PRD · Front-end</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">React · Storybook · Design tokens · Ant Design</dd></div>
   </dl>
-  <div class="todo"><b>DRAFT to react to, not finished copy.</b>
-  <b>Yours:</b> &ldquo;How to roll out design changes while courses are live?&rdquo; (your week-one notes), &ldquo;Evaluate course author impact sooner, biggest gotcha&rdquo; and &ldquo;be more in the understanding side before jumping to the design&rdquo; (your Nov 12 retro), &ldquo;minimize the amount of re-work course authors will need to do&rdquo; and the December-January / April-May window (your PRD).
-  <b>Mine:</b> The stitching, and &ldquo;I answered it in the wrong order.&rdquo;
-  Source: .jobhunt/PATHSTREAM_CASE_STUDY_SOURCE.md, TIER 3 cleared. Rewrite freely; the point is to have something to push against.</div>
   <p class="setup">In week one I wrote down the question: how do you roll out design changes
   while courses are live?</p>
   <p>I committed to a direction before I understood
@@ -1024,20 +996,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <p class="lineage">The Iodine acquisition closed while I was interviewing, so I came in
   officially as a GoodRx employee working two products. Iodine was the experimenting layer. GoodRx was
   the scale, and where I got pulled in to ship.</p>
-  <div class="todo"><b>DRAFT to react to, not finished copy.</b>
-  <b>Yours:</b> Sentences two and three are close to verbatim from your 2018 portfolio: &ldquo;the idea had much higher engagement than we anticipated&rdquo; and &ldquo;we ultimately decided to shut it down because we didn&rsquo;t have the full resources to respond within a guaranteed 48 hour period.&rdquo;
-  <b>Mine:</b> The opening sentence and the closing line. The closing one is an interpretation, so it is the first thing to cut or replace.
-  Source: old-portfolio harvest, iodine/_text.txt. Rewrite freely; the point is to have something to push against.</div>
   <p class="setup">It came out of feedback, and out of working with pharmacists. So we built Ask a
   Pharmacist.</p>
   <p>When we shipped it, engagement was much higher than we anticipated. We shut it down anyway,
   because we didn't have the resources to respond inside a guaranteed 48 hours. Trust is the absolute
   priority, and if you can't support it, it's better to shut it down than run a service that fails people.</p>
-  <div class="todo"><b>Your words, compressed by me. Check it still sounds like you.</b>
-  You said: even if the ideas are good and have real traction and engagement, can you realistically and
-  operationally support it, and can you intelligently measure and grow at a pace you can sustain. Your
-  second clause replaced "scale is a real thing", which said the same thing less precisely. Sits at the
-  35-word cap, so anything you add has to push something out.</div>
     <p class="result"><span class="rlbl">Iodine.com</span><span class="fig">2% &rarr; 5%</span><span class="qual">Coupon-flow conversion. Iodine.com won the Webby for Best Health Website.</span></p>
   <p class="result"><span class="rlbl">GoodRx Research</span><span class="fig">+10% mobile, +25% desktop</span><span class="qual">Referenced in the New York Times and used in federal drug-pricing debates.</span></p>
   <p class="taught">Engagement validates the idea, not our ability to serve it. Before I ship now I
@@ -1078,10 +1041,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="wide"><dt>Owned</dt><dd>Clinical tools · Field research · Brand · Front-end · Marketing site</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · CSS · Clinical workflow</dd></div>
   </dl>
-  <div class="todo"><b>DRAFT to react to, not finished copy.</b>
-  <b>Yours:</b> &ldquo;I spent a week in New Jersey shadowing and interviewing Nurse Practitioners&rdquo;, &ldquo;Nurse Practitioners did not have a set flow in where they start when processing the form&rdquo;, and &ldquo;every night before visits, they would spend around 2 hours to pre-fill as much information as possible on paper forms.&rdquo;
-  <b>Mine:</b> &ldquo;I went in expecting to design a form&rdquo; and the last two sentences. That is my inference about what the week changed. If it is wrong, this is the paragraph to rewrite.
-  Source: old-portfolio harvest, clover-care-visit/_text.txt. Rewrite freely; the point is to have something to push against.</div>
   <p class="setup">The brief from the CPO was "fix the home visit experience." That was all of it. I
   spent a week in New Jersey shadowing nurse practitioners on live visits.</p>
   <p>They had no set flow, no fixed place they started, and every night they spent about two hours
@@ -1184,10 +1143,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <div class="wide"><dt>Owned</dt><dd>Product design · iOS · Android · Marketplace · Rebrand</dd></div>
     <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Mobile · Two-sided</dd></div>
   </dl>
-  <div class="todo"><b>DRAFT to react to, not finished copy.</b>
-  <b>Yours:</b> Nearly all of it, close to verbatim: &ldquo;the Tasker app we shipped was painful to use&rdquo;, &ldquo;Taskers were more likely to pass on a task than to commit to one as they preferred to be able to view all of the tasks before selecting&rdquo;, &ldquo;seeing a schedule view was most important to them since they relied heavily on a calendar app&rdquo;, and &ldquo;even if the Client experience was designed well, the full experience would be incomplete because the rest of the experience is dependent on the Tasker.&rdquo;
-  <b>Mine:</b> Compression only.
-  Source: old-portfolio harvest, taskrabbit-tasker-experience/_text.txt. Rewrite freely; the point is to have something to push against.</div>
   <p class="setup">Taskers were absorbing a company change from bidding to direct hire, and the Tasker
   app shipped painful on top of it.</p>
   <p>Taskers were passing on tasks rather than committing, because they wanted to see everything
