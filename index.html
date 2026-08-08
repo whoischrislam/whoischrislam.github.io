@@ -487,7 +487,16 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;align-items:center}
 .tags .lbl{font-size:var(--t-xs);color:var(--muted);margin-right:4px}
 .tags span.t{font-size:var(--t-xs);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:4px 11px}
-.refs{background:var(--surface);border-radius:10px;padding:26px;margin:36px 0 0}
+/* Same kind of object as a work card, so: square, bordered, same padding. */
+.refs{background:var(--surface);border:1px solid var(--border);border-radius:0;
+  padding:var(--sp-4) 30px;margin:36px 0 0}
+/* The two buttons sat 5px apart, which was just collapsed inline whitespace, and the
+   tertiary link sat flush against them at 0px. Three tiers, three gaps. */
+.refs > p:first-of-type{margin:0 0 26px}
+.refs .btn{margin-right:6px}   /* +5px of inline whitespace = ~11px */
+.refs .links{margin:18px 0 0}
+/* A trailing 16px margin made the box bottom 42px against a 26px top. */
+.refs > *:last-child{margin-bottom:0}
 .refs p{margin:0 0 16px}
 
 .foot{border-top:1px solid var(--border);margin-top:var(--sp-12);padding:38px 0 100px;
@@ -780,7 +789,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <div class="wrap">
     <a class="logo" href="#top">Chris Lam</a>
     <nav aria-label="Primary">
-      <a href="#looking-for" class="hide-sm">About</a>
+      <a href="#top" class="hide-sm">About</a>
       <a href="#work">Work</a>
       <a href="/chris-lam-resume.pdf" download class="hide-sm" target="_blank" rel="noopener">Resume</a>
       <button id="theme-toggle" type="button" role="switch" aria-checked="true"
