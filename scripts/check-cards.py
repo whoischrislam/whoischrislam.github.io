@@ -43,7 +43,7 @@ ORDER = [
     "prose",         # the decision: alternative, evidence, choice, cost
     "result",        # what happened. Inside the story, so the arc resolves
     "taught",        # what it changed about how he works
-    "buyer",         # what that decision means for the reader
+    "transfers",     # the problem shape, industry removed, so it travels
     "todo",          # a blank waiting on Chris, sits with what it is about
     "ruleslabel",
     "hl",            # the enumerated calls
@@ -73,14 +73,14 @@ TIERS = {
 
 SPEC = {
     "lead": {
-        "required": {"card-head", "ctx", "facts", "buyer", "taught", "result"},
+        "required": {"card-head", "ctx", "facts", "transfers", "taught", "result"},
         "allowed": {"prose", "setup", "ruleslabel", "hl", "limit",
                     "vids", "shot", "rec", "proof", "card-cta", "ref-offer", "todo"},
         "prose_words": 180,
     },
     "proof": {
         "required": {"card-head", "ctx", "facts", "proof", "taught", "result"},
-        "allowed": {"prose", "setup", "buyer", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
+        "allowed": {"prose", "setup", "transfers", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
         "prose_words": 75,   # a four-beat decision runs 50-70; 60 strangled it
     },
     "row": {
@@ -92,7 +92,7 @@ SPEC = {
 
 # Slots that may appear at most once anywhere, in any tier. A card with two hooks
 # has no hook.
-SINGLETON = {"card-head", "ctx", "impact", "facts", "buyer", "setup", "taught", "limit", "ruleslabel", "hl",
+SINGLETON = {"card-head", "ctx", "impact", "facts", "transfers", "setup", "taught", "limit", "ruleslabel", "hl",
              "ref-offer"}
 # Quotes may pair, never stack. Two is corroboration; three is a wall.
 MAX_RECS = 2
@@ -102,7 +102,7 @@ MAX_RESULTS = 2
 CLASSED = re.compile(
     r'<(?:div|dl|p|ul|h4|img|a)\s[^>]*class="([a-z-]+)"[^>]*>|<p>'
 )
-ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx",          "buyer": "buyer", "setup": "setup", "taught": "taught", "result": "result", "rlbl": None, "impact": "impact", "outcome": None, "lineage": "lineage", "limit": "limit", "vids": "vids",
+ALIAS = {"card-head": "card-head", "facts": "facts", "ctx": "ctx",          "buyer": "buyer", "transfers": "transfers", "setup": "setup", "taught": "taught", "result": "result", "rlbl": None, "impact": "impact", "outcome": None, "lineage": "lineage", "limit": "limit", "vids": "vids",
          "ruleslabel": "ruleslabel", "hl": "hl", "shot": "shot", "proof": "proof",
          "card-cta": "card-cta", "ref-offer": "ref-offer", "todo": "todo",
          "role": None, "fig": None, "qual": None, "tech": None, "wide": None,
@@ -264,20 +264,20 @@ def check(path, quiet=False):
                                     "of a decision. Written for the recruiter, not the "
                                     "hiring manager" % (len(hits), ", ".join(hits[:3]))))
 
-        bm = re.search(r'<p class="buyer">(.*?)</p>', stripped, re.S)
+        bm = re.search(r'<p class="transfers">(.*?)</p>', stripped, re.S)
         if bm:
             btxt = re.sub(r"<[^>]+>", " ", bm.group(1))
-            if not re.search(r"\byou\b|\byour\b", btxt, re.I):
-                fails.append((name, "buyer line does not address the reader. Its whole job "
-                                    "is to name their situation, so it needs you or your"))
-            if words(bm.group(1)) > 30:
-                fails.append((name, "buyer line is %d words, cap is 30" % words(bm.group(1))))
-
-        for rm in re.finditer(r'<span class="rlbl">([^<]*)</span>', stripped):
-            lbl = rm.group(1).strip()
-            OK = {"Result", "Adoption", "Tradeoff"}
-            if lbl not in OK and name != "GoodRx":
-                fails.append((name, "result label %r not in Result / Adoption / Tradeoff" % lbl))
+            if words(bm.group(1)) > 25:
+                fails.append((name, "transfers line is %d words, cap is 25" % words(bm.group(1))))
+            # It fails the moment it names an industry: the whole point is that it
+            # travels. Not exhaustive, just the domains on this page.
+            DOMAIN = ("elder", "senior", "caregiv", "clinical", "healthcare", "patient",
+                      "prescription", "game dev", "indie", "tasker", "marketplace",
+                      "nurse", "course", "student", "discord")
+            for d in DOMAIN:
+                if d in btxt.lower():
+                    fails.append((name, "transfers line contains %r. It has to travel, so "
+                                        "no industry in it" % d))
 
         tm = re.search(r'<p class="taught">(.*?)</p>', stripped, re.S)
         if tm:
