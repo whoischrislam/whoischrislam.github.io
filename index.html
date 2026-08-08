@@ -96,7 +96,7 @@
   --on-accent:#15110F; --surface-hover:var(--surface-2);
   --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
   --serif:'Instrument Serif',Georgia,serif; --sans:'Open Sans',system-ui,sans-serif;
-  --head-h:56px
+  --head-h:56px;
   /* Type scale, seven steps. Was twenty-one sizes at half-pixel granularity,
      which is the granularity of a generator, not a decision. */
   --t-xxl:32px; --t-xl:26px; --t-lg:21px; --t-md:19px;
@@ -188,8 +188,9 @@ a:hover{text-decoration-color:var(--accent)}
   text-underline-offset:4px}
 
 /* ── 3. Logo strip ────────────────────────────────────────────── */
-.logos{border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  padding:20px 0;margin:0}
+/* No bottom rule: h2.sec now draws the rule that introduces the next section, so a
+   border here left two lines with a dead 88px band between them. */
+.logos{border-top:1px solid var(--border);padding:20px 0;margin:0}
 .logos .lbl{font-size:var(--t-xs);color:var(--muted);
   margin:0 0 14px}
 /* Optical sizing: equal visual AREA, not equal height, or the wide wordmarks
@@ -197,7 +198,7 @@ a:hover{text-decoration-color:var(--accent)}
 .logo-row{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;
   gap:18px 34px;align-items:center}
 .logo-row li{height:var(--h);display:flex;align-items:center}
-.logo-row svg{height:100%;width:auto;color:var(--muted);opacity:.8}
+.logo-row svg{height:100%;width:auto;color:var(--muted);opacity:1}
 /* The five named in the hero carry more weight. Contrast, not motion: five
    things pulsing at once would cancel each other out. */
 .logo-row li.pri{height:calc(var(--h)*1.15)}
@@ -246,6 +247,10 @@ details.more summary::before{content:"\203A";display:inline-block;margin-right:8
 details.more[open] summary::before{transform:rotate(90deg)}
 
 /* ── Work cards ───────────────────────────────────────────────── */
+/* The header is sticky, so every anchor target landed underneath it: the nav links,
+   the in-page CTAs, and all seven of the agent's navigation targets. scroll-padding
+   on the scroll container fixes all of them at once. */
+html{scroll-padding-top:calc(var(--head-h) + 20px)}
 h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   /* Rule above the heading, not below it. It terminates the previous block and
      introduces this one, which is how his Squarespace case studies were built. */
@@ -294,7 +299,6 @@ h2.sec + #worklist > .card:first-child{border-top:0}   /* cards under "Work" are
 .card[data-accent="amazon"]{--proj-accent:#DF9900}                 /* his 2014 per-project assignment */
 [data-theme="light"] .card[data-accent="amazon"]{--proj-accent:#956600}
 .taught{border-left-color:var(--proj-accent,var(--accent))}
-.result .fig{color:var(--proj-accent,var(--accent))}
 
 /* Recommendations, collected. Four quotes at full weight instead of four
    quotes buried one per card. */
@@ -342,7 +346,7 @@ h2.sec + #worklist > .card:first-child{border-top:0}   /* cards under "Work" are
 .result{margin:0 0 14px}
 .rlbl{display:block;font-size:var(--t-xs);
   color:var(--muted);margin-bottom:3px}
-.result .fig{font-family:var(--serif);font-weight:400;font-size:var(--t-lg);color:var(--accent);
+.result .fig{font-family:var(--serif);font-weight:400;font-size:var(--t-lg);color:var(--proj-accent,var(--accent));
   margin-right:7px;letter-spacing:-.01em}
 .result .qual{font-size:var(--t-sm);line-height:1.55}
 /* Names the problem shape with the industry taken out, so a reader outside
@@ -758,7 +762,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <div class="wrap">
     <a class="logo" href="#top">Chris Lam</a>
     <nav aria-label="Primary">
-      <a href="#work" class="hide-sm">About</a>
+      <a href="#looking-for" class="hide-sm">About</a>
       <a href="#work">Work</a>
       <a href="/chris-lam-resume.pdf" download class="hide-sm" target="_blank" rel="noopener">Resume</a>
       <button id="theme-toggle" type="button" role="switch" aria-checked="true"
