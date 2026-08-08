@@ -1,56 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <!-- Primary meta (humans + crawlers) -->
-        <title>Chris Lam · Product Design Engineer for AI-native products</title>
-        <meta name="description" content="Chris Lam, product design engineer for AI-native products. I design the product and I ship the code: user research and interaction design through React, TypeScript, Python, design systems, evals, and agent architecture. 14 years across healthcare, creative tools, developer products, and consumer software. Remote US from Honolulu, West Coast hours. Open to senior and lead IC design-engineering roles." />
-        <meta name="author" content="Chris Lam" />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://whoischrislam.github.io/" />
-
-        <!-- Open Graph / Twitter -->
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Chris Lam · Product Design Engineer for AI-native products</title>
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://whoischrislam.github.io/" />
+<meta name="description" content="Chris Lam, product design engineer for AI-native products. I design the product and I ship the code: user research and interaction design through React, TypeScript, Python, design systems, evals, and agent architecture. 14 years across healthcare, creative tools, developer products, and consumer software. Remote US from Honolulu, West Coast hours. Open to senior and lead IC design-engineering roles." />
         <meta property="og:type" content="profile" />
         <meta property="og:title" content="Chris Lam · Product Design Engineer for AI-native products" />
         <meta property="og:description" content="I design the product. I ship the code. Product design engineer for AI-native products: React, TypeScript, Python, design systems, agent UX, and evals. 14 years across healthcare, creative tools, developer products, and consumer software. Remote US from Honolulu, West Coast hours." />
+        <!-- Draft URL while under review; reverts to the site root on promotion. -->
         <meta property="og:url" content="https://whoischrislam.github.io/" />
         <meta property="og:site_name" content="Chris Lam" />
         <meta property="og:image" content="https://whoischrislam.github.io/images/og-image.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Chris Lam, product design engineer for AI-native products" />
-        <meta property="profile:first_name" content="Chris" />
-        <meta property="profile:last_name" content="Lam" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Chris Lam · Product Design Engineer for AI-native products" />
         <meta name="twitter:description" content="I design the product. I ship the code. Product design engineer for AI-native products: React, TypeScript, Python, design systems, agent UX, and evals. 14 years. Remote US from Honolulu, West Coast hours." />
         <meta name="twitter:image" content="https://whoischrislam.github.io/images/og-image.png" />
-
-        <!-- Inline SVG favicon: voice bars (no binary asset / build step) -->
-        <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230F0F11'/%3E%3Cg fill='%23FF7059'%3E%3Crect x='7' y='13' width='3' height='6' rx='1.5'/%3E%3Crect x='12.5' y='9' width='3' height='14' rx='1.5'/%3E%3Crect x='18' y='6' width='3' height='20' rx='1.5'/%3E%3Crect x='23.5' y='11' width='3' height='10' rx='1.5'/%3E%3C/g%3E%3C/svg%3E" type="image/svg+xml" />
-
-        <!-- Google Fonts: Instrument Serif (display) + Open Sans (body) -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
-        <link rel="stylesheet" href="styles.css" />
-
-        <!-- PostHog product analytics. No DOM autocapture; session replay ON (enable it in
-             project settings too); localStorage persistence (return-visit attribution, no
-             third-party cookies). Stays fully dark until a real project key is set below. -->
-        <script type="text/javascript" src="analytics-init.js"></script>
-
-        <script type="text/javascript" src="script.js"></script>
-        <script type="text/javascript" src="voice-agent.js" defer></script>
-        <script type="text/javascript" src="analytics.js" defer></script>
-
-        <!-- Machine-readable identity for AI / search (schema.org @graph: WebSite + ProfilePage + Person) -->
-        <script type="application/ld+json">
+<script type="application/ld+json">
         {
             "@context": "https://schema.org",
             "@graph": [
@@ -113,57 +82,694 @@
             ]
         }
         </script>
-    </head>
-    <body>
-        <div id="loading"><span class="loading-text">loading</span><span id="blink-1">.</span><span id="blink-2">.</span><span id="blink-3">.</span></div>
-        <div class="read-progress"></div>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0F0F11; --surface:#17171A; --surface-2:#1E1E22; --text:#ECEAE4; --muted:#9A988F;
+  --accent:#FF7059; --accent-soft:rgba(255,112,89,.13); --border:rgba(255,255,255,.10);
+  /* Agent token shim: the hiring guide's CSS was written against the old
+     stylesheet's names. Mapped onto v2's tokens rather than duplicating values. */
+  --accent-strong:#FF8A77; --border-strong:rgba(255,255,255,.18);
+  --chip-bg:rgba(255,255,255,.06); --drop-shadow:0 10px 30px rgba(0,0,0,.35);
+  --on-accent:#15110F; --surface-hover:var(--surface-2);
+  --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
+  --serif:'Instrument Serif',Georgia,serif; --sans:'Open Sans',system-ui,sans-serif;
+  --head-h:56px}
+:root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
+:root[data-theme="light"]{
+  --bg:#FBF8F4; --surface:#FFFFFF; --surface-2:#F4F1EB; --text:#1A1A18; --muted:#6A675F;
+  --accent:#B8401F; --accent-soft:rgba(184,64,31,.10); --border:rgba(0,0,0,.10)
+  --accent-strong:#B8431F; --border-strong:rgba(0,0,0,.16);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 10px 30px rgba(60,40,20,.10);
+  --on-accent:#FFFFFF; --surface-hover:var(--surface-2);}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border)}
+a:hover{text-decoration-color:var(--accent)}
+.wrap{max-width:840px;margin:0 auto;padding:0 24px}
 
-        <header>
-            <div id="header-content">
-                <a class="logo" href="#introduction">Chris Lam</a>
-                <nav id="nav-links" aria-label="Primary">
-                    <a href="#introduction">About</a>
-                    <a href="#work">Work</a>
-                    <a href="/chris-lam-resume.pdf" download>Resume</a>
-                    <button id="theme-toggle" type="button" aria-label="Toggle light and dark mode" title="Toggle theme">
-                        <span class="material-symbols-outlined">dark_mode</span>
-                    </button>
-                    <a href="https://github.com/whoischrislam" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa fa-github" style="font-size:22px"></i></a>
-                    <a href="https://www.linkedin.com/in/whoischrislam/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa fa-linkedin" style="font-size:22px"></i></a>
-                    <a href="mailto:whoischrislam@gmail.com" aria-label="Email"><span class="material-symbols-outlined">mail</span></a>
-                </nav>
-            </div>
-        </header>
+/* ── 1. Sticky header ─────────────────────────────────────────── */
+.site-head{position:sticky;top:0;z-index:50;height:var(--head-h);
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--border)}
+.site-head .wrap{display:flex;align-items:center;justify-content:space-between;height:100%}
+.site-head .logo{font-family:var(--serif);font-size:23px;text-decoration:none}
+.site-head nav{display:flex;align-items:center;gap:6px}
+.site-head nav a{font-size:15px;text-decoration:none;color:var(--muted);
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:44px;padding:0 10px;border-radius:7px;transition:color .16s ease}
+.site-head nav a:hover{color:var(--text)}
+/* Icon links get a square target; text links keep their padding. */
+.site-head nav a[aria-label]{min-width:44px;padding:0}
+.site-head nav svg{width:19px;height:19px;display:block}
+/* A track with a knob, so it reads as a switch rather than an icon that
+   happens to change. Both states stay visible; the knob says which is live. */
+#theme-toggle{position:relative;flex:none;width:52px;height:27px;margin:0 4px;padding:0;
+  border:1px solid var(--border);border-radius:999px;background:var(--surface);
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:space-between;
+  transition:border-color .18s ease,background .18s ease}
+#theme-toggle:hover{border-color:var(--accent)}
+#theme-toggle .knob{position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;
+  background:var(--accent);opacity:.9;
+  transition:transform .26s cubic-bezier(.34,1.4,.5,1)}
+:root[data-theme="light"] #theme-toggle .knob{transform:translateX(25px)}
+#theme-toggle svg{position:relative;z-index:1;width:13px!important;height:13px!important;
+  margin:0 6px;transition:color .2s ease,opacity .2s ease}
+#theme-toggle .i-moon{color:#fff;opacity:1}
+#theme-toggle .i-sun{color:var(--muted);opacity:.75}
+:root[data-theme="light"] #theme-toggle .i-moon{color:var(--muted);opacity:.75}
+:root[data-theme="light"] #theme-toggle .i-sun{color:#fff;opacity:1}
+#theme-toggle:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
+@media (prefers-reduced-motion:reduce){ #theme-toggle .knob{transition:none} }
+@media (max-width:560px){ .site-head nav a.hide-sm{display:none} }
 
-        <main>
-            <section id="introduction">
-                <div class="section-content">
-                    <p id="hero-line-1">Hi, I'm Chris.</p>
-                    <h1 id="hero-line-2">I design the product. I ship the code.</h1>
-                    <p id="hero-line-3" class="hero-claim">Product design engineer for AI-native products.</p>
-                    <p class="hero-subtitle">I turn complex, high-trust workflows into production software: user research and interaction design through React, TypeScript, Python, design systems, evals, and agent architecture. Fourteen years across healthcare, creative tools, developer products, and consumer software.</p>
-                    <div class="open-to-chips animation-appear">
-                        <span class="open-to-label">Open to</span>
-                        <span class="open-to-chip">Senior / Lead Design Engineer</span>
-                        <span class="open-to-chip">Product Design Engineer</span>
-                        <span class="open-to-chip">AI Product Engineer</span>
-                    </div>
-                    <div class="open-to-chips animation-appear">
-                        <span class="open-to-label">Based</span>
-                        <span class="open-to-chip">Remote US from Honolulu</span>
-                        <span class="open-to-chip">West Coast hours</span>
-                        <span class="open-to-chip">Quarterly Bay Area / Seattle travel</span>
-                    </div>
-                    <div class="hero-cta animation-appear">
-                        <a class="btn-hero btn-primary" href="#y30">View selected work</a>
-                        <a class="btn-hero btn-primary" href="#" data-va-open role="button">Qualify me in 60 seconds</a>
-                        <a class="btn-hero btn-ghost" href="/chris-lam-resume.pdf" download>Download resume</a>
-                    </div>
-                    <p class="hero-agent-note animation-appear">That's not a form. It's an AI hiring guide I built end to end on Cloudflare Workers and Claude: fact-grounded, streaming, with a server-side safety layer. <strong>The agent is the work sample.</strong></p>
-                    <div id="voice-interface" class="voice-agent" data-state="idle" hidden>
+/* ── Hero ─────────────────────────────────────────────────────── */
+.hero{padding:34px 0 38px}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,60px);
+  line-height:1.05;margin:0 0 16px;letter-spacing:.2px}
+.hero .sub{font-size:18.5px;line-height:1.65;color:var(--muted);margin:0 0 26px}
+.hero .sub b{font-weight:600;color:var(--text)}
+.hero .sub .exits{color:var(--text)}
+.hero .sub a{color:var(--text);text-decoration-color:var(--border);
+  text-underline-offset:3px;white-space:nowrap}
+.hero .sub a:hover{text-decoration-color:var(--accent)}
+
+/* The sentence has two halves doing the same job. Underline the two verbs so
+   the parallel is visible, and draw them in on load, staggered. */
+.lit-word{background-image:linear-gradient(var(--accent),var(--accent));
+  background-repeat:no-repeat;background-position:0 90%;background-size:0% 4px;
+  padding-bottom:2px;
+  transition:background-size .75s cubic-bezier(.22,.61,.36,1)}
+.lit-word:nth-of-type(2){transition-delay:.22s}
+.js .hero.lit .lit-word{background-size:100% 4px}
+@media (prefers-reduced-motion:reduce){
+  .lit-word{background-size:100% 4px!important;transition:none}
+}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;
+  border-radius:8px;font-weight:600;font-size:15.5px;text-decoration:none;
+  border:1px solid var(--border);min-height:48px;line-height:1.4}
+.btn.primary{background:var(--accent);color:#fff;border-color:transparent}
+.btn:hover{border-color:var(--accent)}
+.btn.ghost{border-color:transparent;color:var(--muted);padding-left:8px}
+.btn.ghost:hover{color:var(--text);border-color:transparent;text-decoration:underline;
+  text-underline-offset:4px}
+
+/* ── 3. Logo strip ────────────────────────────────────────────── */
+.logos{border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:20px 0;margin:0}
+.logos .lbl{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  margin:0 0 14px}
+/* Optical sizing: equal visual AREA, not equal height, or the wide wordmarks
+   swallow the compact ones. --h is precomputed per logo. */
+.logo-row{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;
+  gap:18px 34px;align-items:center}
+.logo-row li{height:var(--h);display:flex;align-items:center}
+.logo-row svg{height:100%;width:auto;color:var(--muted);opacity:.8}
+/* The five named in the hero carry more weight. Contrast, not motion: five
+   things pulsing at once would cancel each other out. */
+.logo-row li.pri{height:calc(var(--h)*1.15)}
+.logo-row li.pri svg{color:var(--text);opacity:1}
+@media (max-width:560px){ .logo-row{gap:16px 24px} .logo-row li{height:calc(var(--h)*.82)} }
+
+/* ── Arc. The rule is a measure, not an ornament: segment widths are
+   proportional to real duration (10yr / 2yr / 2.6yr). The present stage has no
+   right edge, because it hasn't ended. ─────────────────────────────────── */
+/* Sits in the action row as a third, quieter option. */
+/* Opens in the top layer, so opening it moves nothing on the page. Native
+   popover carries light-dismiss, Escape and focus-return without custom JS. */
+.story-trigger{cursor:pointer;font-family:var(--sans);font-size:15.5px;font-weight:600;
+  color:var(--muted);min-height:48px;padding:0 10px;display:inline-flex;align-items:center;
+  gap:7px;background:none;border:0;border-radius:8px}
+.story-trigger:hover{color:var(--text)}
+.story-panel{position:fixed;margin:0;border:0;padding:0;
+  width:min(660px,calc(100vw - 32px));max-height:min(78vh,780px);overflow:auto;
+  left:50%;top:50%;translate:-50% -50%;
+  background:var(--surface);color:var(--text);border-radius:14px;
+  box-shadow:0 24px 70px rgba(0,0,0,.42);
+  opacity:0;transform:translateY(14px) scale(.985);
+  transition:opacity .22s cubic-bezier(.16,1,.3,1),transform .22s cubic-bezier(.16,1,.3,1),
+    overlay .22s allow-discrete,display .22s allow-discrete}
+.story-panel:popover-open{opacity:1;transform:none}
+@starting-style{ .story-panel:popover-open{opacity:0;transform:translateY(14px) scale(.985)} }
+.story-panel::backdrop{background:rgba(0,0,0,.55);opacity:0;
+  transition:opacity .22s ease,overlay .22s allow-discrete,display .22s allow-discrete}
+.story-panel:popover-open::backdrop{opacity:1}
+@starting-style{ .story-panel:popover-open::backdrop{opacity:0} }
+.story-panel .inner{padding:26px 28px 28px}
+.story-panel h2{font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 16px}
+.story-panel p{margin:0 0 14px;color:var(--muted);font-size:16px;line-height:1.7}
+.story-panel p:last-child{margin:0}
+.story-close{position:sticky;top:0;float:right;margin:10px 10px 0 0;appearance:none;
+  background:var(--bg);border:1px solid var(--border);color:var(--muted);cursor:pointer;
+  width:36px;height:36px;border-radius:50%;font-size:17px;line-height:1;z-index:1}
+.story-close:hover{color:var(--text);border-color:var(--accent)}
+@media (max-width:640px){ .story-panel .inner{padding:20px} }
+details.more{margin-top:28px}
+details.more summary{cursor:pointer;font-size:14.5px;color:var(--muted);min-height:44px;
+  display:flex;align-items:center;list-style:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"\203A";display:inline-block;margin-right:8px;
+  transition:transform .18s ease}
+details.more[open] summary::before{transform:rotate(90deg)}
+
+/* ── Work cards ───────────────────────────────────────────────── */
+h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26px}
+.card{border-top:1px solid var(--border);padding:34px 0}
+
+/* The limit. Separated by a rule, NOT muted. It reads as a deliberate register
+   change, not a footnote, because on these cards the honesty is the argument. */
+.limit{border-top:1px solid var(--border);margin-top:20px;padding-top:16px}
+.setup{margin:0 0 12px}
+.avail{font-size:16.5px;margin:0 0 20px;color:var(--muted)}
+.fitline{font-size:16px;margin:0 0 14px}
+.aiwork{max-width:66ch;margin:0 0 16px;font-size:16.5px;line-height:1.62}
+.taught{margin:-2px 0 14px;padding-left:14px;border-left:2px solid var(--border)}
+
+.wslbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);font-weight:600;margin-bottom:5px}
+.ruleslabel{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  font-weight:600;margin:20px 0 10px}
+
+/* Recommendations, collected. Four quotes at full weight instead of four
+   quotes buried one per card. */
+.reccluster{display:grid;gap:26px}
+@media (min-width:720px){ .reccluster{grid-template-columns:1fr 1fr;gap:30px 40px} }
+
+/* Brief cards. Same card, chrome removed: no facts dl, no image, no
+   multi-paragraph body. Receipts stay, because receipts are the point. */
+.card--brief{padding:22px 0}
+.card--brief .card-head{margin-bottom:8px}
+.card--brief .card-head h3{font-size:21px}
+.card--brief .card-head .role{font-size:14.5px;margin-top:4px}
+.card--brief p{margin:0 0 10px;font-size:15.5px;line-height:1.55}
+.card--brief .proof{margin-top:10px}
+.card--brief .facts{padding:0;margin:0 0 2px}
+.card--brief .facts > div{padding:2.5px 0}
+.card--brief .facts dd{font-size:14px}
+.card--brief .facts dt{font-size:10.5px}
+.card--brief .card--brief h4{font-size:16px;margin:16px 0 6px}
+.card--brief .proj{margin:0}
+
+.card-head{margin-bottom:14px}
+.ch-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.ch-top h3{flex:none}
+.ch-top .when{flex:none;margin:0 0 0 auto;font-size:14px;color:var(--muted);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:560px){ .ch-top .when{margin-left:0} }
+.card-head h3{font-family:var(--serif);font-weight:400;font-size:28px;margin:0}
+.card-head .role{margin:7px 0 0;font-size:15.5px;color:var(--muted);line-height:1.45}
+.card-head .role b{color:var(--text);font-weight:600}
+
+/* Dates, role and stack together at the top, same shape as the case studies. */
+/* One field per line, labels in a fixed column so every value starts at the
+   same x. The alignment is what makes it scan as label / data: the eye drops
+   straight down the values without hunting for where each one begins. */
+.facts{display:block;margin:0 0 4px;padding:0}
+.facts > div{display:grid;grid-template-columns:64px 1fr;gap:0 16px;
+  align-items:baseline;padding:3.5px 0}
+.facts dt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin:0;padding-top:2px}
+.facts dd{margin:0;font-size:14.5px;line-height:1.5;min-width:0}
+@media (max-width:460px){ .facts > div{grid-template-columns:1fr;gap:1px} }
+.facts dd.tech{color:var(--muted)}
+/* The result lands inside the story, not in the metadata. Situation, action,
+   result, meaning: the arc a hiring manager reads for. */
+.result{margin:0 0 14px}
+.rlbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:3px}
+.result .fig{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--accent);
+  margin-right:7px;letter-spacing:-.01em}
+.result .qual{font-size:15.5px;line-height:1.55}
+/* Names the problem shape with the industry taken out, so a reader outside
+   healthcare or games can see where it applies to them. */
+.transfers{margin:16px 0 0;padding-top:13px;border-top:1px solid var(--border);
+  font-size:15.5px;line-height:1.55}
+/* Sits with the company name, because it is a fact about the company. "Later"
+   does the honest work: it signals he was already gone. */
+.outcome{align-self:baseline;font-size:11.5px;letter-spacing:.03em;color:var(--muted);
+  font-variant-numeric:tabular-nums;
+  border:1px solid var(--border);border-radius:999px;padding:3px 10px;white-space:nowrap;
+  position:relative;top:-2px}
+.ch-top{row-gap:6px}
+.card p{margin:0 0 14px}
+
+/* The metric is the focal point. */
+/* Impact frame: the feedback is in the arrival and the stop, not in
+   continuous movement. A number that counts up reads as trying to impress;
+   a number that lands reads as stating a fact. Fires once. */
+@keyframes fig-land{from{transform:scale(.94)}to{transform:scale(1)}}
+.js .reveal.in 
+.hl{list-style:none;padding:0;margin:16px 0 0}
+.hl li{position:relative;padding-left:20px;margin:0 0 9px;font-size:15.5px;line-height:1.55}
+.hl li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;
+  border-radius:50%;background:var(--accent);opacity:.55}
+.hl li b{font-weight:600}
+
+/* The metric is my claim; these are somebody else's. */
+.proof{display:flex;flex-wrap:wrap;gap:7px 10px;align-items:center;margin:14px 0 0}
+.proof .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+/* These carry borrowed credibility. They were quieter than body text, which
+   is backwards. Respond fast on enter, settle slow on leave. */
+.proof a{font-size:13px;font-weight:600;text-decoration:none;color:var(--text);
+  border:1px solid var(--border);border-radius:20px;padding:5px 12px;line-height:1.3;
+  transition:background .22s ease,color .22s ease,border-color .22s ease}
+.proof a:hover,.proof a:focus-visible{background:var(--accent);color:#fff;
+  border-color:transparent;transition-duration:.12s}
+.proof a::after{content:" \2197";opacity:.6;font-size:11px}
+.proof .lbl::after{content:"";display:inline-block;width:14px;height:1px;
+  background:var(--border);vertical-align:middle;margin-left:8px}
+/* One CTA pattern, one position, one verb shape. */
+.card-cta{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:18px;
+  padding-top:15px;border-top:1px solid var(--border)}
+.card-cta a{font-size:15px;font-weight:600;color:var(--accent);text-decoration:none;
+  display:inline-flex;align-items:center;gap:6px;min-height:40px}
+.card-cta a::after{content:"\2192";transition:transform .22s ease}
+.card-cta a:hover{text-decoration:underline;text-underline-offset:4px}
+.card-cta a:hover::after{transform:translateX(3px);transition-duration:.12s}
+
+/* Context before impact: a reader may not know Iodine or Pathstream. */
+.ctx{font-size:14.5px;color:var(--muted);margin:0 0 16px;line-height:1.5}
+.card-head .ctx{margin:7px 0 0;max-width:62ch}
+/* What this means for the reader's team. Lead cards only. */
+/* Reads as an annotation on the metric, not a fifth container. No rule (the
+   quotes own that) and no tint (the reference offer owns that). */
+.buyer{font-size:16.5px;line-height:1.5;margin:-6px 0 22px;color:var(--text);
+  max-width:62ch}
+.buyer b{color:var(--accent);font-weight:600}
+.shot{border:1px solid var(--border);border-radius:8px;margin:18px 0;background:var(--surface)}
+
+/* Video facade: the iframe only exists after a click. */
+.vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:18px 0}
+.embed{position:relative;aspect-ratio:16/9;border-radius:8px;overflow:hidden;
+  border:1px solid var(--border);background:var(--surface);margin:0}
+.embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.embed .facade{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
+  background:none;cursor:pointer;display:block}
+.embed .facade img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .4s ease,opacity .25s ease}
+@media (hover:hover){ .embed .facade:hover img{transform:scale(1.03);opacity:.85} }
+.embed .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:58px;height:58px;border-radius:50%;background:rgba(12,12,14,.72);
+  backdrop-filter:blur(3px);display:grid;place-items:center;pointer-events:none;
+  transition:background .2s ease}
+.embed .facade:hover .play{background:var(--accent)}
+.embed .play::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;
+  border-bottom:10px solid transparent;margin-left:4px}
+.embed .cap{position:absolute;left:0;right:0;bottom:0;padding:22px 14px 11px;
+  font-size:13.5px;line-height:1.4;color:#fff;text-align:left;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
+.embed .facade:focus-visible{outline:none;box-shadow:inset 0 0 0 3px var(--accent)}
+/* The Loom facade has no thumbnail service, so it draws its own poster. */
+.embed .facade.loom{background:linear-gradient(150deg,var(--surface-2),var(--surface));
+  display:grid;place-items:center}
+.embed .facade.loom .cap{background:linear-gradient(180deg,transparent,rgba(0,0,0,.55))}
+:root[data-theme="light"] .embed .facade.loom .cap{color:var(--text);
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.10))}
+
+/* A recommendation is a person vouching. Give it a shape. */
+/* This is somebody else's voice. Quotation marks are the oldest signal for
+   that, and a left rule reads even in grayscale. No motion: an animated
+   reveal on a quoted person's words implies the text is being generated. */
+.rec{position:relative;border-left:3px solid var(--accent);padding:4px 0 4px 22px;
+  margin:22px 0 0;background:none;border-radius:0}
+.rec::before{content:"\201C";position:absolute;left:14px;top:-14px;
+  font-family:var(--serif);font-size:64px;line-height:1;color:var(--accent);
+  opacity:.16;pointer-events:none}
+.rec p{position:relative;margin:0 0 10px;font-size:16px;line-height:1.62;font-style:italic}
+.rec .who{font-size:13.5px;color:var(--muted);font-style:normal}
+.rec .who b{color:var(--text);font-weight:600;font-style:normal}
+
+/* An offer to connect you is an action, not an attribution. */
+.ref-offer{display:inline-flex;align-items:center;gap:8px;margin-top:14px;
+  font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;
+  border:1px solid var(--accent-soft);background:var(--accent-soft);
+  border-radius:20px;padding:7px 14px;min-height:38px;
+  transition:background .22s ease,color .22s ease}
+.ref-offer:hover{background:var(--accent);color:#fff;transition-duration:.12s}
+.ref-offer::before{content:"";width:7px;height:7px;border-radius:50%;
+  background:currentColor;opacity:.85}
+
+/* Acquisition lineage */
+.lineage{font-size:13.5px;color:var(--muted);border:1px dashed var(--border);
+  border-radius:7px;padding:9px 13px;margin:0 0 18px;display:inline-block}
+.proj{border-left:2px solid var(--border);padding:0 0 0 18px;margin:22px 0 0}
+.proj h4{font-size:17px;margin:0 0 8px;font-weight:600}
+.proj .tag{font-weight:400;font-size:13px;color:var(--muted)}
+.proj .impact{margin:0 0 4px}
+
+
+.want li{margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;align-items:center}
+.tags .lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.tags span.t{font-size:12.5px;color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:4px 11px}
+.refs{background:var(--surface);border-radius:10px;padding:26px;margin:36px 0 0}
+.refs p{margin:0 0 16px}
+
+.foot{border-top:1px solid var(--border);margin-top:76px;padding:38px 0 100px;
+  color:var(--muted);font-size:15px}
+.foot .signoff{font-family:var(--serif);font-size:23px;line-height:1.35;color:var(--text);margin:0 0 26px}
+.foot .avail-line{margin:0 0 20px}
+.foot .avail-line .upd{color:var(--text)}
+.foot .links{margin:0 0 22px}
+.foot .craft{font-size:13.5px;margin:0;opacity:.8}
+.foot a:focus-visible{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
+
+@media (max-width:640px){ body{font-size:16px} .hero{padding:26px 0 30px} .btn{flex:1 1 100%} }
+
+/* Cross-document view transitions. Firefox falls back to a plain navigation. */
+@view-transition{ navigation:auto }
+::view-transition-old(root),::view-transition-new(root){ animation-duration:.28s }
+
+/* Hover dims siblings; the card surface only exists on hover. */
+@media (hover:hover) and (min-width:900px){
+  #worklist:hover .card{opacity:.55}
+  #worklist .card:hover,#worklist .card:focus-within{opacity:1}
+  /* Asymmetric: 120ms in so it feels immediate, 320ms out so attention
+     settles rather than snaps. One duration for both is the tell. */
+  .card{position:relative;transition:opacity .32s ease}
+  #worklist:hover .card{transition-duration:.12s}
+  .card::before{content:"";position:absolute;inset:-4px -24px;border-radius:12px;z-index:-1;
+    background:transparent;box-shadow:none;transition:background .32s ease,box-shadow .32s ease}
+  .card:hover::before,.card:focus-within::before{transition-duration:.12s}
+  .card:hover::before,.card:focus-within::before{
+    background:var(--surface);
+    box-shadow:inset 0 1px 0 0 rgba(255,255,255,.07), 0 8px 30px rgba(0,0,0,.22)}
+}
+
+:root[data-theme="light"] .card:hover::before,
+:root[data-theme="light"] .card:focus-within::before{
+  box-shadow:inset 0 1px 0 0 rgba(255,255,255,.9), 0 8px 26px rgba(0,0,0,.07)}
+
+/* (iii) Focus as box-shadow so it follows border-radius. The chips are 20px. */
+a:focus-visible,button:focus-visible,summary:focus-visible{
+  outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent);border-radius:6px}
+
+/* (iv) Reveal. 8px, 450ms, fires once. Only armed when JS is present, so the
+   page is never blank without it. */
+.js .reveal{opacity:0;transform:translateY(8px);
+  transition:opacity .45s ease,transform .45s ease}
+.js .reveal.in{opacity:1;transform:none}
+.js .logo-row li{opacity:0;transform:translateY(6px);
+  transition:opacity .4s ease,transform .4s ease;transition-delay:calc(var(--i,0)*60ms)}
+.js .logos.in .logo-row li{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .js .reveal,.js .logo-row li{opacity:1!important;transform:none!important}
+  .js .reveal.in   .story-panel,.story-panel::backdrop{transition:none!important}
+  .story-panel:popover-open{opacity:1!important;transform:none!important}
+  ::view-transition-group(*){animation:none!important}
+}
+
+.va-ico{display:inline-block;vertical-align:-3px;flex:none}
+/* ── AI hiring guide, ported from styles.css ─────────────────────── */
+/* Work-sample framing under the hero CTA: tells a skimmer the agent is substantive
+   (fact-grounded, streaming, server-side safety) BEFORE they open it. */
+.hero-agent-note {
+    font-size: 0.95em;
+    color: var(--muted);
+    max-width: 560px;
+    margin: -0.4em 0 1.8em 0;
+    line-height: 1.55;
+}
+.hero-agent-note strong { color: var(--text); font-weight: 600; }
+/* ---------- Voice agent (AI hiring guide) ---------- */
+.voice-agent {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 0 1.8em 0;
+    padding: 1.3em 1.4em;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--border-radius);
+    box-shadow: var(--drop-shadow);
+}
+/* Reset the global full-width button rule inside the widget */
+.voice-agent button { width: auto; background: none; color: var(--text); padding: 0; border-radius: 2em; }
+.va-head { margin-bottom: 0.9em; }
+.va-title { display: flex; align-items: center; gap: 0.4em; font-size: 1.05em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
+.va-title-icon { font-size: 20px; color: var(--accent); }
+.va-scope { font-size: 0.82em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
+.va-disclosure { font-size: 0.66em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
+.va-modes { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
+.va-mode {
+    font-size: 0.82em; font-weight: 500;
+    padding: 0.42em 0.95em !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--muted) !important;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition), background-color var(--transition);
+}
+.va-mode:hover { color: var(--text) !important; border-color: var(--text) !important; }
+.va-mode.is-active {
+    color: var(--accent) !important;
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent) !important;
+    background: var(--accent-soft) !important;
+}
+.va-conversation { display: flex; flex-direction: column; gap: 0.9em; }
+.va-conversation:empty { display: none; }
+.va-turn { margin: 0 !important; white-space: pre-wrap; overflow-wrap: break-word; }
+.va-turn-you { align-self: flex-end; max-width: 82%; font-size: 0.84em !important; line-height: 1.45; padding: 0.45em 0.8em; border-radius: 0.9em; background: var(--chip-bg); color: var(--muted) !important; }
+.va-turn-agent { align-self: stretch; max-width: 100%; font-size: 0.95em !important; line-height: 1.62; padding: 0.1em 0 0.2em 0.95em; border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); color: var(--text) !important; }
+.va-status { font-size: 0.8em !important; color: var(--muted) !important; margin: 0 !important; }
+.va-status:empty { display: none; }
+/* Single-scroll dock frame: header (dock) / scrolling messages / pinned footer tray */
+.va-scroll { flex: 1; min-height: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 0.7em; padding: 1.1em 1.2em 0.5em; }
+.va-foot { flex-shrink: 0; display: flex; flex-direction: column; gap: 0.55em; padding: 0.7em 1.1em 0.85em; border-top: 1px solid var(--border); background: var(--surface); }
+.va-intro { display: flex; flex-direction: column; gap: 0.7em; }
+.va-intro-msg { display: flex; align-items: flex-start; gap: 0.45em; font-size: 0.9em !important; line-height: 1.55; color: var(--text) !important; margin: 0 !important; }
+.va-intro-msg .va-title-icon { position: relative; top: 2px; flex-shrink: 0; }
+.va-started .va-intro-msg, .va-role-chosen .va-intro-msg { display: none; }
+/* Radio behavior: once a role is picked, collapse to just that choice + Change */
+.va-change { display: none; width: auto !important; font-size: 0.78em; color: var(--muted) !important; padding: 0.42em 0.6em !important; border: none !important; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.va-change:hover { color: var(--accent) !important; }
+.va-role-chosen .va-change { display: inline-flex; }
+.va-role-chosen .va-mode:not(.is-active) { display: none; }
+.va-flows { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
+.va-flows:empty { display: none; }
+.va-flow {
+    font-size: 0.8em;
+    padding: 0.3em 0.8em !important;
+    border: 1px solid var(--border) !important;
+    color: var(--muted) !important;
+    cursor: pointer;
+    transition: color var(--transition), border-color var(--transition);
+}
+.va-flow:hover { color: var(--accent) !important; border-color: color-mix(in srgb, var(--accent) 40%, transparent) !important; }
+.va-composer { display: flex; align-items: center; gap: 0.5em; }
+.va-input {
+    flex: 1; min-width: 0;
+    font-family: var(--body-font); font-size: 0.95em;
+    padding: 0.6em 0.9em;
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border-strong); border-radius: 2em;
+    outline: none;
+    transition: border-color var(--transition);
+}
+.va-input:focus { border-color: var(--accent); }
+.va-input::placeholder { color: var(--muted); }
+.va-send, .va-mic {
+    display: inline-flex !important; align-items: center; justify-content: center;
+    width: 2.4em !important; height: 2.4em;
+    border-radius: 50% !important;
+    cursor: pointer; flex-shrink: 0;
+    transition: background-color var(--transition), transform var(--transition);
+}
+.va-send { background: var(--chip-bg) !important; color: var(--text) !important; }
+.va-send:hover { background: var(--surface-hover) !important; }
+.va-mic { background: var(--accent) !important; color: var(--on-accent) !important; }
+.va-mic:hover { background: var(--accent-strong) !important; }
+.va-mic:disabled, .va-send:disabled { opacity: 0.5; cursor: default; }
+.va-send .va-ico, .va-mic .va-ico { width:20px; height:20px; }
+.va-stop {
+    padding: 0.5em 1em !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text) !important; font-size: 0.85em; cursor: pointer; flex-shrink: 0;
+}
+.va-stop:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
+/* States */
+.voice-agent[data-state="listening"] .va-mic { animation: pulse 1.3s ease-in-out infinite; }
+.voice-agent[data-state="processing"] .va-input { opacity: 0.6; }
+/* Floating launcher (persistent recall surface) */
+.va-launcher {
+    position: fixed; bottom: 1.4em; right: 1.4em; z-index: 200;
+    display: inline-flex; align-items: center; gap: 0.5em;
+    width: auto !important;
+    padding: 0.7em 1.1em !important;
+    background: var(--accent) !important; color: var(--on-accent) !important;
+    border: none !important; border-radius: 2em !important;
+    font-family: var(--body-font); font-size: 0.9em; font-weight: 600;
+    box-shadow: var(--drop-shadow); cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition);
+}
+.va-launcher[hidden] { display: none; }
+.va-launcher:hover { background: var(--accent-strong) !important; transform: translateY(-1px); }
+.va-launcher .va-ico { width:20px; height:20px; }
+.va-launcher-label { display: none; }
+.va-launcher { padding: 0.75em !important; }
+/* ---------- Recruiter brief (export artifact) ---------- */
+.va-brief-bar { display: contents; }
+.va-brief-cta {
+    width: auto !important;
+    font-size: 0.85em; font-weight: 600;
+    padding: 0.5em 1em !important;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent) !important;
+    background: var(--accent-soft) !important;
+    color: var(--accent) !important;
+    cursor: pointer;
+}
+.va-brief-cta[hidden] { display: none; }
+.va-brief-cta:hover { background: var(--accent) !important; color: var(--on-accent) !important; }
+.va-brief {
+    margin-top: 1em;
+    padding: 1.1em 1.2em;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--border-radius);
+}
+.va-brief[hidden] { display: none; }
+.va-brief h4 { font-family: var(--body-font); font-size: 0.72em; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 1em 0 0.4em 0; }
+.va-brief-title { font-size: 1em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.2em 0 !important; }
+.va-brief p, .va-brief li { font-size: 0.88em !important; line-height: 1.55; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
+.va-brief ul { list-style: none; padding: 0; margin: 0; }
+.va-brief li { padding-left: 1em; position: relative; }
+.va-brief li::before { content: "\203A"; position: absolute; left: 0; color: var(--accent); }
+.va-brief-ev a { color: var(--accent); font-size: 0.82em; white-space: nowrap; }
+.va-brief-prov { font-size: 0.7em !important; color: var(--muted) !important; margin-top: 1em !important; padding-top: 0.7em; border-top: 1px solid var(--border); }
+.va-brief-actions { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: 1em; }
+.va-brief-actions button { width: auto !important; font-size: 0.82em; padding: 0.45em 0.9em !important; border-radius: 2em !important; cursor: pointer; }
+.va-brief-copy { background: var(--accent) !important; color: var(--on-accent) !important; }
+.va-brief-copy:hover { background: var(--accent-strong) !important; }
+.va-brief-print, .va-brief-close { border: 1px solid var(--border-strong) !important; color: var(--text) !important; }
+.va-brief-print:hover, .va-brief-close:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
+/* Build B: proof highlight pulse (the agent guiding you to evidence) */
+.va-proof-highlight { animation: va-proof-pulse 2.8s ease; border-radius: var(--border-radius); }
+/* Pinned dock: the agent stays put while the page scrolls and highlights */
+.va-dock {
+    position: fixed; z-index: 250;
+    bottom: 1.2em; right: 1.2em;
+    width: min(390px, calc(100vw - 2.4em));
+    max-height: min(82vh, 660px);
+    display: flex; flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--border-radius);
+    box-shadow: var(--drop-shadow);
+    overflow: hidden;
+}
+.va-dock[hidden] { display: none; }
+.va-dock-head { display: flex; align-items: center; justify-content: space-between; padding: 0.55em 0.9em; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.va-dock-title { font-size: 0.85em; font-weight: 600; color: var(--text); }
+.va-dock-close { width: auto !important; background: none !important; color: var(--muted) !important; padding: 0.1em 0.5em !important; font-size: 1.3em; line-height: 1; cursor: pointer; border-radius: 0.4em !important; }
+.va-dock-close:hover { color: var(--accent) !important; }
+.va-dock-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+/* Inside the dock, the agent drops its own card chrome (the dock provides it) and
+   fills the body as a flex column so only .va-scroll scrolls (no scroll-in-scroll) */
+.va-dock .voice-agent { margin: 0 !important; border: none !important; box-shadow: none !important; max-width: none !important; border-radius: 0 !important; padding: 0 !important; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.va-dock { left: 0.6em; right: 0.6em; bottom: 0.6em; width: auto; max-height: 80vh; }
+
+    
+
+/* Print rules. These MUST stay inside the media query: the first one is
+   body > *:not(#va-dock){display:none} and it blanks the page without it. */
+@media print {
+    /* Print ONLY the recruiter brief. The page is long, so the rest must be REMOVED from
+       layout with display:none, not hidden with visibility:hidden, which keeps the space
+       and prints as blank trailing pages. display:none collapses the document to the
+       brief's height. (#va-dock is a direct child of body and holds the live interface.) */
+    body > *:not(#va-dock) { display: none !important; }
+    #va-dock {
+        display: block !important; position: static !important; inset: auto !important;
+        width: auto !important; height: auto !important; max-height: none !important;
+        overflow: visible !important; margin: 0 !important; border: none !important;
+        box-shadow: none !important; background: #fff !important;
+    }
+    /* Un-clip the interface containers so the brief flows at natural height. */
+    #voice-interface, .va-dock-body, .va-scroll {
+        display: block !important; position: static !important;
+        height: auto !important; max-height: none !important; overflow: visible !important;
+    }
+    /* Hide dock chrome and the foot (CTA/composer), and the transcript, leave only the brief. */
+    .va-dock-head, .va-foot { display: none !important; }
+    .va-scroll > *:not(#brief-print-root) { display: none !important; }
+    #brief-print-root {
+        display: block !important; position: static !important; width: 100%;
+        margin: 0; padding: 0; border: none; border-radius: 0;
+        background: #fff !important; color: #000 !important;
+    }
+    #brief-print-root *, #brief-print-root h4 { color: #000 !important; background: transparent !important; }
+    #brief-print-root .va-brief-actions { display: none !important; }
+    #brief-print-root li::before { color: #000 !important; }
+    #brief-print-root h4, #brief-print-root li, #brief-print-root p { break-inside: avoid; }
+}
+</style>
+<script type="text/javascript" src="analytics-init.js"></script>
+<script type="text/javascript" src="analytics.js" defer></script>
+<script type="text/javascript" src="voice-agent.js" defer></script>
+</head><body>
+
+<!-- 1. Sticky header -->
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="#top">Chris Lam</a>
+    <nav aria-label="Primary">
+      <a href="#work" class="hide-sm">About</a>
+      <a href="#work">Work</a>
+      <a href="/chris-lam-resume.pdf" download class="hide-sm" target="_blank" rel="noopener">Resume</a>
+      <button id="theme-toggle" type="button" role="switch" aria-checked="true"
+        aria-label="Dark mode">
+        <span class="knob" aria-hidden="true"></span>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/><path d="M12 1.8v2.2M12 20v2.2M4.4 4.4l1.6 1.6M18 18l1.6 1.6M1.8 12h2.2M20 12h2.2M4.4 19.6 6 18M18 6l1.6-1.6"/></svg>
+      </button>
+      <a href="https://github.com/whoischrislam" aria-label="GitHub" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+      <a href="https://www.linkedin.com/in/whoischrislam/" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="mailto:whoischrislam@gmail.com?subject=Hello%20Chris" aria-label="Email" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 6.5 9 6.5 9-6.5"/></svg></a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap" id="top">
+
+<!-- 2. Hero -->
+<header class="hero">
+  <h1>I <span class="lit-word">design</span> the product and I
+    <span class="lit-word">ship</span> the code.</h1>
+  <p class="sub"><b>Product design engineer for AI-native products.</b><br>
+    14+ years as a product designer, engineer, or something in-between.
+    I started my career at <b>Amazon</b>. Was an early employee at exited companies such as
+    <span class="exits">TaskRabbit (IKEA), Clover Health (IPO), GoodRx (IPO),
+    doc.ai (Sharecare)</span>.<br>
+    When I'm not building, you'll find me
+    <a href="https://www.instagram.com/p/CuxQjRwvGKw/" target="_blank" rel="noopener">🎲 playing board games</a>,
+    <a href="https://www.instagram.com/reel/CuoaWzXgtSR/" target="_blank" rel="noopener">🕺 dancing</a>, or
+    <a href="https://www.instagram.com/reel/C1DISysSMxZ/" target="_blank" rel="noopener">🛼 roller skating</a>.</p>
+  <div class="cta">
+    <a class="btn primary" href="candidate.html" target="_blank" rel="noopener">Qualify me in 60 seconds</a>
+    <a class="btn ghost" href="/chris-lam-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute;</a>
+    <button class="story-trigger" type="button" popovertarget="story-panel">
+      <span aria-hidden="true">&#9656;</span> The full story
+    </button>
+  </div>
+  <p class="hero-agent-note animation-appear">That's not a form. It's an AI hiring guide I built end to end on Cloudflare Workers and Claude: fact-grounded, streaming, with a server-side safety layer. <strong>The agent is the work sample.</strong></p>
+  <div id="voice-interface" class="voice-agent" data-state="idle" hidden>
                         <div class="va-scroll">
                             <div class="va-intro">
-                                <p class="va-intro-msg"><span class="material-symbols-outlined va-title-icon" aria-hidden="true">graphic_eq</span> <span>I'm Chris's AI hiring guide. Ask by voice or text and I'll give you a fast read on fit, systems depth, and shipped outcomes. First, who's asking? I'll tailor what I show you.</span></p>
+                                <p class="va-intro-msg"><svg class="va-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><rect x="3" y="9" width="2" height="6" rx="1"/><rect x="7.5" y="5" width="2" height="14" rx="1"/><rect x="12" y="2" width="2" height="20" rx="1"/><rect x="16.5" y="5" width="2" height="14" rx="1"/><rect x="21" y="9" width="2" height="6" rx="1"/></svg> <span>I'm Chris's AI hiring guide. Ask by voice or text and I'll give you a fast read on fit, systems depth, and shipped outcomes. First, who's asking? I'll tailor what I show you.</span></p>
                                 <div class="va-modes" role="group" aria-label="Who's asking">
                                     <button type="button" class="va-mode" data-lens="recruiter">Recruiter</button>
                                     <button type="button" class="va-mode" data-lens="hiring_manager">Hiring manager</button>
@@ -182,662 +788,600 @@
                             <div class="va-composer">
                                 <input type="text" class="va-input" placeholder="Type a question, or tap the mic" aria-label="Ask a question" autocomplete="off" />
                                 <button type="button" class="va-send" aria-label="Send question">
-                                    <span class="material-symbols-outlined" aria-hidden="true">arrow_upward</span>
+                                    <svg class="va-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M12 4l7 7-1.4 1.4L13 7.8V20h-2V7.8L6.4 12.4 5 11z"/></svg>
                                 </button>
                                 <button type="button" class="va-mic" aria-label="Ask by voice">
-                                    <span class="material-symbols-outlined" aria-hidden="true">mic</span>
+                                    <svg class="va-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M17.3 11a5.3 5.3 0 0 1-10.6 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg>
                                 </button>
                                 <button type="button" class="va-stop" hidden>Stop</button>
                             </div>
                             <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
                         </div>
                     </div>
-                    <div class="intro-columns">
-                        <p class="animation-appear">Healthcare, AI-native products, developer tools, consumer software. Usually the first or sole designer in the room: writing specs, shipping alongside engineers, then eventually shipping the code myself. I do my best work owning the full arc from the first user conversation to production. Based in sunny 🌺 Honolulu, HI. Remote US, working West Coast hours, with quarterly travel to the Bay Area or Seattle.</p>
-                        <p class="animation-appear">When I'm not building, you'll find me <a href="https://www.instagram.com/p/CuxQjRwvGKw/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">🎲 playing board games</a>, <a href="https://www.instagram.com/reel/CuoaWzXgtSR/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">🕺 dancing</a>, or <a href="https://www.instagram.com/reel/C1DISysSMxZ/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" rel="noopener">🛼 roller skating</a>.</p>
-                    </div>
-                    <!-- single-column override applied via CSS -->
-                    <div class="arc-block animation-appear">
-                        <div class="proof-strip">
-                            <span>ex-Amazon</span>
-                            <span>Clover Health</span>
-                            <span>GoodRx</span>
-                            <span>Sharecare</span>
-                            <span>Founder</span>
-                            <span>UW BS + MS</span>
-                        </div>
-                        <span class="section-label">The arc</span>
-                        <p class="arc-opener">I started as a designer. Then I learned to code. Now I build the whole thing.</p>
-                        <ol class="arc-track">
-                            <li class="arc-step">
-                                <span class="arc-step-title">Designer</span>
-                                <span class="arc-step-dates">2012 – 2022</span>
-                                <p class="arc-step-desc">First or sole designer at multiple companies. Research, specs, systems.</p>
-                            </li>
-                            <li class="arc-step">
-                                <span class="arc-step-title">Design Engineer</span>
-                                <span class="arc-step-dates">2022 – 2024</span>
-                                <p class="arc-step-desc">Taught myself to code, then a software engineering role, then solo-built PlaySesh from scratch.</p>
-                            </li>
-                            <li class="arc-step arc-step-now">
-                                <span class="arc-step-title">Founder / PE</span>
-                                <span class="arc-step-dates">2024 – present</span>
-                                <p class="arc-step-desc">Co-founding and shipping end to end. Research, product, UX, voice AI stack.</p>
-                            </li>
-                        </ol>
-                        <p class="arc-exits">Early at Clover Health and GoodRx, both later IPO'd. In the room through an acquisition: doc.ai into Sharecare. Built the 2014 TaskRabbit rebrand, before IKEA.</p>
-                        <details class="arc-more">
-                            <summary class="arc-more-toggle">
-                                <span>Read the full story</span>
-                                <span class="arc-more-chevron material-symbols-outlined" aria-hidden="true">expand_more</span>
-                            </summary>
-                            <div class="arc-more-body">
-                                <p>I studied Human-Computer Interaction at UW and came out believing good design isn't decoration; it's how you show people you actually thought about them. That took me through Amazon, TaskRabbit, Clover Health, and Iodine/GoodRx, usually as one of the first designers in the building. Clinical tools, design systems, data visualizations: ~7–8× revenue impact on nurse home visits, Webby-winning drug information, research that showed up in federal drug-pricing debates.</p>
-                                <p>Somewhere along the way I got tired of throwing designs over the wall, so I taught myself to code: a year heads-down, then shipping every project I could get my hands on. I moved into a software engineering role at Modus Create, then built PlaySesh end to end (Vanilla JS, Express, Supabase) before co-founding it. The fourteen years of design didn't get left behind; they're why my architecture has a point of view. I build systems the way I designed products: starting from the person who has to use it, then earning every abstraction. That chapter is where I proved I could own the full stack: research, UX, systems, and production code.</p>
-                                <p>In 2026 I co-founded y30 with <a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a>. y30 is voice AI for elder care: daily check-ins that help older adults stay connected while giving caregivers and clinicians real signal between appointments. I own the product, the UX, and the voice stack.</p>
-                            </div>
-                        </details>
-                    </div>
-                </div>
-            </section>
+  <div class="story-panel" id="story-panel" popover="auto" aria-labelledby="story-heading">
+    <button class="story-close" type="button" popovertarget="story-panel"
+            popovertargetaction="hide" aria-label="Close">&times;</button>
+    <div class="inner">
+    <h2 id="story-heading">The full story</h2>
+    <p>I studied Human-Computer Interaction at UW and came out believing good design isn't
+    decoration. It's how you show people you actually thought about them. That took me through
+    Amazon, TaskRabbit, Clover Health and Iodine/GoodRx, usually as one of the first designers in
+    the building. Clinical tools, design systems, data visualizations.</p>
+    <p>Somewhere along the way I got tired of throwing designs over the wall, so I taught myself to
+    code: a year heads-down, then shipping every project I could get my hands on. I moved into a
+    software engineering role at Modus Create, then built PlaySesh end to end before co-founding
+    it. The fourteen years of design didn't get left behind. They're why my architecture has a
+    point of view.</p>
+    <p>In 2026 I co-founded y30 with Vijay Sivaji: voice AI for elder care, daily check-ins that
+    help older adults stay connected while giving caregivers and clinicians real signal between
+    appointments. I own the product, the UX and the voice stack.</p>
+    </div>
+  </div>
+</header>
 
-            <section id="looking-for">
-                <div class="section-content">
-                    <h2 class="animation-appear">What I'm looking for</h2>
-                    <p class="section-lede animation-appear">I design and engineer the same product, research to ship. Design intent survives all the way to production. I use AI as an engineer, not a shortcut. I'm at my best on hard, ambiguous problems where judgment decides the outcome, not headcount.</p>
-                    <ul class="looking-for-list animation-appear">
-                        <li>A small, high-output team, or a senior IC pocket inside a larger one, where I can go deep and stay. The work is the scoreboard.</li>
-                        <li>Products that put AI in front of real users, where trust, oversight, and safety are the hard part. Healthcare, AI-native systems, developer tools, complex SaaS.</li>
-                        <li>Direct collaboration across product, design, and engineering, with people who sweat the details.</li>
-                        <li>The direction I'm heading: safe, eval-driven AI in high-stakes domains. Guardrails, evals, and oversight as product architecture, not an afterthought.</li>
-                    </ul>
-                </div>
-            </section>
+<!-- 3. Logo strip -->
+<section class="logos reveal">
+  <p class="lbl">Where I've built</p>
+  <ul class="logo-row">
+    <li class="pri" style="--h:30.6px;--i:0" title="Amazon"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 398.61 133.49" fill="currentColor"><path d="M19.49 70.785q-5.79 0-10.194-2.528-4.405-2.61-6.85-7.177-2.447-4.648-2.447-10.683 0-7.258 3.588-12.72 3.671-5.465 10.357-8.4 6.769-2.936 15.821-2.936 4.16 0 6.77.57V25.2q0-6.198-2.284-9.215-2.283-3.099-6.932-3.099-7.503 0-9.623 7.91-.653 2.284-2.69 1.957L3.913 20.795q-1.223-.244-1.713-1.06-.407-.815-.081-2.202 2.12-8.317 8.97-12.885Q18.022.001 28.46 0q12.396 0 18.838 6.687 6.524 6.687 6.524 19.491v41.02q0 .895-.652 1.548-.57.57-1.468.571H41.101q-1.957 0-2.446-2.12l-1.631-7.665h-.653q-2.202 5.382-6.605 8.317-4.323 2.936-10.275 2.936zM17.777 48.44q0 4.322 2.202 6.932 2.284 2.528 6.117 2.528 5.056 0 7.747-4.485 2.69-4.567 2.69-13.048v-4.323a24.6 24.6 0 0 0-4.321-.408q-6.687 0-10.601 3.507-3.833 3.425-3.833 9.296zM63.934 3.588q0-.897.571-1.468a2.12 2.12 0 0 1 1.55-.652H76.82q.897 0 1.467.57.653.572.816 1.55l1.631 7.992h.652q2.203-5.627 6.28-8.563Q91.826 0 97.452 0q6.035 0 10.357 3.18 4.404 3.18 6.769 9.052h.652q3.588-6.198 8.074-9.215C127.79 0 129.637 0 133.334 0q6.035 0 10.438 3.262 4.486 3.261 6.85 9.296 2.366 6.034 2.366 14.271v40.367q0 .897-.653 1.55-.571.57-1.468.57h-13.048q-.897 0-1.55-.57a2.27 2.27 0 0 1-.57-1.55V28.133q0-5.953-2.283-9.133t-6.606-3.18q-4.73 0-7.258 3.75-2.446 3.752-2.446 10.847v36.779q0 .897-.653 1.549-.57.57-1.468.57h-13.048q-.896 0-1.55-.57a2.27 2.27 0 0 1-.57-1.55V28.134q0-5.954-2.284-9.134t-6.605-3.18q-4.73 0-7.258 3.751-2.446 3.75-2.447 10.846v36.78q0 .895-.652 1.548-.57.57-1.468.57H66.055q-.897 0-1.55-.57a2.28 2.28 0 0 1-.57-1.549zm97.533 46.809q0-7.259 3.59-12.721 3.667-5.465 10.356-8.4 6.769-2.935 15.82-2.935 4.16 0 6.77.57V25.2q-.001-6.198-2.285-9.215-2.283-3.1-6.93-3.1-7.504 0-9.624 7.911-.653 2.283-2.69 1.957l-11.092-1.957q-1.224-.244-1.713-1.06-.407-.816-.08-2.202 2.118-8.317 8.97-12.885Q179.49 0 189.93 0q12.394 0 18.837 6.687 6.525 6.687 6.524 19.49v41.02q0 .897-.652 1.549-.57.57-1.468.57h-10.6q-1.959 0-2.448-2.12l-1.63-7.665h-.653q-2.202 5.382-6.606 8.318-4.32 2.936-10.275 2.936c-5.955 0-7.258-.843-10.194-2.528q-4.404-2.61-6.85-7.177-2.446-4.648-2.447-10.683zm17.78-1.957q-.001 4.323 2.2 6.932 2.283 2.528 6.116 2.528 5.056 0 7.748-4.486 2.69-4.566 2.691-13.048v-4.322a24.6 24.6 0 0 0-4.323-.408q-6.685 0-10.6 3.507-3.834 3.425-3.833 9.296zm44.851 8.889q0-1.794.978-3.1l27.89-39.061H226.87q-.897 0-1.549-.571a2.27 2.27 0 0 1-.57-1.55v-9.46q0-.896.57-1.467a2.12 2.12 0 0 1 1.55-.653h42.894q.899 0 1.468.653.652.57.652 1.468v9.867q0 1.795-.978 3.1l-25.28 34.74a26.4 26.4 0 0 1 4.648-.408q5.872 0 10.765 1.06 4.974.979 10.275 3.262 1.875.816 1.875 2.773v9.378q.001 1.305-.815 1.794-.815.407-2.039-.082-6.116-2.283-10.846-3.18-4.649-.979-10.194-.98c-5.545 0-7.23.328-10.764.98q-5.22.978-11.58 3.18-1.224.408-2.039 0-.815-.49-.815-1.712zm52.681-21.937q0-9.949 3.832-18.022 3.833-8.155 10.52-12.722Q297.9-.001 306.136 0c8.236 0 10.547 1.549 15.005 4.648q6.77 4.566 10.602 12.722 3.914 8.073 3.914 18.022 0 9.95-3.914 18.104-3.832 8.073-10.602 12.722-6.687 4.566-15.005 4.566c-5.545 0-10.492-1.522-15.005-4.566q-6.687-4.65-10.52-12.722-3.832-8.155-3.832-18.104m17.94 0q.001 10.358 2.936 15.984 2.936 5.545 8.481 5.545c5.545 0 6.552-1.848 8.563-5.545q3.017-5.627 3.017-15.984T314.7 19.49q-3.016-5.628-8.563-5.627c-5.547 0-6.523 1.875-8.48 5.627q-2.937 5.545-2.937 15.902m49.745-31.804q0-.897.572-1.468a2.12 2.12 0 0 1 1.55-.652h10.763q.897 0 1.468.57.653.57.816 1.55l1.631 7.992h.652q2.202-5.546 6.443-8.563Q372.681 0 378.471 0q6.197 0 10.682 3.261 4.567 3.262 7.014 9.297 2.446 6.034 2.446 14.271v40.367q0 .897-.652 1.549-.57.57-1.468.57h-13.048q-.897 0-1.549-.57a2.27 2.27 0 0 1-.57-1.549V28.133q0-5.953-2.448-9.133-2.445-3.18-6.93-3.18-4.977 0-7.585 3.75-2.61 3.752-2.61 10.847v36.779q0 .896-.652 1.549-.57.57-1.468.57h-13.048q-.897 0-1.549-.57a2.27 2.27 0 0 1-.572-1.55zM45.343 78.693q-1.55 1.224-.652 4.078.814 2.528 3.832 6.279 12.15 15.004 28.95 24.954c16.8 9.95 23.188 11.526 35.964 14.679q19.245 4.81 39.306 4.81 25.689 0 48.93-7.501 23.242-7.422 38.818-20.877 5.464-4.811 5.464-7.666 0-1.06-.897-2.12-1.224-1.223-2.936-.815-1.713.406-4.812 2.038-14.923 7.83-36.37 12.477-21.366 4.73-44.608 4.73-28.786 0-55.617-7.829T53.172 81.466q-3.017-2.365-4.893-3.018-1.794-.651-2.935.245z"/><path d="M226.54 82.775q-1.713 1.632-.897 3.426.57 1.304 2.202 1.467 1.63.244 4.648-.326a75.5 75.5 0 0 1 10.193-1.468q5.301-.326 9.216.163 3.914.57 4.893 1.957 1.468 2.203-1.061 9.297-2.445 7.095-6.687 13.782-1.63 2.69-1.957 4.241-.326 1.549.816 2.61.734.732 1.631.733 2.365 0 6.85-4.159 8.073-7.012 11.336-16.636 1.793-4.975 2.201-10.438t-1.223-7.829q-1.55-2.283-6.85-3.75a38.7 38.7 0 0 0-10.52-1.469q-10.357 0-19.653 4.893-3.425 1.877-5.138 3.507z"/></svg></li>
+    <li class="pri" style="--h:21.9px;--i:1" title="Clover Health"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 24" fill="currentColor"><title>Chris Lam · Product Design Engineer for AI-native products</title><desc>Clover Health logo</desc><path d="M19.192 16.184c-.347 0-.654.115-1.077.343-1.307.763-3.076 1.221-4.806 1.221-3.963 0-5.885-2.402-5.885-6.597 0-3.584 1.423-4.956 2.693-5.338.345-.115.73-.152 1.076-.152 1.77 0 3.153 1.22 4.539 3.774.422.765.731.877 1.385.877 1.462 0 3.307-1.449 3.307-4.309 0-3.355-3.422-5.567-8.69-5.567C4.73.434 0 5.087 0 12.294 0 20.377 4.845 24 11.499 24c3.691 0 6-1.067 7.423-2.402 1-.914 1.653-2.21 1.653-3.547 0-1.562-.845-1.867-1.383-1.867m10.805 2.288V2.188c0-1.563-.539-2.058-2.924-2.058h-1.268c-.693 0-1.576.037-2.231.151-.538.076-.77.305-.77.763 0 .343.038.877.038 1.488v19.066c0 1.565.538 2.06 2.924 2.06h1.268c.693 0 1.577-.038 2.23-.151.539-.078.77-.305.77-.763 0-.343-.04-.877-.04-1.488v-2.784zM42.343 6.001c-5.538 0-9.73 3.204-9.73 9.038 0 5.95 3.885 8.885 9.038 8.885 2.651 0 5-.724 6.73-2.212 1.806-1.525 2.923-3.89 2.923-6.863 0-5.949-3.845-8.848-8.96-8.848m.538 13.309c-.154.039-.346.039-.5.039-1.231 0-1.961-1.527-2.347-4.005a13 13 0 0 1-.152-2.059c0-1.296.383-2.173 1.152-2.478.27-.114.501-.114.617-.114 1.27 0 1.884 1.45 2.23 3.814.114.876.192 1.64.192 2.174 0 1.447-.307 2.439-1.192 2.629M70.187 6.422a30 30 0 0 0-1.961-.077h-.577c-.808 0-2.116.077-2.501.114-.538.078-.808.268-.961.992-.693 3.622-1.385 6.977-2.154 9.684h-.231c-.73-2.707-1.423-6.14-2.04-9.38-.193-.954-.806-1.259-1.73-1.335a29 29 0 0 0-2.038-.077h-.807c-.96 0-1.5.037-2.076.114-.501.078-.732.268-.732.649 0 .419.192 1.22.5 2.212 1.077 3.469 2.615 8.16 3.962 11.325.806 1.869 1.422 2.631 3.115 2.86.576.076 1.346.154 2.076.154h.501c.77 0 1.807-.154 2.27-.266.654-.154 1.038-.46 1.345-1.106 1.963-4.157 3.616-8.81 4.5-11.708.423-1.41.732-2.478.732-3.012 0-.725-.307-1.067-1.193-1.143m11.348-.421c-5.538 0-8.96 3.47-8.96 9.151 0 5.835 3.843 8.77 8.997 8.77 3.423 0 5.384-.991 6.693-2.477.5-.573 1-1.45 1-2.364 0-.611-.307-.877-.769-.877-.577 0-2 .229-3.233.229-2.806 0-4.653-.687-5.383-2.517 3.076.04 6.538.04 8.499-.075.616-.04.884-.268.922-.992.039-.382.039-.724.039-1.067.003-5.035-3.036-7.78-7.805-7.78m-2.114 6.865c0-1.41.347-2.631 1.501-2.897.192-.039.308-.039.462-.039.693 0 1.307.344 1.73 1.03.307.458.54 1.143.655 1.869-1.387.037-3.001.037-4.348.037m23.19-6.866c-1.577 0-2.885.763-4.076 2.67h-.078l-.155-.877c-.192-1.145-.577-1.45-2.538-1.45h-1.076c-.693 0-1.578.04-2.231.152-.539.076-.77.307-.77.763 0 .343.041.877.041 1.486v12.851c0 1.564.538 2.06 2.922 2.06h1.27c.691 0 1.576-.037 2.23-.153.537-.075.768-.304.768-.762 0-.344-.037-.877-.037-1.488v-9.074c.806-.153 1.576-.23 2.192-.23.577 0 1.616.075 2.154.153.231.037.462.077.654.077.46 0 .808-.153 1-.801.192-.61.27-1.374.27-2.059-.002-2.48-1.156-3.318-2.54-3.318m32.07-3.291c0-1.49-.462-1.909-1.734-2.023-.462-.039-1.117-.039-1.849-.039h-.27c-.923 0-1.77.039-2.58.076-.656.039-.963.458-.963 1.03.039 1.68.039 3.17.039 5.232v2.635c-1.694-.04-3.389-.04-5.007-.04v-6.87c0-1.49-.461-1.91-1.733-2.024-.462-.039-1.117-.039-1.849-.039h-.27c-.923 0-1.771.039-2.58.076-.656.039-.963.458-.963 1.03.039 1.68.039 3.17.039 5.232v14.51c0 1.489.462 1.908 1.733 2.023.462.038 1.117.038 1.849.038h.27a55 55 0 0 0 2.581-.075c.655-.04.962-.458.962-1.03-.039-1.68-.039-3.17-.039-5.23v-2.024c1.656 0 3.389 0 5.007.038v6.148c0 1.49.462 2.023 1.734 2.138.461.039 1.117.039 1.848.039h.27c.924 0 1.771-.039 2.581-.076.655-.039.963-.458.963-1.03-.039-1.68-.039-3.284-.039-5.345zm11.284 3.17c-5.545 0-8.973 3.475-8.973 9.164 0 5.842 3.851 8.783 9.012 8.783 3.428 0 5.39-.994 6.701-2.482.501-.572 1.002-1.45 1.002-2.366 0-.611-.308-.88-.771-.88-.577 0-2.002.23-3.234.23-2.812 0-4.661-.687-5.392-2.52 3.081.038 6.546.038 8.511-.076.616-.039.886-.268.923-.993.039-.382.039-.726.039-1.07 0-5.04-3.042-7.79-7.818-7.79m-2.117 6.873c0-1.412.346-2.634 1.502-2.902.192-.038.308-.038.462-.038.693 0 1.309.343 1.734 1.03.307.458.538 1.144.655 1.87-1.389.04-3.005.04-4.353.04m29.568 6.874c-1.039-.115-1.463-.726-1.463-1.87l-.04-4.354c0-2.71-.461-4.276-1.655-5.575-1.27-1.376-3.312-1.948-6.007-1.948-2.657 0-4.967.65-6.239 1.641q-1.618 1.26-1.618 3.093c0 .916.27 1.565.924 1.565.307 0 .616-.114.923-.19.963-.268 2.272-.458 3.235-.458 2.234 0 3.312.573 3.312 1.795v.42c-.54-.114-1.387-.19-2.387-.19-4.352 0-6.854 1.337-6.854 5.116 0 3.399 2.618 5.155 5.623 5.155 1.964 0 3.35-.765 4.044-1.795.693 1.108 2.002 1.795 4.197 1.795 1.424 0 2.618-.382 3.504-1.108.732-.611 1.117-1.375 1.117-2.215 0-.611-.193-.84-.616-.877m-8.626 0c-.309.304-.809.457-1.272.457-1.039 0-1.849-.496-1.849-1.64 0-1.145.771-1.72 2.002-1.72.54 0 .886.04 1.117.076v2.827zm18.232-1.261V2.062c0-1.565-.54-2.062-2.927-2.062h-1.27c-.692 0-1.579.039-2.234.153-.54.076-.771.305-.771.764 0 .344.039.88.039 1.49V21.5c0 1.565.54 2.062 2.927 2.062h1.272c.693 0 1.579-.04 2.234-.154.538-.075.771-.304.771-.764 0-.343-.039-.878-.039-1.49-.002-.84-.002-1.604-.002-2.787m14.765-7.103c.886 0 1.463-.19 1.849-.916.27-.535.307-1.184.307-1.91 0-.381 0-.992-.039-1.374-.039-.534-.231-.65-.732-.65-1.232.039-3.312.039-4.737.039V3.017c0-.65-.27-.726-.692-.765a11 11 0 0 0-1.965.04c-.692.075-1.117.304-1.618.763l-4.427 3.818c-.462.421-.809.802-.963 1.184-.192.496-.27 1.375-.27 2.29 0 .612.27.917.847.917h2.195l-.115 5.575c-.115 4.697 1.655 6.988 6.662 6.988 3.504 0 5.776-1.413 5.776-3.896 0-.61-.27-.993-.886-.954-.386 0-.732.039-1.078.039-1.233 0-2.157-.154-2.697-.65-.731-.65-.77-1.985-.77-3.667v-3.435zm21.81 9.889v-8.285c0-2.062-.155-3.475-.538-4.468-.656-1.68-2.156-2.52-4.661-2.52-1.925 0-3.85.726-5.237 2.062v-5.88c0-1.565-.539-2.062-2.927-2.062h-1.272c-.693 0-1.579.039-2.234.153-.54.076-.771.305-.771.764 0 .344.039.88.039 1.49v19.09c0 1.565.54 2.062 2.927 2.062h1.272c.692 0 1.579-.039 2.234-.153.54-.076.771-.305.771-.764 0-.344-.039-.88-.039-1.49V11.34c.501-.229 1.039-.382 1.618-.382 1.193 0 1.655.572 1.655 2.787v7.75c0 1.566.54 2.063 2.927 2.063h1.272c.692 0 1.579-.039 2.234-.153.54-.076.771-.305.771-.764-.002-.344-.041-.877-.041-1.489"/></svg></li>
+    <li class="pri" style="--h:26.5px;--i:2" title="GoodRx"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500.87 106.67" fill="currentColor"><path d="M180.67 77.785c5.361 0 10.721-1.313 15.644-4.923V60.61h-14.988V49.67h27.678v28.88c-6.453 6.236-15.534 11.268-28.334 11.268-23.083 0-37.743-16.3-37.743-36.54s14.66-36.538 36.65-36.538c10.72 0 20.129 4.046 26.583 11.377l-9.298 9.189c-4.158-5.141-10.176-8.205-17.285-8.205-13.457 0-23.522 11.16-23.522 24.178 0 13.348 10.065 24.506 24.615 24.506m62.9.328c8.752 0 15.206-7.22 15.206-15.317 0-8.094-6.454-15.316-15.206-15.316s-15.206 7.222-15.206 15.316c0 8.097 6.454 15.317 15.206 15.317m0 11.816c-15.317 0-27.46-12.144-27.46-27.133s12.143-27.13 27.46-27.13 27.46 12.142 27.46 27.13c0 14.989-12.143 27.133-27.46 27.133m59.29-11.816c8.752 0 15.206-7.22 15.206-15.317 0-8.094-6.454-15.316-15.206-15.316s-15.206 7.222-15.206 15.316c0 8.097 6.454 15.317 15.206 15.317m0 11.816c-15.317 0-27.46-12.144-27.46-27.133s12.143-27.13 27.46-27.13 27.46 12.142 27.46 27.13c0 14.989-12.143 27.133-27.46 27.133m59.29-42.449c-8.752 0-15.206 7.22-15.206 15.316s6.454 15.317 15.206 15.317 15.206-7.222 15.206-15.317-6.454-15.316-15.206-15.316m15.206-29.647h12.253v71h-12.253v-5.36c-3.829 4.047-9.517 6.454-15.971 6.454-14.879 0-26.694-12.581-26.694-27.131s11.815-27.132 26.694-27.132c6.454 0 12.142 2.407 15.971 6.455zm32.934 35.774h13.893c10.504 0 15.645-5.47 15.645-13.893 0-8.425-5.141-13.894-15.645-13.894H410.29zm30.523 35.227-16.52-28.115H410.29v28.115h-8.642v-71h22.098c17.067 0 24.724 9.407 24.724 21.223 0 9.846-5.033 17.833-14.987 20.567l17.175 29.21zm30.617-26.912-18.16-25.053h9.738l13.345 18.38 13.347-18.38h9.736l-18.16 25.162 19.584 26.804h-9.846l-14.77-20.13-14.55 20.13h-9.846zM88.536 32.754H73.914V18.132C73.914 8.117 65.795 0 55.782 0s-18.13 8.117-18.13 18.132v50.884h50.884c10.013 0 18.13-8.117 18.13-18.132 0-10.013-8.117-18.13-18.13-18.13M37.65 73.677v14.858c0 10.013 8.117 18.13 18.13 18.13 10.015 0 18.132-8.117 18.132-18.13V73.677zm-4.903-40.923H18.131C8.118 32.754 0 40.871 0 50.884 0 60.9 8.118 69.016 18.13 69.016h14.616z"/></svg></li>
+    <li style="--h:25.7px;--i:3" title="Iodine"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 422 81" fill="currentColor"><title>Chris Lam · Product Design Engineer for AI-native products</title><g fill-rule="evenodd"><path d="M153.5 61.1c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-16c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-15.8c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6M170 11.8c-3.1 0-5.6-2.5-5.6-5.6S166.9.6 170 .6s5.6 2.5 5.6 5.6c0 1.5-.6 2.9-1.6 4-1.1 1-2.5 1.6-4 1.6m16.1 1.7c-.5 0-1-.1-1.5-.2-2.7-.9-4.3-3.7-3.8-6.7.3-1.5 1.2-2.8 2.5-3.6.6-.4 1.6-.8 2.9-.8q.9 0 1.8.3c1.6.5 2.9 1.6 3.5 3.1.6 1.4.6 3-.1 4.3-.9 2.2-3 3.6-5.3 3.6m13.7 8.3c-1.5-.1-2.7-.7-3.6-1.6-1-1.1-1.4-2.3-1.5-3.6 0-1.5.4-2.9 1.3-4 1-1.3 2.4-2 3.9-2 1.8 0 3.3.7 4.4 1.8 1.2 1.2 1.8 2.8 1.6 4.4-.1 1.5-.9 2.9-2.2 3.8-1 .7-2.3 1.1-3.6 1.1.1.1-.2.1-.3.1m8.7 14.4c-1.2 0-2.4-.4-3.5-1.1-1.1-.8-1.9-1.8-2.3-3.1q-.3-1.05 0-2.1.15-.9.6-1.8c.7-1.3 1.8-2.3 3.1-2.8.6-.3 1.3-.4 2-.4.8 0 1.7.2 2.4.6q1.05.6 1.8 1.5c.5.7.8 1.4 1 2.3.4 1.6.2 3.3-.8 4.6-.9 1.3-2.2 2.1-3.8 2.2-.1.1-.3.1-.5.1m-.2 16.5c-.7 0-1.3-.1-2-.4-1.3-.5-2.4-1.5-3.1-2.8-.3-.6-.5-1.2-.6-1.9-.1-.6-.1-1.3 0-2 .4-1.3 1.2-2.4 2.3-3.2 1-.7 2.3-1.1 3.5-1.1h.6c1.6.2 2.9 1 3.8 2.2.9 1.4 1.2 3.1.8 4.7-.2.8-.5 1.5-1 2.2q-.75 1.05-1.8 1.5c-.8.6-1.6.8-2.5.8M200 67c-1.6 0-2.9-.8-3.9-2-.8-1.1-1.3-2.5-1.3-4 0-1.3.5-2.5 1.4-3.6.9-.9 2.1-1.5 3.6-1.6h.4c1.3 0 2.6.4 3.6 1.1 1.3.9 2 2.3 2.2 3.8s-.5 3.2-1.7 4.4c-1 1.1-2.5 1.8-4.2 1.8zm-13.8 8.3c-1.2 0-2.3-.4-2.9-.8-1.4-.8-2.2-2-2.5-3.6-.5-3 1.1-5.8 3.8-6.7.5-.1 1-.2 1.5-.2 2.2 0 4.3 1.4 5.4 3.5.7 1.3.7 2.9.1 4.3-.7 1.5-2 2.6-3.6 3.1-.5.3-1.1.4-1.8.4M170 77.1c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6c1.5 0 2.9.6 4 1.6 1.1 1.1 1.6 2.5 1.6 4 0 3-2.5 5.6-5.6 5.6m-16.8-64h-.6l-.2-.1h-.3l-.3-.1-.2-.1-.3-.1-.2-.1-.3-.1-.2-.2-.3-.1-.2-.2-.2-.1-.2-.2-.2-.2-.2-.2-.2-.2-.1-.2-.2-.2-.1-.3-.2-.2-.1-.2-.1-.3-.1-.2-.1-.3-.1-.3v-.2l-.1-.3V6.7l.1-.3v-.3l.1-.2.1-.3.1-.3.1-.2.1-.2.1-.3.2-.2.1-.2.2-.2.2-.2.2-.2.2-.2.2-.2.2-.2.2-.1.2-.2.3-.1.2-.1.3-.2.2-.1h.3l.2-.1.3-.1h.3l.3-.1h1.1l.3.1h.3l.2.1h.3l.3.1.2.1.3.1.2.2.3.1.2.1.2.2.2.2.2.1.2.2.2.2.2.2.1.2.2.2.1.3.2.2.1.3.1.2.1.3.1.2.1.3v.2l.1.3v.3l.1.3v.6l-.1.2v.6l-.1.3-.1.3-.1.2-.1.3-.1.2-.1.3-.1.2-.2.2-.1.2-.2.3-.2.2-.2.2-.1.1-.2.2-.3.2-.2.1-.2.2-.2.1-.3.2-.2.1-.3.1-.2.1h-.3l-.3.1-.3.1z"/><path d="M153.2 13.1h-.6l-.2-.1h-.3l-.3-.1-.2-.1-.3-.1-.2-.1-.3-.1-.2-.2-.3-.1-.2-.2-.2-.1-.2-.2-.2-.2-.2-.2-.2-.2-.1-.2-.2-.2-.1-.3-.2-.2-.1-.2-.1-.3-.1-.2-.1-.3-.1-.3v-.2l-.1-.3V6.7l.1-.3v-.3l.1-.2.1-.3.1-.3.1-.2.1-.2.1-.3.2-.2.1-.2.2-.2.2-.2.2-.2.2-.2.2-.2.2-.2.2-.1.2-.2.3-.1.2-.1.3-.2.2-.1h.3l.2-.1.3-.1h.3l.3-.1h1.1l.3.1h.3l.2.1h.3l.3.1.2.1.3.1.2.2.3.1.2.1.2.2.2.2.2.1.2.2.2.2.2.2.1.2.2.2.1.3.2.2.1.3.1.2.1.3.1.2.1.3v.2l.1.3v.3l.1.3v.6l-.1.2v.6l-.1.3-.1.3-.1.2-.1.3-.1.2-.1.3-.1.2-.2.2-.1.2-.2.3-.2.2-.2.2-.1.1-.2.2-.3.2-.2.1-.2.2-.2.1-.3.2-.2.1-.3.1-.2.1h-.3l-.3.1-.3.1zm0 64-.3-.1h-.5l-.3-.1-.3-.1-.2-.1-.3-.1-.2-.1-.3-.1-.2-.1-.3-.2-.2-.1-.2-.2-.2-.2-.2-.2-.2-.1-.2-.3-.1-.2-.2-.2-.1-.2-.2-.2-.1-.3-.1-.2-.1-.3-.1-.2-.1-.3v-.3l-.1-.3v-1.7l.1-.2v-.3l.1-.3.1-.2.1-.3.1-.3.1-.2.1-.2.3-.5.2-.2.2-.2.2-.2.4-.4.2-.1.2-.2.2-.1.3-.2.2-.1.3-.1.2-.1.3-.1.2-.1h.3l.3-.1h.5l.3-.1h.3l.3.1h.3l.3.1h.2l.3.1.3.1.2.1.3.1.2.1.2.1.3.2.2.1.2.2.2.2.2.2.2.2.2.2.1.2.2.2.1.2.2.3.1.2.1.2.1.3.1.3.1.2v.3l.1.3v.3l.1.2v.6l-.1.3v.6l-.1.2-.1.3-.1.3-.1.2-.1.3-.1.2-.1.2-.2.3-.1.2-.2.2-.2.2-.2.2-.2.2-.1.2-.3.1-.2.2-.2.1-.2.2-.3.1-.2.1-.3.1-.2.1-.3.1h-.3l-.3.1h-.2l-.3.1z"/><path d="m153.2 77.1-.3-.1h-.5l-.3-.1-.3-.1-.2-.1-.3-.1-.2-.1-.3-.1-.2-.1-.3-.2-.2-.1-.2-.2-.2-.2-.2-.2-.2-.1-.2-.3-.1-.2-.2-.2-.1-.2-.2-.2-.1-.3-.1-.2-.1-.3-.1-.2-.1-.3v-.3l-.1-.3v-1.7l.1-.2v-.3l.1-.3.1-.2.1-.3.1-.3.1-.2.1-.2.3-.5.2-.2.2-.2.2-.2.4-.4.2-.1.2-.2.2-.1.3-.2.2-.1.3-.1.2-.1.3-.1.2-.1h.3l.3-.1h.5l.3-.1h.3l.3.1h.3l.3.1h.2l.3.1.3.1.2.1.3.1.2.1.2.1.3.2.2.1.2.2.2.2.2.2.2.2.2.2.1.2.2.2.1.2.2.3.1.2.1.2.1.3.1.3.1.2v.3l.1.3v.3l.1.2v.6l-.1.3v.6l-.1.2-.1.3-.1.3-.1.2-.1.3-.1.2-.1.2-.2.3-.1.2-.2.2-.2.2-.2.2-.2.2-.1.2-.3.1-.2.2-.2.1-.2.2-.3.1-.2.1-.3.1-.2.1-.3.1h-.3l-.3.1h-.2l-.3.1zm91.1-64c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0 16.2c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0 15.9c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6c0 3-2.5 5.6-5.6 5.6m0 16c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6c0 3-2.5 5.6-5.6 5.6m0 15.9c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6M5.8 13.1C2.7 13.1.2 10.6.2 7.5s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0 16.2c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0 15.9c-3.1 0-5.6-2.5-5.6-5.6S2.7 34 5.8 34s5.6 2.5 5.6 5.6c0 3-2.5 5.6-5.6 5.6m0 16c-3.1 0-5.6-2.5-5.6-5.6S2.7 50 5.8 50s5.6 2.5 5.6 5.6c0 3-2.5 5.6-5.6 5.6m0 15.9c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m280.8 0c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-16c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-16c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-15.8c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m55.9 31.8c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m-14.4.1c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m-13.6-16c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m-12.8-15.9c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m40.8 15.9c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-15.9c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6c.1 3.1-2.5 5.6-5.6 5.6m0-16.2c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6c.1 3.1-2.5 5.6-5.6 5.6m-55.9 0c-1.7 0-3.3-.7-4.3-2-2-2.4-1.6-5.9.7-7.9 1-.8 2.3-1.3 3.6-1.3 1.7 0 3.3.7 4.3 2 1 1.2 1.4 2.6 1.3 4.1s-.9 2.8-2 3.8c-1 .9-2.3 1.3-3.6 1.3m55.9 64c-1.7 0-3.3-.7-4.3-2-2-2.4-1.6-5.9.7-7.9 1-.8 2.3-1.3 3.6-1.3 1.7 0 3.3.7 4.3 2 2 2.4 1.6 5.9-.7 7.9-1 .8-2.3 1.3-3.6 1.3m73.9 0c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m-15.9 0c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m-15.9-16c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-16c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-15.8c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m15.9-16.2c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6c0 3-2.5 5.6-5.6 5.6m15.9 0c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6c0 3-2.5 5.6-5.6 5.6m-31.8 64c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6"/><path d="M384.6 77.1c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m0-64c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6c0 3-2.5 5.6-5.6 5.6m15.9 32c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m15.9 0c-3.1 0-5.6-2.5-5.6-5.6s2.5-5.6 5.6-5.6 5.6 2.5 5.6 5.6-2.5 5.6-5.6 5.6m-327-15.3c-3 0-5.5-2.4-5.6-5.5 0-1.5.5-2.9 1.5-4s2.4-1.7 3.9-1.8h.2c3 0 5.5 2.4 5.6 5.5 0 1.5-.5 2.9-1.5 4s-2.4 1.7-3.9 1.8zm-.3-18.5c-3-.2-5.4-2.7-5.3-5.7.1-3.1 2.6-5.6 5.7-5.6h.2c3 .2 5.4 2.7 5.3 5.7 0 1.5-.6 2.9-1.7 3.9s-2.5 1.6-4 1.6zM71 29.7c-.9 0-1.8-.2-2.6-.7-1.3-.7-2.3-1.9-2.7-3.3s-.3-2.9.4-4.3c1-1.8 2.9-3 5-2.9.9 0 1.8.2 2.6.7 1.3.7 2.3 1.9 2.7 3.3s.3 3-.4 4.3c-1 1.8-3 2.9-5 2.9m-9.3 15.9c-1.9 0-3.7-1-4.7-2.7-1.6-2.6-.8-6.1 1.8-7.7.9-.6 1.9-.8 3-.8 2 0 3.7 1 4.7 2.7 1.6 2.6.8 6.1-1.8 7.7-.9.5-1.9.8-3 .8m18.3-.4c-2-.1-3.7-1.1-4.7-2.8-1.6-2.7-.6-6.1 2-7.7.9-.5 1.9-.8 3-.8 2 .1 3.7 1.1 4.7 2.8 1.6 2.7.6 6.1-2 7.7-.9.5-2 .8-3 .8m-9.2 16.4c-3 0-5.5-2.4-5.6-5.5s2.4-5.7 5.5-5.8h.2c3 0 5.5 2.4 5.6 5.5s-2.4 5.7-5.5 5.8zm18.4.1c-.9 0-1.8-.2-2.6-.7-2.7-1.5-3.7-4.9-2.3-7.6 1-1.8 2.9-3 5-2.9.9 0 1.8.2 2.6.7 2.7 1.5 3.7 4.9 2.3 7.6-1 1.7-2.9 2.9-5 2.9M70.7 11.2c-1.9-.1-3.7-1.2-4.6-2.9-1.5-2.7-.5-6.1 2.2-7.6.9-.5 2-.8 3-.7 2 .1 3.7 1.2 4.6 2.9 1.5 2.7.5 6.1-2.2 7.6-.9.5-2 .8-3 .7m-16 9.2c-.9 0-1.8-.3-2.6-.8-2.7-1.6-3.5-5-1.9-7.7 1.1-1.8 3-2.8 5.1-2.7.9.1 1.8.3 2.6.8 1.3.8 2.2 2 2.6 3.5s.1 3-.6 4.3c-1.2 1.7-3.1 2.7-5.2 2.6m-9.3 16c-3-.2-5.4-2.7-5.3-5.7.1-3.1 2.6-5.6 5.7-5.5h.2c3 .2 5.4 2.7 5.3 5.7-.1 3.1-2.6 5.6-5.7 5.5zm0 18.4c-2-.1-3.7-1.2-4.6-2.9-.7-1.3-.9-2.8-.5-4.3.4-1.4 1.4-2.6 2.7-3.4.9-.5 2-.8 3-.7 1.9.1 3.7 1.2 4.6 2.9 1.5 2.7.5 6.1-2.2 7.6-.9.7-1.9.9-3 .8m9.2 16c-.9 0-1.8-.3-2.6-.8-2.6-1.6-3.5-5.1-1.9-7.7 1.1-1.8 3-2.8 5.1-2.7.9 0 1.8.3 2.6.8 2.7 1.6 3.5 5 1.9 7.7-1.1 1.8-3 2.8-5.1 2.7m16 9.3c-3-.2-5.4-2.7-5.3-5.7 0-1.5.6-2.9 1.7-3.9s2.5-1.6 4-1.6h.2c3 .2 5.4 2.7 5.3 5.7 0 1.5-.6 2.9-1.7 3.9s-2.5 1.6-4 1.6zm18.4 0c-1.9-.1-3.7-1.2-4.6-2.9-.7-1.3-.9-2.8-.5-4.3.4-1.4 1.4-2.6 2.7-3.4.9-.5 2-.8 3-.7 1.9.1 3.7 1.2 4.6 2.9.7 1.3.9 2.8.5 4.3-.4 1.4-1.4 2.6-2.7 3.4-.9.5-1.9.8-3 .7m16-9.2c-.9 0-1.8-.3-2.6-.8-1.3-.8-2.2-2-2.6-3.5s-.1-3 .6-4.2c1.1-1.8 3-2.8 5.1-2.7.9 0 1.8.3 2.6.8 1.3.8 2.2 2 2.6 3.4.4 1.5.1 3-.6 4.3-1.1 1.8-3 2.8-5.1 2.7m9.3-15.9c-3-.2-5.4-2.7-5.3-5.7 0-1.5.6-2.9 1.7-3.9s2.5-1.6 4-1.6h.2c3 .2 5.4 2.7 5.3 5.7 0 1.5-.6 2.9-1.7 3.9s-2.5 1.6-4 1.6zm0-18.5c-1.9-.1-3.7-1.2-4.6-2.9-1.5-2.7-.5-6.1 2.2-7.6.9-.5 2-.7 3-.7 1.9.1 3.7 1.2 4.6 2.9.7 1.3.9 2.8.5 4.3-.4 1.4-1.4 2.6-2.7 3.4-.9.4-2 .7-3 .6m-9.2-16c-.9 0-1.8-.3-2.6-.8-1.3-.8-2.2-2-2.6-3.5s-.1-3 .6-4.3c1.1-1.8 3-2.8 5.1-2.7.9 0 1.8.3 2.6.8 2.6 1.6 3.5 5 1.9 7.7-1 1.9-2.9 2.9-5 2.8m-6.6 25.3c-1.9 0-3.7-1-4.7-2.7-.8-1.3-1-2.8-.7-4.2.3-1.5 1.2-2.7 2.5-3.5.9-.6 1.9-.8 3-.8 1.9 0 3.7 1 4.7 2.7.8 1.3 1 2.8.7 4.2-.3 1.5-1.2 2.7-2.5 3.5-.9.5-1.9.8-3 .8"/></g></svg></li>
+    <li class="pri" style="--h:23.2px;--i:4" title="TaskRabbit"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 761 102" fill="currentColor"><title>Chris Lam · Product Design Engineer for AI-native products</title><path d="M705.6 1.56A9.13 9.13 0 0 0 700.49 0l-.01-.01a8.88 8.88 0 0 0-6.6 2.62 9.1 9.1 0 0 0-1.98 3.05 9.1 9.1 0 0 0-.61 3.59c0 1.83.54 3.62 1.55 5.14a9.23 9.23 0 0 0 4.13 3.41 9.15 9.15 0 0 0 10.02-2 9.26 9.26 0 0 0 2.52-4.74c.36-1.8.18-3.66-.52-5.35a9.3 9.3 0 0 0-3.39-4.15m2.15 26.14H693.3v71.31h14.45zM359.39 9.23h14.45v51.854L397.8 27.74h15.66L389.9 59.99l26.27 39.06h-16.81L373.84 61.2v37.81h-14.45zM180.33 78.56V40.77h-12.56V27.7h12.56V9.38h14.45V27.7h17.93v13.07h-17.98v37.79c0 4.83 2.11 7.39 6.78 7.39h10.51v13.06h-10.51c-12.28 0-21.17-7.96-21.17-20.45zm33.64-15.205c.002-24.567 16.511-37.645 34.29-37.645 10.59 0 19.62 4.12 25.13 12.07V27.69h14.45V99h-14.45V88.89c-5.5 7.93-14.54 12.08-25.13 12.08-17.759.03-34.288-13.048-34.29-37.615m37.26 24.005c12.56 0 22.16-8.67 22.16-24s-9.6-24-22.16-24-22.33 8.66-22.33 24 9.63 24 22.33 24m60.41-8.1h-14.96v.01c1.55 13.6 12.55 21.77 27.24 21.77s25.97-9.54 25.97-22.47c0-16.988-12.398-19.52-22.945-21.673-7.804-1.594-14.595-2.981-14.595-9.867 0-5.4 4.82-8.53 10.3-8.53s9.18 2.7 10.73 7.67h14.96c-1.55-12.52-12-20.45-25.69-20.45s-25.26 8.8-25.26 22.02c0 16.586 12.178 19.067 22.662 21.202 7.923 1.614 14.878 3.03 14.878 10.188 0 5.68-4.8 9.08-11.01 9.08s-10.59-2.83-12.28-8.95M420.51 27.7h-.01l.01-.01zm0 0h14.44v10.57a29.14 29.14 0 0 1 10.51-9.28c4.2-2.19 8.87-3.31 13.6-3.28v15.06c-13.83-2.42-24.14 4.12-24.14 18.61v39.65h-14.45zm40.48 52.56c0-11.66 6.78-18.04 20.46-21.74l22.59-5.96v-3.97c0-5.29-4.37-9.25-12.14-9.25-6.36 0-12.42 2.41-14.45 10.65h-15.48c2.55-16.21 14.45-24.3 29.93-24.3 16.66 0 26.53 9.09 26.53 22.87v50.43h-14.45v-7.67c-5.08 6.96-13.55 9.66-20.9 9.66-12.5.01-22.1-6.95-22.1-20.73zm25.27 8.24c8.6 0 17.78-5.54 17.78-16.34v-7.53l-19.48 5.12c-6.5 1.85-9.04 4.69-9.04 9.52 0 6.4 4.79 9.24 10.73 9.24zm56.18 10.51v-9.95c5.64 7.76 14.53 11.94 25.26 11.98 17.64 0 34.31-13.06 34.31-37.64s-16.67-37.65-34.31-37.65c-10.73 0-19.63 4.09-25.26 11.9V9.23h-14.45v89.78zm44.49-35.65c0 15.33-9.6 24-22.17 24h-.04c-12.7 0-22.29-8.66-22.29-24s9.76-24 22.33-24 22.17 8.67 22.17 24m38.3 25.71v9.94h-14.45V9.23h14.45v28.42c5.65-7.81 14.54-11.9 25.27-11.9 17.64 0 34.29 13.07 34.29 37.65s-16.65 37.64-34.29 37.64c-10.73-.04-19.62-4.22-25.27-11.98zm22.33-1.71c12.56 0 22.16-8.67 22.16-24s-9.6-24-22.16-24-22.33 8.66-22.33 24 9.6 24 22.3 24zm80.6-8.8V40.77h-12.57V27.7h12.57V9.38h14.45V27.7h17.93v13.07h-17.93v37.79c0 4.83 2.11 7.39 6.78 7.39h10.51v13.06h-10.51c-12.33 0-21.22-7.96-21.22-20.45zM101.83 22.07c18-2.01 39.67 7.73 46.18 26.06H148c.72 2.04.5 4.31-.6 6.17-7.255 12.305-17.54 15.609-26.455 18.472-10.133 3.255-18.497 5.941-18.635 20.628l.013 2.022c.012 1.772.027 3.886.027 5.218v.26q-.007.025-.013.028t-.017.002h-9.4a1.86 1.86 0 0 1-1.85-1.85c-.005-.902 0-1.918.003-2.777.004-.94.008-1.69-.003-1.893-.36-6.65 2.33-17.06 8.13-23.28 5.263-5.236 10.738-6.679 16.25-8.132 6.616-1.744 13.285-3.501 19.7-11.848.37-.47.5-1.1.33-1.67-2.66-8.8-15.82-18.09-33.76-15.67-.82.11-1.47.75-1.59 1.57-1.4 9.24-6.47 18.21-15.55 20.84-8.48 2.884-12.889-1.412-17.885-6.28-1.95-1.9-3.989-3.888-6.395-5.57-9.65-6.55-24.5-7.86-35.27-1.62l-.08.05-.08.05c-40.23 27.86 19.45 73.67 36.06 28.43.31-.86 1.2-1.36 2.1-1.19l3.704.72 4.006.78c1.02.2 1.69 1.2 1.46 2.22C62.68 115.56-2.35 107.19.07 63.22c2.16-36.79 50.29-46.86 72.4-23.54q.46.486.863.915c3.056 3.245 3.823 4.06 6.617 3.995 5.07.04 6.66-5.6 6.65-5.6.31-1.53-.61-2.58-2.08-2.91-8.28-1.87-13.05-3.72-17.74-7.59-4.63-3.83-8.15-8.67-11.18-19.34C54.25 4.4 56.54 0 63.07 0c9.41.01 15.02.74 21.23 4.46 5.51 3.29 10 8.12 13.91 16.05.48.99 2.52 1.68 3.62 1.56m-14.663 4.11h.013c1.1-.11 1.92-1.07 1.54-2.18C84.157 10.83 70.346 9.59 68.372 9.412l-.022-.002c-1.58-.14-1.97.73-1.62 1.81 5.324 16.531 19.637 15.044 20.437 14.96"/></svg></li>
+    <li style="--h:25.5px;--i:5" title="Pathstream"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" data-name="Layer 2" viewBox="0 0 2562.28 481.32" fill="currentColor"><g data-name="Layer 1"><path d="M523.32 385.67V91.92h118.74c62.06 0 102.19 39.31 102.19 94.75S704.12 281 642.06 281h-69.09v104.68h-49.65ZM640 237.56c34.75 0 53.37-15.31 53.37-43.44v-14.89c0-28.13-18.62-43.44-53.37-43.44h-67.03v101.78H640ZM825 389.4c-46.75 0-74.89-22.76-74.89-61.65 0-36.41 23.58-55.44 66.61-62.06l40.55-6.21c23.17-3.72 31.44-8.27 31.44-24.82 0-18.2-14.48-27.31-38.06-27.31-25.65 0-41.37 10.76-47.17 34.34h-49.23c12-45.92 44.68-71.99 97.23-71.99s85.64 25.65 85.64 75.3v140.67h-44.27V350.5h-2.48c-12.41 25.65-35.17 38.89-65.37 38.89Zm9.93-37.24c31.86 0 53.79-19.45 53.79-52.96v-17.38c-6.62 7.03-16.55 9.93-28.13 11.58l-28.96 4.14c-21.1 2.9-33.1 8.69-33.1 25.65v4.14c0 16.96 13.24 24.82 36.41 24.82Zm211.82 33.51c-42.2 0-64.13-20.27-64.13-57.51V213.97h-32.27v-40.55h32.27v-63.45l48.82-18.06v81.51h45.93v40.55h-45.93v112.54c0 12.41 5.79 17.79 18.62 17.79h28.55v41.37zm56.52 0V109.98l48.41-18.06v113.36h2.9c13.24-24.82 35.58-35.58 65.79-35.58 47.58 0 77.78 30.2 77.78 79.85v136.12h-48.82V259.89c0-31.44-14.48-48.41-44.69-48.41-33.51 0-52.54 19.86-52.54 55.85v118.33h-48.82Zm315.12 3.73c-57.51 0-90.2-26.07-96.82-70.75h49.24c4.55 23.58 18.62 33.93 47.99 33.93s42.62-9.1 42.62-24.82v-3.31c0-12-8.28-21.1-33.1-24.41l-32.69-4.14c-44.27-5.38-68.27-27.31-68.27-62.06 0-38.48 33.51-64.13 85.64-64.13s83.58 24.41 92.26 67.44h-49.23c-5.38-21.51-17.38-30.2-43.85-30.2-23.17 0-37.65 7.86-37.65 23.17v3.72c0 12.41 10.34 21.1 33.93 24.82l32.69 4.55c47.17 6.21 67.85 26.89 67.85 59.99 0 39.72-34.75 66.2-90.61 66.2m190.16-3.73c-42.2 0-64.13-20.27-64.13-57.51V213.97h-32.27v-40.55h32.27v-63.45l48.82-18.06v81.51h45.92v40.55h-45.92v112.54c0 12.41 5.79 17.79 18.62 17.79h28.55v41.37zm56.54 0V173.42h44.68v38.06h2.48c9.52-25.65 29.37-38.06 58.33-38.06h16.55v46.75h-31.03c-25.65 0-42.2 13.65-42.2 51.72v113.78h-48.82Zm233.77 3.73c-64.96 0-105.92-43.86-105.92-110.05s40.55-109.64 105.09-109.64 102.19 43.44 102.19 104.26c0 4.55 0 12-.41 17.38h-158.88c.82 39.3 21.51 58.34 56.68 58.34 26.89 0 43.45-9.93 50.89-33.51h48.82c-11.58 45.51-47.99 73.23-98.47 73.23Zm51.71-131.57c-2.07-31.44-19.44-49.24-53.37-49.24-31.86 0-52.13 15.31-55.44 49.24zm140.34 131.57c-46.75 0-74.89-22.76-74.89-61.65 0-36.41 23.59-55.44 66.61-62.06l40.55-6.21c23.17-3.72 31.44-8.27 31.44-24.82 0-18.2-14.48-27.31-38.06-27.31-25.65 0-41.37 10.76-47.17 34.34h-49.23c12-45.92 44.68-71.99 97.23-71.99s85.64 25.65 85.64 75.3v140.67h-44.27V350.5h-2.48c-12.41 25.65-35.17 38.89-65.37 38.89Zm9.93-37.24c31.86 0 53.79-19.45 53.79-52.96v-17.38c-6.62 7.03-16.55 9.93-28.13 11.58l-28.96 4.14c-21.1 2.9-33.1 8.69-33.1 25.65v4.14c0 16.96 13.24 24.82 36.41 24.82Zm131.28 33.51V173.42h45.1v34.75h2.48c13.24-24.82 32.69-38.48 64.95-38.48s57.09 14.89 68.68 42.62h2.07c12.41-27.31 35.99-42.62 68.27-42.62 47.99 0 78.61 29.79 78.61 79.44v136.53h-48.82v-126.6c0-29.38-12-47.58-43.03-47.58-32.69 0-48.82 19.86-48.82 55.44v118.74h-48.82v-126.6c0-29.79-12.41-47.58-43.03-47.58-32.69 0-48.82 19.86-48.82 55.44v118.74h-48.82ZM126.38 417.42C76.66 401.89 0 353.84 0 321.82s61.97-51.07 140.42-74.41c36.32-10.81 73.87-21.98 101.72-34.29 34.99-15.47 42.33-27.52 42.33-34.9 0-6.02-10.1-24.15-48.33-49.67-36.72-24.51-85.03-45.84-136.03-60.07l4.66-16.68c52.72 14.71 102.79 36.85 140.99 62.35 50.58 33.75 56.04 56.05 56.04 64.07 0 39.25-75.99 61.85-156.43 85.79-34.58 10.29-67.25 20.01-91.8 30.52-31.52 13.5-36.23 22.89-36.23 27.28 0 15.55 57.57 61.37 114.22 79.06l-5.16 16.53Z"/><path d="m137.62 481.32-11.64-4.27C75.17 458.42 0 414.69 0 380.01c0-22.85 25.4-38.65 62.86-52.51C28.9 307.85 0 283.26 0 263.63c0-30.91 58.23-47.98 131.96-69.58 27.74-8.13 58.24-17.06 84.63-27-30.17-18.4-69.56-36.72-116.48-49.82l-6.33-1.77V0l10.99 3.07C218.89 34.92 301.76 82.78 301.8 116.89c.03 21.95-19.54 39.04-48.92 53.52 43.96 32.56 48.91 53.55 48.92 61.29.05 44.02-75.9 65.59-156.32 88.42-12.1 3.44-24.83 7.05-37.38 10.84 7.67 3.22 15.53 6.13 23.46 8.61l6.08 1.9v139.87Zm-53.9-142.66c-36.55 12.26-66.4 26.1-66.4 41.35 0 17.88 50.2 54.48 102.98 76.24V354.08c-11.5-3.96-24.05-9.25-36.57-15.42Zm150.72-159.99c-28.69 11.82-63.4 21.99-97.62 32.01-32.68 9.58-63.56 18.62-86.37 28.3-28.83 12.23-33.13 20.7-33.13 24.66 0 10.97 29.06 36.25 67.47 56.34 17.3-5.56 36.27-10.94 55.94-16.53 64.05-18.19 143.77-40.82 143.73-71.74-.01-9.71-17.75-30.61-50.03-53.04ZM111.1 102.36c45.88 13.44 89.77 33.28 125.39 56.62 28.18-12.44 48.01-26.36 47.99-42.07 0-5.82-10.09-21.44-47.84-43.07-32.65-18.7-76.9-36.63-125.54-50.94z"/></g></svg></li>
+    <li class="pri" style="--h:22.9px;--i:6" title="Sharecare"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 231.775 29.898" fill="currentColor"><g style="fill-rule:evenodd"><path d="M20.923 22.874A13.1 13.1 0 0 1 13 25.517c-7.18 0-13-5.712-13-12.759C0 5.712 5.82 0 13 0s13 5.712 13 12.758c0 3.017-1.067 5.79-2.85 7.974L29 25.517h-7ZM13 22.573c5.523 0 10-4.394 10-9.815s-4.477-9.814-10-9.814S3 7.338 3 12.758s4.477 9.815 10 9.815m21.572-3.193h3.17c-.27 4.296 7.881 4.443 8.017 1.235 0-3.298-6.34-1.2-9.775-4.571-2.331-2.04-2.398-8.404 4.928-8.584 1.641-.021 3.21.374 4.39 1.01v-.71h3.133v5.848H45.3v-1.089c-1.029-1.498-2.365-2.176-4.202-2.176-1.907 0-3.166.864-3.166 2.176 0 2.962 6.948 1.236 9.927 4.161 3.638 3.935.575 9.276-5.382 9.069-1.95 0-3.438-.41-4.736-1.273v.976h-3.17zM53.78 3.074h-3.245V0h6.837v9.783c2.249-1.798 4.045-2.548 5.994-2.548 2.824 0 4.964 1.385 4.964 5.36v9.783h3.096v3.074h-6.687V13.343c0-1.724-.533-3-2.212-3-1.299 0-3.132.826-5.155 2.327v9.708h3.09v3.074h-9.967v-3.074h3.285zm36.928 22.38h-6.264v-2.178c-5.026 4.567-11.685 2.419-11.912-3.15-.014-4.035 5.057-8.005 11.494-4.234-.114-2.302.828-5.516-4.01-5.735-1.72 0-3.055.715-3.858 2.104l-3.4-.904c2.85-5.886 15.033-5.51 14.856 1.313v9.71h3.094zm-6.682-6.6c-2.231-1.935-7.68-3.115-8.096 1.272.343 4.207 5.646 3.24 8.096.826zm12.333-8.023H92.73V7.759h6.453v4.028c1.149-2.963 3.516-4.326 5.768-4.326h2.327v3.523h-1.91c-6.788.099-5.422 5.7-5.422 11.395h3.899v3.074h-11.04V22.38h3.552V10.83Zm14.071 6.637c.961 6.68 8.915 6.763 11.97 2.548l3.117 1.349c-5.408 8.047-19.122 5.078-19-4.76 0-5.733 4.75-9.37 9.421-9.37 4.981 0 9.579 3.75 9.579 10.233zm11.476-2.552c-.57-2.808-3.077-4.872-5.888-4.872s-4.942 1.912-5.475 4.872z"  transform="scale(1.15888 1.14992)"/><path d="M20 10.804c0 2.574-2.616 5.959-7.001 8.824C8.856 16.93 6 13.344 6 10.804c.095-4.565 5.683-4.766 6.999-2.55 1.363-2.216 6.919-2.049 7.001 2.55m164.913 6.663c.962 6.68 8.915 6.762 11.971 2.547L200 21.363c-5.408 8.048-19.122 5.078-19-4.76 0-5.733 4.75-9.37 9.422-9.37 4.98 0 9.578 3.75 9.578 10.234zm-14.776-6.639h-3.627V7.757h6.453v4.027c1.149-2.963 3.516-4.325 5.768-4.325h2.327v3.523h-1.91c-6.788.098-5.422 5.7-5.422 11.395h3.899v3.074h-11.04v-3.074h3.552zm-5.65 14.632h-6.264v-2.178c-5.026 4.568-11.687 2.42-11.914-3.15-.013-4.034 5.057-8.004 11.495-4.233-.113-2.302.829-5.516-4.01-5.735-1.72 0-3.054.715-3.857 2.104l-3.4-.905c2.849-5.885 15.032-5.509 14.856 1.313v9.71h3.094zm31.903-10.546c-.571-2.808-3.078-4.872-5.89-4.872-2.81 0-4.94 1.912-5.474 4.872zm-38.586 3.946c-2.23-1.934-7.68-3.114-8.095 1.273.341 4.206 5.645 3.24 8.095.826zm-13.826-4.429h-3.207c-.288-2.244-1.979-4.01-4.773-4.01-3.209 0-5.348 2.435-5.348 5.996.4 8.375 9.017 7.59 10.923 2.886l2.942 1.35c-1.567 3.486-4.545 5.322-8.482 5.322-6.26 0-9.2-5.024-9.2-9.52 0-5.098 3.932-9.22 8.859-9.22 1.949 0 3.74.6 5.08 1.723v-1.2h3.206z"  transform="scale(1.15888 1.14992)"/></g></svg></li>
+    <li style="--h:22.9px;--i:7" title="Modus Create"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 186 24" fill="currentColor"><g clip-path="url(#a)"><path d="M7.636 11.957a8 8 0 0 0-.04-.765 8.346 8.346 0 0 1-3.012-9.929A11.6 11.6 0 0 0 1.41.41a11.63 11.63 0 0 0 5.716 14.302 7.7 7.7 0 0 0 .511-2.755"/><path d="M5.241 1.57a7.6 7.6 0 0 0-.477 3.52A8.36 8.36 0 0 1 0 20.32v3.27c6.423 0 11.631-5.208 11.631-11.63a11.63 11.63 0 0 0-6.39-10.39m11.994 14.114a12.4 12.4 0 0 1-3.196.886c1.786 4.129 5.894 7.02 10.68 7.02v-3.27a8.37 8.37 0 0 1-7.484-4.636m-.791-4.914a8.36 8.36 0 0 1 7.525-7.139A11.5 11.5 0 0 0 23.316.41c-5.75.69-10.21 5.578-10.229 11.51a7.55 7.55 0 0 0 3.357-1.15"/><path d="M20.636 5.511a8.36 8.36 0 0 1-8.274 7.172h-.021a12.3 12.3 0 0 1-.633 3.252q.324.017.656.018c6.411 0 11.613-5.187 11.631-11.596a7.6 7.6 0 0 0-3.359 1.154m26.189 4.934-3.148 7.328h-1.549l-3.131-7.328v7.328h-2.599V6.13h3.515l2.999 7.362 3.015-7.362h3.498v11.643h-2.598v-7.328zm16.781 5.92Q61.735 18.138 59 18.138q-2.736 0-4.606-1.773-1.87-1.771-1.87-4.408 0-2.634 1.87-4.408Q56.264 5.776 59 5.776t4.605 1.773 1.87 4.408q0 2.634-1.87 4.408m-.936-4.399q0-1.6-1.058-2.73-1.058-1.131-2.603-1.131-1.544 0-2.603 1.13-1.058 1.13-1.059 2.731 0 1.602 1.059 2.722 1.057 1.12 2.603 1.121 1.542 0 2.603-1.121 1.058-1.123 1.058-2.722M77.52 7.653q1.719 1.525 1.718 4.239 0 2.716-1.677 4.296-1.678 1.583-5.118 1.582h-4.11V6.127h4.248q3.219.005 4.938 1.526m-1.969 6.921q.989-.899.989-2.615t-.989-2.64q-.989-.923-3.035-.923H71.02v7.078h1.703q1.838 0 2.828-.9m9.927.449q.666.808 1.793.807 1.126 0 1.784-.807.657-.807.658-2.207V6.139h2.664v6.76q0 2.533-1.433 3.89t-3.67 1.356-3.678-1.366-1.443-3.88V6.14h2.664v6.677q-.007 1.402.66 2.207m13.42-6.61q-.382.318-.382.838t.466.828 2.151.726 2.617 1.256q.932.836.933 2.445 0 1.607-1.193 2.607-1.195 1.001-3.143 1-2.813 0-5.064-2.102l1.575-1.95q1.915 1.693 3.54 1.692.73 0 1.145-.317.415-.316.414-.854a1 1 0 0 0-.44-.853q-.439-.316-1.745-.642-2.066-.495-3.024-1.291-.956-.794-.956-2.496 0-1.7 1.212-2.624 1.211-.923 3.024-.924 1.187 0 2.371.41 1.186.41 2.066 1.163l-1.338 1.949q-1.542-1.18-3.185-1.18-.662.003-1.044.32m20.974 7.225q2.034 0 3.326-1.557l1.768 1.761q-2.106 2.29-4.962 2.292-2.857 0-4.706-1.743t-1.849-4.401 1.884-4.436 4.608-1.777q3.043 0 5.095 2.24l-1.717 1.88q-1.31-1.574-3.254-1.573-1.557 0-2.664.981-1.105.983-1.105 2.65-.001 1.668 1.045 2.675 1.047 1.008 2.531 1.007m17.518-5.645q0 2.797-2.214 3.615l2.947 4.164h-3.198l-2.583-3.716h-1.798v3.716h-2.598V6.13h4.413q2.715 0 3.873.916 1.158.917 1.158 2.948m-3.131 1.235c.321-.289.484-.6.484-1.228q0-.942-.5-1.291-.5-.35-1.749-.35h-1.95v3.302h1.898q1.333.003 1.817-.433m14.77-5.099v2.314h-6.076v2.399h6.076v2.214h-6.076v2.415h6.076v2.298h-8.675V6.127h8.675zm11.989 11.643-1.082-2.515h-4.881l-1.081 2.515h-2.766l5.029-11.643h2.517l5.029 11.643zm-3.513-8.18-1.466 3.38h2.915zm12.94-1.213v9.393h-2.598V8.379h-3.299V6.13h9.193v2.25zm14.931-2.25v2.314h-6.076v2.399h6.076v2.214h-6.076v2.415h6.076v2.298H176.7V6.127h8.675z"/></g><defs><clipPath id="a"><path d="M0 .41h185.375v23.18H0z"/></clipPath></defs></svg></li>
+  </ul>
+</section>
 
-            <section id="y30">
-                <div class="section-content">
-                    <h2 class="animation-appear">Current work</h2>
-                    <article class="featured-card animation-appear">
-                        <div class="featured-top">
-                            <span class="featured-badge"><span class="dot"></span> Current</span>
-                            <span class="material-symbols-outlined featured-glyph">graphic_eq</span>
-                        </div>
-                        <h3>y30</h3>
-                        <p class="featured-role">Co-Founder &amp; CPTO · since 2026</p>
-                        <p>Voice AI for older adults and their caregivers. The bar I held it to: not "did it answer." "Would grandma keep talking?" I define problems with caregivers and clinicians, write the specs, design the IA and interactions, and ship end to end: Python, LiveKit, React, Supabase. Years in the unglamorous parts of healthtech: call centers, care-coordination handoffs. The places where the gap between the system and the actual person is hardest to ignore. y30 closes it: voice that earns trust, and every conversation becomes structured signal a caregiver can act on.</p>
-                        <p class="featured-creed">Healthcare is the thread. Voice is the medium. Dignity is the constraint.</p>
 
-                        <div class="featured-divider"></div>
+<!-- 5. Work: no intro sentence -->
+<h2 class="sec" id="stack">A note on working with AI</h2>
+<p class="aiwork">I treat agents as tools, not autopilot. I incur comprehension debt deliberately,
+  in prototypes, never in core or safety paths. The judgment is mine; the speed is the tool's.</p>
+<p class="aiwork">Agents don't have the judgment to tell a subtlety from a deliberate decision, and
+  their context isn't persistent, so they have to be guided by what you already know. I check what an
+  agent actually has in context, interview it and let it interview me, test the result against what I
+  expected rather than what it claims, and codify anything I catch twice.</p>
+<p class="aiwork">At y30 I built a five-stage eval flywheel: session capture, auto-eval, failure
+  harvest, STT variants, CI regression detection. Then the automation was producing pull requests and
+  issues nobody had a ritual for reviewing, which is worse than no automation because it creates false
+  confidence. So I wrote the operating workflow too: fifteen minutes of triage every Monday, P0s
+  alerting to Slack the same day.</p>
 
-                        <div class="featured-section animation-appear">
-                            <h4 class="featured-section-label">The problem</h4>
-                            <p>Caregivers and clinicians are flying blind between appointments. A senior can decline significantly in days, but the system only finds out at the next visit, if at all. The signal exists; it just has no infrastructure to surface it.</p>
-                        </div>
+<h2 class="sec" id="work">Work</h2>
+<div id="worklist">
 
-                        <div class="featured-section animation-appear">
-                            <h4 class="featured-section-label">What I built</h4>
-                            <ul class="featured-decisions">
-                                <li>
-                                    <span class="featured-decision-title">Made it slower, on purpose</span>
-                                    <span class="featured-decision-rationale">Answer too fast and you cut people off. For an 80-year-old, that's not fast. It's rude. y30 waits 800ms before deciding someone has finished, up from the 600ms it started with, because 600ms misfires on 70–80% of elder intra-sentence pauses, and I cover the wait with immediate non-verbal feedback so it reads as listening, not lag. One call wearing three hats: the product judgment to not rush them, the interaction design to make waiting feel like care, and the engineering to hold the turn.</span>
-                                </li>
-                                <li>
-                                    <span class="featured-decision-title">An interface an 80-year-old never has to learn</span>
-                                    <span class="featured-decision-rationale">One tap to start. One task per screen. Tap targets sized for unsteady hands, type for tired eyes, and a live audio indicator so the person always knows it's listening. No AI sparkle, no chat-bubble clutter, nothing to figure out. The hard part was everything I left out, so the user never feels tested.</span>
-                                </li>
-                                <li>
-                                    <span class="featured-decision-title">Deterministic engine, warm LLM delivery</span>
-                                    <span class="featured-decision-rationale">Flow control runs on a finite-state machine. The LLM only owns phrasing, warmth, and repair. The model is never consulted for sequencing. Prompt-driven flow control worked about 70% of the time; code-driven works every time. Flow is engineering; warmth is the model. They don't bleed.</span>
-                                </li>
-                                <li>
-                                    <span class="featured-decision-title">Safety that survives the model going down</span>
-                                    <span class="featured-decision-rationale">A rule-based detection floor fires independent of any LLM or feature flag. The classifier adds nuance on top, never as the sole line. A crisis response can't be contingent on an API being healthy. The voice session is sacred.</span>
-                                </li>
-                            </ul>
-                        </div>
+<article id="y30" class="card reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>y30</h3><p class="when">2026 – now</p></div>
+    <p class="role"><b>Co-founder, CPTO</b></p>
+    <p class="ctx">Voice AI for elders and support for longitudinal caregiving.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Bootstrapped. Vijay and I are paying out of pocket for the costs and developing it. Deployed and actively hardening</dd></div>
+    <div><dt>Team</dt><dd><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> (CEO) and me. Vijay owns fundraising, customer discovery, recruiting testers, sales, and building relationships with subject matter experts</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Python · React · TypeScript · LiveKit · Voice AI</dd></div>
+  </dl>
+  
+  <p class="setup">A session is a voice call, on a phone or anything with a browser and a
+  microphone. The user starts it, or a caregiver starts it with them. Inside it they can just talk or
+  play a game, and move between the two, and hang up whenever. Caregivers and clinicians get the
+  summary. The hardest part wasn't getting the AI to do more. It was deciding what it shouldn't get
+  to decide.</p>
+  <p>I let the model run the game sequence at first. After eight prompt revisions, guards and a
+  watchdog, it still started the round only about 70% of the time. I moved that sequence into
+  code. Conversation stayed open-ended; the part that had to happen in order stopped being a
+  request.</p>
+    <p class="result"><span class="rlbl">Tradeoff</span><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
+  <p class="taught">AI covers the edges I didn't anticipate. So I decide up front what the model gets
+  to own and what has to be guaranteed, instead of finding the line at 70%.</p>
+  <p class="transfers"><span class="rlbl">Transfers to</span>Deciding which parts of a product a model is allowed to run.</p>
+  <h4 class="ruleslabel">Conversation design</h4>
+  <ul class="hl">
+  <li><b>Pacing.</b> Waits longer for elders before deciding they're done, to make sure it's listening.</li>
+  <li><b>Interruptions.</b> Handles them, and never talks over the user.</li>
+  <li><b>Confirmation.</b> Never corrects a false memory. Some phrases are banned to prevent tone-deaf responses, enforced by a guard that checks every response before it's spoken.</li>
+  <li><b>Safety.</b> Emergency and crisis responses are recognized before any AI model is called.</li>
+  <li><b>Tangents.</b> Waits a few exchanges before offering to go back to the original topic, and never pressures.</li>
+  <li><b>Memory.</b> Remembers the last 20 sessions, and stops surfacing a follow-up if it goes unresolved after a few.</li>
+  </ul>
+  <p class="limit">We can't claim product market fit, we can only claim interest. We're actively
+  getting feedback from subject matter experts. We know it's engaging, but we haven't proven
+  clinical data and value yet. We decided to not log elder phone sessions to build their trust
+  and to focus on whether they would even bother to interact with y30. They are a vulnerable
+  population and they get taken advantage of, so we were very sensitive to the elders we talked
+  to. One of our primary motivations is building proper trust.</p>
+  <div class="vids">
+  <div class="embed">
+  <button class="facade loom" type="button" data-loom="eb44015201554d11ac841cd1700653ce"
+  aria-label="Play video: a real reminiscence call with the y30 voice agent">
+  <span class="play"></span>
+  <span class="cap">A real reminiscence call, and what it becomes</span>
+  </button>
+  </div>
+  </div>
+  <div class="proof"><span class="lbl">Receipts</span>
+  <a href="https://y30.ai" target="_blank" rel="noopener">y30.ai</a></div>
+  <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
+</article>
 
-                        <div class="featured-section animation-appear">
-                            <h4 class="featured-section-label">What I didn't build</h4>
-                            <p>Killed preemptive generation: it tested well but produced ghost speech fragments in real conversations. No diagnosis, treatment plans, or financial advice, by design. Phase 1 had one job: prove voice quality. Restraint was a feature.</p>
-                        </div>
+<article id="playsesh" class="card reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>PlaySesh</h3><p class="when">2024 – 2026</p></div>
+    <p class="role"><b>Co-founder, CEO</b></p>
+    <p class="ctx">A collaborative source of truth for small indie game teams, sitting on top of their engine and IDE.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Pre-seed, bootstrapped by choice</dd></div>
+    <div><dt>Team</dt><dd>3 co-founders, <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> COO. I authored 1,147 of the rebuild&rsquo;s 1,793 commits; 291 tests, still green</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Cloudflare Workers · Durable Objects</dd></div>
+  </dl>
+  
+  <p class="setup">I started it solo, trying to solve loneliness through gaming: help people find
+  someone to play with. Interviews killed that idea. Then at Blue Startups I talked to thirty-odd game
+  designers and developers, most days for months, and found the real problem. Teams could not get from
+  an idea to something playable, or get enough playtests to know if it was any good. The canvas was our
+  MVP, collaborative by default, because presence was the thing that had to work.</p>
+  <p>It was running on tldraw. When that couldn't carry real
+  multiplayer I replaced it with an operation-based sync engine on Durable Objects. It took about a
+  week. What it bought was total control of the canvas; what it cost was that we now maintained all of
+  it ourselves. The point was never to own unusual infrastructure. It was to make a remote team feel
+  like it was in the same room.</p>
+    <p class="result"><span class="rlbl">Adoption</span><span class="fig">6,220 authorized accounts</span><span class="qual">Discord reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026. Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</span></p>
+  <p class="taught">Every direction has a reversal cost. I weigh technical, product and design paths by
+  which one I can afford to be wrong about, then measure progress to know whether to keep going.</p>
+  <p class="transfers"><span class="rlbl">Transfers to</span>Buy versus build, when the thing you'd buy can't do the one thing that matters.</p>
+  <div class="vids">
+  <div class="embed">
+  <button class="facade" type="button" data-yt="Q0S-_WAea6Y"
+  aria-label="Play video: AI-assisted game prototyping, from prompt to playable">
+  <img loading="lazy" decoding="async" width="1280" height="720"
+  src="https://img.youtube.com/vi/Q0S-_WAea6Y/maxresdefault.jpg" alt="">
+  <span class="play"></span>
+  <span class="cap">Prompt to playable, AI-assisted prototyping</span>
+  </button>
+  </div>
+  <div class="embed">
+  <button class="facade" type="button" data-yt="Cuqu38j7-vQ"
+  aria-label="Play video: multiplayer game design workspace inside Discord">
+  <img loading="lazy" decoding="async" width="1280" height="720"
+  src="https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg" alt="">
+  <span class="play"></span>
+  <span class="cap">Multiplayer design workspace, inside Discord</span>
+  </button>
+  </div>
+  </div>
+  <div class="proof"><span class="lbl">Receipts</span>
+  <a href="https://discord.com/discovery/applications/1225184380419440810" target="_blank" rel="noopener">Discord App Directory</a></div>
+  <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
+</article>
 
-                        <p class="featured-proof">1,400 commits · 122 test files · STT 4-deep · TTS 5-deep provider fallback</p>
+<article class="card reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>Pathstream</h3><p class="when">2019 – 2020</p></div>
+    <p class="role"><b>Senior Product Design Manager</b></p>
+    <p class="ctx">A career-development and learning platform teaching job skills with real software.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Series A</dd></div>
+    <div><dt>Team</dt><dd>3–5 engineers, 1 PM, 1 designer (me)</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · Design system · Research · PRD · Front-end</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">React · Storybook · Design tokens · Ant Design</dd></div>
+  </dl>
+  <p class="setup">In week one I wrote down the question: how do you roll out design changes
+  while courses are live?</p>
+  <p>I committed to a direction before I understood
+  course-author impact. Every structural change created re-work for a team I didn&rsquo;t manage,
+  so the design became backward compatible by default. That cost me changes I wanted and
+  narrowed the window to the gaps between cohorts.</p>
+    <p class="result"><span class="rlbl">Result</span><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
+  <p class="taught">Be more in the understanding side before jumping to the design, and evaluate
+  course-author impact sooner.</p>
+  <p class="transfers"><span class="rlbl">Transfers to</span>Changing something people are already using.</p>
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/pathstream.webp" alt="Pathstream lesson experience">
+  <div class="rec">
+    <p>&ldquo;Chris is a great designer to collaborate with. His empathy, creativity and focus make him an excellent thought partner, truly focused on bringing your idea to life.&rdquo;</p>
+    <div class="who"><b>Anthony Jones</b> &middot; worked alongside him, Pathstream</div>
+  </div>
+  <div class="card-cta"><a href="work/pathstream.html" target="_blank" rel="noopener">Read the case study</a></div>
+</article>
 
-                        <p class="featured-proof">Every conversation auto-graded by an eval pipeline. Regressions file themselves as issues, metadata only, no PHI.</p>
+<article class="card card--brief reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>GoodRx</h3><span class="outcome">IPO 2020</span><p class="when">2017 – 2018</p></div>
+    <p class="role"><b>Lead Product Designer</b></p>
+    <p class="ctx">Consumer healthcare: prescription drug information, then drug pricing.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Profitable, PE-backed, pre-IPO</dd></div>
+    <div><dt>Team</dt><dd>6-person special-projects team in SF</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · Front-end · Data visualization · Research · Conversion</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">D3 · Experimentation · Healthcare</dd></div>
+  </dl>
+  <p class="lineage">The Iodine acquisition closed while I was interviewing, so I came in
+  officially as a GoodRx employee working two products. Iodine was the experimenting layer. GoodRx was
+  the scale, and where I got pulled in to ship.</p>
+  <p class="setup">It came out of feedback, and out of working with pharmacists. So we built Ask a
+  Pharmacist.</p>
+  <p>When we shipped it, engagement was much higher than we anticipated. We shut it down anyway,
+  because we didn't have the resources to respond inside a guaranteed 48 hours. Trust is the absolute
+  priority, and if you can't support it, it's better to shut it down than run a service that fails people.</p>
+    <p class="result"><span class="rlbl">Iodine.com</span><span class="fig">2% &rarr; 5%</span><span class="qual">Coupon-flow conversion. Iodine.com won the Webby for Best Health Website.</span></p>
+  <p class="result"><span class="rlbl">GoodRx Research</span><span class="fig">+10% mobile, +25% desktop</span><span class="qual">Referenced in the New York Times and used in federal drug-pricing debates.</span></p>
+  <p class="taught">Engagement validates the idea, not our ability to serve it. Before I ship now I
+  ask what it commits us to operationally, and whether we can measure and grow at a pace we can
+  sustain.</p>
+  <p class="transfers"><span class="rlbl">Transfers to</span>Shutting down a feature rather than running it badly.</p>
+  
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/goodrx.webp" alt="GoodRx data visualization work">
+  <div class="rec">
+    <p>&ldquo;He isn&rsquo;t afraid to voice and fight for what he believes is right, but, more importantly, he is willing to listen to others&rsquo; opinions and concede when appropriate. Even when a feature wasn&rsquo;t successful from a business standpoint, he would make sure that both he and the rest of the team learned from it.&rdquo;</p>
+    <div class="who"><b>Marc Mendiola</b> &middot; software engineer, Iodine and GoodRx</div>
+  </div>
+  <div class="rec">
+    <p>&ldquo;An innate ability to understand user needs and experiment with software design until the product matches the purpose. He is literate in code, engineers love working with him, and is also deeply attuned to the needs of ordinary people.&rdquo;</p>
+    <div class="who"><b>Thomas Goetz</b> &middot; his manager, Chief of Research, GoodRx</div>
+  </div>
+  <div class="proof"><span class="lbl">Receipts</span>
+  <a href="https://www.goodrx.com/corporate/culture/iodine-com-wins-the-webby-for-best-health-website" target="_blank" rel="noopener">Webby 2018 announcement</a>
+  <a href="https://web.archive.org/web/20180224101750/https://www.iodine.com/" target="_blank" rel="noopener">Iodine.com, archived Feb 2018</a>
+  <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html" target="_blank" rel="noopener">New York Times</a>
+  <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554" target="_blank" rel="noopener">S.2554</a>
+  <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553" target="_blank" rel="noopener">S.2553</a>
+  <a href="https://abcnews.go.com/GMA/Wellness/video/flu-numbers-show-growing-outbreak-us-53014507" target="_blank" rel="noopener">Good Morning America</a>
+  <a href="https://web.archive.org/web/20180915114231/https://www.goodrx.com/atorvastatin" target="_blank" rel="noopener">A drug page, archived Sep 2018</a></div>
+  <div class="card-cta">
+    <a href="work/iodine.html" target="_blank" rel="noopener">Iodine case study</a>
+    <a href="work/goodrx.html" target="_blank" rel="noopener">GoodRx Research case study</a></div>
+</article>
 
-                        <div class="video-demos animation-appear">
-                            <div class="video-demo-item">
-                                <div class="video-embed">
-                                    <iframe src="https://www.loom.com/embed/eb44015201554d11ac841cd1700653ce?hide_owner=true&hide_share=true&hideEmbedTopBar=true"
-                                            allowfullscreen
-                                            title="y30 voice AI: an unscripted reminiscence call"></iframe>
-                                </div>
-                                <div class="video-caption">
-                                    <p class="video-caption-label">A real reminiscence call, and what it becomes.</p>
-                                    <p class="video-caption-desc">An unscripted voice session: the agent waits through a long pause without cutting in, yields the instant it's interrupted, and softens its tone when the conversation turns to grief. Then the conversation becomes structured signal a caregiver can act on.</p>
-                                </div>
-                            </div>
-                        </div>
+<article class="card card--brief reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>Clover Health</h3><span class="outcome">IPO 2021</span><p class="when">2015 – 2016</p></div>
+    <p class="role"><b>Product Designer, second designer</b></p>
+    <p class="ctx">A Medicare Advantage insurer using data to direct clinical care.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>About 30 people, founder-funded, months before the Series A</dd></div>
+    <div><dt>Team</dt><dd>4–5 engineers, 1 PM</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Clinical tools · Field research · Brand · Front-end · Marketing site</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · CSS · Clinical workflow</dd></div>
+  </dl>
+  <p class="setup">The brief from the CPO was "fix the home visit experience." That was all of it. I
+  spent a week in New Jersey shadowing nurse practitioners on live visits.</p>
+  <p>They had no set flow, no fixed place they started, and every night they spent about two hours
+  pre-filling paper by hand. So it could not be a wizard. It needed to be flexible with a suggested
+  order, like TurboTax.</p>
+    <p class="result"><span class="rlbl">Result</span><span class="fig">~7–8× ROI</span><span class="qual">On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</span></p>
+  <p class="taught">Not just the end user, but the people who deliver the service and represent the
+  company to them. At Clover the nurse practitioner was both.</p>
+  <p class="transfers"><span class="rlbl">Transfers to</span>Designing for how people actually work, not the order you assumed.</p>
+  
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/clover.webp" alt="Clover Health care visit app">
+  <div class="rec">
+    <p>&ldquo;Chris completed each phase of the designs by himself, from user research to visual composition. He introduced the usage of new tools that made going from design to code far easier than I&rsquo;ve experienced in the past.&rdquo;</p>
+    <div class="who"><b>Dan Lee</b> &middot; product engineer, Clover Health</div>
+  </div>
+  <div class="rec">
+    <p>&ldquo;He is not shy to push when he thinks something is important, but at the same time he is flexible and compromises when engineering isn&rsquo;t able to implement all aspects of his work. He always presented multiple design options and made sure to get input from all teams involved: engineering, product and operations.&rdquo;</p>
+    <div class="who"><b>Saba Naqvi</b> &middot; worked with him at Clover Health, now Senior Engineering Manager at Rakuten</div>
+  </div>
+  <div class="proof"><span class="lbl">Receipts</span>
+  <a href="https://web.archive.org/web/20160220081453/https://www.cloverhealth.com/en/" target="_blank" rel="noopener">The site I shipped, archived Feb 2016</a></div>
+  <div class="card-cta">
+  <a href="work/clover-care-visit.html" target="_blank" rel="noopener">Care Visit case study</a>
+  <a href="work/clover-health-website.html" target="_blank" rel="noopener">The website</a>
+  </div>
+</article>
 
-                        <div class="keyword-container">
-                            <p class="keyword">Voice AI</p>
-                            <p class="keyword">Elder Care</p>
-                            <p class="keyword">Human-AI Interaction</p>
-                            <p class="keyword">Interaction Design</p>
-                            <p class="keyword">Real-Time Systems</p>
-                            <p class="keyword">Accessibility</p>
-                            <p class="keyword">Product Engineering</p>
-                        </div>
+<article class="card card--brief reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>Blue Startups</h3><p class="when">2024</p></div>
+    <p class="role"><b>Entrepreneur in Residence</b></p>
+    <p class="ctx">A Honolulu accelerator.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Fixed-term, alongside PlaySesh</dd></div>
+    <div><dt>Team</dt><dd>Accelerator cohort</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Founder advising · Product review</dd></div>
+  </dl>
+  <p>Advising founders on product and design in the earliest stage, where the question is usually what to build rather than how.</p>
+</article>
 
-                        <div class="button-group featured-actions animation-appear">
-                            <button class="button" onclick="window.location.href='mailto:whoischrislam@gmail.com?subject=y30%20live%20walkthrough'">Schedule a live walkthrough <span class="arrow">→</span></button>
-                            <button class="button ghost" onclick="window.open('https://y30.ai', '_blank')">Visit y30.ai <span class="arrow">↗</span></button>
-                        </div>
-                    </article>
-                </div>
-            </section>
+<article class="card card--brief reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>Modus Create</h3><p class="when">2023 – 2024</p></div>
+    <p class="role"><b>Software Engineer</b></p>
+    <p class="ctx">A product consultancy, delivering for client engineering teams.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Consultancy</dd></div>
+    <div><dt>Team</dt><dd>6 engineers</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Front-end · Client delivery · Atlassian ecosystem</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">React · TypeScript · Atlassian Forge</dd></div>
+  </dl>
+  <p>The chapter where I stopped handing designs over. Production front-end on client engagements,
+  which is where the second half of the job got proven rather than claimed. I started PlaySesh
+  while finishing here, so the two overlap by a couple of months.</p>
+  <div class="proof"><span class="lbl">Receipts</span>
+  <a href="https://marketplace.atlassian.com/vendors/1212980/modus-create" target="_blank" rel="noopener">Atlassian Marketplace</a></div>
+</article>
 
-            <section id="playsesh">
-                <div class="section-content">
-                    <h2 class="animation-appear">Past founder work</h2>
-                    <article class="featured-card animation-appear">
-                        <div class="featured-top">
-                            <span class="featured-badge featured-badge-past">Founder · 2024–2026</span>
-                            <span class="material-symbols-outlined featured-glyph">sports_esports</span>
-                        </div>
-                        <h3>PlaySesh</h3>
-                        <p class="featured-role">Co-Founder &amp; CEO · 2024–2026</p>
-                        <p>A collaborative game-thinking layer for indie devs, built inside Discord. I started it solo, proved the concept, then brought on two co-founders, including <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> as COO. What began as a play against loneliness through gaming evolved into a real-time design and playtesting tool for small game teams. 1,793 commits. Zero ad spend.</p>
-                        <p class="featured-creed">138 server installs · over 6,200 authorized Discord accounts · 1,043 MAU at peak. All organic.</p>
-                        <p class="featured-source">Discord authorization and install counts are approximate and were read on August 1, 2026. Monthly active users are from PostHog and count unique people who started a session in a calendar month; peak was January 2026.</p>
+<article class="card card--brief reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>StartPlaying</h3><p class="when">2022 – 2023</p></div>
+    <p class="role"><b>Founding Product Designer</b></p>
+    <p class="ctx">A marketplace connecting tabletop players with paid game masters.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Seed, a16z · YC company</dd></div>
+    <div><dt>Team</dt><dd>7 people, 1 designer (me)</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · Two-sided marketplace · Research · Front-end</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Consumer · Design systems</dd></div>
+  </dl>
+  <p>Two-sided by nature: the player picking a game has almost nothing in common with the GM running one as a business, and the same surfaces had to serve both.</p>
+  <div class="rec">
+    <p>&ldquo;Chris collaborates exceptionally well. He loves communication and hearing others&rsquo; ideas. He is receptive to feedback and develops strong relationships with the members of his team.&rdquo;</p>
+    <div class="who"><b>Nate Tucker</b> &middot; his manager, StartPlaying</div>
+  </div>
+</article>
 
-                        <div class="featured-divider"></div>
+<article class="card card--brief reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>doc.ai</h3><span class="outcome">Sharecare 2021</span><p class="when">2021</p></div>
+    <p class="role"><b>Lead Product Designer</b></p>
+    <p class="ctx">An enterprise AI platform for healthcare, running clinical studies.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Series A · acquired mid-tenure</dd></div>
+    <div><dt>Team</dt><dd>5–6 people, 1 designer (me)</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Clinical studies product · Research · Design system · Front-end</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Healthcare · React · Clinical data</dd></div>
+  </dl>
+  <p>The nearest thing I did to y30 before y30. Health data, real participants, and a product where
+  being wrong has a cost.</p>
+</article>
 
-                        <div class="featured-section animation-appear">
-                            <h4 class="featured-section-label">The problem</h4>
-                            <p>Small indie game teams have no single source of truth. Design lives in Figma, decisions in Notion, code in the engine, and feedback scattered across Discord threads. PlaySesh is the layer that connects them: canvas, IDE companion, and playtesting in one loop.</p>
-                        </div>
+<article class="card card--brief reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>TaskRabbit</h3><span class="outcome">IKEA 2017</span><p class="when">2014 – 2015</p></div>
+    <p class="role"><b>Product Designer</b></p>
+    <p class="ctx">A two-sided marketplace for local help, mid-rebuild.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Series C</dd></div>
+    <div><dt>Team</dt><dd>1 of 5 designers</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Product design · iOS · Android · Marketplace · Rebrand</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Marketplace · Mobile · Two-sided</dd></div>
+  </dl>
+  <p class="setup">Taskers were absorbing a company change from bidding to direct hire, and the Tasker
+  app shipped painful on top of it.</p>
+  <p>Taskers were passing on tasks rather than committing, because they wanted to see everything
+  available before choosing. So we rebuilt around what they already relied on: a schedule view,
+  matching the calendar apps they lived in. The client experience can be perfect and the service
+  still fails, because the rest of it depends on the Tasker.</p>
+    <p class="result"><span class="rlbl">Result</span><span class="fig">NPS −5 → mid-50s</span><span class="qual">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</span></p>
+  <p class="taught">People absorbing a change they didn't ask for have no appetite for a second one. So
+  I build on what they already use instead of asking them to learn something new.</p>
+  <p class="transfers"><span class="rlbl">Transfers to</span>Building on what people already use instead of teaching them something new.</p>
+  
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/taskrabbit.webp" alt="TaskRabbit Tasker experience">
+  <div class="rec">
+    <p>&ldquo;He always brought an intensely thoughtful and high EQ approach to every single project he worked on. You can tell he cares deeply about every project, big and small.&rdquo;</p>
+    <div class="who"><b>Melissa McAlpine</b> &middot; worked with him at TaskRabbit, now Director of Product, Samsung Digital Health</div>
+  </div>
+  <div class="proof"><span class="lbl">Receipts</span>
+  <a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild</a>
+  <a href="https://web.archive.org/web/20150227060448/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Feb 2015</a></div>
+  <div class="card-cta">
+  <a href="work/taskrabbit-tasker.html" target="_blank" rel="noopener">Tasker case study</a>
+  <a href="work/taskrabbit-client.html" target="_blank" rel="noopener">Client redesign</a>
+  </div>
+</article>
 
-                        <div class="featured-section animation-appear">
-                            <h4 class="featured-section-label">What I built</h4>
-                            <ul class="featured-decisions">
-                                <li>
-                                    <span class="featured-decision-title">Built inside Discord</span>
-                                    <span class="featured-decision-rationale">Game devs already live in Discord. Building as a Discord Activity meant zero cold-start adoption friction: the tool was already where the team was.</span>
-                                </li>
-                                <li>
-                                    <span class="featured-decision-title">Solo 0→1 build</span>
-                                    <span class="featured-decision-rationale">Designed and shipped the first version alone (Vanilla JS, Express, Supabase) before recruiting co-founders. No design-to-engineering handoff because I was both. I authored 1,147 of its 1,793 commits and 291 passing tests, primary engineer on the codebase.</span>
-                                </li>
-                                <li>
-                                    <span class="featured-decision-title">A custom real-time engine</span>
-                                    <span class="featured-decision-rationale">When the off-the-shelf canvas library couldn't carry real multiplayer, I replaced it with my own operation-based sync protocol on Cloudflare Durable Objects: authoritative ordering, conflict handling, and the WebSocket reconnection logic by hand. The foundation the whole collaborative tool runs on.</span>
-                                </li>
-                                <li>
-                                    <span class="featured-decision-title">Designed the feel, not just the features</span>
-                                    <span class="featured-decision-rationale">Real-time collaboration is a feeling, not a checkbox. I designed for presence: live cursors, instant updates, and game-specific tools (dice, counters, boards) so a remote team felt like one shared room. Simple enough to open cold, deep enough to live in for a half-hour working session.</span>
-                                </li>
-                                <li>
-                                    <span class="featured-decision-title">Product-led pivot</span>
-                                    <span class="featured-decision-rationale">User behavior, not a roadmap, drove the shift from social gaming to game dev tooling. Engaged sessions ran a median of 20 to 30 minutes. That signal told us what people actually wanted to do.</span>
-                                </li>
-                            </ul>
-                        </div>
+<article class="card card--brief reveal">
+  <div class="card-head">
+    <div class="ch-top"><h3>Amazon</h3><p class="when">2012 – 2013</p></div>
+    <p class="role"><b>User Experience Designer</b></p>
+    <p class="ctx">Amazon Prime, then Amazon Music as it moved off the browser and onto devices.</p></div>
+  <dl class="facts">
+    <div><dt>Stage</dt><dd>Public company</dd></div>
+    <div><dt>Team</dt><dd>1 of 6 designers, Amazon Music</dd></div>
+    <div class="wide"><dt>Owned</dt><dd>Desktop client · Device integrations · Platform clients</dd></div>
+    <div class="wide"><dt>Stack</dt><dd class="tech">Music · Desktop · Cloud</dd></div>
+  </dl>
+  <p>I interned on the Prime team, where subscribing was buried in a workflow that made no sense. I
+  designed a way to buy it in your cart and to gift it, which became Prime gifting. Then I was hired
+  full time onto Amazon Music.</p>
+  <div class="rec">
+    <p>&ldquo;The Amazon Prime team is incredibly demanding in regards to complexity and level of polish and thought required in its products. We literally dropped Christopher into the deep end right away and he took to everything quickly.&rdquo;</p>
+    <div class="who"><b>Christopher McGarry</b> &middot; his manager, Amazon Prime</div>
+  </div>
+  <div class="rec">
+    <p>&ldquo;Chris continuously pushed our design team to stand up for great design in the face of
+    constant pressure from date-driven Product managers and eager Directors. He knows how to ask
+    tough questions and never stops fighting for the end user.&rdquo;</p>
+    <div class="who"><b>Eric Eisher</b> &middot; designer, Amazon</div>
+  </div>
+  <div class="proof"><span class="lbl">Receipts</span>
+  <a href="https://press.aboutamazon.com/news-releases/news-release-details/updated-amazon-cloud-player-includes-new-scan-and-match">Scan and match, Amazon, July 2012</a>
+  <a href="https://www.engadget.com/2013-10-03-samsung-shape-wireless-audio-system.html">Samsung Shape launch, October 2013</a></div>
+</article>
 
-                        <div class="video-demos animation-appear">
-                            <div class="video-demo-item">
-                                <div class="video-facade" data-video-id="Q0S-_WAea6Y" data-video-si="aRTUcfB8VObMvodP">
-                                    <img src="https://img.youtube.com/vi/Q0S-_WAea6Y/maxresdefault.jpg" alt="PlaySesh AI prototyping demo: game concept to playable WebAssembly" loading="lazy">
-                                    <div class="video-overlay">
-                                        <button class="video-play-btn" aria-label="Play AI prototyping demo">
-                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M5 3.5l10 5.5-10 5.5V3.5z"/></svg>
-                                        </button>
-                                        <span class="video-runtime">2:43</span>
-                                    </div>
-                                </div>
-                                <div class="video-caption">
-                                    <p class="video-caption-label">AI-assisted game prototyping, from prompt to playable.</p>
-                                    <p class="video-caption-desc">An AI assistant generates a game concept and produces a playable WebAssembly prototype directly on the board. Game variables stay editable in the workspace: idea, prototype, and iteration in one loop.</p>
-                                </div>
-                            </div>
-                            <div class="video-demo-item">
-                                <div class="video-facade" data-video-id="Cuqu38j7-vQ" data-video-si="l4oldhRuvCsZ8NMs">
-                                    <img src="https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg" alt="PlaySesh multiplayer game design workspace demo" loading="lazy">
-                                    <div class="video-overlay">
-                                        <button class="video-play-btn" aria-label="Play collaboration demo">
-                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><path d="M5 3.5l10 5.5-10 5.5V3.5z"/></svg>
-                                        </button>
-                                        <span class="video-runtime">3:09</span>
-                                    </div>
-                                </div>
-                                <div class="video-caption">
-                                    <p class="video-caption-label">Multiplayer game design workspace inside Discord.</p>
-                                    <p class="video-caption-desc">A live session on the shared board inside a Discord voice channel. Shows the game-specific tools (dice, counters, canvas) and how a team moves from discussion to structured design without leaving where they already work.</p>
-                                </div>
-                            </div>
-                        </div>
+<h2 class="sec" id="play">Side projects</h2>
 
-                        <div class="keyword-container">
-                            <p class="keyword badge-founder">Founder</p>
-                            <p class="keyword">Real-Time Collaboration</p>
-                            <p class="keyword">Interaction Design</p>
-                            <p class="keyword">Durable Objects</p>
-                            <p class="keyword">WebSockets</p>
-                            <p class="keyword">Three.js</p>
-                            <p class="keyword">0→1 Product</p>
-                        </div>
+<article class="card reveal">
+  <div class="card-head"><h3>HogWare</h3>
+    <p class="role"><b>Product Engineer, Game Design</b> · 2026</p></div>
+  <dl class="facts">
+    <div class="wide"><dt>Stack</dt><dd class="tech">Vanilla JS · Canvas · WebAudio · Cloudflare Workers · Playwright</dd></div>
+  </dl>
+  <p>A daily browser microgame gauntlet, built for a role that closed mid-build. I shipped it
+  anyway. 33 keyframes, a beat-clock conductor so a zoom costs zero playable time, and a WebAudio
+  scheduler with ducking.</p>
+  <div class="card-cta">
+    <a href="hogware.html" target="_blank" rel="noopener">Play it</a>
+    <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">The build log</a>
+  </div>
+</article>
 
-                        <div class="featured-actions animation-appear">
-                            <button class="button" onclick="window.open('https://discord.com/discovery/applications/1225184380419440810', '_blank')">View live app ↗</button>
-                        </div>
-                    </article>
-                </div>
-            </section>
+<article class="card reveal">
+  <div class="card-head"><h3>Voice Noir</h3>
+    <p class="role"><b>Product Engineer, Voice UX</b> · 2026</p></div>
+  <dl class="facts">
+    <div class="wide"><dt>Stack</dt><dd class="tech">Web Speech API · ElevenLabs · Voice UX</dd></div>
+    <div class="wide"><dt>Unlocked</dt><dd>Voice UX · Web Speech API · ElevenLabs TTS · real-time state from speech</dd></div>
+  </dl>
+  <p>A voice-first noir detective game. Inspect the scene, question witnesses, and crack the case
+  by calling out contradictions out loud. Hands-on STT, TTS, and voice-driven interaction design,
+  which is the same problem space as y30.</p>
+</article>
 
-            <section id="work">
-                <div class="section-content">
-                    <span class="section-label animation-appear">Career</span>
-                    <h2 class="animation-appear">Selected work</h2>
-                    <p class="animation-appear section-lede">The work I can point to a number on. Fuller history below.</p>
-                    <div class="case-grid">
-                        <article class="case-card animation-appear">
-                            <div class="case-head">
-                                <h3>HogWare</h3>
-                                <span class="case-meta">Solo build for PostHog's Ex-Founder application · 2026</span>
-                            </div>
-                            <p class="case-outline">A WarioWare built out of PostHog's handbook: their five company values as five microgames, plus a boss. The role closed while it was mid-build. I shipped it anyway. <strong>Concept to playtest-tuned, phone-ready game in about a week</strong>, with PostHog itself as the backend: the leaderboard is a HogQL query, the A/B test is a live feature flag, and the cheat protection runs inside the query. Reviewed adversarially by external models, played end to end by a 32-check headless suite, and shared Wordle-style on a daily seed. <a href="https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md" target="_blank" rel="noopener">The build log</a> tells the whole story, including the three bosses I cut.</p>
-                            <div class="keyword-container">
-                                <p class="keyword">Game</p>
-                                <p class="keyword">PostHog</p>
-                                <p class="keyword">Cloudflare Workers</p>
-                                <p class="keyword">AI-native build</p>
-                                <a class="keyword badge-award" href="hogware.html">Play it ↗</a>
-                            </div>
-                        </article>
-                        <article class="case-card case-card--featured animation-appear">
-                            <div class="case-head">
-                                <h3>Iodine <span class="work-aka">(acquired by GoodRx)</span></h3>
-                                <span class="case-meta">Lead Product Designer (first full-time designer) · 2017–2018</span>
-                            </div>
-                            <p class="case-outline">First full-time designer at a pre-IPO startup, operating across problem framing, specs, IA, interactions, and close partnership with engineering. Owned the coupon flow end to end: diagnosed why it barely converted, redesigned how people find and redeem drug discounts, and saw it through to implementation. <strong>Conversion went from 2% to 5%.</strong> I also contributed to the GoodRx Research data visualizations, which were referenced in the <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html" target="_blank" rel="noopener">New York Times</a> and ran on <a href="https://abcnews.go.com/GMA/Wellness/video/flu-numbers-show-growing-outbreak-us-53014507" target="_blank" rel="noopener">Good Morning America</a> and ABC News. With GoodRx co-CEO Doug Hirsch I built 50-state prescription-price fact sheets, used in advocacy around <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554" target="_blank" rel="noopener">S.2554</a> and <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553" target="_blank" rel="noopener">S.2553</a> on prescription drug price transparency.</p>
-                            <a class="case-link" href="work/iodine.html">Iodine case study →</a>
-                            <a class="case-link" href="work/goodrx.html">GoodRx Research →</a>
-                            <div class="keyword-container">
-                                <p class="keyword">Healthcare</p>
-                                <p class="keyword badge-ipo">IPO</p>
-                                <p class="keyword badge-acq">Acquisition</p>
-                                <a class="keyword badge-award" href="https://www.goodrx.com/corporate/culture/iodine-com-wins-the-webby-for-best-health-website" target="_blank" rel="noopener">Webby '18 ↗</a>
-                            </div>
-                            <figure class="case-figures">
-                                <a class="case-figure" href="images/work/goodrx-us-of-drugs.webp" target="_blank" rel="noopener"><img loading="lazy" src="images/work/goodrx-us-of-drugs.webp" alt="GoodRx data visualization: the most prescribed medication in each of the 50 US states, 2018"></a>
-                                <a class="case-figure" href="images/work/goodrx-cities-prices.webp" target="_blank" rel="noopener"><img loading="lazy" src="images/work/goodrx-cities-prices.webp" alt="GoodRx data visualization: the most and least expensive US cities for prescription drugs, 2018, referenced by the New York Times"></a>
-                                <a class="case-figure" href="images/work/goodrx-flu-prescriptions.webp" target="_blank" rel="noopener"><img loading="lazy" src="images/work/goodrx-flu-prescriptions.webp" alt="GoodRx data visualization: the 20 states with the biggest increase in Tamiflu prescriptions, 2017 to 2018 flu season"></a>
-                                <figcaption>GoodRx Research data visualizations. The cities map was referenced in the New York Times; the flu map ran on Good Morning America and ABC News. Click any to enlarge.</figcaption>
-                            </figure>
-                        </article>
-                        <article class="case-card animation-appear">
-                            <div class="case-head">
-                                <h3>Pathstream</h3>
-                                <span class="case-meta">Senior Product Design Manager, operating as lead designer (first design hire) · 2019–2020</span>
-                            </div>
-                            <p class="case-outline">Rebuilt the core lesson experience of a live learning platform while real students were mid-course. The hard part was not the redesign, it was shipping it <strong>without forcing a rewrite of 60–80 hours of existing course content</strong>. So the new structure was backward compatible by default and the migration cost nothing until an author chose to pay it. Code merged. I also wrote the Labs PRD across students, instructors, and course authors, and built the design system in React and Storybook. I never measured whether the redesign worked, and the case study says so.</p>
-                            <a class="case-link" href="work/pathstream.html">Read the case study →</a>
-                            <div class="keyword-container">
-                                <p class="keyword">0→1</p>
-                                <p class="keyword">LMS</p>
-                                <p class="keyword">Design System</p>
-                                <p class="keyword">Storybook</p>
-                                <p class="keyword">Motion</p>
-                            </div>
-                        </article>
-                        <article class="case-card animation-appear">
-                            <div class="case-head">
-                                <h3>Clover Health</h3>
-                                <span class="case-meta">Designer, operating as product design lead (2nd designer) · 2015–2016</span>
-                            </div>
-                            <p class="case-outline">Rewired the NP home-visit workflow end to end: shadowed real visits in New Jersey to understand the clinical reality, redesigned the IA and interactions, and worked directly with product engineering to ship it. <strong>~7–8× lift in visit-related revenue. ~2 hours saved per nurse per day.</strong> Second designer when it was about 30 people and founder-funded: helped build the design function itself, sat in product development, and co-wrote PRDs with my PM.</p>
-                            <a class="case-link" href="work/clover-care-visit.html">Care Visit case study →</a>
-                            <a class="case-link" href="work/clover-health-website.html">The website →</a>
-                            <div class="keyword-container">
-                                <p class="keyword">Healthcare</p>
-                                <p class="keyword badge-ipo">IPO</p>
-                                <p class="keyword">Design System</p>
-                            </div>
-                        </article>
-                        <article class="case-card animation-appear">
-                            <div class="case-head">
-                                <h3>Amazon</h3>
-                                <span class="case-meta">User Experience Designer · 2012–2013</span>
-                            </div>
-                            <p class="case-outline">Prototyped the flow to buy and gift Amazon Prime, <strong>projected to drive 1M+ new subscribers</strong>. My first taste of shipping product at scale.</p>
-                            <div class="keyword-container">
-                                <p class="keyword">Big Tech</p>
-                                <p class="keyword">Prime</p>
-                                <p class="keyword">UX</p>
-                            </div>
-                        </article>
-                        <article class="case-card animation-appear">
-                            <div class="case-head">
-                                <h3>TaskRabbit</h3>
-                                <span class="case-meta">Product Designer · 2014–2015</span>
-                            </div>
-                            <p class="case-outline">During the <a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">2014 rebrand</a>, I owned the Tasker experience end to end (research, IA, UX, visual design) and pitched in across the broader rebrand wherever I could, working closely with the PMs and engineering. <strong>Tasker NPS recovered from roughly −5 in mid-2014 to the mid-50s, and Client NPS to the high-40s.</strong></p>
-                            <a class="case-link" href="work/taskrabbit-tasker.html">Tasker case study →</a>
-                            <a class="case-link" href="work/taskrabbit-client.html">Client redesign →</a>
-                            <div class="keyword-container">
-                                <p class="keyword">Marketplace</p>
-                                <p class="keyword badge-acq">Acquisition</p>
-                                <p class="keyword">Rebrand</p>
-                            </div>
-                        </article>
-                    </div>
-                    <p class="animation-appear"><a class="case-link" href="work/">All seven case studies, with a guide to which one to open first &rarr;</a></p>
-                    <h3 class="work-subhead animation-appear">Additional experience</h3>
-                    <ul class="work-list">
-                        <li class="work-item animation-appear">
-                            <div class="work-head">
-                                <span class="work-company">Blue Startups</span>
-                                <span class="work-role">Entrepreneur in Residence</span>
-                                <span class="work-dates">2024</span>
-                            </div>
-                            <div class="keyword-container">
-                                <p class="keyword">Accelerator</p>
-                                <p class="keyword">Advising</p>
-                                <p class="keyword">10 startups</p>
-                            </div>
-                        </li>
-                        <li class="work-item animation-appear">
-                            <div class="work-head">
-                                <span class="work-company"><a href="https://marketplace.atlassian.com/vendors/1212980/modus-create" target="_blank" rel="noopener">Modus Create ↗</a></span>
-                                <span class="work-role">Software Engineer · Atlassian apps</span>
-                                <span class="work-dates">2023–2024</span>
-                            </div>
-                            <p class="work-detail">Shipped dark mode for JIRA and Confluence Cloud (500K+ enterprise users). Owned design, engineering, and internal documentation.</p>
-                            <div class="keyword-container">
-                                <p class="keyword">TypeScript</p>
-                                <p class="keyword">Docker</p>
-                                <p class="keyword">CI/CD</p>
-                                <p class="keyword">Atlassian</p>
-                                <p class="keyword">Dark mode</p>
-                            </div>
-                        </li>
-                        <li class="work-item animation-appear">
-                            <div class="work-head">
-                                <span class="work-company">StartPlaying</span>
-                                <span class="work-role">First Product Designer</span>
-                                <span class="work-dates">2022–2023</span>
-                            </div>
-                            <div class="keyword-container">
-                                <p class="keyword badge-yc">YC W20</p>
-                                <p class="keyword">a16z</p>
-                                <p class="keyword">TTRPG</p>
-                                <p class="keyword">Stripe</p>
-                                <p class="keyword">0→1</p>
-                                <p class="keyword">Figma</p>
-                            </div>
-                        </li>
-                        <li class="work-item animation-appear">
-                            <div class="work-head">
-                                <span class="work-company">Sharecare <span class="work-aka">(doc.ai)</span></span>
-                                <span class="work-role">Lead Product Designer · product rescue</span>
-                                <span class="work-dates">2021</span>
-                            </div>
-                            <div class="keyword-container">
-                                <p class="keyword">Clinical Trials</p>
-                                <p class="keyword badge-ipo">IPO</p>
-                                <p class="keyword badge-acq">Acquisition</p>
-                                <p class="keyword">SaaS</p>
-                                <p class="keyword">Healthcare</p>
-                            </div>
-                        </li>
-                    </ul>
-                    <p class="work-education animation-appear">🎓 University of Washington · BS Informatics (HCI) &amp; MS Human Centered Design &amp; Engineering</p>
-                </div>
-            </section>
+<article class="card reveal">
+  <div class="card-head"><h3>Evolve, Die, Repeat</h3>
+    <p class="role"><b>Game Design, Engineer</b> · 2025</p></div>
+  <dl class="facts">
+    <div class="wide"><dt>Stack</dt><dd class="tech">Lua · Love2D</dd></div>
+    <div class="wide"><dt>Unlocked</dt><dd>Lua · Love2D · test-driven game dev · telemetry-driven iteration · cross-platform CI/CD</dd></div>
+  </dl>
+  <p>A 2D side-scrolling roguelite in Love2D. Swap body parts mid-run to evolve: fins to swim,
+  wings to fly, claws to climb, stingers to shoot venom.</p>
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/edr.webp" alt="Evolve Die Repeat">
+</article>
 
-            <section id="stack">
-                <div class="section-content">
-                    <span class="section-label animation-appear">Approach</span>
-                    <h2 class="animation-appear">How I work</h2>
-                    <p class="animation-appear section-lede">On most projects I connect research, product decisions, design craft, and implementation. I'm comfortable being effectively the PM and designer, or the engineer with strong UX opinions, owning the whole arc when that's the fastest path.</p>
-                    <p class="animation-appear">On AI: I treat agents as tools, not autopilot. I set the architecture, the contracts, and the acceptance criteria; AI implements inside them; and I own the code review, the tests, and the safety gates. I incur comprehension debt deliberately, in prototypes, never in core or safety paths, and I keep it in check with pure-function extraction, regression tests tied to real incidents, adversarial multi-model reviews, and staged rollout. The judgment is mine; the speed is the tool's.</p>
-                    <div class="stack-grid animation-appear">
-                        <div class="stack-col">
-                            <h3>Design</h3>
-                            <ul>
-                                <li>Product design (0→1, interaction, systems thinking)</li>
-                                <li>UX research (field interviews, usability testing, user testing)</li>
-                                <li>Design systems (Figma, React + Storybook + Chromatic, design tokens)</li>
-                                <li>Prototyping (Figma, Principle, interactive)</li>
-                                <li>Motion design</li>
-                                <li>Accessibility (WCAG) &amp; elder-care UX</li>
-                                <li>Information architecture</li>
-                            </ul>
-                        </div>
-                        <div class="stack-col">
-                            <h3>Engineering</h3>
-                            <ul>
-                                <li>React · TypeScript · Vanilla JS · Python · Next.js · HTML/CSS</li>
-                                <li>Voice AI (LiveKit · real-time STT/LLM/TTS pipelines · VAD &amp; turn-taking)</li>
-                                <li>Agent orchestration (FSM/LLM hybrid · prompt &amp; system-instruction design · attention arbiters · multi-layer safety harnesses)</li>
-                                <li>Evals &amp; observability (LLM judges · behavioral rubrics · evaluation UX · provenance · telemetry · WER)</li>
-                                <li>Multi-agent AI (Claude · OpenAI · OpenRouter · Perplexity · MCP)</li>
-                                <li>Supabase · Firebase · Postgres · Cloudflare Workers · Docker · CI/CD · test-driven development</li>
-                                <li>Product engineer mindset (owning features across stack, UX, data, and abstractions)</li>
-                                <li>Tauri · Discord SDK · WebSockets · real-time sync</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
+<article class="card reveal">
+  <div class="card-head"><h3>Zodiacus</h3>
+    <p class="role"><b>Game Design, Print Production</b> · 2023</p></div>
+  <dl class="facts">
+    <div class="wide"><dt>Stack</dt><dd class="tech">Game design · Playtesting · Manufacturing</dd></div>
+    <div class="wide"><dt>Unlocked</dt><dd>Systems design · physical prototyping · playtesting methodology</dd></div>
+  </dl>
+  <p>A board game built on the Chinese zodiac, started during the pandemic in response to rising
+  anti-Asian hate. I wrote the rulebook and most of the design; a friend wrote the story. Prototyped
+  physically and playtested twice.</p>
+  <img class="shot" loading="lazy" decoding="async" width="1544" height="579" src="images/co/zodiacus.webp" alt="Zodiacus board game">
+</article>
 
-            <section id="testimonials">
-                <div class="section-content">
-                    <span class="section-label animation-appear">Social proof</span>
-                    <h2 class="animation-appear">Recommendations</h2>
-                    <p class="testimonial-source animation-appear">Pulled straight from my <a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener">LinkedIn recommendations</a>.</p>
-                    <div class="testimonial-grid">
-                        <blockquote class="testimonial-card animation-appear">
-                            <p>He has enough technical know-how and communication skills to effectively interact with members of the team who oversee different aspects of the product, both business and technical.</p>
-                            <footer>
-                                <strong>Marc Mendiola</strong>
-                                <span>Software Engineer · Iodine (acquired by GoodRx)</span>
-                            </footer>
-                        </blockquote>
-                        <blockquote class="testimonial-card animation-appear">
-                            <p>He is literate in code, engineers love working with him, and he is deeply attuned to the needs of ordinary people. We worked on healthcare information and tools, which is not an easy area to understand user needs and concerns.</p>
-                            <footer>
-                                <strong>Thomas Goetz</strong>
-                                <span>Direct manager · Chief of Research, GoodRx</span>
-                            </footer>
-                        </blockquote>
-                        <blockquote class="testimonial-card animation-appear">
-                            <p>Chris completed each phase by himself, from user research to visual composition. Together, we built software from scratch for users ranging from Nurse Practitioners to Customer Service Representatives.</p>
-                            <footer>
-                                <strong>Dan Lee</strong>
-                                <span>Lead Engineer · Clover Health</span>
-                            </footer>
-                        </blockquote>
-                        <blockquote class="testimonial-card animation-appear">
-                            <p>He is constantly learning and his passion extends beyond work to things like building a board game, learning new dance moves, or rollerskating. Chris collaborates exceptionally well.</p>
-                            <footer>
-                                <strong>Nate Tucker</strong>
-                                <span>Direct manager · StartPlaying</span>
-                            </footer>
-                        </blockquote>
-                    </div>
-                    <div class="reference-callout animation-appear">
-                        <div class="reference-text">
-                            <strong>Talk to people who've built with me.</strong>
-                            <span><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> (co-founder, y30) and <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> (co-founder, PlaySesh) are glad to get on a call and tell you what it's really like. Just ask.</span>
-                        </div>
-                        <a class="btn-hero btn-ghost reference-cta" href="mailto:whoischrislam@gmail.com?subject=Reference request for Chris Lam&body=Hi Chris, I'd like to talk to one of your references.">Talk to a reference</a>
-                    </div>
-                </div>
-            </section>
+<article class="card reveal">
+  <div class="card-head"><h3>Rat with Wings</h3>
+    <p class="role"><b>Game Design</b> · 2022</p></div>
+  <dl class="facts">
+    <div class="wide"><dt>Stack</dt><dd class="tech">Unity</dd></div>
+    <div class="wide"><dt>Unlocked</dt><dd>Unity · C# · game engine fundamentals · shipping a playable web build</dd></div>
+  </dl>
+  <p>A weekend project to teach myself Unity. Evenings and one weekend, start to playable.</p>
+  <div class="card-cta">
+    <a href="https://rat-with-wings.netlify.app/" target="_blank" rel="noopener">Play it</a>
+    <a href="https://github.com/whoischrislam/unity-game-rat-with-wings" target="_blank" rel="noopener">Repo</a>
+  </div>
+</article>
 
-            <section id="play">
-                <div class="section-content">
-                    <span class="section-label animation-appear">Play</span>
-                    <h2 class="animation-appear">Side projects</h2>
-                    <p class="animation-appear section-lede">Things I build to learn. Each one was a deliberate skill unlock.</p>
-                    <div class="project-grid">
-                        <article class="project-card animation-appear">
-                            <img class="project-banner project-banner--hogware" loading="lazy" src="images/hogware-og.png" alt="HogWare running inside a beige 1990s CRT monitor">
-                            <h3>HogWare</h3>
-                            <p>A daily browser microgame gauntlet built from PostHog's five handbook values for my Technical Ex-Founder application. Scores are stored in PostHog through an ad-blocker-safe Cloudflare Worker and ranked with one HogQL query.</p>
-                            <p class="project-unlock">Built: vanilla JavaScript game engine, daily seeding, Cloudflare Worker, PostHog ingestion, HogQL leaderboard, 32-check Playwright suite</p>
-                            <div class="keyword-container">
-                                <p class="keyword badge-founder">Product Engineering</p>
-                                <p class="keyword">Vanilla JS</p>
-                                <p class="keyword">Cloudflare Workers</p>
-                                <p class="keyword">PostHog</p>
-                                <p class="keyword">HogQL</p>
-                                <p class="keyword">Playwright</p>
-                            </div>
-                            <span class="project-status">Finished · July 2026</span>
-                            <div class="button-group">
-                                <button class="button ghost" onclick="window.open('https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md', '_blank')"><i class="fa fa-file-text-o"></i> Read the build notes</button>
-                                <button class="button" onclick="window.open('hogware.html', '_blank')"><i class="fa fa-play"></i> Play HogWare</button>
-                            </div>
-                        </article>
-                        <article class="project-card animation-appear">
-                            <h3>Voice Noir</h3>
-                            <p>A voice-first noir detective game. Inspect the crime scene, question witnesses, and crack the case by calling out contradictions out loud. My hands-on exploration of STT, TTS, and voice-driven interaction design: the same problem space as y30.</p>
-                            <p class="project-unlock">Unlocked: voice UX, Web Speech API, ElevenLabs TTS, real-time state from speech</p>
-                            <div class="keyword-container">
-                                <p class="keyword badge-founder">Voice AI</p>
-                                <p class="keyword">STT</p>
-                                <p class="keyword">Web Speech API</p>
-                                <p class="keyword">ElevenLabs</p>
-                                <p class="keyword">React</p>
-                                <p class="keyword">TypeScript</p>
-                            </div>
-                            <span class="project-status">Active · April 2026</span>
-                            <div class="button-group">
-                                <button class="button" onclick="window.location.href='mailto:whoischrislam@gmail.com?subject=Voice%20Noir%20demo%20access&amp;body=Hi%20Chris%2C%20I%27d%20love%20to%20try%20the%20Voice%20Noir%20demo.'"><i class="fa fa-envelope"></i> Request demo access</button>
-                            </div>
-                        </article>
-                        <article class="project-card animation-appear">
-                            <img class="project-banner" loading="lazy" src="images/edr.png" alt="Evolve, Die, Repeat pixel-art creature">
-                            <h3>Evolve, Die, Repeat</h3>
-                            <p>A 2D side-scrolling roguelite where you swap body parts mid-run to evolve: grow fins to swim, wings to fly, claws to climb. Built solo in Love2D (Lua), test-driven with 1,568 tests across 69 files, a telemetry and playtest-feedback pipeline, and CI/CD that ships Windows, macOS, and Linux builds to itch.io. In friends-and-family playtesting. Inspired by Hades, Dead Cells, and E.V.O.</p>
-                            <p class="project-unlock">Unlocked: Lua, Love2D, test-driven game dev, telemetry-driven iteration, automated cross-platform CI/CD</p>
-                            <div class="keyword-container">
-                                <p class="keyword">Love2D</p>
-                                <p class="keyword">Lua</p>
-                                <p class="keyword">Roguelite</p>
-                                <p class="keyword">Game Design</p>
-                                <p class="keyword">Test-driven</p>
-                                <p class="keyword">Telemetry</p>
-                                <p class="keyword">CI/CD</p>
-                                <p class="keyword">itch.io</p>
-                            </div>
-                            <span class="project-status">Active · January 2026</span>
-                            <div class="button-group">
-                                <button class="button" onclick="window.location.href='mailto:whoischrislam@gmail.com?subject=EDR%20early%20demo%20access&amp;body=Hi%20Chris%2C%20I%27d%20love%20to%20try%20the%20EDR%20early%20demo.'"><i class="fa fa-envelope"></i> Request demo access</button>
-                            </div>
-                        </article>
-                        <article class="project-card animation-appear">
-                            <img class="project-banner" loading="lazy" src="images/unity.png" alt="Made with Unity">
-                            <h3>Rat with wings</h3>
-                            <p>A Flappy Bird clone I made to get familiar with a game engine. Built in Unity with C#.</p>
-                            <p class="project-unlock">Unlocked: Unity, C#, game engine fundamentals, shipping a playable web build</p>
-                            <div class="keyword-container">
-                                <p class="keyword">Unity</p>
-                                <p class="keyword">Game Dev</p>
-                                <p class="keyword">C#</p>
-                                <p class="keyword">Game Engine</p>
-                                <p class="keyword">Figma</p>
-                            </div>
-                            <span class="project-status">Finished · 2023</span>
-                            <div class="button-group">
-                                <button class="button ghost" onclick="window.open('https://github.com/whoischrislam/unity-game-rat-with-wings', '_blank')"><i class="fa fa-github"></i> View repo</button>
-                                <button class="button" onclick="window.open('https://rat-with-wings.netlify.app/', '_blank')"><i class="fa fa-play"></i> Play</button>
-                            </div>
-                        </article>
-                        <article class="project-card animation-appear">
-                            <img class="project-banner" loading="lazy" src="images/openai.png" alt="OpenAI">
-                            <h3>Translator: AI Polyglot</h3>
-                            <p>An AI-powered language translation app. Built in JavaScript with the OpenAI API.</p>
-                            <p class="project-unlock">Unlocked: first LLM API integration, prompt design, shipping a live AI app</p>
-                            <div class="keyword-container">
-                                <p class="keyword">AI</p>
-                                <p class="keyword">OpenAI</p>
-                                <p class="keyword">JavaScript</p>
-                                <p class="keyword">API</p>
-                                <p class="keyword">Figma</p>
-                            </div>
-                            <span class="project-status">Finished · 2023</span>
-                            <div class="button-group">
-                                <button class="button ghost" onclick="window.open('https://github.com/whoischrislam/ai-polyglot', '_blank')"><i class="fa fa-github"></i> View repo</button>
-                                <button class="button" onclick="window.open('https://ai-polyglot.netlify.app/', '_blank')"><i class="fa fa-eye"></i> View app</button>
-                            </div>
-                        </article>
-                        <article class="project-card animation-appear">
-                            <img class="project-banner" loading="lazy" src="images/zodiacus.png" alt="Zodiacus 3D-printed game pieces">
-                            <h3>Zodiacus</h3>
-                            <p>A board game I'm designing. I'm an avid board gamer who always wanted to make my own. Got to alpha with playtesting before putting it on ice.</p>
-                            <p class="project-unlock">Unlocked: systems design, physical prototyping, playtesting methodology</p>
-                            <div class="keyword-container">
-                                <p class="keyword">Game Design</p>
-                                <p class="keyword">Tabletop</p>
-                                <p class="keyword">Board Game</p>
-                                <p class="keyword">3D Printing</p>
-                                <p class="keyword">Playtesting</p>
-                            </div>
-                            <span class="project-status">On hiatus · 2021</span>
-                        </article>
-                    </div>
-                </div>
-            </section>
-            <section id="contact">
-                <div class="section-content">
-                    <h2 class="animation-appear">Let's work together.</h2>
-                    <p class="contact-subtitle animation-appear">Selectively open to senior IC roles. Warm intros preferred.</p>
-                    <div class="open-to-chips animation-appear">
-                        <span class="open-to-label">Open to</span>
-                        <span class="open-to-chip">Product Design Engineer</span>
-                        <span class="open-to-chip">Design Engineer</span>
-                        <span class="open-to-chip">AI Product Engineer</span>
-                        <span class="open-to-chip">Senior / Lead IC</span>
-                    </div>
-                    <p class="contact-lede animation-appear">Still weighing fit? Ask my hiring guide, or reach out directly.</p>
-                    <div class="hero-cta animation-appear">
-                        <a class="btn-hero btn-primary" href="https://cal.com/whoischrislam/30min" target="_blank" rel="noopener">Book 30 minutes →</a>
-                        <a class="btn-hero btn-ghost" href="mailto:whoischrislam@gmail.com?subject=Role%20conversation%20with%20Chris%20Lam&amp;body=Hi%20Chris%2C%0A%0A">Email me</a>
-                        <a class="btn-hero btn-ghost" href="#" data-va-open role="button">Ask my hiring guide</a>
-                        <a class="btn-hero btn-ghost" href="/chris-lam-resume.pdf" download>Download resume</a>
-                    </div>
-                </div>
-            </section>
-        </main>
+<article class="card reveal">
+  <div class="card-head"><h3>Translator: AI Polyglot</h3>
+    <p class="role"><b>Product Engineer, AI</b> · 2024</p></div>
+  <dl class="facts">
+    <div class="wide"><dt>Stack</dt><dd class="tech">JavaScript · LLM APIs</dd></div>
+    <div class="wide"><dt>Unlocked</dt><dd>First LLM API integration · prompt design · shipping a live AI app</dd></div>
+  </dl>
+  <div class="card-cta">
+    <a href="https://ai-polyglot.netlify.app/" target="_blank" rel="noopener">Try it</a>
+    <a href="https://github.com/whoischrislam/ai-polyglot" target="_blank" rel="noopener">Repo</a>
+  </div>
+</article>
 
-        <footer>
-            <div id="footer-content">
-                <nav id="nav-links" aria-label="Footer">
-                    <a href="#introduction">About</a>
-                    <a href="#work">Work</a>
-                    <a href="https://github.com/whoischrislam" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa fa-github" style="font-size:22px"></i></a>
-                    <a href="https://www.linkedin.com/in/whoischrislam/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa fa-linkedin" style="font-size:22px"></i></a>
-                    <a href="mailto:whoischrislam@gmail.com" aria-label="Email"><span class="material-symbols-outlined">mail</span></a>
-                </nav>
-                <div class="footer-meta">
-                    <p>Built from scratch: the site in vanilla HTML, CSS, and JavaScript, and the AI hiring guide as a custom voice agent I architected end to end (Cloudflare Workers orchestrating Claude and ElevenLabs, not a plug-in widget). Hand-coded foundations, AI-assisted.</p>
-                    <p>© 2026 Christopher Lam · Honolulu, HI 🌺</p>
-                </div>
-            </div>
-        </footer>
-        <button id="va-launcher" class="va-launcher" hidden aria-label="Open Chris's AI hiring guide">
-            <span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span>
+<h2 class="sec" id="looking-for">What I'm looking for</h2>
+<p class="lede">I design and engineer the same product, research to ship. Design intent survives all the way to production. I use AI as an engineer, not a shortcut. I&rsquo;m at my best on hard, ambiguous problems where judgment decides the outcome, not headcount.</p>
+<ul class="want">
+  <li>A small, high-output team, or a senior IC pocket inside a larger one, where I can go deep and stay. The work is the scoreboard.</li>
+  <li>Products that put AI in front of real users, where trust, oversight and safety are the hard part. Healthcare, AI-native systems, developer tools, complex SaaS.</li>
+  <li>Direct collaboration across product, design and engineering, with people who sweat the details.</li>
+  <li>The direction I&rsquo;m heading: safe, eval-driven AI in high-stakes domains. Guardrails, evals and oversight as product architecture, not an afterthought.</li>
+</ul>
+<div class="tags"><span class="lbl">Open to</span>
+  <span class="t">Senior / Lead Design Engineer</span><span class="t">Product Design Engineer</span>
+  <span class="t">AI Product Engineer</span></div>
+<div class="tags"><span class="lbl">Based</span>
+  <span class="t">Remote US from Honolulu</span><span class="t">West Coast hours</span>
+  <span class="t">Quarterly Bay Area / Seattle</span></div>
+
+<h2 class="sec">Let&rsquo;s work together.</h2>
+<p class="avail">Selectively open to senior IC roles. Warm intros preferred.</p>
+<div class="refs" id="contact">
+  <p><b>Talk to people who've built with me.</b> <a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> and <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> are glad to get on
+  a call and tell you what it's really like. Just ask.</p>
+  <a class="btn" href="mailto:whoischrislam@gmail.com?subject=Reference%20call" target="_blank" rel="noopener">Talk to a reference</a>
+  <a class="btn" href="#" data-va-open role="button">Ask my AI hiring guide</a>
+  <a class="btn primary" href="https://cal.com/whoischrislam/30min" target="_blank" rel="noopener">Book 30 minutes</a>
+  <p class="links"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener">Or read what they already wrote &rarr;</a></p>
+</div>
+
+<div class="foot">
+  <p class="avail-line"><span class="upd">Updated August 2026.</span></p>
+  <p class="links"><a href="mailto:whoischrislam@gmail.com?subject=Hello%20Chris" target="_blank" rel="noopener">whoischrislam@gmail.com</a>
+     · <a href="/chris-lam-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute;</a>
+     · <a href="https://github.com/whoischrislam" target="_blank" rel="noopener">GitHub</a>
+     · <a href="https://www.linkedin.com/in/whoischrislam/" target="_blank" rel="noopener">LinkedIn</a></p>
+  <p class="craft">Hand-written HTML and CSS. No build step, no framework, no npm.
+     <a href="https://github.com/whoischrislam/whoischrislam.github.io" target="_blank" rel="noopener">Read the source</a></p>
+</div>
+
+</div>
+
+<button id="va-launcher" class="va-launcher" hidden aria-label="Open Chris's AI hiring guide">
+            <svg class="va-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><rect x="3" y="9" width="2" height="6" rx="1"/><rect x="7.5" y="5" width="2" height="14" rx="1"/><rect x="12" y="2" width="2" height="20" rx="1"/><rect x="16.5" y="5" width="2" height="14" rx="1"/><rect x="21" y="9" width="2" height="6" rx="1"/></svg>
             <span class="va-launcher-label">Ask my AI guide</span>
         </button>
-        <div id="va-dock" class="va-dock" role="dialog" aria-label="Chris's AI hiring guide" hidden>
+<div id="va-dock" class="va-dock" role="dialog" aria-label="Chris's AI hiring guide" hidden>
             <div class="va-dock-head">
                 <span class="va-dock-title">Chris's AI hiring guide</span>
                 <button type="button" class="va-dock-close" aria-label="Minimize">&minus;</button>
             </div>
             <div class="va-dock-body"></div>
         </div>
-    </body>
-</html>
+
+<script>
+(function(){
+  var r=document.documentElement, k="theme";
+  r.classList.add("js");
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ document.querySelector(".hero").classList.add("lit")})});
+
+  /* Reveal. Fires once, unobserves, never re-triggers on scroll-up. Skipped
+     entirely when the user has asked for less motion. */
+  if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target)} })},{rootMargin:"0px 0px -8% 0px",threshold:.05});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el)});
+    document.querySelectorAll(".logo-row li").forEach(function(el,i){ el.style.setProperty("--i",i)})}else{
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in")})}
+
+  var saved=localStorage.getItem(k);
+  if(saved) r.setAttribute("data-theme",saved);
+  else if(window.matchMedia("(prefers-color-scheme: light)").matches) r.setAttribute("data-theme","light");
+  /* Swap the facade for the real player on click. Nothing loads until asked. */
+  /* The story panel is a native popover: the platform handles open, close,
+     light-dismiss, Escape and focus return. No JS needed here. */
+
+  document.querySelectorAll(".embed .facade").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var f = document.createElement("iframe");
+      f.src = btn.dataset.loom
+        ? "https://www.loom.com/embed/" + btn.dataset.loom +
+          "?hide_owner=true&hide_share=true&hideEmbedTopBar=true&autoplay=1"
+        : "https://www.youtube-nocookie.com/embed/" + btn.dataset.yt + "?autoplay=1&rel=0";
+      f.title = btn.getAttribute("aria-label").replace(/^Play video: /, "");
+      f.allow = "accelerometer; autoplay; clipped-media; encrypted-media; picture-in-picture";
+      f.referrerPolicy = "strict-origin-when-cross-origin";
+      f.allowFullscreen = true;
+      btn.replaceWith(f);
+      f.focus()})});
+
+  var tt = document.getElementById("theme-toggle");
+  function syncToggle(){
+    var dark = r.getAttribute("data-theme") !== "light";
+    tt.setAttribute("aria-checked", String(dark));
+    tt.setAttribute("aria-label", dark ? "Dark mode. Switch to light." : "Light mode. Switch to dark.");
+  }
+  syncToggle();
+  tt.addEventListener("click", function(){
+    var next = r.getAttribute("data-theme") === "light" ? "dark" : "light";
+    r.setAttribute("data-theme", next);
+    localStorage.setItem(k, next);
+    syncToggle();
+  });
+})();
+</script>
+</body></html>

@@ -18,7 +18,7 @@ Rules are per tier: which slots are required, which are allowed, and how many
 words of free prose the tier may carry. Order is checked against one canonical
 sequence for every card.
 
-    python3 scripts/check-cards.py [--file index-v2.html] [--quiet]
+    python3 scripts/check-cards.py [--file index.html] [--quiet]
 
 Exit 0 clean, 1 on any FAIL. WARNs never fail the run; they are things that must
 be resolved before publish, not before commit.
@@ -385,7 +385,7 @@ def template(tier):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--file", default="index-v2.html")
+    ap.add_argument("--file", default="index.html")
     ap.add_argument("--quiet", action="store_true")
     ap.add_argument("--template", choices=("lead", "proof", "row"),
                     help="print a blank card skeleton for a new company")
