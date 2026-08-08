@@ -88,10 +88,10 @@
 <style>
 :root{
   --bg:#0F0F11; --surface:#17171A; --surface-2:#1E1E22; --text:#ECEAE4; --muted:#9A988F;
-  --accent:#FF7059; --accent-soft:rgba(255,112,89,.13); --border:rgba(255,255,255,.10);
+  --accent:#26AF55; --accent-soft:rgba(38,175,85,.13); --border:rgba(255,255,255,.10);
   /* Agent token shim: the hiring guide's CSS was written against the old
      stylesheet's names. Mapped onto v2's tokens rather than duplicating values. */
-  --accent-strong:#FF8A77; --border-strong:rgba(255,255,255,.18);
+  --accent-strong:#3FD070; --border-strong:rgba(255,255,255,.18);
   --chip-bg:rgba(255,255,255,.06); --drop-shadow:0 10px 30px rgba(0,0,0,.35);
   --on-accent:#15110F; --surface-hover:var(--surface-2);
   --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
@@ -100,8 +100,8 @@
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
   --bg:#FBF8F4; --surface:#FFFFFF; --surface-2:#F4F1EB; --text:#1A1A18; --muted:#6A675F;
-  --accent:#B8401F; --accent-soft:rgba(184,64,31,.10); --border:rgba(0,0,0,.10)
-  --accent-strong:#B8431F; --border-strong:rgba(0,0,0,.16);
+  --accent:#177537; --accent-soft:rgba(23,117,55,.10); --border:rgba(0,0,0,.10)
+  --accent-strong:#0F5F2C; --border-strong:rgba(0,0,0,.16);
   --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 10px 30px rgba(60,40,20,.10);
   --on-accent:#FFFFFF; --surface-hover:var(--surface-2);}
 *,*::before,*::after{box-sizing:border-box}
@@ -173,7 +173,7 @@ a:hover{text-decoration-color:var(--accent)}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;
   border-radius:8px;font-weight:600;font-size:15.5px;text-decoration:none;
   border:1px solid var(--border);min-height:48px;line-height:1.4}
-.btn.primary{background:var(--accent);color:#fff;border-color:transparent}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:transparent}
 .btn:hover{border-color:var(--accent)}
 .btn.ghost{border-color:transparent;color:var(--muted);padding-left:8px}
 .btn.ghost:hover{color:var(--text);border-color:transparent;text-decoration:underline;
@@ -182,7 +182,7 @@ a:hover{text-decoration-color:var(--accent)}
 /* ── 3. Logo strip ────────────────────────────────────────────── */
 .logos{border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   padding:20px 0;margin:0}
-.logos .lbl{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+.logos .lbl{font-size:13.5px;color:var(--muted);
   margin:0 0 14px}
 /* Optical sizing: equal visual AREA, not equal height, or the wide wordmarks
    swallow the compact ones. --h is precomputed per logo. */
@@ -250,38 +250,24 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .aiwork{max-width:66ch;margin:0 0 16px;font-size:16.5px;line-height:1.62}
 .taught{margin:-2px 0 14px;padding-left:14px;border-left:2px solid var(--border)}
 
-.wslbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+.wslbl{display:block;font-size:13.5px;
   color:var(--muted);font-weight:600;margin-bottom:5px}
-.ruleslabel{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+.ruleslabel{font-size:13.5px;color:var(--muted);
   font-weight:600;margin:20px 0 10px}
 
 
-/* ── PREVIEW, one card only ──────────────────────────────────────────
-   Testing four changes drawn from Chris's own 2010-2024 CSS, against the
-   template defaults currently on every other card.
-   1. His green, not coral. #26AF55 is the accent he chose for the
-      professional repo in Jan 2024; 6.70:1 on this background, matching
-      the coral it replaces. Light-mode counterpart #177537 = 5.46:1.
-      Coral has no precedent in sixteen years of his work.
-   2. Labels lose the uppercase-11px-letterspaced treatment. He uses
-      uppercase for display and nav at readable sizes, never as micro-type.
-      That treatment is the single strongest template tell in the file.
-   3. border-radius: 0. In gamedev he explicitly reset radius to zero and
-      deleted every drop shadow.
-   4. Left borders go to 2px accent. His 2024 --border was
-      "2px solid var(--primary)", carrying structure by line weight alone. */
-.card--preview{--accent:#26AF55;--accent-soft:rgba(38,175,85,.13)}
-[data-theme="light"] .card--preview{--accent:#177537;--accent-soft:rgba(23,117,55,.10)}
-.card--preview .facts dt,
-.card--preview .rlbl,
-.card--preview .proof .lbl{font-size:13.5px;letter-spacing:0;text-transform:none;
-  font-weight:400;color:var(--muted)}
-.card--preview .facts dt{padding-top:1px}
-.card--preview .shot{border-radius:0;border-width:1px}
-.card--preview .taught{border-left:2px solid var(--accent);padding-left:16px}
-.card--preview .rec{border-left:2px solid var(--accent)}
-.card--preview .proof a{border-radius:0}
-.card--preview .proof a:hover,.card--preview .proof a:focus-visible{background:var(--accent)}
+
+
+/* Hard edges. In gamedev he reset every radius to zero, deleted the drop shadows,
+   and hardened borders to "2px solid var(--primary)". Structure by line weight. */
+.shot,.proof a,.result > div{border-radius:0}
+.taught{border-left:2px solid var(--accent);padding-left:16px}
+.rec{border-left:2px solid var(--proj-accent,var(--accent))}
+/* Per-project accent, revived from portfolio_v5 (2014), where the accent was the
+   client's brand colour rather than his. Falls back to the green. */
+.card{--proj-accent:var(--accent)}
+.taught{border-left-color:var(--proj-accent,var(--accent))}
+.result .fig{color:var(--proj-accent,var(--accent))}
 
 /* Recommendations, collected. Four quotes at full weight instead of four
    quotes buried one per card. */
@@ -299,7 +285,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .card--brief .facts{padding:0;margin:0 0 2px}
 .card--brief .facts > div{padding:2.5px 0}
 .card--brief .facts dd{font-size:14px}
-.card--brief .facts dt{font-size:10.5px}
+.card--brief .facts dt{font-size:13px}
 .card--brief .card--brief h4{font-size:16px;margin:16px 0 6px}
 .card--brief .proj{margin:0}
 
@@ -320,15 +306,14 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .facts{display:block;margin:0 0 4px;padding:0}
 .facts > div{display:grid;grid-template-columns:64px 1fr;gap:0 16px;
   align-items:baseline;padding:3.5px 0}
-.facts dt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--muted);margin:0;padding-top:2px}
+.facts dt{font-size:13.5px; color:var(--muted);margin:0;padding-top:2px}
 .facts dd{margin:0;font-size:14.5px;line-height:1.5;min-width:0}
 @media (max-width:460px){ .facts > div{grid-template-columns:1fr;gap:1px} }
 .facts dd.tech{color:var(--muted)}
 /* The result lands inside the story, not in the metadata. Situation, action,
    result, meaning: the arc a hiring manager reads for. */
 .result{margin:0 0 14px}
-.rlbl{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+.rlbl{display:block;font-size:13.5px;
   color:var(--muted);margin-bottom:3px}
 .result .fig{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--accent);
   margin-right:7px;letter-spacing:-.01em}
@@ -360,7 +345,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 
 /* The metric is my claim; these are somebody else's. */
 .proof{display:flex;flex-wrap:wrap;gap:7px 10px;align-items:center;margin:14px 0 0}
-.proof .lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.proof .lbl{font-size:13.5px;color:var(--muted)}
 /* These carry borrowed credibility. They were quieter than body text, which
    is backwards. Respond fast on enter, settle slow on leave. */
 .proof a{font-size:13px;font-weight:600;text-decoration:none;color:var(--text);
@@ -438,7 +423,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
   border:1px solid var(--accent-soft);background:var(--accent-soft);
   border-radius:20px;padding:7px 14px;min-height:38px;
   transition:background .22s ease,color .22s ease}
-.ref-offer:hover{background:var(--accent);color:#fff;transition-duration:.12s}
+.ref-offer:hover{background:var(--accent);color:var(--on-accent);transition-duration:.12s}
 .ref-offer::before{content:"";width:7px;height:7px;border-radius:50%;
   background:currentColor;opacity:.85}
 
@@ -453,7 +438,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 
 .want li{margin:0 0 10px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;align-items:center}
-.tags .lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.tags .lbl{font-size:13.5px;color:var(--muted);margin-right:4px}
 .tags span.t{font-size:12.5px;color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:4px 11px}
 .refs{background:var(--surface);border-radius:10px;padding:26px;margin:36px 0 0}
 .refs p{margin:0 0 16px}
@@ -1061,7 +1046,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <a href="work/goodrx.html" target="_blank" rel="noopener">GoodRx Research case study</a></div>
 </article>
 
-<article class="card card--brief card--preview reveal">
+<article class="card card--brief reveal">
   <div class="card-head">
     <div class="ch-top"><h3>Clover Health</h3><span class="outcome">IPO 2021</span><p class="when">2015 – 2016</p></div>
     <p class="role"><b>Product Designer, second designer</b></p>
@@ -1163,7 +1148,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   being wrong has a cost.</p>
 </article>
 
-<article class="card card--brief reveal">
+<article class="card card--brief reveal" style="--proj-accent:#2E964B">
   <div class="card-head">
     <div class="ch-top"><h3>TaskRabbit</h3><span class="outcome">IKEA 2017</span><p class="when">2014 – 2015</p></div>
     <p class="role"><b>Product Designer</b></p>
