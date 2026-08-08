@@ -510,6 +510,20 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 
 @media (max-width:640px){ body{font-size:var(--t-base)} .hero{padding:26px 0 30px} .btn{flex:1 1 100%} }
 
+/* One mobile step, which is how he did it in 2024: one type step down, section padding
+   halved, one width step. Nothing else changes.
+
+   The reason it is needed here: at a true 390px viewport the wrap padding, card padding
+   and borders were eating 112px, so a card had 267px of a 390px screen to write in. */
+@media (max-width:640px){
+  :root{ --t-xxl:28px; --t-xl:23px; --t-lg:20px;
+         --sp-12:44px; --sp-8:28px }
+  .wrap{padding:0 16px}
+  .card{padding:20px 16px}
+  .card--brief{padding:18px 16px}
+  .refs{padding:20px 16px}
+}
+
 /* Cross-document view transitions. Firefox falls back to a plain navigation. */
 @view-transition{ navigation:auto }
 ::view-transition-old(root),::view-transition-new(root){ animation-duration:.28s }
