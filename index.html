@@ -255,6 +255,34 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .ruleslabel{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
   font-weight:600;margin:20px 0 10px}
 
+
+/* ── PREVIEW, one card only ──────────────────────────────────────────
+   Testing four changes drawn from Chris's own 2010-2024 CSS, against the
+   template defaults currently on every other card.
+   1. His green, not coral. #26AF55 is the accent he chose for the
+      professional repo in Jan 2024; 6.70:1 on this background, matching
+      the coral it replaces. Light-mode counterpart #177537 = 5.46:1.
+      Coral has no precedent in sixteen years of his work.
+   2. Labels lose the uppercase-11px-letterspaced treatment. He uses
+      uppercase for display and nav at readable sizes, never as micro-type.
+      That treatment is the single strongest template tell in the file.
+   3. border-radius: 0. In gamedev he explicitly reset radius to zero and
+      deleted every drop shadow.
+   4. Left borders go to 2px accent. His 2024 --border was
+      "2px solid var(--primary)", carrying structure by line weight alone. */
+.card--preview{--accent:#26AF55;--accent-soft:rgba(38,175,85,.13)}
+[data-theme="light"] .card--preview{--accent:#177537;--accent-soft:rgba(23,117,55,.10)}
+.card--preview .facts dt,
+.card--preview .rlbl,
+.card--preview .proof .lbl{font-size:13.5px;letter-spacing:0;text-transform:none;
+  font-weight:400;color:var(--muted)}
+.card--preview .facts dt{padding-top:1px}
+.card--preview .shot{border-radius:0;border-width:1px}
+.card--preview .taught{border-left:2px solid var(--accent);padding-left:16px}
+.card--preview .rec{border-left:2px solid var(--accent)}
+.card--preview .proof a{border-radius:0}
+.card--preview .proof a:hover,.card--preview .proof a:focus-visible{background:var(--accent)}
+
 /* Recommendations, collected. Four quotes at full weight instead of four
    quotes buried one per card. */
 .reccluster{display:grid;gap:26px}
@@ -1033,7 +1061,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     <a href="work/goodrx.html" target="_blank" rel="noopener">GoodRx Research case study</a></div>
 </article>
 
-<article class="card card--brief reveal">
+<article class="card card--brief card--preview reveal">
   <div class="card-head">
     <div class="ch-top"><h3>Clover Health</h3><span class="outcome">IPO 2021</span><p class="when">2015 – 2016</p></div>
     <p class="role"><b>Product Designer, second designer</b></p>
