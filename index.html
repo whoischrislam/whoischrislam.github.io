@@ -96,7 +96,15 @@
   --on-accent:#15110F; --surface-hover:var(--surface-2);
   --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
   --serif:'Instrument Serif',Georgia,serif; --sans:'Open Sans',system-ui,sans-serif;
-  --head-h:56px}
+  --head-h:56px
+  /* Type scale, seven steps. Was twenty-one sizes at half-pixel granularity,
+     which is the granularity of a generator, not a decision. */
+  --t-xxl:32px; --t-xl:26px; --t-lg:21px; --t-md:19px;
+  --t-base:17px; --t-sm:15px; --t-xs:13px;
+  /* Spacing. 4px base, doubling. Ported from his 2024 token set, which used the
+     same shape in em: 0.2 / 0.4 / 0.8 / 1 / 1.6 / 2 / 4. */
+  --sp-1:4px; --sp-2:8px; --sp-3:16px; --sp-4:24px; --sp-6:32px; --sp-8:44px; --sp-12:88px;
+}
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
   --bg:#FBF8F4; --surface:#FFFFFF; --surface-2:#F4F1EB; --text:#1A1A18; --muted:#6A675F;
@@ -106,7 +114,7 @@
   --on-accent:#FFFFFF; --surface-hover:var(--surface-2);}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
-  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%;height:auto}
 a{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border)}
 a:hover{text-decoration-color:var(--accent)}
@@ -117,9 +125,9 @@ a:hover{text-decoration-color:var(--accent)}
   background:color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--border)}
 .site-head .wrap{display:flex;align-items:center;justify-content:space-between;height:100%}
-.site-head .logo{font-family:var(--serif);font-size:23px;text-decoration:none}
+.site-head .logo{font-family:var(--serif);font-size:var(--t-lg);text-decoration:none}
 .site-head nav{display:flex;align-items:center;gap:6px}
-.site-head nav a{font-size:15px;text-decoration:none;color:var(--muted);
+.site-head nav a{font-size:var(--t-sm);text-decoration:none;color:var(--muted);
   display:inline-flex;align-items:center;justify-content:center;
   min-height:44px;padding:0 10px;border-radius:7px;transition:color .16s ease}
 .site-head nav a:hover{color:var(--text)}
@@ -151,7 +159,7 @@ a:hover{text-decoration-color:var(--accent)}
 .hero{padding:34px 0 38px}
 .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,60px);
   line-height:1.05;margin:0 0 16px;letter-spacing:.2px}
-.hero .sub{font-size:18.5px;line-height:1.65;color:var(--muted);margin:0 0 26px}
+.hero .sub{font-size:var(--t-md);line-height:1.65;color:var(--muted);margin:0 0 26px}
 .hero .sub b{font-weight:600;color:var(--text)}
 .hero .sub .exits{color:var(--text)}
 .hero .sub a{color:var(--text);text-decoration-color:var(--border);
@@ -171,7 +179,7 @@ a:hover{text-decoration-color:var(--accent)}
 }
 .cta{display:flex;flex-wrap:wrap;gap:10px}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;
-  border-radius:8px;font-weight:600;font-size:15.5px;text-decoration:none;
+  border-radius:8px;font-weight:600;font-size:var(--t-sm);text-decoration:none;
   border:1px solid var(--border);min-height:48px;line-height:1.4}
 .btn.primary{background:var(--accent);color:var(--on-accent);border-color:transparent}
 .btn:hover{border-color:var(--accent)}
@@ -182,7 +190,7 @@ a:hover{text-decoration-color:var(--accent)}
 /* ── 3. Logo strip ────────────────────────────────────────────── */
 .logos{border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   padding:20px 0;margin:0}
-.logos .lbl{font-size:13.5px;color:var(--muted);
+.logos .lbl{font-size:var(--t-xs);color:var(--muted);
   margin:0 0 14px}
 /* Optical sizing: equal visual AREA, not equal height, or the wide wordmarks
    swallow the compact ones. --h is precomputed per logo. */
@@ -202,7 +210,7 @@ a:hover{text-decoration-color:var(--accent)}
 /* Sits in the action row as a third, quieter option. */
 /* Opens in the top layer, so opening it moves nothing on the page. Native
    popover carries light-dismiss, Escape and focus-return without custom JS. */
-.story-trigger{cursor:pointer;font-family:var(--sans);font-size:15.5px;font-weight:600;
+.story-trigger{cursor:pointer;font-family:var(--sans);font-size:var(--t-sm);font-weight:600;
   color:var(--muted);min-height:48px;padding:0 10px;display:inline-flex;align-items:center;
   gap:7px;background:none;border:0;border-radius:8px}
 .story-trigger:hover{color:var(--text)}
@@ -221,16 +229,16 @@ a:hover{text-decoration-color:var(--accent)}
 .story-panel:popover-open::backdrop{opacity:1}
 @starting-style{ .story-panel:popover-open::backdrop{opacity:0} }
 .story-panel .inner{padding:26px 28px 28px}
-.story-panel h2{font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 16px}
-.story-panel p{margin:0 0 14px;color:var(--muted);font-size:16px;line-height:1.7}
+.story-panel h2{font-family:var(--serif);font-weight:400;font-size:var(--t-xl);margin:0 0 16px}
+.story-panel p{margin:0 0 14px;color:var(--muted);font-size:var(--t-base);line-height:1.7}
 .story-panel p:last-child{margin:0}
 .story-close{position:sticky;top:0;float:right;margin:10px 10px 0 0;appearance:none;
   background:var(--bg);border:1px solid var(--border);color:var(--muted);cursor:pointer;
-  width:36px;height:36px;border-radius:50%;font-size:17px;line-height:1;z-index:1}
+  width:36px;height:36px;border-radius:50%;font-size:var(--t-base);line-height:1;z-index:1}
 .story-close:hover{color:var(--text);border-color:var(--accent)}
 @media (max-width:640px){ .story-panel .inner{padding:20px} }
 details.more{margin-top:28px}
-details.more summary{cursor:pointer;font-size:14.5px;color:var(--muted);min-height:44px;
+details.more summary{cursor:pointer;font-size:var(--t-sm);color:var(--muted);min-height:44px;
   display:flex;align-items:center;list-style:none}
 details.more summary::-webkit-details-marker{display:none}
 details.more summary::before{content:"\203A";display:inline-block;margin-right:8px;
@@ -238,21 +246,27 @@ details.more summary::before{content:"\203A";display:inline-block;margin-right:8
 details.more[open] summary::before{transform:rotate(90deg)}
 
 /* ── Work cards ───────────────────────────────────────────────── */
-h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26px}
-.card{border-top:1px solid var(--border);padding:34px 0}
+h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
+  /* Rule above the heading, not below it. It terminates the previous block and
+     introduces this one, which is how his Squarespace case studies were built. */
+  border-top:1px solid var(--border);padding-top:var(--sp-4);margin:var(--sp-12) 0 13px}
+/* ...so the first card must not draw a second line 13px under the first. */
+h2.sec + .card,
+h2.sec + #worklist > .card:first-child{border-top:0}   /* cards under "Work" are wrapped, so adjacency alone misses the first one */
+.card{border-top:1px solid var(--border);padding:var(--sp-4) 0}
 
 /* The limit. Separated by a rule, NOT muted. It reads as a deliberate register
    change, not a footnote, because on these cards the honesty is the argument. */
 .limit{border-top:1px solid var(--border);margin-top:20px;padding-top:16px}
 .setup{margin:0 0 12px}
-.avail{font-size:16.5px;margin:0 0 20px;color:var(--muted)}
-.fitline{font-size:16px;margin:0 0 14px}
-.aiwork{max-width:66ch;margin:0 0 16px;font-size:16.5px;line-height:1.62}
+.avail{font-size:var(--t-base);margin:0 0 20px;color:var(--muted)}
+.fitline{font-size:var(--t-base);margin:0 0 14px}
+.aiwork{max-width:66ch;margin:0 0 16px;font-size:var(--t-base);line-height:1.62}
 .taught{margin:-2px 0 14px;padding-left:14px;border-left:2px solid var(--border)}
 
-.wslbl{display:block;font-size:13.5px;
+.wslbl{display:block;font-size:var(--t-xs);
   color:var(--muted);font-weight:600;margin-bottom:5px}
-.ruleslabel{font-size:13.5px;color:var(--muted);
+.ruleslabel{font-size:var(--t-xs);color:var(--muted);
   font-weight:600;margin:20px 0 10px}
 
 
@@ -266,6 +280,19 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 /* Per-project accent, revived from portfolio_v5 (2014), where the accent was the
    client's brand colour rather than his. Falls back to the green. */
 .card{--proj-accent:var(--accent)}
+/* Per-project accents. Each hue comes from a real source, named below; only the
+   lightness moves between themes, because his 2014 palette was built for a
+   light-only page and half of it is invisible on dark. Every pair clears 4.5:1. */
+.card[data-accent="y30"]{--proj-accent:#2E7DDD}                 /* his own token in y30-voice, commented 'y30 blue' */
+[data-theme="light"] .card[data-accent="y30"]{--proj-accent:#1A56A0}
+.card[data-accent="playsesh"]{--proj-accent:#E29452}                 /* the accent in playsesh client/src/App.css */
+[data-theme="light"] .card[data-accent="playsesh"]{--proj-accent:#AA5D1C}
+.card[data-accent="pathstream"]{--proj-accent:#FF4F51}                 /* PATHSTREAM_BRAND_GUIDELINES.pdf, labelled HEX */
+[data-theme="light"] .card[data-accent="pathstream"]{--proj-accent:#E30003}
+.card[data-accent="taskrabbit"]{--proj-accent:#2E964B}                 /* his 2014 per-project assignment */
+[data-theme="light"] .card[data-accent="taskrabbit"]{--proj-accent:#278140}
+.card[data-accent="amazon"]{--proj-accent:#DF9900}                 /* his 2014 per-project assignment */
+[data-theme="light"] .card[data-accent="amazon"]{--proj-accent:#956600}
 .taught{border-left-color:var(--proj-accent,var(--accent))}
 .result .fig{color:var(--proj-accent,var(--accent))}
 
@@ -276,27 +303,27 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 
 /* Brief cards. Same card, chrome removed: no facts dl, no image, no
    multi-paragraph body. Receipts stay, because receipts are the point. */
-.card--brief{padding:22px 0}
+.card--brief{padding:var(--sp-3) 0}
 .card--brief .card-head{margin-bottom:8px}
-.card--brief .card-head h3{font-size:21px}
-.card--brief .card-head .role{font-size:14.5px;margin-top:4px}
-.card--brief p{margin:0 0 10px;font-size:15.5px;line-height:1.55}
+.card--brief .card-head h3{font-size:var(--t-lg)}
+.card--brief .card-head .role{font-size:var(--t-sm);margin-top:4px}
+.card--brief p{margin:0 0 10px;font-size:var(--t-sm);line-height:1.55}
 .card--brief .proof{margin-top:10px}
 .card--brief .facts{padding:0;margin:0 0 2px}
 .card--brief .facts > div{padding:2.5px 0}
-.card--brief .facts dd{font-size:14px}
-.card--brief .facts dt{font-size:13px}
-.card--brief .card--brief h4{font-size:16px;margin:16px 0 6px}
+.card--brief .facts dd{font-size:var(--t-xs)}
+.card--brief .facts dt{font-size:var(--t-xs)}
+.card--brief .card--brief h4{font-size:var(--t-base);margin:16px 0 6px}
 .card--brief .proj{margin:0}
 
 .card-head{margin-bottom:14px}
 .ch-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
 .ch-top h3{flex:none}
-.ch-top .when{flex:none;margin:0 0 0 auto;font-size:14px;color:var(--muted);
+.ch-top .when{flex:none;margin:0 0 0 auto;font-size:var(--t-xs);color:var(--muted);
   font-variant-numeric:tabular-nums;white-space:nowrap}
 @media (max-width:560px){ .ch-top .when{margin-left:0} }
-.card-head h3{font-family:var(--serif);font-weight:400;font-size:28px;margin:0}
-.card-head .role{margin:7px 0 0;font-size:15.5px;color:var(--muted);line-height:1.45}
+.card-head h3{font-family:var(--serif);font-weight:400;font-size:var(--t-xl);margin:0}
+.card-head .role{margin:7px 0 0;font-size:var(--t-sm);color:var(--muted);line-height:1.45}
 .card-head .role b{color:var(--text);font-weight:600}
 
 /* Dates, role and stack together at the top, same shape as the case studies. */
@@ -306,25 +333,25 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .facts{display:block;margin:0 0 4px;padding:0}
 .facts > div{display:grid;grid-template-columns:64px 1fr;gap:0 16px;
   align-items:baseline;padding:3.5px 0}
-.facts dt{font-size:13.5px; color:var(--muted);margin:0;padding-top:2px}
-.facts dd{margin:0;font-size:14.5px;line-height:1.5;min-width:0}
+.facts dt{font-size:var(--t-xs); color:var(--muted);margin:0;padding-top:2px}
+.facts dd{margin:0;font-size:var(--t-sm);line-height:1.5;min-width:0}
 @media (max-width:460px){ .facts > div{grid-template-columns:1fr;gap:1px} }
 .facts dd.tech{color:var(--muted)}
 /* The result lands inside the story, not in the metadata. Situation, action,
    result, meaning: the arc a hiring manager reads for. */
 .result{margin:0 0 14px}
-.rlbl{display:block;font-size:13.5px;
+.rlbl{display:block;font-size:var(--t-xs);
   color:var(--muted);margin-bottom:3px}
-.result .fig{font-family:var(--serif);font-weight:400;font-size:22px;color:var(--accent);
+.result .fig{font-family:var(--serif);font-weight:400;font-size:var(--t-lg);color:var(--accent);
   margin-right:7px;letter-spacing:-.01em}
-.result .qual{font-size:15.5px;line-height:1.55}
+.result .qual{font-size:var(--t-sm);line-height:1.55}
 /* Names the problem shape with the industry taken out, so a reader outside
    healthcare or games can see where it applies to them. */
 .transfers{margin:16px 0 0;padding-top:13px;border-top:1px solid var(--border);
-  font-size:15.5px;line-height:1.55}
+  font-size:var(--t-sm);line-height:1.55}
 /* Sits with the company name, because it is a fact about the company. "Later"
    does the honest work: it signals he was already gone. */
-.outcome{align-self:baseline;font-size:11.5px;letter-spacing:.03em;color:var(--muted);
+.outcome{align-self:baseline;font-size:var(--t-xs);letter-spacing:.03em;color:var(--muted);
   font-variant-numeric:tabular-nums;
   border:1px solid var(--border);border-radius:999px;padding:3px 10px;white-space:nowrap;
   position:relative;top:-2px}
@@ -338,40 +365,40 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 @keyframes fig-land{from{transform:scale(.94)}to{transform:scale(1)}}
 .js .reveal.in 
 .hl{list-style:none;padding:0;margin:16px 0 0}
-.hl li{position:relative;padding-left:20px;margin:0 0 9px;font-size:15.5px;line-height:1.55}
+.hl li{position:relative;padding-left:20px;margin:0 0 9px;font-size:var(--t-sm);line-height:1.55}
 .hl li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;
   border-radius:50%;background:var(--accent);opacity:.55}
 .hl li b{font-weight:600}
 
 /* The metric is my claim; these are somebody else's. */
 .proof{display:flex;flex-wrap:wrap;gap:7px 10px;align-items:center;margin:14px 0 0}
-.proof .lbl{font-size:13.5px;color:var(--muted)}
+.proof .lbl{font-size:var(--t-xs);color:var(--muted)}
 /* These carry borrowed credibility. They were quieter than body text, which
    is backwards. Respond fast on enter, settle slow on leave. */
-.proof a{font-size:13px;font-weight:600;text-decoration:none;color:var(--text);
+.proof a{font-size:var(--t-xs);font-weight:600;text-decoration:none;color:var(--text);
   border:1px solid var(--border);border-radius:20px;padding:5px 12px;line-height:1.3;
   transition:background .22s ease,color .22s ease,border-color .22s ease}
 .proof a:hover,.proof a:focus-visible{background:var(--accent);color:#fff;
   border-color:transparent;transition-duration:.12s}
-.proof a::after{content:" \2197";opacity:.6;font-size:11px}
+.proof a::after{content:" \2197";opacity:.6;font-size:var(--t-xs)}
 .proof .lbl::after{content:"";display:inline-block;width:14px;height:1px;
   background:var(--border);vertical-align:middle;margin-left:8px}
 /* One CTA pattern, one position, one verb shape. */
 .card-cta{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:18px;
   padding-top:15px;border-top:1px solid var(--border)}
-.card-cta a{font-size:15px;font-weight:600;color:var(--accent);text-decoration:none;
+.card-cta a{font-size:var(--t-sm);font-weight:600;color:var(--accent);text-decoration:none;
   display:inline-flex;align-items:center;gap:6px;min-height:40px}
 .card-cta a::after{content:"\2192";transition:transform .22s ease}
 .card-cta a:hover{text-decoration:underline;text-underline-offset:4px}
 .card-cta a:hover::after{transform:translateX(3px);transition-duration:.12s}
 
 /* Context before impact: a reader may not know Iodine or Pathstream. */
-.ctx{font-size:14.5px;color:var(--muted);margin:0 0 16px;line-height:1.5}
+.ctx{font-size:var(--t-sm);color:var(--muted);margin:0 0 16px;line-height:1.5}
 .card-head .ctx{margin:7px 0 0;max-width:62ch}
 /* What this means for the reader's team. Lead cards only. */
 /* Reads as an annotation on the metric, not a fifth container. No rule (the
    quotes own that) and no tint (the reference offer owns that). */
-.buyer{font-size:16.5px;line-height:1.5;margin:-6px 0 22px;color:var(--text);
+.buyer{font-size:var(--t-base);line-height:1.5;margin:-6px 0 22px;color:var(--text);
   max-width:62ch}
 .buyer b{color:var(--accent);font-weight:600}
 .shot{border:1px solid var(--border);border-radius:8px;margin:18px 0;background:var(--surface)}
@@ -394,7 +421,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .embed .play::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;
   border-bottom:10px solid transparent;margin-left:4px}
 .embed .cap{position:absolute;left:0;right:0;bottom:0;padding:22px 14px 11px;
-  font-size:13.5px;line-height:1.4;color:#fff;text-align:left;pointer-events:none;
+  font-size:var(--t-xs);line-height:1.4;color:#fff;text-align:left;pointer-events:none;
   background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
 .embed .facade:focus-visible{outline:none;box-shadow:inset 0 0 0 3px var(--accent)}
 /* The Loom facade has no thumbnail service, so it draws its own poster. */
@@ -413,13 +440,13 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
 .rec::before{content:"\201C";position:absolute;left:14px;top:-14px;
   font-family:var(--serif);font-size:64px;line-height:1;color:var(--accent);
   opacity:.16;pointer-events:none}
-.rec p{position:relative;margin:0 0 10px;font-size:16px;line-height:1.62;font-style:italic}
-.rec .who{font-size:13.5px;color:var(--muted);font-style:normal}
+.rec p{position:relative;margin:0 0 10px;font-size:var(--t-base);line-height:1.62;font-style:italic}
+.rec .who{font-size:var(--t-xs);color:var(--muted);font-style:normal}
 .rec .who b{color:var(--text);font-weight:600;font-style:normal}
 
 /* An offer to connect you is an action, not an attribution. */
 .ref-offer{display:inline-flex;align-items:center;gap:8px;margin-top:14px;
-  font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;
+  font-size:var(--t-xs);font-weight:600;color:var(--accent);text-decoration:none;
   border:1px solid var(--accent-soft);background:var(--accent-soft);
   border-radius:20px;padding:7px 14px;min-height:38px;
   transition:background .22s ease,color .22s ease}
@@ -428,31 +455,31 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:32px;margin:60px 0 26p
   background:currentColor;opacity:.85}
 
 /* Acquisition lineage */
-.lineage{font-size:13.5px;color:var(--muted);border:1px dashed var(--border);
+.lineage{font-size:var(--t-xs);color:var(--muted);border:1px dashed var(--border);
   border-radius:7px;padding:9px 13px;margin:0 0 18px;display:inline-block}
 .proj{border-left:2px solid var(--border);padding:0 0 0 18px;margin:22px 0 0}
-.proj h4{font-size:17px;margin:0 0 8px;font-weight:600}
-.proj .tag{font-weight:400;font-size:13px;color:var(--muted)}
+.proj h4{font-size:var(--t-base);margin:0 0 8px;font-weight:600}
+.proj .tag{font-weight:400;font-size:var(--t-xs);color:var(--muted)}
 .proj .impact{margin:0 0 4px}
 
 
 .want li{margin:0 0 10px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;align-items:center}
-.tags .lbl{font-size:13.5px;color:var(--muted);margin-right:4px}
-.tags span.t{font-size:12.5px;color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:4px 11px}
+.tags .lbl{font-size:var(--t-xs);color:var(--muted);margin-right:4px}
+.tags span.t{font-size:var(--t-xs);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:4px 11px}
 .refs{background:var(--surface);border-radius:10px;padding:26px;margin:36px 0 0}
 .refs p{margin:0 0 16px}
 
-.foot{border-top:1px solid var(--border);margin-top:76px;padding:38px 0 100px;
-  color:var(--muted);font-size:15px}
-.foot .signoff{font-family:var(--serif);font-size:23px;line-height:1.35;color:var(--text);margin:0 0 26px}
+.foot{border-top:1px solid var(--border);margin-top:var(--sp-12);padding:38px 0 100px;
+  color:var(--muted);font-size:var(--t-sm)}
+.foot .signoff{font-family:var(--serif);font-size:var(--t-lg);line-height:1.35;color:var(--text);margin:0 0 26px}
 .foot .avail-line{margin:0 0 20px}
 .foot .avail-line .upd{color:var(--text)}
 .foot .links{margin:0 0 22px}
-.foot .craft{font-size:13.5px;margin:0;opacity:.8}
+.foot .craft{font-size:var(--t-xs);margin:0;opacity:.8}
 .foot a:focus-visible{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
 
-@media (max-width:640px){ body{font-size:16px} .hero{padding:26px 0 30px} .btn{flex:1 1 100%} }
+@media (max-width:640px){ body{font-size:var(--t-base)} .hero{padding:26px 0 30px} .btn{flex:1 1 100%} }
 
 /* Cross-document view transitions. Firefox falls back to a plain navigation. */
 @view-transition{ navigation:auto }
@@ -864,7 +891,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <h2 class="sec" id="work">Work</h2>
 <div id="worklist">
 
-<article id="y30" class="card reveal">
+<article id="y30" class="card reveal" data-accent="y30">
   <div class="card-head">
     <div class="ch-top"><h3>y30</h3><p class="when">2026 – now</p></div>
     <p class="role"><b>Co-founder, CPTO</b></p>
@@ -918,7 +945,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
 </article>
 
-<article id="playsesh" class="card reveal">
+<article id="playsesh" class="card reveal" data-accent="playsesh">
   <div class="card-head">
     <div class="ch-top"><h3>PlaySesh</h3><p class="when">2024 – 2026</p></div>
     <p class="role"><b>Co-founder, CEO</b></p>
@@ -969,7 +996,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   <a class="ref-offer" href="mailto:whoischrislam@gmail.com?subject=Reference%20call">Talk to them</a>
 </article>
 
-<article class="card reveal">
+<article class="card reveal" data-accent="pathstream">
   <div class="card-head">
     <div class="ch-top"><h3>Pathstream</h3><p class="when">2019 – 2020</p></div>
     <p class="role"><b>Senior Product Design Manager</b></p>
@@ -1148,7 +1175,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   being wrong has a cost.</p>
 </article>
 
-<article class="card card--brief reveal" style="--proj-accent:#2E964B">
+<article class="card card--brief reveal" data-accent="taskrabbit">
   <div class="card-head">
     <div class="ch-top"><h3>TaskRabbit</h3><span class="outcome">IKEA 2017</span><p class="when">2014 – 2015</p></div>
     <p class="role"><b>Product Designer</b></p>
@@ -1184,7 +1211,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   </div>
 </article>
 
-<article class="card card--brief reveal">
+<article class="card card--brief reveal" data-accent="amazon">
   <div class="card-head">
     <div class="ch-top"><h3>Amazon</h3><p class="when">2012 – 2013</p></div>
     <p class="role"><b>User Experience Designer</b></p>
@@ -1325,7 +1352,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
      · <a href="/chris-lam-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute;</a>
      · <a href="https://github.com/whoischrislam" target="_blank" rel="noopener">GitHub</a>
      · <a href="https://www.linkedin.com/in/whoischrislam/" target="_blank" rel="noopener">LinkedIn</a></p>
-  <p class="craft">Hand-written HTML and CSS. No build step, no framework, no npm.
+  <p class="craft">Built from hand-coded foundations, AI-assisted since. No build step, no framework, no npm.
      <a href="https://github.com/whoischrislam/whoischrislam.github.io" target="_blank" rel="noopener">Read the source</a></p>
 </div>
 
