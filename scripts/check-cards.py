@@ -79,8 +79,8 @@ SPEC = {
         "prose_words": 180,
     },
     "proof": {
-        "required": {"card-head", "ctx", "facts", "proof", "taught", "result"},
-        "allowed": {"prose", "setup", "transfers", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
+        "required": {"card-head", "ctx", "facts", "proof", "taught", "result", "transfers"},
+        "allowed": {"prose", "setup", "lineage", "vids", "shot", "rec", "card-cta", "todo"},
         "prose_words": 75,   # a four-beat decision runs 50-70; 60 strangled it
     },
     "row": {
