@@ -135,7 +135,8 @@
             "summary": "Worked on the 2014 rebrand; TaskRabbit later acquired by IKEA (2017).",
             "highlights": [
                 "Hired by founder and CEO Leah Busque onto a new design team as TaskRabbit moved from bidding to direct hire. Owned the Tasker side of the experience outright and contributed to the consumer side.",
-                "Tasker NPS recovered from about -5 in mid-2014 to the mid-50s; Client NPS to the high-40s."
+                "Tasker NPS recovered from about -5 in mid-2014 to the mid-50s; Client NPS to the high-40s.",
+                "Led the mobile design system after the 2014 rebrand: one type scale, an icon set specified at six sizes, four named colour families each with a ten-step scale, and component specs through to empty states. Picked it up because nobody owned it and the design team had drifted, with each designer owning different pieces."
             ]
         },
         {
@@ -177,7 +178,10 @@
                 "Information architecture",
                 "WCAG accessibility",
                 "Product strategy",
-                "Elder-care UX"
+                "Elder-care UX",
+                "Figma",
+                "Sketch",
+                "Adobe Photoshop/Illustrator"
             ]
         },
         {
@@ -216,7 +220,15 @@
                 "MCP",
                 "LiveKit",
                 "Real-time STT/TTS",
-                "Voice AI"
+                "Voice AI",
+                "Claude Code",
+                "Cursor",
+                "GitHub Copilot",
+                "Codex",
+                "Superset",
+                "OpenRouter",
+                "Perplexity",
+                "Multi-model adversarial review"
             ]
         }
     ],
