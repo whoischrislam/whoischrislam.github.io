@@ -49,7 +49,7 @@ Full write-ups with artifacts, outcomes, and what went wrong. Index: https://who
 - TaskRabbit (later acquired by IKEA): owned the Tasker experience; NPS recovered from about -5 to the mid-50s.
 - Amazon: prototyped the buy-and-gift Prime flow projected to drive 1M+ new subscribers.
 - Modus Create: shipped dark mode for JIRA and Confluence Cloud, 500K+ enterprise users.
-- y30: built the voice pipeline (multi-provider, deep fallback) and a model-independent safety floor; 1,400 commits, 122 test files.
+- y30: built the voice pipeline (multi-provider, deep fallback) and a model-independent safety floor; 1,400 commits.
 - PlaySesh (Co-Founder and CEO; company founded 2024, product shipped July 2025, ran to 2026): built 0 to 1 solo; over 6,200 authorized Discord accounts and 138 Discord server installs (Discord's counts are approximate, read August 1, 2026), and 1,043 monthly active users at peak in January 2026, all organic.
   - Measurement note: these are three different measurements and are never interchangeable. Authorized accounts are Discord OAuth authorizations, not users and not installs. Server installs count servers the app was added to. MAU is unique users in the peak calendar month, January 2026, from PlaySesh's own analytics. Discord counts as of August 1, 2026.
 
