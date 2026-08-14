@@ -190,9 +190,12 @@ a:hover{text-decoration-color:var(--accent)}
 /* ── 3. Logo strip ────────────────────────────────────────────── */
 /* No bottom rule: h2.sec now draws the rule that introduces the next section, so a
    border here left two lines with a dead 88px band between them. */
-/* Bottom gap belongs to the next h2.sec (88px section boundary, per
-   DESIGN_SYSTEM.md). Padding here as well double-counted it. */
+/* Bottom gap belongs to the next h2.sec, so no padding here as well.
+   And the logo band is a thin strip continuing the hero, not a peer section,
+   so it takes the 44px step rather than the full 88px section boundary. */
 .logos{border-top:1px solid var(--border);padding:20px 0 0;margin:0}
+.logos + h2.sec{margin-top:var(--sp-8)}
+@media (max-width:560px){ .logos + h2.sec{margin-top:var(--sp-4)} }
 .logos .lbl{font-size:var(--t-xs);color:var(--muted);
   margin:0 0 14px}
 /* Optical sizing: equal visual AREA, not equal height, or the wide wordmarks
