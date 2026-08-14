@@ -294,9 +294,36 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   font-size:var(--t-sm);line-height:1.62;color:var(--muted);
   font-variant-numeric:tabular-nums}
 .ailist b{display:block;margin:0 0 5px}
+/* The lead always shows. It carries the company names, which are the proof a
+   skimmer is looking for; only the reasoning collapses. */
+.ailist .ai-lead{margin:0}
+/* Native <details>: no JS, keyboard-operable, and the text stays in the DOM so
+   crawlers and AI search still read it while collapsed. */
+.ai-more{margin:2px 0 0}
+.ai-more>summary{list-style:none;cursor:pointer;display:inline-block;
+  font-size:var(--t-xs);color:var(--muted);padding:2px 0;
+  text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.ai-more>summary::-webkit-details-marker{display:none}
+.ai-more>summary::before{content:"Why this matters"}
+.ai-more[open]>summary::before{content:"Less"}
+.ai-more>summary:hover{color:var(--text);text-decoration-color:var(--accent)}
+.ai-more>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.ai-more>p{margin:6px 0 0}
+.ai-expand-wrap{margin:26px 0 0;padding-left:34px}
+.ai-expand{background:none;border:0;padding:2px 0;cursor:pointer;font:inherit;
+  font-size:var(--t-xs);color:var(--muted);
+  text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.ai-expand:hover{color:var(--text);text-decoration-color:var(--accent)}
+.ai-expand:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
 @media (max-width:560px){
   .ailist li{margin:0 0 22px;padding-left:26px}
   .ai-lede{margin:0 0 var(--sp-4)}
+  .ai-expand-wrap{padding-left:26px}
+}
+/* Paper has no toggles. Show everything and drop the affordances. */
+@media print{
+  .ai-more>summary,.ai-expand-wrap{display:none}
+  .ai-more>p{display:block}
 }
 .taught{margin:-2px 0 14px;padding-left:14px;border-left:2px solid var(--border)}
 
@@ -945,42 +972,62 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   judgment doesn&rsquo;t.</p>
 <ul class="ailist">
   <li><b>AI scales what you already have.</b>
-    I let an agent build things and it always came back bland. None of my years or judgement or taste
-    was in the CONTEXT. Foundation is EVERYTHING here. So I pointed it at fourteen years of my own
-    archives instead, Fireworks through Figma, old repos, portfolios back to 2010, and had it recover
-    the decisions I&rsquo;d already made. The generated version had twenty-one type sizes. Mine had
-    seven.</li>
+    <p class="ai-lead">I let an agent build things and it always came back bland. None of my years or
+      judgement or taste was in the CONTEXT.</p>
+    <details class="ai-more"><summary></summary>
+      <p>Foundation is EVERYTHING here. So I pointed it at fourteen years of my own archives instead,
+        Fireworks through Figma, old repos, portfolios back to 2010, and had it recover the decisions
+        I&rsquo;d already made. The generated version had twenty-one type sizes. Mine had seven.</p>
+    </details></li>
   <li><b>AI made me faster. The years made me better.</b>
-    At Amazon, TaskRabbit, GoodRx, doc.ai (acq by Sharecare) and other companies I spent years
-    handcrafting designs (whiteboarding, sketching, designing by hand to think) and years getting
-    feedback (critiques, user research, testing, measuring). You can&rsquo;t delegate that. Knowing how
-    to drive design intent regardless of the tool or medium matters, and it matters more at the pace
-    you can build with AI now.</li>
+    <p class="ai-lead">At Amazon, TaskRabbit, GoodRx, doc.ai (acq by Sharecare) and other companies I
+      spent years handcrafting designs (whiteboarding, sketching, designing by hand to think) and years
+      getting feedback (critiques, user research, testing, measuring).</p>
+    <details class="ai-more"><summary></summary>
+      <p>You can&rsquo;t delegate that. Knowing how to drive design intent regardless of the tool or
+        medium matters, and it matters more at the pace you can build with AI now.</p>
+    </details></li>
   <li><b>AI works like a team that asks for direction and guidance.</b>
-    Second designer at Clover Health, first design hire at Pathstream, founding designer at
-    StartPlaying, and co-founder twice since. Every one of those was the same job: decide who decides
-    what, and where the handoffs are. Know when to zoom out and when to zoom in. Working with agents is
-    that same job in a different medium. The rule in every repo is stop and ask if in doubt. No job is
-    beneath you, so when it&rsquo;s wrong I go into the design or the code myself.</li>
+    <p class="ai-lead">Second designer at Clover Health, first design hire at Pathstream, founding
+      designer at StartPlaying, and co-founder twice since.</p>
+    <details class="ai-more"><summary></summary>
+      <p>Every one of those was the same job: decide who decides what, and where the handoffs are. Know
+        when to zoom out and when to zoom in. Working with agents is that same job in a different
+        medium. The rule in every repo is stop and ask if in doubt. No job is beneath you, so when
+        it&rsquo;s wrong I go into the design or the code myself.</p>
+    </details></li>
   <li><b>Evolve the process with the work.</b>
-    What am I best suited to own? What is the system best suited to own? Design process and systems
-    taught me this before AI agents did. You always start somewhere, greenfield or a legacy monolith,
-    and you adjust as you learn. I build the harness while I&rsquo;m iterating, not after.</li>
+    <p class="ai-lead">What am I best suited to own? What is the system best suited to own?</p>
+    <details class="ai-more"><summary></summary>
+      <p>Design process and systems taught me this before AI agents did. You always start somewhere,
+        greenfield or a legacy monolith, and you adjust as you learn. I build the harness while
+        I&rsquo;m iterating, not after.</p>
+    </details></li>
   <li><b>Anyone can add. The judgment is what you retire.</b>
-    A design system at TaskRabbit. The design function at Clover. A rebuilt system at Pathstream.
-    Different surface every time, same three questions: what to keep, what to add, what to retire.
-    Retiring is the one people skip, and the one that took me years. My repos run on that judgment now:
-    nothing goes in unless I can name what it replaces.</li>
+    <p class="ai-lead">A design system at TaskRabbit. The design function at Clover. A rebuilt system
+      at Pathstream.</p>
+    <details class="ai-more"><summary></summary>
+      <p>Different surface every time, same three questions: what to keep, what to add, what to retire.
+        Retiring is the one people skip, and the one that took me years. My repos run on that judgment
+        now: nothing goes in unless I can name what it replaces.</p>
+    </details></li>
   <li><b>I build systems that build systems.</b>
-    At Modus Create I owned the dev documentation and the CI pipeline. At PlaySesh I built the tools
-    other developers made their games inside. At y30 I build the harness the agents run in. Each one
-    got further from the work and closer to the thing that makes the work possible.</li>
+    <p class="ai-lead">At Modus Create I owned the dev documentation and the CI pipeline. At PlaySesh I
+      built the tools other developers made their games inside. At y30 I build the harness the agents
+      run in.</p>
+    <details class="ai-more"><summary></summary>
+      <p>Each one got further from the work and closer to the thing that makes the work possible.</p>
+    </details></li>
   <li><b>Automation nobody reviews is worse than none.</b>
-    At y30 I built a five-stage eval flywheel: session capture, auto-eval, failure harvest, STT
-    variants, CI regression detection. Then it started producing pull requests and issues nobody had a
-    ritual for reviewing, which creates false confidence. So I wrote the operating workflow too:
-    fifteen minutes of triage every Monday, P0s to Slack the same day.</li>
+    <p class="ai-lead">At y30 I built a five-stage eval flywheel: session capture, auto-eval, failure
+      harvest, STT variants, CI regression detection.</p>
+    <details class="ai-more"><summary></summary>
+      <p>Then it started producing pull requests and issues nobody had a ritual for reviewing, which
+        creates false confidence. So I wrote the operating workflow too: fifteen minutes of triage
+        every Monday, P0s to Slack the same day.</p>
+    </details></li>
 </ul>
+<p class="ai-expand-wrap"><button type="button" id="ai-expand" class="ai-expand">Expand all</button></p>
 
 <h2 class="sec" id="work">Work</h2>
 <div id="worklist">
@@ -1513,6 +1560,26 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     localStorage.setItem(k, next);
     syncToggle();
   });
+
+  /* Expand-all for the AI bullets. The <details> work without this; the button
+     is a convenience for anyone who wants the whole thing at once, and for
+     print. Progressive enhancement: no button rendered means no loss. */
+  var xb = document.getElementById("ai-expand");
+  if (xb) {
+    var panels = Array.prototype.slice.call(document.querySelectorAll(".ai-more"));
+    var sync = function(){
+      var allOpen = panels.every(function(d){ return d.open });
+      xb.textContent = allOpen ? "Collapse all" : "Expand all";
+      xb.setAttribute("aria-expanded", String(allOpen));
+    };
+    xb.addEventListener("click", function(){
+      var open = !panels.every(function(d){ return d.open });
+      panels.forEach(function(d){ d.open = open });
+      sync();
+    });
+    panels.forEach(function(d){ d.addEventListener("toggle", sync) });
+    sync();
+  }
 })();
 </script>
 </body></html>
