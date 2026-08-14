@@ -297,13 +297,19 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 /* Two-up at desktop, same idiom as .reccluster. Seven stacked paragraphs read
    as a wall; two columns halve the height without hiding a single word. */
 .ailist p{margin:0;font-size:var(--t-sm);line-height:1.55;color:var(--muted)}
-@media (min-width:760px){
-  /* Multi-column, not grid: these bodies are 273-457 chars, so a two-track grid
-     leaves ragged holes under the short ones. Columns balance the total instead,
-     and break-inside keeps each item whole. */
-  .ailist{column-count:2;column-gap:44px;max-width:100%}
-  .ailist li{break-inside:avoid;-webkit-column-break-inside:avoid;margin:0 0 30px}
-}
+/* The lead is a whole sentence, so the collapsed edge is a full stop rather
+   than a gradient through half a word. That was what read as broken before. */
+.ai-more{margin:3px 0 0}
+.ai-more>summary{list-style:none;cursor:pointer;display:inline-block;
+  font-size:var(--t-xs);color:var(--muted);padding:1px 0;
+  text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.ai-more>summary::-webkit-details-marker{display:none}
+.ai-more>summary::before{content:"More"}
+.ai-more[open]>summary::before{content:"Less"}
+.ai-more>summary:hover{color:var(--text);text-decoration-color:var(--accent)}
+.ai-more>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+.ai-more>p{margin:5px 0 0}
+@media print{ .ai-more>summary{display:none} }
 @media (max-width:560px){
   .ailist li{margin:0 0 22px;padding-left:26px}
   .ai-lede{margin:0 0 var(--sp-4)}
@@ -956,31 +962,52 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 <ul class="ailist">
   <li>
     <b>AI scales what you already have.</b>
-    <p>I let an agent build things and it always came back bland. None of my years or judgement or taste was in the CONTEXT. Foundation is EVERYTHING here. So I pointed it at fourteen years of my own archives instead, Fireworks through Figma, old repos, portfolios back to 2010, and had it recover the decisions I&rsquo;d already made. The generated version had twenty-one type sizes. Mine had seven.</p>
+    <p class="ai-lead">I let an agent build things and it always came back bland.</p>
+    <details class="ai-more"><summary></summary>
+      <p>None of my years or judgement or taste was in the CONTEXT. Foundation is EVERYTHING here. So I pointed it at fourteen years of my own archives instead, Fireworks through Figma, old repos, portfolios back to 2010, and had it recover the decisions I&rsquo;d already made. The generated version had twenty-one type sizes. Mine had seven.</p>
+    </details>
   </li>
   <li>
     <b>AI made me faster. The years made me better.</b>
-    <p>At Amazon, TaskRabbit, GoodRx, doc.ai (acq by Sharecare) and other companies I spent years handcrafting designs (whiteboarding, sketching, designing by hand to think) and years getting feedback (critiques, user research, testing, measuring). You can&rsquo;t delegate that. Knowing how to drive design intent regardless of the tool or medium matters, and it matters more at the pace you can build with AI now.</p>
+    <p class="ai-lead">At Amazon, TaskRabbit, GoodRx, doc.ai (acq by Sharecare) and other companies I spent years handcrafting designs (whiteboarding, sketching, designing by hand to think) and years getting feedback (critiques, user research, testing, measuring).</p>
+    <details class="ai-more"><summary></summary>
+      <p>You can&rsquo;t delegate that. Knowing how to drive design intent regardless of the tool or medium matters, and it matters more at the pace you can build with AI now.</p>
+    </details>
   </li>
   <li>
     <b>AI works like a team that asks for direction and guidance.</b>
-    <p>Second designer at Clover Health, first design hire at Pathstream, founding designer at StartPlaying, and co-founder twice since. Every one of those was the same job: decide who decides what, and where the handoffs are. Know when to zoom out and when to zoom in. Working with agents is that same job in a different medium. The rule in every repo is stop and ask if in doubt. No job is beneath you, so when it&rsquo;s wrong I go into the design or the code myself.</p>
+    <p class="ai-lead">Second designer at Clover Health, first design hire at Pathstream, founding designer at StartPlaying, and co-founder twice since.</p>
+    <details class="ai-more"><summary></summary>
+      <p>Every one of those was the same job: decide who decides what, and where the handoffs are. Know when to zoom out and when to zoom in. Working with agents is that same job in a different medium. The rule in every repo is stop and ask if in doubt. No job is beneath you, so when it&rsquo;s wrong I go into the design or the code myself.</p>
+    </details>
   </li>
   <li>
     <b>Evolve the process with the work.</b>
-    <p>What am I best suited to own? What is the system best suited to own? Design process and systems taught me this before AI agents did. You always start somewhere, greenfield or a legacy monolith, and you adjust as you learn. I build the harness while I&rsquo;m iterating, not after.</p>
+    <p class="ai-lead">What am I best suited to own? What is the system best suited to own?</p>
+    <details class="ai-more"><summary></summary>
+      <p>Design process and systems taught me this before AI agents did. You always start somewhere, greenfield or a legacy monolith, and you adjust as you learn. I build the harness while I&rsquo;m iterating, not after.</p>
+    </details>
   </li>
   <li>
     <b>Anyone can add. The judgment is what you retire.</b>
-    <p>A design system at TaskRabbit. The design function at Clover. A rebuilt system at Pathstream. Different surface every time, same three questions: what to keep, what to add, what to retire. Retiring is the one people skip, and the one that took me years. My repos run on that judgment now: nothing goes in unless I can name what it replaces.</p>
+    <p class="ai-lead">A design system at TaskRabbit. The design function at Clover. A rebuilt system at Pathstream.</p>
+    <details class="ai-more"><summary></summary>
+      <p>Different surface every time, same three questions: what to keep, what to add, what to retire. Retiring is the one people skip, and the one that took me years. My repos run on that judgment now: nothing goes in unless I can name what it replaces.</p>
+    </details>
   </li>
   <li>
     <b>I build systems that build systems.</b>
-    <p>At Modus Create I owned the dev documentation and the CI pipeline. At PlaySesh I built the tools other developers made their games inside. At y30 I build the harness the agents run in. Each one got further from the work and closer to the thing that makes the work possible.</p>
+    <p class="ai-lead">At Modus Create I owned the dev documentation and the CI pipeline.</p>
+    <details class="ai-more"><summary></summary>
+      <p>At PlaySesh I built the tools other developers made their games inside. At y30 I build the harness the agents run in. Each one got further from the work and closer to the thing that makes the work possible.</p>
+    </details>
   </li>
   <li>
     <b>Automation nobody reviews is worse than none.</b>
-    <p>At y30 I built a five-stage eval flywheel: session capture, auto-eval, failure harvest, STT variants, CI regression detection. Then it started producing pull requests and issues nobody had a ritual for reviewing, which creates false confidence. So I wrote the operating workflow too: fifteen minutes of triage every Monday, P0s to Slack the same day.</p>
+    <p class="ai-lead">At y30 I built a five-stage eval flywheel: session capture, auto-eval, failure harvest, STT variants, CI regression detection.</p>
+    <details class="ai-more"><summary></summary>
+      <p>Then it started producing pull requests and issues nobody had a ritual for reviewing, which creates false confidence. So I wrote the operating workflow too: fifteen minutes of triage every Monday, P0s to Slack the same day.</p>
+    </details>
   </li>
 </ul>
 
