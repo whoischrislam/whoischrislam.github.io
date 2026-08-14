@@ -21,6 +21,20 @@ Normal project work does not automatically become a training exercise. Use this 
 
 Before writing or changing any PlaySesh adoption claim in the resume, portfolio, or application materials, read `PLAYSESH_METRICS.md`. Keep Discord authorizations, server installs, individual-user installs, and PostHog engagement metrics separately labeled. Do not describe OAuth authorizations as active users or installs.
 
+**Six surfaces carry facts, not five.** `index.html`, `resume.json`, `llms.txt`, `candidate.html`, the résumé PDF, and `portfolio-voice-backend/src/facts.js` — the last one is the agent's catalog and it is the one that drifts unseen, because nothing on the site renders it. On 2026-08-13 it was found live with a fabricated "3.2s patience window", a test-file count removed everywhere else, and four PlaySesh figures that `PLAYSESH_METRICS.md` marks "Not supported." Change a number on one surface, change it on all six, and run `node test-facts.mjs` in the backend repo.
+
+## Diagnosing the site
+
+**Measure before proposing a layout, length, or density fix.** Every intuition about this page was wrong on 2026-08-13: widening the column looked like it would shorten the page (it saves 2% and pushes the lede to 124 characters per line), the AI section looked like the density problem (it is 2% of the page; 17 work cards are 78%). Render the page in headless Chrome, measure section heights, characters per line, and page total, then decide.
+
+**Verify by rendering the real page, not a harness.** An isolated test page showed mobile overflow that did not exist in `index.html`; the harness was broken, not the site. When a test disagrees with expectation, suspect the test first. Print CSS in particular cannot be trusted by reading — this page prints only `#va-dock` by design, which silently made two print rules dead code.
+
+## Before building, inventory
+
+Check what already exists before designing anything new. On 2026-08-13 the "speed run" concept was specced from scratch before discovering `/brief` in `portfolio-voice-backend` already compiles a fact-cited recruiter brief; and a visual index was proposed before discovering seven finished case-study pages already carry 150 images in `images/craft/` that `index.html` references zero times.
+
+**`DESIGN_SYSTEM.md` is derived, not the source.** It holds recovered tokens. `portfolio-archive/live/` holds the recovered *structure* — the 2014-2020 site that performed: short index, hero image plus one sentence per project, case studies on their own pages. Reading the token file is not reading the archive.
+
 ## Private job-hunt workspace
 
 Before job-search research, application work, interview preparation, or career-positioning work, read `.jobhunt/README.md`.

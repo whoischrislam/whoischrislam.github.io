@@ -10,6 +10,18 @@ Outside an explicitly agreed training rep, follow the repository's normal task i
 
 Before writing or changing any PlaySesh adoption claim, read `PLAYSESH_METRICS.md`. Treat it as the canonical interpretation of Discord authorization and install counts, and do not conflate them with active usage.
 
+**Six surfaces carry facts, not five.** `index.html`, `resume.json`, `llms.txt`, `candidate.html`, the résumé PDF, and `portfolio-voice-backend/src/facts.js`. The last is the agent's catalog and the one that drifts unseen, because nothing on the site renders it — on 2026-08-13 it was live with a fabricated "3.2s patience window", a test-file count removed everywhere else, and four PlaySesh figures `PLAYSESH_METRICS.md` marks "Not supported." Change a number on one, change it on all six, then run `node test-facts.mjs` in the backend repo.
+
+## Diagnosing the site
+
+**Measure before proposing a layout, length, or density fix.** Every intuition was wrong on 2026-08-13: widening the column looked like it would shorten the page (saves 2%, pushes the lede to 124 characters per line), and the AI section looked like the density problem (it is 2% of the page; 17 work cards are 78%). Render in headless Chrome and measure section heights, characters per line, and page total before deciding.
+
+**Verify by rendering the real page, not a harness.** An isolated test page showed mobile overflow that did not exist in `index.html` — the harness was broken, not the site. When a test disagrees with expectation, suspect the test first. Print CSS especially cannot be judged by reading: this page prints only `#va-dock` by design, which silently made two print rules dead code.
+
+**Inventory before building.** The "speed run" was specced from scratch before discovering `/brief` in `portfolio-voice-backend` already compiles a fact-cited recruiter brief. A visual index was proposed before discovering seven finished case-study pages already hold 150 images in `images/craft/` that `index.html` references zero times.
+
+**`DESIGN_SYSTEM.md` is derived, not the source.** It holds recovered tokens. `portfolio-archive/live/` holds the recovered *structure* — the 2014-2020 site that performed. Reading the token file is not reading the archive.
+
 ## Private job-hunt workspace
 
 Before job-search, application, interview-prep, or career-positioning work, read `.jobhunt/README.md`.
