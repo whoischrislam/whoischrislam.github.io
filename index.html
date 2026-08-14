@@ -283,12 +283,21 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 .aiwork{max-width:66ch;margin:0 0 16px;font-size:var(--t-base);line-height:1.62}
 /* Lede sets up the list; the gap below it is a beat, not a paragraph break. */
 .ai-lede{color:var(--muted);margin:0 0 var(--sp-6)}
-/* No markers: the bold claim is the marker, and it has to survive a skim. */
-.ailist{list-style:none;padding:0;margin:0;max-width:66ch}
-.ailist li{margin:0 0 28px;font-size:var(--t-base);line-height:1.62}
+/* No markers: the bold claim is the marker, and it has to survive a skim.
+   Numbers are counters in the indent, not list bullets, so they can be muted
+   and tabular without fighting the browser's marker styling. */
+.ailist{list-style:none;padding:0;margin:0;max-width:66ch;counter-reset:ai}
+.ailist li{counter-increment:ai;position:relative;padding-left:34px;
+  margin:0 0 28px;font-size:var(--t-base);line-height:1.62}
 .ailist li:last-child{margin:0}
+.ailist li::before{content:counter(ai);position:absolute;left:0;top:1px;
+  font-size:var(--t-sm);line-height:1.62;color:var(--muted);
+  font-variant-numeric:tabular-nums}
 .ailist b{display:block;margin:0 0 5px}
-@media (max-width:560px){ .ailist li{margin:0 0 22px} .ai-lede{margin:0 0 var(--sp-4)} }
+@media (max-width:560px){
+  .ailist li{margin:0 0 22px;padding-left:26px}
+  .ai-lede{margin:0 0 var(--sp-4)}
+}
 .taught{margin:-2px 0 14px;padding-left:14px;border-left:2px solid var(--border)}
 
 .wslbl{display:block;font-size:var(--t-xs);
