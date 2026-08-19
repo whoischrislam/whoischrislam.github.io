@@ -843,12 +843,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .v3work .proj-head h3{font-size:2em;margin:0;font-family:var(--header-font);font-weight:400}
 .v3work .proj-meta{color:var(--muted);font-size:.9em;margin:0}
 .v3work .lead{font-size:1.2em;line-height:1.5;margin:.45em 0 .8em;max-width:42em}
-.v3work .proof{margin:0 0 .55em;font-size:.95em;color:var(--muted);max-width:46em}
-.v3work .proof .rlbl{display:inline-block;font-size:.72em;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--muted);margin-right:.7em}
-.v3work .proof .fig{color:var(--accent);font-weight:600}
-.v3work .proof .qual{display:block;margin-top:.3em}
-.v3work .cites{margin:0 0 1.2em;font-size:.9em}
 .v3work .shot{display:block;border-radius:var(--border-radius);overflow:hidden;
   border:1px solid var(--border);background:#fff}
 .v3work .shot img{display:block;width:100%;height:auto}
@@ -886,13 +880,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .logos .lbl{margin-bottom:2px}
 h2.sec#work{margin-top:8px}
 
-.v3work .owned{margin:.15em 0 .9em;font-size:var(--t-xs);color:var(--muted);letter-spacing:.01em}
 
-.v3work .how-ai{margin:0 0 1em;font-size:.95em;color:var(--text);border-left:2px solid var(--accent);
-  padding-left:14px;max-width:44em}
-.v3work .how-lbl{display:block;font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:.25em}
-.v3work .how-ai.blank{border-left-style:dashed;color:var(--muted)}
 
 .hero .hero-hob{color:var(--muted);font-size:var(--t-sm);margin:2px 0 0}
 .hero .hero-hob a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
@@ -921,6 +909,59 @@ h2.sec#work{margin-top:8px}
 .hero .cta{margin-top:20px}
 .logos{padding-top:20px;padding-bottom:20px}
 h2.sec#work{margin-top:16px}
+
+.v3work .proj-head{align-items:baseline}
+.v3work .shot img{max-height:280px;object-fit:cover;object-position:center}
+@media(max-width:700px){}
+
+/* --- entry: metadata, outcome, receipts, actions --- */
+
+.v3work .outcome-line{display:flex;align-items:baseline;gap:0;margin:1em 0 .2em;font-size:1.15em}
+.v3work .outcome-line b{color:var(--accent);font-weight:600}
+
+/* Receipts: ported from index.html's own .proof component */
+
+.v3work .go{margin:18px 0 0;display:flex;gap:.6em;flex-wrap:wrap}
+
+/* --- simplified entry --- */
+.v3work .desc{margin:1em 0 .6em;font-size:1em;color:var(--muted);max-width:46em;line-height:1.6}
+.v3work .proj-foot{margin:22px 0 0;padding-top:12px;border-top:1px solid var(--border);
+  display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.v3work .f-owned{font-size:var(--t-xs);color:var(--muted);letter-spacing:.01em}
+.v3work .f-rec{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.v3work .f-rec a{font-size:var(--t-xs);text-decoration:none;color:var(--muted);
+  border:1px solid var(--border);border-radius:20px;padding:3px 10px;line-height:1.3}
+.v3work .f-rec a:hover{color:var(--text);border-color:var(--accent)}
+.v3work .f-rec a::after{content:" \2197";opacity:.5}
+@media(max-width:760px){.v3work .f-rec{margin-left:0}}
+
+/* result + actions on one band; metadata whispers */
+.v3work .band{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  flex-wrap:wrap;margin:1.4em 0 0}
+.v3work .res{display:flex;flex-direction:column;gap:2px;line-height:1.1}
+.v3work .res-lbl{font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.v3work .res-fig{font-family:var(--header-font);font-size:2.1em;color:var(--accent);line-height:1.05}
+.v3work .res-go{display:flex;gap:.55em;flex-wrap:wrap;align-items:center}
+.v3work .proj-foot{margin:26px 0 0;padding-top:0;border-top:0;
+  display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;opacity:.72}
+.v3work .f-owned{font-size:var(--t-xs);color:var(--muted)}
+.v3work .f-rec a{border-color:var(--border);color:var(--muted);padding:2px 9px}
+@media(max-width:760px){.v3work .band{align-items:flex-start}.v3work .res-fig{font-size:1.7em}}
+
+.v3work .desc b{color:var(--text);font-weight:600}
+
+.v3work .with{color:var(--muted)}
+.v3work .with a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.v3work .with a:hover{color:var(--text)}
+/* claim = the outcome, with its third-party proof attached directly beneath it */
+.v3work .claim{margin:1.4em 0 0;border-left:2px solid var(--accent);padding-left:16px}
+.v3work .claim .res{display:flex;flex-direction:column;gap:2px}
+.v3work .proofline{display:flex;flex-wrap:wrap;gap:6px;margin:.7em 0 0}
+.v3work .proofline a{font-size:var(--t-xs);text-decoration:none;color:var(--muted);
+  border:1px solid var(--border);border-radius:20px;padding:3px 10px;line-height:1.3}
+.v3work .proofline a:hover{color:var(--text);border-color:var(--accent)}
+.v3work .proofline a::after{content:" \2197";opacity:.5}
+.v3work .acts{margin:1.2em 0 0;display:flex;gap:.55em;flex-wrap:wrap}
 </style>
 <script type="text/javascript" src="analytics-init.js"></script>
 <script type="text/javascript" src="analytics.js" defer></script>
@@ -1039,29 +1080,25 @@ h2.sec#work{margin-top:16px}
 <!-- nbsp keeps the date whole so the heading breaks after "since", not before "2024". -->
 <h2 class="sec" id="work">Work</h2>
 <div class="v3work">
-<article class="proj">
-  <div class="proj-head"><h3>y30</h3><p class="proj-meta">2026 – now &middot; Co-founder, CPTO</p></div>
+<article class="proj">  <div class="proj-head"><h3>y30</h3><p class="proj-meta">2026 – now &middot; Co-founder, CPTO <span class="with">(with <a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a>)</span></p></div>
   <p class="lead">Voice AI for elders and support for longitudinal caregiving.</p>
-  <p class="owned">Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</p>
   <div class="vids">
   <div class="embed">
   <button class="facade loom" type="button" data-loom="eb44015201554d11ac841cd1700653ce"
   aria-label="Play video: a real reminiscence call with the y30 voice agent">
-  <img loading="lazy" decoding="async" src="images/work/y30-voice.png" alt="">
+  <img loading="lazy" decoding="async" width="1440" height="1230" src="images/work/y30-voice.png" alt="">
   <span class="play"></span>
   <span class="cap">A real reminiscence call, and what it becomes</span>
   </button>
   </div>
   </div>
-  <p class="how-ai"><span class="how-lbl">Working with AI</span>I let the model run the game sequence at first. After eight prompt revisions, guards and a watchdog, it still started the round only about 70% of the time. I moved that sequence into code.</p>
-  <p class="proof"><span class="rlbl">Tradeoff</span><span class="fig">3&times; slower, on purpose</span><span class="qual">People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</span></p>
-  <p class="cites"><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a></p>
-  <p class="go"><a class="btn primary" href="https://y30.ai" target="_blank" rel="noopener">y30.ai &rarr;</a> <a class="btn ghost" href="work/y30.html">y30 case study &rarr;</a></p>
+  <p class="desc">I let <b>the model</b> run the game sequence at first. After eight prompt revisions, guards and a watchdog, it still started the round only about <b>70% of the time</b>. I moved that sequence <b>into code</b>. People would rather talk to someone who <b>listens</b> to them than someone who waits for their turn to speak.</p>
+  <div class="claim"><div class="res"><span class="res-lbl">Tradeoff</span><span class="res-fig">3&times; slower, on purpose</span></div></div>
+  <p class="acts"><a class="btn primary" href="https://y30.ai" target="_blank" rel="noopener">Try it live &rarr;</a> <a class="btn" href="work/y30.html">Read the y30 case study &rarr;</a></p>
+  <div class="proj-foot"><span class="f-owned">Product · Conversation design · Safety architecture · Evaluation · Front-end · Voice pipeline</span></div>
 </article>
-<article class="proj">
-  <div class="proj-head"><h3>PlaySesh</h3><p class="proj-meta">2024 – 2026 &middot; Co-founder, CEO</p></div>
+<article class="proj">  <div class="proj-head"><h3>PlaySesh</h3><p class="proj-meta">2024 – 2026 &middot; Co-founder, CEO <span class="with">(with <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a>)</span></p></div>
   <p class="lead">A collaborative source of truth for small indie game teams, sitting on top of their engine and IDE.</p>
-  <p class="owned">Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</p>
   <div class="vids">
   <div class="embed">
   <button class="facade" type="button" data-yt="Q0S-_WAea6Y"
@@ -1082,53 +1119,49 @@ h2.sec#work{margin-top:16px}
   </button>
   </div>
   </div>
-  <p class="how-ai blank"><span class="how-lbl">Working with AI</span><em>Blank — no copy exists for how PlaySesh was built with AI. Chris to supply.</em></p>
-  <p class="proof"><span class="rlbl">Adoption</span><span class="fig">6,220 authorized accounts</span><span class="qual">Discord reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026. Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</span></p>
-  <p class="cites"><a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a></p>
-  <p class="go"><a class="btn primary" href="https://discord.com/discovery/applications/1225184380419440810" target="_blank" rel="noopener">Discord App Directory &rarr;</a></p>
+  <p class="desc">Discord reported approximately 6,220 authorized accounts and 138 server installs as of August 1, 2026. Separately, PostHog measured a peak of 1,043 monthly active users in January 2026. All organic.</p>
+  <div class="claim"><div class="res"><span class="res-lbl">Adoption</span><span class="res-fig">6,220 authorized accounts</span></div></div>
+  <p class="acts"><a class="btn primary" href="https://discord.com/discovery/applications/1225184380419440810" target="_blank" rel="noopener">See it on Discord &rarr;</a></p>
+  <div class="proj-foot"><span class="f-owned">Product · Design system · Real-time sync engine · Front-end · Back-end · Playtesting</span></div>
+  <p class="wip"><span class="wip-tag">WIP</span> No copy yet for how PlaySesh was built with AI.</p>
 </article>
-<article class="proj">
-  <div class="proj-head"><h3>Pathstream</h3><p class="proj-meta">2019 – 2020 &middot; Senior Product Design Manager</p></div>
+<article class="proj">  <div class="proj-head"><h3>Pathstream</h3><p class="proj-meta">2019 – 2020 &middot; Senior Product Design Manager</p></div>
   <p class="lead">A career-development and learning platform teaching job skills with real software.</p>
-  <p class="owned">Product design · Design system · Research · PRD · Front-end</p>
-  <a class="shot" href="work/pathstream.html"><img src="images/craft/pathstream-menuscrolling.webp" alt="Pathstream" loading="lazy"></a>
-  <p class="proof"><span class="rlbl">Result</span><span class="fig">60–80 hours saved</span><span class="qual">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</span></p>
-  <p class="go"><a class="btn ghost" href="work/pathstream.html">Pathstream case study &rarr;</a></p>
+  <a class="shot" href="work/pathstream.html"><img width="3330" height="1080" src="images/craft/pathstream-menuscrolling.webp" alt="Pathstream" loading="lazy"></a>
+  <p class="desc">Shipped without forcing a rewrite of the existing course content. I never measured whether the redesign worked, and the case study says so.</p>
+  <div class="claim"><div class="res"><span class="res-lbl">Result</span><span class="res-fig">60–80 hours saved</span></div></div>
+  <p class="acts"><a class="btn primary" href="work/pathstream.html">Read the Pathstream case study &rarr;</a></p>
+  <div class="proj-foot"><span class="f-owned">Product design · Design system · Research · PRD · Front-end</span></div>
   <p class="wip"><span class="wip-tag">WIP</span> No live artifact or demo yet. Case study only.</p>
 </article>
-<article class="proj">
-  <div class="proj-head"><h3>GoodRx</h3><p class="proj-meta">2017 – 2018 &middot; Lead Product Designer</p></div>
+<article class="proj">  <div class="proj-head"><h3>GoodRx</h3><p class="proj-meta">2017 – 2018 &middot; Lead Product Designer</p></div>
   <p class="lead">Consumer healthcare: prescription drug information, then drug pricing.</p>
-  <p class="owned">Product design · Front-end · Data visualization · Research · Conversion</p>
-  <a class="shot" href="work/goodrx.html"><img src="images/craft/hero-goodrx.webp" alt="GoodRx" loading="lazy"></a>
-  <p class="proof"><span class="rlbl">Iodine.com</span><span class="fig">2% &rarr; 5%</span><span class="qual">Coupon-flow conversion. Iodine.com won the Webby for Best Health Website.</span></p>
-  <p class="cites"><a href="https://www.goodrx.com/corporate/culture/iodine-com-wins-the-webby-for-best-health-website" target="_blank" rel="noopener">Webby 2018 announcement</a> &middot; <a href="https://web.archive.org/web/20180224101750/https://www.iodine.com/" target="_blank" rel="noopener">Iodine.com, archived Feb 2018</a> &middot; <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554" target="_blank" rel="noopener">S.2554</a> &middot; <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553" target="_blank" rel="noopener">S.2553</a> &middot; <a href="https://abcnews.go.com/GMA/Wellness/video/flu-numbers-show-growing-outbreak-us-53014507" target="_blank" rel="noopener">Good Morning America</a> &middot; <a href="https://web.archive.org/web/20180915114231/https://www.goodrx.com/atorvastatin" target="_blank" rel="noopener">A drug page, archived Sep 2018</a></p>
-  <p class="go"><a class="btn primary" href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html" target="_blank" rel="noopener">New York Times &rarr;</a> <a class="btn ghost" href="work/goodrx.html">GoodRx selected projects &rarr;</a> <a class="btn ghost" href="work/iodine.html">Iodine selected projects &rarr;</a></p>
+  <a class="shot" href="work/goodrx.html"><img width="1400" height="450" src="images/craft/hero-goodrx.webp" alt="GoodRx" loading="lazy"></a>
+  <p class="desc">Coupon-flow conversion. Iodine.com won the Webby for Best Health Website.</p>
+  <div class="claim"><div class="res"><span class="res-lbl">Iodine.com</span><span class="res-fig">2% &rarr; 5%</span></div><p class="proofline"><a href="https://www.goodrx.com/corporate/culture/iodine-com-wins-the-webby-for-best-health-website" target="_blank" rel="noopener">Webby 2018 announcement</a><a href="https://web.archive.org/web/20180224101750/https://www.iodine.com/" target="_blank" rel="noopener">Iodine.com, archived Feb 2018</a><a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554" target="_blank" rel="noopener">S.2554</a><a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553" target="_blank" rel="noopener">S.2553</a><a href="https://abcnews.go.com/GMA/Wellness/video/flu-numbers-show-growing-outbreak-us-53014507" target="_blank" rel="noopener">Good Morning America</a><a href="https://web.archive.org/web/20180915114231/https://www.goodrx.com/atorvastatin" target="_blank" rel="noopener">A drug page, archived Sep 2018</a><a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html" target="_blank" rel="noopener">New York Times</a></p></div>
+  <p class="acts"><a class="btn primary" href="work/goodrx.html">GoodRx case study &rarr;</a> <a class="btn" href="work/iodine.html">Iodine case study &rarr;</a></p>
+  <div class="proj-foot"><span class="f-owned">Product design · Front-end · Data visualization · Research · Conversion</span></div>
 </article>
-<article class="proj">
-  <div class="proj-head"><h3>Clover Health</h3><p class="proj-meta">2015 – 2016 &middot; Product Designer, second designer</p></div>
+<article class="proj">  <div class="proj-head"><h3>Clover Health</h3><p class="proj-meta">2015 – 2016 &middot; Product Designer, second designer</p></div>
   <p class="lead">A Medicare Advantage insurer using data to direct clinical care.</p>
-  <p class="owned">Clinical tools · Field research · Brand · Front-end · Marketing site</p>
-  <a class="shot" href="work/clover-care-visit.html"><img src="images/craft/hero-clover.webp" alt="Clover Health" loading="lazy"></a>
-  <p class="proof"><span class="rlbl">Result</span><span class="fig">~7–8× ROI</span><span class="qual">On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</span></p>
-  <p class="go"><a class="btn primary" href="https://web.archive.org/web/20160220081453/https://www.cloverhealth.com/en/" target="_blank" rel="noopener">The site I shipped, archived Feb 2016 &rarr;</a> <a class="btn ghost" href="work/clover-care-visit.html">Clover Care Visit case study &rarr;</a> <a class="btn ghost" href="work/clover-health-website.html">Clover website case study &rarr;</a></p>
+  <a class="shot" href="work/clover-care-visit.html"><img width="1400" height="450" src="images/craft/hero-clover.webp" alt="Clover Health" loading="lazy"></a>
+  <p class="desc">On visit-related revenue. Nurse practitioners stopped losing two hours a night to paper forms.</p>
+  <div class="claim"><div class="res"><span class="res-lbl">Result</span><span class="res-fig">~7–8× ROI</span></div><p class="proofline"><a href="https://web.archive.org/web/20160220081453/https://www.cloverhealth.com/en/" target="_blank" rel="noopener">The site I shipped, archived Feb 2016</a></p></div>
+  <p class="acts"><a class="btn primary" href="work/clover-care-visit.html">Care Visit case study &rarr;</a> <a class="btn" href="work/clover-health-website.html">Website case study &rarr;</a></p>
+  <div class="proj-foot"><span class="f-owned">Clinical tools · Field research · Brand · Front-end · Marketing site</span></div>
 </article>
-<article class="proj">
-  <div class="proj-head"><h3>TaskRabbit</h3><p class="proj-meta">2014 – 2015 &middot; Product Designer</p></div>
+<article class="proj">  <div class="proj-head"><h3>TaskRabbit</h3><p class="proj-meta">2014 – 2015 &middot; Product Designer</p></div>
   <p class="lead">A two-sided marketplace for local help, mid-rebuild.</p>
-  <p class="owned">Product design · iOS · Android · Marketplace · Rebrand</p>
-  <a class="shot" href="work/taskrabbit-tasker.html"><img src="images/craft/hero-taskrabbit.webp" alt="TaskRabbit" loading="lazy"></a>
-  <p class="proof"><span class="rlbl">Result</span><span class="fig">NPS −5 → mid-50s</span><span class="qual">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</span></p>
-  <p class="cites"><a href="https://web.archive.org/web/20150227060448/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Feb 2015</a></p>
-  <p class="go"><a class="btn primary" href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild &rarr;</a> <a class="btn ghost" href="work/taskrabbit-tasker.html">Tasker case study &rarr;</a> <a class="btn ghost" href="work/taskrabbit-client.html">Client case study &rarr;</a></p>
+  <a class="shot" href="work/taskrabbit-tasker.html"><img width="1400" height="450" src="images/craft/hero-taskrabbit.webp" alt="TaskRabbit" loading="lazy"></a>
+  <p class="desc">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</p>
+  <div class="claim"><div class="res"><span class="res-lbl">Result</span><span class="res-fig">NPS −5 → mid-50s</span></div><p class="proofline"><a href="https://web.archive.org/web/20150227060448/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Feb 2015</a><a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild</a></p></div>
+  <p class="acts"><a class="btn primary" href="work/taskrabbit-tasker.html">Tasker case study &rarr;</a> <a class="btn" href="work/taskrabbit-client.html">Client case study &rarr;</a></p>
+  <div class="proj-foot"><span class="f-owned">Product design · iOS · Android · Marketplace · Rebrand</span></div>
 </article>
-<article class="proj">
-  <div class="proj-head"><h3>Amazon</h3><p class="proj-meta">2012 – 2013 &middot; User Experience Designer</p></div>
+<article class="proj">  <div class="proj-head"><h3>Amazon</h3><p class="proj-meta">2012 – 2013 &middot; User Experience Designer</p></div>
   <p class="lead">Amazon Prime, then Amazon Music as it moved off the browser and onto devices.</p>
-  <p class="owned">Desktop client · Device integrations · Platform clients</p>
   <p class="ph"><span class="wip-tag">WIP</span> No image, video, or demo on disk for Amazon yet.</p>
-  <p class="cites"><a href="https://www.engadget.com/2013-10-03-samsung-shape-wireless-audio-system.html">Samsung Shape launch, October 2013</a></p>
-  <p class="go"><a class="btn primary" href="https://press.aboutamazon.com/news-releases/news-release-details/updated-amazon-cloud-player-includes-new-scan-and-match" target="_blank" rel="noopener">Scan and match, Amazon, July 2012 &rarr;</a></p>
+  <div class="proj-foot"><span class="f-owned">Desktop client · Device integrations · Platform clients</span><span class="f-rec"><a href="https://www.engadget.com/2013-10-03-samsung-shape-wireless-audio-system.html" target="_blank" rel="noopener">Samsung Shape launch, October 2013</a><a href="https://press.aboutamazon.com/news-releases/news-release-details/updated-amazon-cloud-player-includes-new-scan-and-match" target="_blank" rel="noopener">Scan and match, Amazon, July 2012</a></span></div>
 </article>
 
 <h3 class="also-h">Also</h3>
