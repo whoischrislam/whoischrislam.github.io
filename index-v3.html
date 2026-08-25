@@ -1002,6 +1002,20 @@ h2.sec#work{margin-top:16px}
 .work-tile[hidden]{display:none}
 .work-tile img{display:block;width:100%;height:auto;min-height:116px;max-height:330px;
   object-fit:cover;background:var(--surface-2);transition:transform .32s ease,opacity .22s ease}
+/* JS progressively enhances the safe multi-column fallback into a variable-
+   span mosaic. Eight tracks let a tile be 2, 3 or 4 tracks wide instead of
+   forcing the blunt choice between one column and two full columns. */
+.work-grid[data-layout="mosaic"]{position:relative;columns:auto;column-gap:0}
+.work-grid[data-layout="mosaic"] .work-tile{position:absolute;margin:0;
+  transition:opacity .22s ease,filter .22s ease,border-color .16s ease,
+    transform .22s ease,left .32s cubic-bezier(.2,.7,.2,1),
+    top .32s cubic-bezier(.2,.7,.2,1),width .32s cubic-bezier(.2,.7,.2,1)}
+.work-grid[data-layout="mosaic"] .work-tile img{width:100%;height:100%;min-height:0;max-height:none;object-fit:cover}
+.work-grid[data-layout="mosaic"] .work-tile[data-shape="wide"]{aspect-ratio:2/1}
+.work-grid[data-layout="mosaic"] .work-tile[data-shape="landscape"]{aspect-ratio:16/10}
+.work-grid[data-layout="mosaic"] .work-tile[data-shape="square"]{aspect-ratio:1}
+.work-grid[data-layout="mosaic"] .work-tile[data-shape="portrait"]{aspect-ratio:3/4}
+.work-grid[data-layout="mosaic"] .work-tile[data-shape="tall"]{aspect-ratio:9/16}
 .work-tile-label{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;
   gap:1px;padding:34px 11px 10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.84));
   text-shadow:0 1px 2px rgba(0,0,0,.7);pointer-events:none}
@@ -1180,83 +1194,83 @@ h2.sec#work{margin-top:16px}
     <div class="work-panel-actions"></div>
   </aside>
   <div id="work-grid" class="work-grid">
-    <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-voice" data-pin>
+    <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-voice" data-shape="square" data-span="3" data-mobile-span="4" data-pin>
       <img src="images/work/y30-voice.png" width="1440" height="1230" alt="" loading="eager" decoding="async">
       <span class="work-tile-label"><b>y30</b><span>Voice as the interface</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="playsesh" data-tile-id="playsesh-prompt" data-pin>
+    <button class="work-tile" type="button" data-project="playsesh" data-tile-id="playsesh-prompt" data-shape="landscape" data-span="4" data-pin>
       <img src="https://img.youtube.com/vi/Q0S-_WAea6Y/maxresdefault.jpg" width="1280" height="720" alt="" loading="eager" decoding="async">
       <span class="work-tile-label"><b>PlaySesh</b><span>Prompt to playable</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="hogware" data-tile-id="hogware-game" data-pin>
+    <button class="work-tile" type="button" data-project="hogware" data-tile-id="hogware-game" data-shape="landscape" data-span="2" data-pin>
       <img src="images/hogware/og.png" width="2400" height="1350" alt="" loading="eager" decoding="async">
       <span class="work-tile-label"><b>HogWare</b><span>Two-day product-engineering sprint</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-game">
+    <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-game" data-shape="landscape" data-span="2">
       <img src="images/work/y30-game.png" width="1440" height="1305" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>y30</b><span>Deterministic game structure</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-signals">
+    <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-signals" data-shape="portrait" data-span="3">
       <img src="images/work/y30-signals.png" width="1440" height="1630" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>y30</b><span>Conversation to caregiver context</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-system">
+    <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-system" data-shape="landscape" data-span="3">
       <img src="images/work/y30-system.png" width="1440" height="1063" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>y30</b><span>Transport adapters around one agent</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="playsesh" data-tile-id="playsesh-multiplayer">
+    <button class="work-tile" type="button" data-project="playsesh" data-tile-id="playsesh-multiplayer" data-shape="landscape" data-span="2">
       <img src="https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg" width="1280" height="720" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>PlaySesh</b><span>Multiplayer workspace in Discord</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-lessons">
+    <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-lessons" data-shape="wide" data-span="3">
       <img src="images/craft/pathstream-menuscrolling.webp" width="3330" height="1080" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Pathstream</b><span>Lesson navigation system</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-states">
+    <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-states" data-shape="portrait" data-span="2">
       <img src="images/craft/pathstream-dashboardstates.webp" width="1400" height="1944" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Pathstream</b><span>Instructor dashboard states</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-complete">
+    <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-complete" data-shape="landscape" data-span="2">
       <img src="images/craft/pathstream-completelesson.webp" width="1512" height="1080" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Pathstream</b><span>Course completion flow</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="goodrx" data-tile-id="goodrx-cities">
+    <button class="work-tile" type="button" data-project="goodrx" data-tile-id="goodrx-cities" data-shape="square" data-span="2">
       <img src="images/work/goodrx-cities-prices.webp" width="1326" height="1133" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>GoodRx</b><span>Prescription-price research</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="goodrx" data-tile-id="goodrx-states">
+    <button class="work-tile" type="button" data-project="goodrx" data-tile-id="goodrx-states" data-shape="square" data-span="3" data-mobile-span="4">
       <img src="images/work/goodrx-us-of-drugs.webp" width="2500" height="2274" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>GoodRx</b><span>United States of Drugs</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="goodrx" data-tile-id="goodrx-product">
+    <button class="work-tile" type="button" data-project="goodrx" data-tile-id="goodrx-product" data-shape="wide" data-span="4" data-mobile-span="4">
       <img src="images/craft/hero-goodrx.webp" width="1400" height="450" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>GoodRx</b><span>Consumer drug information</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="goodrx" data-tile-id="goodrx-process">
+    <button class="work-tile" type="button" data-project="goodrx" data-tile-id="goodrx-process" data-shape="square" data-span="2">
       <img src="images/craft/goodrx_03.webp" width="1600" height="1456" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>GoodRx</b><span>From research to shipped product</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="clover" data-tile-id="clover-sketch">
+    <button class="work-tile" type="button" data-project="clover" data-tile-id="clover-sketch" data-shape="square" data-span="2">
       <img src="images/craft/clover-care-visit_01.webp" width="1600" height="1200" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Clover Health</b><span>Field research into workflow</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="clover" data-tile-id="clover-form">
+    <button class="work-tile" type="button" data-project="clover" data-tile-id="clover-form" data-shape="portrait" data-span="3">
       <img src="images/craft/clover-care-visit_09.webp" width="768" height="1024" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Clover Health</b><span>Clinical visit interface</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="clover" data-tile-id="clover-site">
+    <button class="work-tile" type="button" data-project="clover" data-tile-id="clover-site" data-shape="wide" data-span="3">
       <img src="images/craft/hero-clover.webp" width="1400" height="450" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Clover Health</b><span>Care-delivery product and brand</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="taskrabbit" data-tile-id="taskrabbit-calendar">
+    <button class="work-tile" type="button" data-project="taskrabbit" data-tile-id="taskrabbit-calendar" data-shape="tall" data-span="2">
       <img src="images/craft/taskrabbit-tasker-experience_01.webp" width="640" height="1136" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>TaskRabbit</b><span>Tasker availability</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="taskrabbit" data-tile-id="taskrabbit-tasks">
+    <button class="work-tile" type="button" data-project="taskrabbit" data-tile-id="taskrabbit-tasks" data-shape="tall" data-span="2">
       <img src="images/craft/taskrabbit-tasker-experience_06.webp" width="720" height="1280" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>TaskRabbit</b><span>Assigned-task workflow</span></span>
     </button>
-    <button class="work-tile" type="button" data-project="taskrabbit" data-tile-id="taskrabbit-system">
+    <button class="work-tile" type="button" data-project="taskrabbit" data-tile-id="taskrabbit-system" data-shape="wide" data-span="4">
       <img src="images/craft/hero-taskrabbit.webp" width="1400" height="450" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>TaskRabbit</b><span>Marketplace redesign</span></span>
     </button>
@@ -1612,11 +1626,60 @@ h2.sec#work{margin-top:16px}
       tile.style.viewTransitionName = "work-" + tile.dataset.tileId;
     });
 
+    /* Pack variable-width tiles against the shortest available run of tracks.
+       The markup still renders as multi-column when JS is unavailable; this is
+       the progressive enhancement that makes medium and large artifacts real
+       layout choices instead of stretching every image to the same width. */
+    function layoutWorkGrid(){
+      var gridWidth = workGrid.clientWidth;
+      if(!gridWidth) return;
+      var mobile = gridWidth < 500;
+      var tracks = mobile ? 4 : (gridWidth < 720 ? 6 : 8);
+      var gap = mobile ? 9 : (tracks === 6 ? 10 : 12);
+      var trackWidth = (gridWidth - gap * (tracks - 1)) / tracks;
+      var heights = Array(tracks).fill(0);
+      var visibleTiles = workTiles.filter(function(tile){ return !tile.hidden; });
+      workGrid.dataset.layout = "mosaic";
+
+      visibleTiles.forEach(function(tile){
+        var requested = mobile
+          ? Number(tile.dataset.mobileSpan || 2)
+          : Number(tile.dataset.span || 2);
+        var span = Math.max(2, Math.min(requested, tracks));
+        var bestStart = 0;
+        var bestTop = Infinity;
+        for(var start = 0; start <= tracks - span; start++){
+          var candidateTop = Math.max.apply(null, heights.slice(start, start + span));
+          if(candidateTop < bestTop){
+            bestTop = candidateTop;
+            bestStart = start;
+          }
+        }
+        var tileWidth = trackWidth * span + gap * (span - 1);
+        tile.style.left = (bestStart * (trackWidth + gap)) + "px";
+        tile.style.top = bestTop + "px";
+        tile.style.width = tileWidth + "px";
+        var nextHeight = bestTop + tile.offsetHeight + gap;
+        for(var track = bestStart; track < bestStart + span; track++){
+          heights[track] = nextHeight;
+        }
+      });
+      workGrid.style.height = Math.max(0, Math.max.apply(null, heights) - gap) + "px";
+    }
+
+    var workLayoutFrame;
+    function queueWorkLayout(){
+      cancelAnimationFrame(workLayoutFrame);
+      workLayoutFrame = requestAnimationFrame(layoutWorkGrid);
+    }
+
     function transitionWork(change){
       if(!reduceWorkMotion.matches && document.startViewTransition){
         var viewTransition = document.startViewTransition(change);
         /* A fast second selection can supersede the first transition. That is
            expected interaction, not an error worth leaking to the console. */
+        viewTransition.ready.catch(function(){});
+        viewTransition.updateCallbackDone.catch(function(){});
         viewTransition.finished.catch(function(){});
       }else{
         change();
@@ -1681,6 +1744,7 @@ h2.sec#work{margin-top:16px}
         });
         workPanel.hidden = true;
         setWorkPressed("all");
+        layoutWorkGrid();
       };
       if(animate === false) reset();
       else transitionWork(reset);
@@ -1698,6 +1762,7 @@ h2.sec#work{margin-top:16px}
         });
         renderWorkPanel(project);
         setWorkPressed(project);
+        layoutWorkGrid();
       });
       workStatus.textContent = "Showing " + related.length + " visuals for " + workProjects[project].name + ".";
     }
@@ -1731,7 +1796,12 @@ h2.sec#work{margin-top:16px}
       if(!Array.isArray(order)) order = randomWorkOrder();
       try { sessionStorage.setItem(workOrderKey, JSON.stringify(order)); }
       catch(error){}
-      transitionWork(function(){ applyWorkOrder(order); });
+      var applyOrder = function(){
+        applyWorkOrder(order);
+        layoutWorkGrid();
+      };
+      if(forceNew) transitionWork(applyOrder);
+      else applyOrder();
       workStatus.textContent = forceNew ? "Visuals shuffled. Showing all projects." : "Showing all projects in this session’s visual order.";
     }
 
@@ -1757,6 +1827,8 @@ h2.sec#work{margin-top:16px}
     document.addEventListener("keydown", function(event){
       if(event.key === "Escape" && workGrid.dataset.locked === "true") resetWork();
     });
+    window.addEventListener("resize", queueWorkLayout);
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(queueWorkLayout);
     shuffleWork(false);
   }
 
