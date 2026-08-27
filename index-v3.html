@@ -1231,7 +1231,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .project-chapter h4{font-family:var(--serif);font-size:clamp(28px,4vw,46px);font-weight:400;line-height:1.04;margin:0 0 12px}
 .project-chapter-copy p{color:var(--muted);font-size:var(--t-sm);line-height:1.6;margin:0}
 .project-chapter-media{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px;min-width:0}
-.story-artifact{appearance:none;position:relative;grid-column:span 6;min-width:0;padding:0;overflow:hidden;
+.story-artifact{appearance:none;position:relative;grid-column:span 6;width:100%;min-width:0;padding:0;overflow:hidden;
   aspect-ratio:4/3;border:1px solid var(--border);background:var(--surface-2);cursor:zoom-in}
 .story-artifact[data-story-span="4"]{grid-column:span 4}
 .story-artifact[data-story-span="12"]{grid-column:span 12;aspect-ratio:16/9}
@@ -1591,7 +1591,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     <div class="work-panel-navline">
       <button class="work-panel-back" type="button">← All work</button>
       <div class="work-panel-provenance" aria-label="Company context">
-        <img class="work-panel-provenance-logo" src="" alt="" hidden>
+        <img class="work-panel-provenance-logo" alt="" hidden>
         <span class="work-panel-provenance-name" hidden></span>
         <span class="work-panel-provenance-outcome" hidden></span>
       </div>
@@ -1664,8 +1664,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       <span class="work-tile-label"><b>Pathstream</b><span>Lesson navigation system</span></span>
     </button>
     <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-states" data-shape="portrait" data-span="2">
-      <img src="images/craft/pathstream-dashboardstates.webp" width="1400" height="1944" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>Pathstream</b><span>Instructor dashboard states</span></span>
+      <img src="images/craft/pathstream-contrast.webp" width="1400" height="5624" alt="" loading="lazy" decoding="async">
+      <span class="work-tile-label"><b>Pathstream</b><span>Lesson state system</span></span>
     </button>
     <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-complete" data-shape="landscape" data-span="2">
       <img src="images/craft/pathstream-completelesson.webp" width="1512" height="1080" alt="" loading="lazy" decoding="async">
@@ -2153,10 +2153,62 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       },
       pathstream: {
         name: "Pathstream",
+        logo: "images/logos/pathstream.svg",
+        dates: "2019–2020",
+        role: "Senior Product Design Manager",
+        context: "A live career-learning platform delivered through colleges and technology partners.",
         meta: "2019–2020 · Senior Product Design Manager",
-        summary: "I redesigned a live learning platform while preserving its existing course material, then designed the shared system and partnered closely with the engineer who implemented it in React, Storybook, and Chromatic.",
-        result: "60–80 hours of existing course content preserved",
-        actions: [["work/pathstream.html", "Read the case study"]]
+        summary: "I joined as Pathstream’s first design hire and lead IC, redesigning live student, instructor, and course-author workflows while courses were already running.",
+        facts: [
+          ["Role shape", "First design hire · lead IC · no direct reports"],
+          ["Owned", "Research · Product design · Motion prototypes · Specs · Handoff"],
+          ["Partners", "Product · Engineering · Curriculum · Course authors"],
+          ["Code boundary", "No production code · Matt implemented the shared system"]
+        ],
+        result: "Core lesson redesign shipped with zero forced migration for existing courses",
+        supportTitle: "More of the platform",
+        supportIntro: "The role crossed student, instructor, authoring, and company surfaces. Delivery labels separate what shipped from what was completed or only explored.",
+        vignettes: [
+          {
+            name: "Labs and browser workspace",
+            kicker: "Learning tools · Student experience",
+            summary: "I redesigned the browser-based lab and virtual-machine experience around loading, orientation, progress, recovery, and returning to work. The broader three-audience vision extended into instructor and course-author workflows.",
+            delivery: "Student update shipped · broader vision partial",
+            result: "Student browser / VM improvements shipped · not every planned workflow did",
+            visual: {
+              title: "Lab loading, progress, and recovery states",
+              status: "CURATE",
+              note: "Export the safe student-facing states; do not use recorded sessions or screen shares."
+            }
+          },
+          {
+            name: "Motion specifications",
+            kicker: "Interaction design · Principle",
+            summary: "I prototyped and specified seven connected lesson interactions, including location tracking, part completion, auto-scroll, lesson completion, tab overflow, and section navigation.",
+            delivery: "Prototyped + handed off",
+            result: "Seven documented interactions · implementation boundary preserved",
+            image: "images/craft/pathstream-menuscrolling.webp"
+          }
+        ],
+        supportingTitle: "Additional completed design work",
+        supportingItems: [
+          {
+            name: "Course-author workflows",
+            description: "Edit modes, course versioning, content organization, and authoring controls across the live platform.",
+            delivery: "Designed · individual release state varies"
+          },
+          {
+            name: "Enrollment and company surfaces",
+            description: "Registration, scholarship, certificate, marketing, and responsive company-site work.",
+            delivery: "Designed · release state not individually audited"
+          },
+          {
+            name: "Interaction and visual cleanup",
+            description: "Loading states, form controls, icons, empty states, and smaller platform fixes throughout the role.",
+            delivery: "Ongoing platform work"
+          }
+        ],
+        actions: []
       },
       goodrx: {
         name: "GoodRx + Iodine",
@@ -2416,6 +2468,228 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     };
 
     var workStories = {
+      pathstream_lessons: {
+        company: "pathstream",
+        depth: "case",
+        slug: "lesson-system",
+        name: "The Lesson System",
+        cardKicker: "Core learning experience · Web",
+        meta: "Core learning experience · Web",
+        delivery: "Shipped",
+        summary: "I rebuilt Pathstream’s core lesson surface around how working adults planned, resumed, and completed coursework—without forcing live courses to migrate.",
+        result: "Merged into the live platform · zero forced migration for existing courses",
+        cardMedia: [
+          "images/craft/pathstream-menuscrolling.webp",
+          "images/craft/pathstream-contrast.webp",
+          "images/craft/pathstream-completelesson.webp"
+        ],
+        hero: "images/craft/pathstream-menuscrolling.webp",
+        facts: [
+          ["Ownership", "Research · Product design · Motion · Specification · Handoff"],
+          ["Constraint", "Live cohorts · roughly 60–80 hours of content per course"],
+          ["Research", "3 test rounds · course-author co-design · support synthesis"],
+          ["Delivery", "Merged PR · student, instructor, author modes · mobile"]
+        ],
+        chapters: [
+          {
+            step: "01 · Diagnose the live system",
+            title: "The lesson looked like a long page, but the failure was planning and completion.",
+            copy: "Three weeks into the role, I audited twenty-six screens and mapped the ecosystem around them. Research showed that working adults studied in short windows, avoided stopping midway through a lesson, and often could not tell whether the platform had registered completed work. A sixty-minute undifferentiated scroll made starting, resuming, and finishing unnecessarily uncertain.",
+            media: [
+              {src:"images/craft/pathstream-pathstreamecosystem.webp", title:"Pathstream learning ecosystem", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "02 · Turn research into rules",
+            title: "Show enough of the road ahead to plan—without turning an estimate into pressure.",
+            copy: "Students wanted to understand upcoming effort but did not trust exact duration estimates, especially once work was already underway. The design showed time on upcoming lessons, removed it from the active lesson, made completion explicit instead of equating it with scroll depth, and added a Go to current control for students who looked ahead before returning to their work.",
+            media: [
+              {src:"images/craft/pathstream-contrast.webp", title:"Lesson parts, progress, and explicit completion states", span:6, fit:"contain"},
+              {src:"images/craft/pathstream-subtle.webp", title:"Alternative state treatment tested against the same model", span:6, fit:"contain"}
+            ]
+          },
+          {
+            step: "03 · Change the product model",
+            title: "Parts became a real entity, with backward compatibility as a product requirement.",
+            copy: "This was not a visual reskin. Parts needed their own data model and had to work for students, instructors, and course authors. Existing lessons defaulted into a single part, kept their title and block styling, and hid part numbering when there was only one. Course authors paid the migration cost only when they chose to adopt the new structure.",
+            media: [
+              {src:"images/craft/pathstream-menuscrolling.webp", title:"Section and lesson navigation across the new hierarchy", span:12}
+            ]
+          },
+          {
+            step: "04 · Resolve focus versus reference",
+            title: "Three test rounds produced a hybrid rather than a false winner.",
+            copy: "I randomized whether participants saw a vertical or horizontal prototype first to reduce order bias. Horizontal felt cleaner and more focused; vertical made it easier to refer backward. The shipped direction kept vertical reading, visually contained each part, and used navigation plus Go to current to make orientation cheap.",
+            media: [
+              {src:"images/craft/pathstream-completelesson.webp", title:"Explicit lesson completion and the payoff state", span:12}
+            ]
+          },
+          {
+            step: "05 · Ship—and keep the missing outcome visible",
+            title: "The implementation landed; the measurement loop did not close.",
+            copy: "I wrote the implementation specification across student, instructor, course-author, and mobile modes, partnered through handoff, and the code was merged. I also defined success criteria around completion, engagement, and return behavior, but no post-launch analysis survives in the record. The portfolio claims the verified delivery and migration outcome, not an unmeasured product lift.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Implementation specification and verified delivery boundary",
+                status: "CURATE",
+                note: "Compose a safe excerpt from the implementation spec beside a public-code merge receipt if one can be verified.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      pathstream_instructor: {
+        company: "pathstream",
+        depth: "project",
+        slug: "instructor-tools",
+        name: "Instructor Tools",
+        cardKicker: "Teaching operations · Web",
+        meta: "Teaching operations · Web",
+        delivery: "Shipped + launched later",
+        summary: "I redesigned grading and resubmission around the history instructors needed, then completed a dashboard for finding live cohorts and students who needed attention.",
+        result: "Grading / resubmission shipped · dashboard launched after my departure",
+        cardVisual: {
+          title: "Grading history, resubmission, and instructor dashboard states",
+          status: "CURATE",
+          note: "Redact institution names and replace photographic avatars before publishing."
+        },
+        heroVisual: {
+          title: "Instructor tools from grading queue to cohort overview",
+          status: "CURATE",
+          note: "Recompose only cleared mock data; raw screen shares contain personal information."
+        },
+        facts: [
+          ["Ownership", "Research · Workflow definition · Product design · State specification"],
+          ["Research", "4+ instructor interviews · competitive review"],
+          ["Shipped during role", "Grading and resubmission workflow"],
+          ["Completed", "Dashboard launched after I left"]
+        ],
+        chapters: [
+          {
+            step: "01 · Instructor reality",
+            title: "The dashboard was not the job; grading and recovery were.",
+            copy: "Instructors often bypassed the home surface and bookmarked grading directly. Research showed that resubmissions were especially expensive: people needed prior attempts, reasons, timestamps, rubrics, and an official record without reopening work they had already reviewed.",
+            media: [
+              {
+                visual: "Instructor grading and resubmission evidence",
+                status: "CURATE",
+                note: "Use recreated states based on the cleared specification, not production screen shares.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "02 · Preserve the record",
+            title: "Resubmission became a visible history instead of a repeated task.",
+            copy: "The workflow brought prior grades, feedback, submission timing, and the reason work was returned into the current decision. It treated instructor actions as part of an auditable conversation rather than a disposable form state. Grading and resubmission shipped during my tenure.",
+            media: [
+              {
+                visual: "Attempt history and grading decision model",
+                status: "RECREATE",
+                note: "Create a neutral state diagram with no participant, institution, or production data.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "03 · Design the overview in states",
+            title: "Live cohorts, attention signals, and the all-caught-up state shared one system.",
+            copy: "The completed dashboard grouped courses in session, supported cohort filtering, and specified states from one course through no updates and all caught up. I finished the design before leaving; the company launched it afterward.",
+            media: [
+              {
+                visual: "Four instructor-dashboard states",
+                status: "CURATE",
+                note: "Replace faces with initials and generalize institution names before export.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      pathstream_foundation: {
+        company: "pathstream",
+        depth: "project",
+        slug: "interface-foundation",
+        name: "Interface Foundation",
+        cardKicker: "Design system · Accessibility",
+        meta: "Design system · Accessibility",
+        delivery: "Designed + implemented with engineering",
+        summary: "I audited the live interface, designed a shared foundation on Ant Design, and worked closely with Matt as he implemented it in React, Storybook, and Chromatic.",
+        result: "One documented foundation replaced visible interface drift",
+        cardVisual: {
+          title: "Pathstream interface inventory and shared foundation",
+          status: "CURATE",
+          note: "Export the cleared UI-library audit; do not present the Ant Design kit as original work."
+        },
+        heroVisual: {
+          title: "From interface inventory to implemented component foundation",
+          status: "CURATE",
+          note: "Pair the UI audit with a clearly attributed design → engineering implementation boundary."
+        },
+        facts: [
+          ["Ownership", "Audit · System design · Visual and interaction rules"],
+          ["Inventory", "16 colors · 12 type sizes · 11 component families"],
+          ["Engineering", "Matt implemented React · Storybook · Chromatic"],
+          ["Code boundary", "I wrote no production code at Pathstream"]
+        ],
+        chapters: [
+          {
+            step: "01 · Inventory the real product",
+            title: "The live interface—not a clean component file—was the source of truth.",
+            copy: "I audited screens and catalogued what the product actually used: sixteen colors, twelve type sizes, eleven component families, duplicated names, and body copy as small as 10.3 pixels. That made drift visible before the team tried to standardize it.",
+            media: [
+              {
+                visual: "Color, typography, and component inventory",
+                status: "CURATE",
+                note: "Export the Styles page from the archived UI Library file.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "02 · Design inside the engineering system",
+            title: "Build a Pathstream foundation on top of Ant Design rather than pretend the platform started blank.",
+            copy: "The product already used Ant Design in React. I defined the Pathstream-level hierarchy, tokens, patterns, and component behavior around that constraint, while keeping the official Ant Design kit clearly separate from work I authored.",
+            media: [
+              {
+                visual: "Ant Design base → Pathstream product rules",
+                status: "RECREATE",
+                note: "A simple attribution diagram is safer and clearer than publishing the third-party kit.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "03 · Share ownership with engineering",
+            title: "I designed the system; Matt made it real in the codebase.",
+            copy: "I worked closely with Matt, the engineer responsible for implementation, as the design foundation became React components documented in Storybook and checked in Chromatic. My implementation medium at Pathstream was specification and high-fidelity Principle prototyping, not production code.",
+            media: [
+              {
+                visual: "Design decisions, component implementation, and visual QA loop",
+                status: "RECREATE",
+                note: "Show the collaboration loop without implying Chris authored the React code.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "04 · Accessibility as a decision constraint",
+            title: "Use WCAG guidance to remove avoidable barriers—without claiming an audit we did not run.",
+            copy: "I flagged low contrast and extremely small text, rejected an icon-only progress idea that depended on shape alone, and shipped mobile-friendly improvements using WCAG 2.1 AA as guidance. Pathstream did not run a formal compliance audit, so this is an accessibility-informed design claim, not a certification.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Accessibility decisions across type, contrast, labels, and mobile",
+                status: "CURATE",
+                note: "Use cleared design comparisons and label them as guidance-driven improvements.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
       startplaying_money: {
         company: "startplaying",
         depth: "case",
@@ -3365,8 +3639,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         mediaItem("images/craft/pathstream-menuscrolling.webp", "Pathstream lesson navigation", "wide", 4, 4),
         mediaItem("images/craft/pathstream-completelesson.webp", "Pathstream lesson completion", "landscape", 3),
         mediaItem("images/craft/pathstream-contrast.webp", "Pathstream high-contrast exploration", "tall", 2),
-        mediaItem("images/craft/pathstream-subtle.webp", "Pathstream subtle-interface exploration", "tall", 2),
-        mediaItem("images/craft/pathstream-dashboardstates.webp", "Pathstream dashboard states", "portrait", 2)
+        mediaItem("images/craft/pathstream-subtle.webp", "Pathstream subtle-interface exploration", "tall", 2)
       ],
       goodrx: [].concat(
         numberedMedia("images/craft/goodrx_", 18, "GoodRx artifact", goodrxShape,

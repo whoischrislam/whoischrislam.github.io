@@ -119,10 +119,7 @@
 
 <h2>Beyond the student</h2>
 <p>The same structure had to serve three audiences. Instructors needed to see who was falling behind, before the student dropped. I specified the dashboard in states, including the empty one, which is the state most specs forget.</p>
-<figure>
-  <img loading="lazy" src="../images/craft/pathstream-dashboardstates.webp" alt="Instructor dashboard specified across four states including empty">
-  <figcaption>Instructor dashboard, specified across four states. Browse by student, browse by assignment.</figcaption>
-</figure>
+<p>The archived dashboard visual is temporarily withheld while institution names and photographic avatars are replaced with safe mock data.</p>
 
 <h2>The interface had drifted</h2>
 <p>Alongside the redesign I inventoried what the platform was already using, and annotated every value with where it appeared. The audit is the argument:</p>
@@ -132,7 +129,7 @@
 <li>Body copy set at four different sizes</li>
 <li>A <b>10.3px</b> type size, shipping to adult learners</li>
 </ul>
-<p>I built the system in React with Storybook on top of Ant Design. I also killed an icon-only progress timeline I liked, because it carried meaning in shape alone and would have failed anyone using a screen reader.</p>
+<p>I designed the shared foundation on top of Ant Design and worked closely with Matt, the engineer who implemented it in React, Storybook, and Chromatic. I did not write production code at Pathstream. I also killed an icon-only progress timeline I liked, because it carried meaning in shape alone and would have failed anyone using a screen reader.</p>
 
 <h2>It shipped</h2>
 <p>Code merged. I wrote the implementation spec covering student, instructor and course-author modes, plus mobile, plus the backward-compatible defaults above.</p>
@@ -165,7 +162,7 @@ October 30: actual initial design completion and handoff, <b>+13 days</b>.</p>
 <p>He had built a personal ritual around not knowing how long a machine would take, or whether it had worked. Nobody designed that ritual; the absence of a loading state did. And it is the same failure as the sixty-minute scroll, aimed at a different person. Nobody in this system could tell where they were or how long anything would take. Not the student, not the instructor, not the author.</p>
 <p>That reframed Labs from an interface problem into a set of systems questions, which is what I ended up writing down: where does a student actually arrive from the LMS, and is that intentional? Should the lab preload while someone reads the introduction? Is work autosaved, and how does a student return to it? How is latency handled, and what does the interface say while it waits?</p>
 <p>One question in that PRD is the one I would still ask today: <em>how do we get students to be confident they know what they are doing, rather than figuring out what they are doing?</em> Micro-emotions, I called it. It is the difference between a tool that works and a tool someone trusts.</p>
-<p>Labs went to engineering as a handoff. I moved onto the lesson redesign before I saw it land.</p>
+<p>The student-facing browser and virtual-machine updates shipped. The broader three-audience vision did not ship in full before I moved onto the lesson redesign.</p>
 
 <h2>The one that still bothers me</h2>
 <p>I wrote the success criteria: time on site, bounce rate, lesson completion. The baseline analysis sat with the PM. It never came back, and I shipped anyway.</p>
