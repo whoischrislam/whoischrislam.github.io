@@ -1659,7 +1659,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     </button>
     <button class="work-tile" type="button" data-project="hogware" data-tile-id="hogware-game" data-shape="landscape" data-span="2" data-pin>
       <img src="images/hogware/og.png" width="2400" height="1350" alt="" loading="eager" decoding="async">
-      <span class="work-tile-label"><b>HogWare</b><span>Two-day product-engineering sprint</span></span>
+      <span class="work-tile-label"><b>HogWare</b><span>Product-engineering sprint</span></span>
     </button>
     <button class="work-tile" type="button" data-project="y30" data-tile-id="y30-game" data-shape="landscape" data-span="2">
       <img src="images/work/y30-game.png" width="1440" height="1305" alt="" loading="lazy" decoding="async">
@@ -2116,8 +2116,17 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     var workProjects = {
       y30: {
         name: "y30",
+        dates: "2026–now",
+        role: "Co-Founder, CPTO",
+        context: "Voice AI for older adults and caregivers that turns conversations into longitudinal signals for human review—not diagnosis or detection.",
         meta: "2026–now · Co-founder, CPTO",
         summary: "Voice AI for older adults and care teams. I scoped the model to phrasing and warmth while deterministic code owns required sequence, safety, and recovery.",
+        facts: [
+          ["Owned", "Product · Design · Full-stack engineering"],
+          ["Voice stack", "Streaming STT → LLM → TTS · Multi-provider fallback"],
+          ["Safety", "Deterministic state machine · Model cannot override crisis paths"],
+          ["Routing", "About half of routing resolves without a model call"]
+        ],
         result: "Deterministic safety · about half of routing needs no model call",
         actions: [["work/y30.html", "Read the case study"], ["https://y30.ai", "Try y30", true]]
       },
@@ -2180,8 +2189,17 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       },
       hogware: {
         name: "HogWare",
+        dates: "2026",
+        role: "Product Engineer · Game Design",
+        context: "A finished browser-game application built from PostHog’s public company values and product stack.",
         meta: "2026 · Product engineer, game design",
-        summary: "A two-day application sprint turned into a finished browser game. I built the interaction system, sound, instrumentation, tests, and the release path.",
+        summary: "A focused application sprint turned into a finished browser game. I built the interaction system, sound, instrumentation, tests, and the release path.",
+        facts: [
+          ["Build shape", "Solo product · Game design through production engineering"],
+          ["Game system", "Five microgames · One shipped boss · Shared engine"],
+          ["Instrumentation", "PostHog events · HogQL leaderboard · Flag · Survey"],
+          ["Verification", "Adversarial review · Playtesting · Headless game suite"]
+        ],
         result: "Five microgames · one boss · instrumented and tested",
         actions: [["hogware.html", "Play it"], ["HOGWARE.md", "Read the build log"]]
       },
