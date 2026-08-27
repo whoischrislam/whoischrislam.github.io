@@ -1685,6 +1685,14 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       </span>
       <span class="work-tile-label"><b>doc.ai · Omix</b><span>From study idea to validation-ready build</span></span>
     </button>
+    <button class="work-tile" type="button" data-project="modus" data-tile-id="modus-dark-mode" data-shape="landscape" data-span="3">
+      <span class="visual-placeholder" data-visual-status="RECREATE" role="img"
+        aria-label="Visual placeholder: Modus Create cross-app dark mode. Status: recreate.">
+        <span class="visual-placeholder-status">RECREATE</span>
+        <span class="visual-placeholder-title">Cross-app dark mode</span>
+      </span>
+      <span class="work-tile-label"><b>Modus Create</b><span>Design and production TypeScript</span></span>
+    </button>
     <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-lessons" data-shape="wide" data-span="3">
       <img src="images/craft/pathstream-menuscrolling.webp" width="3330" height="1080" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Pathstream</b><span>Lesson navigation system</span></span>
@@ -2263,6 +2271,52 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
             name: "Device data integrations",
             description: "A future layer for connecting studies to multiple device APIs and data sources.",
             delivery: "Roadmap · not built"
+          }
+        ],
+        actions: []
+      },
+      modus: {
+        name: "Modus Create",
+        logo: "images/logos/modus-create.svg",
+        dates: "2023–2024",
+        role: "Software Engineer (Contract)",
+        context: "I worked on Modus Create’s portfolio of Jira and Confluence Cloud apps.",
+        meta: "2023–2024 · Software Engineer (Contract)",
+        summary: "After passing an engineering interview process, I designed and implemented visual product features in a legacy production codebase, then shipped them through the team’s existing review, test, QA, and release process.",
+        facts: [
+          ["Role shape", "Contract software engineer · bounded product-feature scope"],
+          ["Owned", "Feature design · TypeScript implementation · Internal documentation"],
+          ["Verification", "PR review · Automated tests · Visual QA · Existing CI/CD"],
+          ["Reach", "Affected apps served a 500K+ installed / reachable user base"]
+        ],
+        result: "Cross-app dark mode and visual consistency shipped to production",
+        supportTitle: "Production engineering proof",
+        supportIntro: "The value of this role is compact but distinct: I joined someone else’s engineering team, worked inside its constraints, and shipped production code.",
+        vignettes: [
+          {
+            name: "Cross-app dark mode",
+            kicker: "Jira + Confluence Cloud · Design engineering",
+            summary: "I designed and implemented dark-mode behavior and visual consistency across multiple affected apps, modifying the primarily TypeScript source while preserving Atlassian compatibility. The work passed pull-request review, automated tests, visual QA, and the existing CI/CD release path.",
+            delivery: "Shipped to production",
+            result: "Affected apps served 500K+ installed / reachable users · dark-mode adoption not separately measured",
+            visual: {
+              title: "One app family across light and dark environments",
+              status: "RECREATE",
+              note: "Create a safe abstract comparison; do not imply access to private Modus or Atlassian source artifacts."
+            }
+          }
+        ],
+        supportingTitle: "Additional shipped and delivered work",
+        supportingItems: [
+          {
+            name: "App icon family",
+            description: "Improved the product icons so the affected Jira and Confluence apps read as a more consistent family.",
+            delivery: "Shipped · exact app count not asserted"
+          },
+          {
+            name: "Repository documentation",
+            description: "Authored the repository README and local developer-setup guidance, including how the team worked with its existing release process.",
+            delivery: "Delivered internally"
           }
         ],
         actions: []
@@ -3699,6 +3753,15 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       });
     }
 
+    function hasCompanyFocus(company){
+      var companyData = workProjects[company];
+      if(!companyData) return false;
+      return hasCompanyStories(company) ||
+        Boolean(companyData.vignettes && companyData.vignettes.length) ||
+        Boolean(companyData.supportingItems && companyData.supportingItems.length) ||
+        Boolean(companyData.alsoShipped && companyData.alsoShipped.length);
+    }
+
     function setWorkFocusEnvironment(active){
       document.body.classList.toggle("work-focus-open", active);
       workBackgroundItems.forEach(function(item){ item.inert = active; });
@@ -3800,6 +3863,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         mediaItem("images/craft/pathstream-subtle.webp", "Pathstream subtle-interface exploration", "tall", 2)
       ],
       sharecare: [],
+      modus: [],
       goodrx: [].concat(
         numberedMedia("images/craft/goodrx_", 18, "GoodRx artifact", goodrxShape,
           function(number){ return number === 2 ? ".gif" : ".webp"; }),
@@ -4032,7 +4096,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         });
         grid.appendChild(card);
       });
-      workFocusContent.appendChild(grid);
+      if(grid.children.length) workFocusContent.appendChild(grid);
       var companyData = workProjects[company];
       var supportingItems = companyData.supportingItems || companyData.alsoShipped || [];
       if((companyData.vignettes && companyData.vignettes.length) ||
@@ -4279,7 +4343,11 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       clearProjectGallery();
       var seen = new Set(curatedWorkTiles
         .filter(function(tile){ return tile.dataset.project === project; })
-        .map(function(tile){ return tile.querySelector("img").getAttribute("src"); }));
+        .map(function(tile){
+          var image = tile.querySelector("img");
+          return image && image.getAttribute("src");
+        })
+        .filter(Boolean));
       curatedWorkTiles.filter(function(tile){ return tile.dataset.project === project; })
         .forEach(function(tile){
           tile.setAttribute("aria-label", (tile.dataset.provider ? "Open video: " : "Open full size: ") + mediaTitleForTile(tile));
@@ -4628,7 +4696,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     function groupWork(project, options){
       options = options || {};
       var source = options.source || "project";
-      var companyFocus = source === "company" && hasCompanyStories(project);
+      var companyFocus = source === "company" && hasCompanyFocus(project);
       var sourceButton = options.trigger && options.trigger.closest
         ? options.trigger.closest("[data-work-company]") : null;
       var sourceImage = sourceButton && sourceButton.querySelector("img");
@@ -4685,8 +4753,11 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           var companyStoryCount = Object.keys(workStories).filter(function(key){
             return workStories[key].company === project;
           }).length;
-          workStatus.textContent = "Showing " + companyStoryCount + " projects at " +
-            workProjects[project].name + ". Select one to explore it.";
+          workStatus.textContent = companyStoryCount
+            ? "Showing " + companyStoryCount + " projects at " +
+              workProjects[project].name + ". Select one to explore it."
+            : "Showing company context and shipped work at " +
+              workProjects[project].name + ".";
         }
       };
       var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change);
@@ -4839,7 +4910,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       tile.addEventListener("click", function(){
         if(workGrid.dataset.locked === "true" && selectedWorkProject === tile.dataset.project){
           openWorkMedia(tile);
-        }else if(hasCompanyStories(tile.dataset.project)){
+        }else if(hasCompanyFocus(tile.dataset.project)){
           groupWork(tile.dataset.project, {trigger:tile, source:"company"});
         }else{
           groupWork(tile.dataset.project, {trigger:tile, source:"project"});
@@ -4859,7 +4930,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         if(project === "all") leaveFocusedWork();
         else groupWork(project, {
           trigger:button,
-          source:hasCompanyStories(project) ? "company" : "project"
+          source:hasCompanyFocus(project) ? "company" : "project"
         });
       });
     });
@@ -4893,7 +4964,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         groupWork(project, {
           history:false,
           source:event.state && event.state.portfolioWorkSource ||
-            (hasCompanyStories(project) ? "company" : "project"),
+            (hasCompanyFocus(project) ? "company" : "project"),
           restoreCompanyScroll:event.state && event.state.portfolioCompanyScrollTop,
           animate:true
         });
@@ -4927,7 +4998,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     }else if(initialWorkProject){
       groupWork(initialWorkProject, {
         history:false,
-        source:hasCompanyStories(initialWorkProject) ? "company" : "project",
+        source:hasCompanyFocus(initialWorkProject) ? "company" : "project",
         animate:false
       });
     }
