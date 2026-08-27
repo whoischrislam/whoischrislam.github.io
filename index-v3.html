@@ -1045,7 +1045,12 @@ h2.sec#work{margin-top:16px}
 .work-panel h3{font-family:var(--serif);font-size:var(--t-xl);font-weight:400;margin:0 0 5px}
 .work-panel.is-company-view h3{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.work-panel-story-meta[hidden]{display:none}
+.work-panel-story-meta{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 .work-panel-meta{color:var(--muted);font-size:var(--t-xs);margin:0 0 10px}
+.work-panel-delivery,.work-project-card-delivery,.work-vignette-delivery{display:inline-flex;align-items:center;
+  min-height:24px;padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);
+  font:700 10px/1.1 var(--sans);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .work-panel-brief{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,.72fr);
   gap:20px 42px;align-items:start}
 .work-panel-details>summary{display:none}
@@ -1075,12 +1080,12 @@ h2.sec#work{margin-top:16px}
 .work-panel.is-story-view .work-panel-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;
   column-gap:24px;align-items:end}
 .work-panel.is-story-view h3{font-size:clamp(34px,4.2vw,56px);line-height:1;margin:0}
-.work-panel.is-story-view .work-panel-meta{margin:0 0 4px;text-align:right}
+.work-panel.is-story-view .work-panel-meta{margin:0;text-align:right}
 .work-panel.is-story-view .work-panel-brief{grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);
   grid-template-areas:"summary outcome" "facts facts";gap:14px 34px}
 .work-panel.is-story-view .work-panel-details{display:contents}
 .work-panel.is-story-view .work-panel-summary{grid-area:summary;max-width:62ch}
-.work-panel.is-story-view .work-panel-facts{grid-area:facts;grid-template-columns:repeat(3,minmax(0,1fr));
+.work-panel.is-story-view .work-panel-facts{grid-area:facts;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:1px;max-width:none;margin:0;border:1px solid var(--border);background:var(--border)}
 .work-panel.is-story-view .work-panel-facts div,
 .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){display:block;grid-column:auto;
@@ -1120,22 +1125,63 @@ h2.sec#work{margin-top:16px}
   height:clamp(220px,28vw,330px);padding:22px 22px 0;overflow:hidden;background:#009b5a}
 .work-project-card[data-work-story="tasker"] .work-project-card-media{background:#069b55}
 .work-project-card[data-work-story="client"] .work-project-card-media{background:#dfe8df}
+.work-project-card[data-work-company="clover"] .work-project-card-media{background:#08786b}
+.work-project-card[data-work-story="clover_site"] .work-project-card-media{background:#57c6d9}
+.work-project-card[data-work-company="playsesh"] .work-project-card-media{background:#241a32}
 .work-project-card-media img{display:block;width:31%;height:94%;object-fit:contain;object-position:center bottom;
   filter:drop-shadow(0 14px 18px rgba(0,0,0,.22));transition:transform .42s cubic-bezier(.2,.75,.2,1)}
 .work-project-card[data-work-story="client"] .work-project-card-media img{width:48%;height:88%;object-fit:cover;
   object-position:top center;border:1px solid rgba(0,0,0,.12);filter:drop-shadow(0 12px 16px rgba(0,0,0,.14))}
+.work-project-card[data-work-company="clover"] .work-project-card-media img{width:30%;height:88%;object-fit:contain;
+  object-position:center top;border:1px solid rgba(0,0,0,.13);background:#fff;
+  filter:drop-shadow(0 12px 16px rgba(0,0,0,.18))}
 .work-project-card:hover .work-project-card-media img:nth-child(odd),
 .work-project-card:focus-visible .work-project-card-media img:nth-child(odd){transform:translateY(-8px) rotate(-1deg)}
 .work-project-card:hover .work-project-card-media img:nth-child(even),
 .work-project-card:focus-visible .work-project-card-media img:nth-child(even){transform:translateY(-12px) rotate(1deg)}
 .work-project-card-copy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 18px;padding:18px}
-.work-project-card-kicker{grid-column:1/-1;color:var(--muted);font-size:var(--t-xs);
+.work-project-card-kicker{grid-column:1;color:var(--muted);font-size:var(--t-xs);
   letter-spacing:.12em;text-transform:uppercase}
+.work-project-card-delivery{grid-column:2;grid-row:1;justify-self:end;align-self:start}
 .work-project-card h4{font-family:var(--serif);font-size:clamp(26px,3vw,38px);font-weight:400;line-height:1.05;margin:0}
 .work-project-card-arrow{align-self:start;color:var(--accent);font-size:28px;line-height:1;transition:transform .2s ease}
 .work-project-card:hover .work-project-card-arrow,.work-project-card:focus-visible .work-project-card-arrow{transform:translateX(5px)}
 .work-project-card p{grid-column:1/-1;color:var(--muted);font-size:var(--t-sm);line-height:1.5;margin:0;max-width:48ch}
 .work-project-card-result{grid-column:1/-1;color:var(--accent);font:400 var(--t-base)/1.35 var(--serif)}
+.work-project-card:only-child{grid-column:1/-1;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);
+  grid-template-rows:1fr}
+.work-project-card:only-child .work-project-card-media{height:100%;min-height:360px}
+.work-project-card:only-child .work-project-card-copy{align-content:center}
+.work-company-support{display:grid;gap:14px;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
+.work-company-support-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px}
+.work-company-support-head h4{font:400 clamp(26px,3vw,38px)/1.05 var(--serif);margin:0}
+.work-company-support-head p{max-width:56ch;margin:0;color:var(--muted);font-size:var(--t-sm);line-height:1.5}
+.work-vignette{appearance:none;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
+  min-width:0;padding:0;overflow:hidden;border:1px solid var(--border);background:var(--surface);
+  color:var(--text);text-align:left;cursor:default;transition:border-color .2s ease,transform .3s cubic-bezier(.2,.75,.2,1)}
+button.work-vignette{cursor:zoom-in}
+button.work-vignette:hover,button.work-vignette:focus-visible{border-color:var(--accent);transform:translateY(-2px)}
+button.work-vignette:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.work-vignette-media{min-width:0;height:clamp(250px,29vw,360px);overflow:hidden;background:#ececea}
+.work-vignette-media img{display:block;width:100%;height:100%;object-fit:cover;object-position:left top;
+  transition:transform .42s cubic-bezier(.2,.75,.2,1)}
+button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-visible .work-vignette-media img{transform:scale(1.015)}
+.work-vignette-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:24px}
+.work-vignette-kicker{color:var(--muted);font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase}
+.work-vignette-delivery{align-self:flex-start}
+.work-vignette h5{font:400 clamp(27px,3.2vw,42px)/1.04 var(--serif);margin:0}
+.work-vignette p{margin:0;color:var(--muted);font-size:var(--t-sm);line-height:1.55}
+.work-vignette-result{color:var(--accent);font:400 var(--t-base)/1.35 var(--serif)}
+.work-also-shipped{display:grid;gap:12px;margin:8px 0 0;padding-top:20px;border-top:1px solid var(--border)}
+.work-also-shipped h5{margin:0;color:var(--muted);font:600 var(--t-xs)/1.3 var(--sans);
+  letter-spacing:.12em;text-transform:uppercase}
+.work-also-shipped-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
+  margin:0;padding:1px;list-style:none;background:var(--border)}
+.work-also-shipped-list li{min-width:0;padding:14px;background:var(--bg)}
+.work-also-shipped-list b{display:block;margin:0 0 4px;color:var(--text);font-size:var(--t-sm)}
+.work-also-shipped-list span{display:block;color:var(--muted);font-size:var(--t-xs);line-height:1.45}
+.work-also-shipped-list .work-supporting-delivery{margin:8px 0 0;color:var(--accent);
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 .project-story{display:grid;gap:clamp(46px,7vw,86px)}
 .project-story-opening{display:grid}
 .project-story-hero{appearance:none;position:relative;display:block;width:100%;padding:0;overflow:hidden;
@@ -1185,6 +1231,38 @@ h2.sec#work{margin-top:16px}
   color:#fff;font-size:var(--t-xs);line-height:1.3;text-align:left;
   background:linear-gradient(transparent,rgba(0,0,0,.78));opacity:0;transition:opacity .18s ease}
 .story-artifact:hover .story-artifact-label,.story-artifact:focus-visible .story-artifact-label{opacity:1}
+.project-story-footer{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  padding:28px 0 10px;border-top:1px solid var(--border)}
+.project-story-footer-label{display:block;margin:0 0 5px;color:var(--muted);font-size:var(--t-xs);
+  letter-spacing:.12em;text-transform:uppercase}
+.project-story-footer h4{margin:0;font:400 clamp(28px,3vw,42px)/1.05 var(--serif)}
+.project-story-footer-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.project-story-footer button{appearance:none;min-height:42px;padding:9px 14px;border:1px solid var(--border);
+  background:transparent;color:var(--text);font:600 var(--t-xs)/1.2 var(--sans);cursor:pointer}
+.project-story-footer button:last-child{border-color:var(--accent);color:var(--accent)}
+.project-story-footer button:hover,.project-story-footer button:focus-visible{border-color:var(--accent);color:var(--accent)}
+.project-story-footer button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.visual-placeholder{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
+  min-width:0;min-height:180px;padding:20px;overflow:hidden;border:1px dashed var(--border-strong);
+  background:
+    linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,transparent),transparent 58%),
+    repeating-linear-gradient(135deg,transparent 0 18px,color-mix(in srgb,var(--border) 48%,transparent) 18px 19px),
+    var(--surface-2);color:var(--text);text-align:left}
+.visual-placeholder::before{content:"";position:absolute;inset:14px;border:1px solid var(--border);pointer-events:none}
+.visual-placeholder-status{position:absolute;top:26px;left:26px;display:inline-flex;align-items:center;
+  min-height:24px;padding:4px 8px;border:1px solid var(--border-strong);border-radius:999px;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);color:var(--muted);
+  font:700 10px/1.1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
+.visual-placeholder-title,.visual-placeholder-note{position:relative;z-index:1;display:block}
+.visual-placeholder-title{max-width:34ch;font:400 clamp(21px,2.6vw,34px)/1.08 var(--serif)}
+.visual-placeholder-note{max-width:54ch;margin-top:7px;color:var(--muted);font:400 var(--t-xs)/1.45 var(--sans)}
+.work-project-card-media>.visual-placeholder{width:100%;height:100%;min-height:0;border:0}
+.work-project-card-media>.visual-placeholder .visual-placeholder-title{font-size:clamp(22px,3vw,36px)}
+.work-vignette-media>.visual-placeholder{width:100%;height:100%;min-height:0;border:0}
+.story-artifact.visual-placeholder{cursor:default}
+.story-artifact.visual-placeholder:hover{border-color:var(--border-strong)}
+.project-story-hero.visual-placeholder{cursor:default;background:var(--surface-2)}
+.project-story-hero.visual-placeholder:hover{border-color:var(--border-strong)}
 .work-grid{columns:4 170px;column-gap:12px;margin:0}
 .work-grid[data-locked="true"]{columns:3 210px}
 .work-tile{appearance:none;display:block;position:relative;width:100%;padding:0;margin:0 0 12px;
@@ -1210,6 +1288,12 @@ h2.sec#work{margin-top:16px}
 .work-grid[data-layout="mosaic"] .work-tile[data-shape="square"]{aspect-ratio:1}
 .work-grid[data-layout="mosaic"] .work-tile[data-shape="portrait"]{aspect-ratio:3/4}
 .work-grid[data-layout="mosaic"] .work-tile[data-shape="tall"]{aspect-ratio:9/16}
+.work-tile>.visual-placeholder{width:100%;min-height:220px;border:0;padding:18px}
+.work-grid[data-layout="mosaic"] .work-tile>.visual-placeholder{height:100%;min-height:0}
+.work-tile>.visual-placeholder::before{inset:10px}
+.work-tile>.visual-placeholder .visual-placeholder-status{top:18px;left:18px}
+.work-tile>.visual-placeholder .visual-placeholder-title{position:absolute;top:64px;left:18px;right:18px;
+  max-width:22ch;font-size:clamp(18px,2.1vw,28px)}
 .work-tile-label{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;
   gap:1px;padding:34px 11px 10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.84));
   text-shadow:0 1px 2px rgba(0,0,0,.7);pointer-events:none}
@@ -1271,10 +1355,18 @@ h2.sec#work{margin-top:16px}
     overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
   .work-project-grid::-webkit-scrollbar{display:none}
   .work-project-card{scroll-snap-align:start}
+  .work-project-card:only-child{display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .work-project-card:only-child .work-project-card-media{height:min(68vw,310px);min-height:0}
+  .work-company-support-head{display:block}
+  .work-company-support-head p{margin-top:6px}
+  .work-vignette{grid-template-columns:1fr}
+  .work-vignette-media{height:min(68vw,310px)}
+  .work-also-shipped-list{grid-template-columns:repeat(2,minmax(0,1fr))}
   .work-shell.is-story-focused .work-panel{margin:0 0 18px;padding:8px 0 20px}
   .work-shell.is-story-focused .work-panel-summary{font-size:var(--t-sm);line-height:1.48}
   .work-shell.is-story-focused .work-panel-result{font-size:24px;margin-top:9px}
   .work-panel.is-story-view .work-panel-heading{grid-template-columns:1fr;gap:5px}
+  .work-panel-story-meta{justify-content:flex-start}
   .work-panel.is-story-view .work-panel-meta{text-align:left;margin:0}
   .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;
     grid-template-areas:"summary" "outcome" "facts";gap:12px}
@@ -1285,6 +1377,8 @@ h2.sec#work{margin-top:16px}
   .project-chapter,.project-chapter:nth-child(even){grid-template-columns:1fr;gap:20px}
   .project-chapter:nth-child(even) .project-chapter-copy,
   .project-chapter:nth-child(even) .project-chapter-media{order:initial}
+  .project-story-footer{display:block}
+  .project-story-footer-actions{justify-content:flex-start;margin-top:18px}
   .work-grid,.work-grid[data-locked="true"]{columns:3 150px}
   .side-projects>summary{align-items:flex-start;flex-wrap:wrap}
   .side-projects>summary span:last-child{order:3;width:100%}
@@ -1312,9 +1406,11 @@ h2.sec#work{margin-top:16px}
   .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr 1fr;gap:1px}
   .work-panel.is-story-view .work-panel-facts div,
   .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-column:auto;padding:10px 11px}
-  .work-panel.is-story-view .work-panel-facts div:nth-child(2){grid-column:1/-1;grid-row:2}
+  .work-panel.is-story-view .work-panel-facts div:last-child:nth-child(odd){grid-column:1/-1}
   .work-project-card-media{height:250px;padding:16px 14px 0}
   .work-project-card-copy{padding:15px}
+  .work-vignette-copy{padding:18px}
+  .work-also-shipped-list{grid-template-columns:1fr}
   .story-artifact,.story-artifact[data-story-span="4"]{grid-column:span 6}
   .story-artifact[data-story-span="12"]{grid-column:span 12}
   .story-artifact img{min-height:0}
@@ -1325,7 +1421,7 @@ h2.sec#work{margin-top:16px}
 }
 @media(prefers-reduced-motion:reduce){
   .work-shell,.work-tile,.work-tile img,.hero-company-logo img,.work-project-card,
-  .work-project-card-media img,.story-artifact img{transition:none!important}
+  .work-project-card-media img,.work-vignette,.work-vignette-media img,.story-artifact img{transition:none!important}
   .work-tile:hover img,.work-tile:focus-visible img{transform:none}
   .project-chapter{opacity:1;transform:none;transition:none}
 }
@@ -1381,7 +1477,13 @@ h2.sec#work{margin-top:16px}
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
     <p class="lbl">Built products at</p>
     <ul class="hero-logo-row">
-      <li style="--h:23px"><img src="images/logos/amazon.svg" alt="Amazon"></li>
+      <li style="--h:23px">
+        <button class="hero-company-logo" type="button" data-work-company="amazon"
+          data-tip="User Experience Designer · View Amazon work →"
+          aria-label="View Amazon work" aria-pressed="false">
+          <img src="images/logos/amazon.svg" alt="">
+        </button>
+      </li>
       <li style="--h:12px">
         <button class="hero-company-logo" type="button" data-work-company="taskrabbit"
           data-tip="Product Designer · View TaskRabbit work →"
@@ -1493,7 +1595,10 @@ h2.sec#work{margin-top:16px}
         <p class="work-panel-context" hidden></p>
         <span class="work-panel-kicker">Selected project</span>
         <h3></h3>
-        <p class="work-panel-meta"></p>
+        <div class="work-panel-story-meta" hidden>
+          <p class="work-panel-meta"></p>
+          <span class="work-panel-delivery"></span>
+        </div>
       </header>
       <div class="work-panel-brief">
         <details class="work-panel-details" open>
@@ -1590,6 +1695,22 @@ h2.sec#work{margin-top:16px}
     <button class="work-tile" type="button" data-project="taskrabbit" data-tile-id="taskrabbit-system" data-shape="wide" data-span="4">
       <img src="images/craft/hero-taskrabbit.webp" width="1400" height="450" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>TaskRabbit</b><span>Marketplace redesign</span></span>
+    </button>
+    <button class="work-tile" type="button" data-project="startplaying" data-tile-id="startplaying-money" data-shape="landscape" data-span="3">
+      <span class="visual-placeholder" data-visual-status="CURATE" role="img"
+        aria-label="Visual placeholder: StartPlaying marketplace money system. Status: curate.">
+        <span class="visual-placeholder-status">CURATE</span>
+        <span class="visual-placeholder-title">Marketplace money system</span>
+      </span>
+      <span class="work-tile-label"><b>StartPlaying</b><span>Payments, payouts, and financial trust</span></span>
+    </button>
+    <button class="work-tile" type="button" data-project="amazon" data-tile-id="amazon-music" data-shape="landscape" data-span="3">
+      <span class="visual-placeholder" data-visual-status="RECREATE" role="img"
+        aria-label="Visual placeholder: Amazon Music across desktop and mobile. Status: recreate.">
+        <span class="visual-placeholder-status">RECREATE</span>
+        <span class="visual-placeholder-title">Music across desktop and mobile</span>
+      </span>
+      <span class="work-tile-label"><b>Amazon</b><span>Importer, playback, and platform work</span></span>
     </button>
   </div>
   <p class="work-history"><b>Also:</b> Blue Startups, Entrepreneur in Residence &middot; Modus Create, Software Engineer &middot; StartPlaying, Founding Product Designer &middot; doc.ai, Lead Product Designer &middot; Amazon, User Experience Designer</p>
@@ -1911,7 +2032,9 @@ h2.sec#work{margin-top:16px}
     var workPanelCompanyRole = workPanel.querySelector(".work-panel-company-role");
     var workPanelContext = workPanel.querySelector(".work-panel-context");
     var workPanelTitle = workPanel.querySelector("h3");
+    var workPanelStoryMeta = workPanel.querySelector(".work-panel-story-meta");
     var workPanelMeta = workPanel.querySelector(".work-panel-meta");
+    var workPanelDelivery = workPanel.querySelector(".work-panel-delivery");
     var workPanelDetails = workPanel.querySelector(".work-panel-details");
     var workPanelSummary = workPanel.querySelector(".work-panel-summary");
     var workPanelFacts = workPanel.querySelector(".work-panel-facts");
@@ -1951,9 +2074,59 @@ h2.sec#work{margin-top:16px}
       },
       playsesh: {
         name: "PlaySesh",
+        dates: "2024–2026",
+        role: "Co-Founder, CEO",
+        companyOutcome: "Discord product remains live",
+        context: "Discord-native collaborative tooling for indie game makers and tabletop groups.",
         meta: "2024–2026 · Co-founder, CEO",
-        summary: "A multiplayer source of truth for game makers. I designed the product, built the interface, and worked with engineering on the real-time collaboration system.",
+        summary: "I led PlaySesh from a failed matchmaking hypothesis through a research-led pivot into a shipped Discord whiteboard, while the team explored a broader game-prototyping system.",
+        facts: [
+          ["Mandate", "Find a viable collaboration product for game makers"],
+          ["Team", "CEO · CTO · Founding engineer"],
+          ["Owned", "Company direction · Product · Design · Testing · Implementation"],
+          ["Delivery", "Shipped Discord product · Internal prototypes · Incomplete rewrite"]
+        ],
         result: "Approx. 6,220 authorized Discord accounts · 138 server installs · as of Aug. 1, 2026",
+        supportTitle: "How the product evolved",
+        supportIntro: "The shipped product was one part of a longer search for a viable game-development and playtesting loop.",
+        vignettes: [
+          {
+            name: "Matchmaking hypothesis",
+            kicker: "Origin · Interactive prototype",
+            summary: "The first product tried to match people who wanted to play together. Research exposed weak willingness to pay and a harder problem around organizing game development and playtests.",
+            delivery: "Retired prototype",
+            result: "Retired after research · the pivot was the outcome",
+            visual: {
+              title: "PlaySesh matchmaking prototype",
+              status: "CAPTURE",
+              note: "Record the simulated queue and result; label it retired after research."
+            }
+          },
+          {
+            name: "AI + WebAssembly proofs",
+            kicker: "Internal demo · Team-built",
+            summary: "The team proved pieces of an AI-assisted spatial editor and a playable WebAssembly game, but never enabled the generation flow for users because inference costs were too high.",
+            delivery: "Internal demo",
+            result: "Working internal demos · never enabled",
+            visual: {
+              title: "AI-assisted editor and WASM game proof",
+              status: "CURATE",
+              note: "Recover the historical prototype capture or replace it with a code-backed diagram."
+            }
+          },
+          {
+            name: "Three.js rewrite",
+            kicker: "Product architecture · Engineering",
+            summary: "When TLDraw constrained the intended runtime, I attempted a custom scene editor and operation-based sync system. The work was substantial, tested, and incomplete.",
+            delivery: "Incomplete rewrite",
+            result: "Substantial rewrite · incomplete",
+            visual: {
+              title: "Custom Three.js editor and runtime boundary",
+              status: "CAPTURE",
+              note: "Capture the verified local build and pair it with a concise architecture boundary."
+            }
+          }
+        ],
         actions: [["https://discord.com/discovery/applications/1225184380419440810", "See it on Discord", true]]
       },
       hogware: {
@@ -1979,10 +2152,156 @@ h2.sec#work{margin-top:16px}
       },
       clover: {
         name: "Clover Health",
-        meta: "2015–2016 · Product Designer, second designer",
-        summary: "I translated a paper-heavy clinical visit into a field-tested digital workflow, then carried the same system thinking into Clover’s public experience.",
-        result: "~7–8× ROI · ~2 hours saved per nurse per day",
-        actions: [["work/clover-care-visit.html", "Care Visit case study"], ["work/clover-health-website.html", "Website case study"]]
+        logo: "images/logos/clover-health.svg",
+        dates: "2015–2016",
+        role: "Designer · second designer",
+        companyOutcome: "IPO · 2021",
+        context: "A Medicare Advantage insurer using data and software to coordinate member care.",
+        meta: "2015–2016 · Designer, second designer",
+        summary: "I joined as Clover’s second designer and worked across the clinical tools used in members’ homes and the company’s first public enrollment experience.",
+        facts: [
+          ["Stage", "Founder-funded · pre-Series A"],
+          ["Team", "Second designer"],
+          ["Owned", "Product design · Research · Clinical workflows · Public web"],
+          ["Focus", "Healthcare · Operations · Responsive web"]
+        ],
+        result: "About 7–8× ROI · 1–2 hours of nightly prep removed",
+        actions: []
+      },
+      startplaying: {
+        name: "StartPlaying",
+        dates: "2022–2023",
+        role: "Founding Product Designer",
+        companyOutcome: "YC W20 · a16z-backed",
+        context: "A marketplace where players hire professional Game Masters for tabletop roleplaying games.",
+        meta: "2022–2023 · Founding Product Designer",
+        summary: "I joined as the first designer after the seed round and concentrated the role on financial trust: replacing manual payouts, handling marketplace edge cases, and keeping weekly contact with Game Masters.",
+        facts: [
+          ["Stage", "Post-seed · first designer"],
+          ["Cadence", "2–3 GM / DM interviews most weeks"],
+          ["Owned", "Research · Product definition · Workflows · Product design"],
+          ["Boundary", "Design lead · engineering implemented production code"]
+        ],
+        result: "Marketplace money movement shipped · manual payout and accounting pain resolved",
+        supportTitle: "Shipped features, completed design, and exploration",
+        supportIntro: "The delivery label is part of the evidence: these workstreams reached different endpoints.",
+        vignettes: [
+          {
+            name: "GM refunds",
+            kicker: "Marketplace operations · Financial edge cases",
+            summary: "I designed refund controls around transaction eligibility, time limits, platform constraints, and balances that could fall below zero.",
+            delivery: "Shipped",
+            result: "Implemented as a distinct production feature",
+            visual: {
+              title: "Refund constraints and negative-balance states",
+              status: "CURATE",
+              note: "Export a short redacted sequence from the surviving Figma board."
+            }
+          },
+          {
+            name: "Player-debt reconciliation",
+            kicker: "Marketplace operations · Recovery flow",
+            summary: "I mapped how debt followed a player through signed-in and signed-out booking paths, then designed the collection and recovery states.",
+            delivery: "Shipped",
+            result: "Implemented across modal and redirect entry paths",
+            visual: {
+              title: "Player-debt recovery across booking paths",
+              status: "CURATE",
+              note: "Redact account and transaction data before using the source sequence."
+            }
+          },
+          {
+            name: "Progressive GM onboarding",
+            kicker: "Activation · End-to-end service design",
+            summary: "I replaced a monolithic application concept with a staged path through acceptance, profile setup, payouts, game setup, Discord, and marketplace readiness.",
+            delivery: "Completed · not launched",
+            result: "Implementation-ready design · did not reach production",
+            visual: {
+              title: "GM onboarding from application to marketplace readiness",
+              status: "CURATE",
+              note: "Rebuild the giant source board as four or five legible stages."
+            }
+          },
+          {
+            name: "Marketplace visibility",
+            kicker: "Opportunity framing · Discovery",
+            summary: "Research also exposed problems with discovery, repeat play, profiles, party formation, and GM administration. These ideas informed direction but were not the delivery priority.",
+            delivery: "Exploration",
+            result: "Opportunity map · no production claim",
+            visual: {
+              title: "Marketplace activation opportunity map",
+              status: "CURATE",
+              note: "Use only as a compact breadth artifact, not as a shipped project."
+            }
+          }
+        ],
+        supportingTitle: "Operating practice",
+        supportingItems: [
+          {
+            name: "Continuous GM discovery",
+            description: "Two or three GM / DM video interviews most weeks, plus synthesis of older notes and recordings.",
+            delivery: "Ongoing practice"
+          }
+        ],
+        actions: []
+      },
+      amazon: {
+        name: "Amazon",
+        logo: "images/logos/amazon.svg",
+        dates: "2012–2013",
+        role: "User Experience Designer",
+        context: "Prime, Games, and Music products spanning web, desktop software, and emerging devices.",
+        meta: "2012–2013 · User Experience Designer",
+        summary: "I moved from a Prime internship to Games contract work and then the full-time Music team, repeatedly taking assigned or unfinished products through complete design and engineering handoff.",
+        facts: [
+          ["Chapters", "Prime intern · Games contractor · Music full-time"],
+          ["Primary scope", "Amazon Music Importer · Windows Phone"],
+          ["Owned", "End-to-end product design · Specs · Prototypes · Engineering collaboration"],
+          ["Surfaces", "Web · Desktop · Mobile · Device integrations"]
+        ],
+        result: "Unified music desktop app shipped · Windows Phone product reached working alpha",
+        supportTitle: "Earlier and supporting work",
+        supportIntro: "Ownership ranged from complete product design to focused contribution; the labels keep those boundaries visible.",
+        vignettes: [
+          {
+            name: "Post-purchase conversion",
+            kicker: "Amazon.com · Checkout follow-through",
+            summary: "After an MP3 purchase, I partnered with a TPM to simplify download choices and improve the path into another purchase, Cloud Player, or Downloader.",
+            delivery: "Shipped + tested",
+            result: "A/B test improved purchase conversion · magnitude unavailable",
+            visual: {
+              title: "Purchase confirmation to download and upsell",
+              status: "TEXT ONLY",
+              note: "Keep compact unless a safe abstract flow is deliberately recreated."
+            }
+          },
+          {
+            name: "Prime buy and gift",
+            kicker: "Internship · End-to-end concept",
+            summary: "I completed the specification, interactive prototype, redlines, and high-fidelity screens for a Prime gifting flow that another owner later carried through engineering.",
+            delivery: "Completed · launched later",
+            result: "Implementation-ready design · projected 1M+ subscribers, not a measured result",
+            visual: {
+              title: "Prime buy-and-gift lifecycle",
+              status: "TEXT ONLY",
+              note: "Do not publish the old confidential board or turn the projection into an outcome."
+            }
+          }
+        ],
+        supportingTitle: "Focused contributions",
+        supportingItems: [
+          {
+            name: "Amazon Game Connect",
+            description: "Owned account linking and authorization; added visual-design support across the surrounding system.",
+            delivery: "Owned feature · contributed system"
+          },
+          {
+            name: "Samsung Shape",
+            description: "Polished selected Music visuals and prepared the partner handoff; Samsung completed implementation.",
+            delivery: "Partner contribution"
+          }
+        ],
+        actions: []
       },
       taskrabbit: {
         name: "TaskRabbit",
@@ -1992,25 +2311,404 @@ h2.sec#work{margin-top:16px}
         companyOutcome: "Acquired by IKEA · 2017",
         context: "A two-sided marketplace for local help, mid-rebuild.",
         meta: "2014–2015 · Product Designer",
-        summary: "Hired onto a new design team as TaskRabbit moved from bidding to direct hire. I owned the Tasker experience and contributed to the Client side and rebrand.",
+        summary: "Hired onto a new design team as TaskRabbit moved from bidding to direct hire. I owned the Tasker experience, contributed across the Client rebuild, and led the consolidation of TaskRabbit’s legacy mobile design into one shared system.",
         facts: [
-          ["Stage", "Series C"],
-          ["Team", "1 of 5 designers"],
-          ["Owned", "Product design · iOS · Android · Marketplace · Rebrand"],
-          ["Focus", "Marketplace · Mobile · Two-sided"]
+          ["Mandate", "Rebuild a two-sided marketplace"],
+          ["Primary scope", "Tasker experience · Mobile system"],
+          ["Collaborated", "Product · Design · Engineering"],
+          ["Surfaces", "iOS · Android · Web · Marketplace"]
         ],
         result: "Tasker NPS −5 → mid-50s · Client NPS → high-40s",
+        vignettes: [
+          {
+            name: "Mobile Design System",
+            kicker: "System leadership · iOS / Android",
+            summary: "I led and consolidated TaskRabbit’s mobile design language from the company’s inception through 2015, turning years of legacy interface decisions into a shared system with the design team and engineers.",
+            delivery: "Shipped system",
+            result: "One source for type, color, navigation, forms, states, components, and interaction patterns",
+            image: "images/taskrabbit-design-system.png"
+          }
+        ],
+        alsoShipped: [
+          ["Authentication and hiring", "Account entry and the gateway into direct hire"],
+          ["Onboarding", "First-run paths and empty states across the marketplace"],
+          ["Transactions", "Task history, invoicing, payment status, and tax export"],
+          ["Support tooling", "Zendesk workflows and recovery paths"],
+          ["Tasker communication", "Operational messaging and notification explorations"],
+          ["Launch support", "Hackdays, Careers, marketing, and brand rollout surfaces"]
+        ],
         actions: []
       }
     };
 
     var workStories = {
+      startplaying_money: {
+        company: "startplaying",
+        depth: "case",
+        slug: "marketplace-money",
+        name: "Marketplace Money System",
+        cardKicker: "Marketplace finance · Web",
+        meta: "Marketplace finance · Web",
+        delivery: "Shipped",
+        summary: "I turned manually managed payouts into an official marketplace system connecting bookings, platform fees, GM accounts, payouts, and transaction history.",
+        result: "Correct, timely, and traceable money movement reached production",
+        cardVisual: {
+          title: "From manual payouts to a marketplace money system",
+          status: "CURATE",
+          note: "Use a redacted sequence: connection, payout status, history, and failure recovery."
+        },
+        heroVisual: {
+          title: "Marketplace money movement: booking → fee → payout → history",
+          status: "CURATE",
+          note: "Recompose the source frames into one legible system view; remove names, IDs, and balances."
+        },
+        facts: [
+          ["Ownership", "Research · Product definition · End-to-end product design"],
+          ["Collaboration", "Founders · Engineering · Game Masters"],
+          ["Boundary", "I owned product design; engineering wrote production code"],
+          ["Delivery", "Shipped marketplace system"]
+        ],
+        chapters: [
+          {
+            step: "01 · Business constraint",
+            title: "Money movement was still being managed by hand.",
+            copy: "StartPlaying had just raised its seed round, but GM payouts and the accounting around them were still painful manual operations. My first mandate as the company’s first designer was to formalize the flow so revenue and GM compensation moved through one accountable system.",
+            media: [
+              {
+                visual: "Manual operations versus official marketplace flow",
+                status: "CURATE",
+                note: "A compact before-and-after system diagram, supported by the source payout board.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "02 · System model",
+            title: "Connect every financial event instead of polishing one payouts screen.",
+            copy: "I modeled the full chain: Stripe account connection, a charged booking, StartPlaying’s platform fee, the GM payout, expected status, and transaction history. Weekly conversations with GMs kept financial trust—especially payout timing and account connection—at the center of the work.",
+            media: [
+              {
+                visual: "Stripe connection and bank-account setup",
+                status: "CURATE",
+                note: "Redacted setup states for individual and business accounts.",
+                span: 6
+              },
+              {
+                visual: "Balance, payout status, and transaction history",
+                status: "CURATE",
+                note: "Show recurring-visit states and expected payout timing.",
+                span: 6
+              }
+            ]
+          },
+          {
+            step: "03 · Operational edges",
+            title: "Financial trust depends on the failure and recovery states.",
+            copy: "The system accounted for incomplete setup, failed payouts, bank-account gaps, and returning visits. Refunds and player-debt recovery became separate shipped features, preserved on the company page rather than inflated into additional case studies.",
+            media: [
+              {
+                visual: "Payout confirmation, failure, and recovery states",
+                status: "CURATE",
+                note: "Curate only the few states that explain the operational model.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "04 · Production outcome",
+            title: "The marketplace got an official, traceable money path.",
+            copy: "The work reached production and replaced the manual payout process. It resolved known revenue and accounting pain while giving GMs a clearer way to connect their account and understand payout history. No numerical lift is available, so the portfolio stops at the observed operational outcome.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Shipped marketplace-finance lifecycle",
+                status: "CURATE",
+                note: "Final proof sequence: connected account, successful payout, transaction record.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      amazon_importer: {
+        company: "amazon",
+        depth: "case",
+        slug: "music-importer",
+        name: "Amazon Music Importer",
+        cardKicker: "Desktop software · Music",
+        meta: "Desktop software · Music",
+        delivery: "Shipped",
+        summary: "I translated an assigned direction into a complete overhaul that joined two live desktop applications into one installation, onboarding, and music-ownership experience.",
+        result: "Unified Importer and Downloader released to customers",
+        cardVisual: {
+          title: "One desktop application for local and cloud music",
+          status: "RECREATE",
+          note: "Use an abstract local ↔ cloud flow rather than raw confidential design boards."
+        },
+        heroVisual: {
+          title: "Local library ↔ Amazon cloud ↔ customer device",
+          status: "RECREATE",
+          note: "Safe recreation of the verified product model; no internal screens or Amazon email addresses."
+        },
+        facts: [
+          ["Ownership", "End-to-end product design from assigned direction through release"],
+          ["Starting point", "Two separate live desktop applications"],
+          ["Surfaces", "Installation · Onboarding · Matching · Upload · Download"],
+          ["Delivery", "Unified application shipped"]
+        ],
+        chapters: [
+          {
+            step: "01 · Assigned direction",
+            title: "Combine two existing products without losing either mental model.",
+            copy: "Amazon MP3 Downloader brought cloud-owned and Amazon-purchased music down to a device. Music Importer moved a customer’s local library into the cloud. I was assigned the consolidation and had to determine the updated experience from scratch.",
+            media: [
+              {
+                visual: "Downloader and Importer before consolidation",
+                status: "RECREATE",
+                note: "Abstract the two opposing flows; do not reproduce confidential boards.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "02 · Product model",
+            title: "Make bidirectional music ownership understandable.",
+            copy: "The product had to explain cloud-to-device downloads and local-to-cloud uploads in one system. Importer could match local songs against Amazon’s catalog and replace a lower-quality copy with the higher-quality matched version, which made state and expectation especially important.",
+            media: [
+              {
+                visual: "Scan, match, upload, and replace state model",
+                status: "RECREATE",
+                note: "A safe state diagram based on verified behavior.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "03 · Cohesive lifecycle",
+            title: "One install and onboarding path held the system together.",
+            copy: "I carried the redesign through flows, high-fidelity screens, edge cases, and engineering collaboration. The two applications became one desktop product with shared installation and onboarding rather than adjacent utilities that customers had to reconcile themselves.",
+            media: [
+              {
+                visual: "Shared installation and onboarding lifecycle",
+                status: "RECREATE",
+                note: "Reconstruct the lifecycle, not the proprietary visual interface.",
+                span: 6
+              },
+              {
+                visual: "Library processing and completion states",
+                status: "RECREATE",
+                note: "Use neutral state cards derived from the archived flow inventory.",
+                span: 6
+              }
+            ]
+          },
+          {
+            step: "04 · Release",
+            title: "The unified application shipped before I moved to mobile.",
+            copy: "The overhaul released to customers while I was on the Music team. Completing it marked my transition to owning Amazon Music for Windows Phone—and became an early lesson that I wanted to carry design intent closer to implementation.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Released unified desktop application",
+                status: "RECREATE",
+                note: "Final proof should use a safe recreation plus a public product receipt if available.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      amazon_windows_phone: {
+        company: "amazon",
+        depth: "project",
+        slug: "windows-phone",
+        name: "Amazon Music for Windows Phone",
+        cardKicker: "Product ownership · Mobile",
+        meta: "Product ownership · Mobile",
+        delivery: "Working alpha",
+        summary: "I inherited an incomplete mobile effort, designed the full listening lifecycle, and worked with a small engineering team to bring it to a working alpha before the product was shuttered.",
+        result: "Working alpha · not publicly launched",
+        cardVisual: {
+          title: "Amazon Music’s listening lifecycle on Windows Phone",
+          status: "RECREATE",
+          note: "Recreate the device, cloud, streaming, and download state model—not proprietary screens."
+        },
+        heroVisual: {
+          title: "Cloud library, device library, streaming, and downloads",
+          status: "RECREATE",
+          note: "A product-state visual gives safer and stronger proof than an internal screen wall."
+        },
+        facts: [
+          ["Ownership", "Entire product design"],
+          ["Team", "2–3 engineers · engineering manager · one product designer"],
+          ["Lifecycle", "Auth · Browse · Search · Playback · Playlists · Downloads"],
+          ["Delivery", "Working alpha · later shuttered"]
+        ],
+        chapters: [
+          {
+            step: "01 · Inherited product",
+            title: "Pick up an unfinished effort and establish the complete surface area.",
+            copy: "I studied competing music products and Amazon’s existing iOS and Android apps, then took responsibility for the Windows Phone product. Purchasing was deliberately excluded and routed to the web because of app-store revenue sharing.",
+            media: [
+              {
+                visual: "Listening lifecycle and platform boundary",
+                status: "RECREATE",
+                note: "Show the expected lifecycle and the deliberate web-only purchasing boundary.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "02 · State model",
+            title: "Distinguish what lives on the device from what streams from the cloud.",
+            copy: "Windows Phone required a different interface and option model. The central interaction problem was explaining local versus cloud availability: downloaded tracks used state icons, download progress was visible, and playback prioritized the locally stored copy.",
+            media: [
+              {
+                visual: "Device library, cloud library, and cross-source search",
+                status: "RECREATE",
+                note: "Use a neutral architecture of sources, states, and user choices.",
+                span: 6
+              },
+              {
+                visual: "Streaming, queued download, and completed download states",
+                status: "RECREATE",
+                note: "Focus on behavior instead of historical visual styling.",
+                span: 6
+              }
+            ]
+          },
+          {
+            step: "03 · Alpha",
+            title: "Bring the full listening loop to working software.",
+            copy: "I worked closely with two to three engineers, including an engineering manager, across authentication, browsing, search, playback, playlists, and downloads. The result was a working alpha; the product was later shuttered rather than launched publicly.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Working-alpha product loop",
+                status: "RECREATE",
+                note: "End on the honest delivery state: functioning alpha, no public-launch claim.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      playsesh_whiteboard: {
+        company: "playsesh",
+        depth: "case",
+        slug: "whiteboard",
+        name: "Whiteboard by PlaySesh",
+        cardKicker: "Founder story · Discord / web",
+        meta: "Founder story · Discord / web",
+        delivery: "Shipped + adopted",
+        summary: "A research-led pivot became a persistent multiplayer whiteboard inside Discord, built for collaborative drawing, tabletop tools, and lightweight playtesting.",
+        result: "Shipped on Discord · organically adopted",
+        cardVisual: {
+          title: "Live Discord whiteboard",
+          status: "CAPTURE",
+          note: "Show the real multiplayer board with anonymized drawing and game-tool state."
+        },
+        heroVisual: {
+          title: "Whiteboard by PlaySesh inside Discord",
+          status: "CAPTURE",
+          note: "Company opening: the live Activity, multiple collaborators, and a useful board—not a marketing mockup."
+        },
+        facts: [
+          ["Ownership", "Company direction · Product · Design · Hands-on implementation"],
+          ["Founding team", "CEO · CTO · Founding engineer"],
+          ["Delivery", "Live Discord Activity · active development paused March 2026"]
+        ],
+        chapters: [
+          {
+            step: "01 · Research-led pivot",
+            title: "The first idea was not a business.",
+            copy: "PlaySesh began as Discord matchmaking. Interviews with prospective users and game developers showed weak willingness to pay and poor unit economics. The stronger problem was elsewhere: teams struggled to maintain a shared source of truth and to organize what they learned from playtests.",
+            media: [
+              {
+                visual: "Matchmaking hypothesis and pivot",
+                status: "CAPTURE",
+                note: "Short prototype capture plus one sentence explaining why research killed it.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "02 · Shipped product",
+            title: "Put the shared workspace where the group already was.",
+            copy: "The product that shipped was a Discord-native whiteboard: one persistent board for a server channel or DM context, with real-time multiplayer synchronization, permanent storage, multiple pages, sharing, and responsive behavior.",
+            media: [
+              {
+                visual: "Persistent multiplayer board in Discord",
+                status: "CAPTURE",
+                note: "Show two collaborators joining the same Discord context and returning to saved work.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "03 · Game-native tools",
+            title: "Differentiate it from a generic whiteboard.",
+            copy: "Custom dice, counters, and timers made the canvas useful for tabletop mechanics and lightweight playtesting. People used it to draw together, hang out, and play VTT or TTRPG sessions—not only to make formal game prototypes.",
+            media: [
+              {
+                visual: "Dice, counter, and timer interaction sequence",
+                status: "CAPTURE",
+                note: "A tight three-state sequence is enough; avoid a whole-board screenshot dump.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "04 · Adoption",
+            title: "Keep every adoption signal honest and separate.",
+            copy: "Distribution was organic with no ad spend. Discord authorizations, server installs, individual-user installs, and measured monthly active use answer different questions, so the portfolio will present them as four separately labeled signals rather than collapse them into one inflated user count.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Four-part PlaySesh adoption proof",
+                status: "RECREATE",
+                note: "Separate authorizations, server installs, individual installs, and peak MAU with dates and definitions.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "05 · Product vision",
+            title: "The larger loop was Design → Play → Observe → Learn → Iterate.",
+            copy: "The ambition extended beyond a whiteboard toward a WYSIWYG game-development environment combining visual authoring, a playable runtime, AI assistance, simulation, and playtest analytics. That complete loop did not ship; it is the product vision that explains the next architectural bet.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Design → Play → Observe → Learn → Iterate",
+                status: "RECREATE",
+                note: "Simple loop diagram labeled as the broader vision, not a shipped workflow.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "06 · Rewrite boundary",
+            title: "I tried to own the canvas and runtime foundations.",
+            copy: "TLDraw limited the control, performance, and independent runtime the vision required. I attempted a Three.js scene editor and operation-based real-time sync on Cloudflare Durable Objects. The rewrite passed its tests and builds, but remained incomplete when the company ran out of runway. Active development paused in March 2026; the shipped Discord product remains live.",
+            media: [
+              {
+                visual: "Three.js rewrite: working proof and incomplete boundary",
+                status: "CAPTURE",
+                note: "Show the verified editor/runtime proof beside an explicit list of what never reached production.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
       tasker: {
         company: "taskrabbit",
+        depth: "case",
         slug: "tasker",
         name: "Tasker Experience",
         cardKicker: "Marketplace operations · Mobile",
         meta: "Marketplace operations · Mobile",
+        delivery: "Shipped + measured",
         summary: "I owned the Tasker side of the marketplace rebuild: the tools people used to manage availability, understand new work, complete tasks, and track payment.",
         result: "Tasker NPS −5 → mid-50s",
         cardMedia: [
@@ -2105,10 +2803,12 @@ h2.sec#work{margin-top:16px}
       },
       client: {
         company: "taskrabbit",
+        depth: "project",
         slug: "client",
         name: "Client Redesign",
         cardKicker: "Marketplace redesign · Web",
         meta: "Marketplace redesign · Web",
+        delivery: "Shipped",
         summary: "I helped rebuild the client experience around direct hiring, clear task status, task history, and repeat relationships.",
         result: "A complete task lifecycle built for repeat trust",
         cardMedia: [
@@ -2116,37 +2816,184 @@ h2.sec#work{margin-top:16px}
           "images/craft/taskrabbit-client-redesign_17.webp"
         ],
         hero: "images/craft/hero-taskrabbit.webp",
+        facts: [
+          ["Contribution", "Client / V3 rebuild"],
+          ["Scope", "Direct hire · Task status · Search · History"],
+          ["Partners", "Product · Design · Engineering"]
+        ],
         chapters: [
           {
-            step: "01 · New model",
-            title: "Direct hiring changed the entire client journey.",
-            copy: "TaskRabbit moved from posting and bidding to directly hiring a Tasker. The interface had to make identity, price, timing, and trust visible from the beginning.",
+            step: "01 · Direct-hire foundation",
+            title: "A new marketplace model needed a new front door.",
+            copy: "TaskRabbit moved from posting a job and waiting for bids to directly hiring a Tasker. I contributed to the account and hiring gateway that made identity, price, timing, and trust visible before a client committed.",
             media: [
               {src:"images/craft/taskrabbit-client-redesign_01.webp", title:"Client landing page", span:6, fit:"contain"},
               {src:"images/craft/taskrabbit-client-redesign_05.webp", title:"Hiring gateway", span:6, fit:"contain"}
             ]
           },
           {
-            step: "02 · Task lifecycle",
-            title: "Make every task legible from booking through payment.",
-            copy: "The system exposed status, the assigned Tasker, history, invoices, actions, and reviews so clients could understand what happened without calling support.",
+            step: "02 · Task-state clarity",
+            title: "Make every task legible while it changes state.",
+            copy: "A task moved through booking, questions, confirmation, completion, review, and payment. The dashboard and card system exposed what had happened, who needed to act, and what came next without making clients reconstruct the process themselves.",
             media: [
               {src:"images/craft/taskrabbit-client-redesign_06.webp", title:"Task-card sketches", span:12},
               {src:"images/craft/taskrabbit-client-redesign_07.webp", title:"Client dashboard", span:6, fit:"contain"},
-              {src:"images/craft/taskrabbit-client-redesign_12.webp", title:"Task history", span:6, fit:"contain"}
+              {src:"images/craft/taskrabbit-client-redesign_08.gif", title:"Task-card lifecycle specification", span:6, fit:"contain"}
             ]
           },
           {
-            step: "03 · Repeat trust",
-            title: "Turn a successful task into the next one.",
-            copy: "Your Taskers made previous relationships easy to find and rehire, turning task history into a practical retention surface.",
+            step: "03 · Semantic search",
+            title: "Treat “Other” as intent, not a dead end.",
+            copy: "Clients did not always know which TaskRabbit category fit what they needed. The open-text path translated an everyday request into relevant categories and Taskers, while keeping the unavailable-state useful when supply did not match.",
             media: [
-              {src:"images/craft/taskrabbit-client-redesign_17.webp", title:"Your Taskers and hire-again flow", span:12, fit:"contain"}
+              {src:"images/craft/taskrabbit-client-redesign_09.webp", title:"Open-text task search", span:4, fit:"contain"},
+              {src:"images/craft/taskrabbit-client-redesign_10.webp", title:"Category and Tasker matches", span:4, fit:"contain"},
+              {src:"images/craft/taskrabbit-client-redesign_11.webp", title:"Unavailable-market recovery", span:4, fit:"contain"}
+            ]
+          },
+          {
+            step: "04 · History and repeat trust",
+            title: "Turn a completed task into a usable relationship.",
+            copy: "Past Tasks brought details, invoices, reviews, receipts, messages, and repeat hiring together. Your Taskers made a successful relationship easy to find again instead of forcing the client to restart the marketplace search.",
+            media: [
+              {src:"images/craft/taskrabbit-client-redesign_12.webp", title:"Past-task history", span:6, fit:"contain"},
+              {src:"images/craft/taskrabbit-client-redesign_13.webp", title:"Repeat-task and receipt actions", span:6, fit:"contain"},
+              {src:"images/craft/taskrabbit-client-redesign_15.webp", title:"Completed-task invoice", span:6, fit:"contain"},
+              {src:"images/craft/taskrabbit-client-redesign_17.webp", title:"Your Taskers and hire-again flow", span:6, fit:"contain"}
+            ]
+          }
+        ]
+      },
+      clover_care: {
+        company: "clover",
+        depth: "case",
+        slug: "care-visit",
+        name: "Clover Care Visit",
+        cardKicker: "Clinical operations · Web / iPad",
+        meta: "Clinical operations · Web / iPad",
+        delivery: "Shipped + measured",
+        summary: "I replaced a paper-heavy home-visit workflow with a field-tested digital system that gave nurse practitioners more time with members and returned data to Clover faster.",
+        result: "About 7–8× ROI · 1–2 hours of nightly prep removed",
+        cardMedia: [
+          "images/craft/clover-care-visit_07.webp",
+          "images/craft/clover-care-visit_13.webp",
+          "images/craft/clover-care-visit_08.webp"
+        ],
+        hero: "images/craft/hero-clover.webp",
+        facts: [
+          ["Ownership", "Research through final product design"],
+          ["Team", "1 PM · 3 engineers · 1 data scientist · 1 designer"],
+          ["Platforms", "Responsive web · iPad"]
+        ],
+        chapters: [
+          {
+            step: "01 · Field research",
+            title: "Follow the visit before redesigning the form.",
+            copy: "I spent a week in New Jersey shadowing nurse practitioners during home visits and interviewed clinical operations, member experience, and data science. The paper packet shaped the visit: nurses spent one to two hours every night pre-filling it, then Clover waited days or weeks for the same information to be entered again.",
+            media: [
+              {src:"images/craft/clover-care-visit_04.webp", title:"New Jersey visit territory", span:6},
+              {src:"images/craft/clover-care-visit_01.webp", title:"Early workflow sketches", span:6}
+            ]
+          },
+          {
+            step: "02 · Workflow model",
+            title: "Design for the order nurses actually worked in.",
+            copy: "The forms assumed a fixed sequence; the nurses did not. I reorganized the experience around sections they could enter in any order, made completion visible, and pre-populated information Clover already knew instead of asking for it again.",
+            media: [
+              {src:"images/craft/clover-care-visit_02.webp", title:"Section-navigation sketches", span:12},
+              {src:"images/craft/clover-care-visit_07.webp", title:"Responsive workflow exploration", span:6, fit:"contain"},
+              {src:"images/craft/clover-care-visit_08.webp", title:"Form-navigation prototype", span:6, fit:"contain"}
+            ]
+          },
+          {
+            step: "03 · Interaction design",
+            title: "Reduce typing while the clinician is with a member.",
+            copy: "The responsive web app had to work on an iPad Air 2 and an iPhone 6 Plus. I optimized for large tap targets, structured inputs, progressive completion, and minimal text entry, then paired with engineers as the design moved into production.",
+            media: [
+              {src:"images/craft/clover-care-visit_10.webp", title:"Responsive form prototype", span:4, fit:"contain"},
+              {src:"images/craft/clover-care-visit_09.webp", title:"Clinical input prototype", span:4, fit:"contain"},
+              {src:"images/craft/clover-care-visit_13.webp", title:"Care Visit interface", span:4, fit:"contain"}
+            ]
+          },
+          {
+            step: "04 · Pilot",
+            title: "Pilot the workflow in the field before converting the team.",
+            copy: "We piloted the app with three nurse practitioners for one week. Their feedback validated the operational change, and Clover transitioned the full nurse-practitioner team from paper to the new digital workflow.",
+            media: [
+              {src:"images/craft/clover-care-visit_14.webp", title:"Pilot feedback from a nurse practitioner", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "05 · Outcome",
+            title: "The operational improvement created time for care.",
+            copy: "Pre-populated forms removed one to two hours of nightly preparation. Visits became shorter without losing care time, data returned in hours instead of days or weeks, and the increase in visit-related revenue produced about a seven-to-eight-times return.",
+            layout: "wide",
+            media: [
+              {src:"images/craft/clover-care-visit_03.webp", title:"The Clover team after shipping", span:12}
+            ]
+          }
+        ]
+      },
+      clover_site: {
+        company: "clover",
+        depth: "project",
+        slug: "website",
+        name: "Enrollment Website",
+        cardKicker: "Enrollment experience · Web",
+        meta: "Enrollment experience · Web",
+        delivery: "Shipped",
+        summary: "I helped turn an agency-started rebrand into Clover’s first member-facing website, coordinating internal and external teams before the 2016 Medicare enrollment window.",
+        result: "One launch serving prospects, members, brokers, and providers",
+        cardMedia: [
+          "images/craft/clover-health-aep_01.webp",
+          "images/craft/clover-health-aep_05.webp",
+          "images/craft/clover-health-aep_16.webp"
+        ],
+        hero: "images/craft/hero-clover.webp",
+        facts: [
+          ["Ownership", "Product design · Coordination · Visual QA"],
+          ["Team", "1 PM · 2–4 engineers · internal and external partners"],
+          ["Platforms", "Web · Out-of-home"]
+        ],
+        chapters: [
+          {
+            step: "01 · Launch constraint",
+            title: "Turn a recruiting site into an enrollment product.",
+            copy: "The previous site was built for recruiting. Before Medicare’s Annual Election Period, Clover needed one public system for prospective members, caretakers, existing members, brokers, and providers. I took agency work already in motion, designed missing product surfaces, and coordinated implementation across internal and external teams.",
+            media: [
+              {src:"images/craft/clover-health-aep_17.webp", title:"Clover billboard", span:4},
+              {src:"images/craft/clover-health-aep_18.webp", title:"Clover information stand", span:4},
+              {src:"images/craft/clover-health-aep_19.webp", title:"Clover bus decal", span:4}
+            ]
+          },
+          {
+            step: "02 · Service tools",
+            title: "Put the enrollment questions before the brand story.",
+            copy: "The homepage started with plan availability by ZIP code. From there, prospective members and their caretakers could compare plans, check drug coverage, verify whether doctors were in network, find events, or contact Clover through the channel they preferred.",
+            media: [
+              {src:"images/craft/clover-health-aep_01.webp", title:"Enrollment homepage", span:12, fit:"contain"},
+              {src:"images/craft/clover-health-aep_05.webp", title:"Drug coverage search", span:6, fit:"contain"},
+              {src:"images/craft/clover-health-aep_16.webp", title:"Provider search results", span:6, fit:"contain"}
+            ]
+          },
+          {
+            step: "03 · Shared surface",
+            title: "Serve the people supporting enrollment, too.",
+            copy: "The same site also became a recurring resource for members, brokers, and providers. Provider tools and contact paths had to coexist with the enrollment journey, while compliance, medical, product, and engineering stakeholders stayed aligned through launch.",
+            media: [
+              {src:"images/craft/clover-health-aep_09.webp", title:"Provider tools and resources", span:6, fit:"contain"},
+              {src:"images/craft/clover-health-aep_11.webp", title:"Provider contact options", span:6, fit:"contain"}
             ]
           }
         ]
       }
     };
+
+    function hasCompanyStories(company){
+      return Object.keys(workStories).some(function(key){
+        return workStories[key].company === company;
+      });
+    }
 
     function setWorkFocusEnvironment(active){
       document.body.classList.toggle("work-focus-open", active);
@@ -2160,8 +3007,8 @@ h2.sec#work{margin-top:16px}
       var sources = new Set();
       Object.keys(workStories).forEach(function(key){
         var story = workStories[key];
-        sources.add(story.hero);
-        story.cardMedia.forEach(function(src){ sources.add(src); });
+        if(story.hero) sources.add(story.hero);
+        (story.cardMedia || []).forEach(function(src){ sources.add(src); });
       });
       sources.forEach(function(src){
         var image = new Image();
@@ -2266,6 +3113,8 @@ h2.sec#work{margin-top:16px}
         numberedMedia("images/craft/clover-health-aep_", 21, "Clover website artifact", cloverSiteShape),
         [mediaItem("images/craft/hero-clover.webp", "Clover Health case-study overview", "wide", 4, 4)]
       ),
+      startplaying: [],
+      amazon: [],
       taskrabbit: [].concat(
         numberedMedia("images/craft/taskrabbit-tasker-experience_", 40,
           "TaskRabbit Tasker artifact", taskerShape),
@@ -2362,6 +3211,16 @@ h2.sec#work{margin-top:16px}
     }
 
     function createStoryArtifact(item){
+      if(item.visual){
+        var placeholder = createVisualPlaceholder({
+          title:item.visual,
+          status:item.status,
+          note:item.note
+        });
+        placeholder.classList.add("story-artifact");
+        placeholder.dataset.storySpan = item.span || 6;
+        return placeholder;
+      }
       var tile = document.createElement("button");
       tile.type = "button";
       tile.className = "story-artifact";
@@ -2383,6 +3242,29 @@ h2.sec#work{margin-top:16px}
       return tile;
     }
 
+    function createVisualPlaceholder(item){
+      var placeholder = document.createElement("span");
+      placeholder.className = "visual-placeholder";
+      placeholder.dataset.visualStatus = item.status || "CURATE";
+      placeholder.setAttribute("role", "img");
+      placeholder.setAttribute("aria-label", "Visual placeholder: " + item.title +
+        ". Status: " + placeholder.dataset.visualStatus + ". " + (item.note || ""));
+      var status = document.createElement("span");
+      status.className = "visual-placeholder-status";
+      status.textContent = placeholder.dataset.visualStatus;
+      var title = document.createElement("span");
+      title.className = "visual-placeholder-title";
+      title.textContent = item.title;
+      placeholder.append(status, title);
+      if(item.note){
+        var note = document.createElement("span");
+        note.className = "visual-placeholder-note";
+        note.textContent = item.note;
+        placeholder.appendChild(note);
+      }
+      return placeholder;
+    }
+
     function mountCompanyFocus(company){
       if(storyRevealHandler){
         workShell.removeEventListener("scroll", storyRevealHandler);
@@ -2395,28 +3277,39 @@ h2.sec#work{margin-top:16px}
         return workStories[key].company === company;
       }).forEach(function(key){
         var story = workStories[key];
-        var heroPreload = new Image();
-        heroPreload.src = story.hero;
+        if(story.hero){
+          var heroPreload = new Image();
+          heroPreload.src = story.hero;
+        }
         var card = document.createElement("button");
         card.type = "button";
         card.className = "work-project-card";
         card.dataset.workStory = key;
-        card.setAttribute("aria-label", "Open " + story.name + " case study");
+        card.dataset.workCompany = story.company;
+        card.dataset.workDepth = story.depth || "project";
+        card.setAttribute("aria-label", "Open " + story.name);
         var media = document.createElement("span");
         media.className = "work-project-card-media";
-        story.cardMedia.forEach(function(src){
-          var image = document.createElement("img");
-          image.src = src;
-          image.alt = "";
-          image.loading = "eager";
-          image.decoding = "async";
-          media.appendChild(image);
-        });
+        if(story.cardVisual){
+          media.appendChild(createVisualPlaceholder(story.cardVisual));
+        }else{
+          (story.cardMedia || []).forEach(function(src){
+            var image = document.createElement("img");
+            image.src = src;
+            image.alt = "";
+            image.loading = "eager";
+            image.decoding = "async";
+            media.appendChild(image);
+          });
+        }
         var copy = document.createElement("span");
         copy.className = "work-project-card-copy";
         var kicker = document.createElement("span");
         kicker.className = "work-project-card-kicker";
         kicker.textContent = story.cardKicker;
+        var delivery = document.createElement("span");
+        delivery.className = "work-project-card-delivery";
+        delivery.textContent = story.delivery || "Project";
         var heading = document.createElement("h4");
         heading.textContent = story.name;
         var arrow = document.createElement("span");
@@ -2428,7 +3321,7 @@ h2.sec#work{margin-top:16px}
         var result = document.createElement("span");
         result.className = "work-project-card-result";
         result.textContent = story.result;
-        copy.append(kicker, heading, arrow, summary, result);
+        copy.append(kicker, delivery, heading, arrow, summary, result);
         card.append(media, copy);
         card.addEventListener("click", function(){
           openWorkStory(key, {trigger:card});
@@ -2436,6 +3329,95 @@ h2.sec#work{margin-top:16px}
         grid.appendChild(card);
       });
       workFocusContent.appendChild(grid);
+      var companyData = workProjects[company];
+      var supportingItems = companyData.supportingItems || companyData.alsoShipped || [];
+      if((companyData.vignettes && companyData.vignettes.length) ||
+        supportingItems.length){
+        var support = document.createElement("section");
+        support.className = "work-company-support";
+        support.setAttribute("aria-label", "More work at " + companyData.name);
+        var supportHead = document.createElement("div");
+        supportHead.className = "work-company-support-head";
+        var supportTitle = document.createElement("h4");
+        supportTitle.textContent = companyData.supportTitle || "Systems & supporting work";
+        var supportIntro = document.createElement("p");
+        supportIntro.textContent = companyData.supportIntro ||
+          "Foundational and smaller surfaces that add context without becoming full case studies.";
+        supportHead.append(supportTitle, supportIntro);
+        support.appendChild(supportHead);
+        (companyData.vignettes || []).forEach(function(vignette){
+          var vignetteCard = document.createElement(vignette.image ? "button" : "article");
+          if(vignette.image) vignetteCard.type = "button";
+          vignetteCard.className = "work-vignette";
+          var vignetteMedia = document.createElement("span");
+          vignetteMedia.className = "work-vignette-media";
+          if(vignette.image){
+            vignetteCard.dataset.mediaTitle = vignette.name;
+            vignetteCard.dataset.fullSrc = vignette.image;
+            vignetteCard.setAttribute("aria-label", "Open full size: " + vignette.name);
+            var vignetteImage = document.createElement("img");
+            vignetteImage.src = vignette.image;
+            vignetteImage.alt = "";
+            vignetteImage.loading = "lazy";
+            vignetteImage.decoding = "async";
+            vignetteMedia.appendChild(vignetteImage);
+          }else if(vignette.visual){
+            vignetteMedia.appendChild(createVisualPlaceholder(vignette.visual));
+          }
+          var vignetteCopy = document.createElement("span");
+          vignetteCopy.className = "work-vignette-copy";
+          var vignetteKicker = document.createElement("span");
+          vignetteKicker.className = "work-vignette-kicker";
+          vignetteKicker.textContent = vignette.kicker;
+          var vignetteDelivery = document.createElement("span");
+          vignetteDelivery.className = "work-vignette-delivery";
+          vignetteDelivery.textContent = vignette.delivery || "Supporting work";
+          var vignetteTitle = document.createElement("h5");
+          vignetteTitle.textContent = vignette.name;
+          var vignetteSummary = document.createElement("p");
+          vignetteSummary.textContent = vignette.summary;
+          var vignetteResult = document.createElement("span");
+          vignetteResult.className = "work-vignette-result";
+          vignetteResult.textContent = vignette.result;
+          vignetteCopy.append(vignetteKicker, vignetteDelivery, vignetteTitle,
+            vignetteSummary, vignetteResult);
+          vignetteCard.append(vignetteMedia, vignetteCopy);
+          if(vignette.image){
+            vignetteCard.addEventListener("click", function(){ openWorkMedia(vignetteCard); });
+          }
+          support.appendChild(vignetteCard);
+        });
+        if(supportingItems.length){
+          var shipped = document.createElement("section");
+          shipped.className = "work-also-shipped";
+          var shippedTitle = document.createElement("h5");
+          shippedTitle.textContent = companyData.supportingTitle ||
+            (companyData.alsoShipped ? "Also shipped" : "Supporting work");
+          var shippedList = document.createElement("ul");
+          shippedList.className = "work-also-shipped-list";
+          supportingItems.forEach(function(item){
+            var normalizedItem = Array.isArray(item)
+              ? {name:item[0], description:item[1]}
+              : item;
+            var listItem = document.createElement("li");
+            var itemTitle = document.createElement("b");
+            itemTitle.textContent = normalizedItem.name;
+            var itemDescription = document.createElement("span");
+            itemDescription.textContent = normalizedItem.description;
+            listItem.append(itemTitle, itemDescription);
+            if(normalizedItem.delivery){
+              var itemDelivery = document.createElement("span");
+              itemDelivery.className = "work-supporting-delivery";
+              itemDelivery.textContent = normalizedItem.delivery;
+              listItem.appendChild(itemDelivery);
+            }
+            shippedList.appendChild(listItem);
+          });
+          shipped.append(shippedTitle, shippedList);
+          support.appendChild(shipped);
+        }
+        workFocusContent.appendChild(support);
+      }
       workFocusContent.hidden = false;
       return grid;
     }
@@ -2445,11 +3427,18 @@ h2.sec#work{margin-top:16px}
       workFocusContent.replaceChildren();
       var article = document.createElement("article");
       article.className = "project-story";
-      article.setAttribute("aria-label", story.name + " case study");
+      article.dataset.storyDepth = story.depth || "project";
+      article.setAttribute("aria-label", story.name + " project story");
       var opening = document.createElement("div");
       opening.className = "project-story-opening";
-      var hero = createStoryArtifact({src:story.hero, title:story.name + " overview", span:12, eager:true});
-      hero.className = "project-story-hero";
+      var hero;
+      if(story.heroVisual){
+        hero = createVisualPlaceholder(story.heroVisual);
+        hero.classList.add("project-story-hero");
+      }else{
+        hero = createStoryArtifact({src:story.hero, title:story.name + " overview", span:12, eager:true});
+        hero.className = "project-story-hero";
+      }
       opening.appendChild(hero);
       article.appendChild(opening);
       var storyNav = document.createElement("nav");
@@ -2479,7 +3468,7 @@ h2.sec#work{margin-top:16px}
         copy.append(step, title, description);
         var media = document.createElement("div");
         media.className = "project-chapter-media";
-        chapter.media.forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
+        (chapter.media || []).forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
         section.append(copy, media);
         article.appendChild(section);
         var navButton = document.createElement("button");
@@ -2496,6 +3485,38 @@ h2.sec#work{margin-top:16px}
         storyNavButtons.push(navButton);
         storyNav.appendChild(navButton);
       });
+      var company = workProjects[story.company];
+      var siblingKeys = Object.keys(workStories).filter(function(key){
+        return workStories[key].company === story.company && key !== storyKey;
+      });
+      var storyFooter = document.createElement("footer");
+      storyFooter.className = "project-story-footer";
+      var storyFooterCopy = document.createElement("div");
+      var storyFooterLabel = document.createElement("span");
+      storyFooterLabel.className = "project-story-footer-label";
+      storyFooterLabel.textContent = "Continue exploring";
+      var storyFooterTitle = document.createElement("h4");
+      storyFooterTitle.textContent = siblingKeys.length
+        ? "More work at " + company.name
+        : "Return to the full " + company.name + " context";
+      storyFooterCopy.append(storyFooterLabel, storyFooterTitle);
+      var storyFooterActions = document.createElement("div");
+      storyFooterActions.className = "project-story-footer-actions";
+      var companyButton = document.createElement("button");
+      companyButton.type = "button";
+      companyButton.textContent = "← " + company.name + " overview";
+      companyButton.addEventListener("click", leaveFocusedWork);
+      storyFooterActions.appendChild(companyButton);
+      if(siblingKeys.length){
+        var siblingKey = siblingKeys[0];
+        var siblingButton = document.createElement("button");
+        siblingButton.type = "button";
+        siblingButton.textContent = "Next: " + workStories[siblingKey].name + " →";
+        siblingButton.addEventListener("click", function(){ openWorkStory(siblingKey); });
+        storyFooterActions.appendChild(siblingButton);
+      }
+      storyFooter.append(storyFooterCopy, storyFooterActions);
+      article.appendChild(storyFooter);
       workFocusContent.appendChild(article);
       workFocusContent.hidden = false;
       var chapters = Array.from(article.querySelectorAll(".project-chapter"));
@@ -2740,8 +3761,9 @@ h2.sec#work{margin-top:16px}
       workPanelKicker.hidden = true;
       workPanelTitle.textContent = item.name;
       workPanelTitle.hidden = true;
+      workPanelStoryMeta.hidden = true;
       workPanelMeta.textContent = "";
-      workPanelMeta.hidden = true;
+      workPanelDelivery.textContent = "";
       workPanelSummary.textContent = item.summary;
       renderWorkFacts(companyView ? item.facts : null);
       workPanelDetails.open = !(companyView && window.matchMedia("(max-width:520px)").matches);
@@ -2775,7 +3797,8 @@ h2.sec#work{margin-top:16px}
       workPanelTitle.textContent = story.name;
       workPanelTitle.hidden = false;
       workPanelMeta.textContent = story.meta;
-      workPanelMeta.hidden = false;
+      workPanelDelivery.textContent = story.delivery || "Project";
+      workPanelStoryMeta.hidden = false;
       workPanelSummary.textContent = story.summary;
       renderWorkFacts(story.facts || null);
       workPanelDetails.open = true;
@@ -2822,8 +3845,12 @@ h2.sec#work{margin-top:16px}
         portfolioCompanyFocus: storyKey,
         portfolioOverviewScrollY: workOverviewScrollY
       });
-      history.replaceState(companyState, "", location.href);
-      var url = new URL(location.href);
+      var companyUrl = new URL(location.href);
+      companyUrl.searchParams.set("work", story.company);
+      companyUrl.searchParams.delete("project");
+      companyUrl.hash = "work";
+      history.replaceState(companyState, "", companyUrl);
+      var url = new URL(companyUrl);
       url.searchParams.set("work", story.company);
       url.searchParams.set("project", story.slug);
       url.hash = "work";
@@ -2894,7 +3921,7 @@ h2.sec#work{margin-top:16px}
     function groupWork(project, options){
       options = options || {};
       var source = options.source || "project";
-      var companyFocus = project === "taskrabbit" && source === "company";
+      var companyFocus = source === "company" && hasCompanyStories(project);
       var sourceButton = options.trigger && options.trigger.closest
         ? options.trigger.closest("[data-work-company]") : null;
       var sourceImage = sourceButton && sourceButton.querySelector("img");
@@ -2948,7 +3975,11 @@ h2.sec#work{margin-top:16px}
         });
         setWorkPressed(project);
         if(companyFocus){
-          workStatus.textContent = "Showing two TaskRabbit projects. Select one to open its case study.";
+          var companyStoryCount = Object.keys(workStories).filter(function(key){
+            return workStories[key].company === project;
+          }).length;
+          workStatus.textContent = "Showing " + companyStoryCount + " projects at " +
+            workProjects[project].name + ". Select one to explore it.";
         }
       };
       var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change);
@@ -3003,7 +4034,7 @@ h2.sec#work{margin-top:16px}
         companyButtons.forEach(function(button){
           button.setAttribute("aria-pressed", String(button.dataset.workCompany === story.company));
         });
-        workStatus.textContent = "Showing the complete " + story.name + " case study.";
+        workStatus.textContent = "Showing " + story.name + ".";
       };
       var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change);
       finished.then(function(){
@@ -3101,8 +4132,8 @@ h2.sec#work{margin-top:16px}
       tile.addEventListener("click", function(){
         if(workGrid.dataset.locked === "true" && selectedWorkProject === tile.dataset.project){
           openWorkMedia(tile);
-        }else if(tile.dataset.project === "taskrabbit"){
-          groupWork("taskrabbit", {trigger:tile, source:"company"});
+        }else if(hasCompanyStories(tile.dataset.project)){
+          groupWork(tile.dataset.project, {trigger:tile, source:"company"});
         }else{
           groupWork(tile.dataset.project, {trigger:tile, source:"project"});
         }
@@ -3121,7 +4152,7 @@ h2.sec#work{margin-top:16px}
         if(project === "all") leaveFocusedWork();
         else groupWork(project, {
           trigger:button,
-          source:project === "taskrabbit" ? "company" : "project"
+          source:hasCompanyStories(project) ? "company" : "project"
         });
       });
     });
@@ -3155,7 +4186,7 @@ h2.sec#work{margin-top:16px}
         groupWork(project, {
           history:false,
           source:event.state && event.state.portfolioWorkSource ||
-            (project === "taskrabbit" ? "company" : "project"),
+            (hasCompanyStories(project) ? "company" : "project"),
           restoreCompanyScroll:event.state && event.state.portfolioCompanyScrollTop,
           animate:true
         });
@@ -3189,7 +4220,7 @@ h2.sec#work{margin-top:16px}
     }else if(initialWorkProject){
       groupWork(initialWorkProject, {
         history:false,
-        source:initialWorkProject === "taskrabbit" ? "company" : "project",
+        source:hasCompanyStories(initialWorkProject) ? "company" : "project",
         animate:false
       });
     }
