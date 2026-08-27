@@ -1,0 +1,4 @@
+interface:
+  display_name: "Session End"
+  short_description: "Preserve evidence and the active handoff"
+  default_prompt: "Wrap up this portfolio session and preserve its verified state for the next session."

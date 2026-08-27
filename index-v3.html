@@ -1128,12 +1128,17 @@ h2.sec#work{margin-top:16px}
 .work-project-card[data-work-company="clover"] .work-project-card-media{background:#08786b}
 .work-project-card[data-work-story="clover_site"] .work-project-card-media{background:#57c6d9}
 .work-project-card[data-work-company="playsesh"] .work-project-card-media{background:#241a32}
+.work-project-card[data-work-company="goodrx"] .work-project-card-media{background:#f4df3d}
+.work-project-card[data-work-story="iodine_product"] .work-project-card-media{background:#6339b6}
 .work-project-card-media img{display:block;width:31%;height:94%;object-fit:contain;object-position:center bottom;
   filter:drop-shadow(0 14px 18px rgba(0,0,0,.22));transition:transform .42s cubic-bezier(.2,.75,.2,1)}
 .work-project-card[data-work-story="client"] .work-project-card-media img{width:48%;height:88%;object-fit:cover;
   object-position:top center;border:1px solid rgba(0,0,0,.12);filter:drop-shadow(0 12px 16px rgba(0,0,0,.14))}
 .work-project-card[data-work-company="clover"] .work-project-card-media img{width:30%;height:88%;object-fit:contain;
   object-position:center top;border:1px solid rgba(0,0,0,.13);background:#fff;
+  filter:drop-shadow(0 12px 16px rgba(0,0,0,.18))}
+.work-project-card[data-work-company="goodrx"] .work-project-card-media img{width:31%;height:88%;object-fit:contain;
+  object-position:center;border:1px solid rgba(0,0,0,.12);background:#fff;
   filter:drop-shadow(0 12px 16px rgba(0,0,0,.18))}
 .work-project-card:hover .work-project-card-media img:nth-child(odd),
 .work-project-card:focus-visible .work-project-card-media img:nth-child(odd){transform:translateY(-8px) rotate(-1deg)}
@@ -1152,6 +1157,13 @@ h2.sec#work{margin-top:16px}
   grid-template-rows:1fr}
 .work-project-card:only-child .work-project-card-media{height:100%;min-height:360px}
 .work-project-card:only-child .work-project-card-copy{align-content:center}
+@media (min-width:761px){
+  .work-project-grid>.work-project-card:last-child:nth-child(odd){grid-column:1/-1;
+    grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);grid-template-rows:1fr}
+  .work-project-grid>.work-project-card:last-child:nth-child(odd) .work-project-card-media{
+    height:100%;min-height:360px}
+  .work-project-grid>.work-project-card:last-child:nth-child(odd) .work-project-card-copy{align-content:center}
+}
 .work-company-support{display:grid;gap:14px;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
 .work-company-support-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px}
 .work-company-support-head h4{font:400 clamp(26px,3vw,38px)/1.05 var(--serif);margin:0}
@@ -1189,6 +1201,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .project-story-hero:hover,.project-story-hero:focus-visible{border-color:var(--accent)}
 .project-story-hero:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .project-story-hero img{display:block;width:100%;height:100%;object-fit:cover}
+.project-story-hero[data-story-fit="contain"] img{object-fit:contain}
+.project-story[data-story-company="goodrx"] .project-story-hero{background:#f4df3d}
+.project-story[data-story-key="iodine_product"] .project-story-hero{background:#6339b6}
 .project-story-nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:4px;
   min-width:0;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);
@@ -2139,16 +2154,75 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       pathstream: {
         name: "Pathstream",
         meta: "2019–2020 · Senior Product Design Manager",
-        summary: "I redesigned a live learning platform while preserving the course material already inside it, then built the React and Storybook system that kept the product coherent.",
+        summary: "I redesigned a live learning platform while preserving its existing course material, then designed the shared system and partnered closely with the engineer who implemented it in React, Storybook, and Chromatic.",
         result: "60–80 hours of existing course content preserved",
         actions: [["work/pathstream.html", "Read the case study"]]
       },
       goodrx: {
         name: "GoodRx + Iodine",
+        logo: "images/logos/goodrx.svg",
+        dates: "2017–2018",
+        role: "Lead Product Designer",
+        companyOutcome: "IPO · 2020",
+        context: "GoodRx helps people compare prescription prices and access discounts; Iodine helped people understand medications.",
         meta: "2017–2018 · Lead Product Designer",
-        summary: "Consumer healthcare work spanning medication knowledge, pricing, and conversion. The failed pharmacist-response experiment became a lesson in designing for operational capacity.",
-        result: "Coupon conversion 2% → 5%",
-        actions: [["work/goodrx.html", "GoodRx case study"], ["work/iodine.html", "Iodine case study"]]
+        summary: "I joined GoodRx to own product design for Iodine, then expanded into GoodRx product, research, editorial, print, and conversion work with the small team we called GoodRx North.",
+        facts: [
+          ["Role shape", "Only embedded designer on Iodine · later GoodRx North"],
+          ["Owned", "Product · Service · Interaction · Visual · Print · Data visualization"],
+          ["Partners", "Research · Product · Pharmacy · Engineering · Company leadership"],
+          ["Code boundary", "Production code only for GoodRx Research interactives"]
+        ],
+        result: "Iodine coupon conversion 2% → 5% · GoodRx drug-page coupon conversion +10% mobile / +25% desktop",
+        supportTitle: "Also shipped and explored",
+        supportIntro: "Smaller contributions stay visible with their real delivery state instead of becoming artificial case studies.",
+        vignettes: [
+          {
+            name: "How GoodRx Works on mobile",
+            kicker: "Product education · Responsive web",
+            summary: "GoodRx had no mobile version of this explanation, so I updated the design while adding a usable mobile experience.",
+            delivery: "Shipped",
+            result: "Mobile support added · no separate outcome metric",
+            image: "images/craft/goodrx_11.webp"
+          },
+          {
+            name: "Iodine blog integration",
+            kicker: "Editorial system · Web",
+            summary: "I updated the blog so product information and editorial content felt like parts of the same Iodine experience.",
+            delivery: "Supporting contribution",
+            result: "Design shipped · no separate outcome claim",
+            image: "images/craft/iodine_26.webp"
+          },
+          {
+            name: "Conditions exploration",
+            kicker: "Product expansion · Research",
+            summary: "I explored how Iodine could organize information around health conditions before the team shifted toward broader GoodRx priorities.",
+            delivery: "Exploration · canceled",
+            result: "Direction explored · not launched",
+            image: "images/craft/iodine_24.webp"
+          },
+          {
+            name: "Price-page social proof",
+            kicker: "Conversion experiment · Framer",
+            summary: "I prototyped motion and usage signals around pharmacy price rows. The source survives, but I no longer remember which treatment shipped.",
+            delivery: "Prototype evidence",
+            result: "Interactive exploration · no release claim",
+            visual: {
+              title: "Price-page nudge prototype",
+              status: "CURATE",
+              note: "Capture the surviving Framer prototype; do not label a variant as shipped."
+            }
+          }
+        ],
+        supportingTitle: "Team and release artifacts",
+        supportingItems: [
+          {
+            name: "Release stickers",
+            description: "Small visual artifacts made around Iodine and GoodRx shipping rituals.",
+            delivery: "Culture · visual craft"
+          }
+        ],
+        actions: []
       },
       clover: {
         name: "Clover Health",
@@ -2424,6 +2498,204 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
                 visual: "Shipped marketplace-finance lifecycle",
                 status: "CURATE",
                 note: "Final proof sequence: connected account, successful payout, transaction record.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      iodine_product: {
+        company: "goodrx",
+        depth: "case",
+        slug: "iodine-product",
+        name: "Iodine",
+        cardKicker: "Medication decisions · Product / service",
+        meta: "Medication decisions · Product / service",
+        delivery: "Shipped + measured",
+        summary: "As Iodine’s embedded designer, I built a connected set of tools that helped people understand medications, compare alternatives, trust coupons, and ask pharmacists for help.",
+        result: "Coupon conversion 2% → 5% · alternative pages nearly doubled session time",
+        cardMedia: [
+          "images/craft/iodine_23.webp",
+          "images/craft/iodine_01.webp",
+          "images/craft/iodine_09.webp"
+        ],
+        hero: "images/craft/hero-iodine.webp",
+        facts: [
+          ["Ownership", "Only embedded designer · complete design ownership"],
+          ["Partners", "Research · Pharmacy · Product · Engineering"],
+          ["Surfaces", "Responsive web · Service design · Print system"],
+          ["Recognition", "2018 Webby · Best Health Website"]
+        ],
+        chapters: [
+          {
+            step: "01 · Printable information",
+            title: "Turn medication guidance into something people could keep.",
+            copy: "People asked for information they could print, keep on a refrigerator, and use as a reminder; doctors wanted copies for their patients. I worked with Thomas on the content foundation, designed a reusable InDesign structure, and partnered with engineering so structured drug data could scale it across thousands of medications and GoodRx doctor kits.",
+            media: [
+              {src:"images/craft/iodine_23.webp", title:"Reusable printable medication sheet", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "02 · Drug alternatives",
+            title: "Help people compare medications before speaking with a doctor.",
+            copy: "The model was closer to product comparison than a static encyclopedia. I reorganized prices, patient-reported experience, pharmacist guidance, filters, and similar medications into a side-by-side decision aid. It supported discovery and informed conversations without pretending to prescribe.",
+            media: [
+              {src:"images/craft/iodine_01.webp", title:"Medication-alternative entry point", span:4, fit:"contain"},
+              {src:"images/craft/iodine_03.webp", title:"Alternative comparison on mobile", span:4, fit:"contain"},
+              {src:"images/craft/iodine_05.webp", title:"Medication comparison details", span:4, fit:"contain"}
+            ]
+          },
+          {
+            step: "03 · Coupon trust",
+            title: "Make a free coupon feel credible at the pharmacy counter.",
+            copy: "People often opened a coupon while already standing in line. The experience had to explain the savings, the prescription, the pharmacy, how the coupon worked, and the codes a pharmacist needed to enter—quickly enough for both people in that handoff. The redesigned flow moved coupon conversion from 2% to 5%.",
+            media: [
+              {src:"images/craft/iodine_09.webp", title:"Coupon discovery in the medication page", span:4, fit:"contain"},
+              {src:"images/craft/iodine_11.webp", title:"Pharmacy price comparison", span:4, fit:"contain"},
+              {src:"images/craft/iodine_14.webp", title:"Coupon handoff information", span:4, fit:"contain"}
+            ]
+          },
+          {
+            step: "04 · Ask a Pharmacist",
+            title: "A human answer built trust—but only if the service could keep its promise.",
+            copy: "Drug pages and FAQs still required people to search and interpret serious information on their own. We launched a quick experiment that let them ask a contract pharmacist and promised a response within 48 hours. Demand exceeded expectations, but the small team could not reliably fulfill the promise, so we retired the service instead of hiding the operational failure.",
+            media: [
+              {src:"images/craft/iodine_15.webp", title:"Ask a Pharmacist entry point", span:4, fit:"contain"},
+              {src:"images/craft/iodine_17.webp", title:"Medication question flow", span:4, fit:"contain"},
+              {src:"images/craft/iodine_22.webp", title:"Pharmacist Q&A topics", span:4, fit:"contain"}
+            ]
+          }
+        ]
+      },
+      goodrx_drug_pages: {
+        company: "goodrx",
+        depth: "project",
+        slug: "goodrx-drug-pages",
+        name: "GoodRx Drug Pages",
+        cardKicker: "Scaled product · Responsive web",
+        meta: "Scaled product · Responsive web",
+        delivery: "Shipped + A/B tested",
+        summary: "I redesigned a high-traffic medication page so people could move between drug information, prescription settings, local prices, and coupons without losing context.",
+        result: "Drug coupon conversion +10% on mobile · +25% on desktop",
+        cardMedia: [
+          "images/craft/goodrx_12.webp",
+          "images/craft/goodrx_15.webp",
+          "images/craft/goodrx_17.webp"
+        ],
+        hero: "images/craft/goodrx_15.webp",
+        heroFit: "contain",
+        facts: [
+          ["Ownership", "Complete product-design ownership"],
+          ["Goal", "Improve discovery and drug coupon conversion"],
+          ["Surfaces", "Mobile web · Desktop web"],
+          ["Delivery", "Shipped · A/B tested"]
+        ],
+        chapters: [
+          {
+            step: "01 · Conversion problem",
+            title: "Useful information was not enough if people could not find the next step.",
+            copy: "Doug and others reported that people were not discovering or progressing through the page. The commercial goal was clear: make the medication information more useful while improving the path into prices and coupons, where GoodRx could help someone save and earn revenue.",
+            media: [
+              {src:"images/craft/goodrx_12.webp", title:"Mobile drug-information overview", span:4, fit:"contain"},
+              {src:"images/craft/goodrx_15.webp", title:"Desktop drug page and navigation", span:8, fit:"contain"}
+            ]
+          },
+          {
+            step: "02 · Information hierarchy",
+            title: "Keep the health context and savings path in one coherent page.",
+            copy: "I brought the drug overview, quick facts, prescription configuration, section navigation, reviews, alternatives, and savings information into a clearer hierarchy. People could understand the medication, update what they were filling, and move to local prices without starting over.",
+            media: [
+              {src:"images/craft/goodrx_13.webp", title:"Mobile quick facts and section navigation", span:4, fit:"contain"},
+              {src:"images/craft/goodrx_16.webp", title:"Desktop information hierarchy", span:8, fit:"contain"}
+            ]
+          },
+          {
+            step: "03 · Responsive system",
+            title: "The same decision had to remain legible on a phone in a pharmacy line.",
+            copy: "Mobile compressed the hierarchy without removing the prescription, price, and coupon context. Desktop used the additional space for persistent navigation and comparison. The two versions shared the same product model instead of becoming separate experiences.",
+            media: [
+              {src:"images/craft/goodrx_14.webp", title:"Mobile prescription and savings state", span:4, fit:"contain"},
+              {src:"images/craft/goodrx_17.webp", title:"Desktop prescription and savings state", span:8, fit:"contain"}
+            ]
+          },
+          {
+            step: "04 · Measured result",
+            title: "The shipped experiment improved drug coupon conversion.",
+            copy: "The redesign was A/B tested. My historical record documents a 10% increase in drug coupon conversion on mobile web and a 25% increase on desktop web, with an associated increase in revenue. I no longer remember a narrower event definition, so the portfolio keeps the original metric language intact.",
+            layout: "wide",
+            media: [
+              {src:"images/craft/goodrx_18.webp", title:"GoodRx drug-page redesign across mobile and desktop", span:12}
+            ]
+          }
+        ]
+      },
+      goodrx_research: {
+        company: "goodrx",
+        depth: "case",
+        slug: "goodrx-research",
+        name: "GoodRx Research",
+        cardKicker: "Data visualization · Design to code",
+        meta: "Data visualization · Design to code",
+        delivery: "Published + shipped",
+        summary: "I taught myself JavaScript and D3, then designed and built production interactives that made prescription-price and utilization data easier to explore.",
+        result: "Production interactives · national media reach · federal policy support",
+        cardMedia: [
+          "images/craft/goodrx_01.webp",
+          "images/craft/goodrx_02.gif",
+          "images/craft/goodrx_05.webp"
+        ],
+        hero: "images/craft/goodrx_01.webp",
+        heroFit: "contain",
+        facts: [
+          ["Ownership", "Visual design · Data preparation · Interactive implementation"],
+          ["Partners", "Thomas and other researchers / writers · Marc in engineering"],
+          ["Code", "JavaScript · D3 · production interactives"],
+          ["Boundary", "Marc helped integrate the work before I knew Git"]
+        ],
+        chapters: [
+          {
+            step: "01 · Close the handoff gap",
+            title: "Learn enough implementation to carry the visual idea into production.",
+            copy: "Marc was stretched thin on a very small team. Rather than add another developer, I spent about a month learning JavaScript and D3 and began implementing the interactives myself. This was before I knew Git or repository workflows: I authored the visualization code, and Marc mentored me and helped integrate it into GoodRx Research.",
+            media: [
+              {src:"images/craft/goodrx_01.webp", title:"Prescription prices with insurance versus GoodRx", span:12}
+            ]
+          },
+          {
+            step: "02 · Geographic exploration",
+            title: "Let readers explore how medication use changed from state to state.",
+            copy: "The United States of Drugs was my first personally implemented interactive. Thomas primarily wrote and framed the editorial story; I cleaned and shaped the supplied data, designed the visual translation, and built the state-level hover interaction.",
+            media: [
+              {src:"images/work/goodrx-us-of-drugs.webp", title:"The United States of Drugs", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "03 · Change over time",
+            title: "Turn a static map into a time-based explanation.",
+            copy: "For anticoagulants, I built an animated state map with timed playback and a slider so readers could see the market shift rather than compare disconnected snapshots. The interaction was part of the published production work, not a speculative prototype.",
+            media: [
+              {src:"images/craft/goodrx_02.gif", title:"Anticoagulant market-share change over time", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "04 · Public reach",
+            title: "Editorial graphics carried the research beyond GoodRx.",
+            copy: "I also designed static and interactive stories with the GoodRx Research team. Work on prescription-price differences was referenced by The New York Times, and flu-prescription research appeared through Good Morning America and ABC News. Research and writing remained collaborative; I owned the visual translation and implemented the interactive pieces.",
+            media: [
+              {src:"images/work/goodrx-cities-prices.webp", title:"Most expensive cities for prescriptions", span:6, fit:"contain"},
+              {src:"images/work/goodrx-flu-prescriptions.webp", title:"Flu prescription research", span:6, fit:"contain"}
+            ]
+          },
+          {
+            step: "05 · Policy communication",
+            title: "Build one evidence structure for fifty policymaker conversations.",
+            copy: "For GoodRx’s Washington advocacy team, I designed one reusable InDesign structure for state-specific prescription-price briefs. The team supplied an Excel workbook; I manually populated all fifty sheets and checked every data point. They were created for meetings with federal policymakers around S.2553 and S.2554, both of which became law. The briefs supported that effort; they did not independently cause the result.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Fifty state-specific prescription-price briefs",
+                status: "CURATE",
+                note: "Export one representative sheet plus a compact fifty-state system view from the archived InDesign sources.",
                 span: 12
               }
             ]
@@ -3428,6 +3700,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       var article = document.createElement("article");
       article.className = "project-story";
       article.dataset.storyDepth = story.depth || "project";
+      article.dataset.storyCompany = story.company;
+      article.dataset.storyKey = storyKey;
       article.setAttribute("aria-label", story.name + " project story");
       var opening = document.createElement("div");
       opening.className = "project-story-opening";
@@ -3436,7 +3710,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         hero = createVisualPlaceholder(story.heroVisual);
         hero.classList.add("project-story-hero");
       }else{
-        hero = createStoryArtifact({src:story.hero, title:story.name + " overview", span:12, eager:true});
+        hero = createStoryArtifact({src:story.hero, title:story.name + " overview", span:12,
+          eager:true, fit:story.heroFit});
         hero.className = "project-story-hero";
       }
       opening.appendChild(hero);

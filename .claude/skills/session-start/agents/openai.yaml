@@ -1,0 +1,4 @@
+interface:
+  display_name: "Session Start"
+  short_description: "Resume from verified portfolio evidence"
+  default_prompt: "Resume this portfolio session from the active handoff and verified evidence."
