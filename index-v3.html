@@ -1506,9 +1506,27 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           <img src="images/logos/taskrabbit.svg" alt="">
         </button>
       </li>
-      <li style="--h:14px"><img src="images/logos/clover-health.svg" alt="Clover Health"></li>
-      <li style="--h:18px"><img src="images/logos/goodrx.svg" alt="GoodRx"></li>
-      <li style="--h:14px"><img src="images/logos/sharecare.svg" alt="doc.ai, acquired by Sharecare"></li>
+      <li style="--h:14px">
+        <button class="hero-company-logo" type="button" data-work-company="clover"
+          data-tip="Designer · View Clover Health work →"
+          aria-label="View Clover Health work" aria-pressed="false">
+          <img src="images/logos/clover-health.svg" alt="">
+        </button>
+      </li>
+      <li style="--h:18px">
+        <button class="hero-company-logo" type="button" data-work-company="goodrx"
+          data-tip="Lead Product Designer · View GoodRx work →"
+          aria-label="View GoodRx work" aria-pressed="false">
+          <img src="images/logos/goodrx.svg" alt="">
+        </button>
+      </li>
+      <li style="--h:14px">
+        <button class="hero-company-logo" type="button" data-work-company="sharecare"
+          data-tip="doc.ai Lead Product Designer · View Omix work →"
+          aria-label="View doc.ai and Omix work" aria-pressed="false">
+          <img src="images/logos/sharecare.svg" alt="">
+        </button>
+      </li>
     </ul>
   </section>
 
@@ -1658,6 +1676,14 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     <button class="work-tile" type="button" data-project="playsesh" data-tile-id="playsesh-multiplayer" data-shape="landscape" data-span="2" data-provider="youtube" data-video-id="Cuqu38j7-vQ" data-media-title="PlaySesh multiplayer workspace demo">
       <img src="https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg" width="1280" height="720" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>PlaySesh</b><span>Multiplayer workspace in Discord</span></span>
+    </button>
+    <button class="work-tile" type="button" data-project="sharecare" data-tile-id="omix-study-builder" data-shape="landscape" data-span="3">
+      <span class="visual-placeholder" data-visual-status="RECREATE" role="img"
+        aria-label="Visual placeholder: Omix clinical-study lifecycle. Status: recreate.">
+        <span class="visual-placeholder-status">RECREATE</span>
+        <span class="visual-placeholder-title">Clinical study lifecycle</span>
+      </span>
+      <span class="work-tile-label"><b>doc.ai · Omix</b><span>From study idea to validation-ready build</span></span>
     </button>
     <button class="work-tile" type="button" data-project="pathstream" data-tile-id="pathstream-lessons" data-shape="wide" data-span="3">
       <img src="images/craft/pathstream-menuscrolling.webp" width="3330" height="1080" alt="" loading="lazy" decoding="async">
@@ -2210,6 +2236,37 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         ],
         actions: []
       },
+      sharecare: {
+        name: "doc.ai",
+        dates: "2021",
+        role: "Lead Product Designer",
+        companyOutcome: "Acquired by Sharecare",
+        context: "Omix was a guided platform for configuring decentralized clinical studies before launch.",
+        meta: "2021 · Lead Product Designer",
+        summary: "I joined as a rescue hire, became Omix’s sole design owner, and worked with clinical, product, and engineering partners to turn fragmented workflows into one coherent pre-launch study builder.",
+        facts: [
+          ["Role shape", "Sole design owner · product-direction influence"],
+          ["Owned", "Audit · Domain synthesis · Product definition · End-to-end design"],
+          ["Partners", "Clinical staff · Researchers · Founders · Product · Engineering"],
+          ["Code boundary", "No production code · engineering built the working product"]
+        ],
+        result: "Functioning engineering build validated with researchers · canceled before public launch",
+        supportTitle: "Planned next iteration",
+        supportIntro: "Research changed the roadmap, but the acquisition-driven shutdown happened before these layers were built.",
+        supportingItems: [
+          {
+            name: "Collaboration and shared awareness",
+            description: "Invitations, shared notes, approvals, and notifications for study teams working asynchronously.",
+            delivery: "Planned iteration · not built"
+          },
+          {
+            name: "Device data integrations",
+            description: "A future layer for connecting studies to multiple device APIs and data sources.",
+            delivery: "Roadmap · not built"
+          }
+        ],
+        actions: []
+      },
       goodrx: {
         name: "GoodRx + Iodine",
         logo: "images/logos/goodrx.svg",
@@ -2684,6 +2741,107 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
                 visual: "Accessibility decisions across type, contrast, labels, and mobile",
                 status: "CURATE",
                 note: "Use cleared design comparisons and label them as guidance-driven improvements.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      omix_study_builder: {
+        company: "sharecare",
+        depth: "project",
+        slug: "omix-study-builder",
+        name: "Omix Study Builder",
+        cardKicker: "Clinical research · Product rescue",
+        meta: "Clinical research · Product rescue",
+        delivery: "Built + validated · canceled",
+        summary: "I consolidated a fragmented clinical-studies product into a guided pre-launch workflow, then partnered with engineering as researchers evaluated the working build.",
+        result: "Working engineering build under domain-expert validation · no public launch",
+        cardVisual: {
+          title: "Study idea → review → IRB → activities → launch readiness",
+          status: "RECREATE",
+          note: "Abstract the verified lifecycle; do not reproduce confidential product screens or regulatory material."
+        },
+        heroVisual: {
+          title: "A guided path from a research question to a launch-ready study",
+          status: "RECREATE",
+          note: "Create a neutral clinical-study lifecycle with no protocol, participant, or internal product data."
+        },
+        facts: [
+          ["Ownership", "Sole design owner · product definition · end-to-end experience"],
+          ["Starting point", "Broken workflows · inconsistent UI · unfinished designs"],
+          ["Validation", "Working engineering build · researcher and academic feedback"],
+          ["Delivery", "Built for validation · canceled before public launch"]
+        ],
+        chapters: [
+          {
+            step: "01 · Rescue the product",
+            title: "The first task was not a redesign. It was reconstructing what the product was supposed to be.",
+            copy: "Omix arrived as disconnected workflows, inconsistent interface decisions, and unfinished design work. After the previous senior designer left, I became the sole design owner. I began with a product audit and interviews across engineering, founders, clinical staff, product, and design so the team could agree on the technical, business, and clinical system before consolidating screens.",
+            media: [
+              {
+                visual: "Fragmented surfaces → one product model",
+                status: "RECREATE",
+                note: "Use an abstract system map derived from the confirmed audit; no inherited screens.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "02 · Learn the domain",
+            title: "A clinical-study lifecycle had to become the organizing model.",
+            copy: "Before choosing a screen to fix, I had to understand how a study moved from an idea to approval and launch. Researchers defined a question, assembled collaborators, planned recruitment, prepared IRB materials in parallel, and configured activities or surveys. That reconstruction gave the product a sequence the team could design and build around.",
+            media: [
+              {
+                visual: "Research question → collaborators → recruitment → IRB → activities",
+                status: "RECREATE",
+                note: "A domain-level lifecycle only; never publish the archived protocols or generated IRB document.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "03 · Build the pre-launch system",
+            title: "Guide researchers through the dependencies instead of exposing a pile of forms.",
+            copy: "I owned the end-to-end pre-launch experience: study setup, collaborator review, lightweight recruitment planning, activity and survey builders, and automatic IRB-document generation once the product had collected enough context. The result was closer to TurboTax for clinical studies than a conventional admin dashboard: each answer prepared the next decision and the eventual study package.",
+            media: [
+              {
+                visual: "Guided study setup and dependency model",
+                status: "RECREATE",
+                note: "Recreate the interaction logic with neutral labels and fabricated study content.",
+                span: 6
+              },
+              {
+                visual: "Collected context → generated study package",
+                status: "RECREATE",
+                note: "Show the transformation without reproducing the confidential generated IRB output.",
+                span: 6
+              }
+            ]
+          },
+          {
+            step: "04 · Validate the working build",
+            title: "Research confirmed the core flow and exposed collaboration as the next product problem.",
+            copy: "Engineering built the redesigned product and the team evaluated it with researchers and academics. The sessions supported the core pre-launch workflow, while revealing that study teams also needed stronger shared awareness as proposals changed: invitations, notes, approvals, and notifications became the next planned layer.",
+            media: [
+              {
+                visual: "Working build → domain feedback → collaboration requirements",
+                status: "RECREATE",
+                note: "Synthesize the decision loop; raw Lookback captures and participant summaries stay private.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "05 · Keep the endpoint honest",
+            title: "The product reached validation, not a public launch.",
+            copy: "The collaboration layer and planned device integrations were not built before Sharecare canceled Omix after acquiring doc.ai. I left after the product—and therefore the ownership scope I had joined for—disappeared. The verified outcome is a coherent working build under domain-expert validation, not adoption, revenue, or a shipped public platform.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Built for validation · canceled before launch",
+                status: "RECREATE",
+                note: "A compact delivery-state receipt that distinguishes built, planned, and canceled work.",
                 span: 12
               }
             ]
@@ -3641,6 +3799,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         mediaItem("images/craft/pathstream-contrast.webp", "Pathstream high-contrast exploration", "tall", 2),
         mediaItem("images/craft/pathstream-subtle.webp", "Pathstream subtle-interface exploration", "tall", 2)
       ],
+      sharecare: [],
       goodrx: [].concat(
         numberedMedia("images/craft/goodrx_", 18, "GoodRx artifact", goodrxShape,
           function(number){ return number === 2 ? ".gif" : ".webp"; }),
