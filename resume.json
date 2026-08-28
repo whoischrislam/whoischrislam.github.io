@@ -41,8 +41,7 @@
                 "Architected a streaming speech-to-text to LLM to text-to-speech pipeline (multi-provider, deep fallback) fronted by a deterministic state machine.",
                 "Scoped the language model to phrasing and warmth while conversation flow runs as a deterministic state machine; about half of routing decisions resolve with no model call.",
                 "Built the first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the state-machine architecture and safety model across the rewrite.",
-                "Designed elder-first voice UX: no app, no screen, no login, just a phone call.",
-                "1,400 commits."
+                "Designed elder-first voice UX: no app, no screen, no login, just a phone call."
             ]
         },
         {
@@ -59,9 +58,9 @@
             "endDate": "2026-03",
             "summary": "Collaborative game development tools for indie developers, built inside Discord. Started while finishing at Modus Create.",
             "highlights": [
-                "Shipped 0 to 1 alone in Vanilla JS, Express, and Supabase before recruiting co-founders; primary engineer who authored 1,147 of its 1,793 commits, with 291 passing tests and zero ad spend.",
-                "Authored the core real-time engine: a custom operation-based sync protocol on Cloudflare Durable Objects, including authoritative ordering and WebSocket reconnection logic, after moving off an off-the-shelf canvas library.",
-                "Grew organically to over 6,200 authorized Discord accounts and 138 server installs; peaked at 1,043 monthly active users (January 2026). Discord counts are approximate, as of August 1, 2026.",
+                "Started 0 to 1 solo, then recruited a co-founder and founding engineer; remained CEO, setting company and product direction, owning product and design, and contributing hands-on testing and implementation.",
+                "Shipped Whiteboard by PlaySesh inside Discord with TLDraw, Cloudflare Durable Objects, and R2; active development paused in March 2026 and the Discord product remains live.",
+                "Grew organically to over 6,200 authorized Discord accounts, 138 server installs, and 67 individual-user installs; peaked at 1,043 monthly active users (January 2026). Discord counts are approximate, as of August 1, 2026.",
                 "Pivoted from social gaming to game dev tooling based on user behavior signal."
             ]
         },
@@ -70,7 +69,7 @@
             "position": "Software Engineer",
             "startDate": "2023-06",
             "endDate": "2024-02",
-            "summary": "Shipped dark mode for JIRA and Confluence Cloud (500K+ enterprise users). Owned design, engineering implementation, and internal dev documentation. Contributed to the CI/CD pipeline with Docker Compose.",
+            "summary": "Designed and implemented cross-app dark mode and visual consistency for Jira and Confluence Cloud products serving a 500K+ installed/reachable user base. Shipped through PR review, automated tests, visual QA, and the team's existing CI/CD; authored README and setup documentation.",
             "_gap_before": "Jan-Jun 2023: deliberate time off to build production engineering depth. Not an unexplained gap; it is the pivot the whole positioning rests on."
         },
         {
@@ -78,14 +77,14 @@
             "position": "Founding Product Designer",
             "startDate": "2022-07",
             "endDate": "2023-01",
-            "summary": "First designer at a YC W20, a16z-backed seed-stage TTRPG marketplace. Redesigned the payment experience with Stripe for 100% on-time payouts; shipped a game master onboarding flow."
+            "summary": "First designer at a YC W20, a16z-backed seed-stage TTRPG marketplace. Shipped Stripe-based marketplace money flows, refunds, and player-debt reconciliation, enabling correct and timely GM payouts and traceable accounting. Completed a GM onboarding redesign that was not launched."
         },
         {
             "name": "doc.ai (acquired by Sharecare)",
             "position": "Lead Product Designer",
             "startDate": "2021-02",
             "endDate": "2021-10",
-            "summary": "Hired by doc.ai; exited under Sharecare paperwork after the acquisition. Rescue hire brought in to ship a clinical-studies product through the acquisition. Sharecare later went public (NASDAQ: SHCR, 2021)."
+            "summary": "Hired by doc.ai; exited under Sharecare paperwork after the acquisition. Became sole design owner for Omix, consolidating fragmented clinical-study workflows into a working engineering build validated with researchers; canceled before public launch after the acquisition."
         },
         {
             "name": "Pathstream",
@@ -95,7 +94,7 @@
             "summary": "Operated as lead designer. First design hire at a career-development and LMS platform.",
             "highlights": [
                 "Redesigned the core lesson experience on a live platform, mid-cohort, without forcing a rewrite of 60-80 hours of existing course content.",
-                "Built the platform's design system in React with Storybook, on top of Ant Design.",
+                "Designed the platform's shared interface system with engineer Matt Clinton, who implemented it in React with Storybook and Chromatic on top of Ant Design.",
                 "Ran the research that set the direction: a 26-screen product audit in week three, three rounds of usability testing, five course-author co-design sessions, and instructor interviews.",
                 "Audited the interface library and found the drift: sixteen colors where four grays were all labeled Text, two different values both called Primary Button, body copy at four sizes, and a 10.3px type size shipping to adult learners."
             ],
