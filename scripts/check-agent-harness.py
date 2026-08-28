@@ -30,6 +30,7 @@ REQUIRED = [
     ".jobhunt/COMPANY_STORY_BRIEF_TEMPLATE.md",
     ".claude/skills/session-start/SKILL.md",
     ".claude/skills/session-end/SKILL.md",
+    "scripts/check-public-facts.py",
     "scripts/check-portfolio-v3.py",
 ]
 

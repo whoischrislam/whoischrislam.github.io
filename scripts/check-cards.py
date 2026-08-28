@@ -90,6 +90,15 @@ SPEC = {
     },
 }
 
+# Most cards use the general company schema. Role-specific schemas are allowed
+# when they preserve the same scan order while naming the real boundary more
+# accurately (for example, design handoff versus engineering verification).
+FACT_SCHEMAS = {
+    "Pathstream": ["Stage", "Partners", "Owned", "Handoff"],
+    "Modus Create": ["Stage", "Scope", "Owned", "Verification"],
+}
+DEFAULT_FACT_SCHEMA = ["Stage", "Team", "Owned", "Stack"]
+
 # Slots that may appear at most once anywhere, in any tier. A card with two hooks
 # has no hook.
 SINGLETON = {"card-head", "ctx", "impact", "facts", "transfers", "setup", "taught", "limit", "ruleslabel", "hl",
@@ -232,14 +241,15 @@ def check(path, quiet=False):
         dl = re.search(r'<dl class="facts">(.*?)</dl>', inner, re.S)
         if dl:
             got = re.findall(r"<dt>([^<]+)</dt>", dl.group(1))
-            extra = [g for g in got if g not in ("Stage", "Team", "Owned", "Stack")]
+            schema = FACT_SCHEMAS.get(name, DEFAULT_FACT_SCHEMA)
+            extra = [g for g in got if g not in schema]
             for e in extra:
                 fails.append((name, "meta row carries %r. The result moved into the read "
                                     "layer so the story resolves" % e))
-            want = [f for f in ("Stage", "Team", "Owned", "Stack") if f in got]
+            want = [f for f in schema if f in got]
             if got != want:
-                fails.append((name, "meta order is %s, must be Stage, Team, Owned, Stack"
-                              % ", ".join(got)))
+                fails.append((name, "meta order is %s, must follow %s"
+                              % (", ".join(got), ", ".join(schema))))
 
         if tier in ("lead", "proof") and not ("vids" in seq or "shot" in seq):
             fails.append((name, "tier %s needs an artifact, a video or an image" % tier))
