@@ -12,6 +12,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 TEXT_SURFACES = ["index.html", "resume.json", "llms.txt", "candidate.html"]
+OPTIONAL_DRAFTS = ["work/y30.html"]
 
 BANNED = {
     "1,400 commits": "y30 code-volume count is not a public claim",
@@ -20,6 +21,9 @@ BANNED = {
     "6,220 active users": "Discord authorizations are not active users",
     "6,220 installs": "Discord authorizations are not installs",
     "127 test files": "the old y30 test-file count is stale",
+    "pre-production, in pilot": "y30 was tested live but never entered a senior pilot",
+    "no elder has ever evaluated": "at least one senior tried y30 by phone; sustained at-home evaluation did not happen",
+    "owned the dev documentation and the ci pipeline": "Modus used the team's existing CI/CD pipeline",
 }
 
 PLAYSESH_REQUIRED = [
@@ -52,6 +56,11 @@ def main() -> int:
             failures.append(f"missing public fact surface: {relative}")
             continue
         surfaces[relative] = path.read_text(encoding="utf-8", errors="replace")
+
+    for relative in OPTIONAL_DRAFTS:
+        path = ROOT / relative
+        if path.is_file():
+            surfaces[relative] = path.read_text(encoding="utf-8", errors="replace")
 
     try:
         json.loads(surfaces.get("resume.json", ""))
@@ -95,7 +104,7 @@ def main() -> int:
         print(f"\nFAIL  public facts have {len(failures)} blocking problem(s).")
         return 1
 
-    print(f"PASS  public facts align across {len(surfaces)} publication surfaces.")
+    print("PASS  public facts align across five core surfaces and available draft evidence.")
     print("NOTE  run ../portfolio-voice-backend/test-facts.mjs for the sixth, hidden agent catalog.")
     return 0
 
