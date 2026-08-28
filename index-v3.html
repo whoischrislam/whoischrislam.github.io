@@ -1128,6 +1128,7 @@ h2.sec#work{margin-top:16px}
 .work-project-card[data-work-company="clover"] .work-project-card-media{background:#08786b}
 .work-project-card[data-work-story="clover_site"] .work-project-card-media{background:#57c6d9}
 .work-project-card[data-work-company="playsesh"] .work-project-card-media{background:#241a32}
+.work-project-card[data-work-company="y30"] .work-project-card-media{background:#10263d}
 .work-project-card[data-work-company="goodrx"] .work-project-card-media{background:#f4df3d}
 .work-project-card[data-work-story="iodine_product"] .work-project-card-media{background:#6339b6}
 .work-project-card-media img{display:block;width:31%;height:94%;object-fit:contain;object-position:center bottom;
@@ -2118,16 +2119,53 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         name: "y30",
         dates: "2026–now",
         role: "Co-Founder, CPTO",
-        context: "Voice AI for older adults and caregivers that turns conversations into longitudinal signals for human review—not diagnosis or detection.",
+        context: "Voice AI that uses conversation and games to help older adults feel less alone, while giving families and care professionals longitudinal signals for human review—not diagnosis or detection.",
         meta: "2026–now · Co-founder, CPTO",
-        summary: "Voice AI for older adults and care teams. I scoped the model to phrasing and warmth while deterministic code owns required sequence, safety, and recovery.",
+        summary: "I owned product, design, and full-stack engineering. I treated voice quality, required sequence, and safety as three different product problems—then gave each one the control system it needed.",
         facts: [
+          ["Users", "Primary: older adults · Secondary: family and care professionals"],
           ["Owned", "Product · Design · Full-stack engineering"],
-          ["Voice stack", "Streaming STT → LLM → TTS · Multi-provider fallback"],
-          ["Safety", "Deterministic state machine · Model cannot override crisis paths"],
-          ["Routing", "About half of routing resolves without a model call"]
+          ["Team", "Two founders · Clinical advisors · QA intern · Coding agents"],
+          ["Delivery", "Deployed internal build · Tested outside the founding team · Not production"]
         ],
-        result: "Deterministic safety · about half of routing needs no model call",
+        result: "Spoken delivery improved in internal testing while required flow and safety moved into code",
+        supportTitle: "Product judgment between the core stories",
+        supportIntro: "Smaller decisions show how difficult feedback, language craft, and caregiver context kept the product accountable to the older adult using it.",
+        vignettes: [
+          {
+            name: "Keep the feedback that hurts",
+            kicker: "Product direction · External review",
+            summary: "A facility owner returned fourteen findings and questioned whether the game felt useful at all. We addressed twelve, clarified why the activity existed, and shifted the external framing from a clinical-sounding AI companion toward voice games for older adults.",
+            delivery: "Product iteration",
+            result: "12 of 14 findings addressed · positioning changed",
+            image: "images/work/y30-game.png"
+          },
+          {
+            name: "Write dignity into the language",
+            kicker: "Conversation design · Older-adult UX",
+            summary: "I turned small language choices into enforceable product rules: never imply someone should remember, never supply a word they are searching for, and answer the twentieth repeated question as warmly as the first.",
+            delivery: "Deployed internal build",
+            result: "Human language rules backed by regression checks",
+            image: "images/work/y30-voice.png"
+          },
+          {
+            name: "Signals for human review",
+            kicker: "Caregiver context · Product boundary",
+            summary: "The older adult was the primary user. Family and care professionals were secondary users who needed longitudinal context without turning a conversation product into a diagnostic or detection system.",
+            delivery: "Deployed internal build",
+            result: "Human review, never automated diagnosis",
+            image: "images/work/y30-signals.png"
+          }
+        ],
+        supportingTitle: "Built, tested, or explored",
+        supportingItems: [
+          {name:"Memory and follow-up context", description:"Cross-session recall, follow-up threads, session summaries, and transcript-derived context", delivery:"Internal build"},
+          {name:"Care evidence workspace", description:"Multi-person care views, longitudinal summaries, activity evidence, and team notes", delivery:"Synthetic demo + live-data paths"},
+          {name:"Multiple session paths", description:"Browser voice, text testing, visual activities, and a phone path around one agent", delivery:"Internal build + phone tested"},
+          {name:"Access and data boundaries", description:"Authentication, consent, role routing, environment isolation, audit logging, and retention controls", delivery:"Internal build"},
+          {name:"Elder and care design systems", description:"Phone-first elder states, caregiver components, shared tokens, responsive states, and recovery patterns", delivery:"Specified + partial build"},
+          {name:"Activity platform", description:"A flagship decade-pricing game, deterministic turn handling, interruption recovery, telemetry, and post-game recap", delivery:"Internal build"}
+        ],
         actions: [["https://y30.ai", "Try y30", true]]
       },
       playsesh: {
@@ -2597,6 +2635,231 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     };
 
     var workStories = {
+      y30_voice: {
+        company: "y30",
+        depth: "case",
+        slug: "spoken-voice-system",
+        name: "The Voice Was Written Like Chat",
+        cardKicker: "Conversation design · Voice quality",
+        meta: "Conversation design · Voice quality",
+        delivery: "Deployed internal build",
+        summary: "When testers called the voice robotic, I benchmarked the stack, found that the model was not the bottleneck, and rebuilt the prompt as a spoken-delivery system without weakening safety.",
+        result: "Internal warmth rubric 3.28 → 4.17 · safety held 7/7",
+        cardMedia: [
+          "images/work/y30-voice.png",
+          "images/work/y30-system.png",
+          "images/work/y30-game.png"
+        ],
+        hero: "images/work/y30-voice.png",
+        heroFit: "contain",
+        facts: [
+          ["Ownership", "Product · Conversation design · Prompt system · Evaluation"],
+          ["Signal", "Multiple testers described the voice as robotic"],
+          ["Measured", "Four iterations · three models · one fixed safety gate"],
+          ["Boundary", "Deployed internal build · not a senior cohort pilot"]
+        ],
+        chapters: [
+          {
+            step: "01 · Start with the complaint",
+            title: "The system read well and sounded wrong.",
+            copy: "Testers repeatedly described the voice as robotic. My first instinct was to blame model or voice-provider quality. I benchmarked alternatives, but the differences were too small to explain the experience. The product was feeding prose written for a screen into speech synthesis and getting stiff, over-complete sentences back.",
+            media: [
+              {src:"images/work/y30-voice.png", title:"The deployed voice experience used for live conversation testing", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "02 · Fix the language before the provider",
+            title: "I stopped swapping models and rewrote the system for speech.",
+            copy: "I froze new provider exploration and rewrote the prompt around spoken delivery: shorter clauses, one job per turn, brief acknowledgments, contractions, and punctuation used as prosody. Concrete examples moved behavior more reliably than another page of abstract rules.",
+            media: [
+              {
+                visual: "Before and after: chat-shaped prose versus speech-shaped turns",
+                status: "RECREATE",
+                note: "Use redacted generated examples and measured turn-length ranges; do not expose private transcripts.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "03 · Hold safety still",
+            title: "Style could change. Safety language could not.",
+            copy: "The safety section stayed word-for-word stable through the rewrite. New safeguards could be added to close a verified gap, but existing phrases were not polished for tone. I treated that language as tested behavior, not editorial copy.",
+            media: [
+              {
+                visual: "Prompt anatomy: spoken-delivery layer around a fixed safety core",
+                status: "RECREATE",
+                note: "Diagram the public architecture without reproducing the private system prompt.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "04 · Measure the change",
+            title: "The voice improved across models, not because of one model.",
+            copy: "Across four iterations and three models, an internal warmth rubric moved from 3.28 to 4.17 while the blocking safety suite held at seven of seven. This was a regression signal, not a validated user outcome; its direction agreed with the tester who called the new build the complete opposite of robotic. The lasting decision was to treat spoken-language design as part of the product architecture.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Four-iteration warmth score with the safety gate held constant",
+                status: "RECREATE",
+                note: "Build from the recorded warmth-runner results; label this as an automated rubric and pair it with the anonymized tester response.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      y30_control: {
+        company: "y30",
+        depth: "case",
+        slug: "deterministic-voice-system",
+        name: "The Deterministic Voice System",
+        cardKicker: "Voice architecture · Product engineering",
+        meta: "Voice architecture · Product engineering",
+        delivery: "Deployed internal build",
+        summary: "Required game behavior stayed unreliable after repeated prompt fixes, so I moved sequence into code and narrowed the model to the decisions it was actually good at.",
+        result: "Required sequence became deterministic · conversation remained model-led",
+        cardMedia: [
+          "images/work/y30-game.png",
+          "images/work/y30-system.png",
+          "images/work/y30-voice.png"
+        ],
+        hero: "images/work/y30-game.png",
+        heroFit: "contain",
+        facts: [
+          ["Ownership", "Product · Conversation design · Safety architecture · Full-stack engineering"],
+          ["Finding", "Prompt-driven required action stayed near 70% after repeated revisions"],
+          ["Decision", "Game sequence in deterministic code · open conversation model-led"],
+          ["Boundary", "Deployed internal build · not production"]
+        ],
+        chapters: [
+          {
+            step: "01 · Find the unreliable boundary",
+            title: "The model could talk naturally; it could not be trusted to run the game.",
+            copy: "The first version asked the model to start each round, accept the guess, reveal the answer, and move forward. After more than eight prompt revisions, phase guards, and a watchdog, the required start action still happened only about seventy percent of the time. The failure was architectural, not another wording problem.",
+            media: [
+              {src:"images/work/y30-game.png", title:"The game interface whose sequence moved out of the prompt", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "02 · Move obligation into code",
+            title: "Anything that had to happen became a state transition.",
+            copy: "I replaced prompt-owned sequencing with a deterministic state machine. Code owned required order, interruption recovery, and safety boundaries; the model generated phrasing and handled ambiguous conversational input. The product became more reliable by giving the model a smaller, clearer job.",
+            media: [
+              {src:"images/work/y30-system.png", title:"One agent behind the product's voice and interface transports", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "03 · Preserve the useful ambiguity",
+            title: "Deterministic did not mean removing the model from everything.",
+            copy: "The game needed an enforceable sequence. Open conversation did not. I kept conversation model-led while deterministic routing handled required actions and safety-critical exits. Routine states could resolve without another model judgment, leaving generation for warmth, phrasing, and genuinely ambiguous moments.",
+            media: [
+              {src:"images/work/y30-voice.png", title:"A live reminiscence conversation through the voice agent", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "04 · Keep the boundary reviewable",
+            title: "The rule was not ‘never use AI.’ It was ‘make ownership explicit.’",
+            copy: "I moved authority back toward the model twice and pulled it back both times. The lasting design principle was practical: if a behavior is required, testable, or safety-critical, code owns it. If it depends on tone or open-ended interpretation, the model can help inside a constrained boundary.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Interactive boundary map: model judgment versus deterministic ownership",
+                status: "RECREATE",
+                note: "Adapt the three-era interaction from the private draft into a v3-native artifact rather than linking the old page.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
+      y30_safety: {
+        company: "y30",
+        depth: "case",
+        slug: "safety-quality-system",
+        name: "Safety That Compounds",
+        cardKicker: "Safety architecture · Human and automated QA",
+        meta: "Safety architecture · Human and automated QA",
+        delivery: "Deployed internal build",
+        summary: "I built safety as a layered quality system: manual scripts, automated and adversarial checks, a human reviewer queue, deployed smoke tests, and a path from approved failures into regression coverage.",
+        result: "Every discovered seam added a stronger test or deterministic boundary",
+        cardMedia: [
+          "images/work/y30-system.png",
+          "images/work/y30-signals.png",
+          "images/work/y30-voice.png"
+        ],
+        hero: "images/work/y30-system.png",
+        heroFit: "contain",
+        facts: [
+          ["Testing", "Manual QA · Unit and scenario tests · Adversarial review · Live smoke"],
+          ["Human QA", "QA intern ran sessions and rated individual AI responses"],
+          ["Learning loop", "Review queue · Approval gate · Failure harvest · Regression coverage"],
+          ["Boundary", "Internal testing · not production"]
+        ],
+        chapters: [
+          {
+            step: "01 · Treat safety as an operating system",
+            title: "A prompt rule was only one layer of the safety program.",
+            copy: "I maintained a living manual QA script with more than sixty scenarios, automated deterministic and research-grounded behavior checks, ran adversarial reviews, and added a separate safety gate against the deployed build. The test program covered both dangerous misses and false alarms that could destroy trust with an older adult.",
+            media: [
+              {
+                visual: "Layered QA system: manual scenarios, automated checks, adversarial review, and deployed smoke",
+                status: "RECREATE",
+                note: "Build a concise system diagram from the verified testing workflow; do not expose private transcripts.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "02 · Put human judgment in the workflow",
+            title: "Manual findings needed somewhere better than screenshots and Slack.",
+            copy: "I designed and built a reviewer workspace and queue. A QA intern ran voice and text sessions, rated individual AI responses, and added structured notes. I retained the approval boundary and set up the harvest pipeline so confirmed failures could become reusable regression scenarios without automatically promoting raw human annotations.",
+            media: [
+              {
+                visual: "Reviewer queue with per-response ratings, structured notes, and approval state",
+                status: "CAPTURE",
+                note: "Capture the reviewer workspace from the y30 repository with every person, transcript, and identifier anonymized.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "03 · Test the deployed seam",
+            title: "The mocks proved the classifier logic—not that the deployed system could reach it.",
+            copy: "The automated safety checks and adversarial review passed, but a live test phrase received only ‘Yeah. I hear you.’ Every real classifier call was failing silently while the mocks remained healthy. I added a new rule: a safety-critical path was not verified until a smoke script exercised the real deployed environment.",
+            media: [
+              {
+                visual: "Mocked safety pass versus deployed classifier failure, followed by live smoke coverage",
+                status: "RECREATE",
+                note: "Use a redacted sequence diagram and the verified response; do not reproduce private session data.",
+                span: 12
+              }
+            ]
+          },
+          {
+            step: "04 · Give medical emergencies their own floor",
+            title: "The post-session evaluator caught what the real-time product missed.",
+            copy: "A later test described a heart attack while choosing a game decade. The real-time classifier called it benign; the post-session evaluator flagged it urgent. The classifier had no medical category. I moved acute medical language into an always-on deterministic route with its own 911 or staff response, separate from the mental-health crisis path and independent of a feature flag.",
+            media: [
+              {src:"images/work/y30-signals.png", title:"Conversation signals prepared for human review", span:12, fit:"contain"}
+            ]
+          },
+          {
+            step: "05 · Make failures accumulate into capability",
+            title: "Frustration became a system for getting harder to break.",
+            copy: "I did not want safety to be a launch checklist. A miss needed to become evidence, then a test, then a stronger boundary. That is why the QA intern, reviewer queue, post-session analysis, live smoke scripts, and deterministic safety routes belong in one story: each layer found a different class of problem and made the next version more defensible.",
+            layout: "wide",
+            media: [
+              {
+                visual: "Compounding safety loop: session → review → approval → regression → deployed smoke",
+                status: "RECREATE",
+                note: "Create a v3-native flywheel illustration from the verified operating workflow.",
+                span: 12
+              }
+            ]
+          }
+        ]
+      },
       pathstream_lessons: {
         company: "pathstream",
         depth: "case",
