@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import subprocess
 import sys
 from typing import Any
@@ -19,6 +20,8 @@ from typing import Any
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ALLOWED_PLACEHOLDERS = {"READY", "CURATE", "CAPTURE", "RECREATE", "TEXT ONLY"}
+ALLOWED_PORTFOLIO_SHAPES = {"company", "founder"}
+ALLOWED_CONTENT_TYPES = {"project", "product-decision"}
 
 
 def extract_object(source: str, declaration: str) -> str:
@@ -126,6 +129,70 @@ def main() -> int:
         print(f"FAIL  {exc}")
         return 1
 
+    if "—" in source:
+        failures.append("public v3 copy contains an em dash")
+
+    required_homepage_fragments = {
+        'class="hero-lockup"': "homepage hero needs the one-line lockup hook",
+        "I <span class=\"lit-word\">design</span> the product &amp; <span class=\"lit-word\">ship</span> the code.":
+            "homepage hero statement changed",
+        "Product design engineer &amp; 0→1 builder.":
+            "homepage market-facing line changed",
+        "14+ years shipping software across healthcare, marketplaces, education, and creative tools. I learn new domains and technologies quickly without compromising product judgment, design craft, or engineering rigor.":
+            "homepage adaptability line changed",
+        "14+ years": "homepage must use the confirmed 14+ years notation",
+        'class="hero-logo-more"': "credibility rail needs its and-more close",
+        'mask-image:var(--logo-mask)':
+            "company logos need their exact green hover masks",
+        'class="work-head"': "work heading and controls need one shared row",
+        'class="work-filter-indicator"': "work filter needs its sliding selected-state indicator",
+        'data-work-kind-filter="experiment"': "work mosaic needs its experiment filter",
+        'class="work-shuffle-label"': "shuffle needs an accessible text label",
+        "workTiles = ordered.concat(missing);":
+            "shuffle must update the layout engine's in-memory tile order",
+    }
+    for fragment, message in required_homepage_fragments.items():
+        if fragment not in source:
+            failures.append(message)
+
+    forbidden_homepage_fragments = {
+        'class="hero-availability"':
+            "homepage hero must not restore the seniority/location availability strip",
+        "Fourteen years": "homepage must not spell out the confirmed 14+ years notation",
+        '<p class="work-history"><b>Also:</b>':
+            "homepage must not restore the detached Also: work-history line",
+        '<details class="side-projects"':
+            "experiments belong in the shared work mosaic, not a separate accordion",
+        "portfolio-v3-work-order":
+            "work mosaic order must be fresh per page load, not session-persistent",
+        'class="work-count"': "homepage must not restore a visible mosaic count",
+        'class="work-control-meta"': "work controls belong directly beside the Work heading",
+    }
+    for fragment, message in forbidden_homepage_fragments.items():
+        if fragment in source:
+            failures.append(message)
+
+    hero_lockup_rule = re.search(r"\.hero h1\.hero-lockup\{([^}]*)\}", source, re.DOTALL)
+    if not hero_lockup_rule or "white-space:nowrap" not in hero_lockup_rule.group(1):
+        failures.append("homepage hero statement must remain one line at every viewport")
+
+    tile_tags = re.findall(r'<button class="work-tile"([^>]*)>', source)
+    tile_ids: set[str] = set()
+    for index, attributes in enumerate(tile_tags, start=1):
+        project_match = re.search(r'data-project="([^"]+)"', attributes)
+        tile_id_match = re.search(r'data-tile-id="([^"]+)"', attributes)
+        kind_match = re.search(r'data-kind="([^"]+)"', attributes)
+        if not project_match or project_match.group(1) not in projects:
+            failures.append(f"work tile {index} references an unknown portfolio record")
+        if not tile_id_match:
+            failures.append(f"work tile {index} is missing data-tile-id")
+        elif tile_id_match.group(1) in tile_ids:
+            failures.append(f"work tile id {tile_id_match.group(1)!r} is duplicated")
+        else:
+            tile_ids.add(tile_id_match.group(1))
+        if not kind_match or kind_match.group(1) not in {"work", "experiment"}:
+            failures.append(f"work tile {index} has an unknown or missing data-kind")
+
     for key, project in projects.items():
         for field in ("name", "summary", "result", "actions"):
             if field not in project:
@@ -135,6 +202,15 @@ def main() -> int:
             warnings.append(
                 f"company {key} still uses the compact fallback; missing {', '.join(missing_scan)}"
             )
+        portfolio_shape = project.get("portfolioShape", "company")
+        if portfolio_shape not in ALLOWED_PORTFOLIO_SHAPES:
+            failures.append(
+                f"company {key} has unknown portfolio shape {portfolio_shape!r}"
+            )
+        if portfolio_shape == "founder":
+            for field in ("storySectionTitle", "storySectionIntro"):
+                if field not in project:
+                    warnings.append(f"founder company {key} is missing {field}")
 
     slugs: dict[str, str] = {}
     for key, story in stories.items():
@@ -149,6 +225,9 @@ def main() -> int:
             failures.append(f"story slug {slug!r} is shared by {slugs[slug]} and {key}")
         elif isinstance(slug, str):
             slugs[slug] = key
+        content_type = story.get("contentType", "project")
+        if content_type not in ALLOWED_CONTENT_TYPES:
+            failures.append(f"story {key} has unknown content type {content_type!r}")
         chapters = story.get("chapters")
         if not isinstance(chapters, list) or not chapters:
             failures.append(f"story {key} needs at least one chapter")
@@ -179,8 +258,8 @@ def main() -> int:
         print(f"FAIL  {failure}")
 
     print(
-        f"\nchecked {len(projects)} companies, {len(stories)} stories, "
-        f"and {len(slugs)} unique story slugs"
+        f"\nchecked {len(projects)} portfolio records, {len(stories)} stories, "
+        f"{len(slugs)} unique story slugs, and {len(tile_ids)} mosaic tiles"
     )
     if failures:
         print(f"FAIL  v3 model has {len(failures)} blocking problem(s).")
