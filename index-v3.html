@@ -55,11 +55,11 @@
                         "skills": "Product design, interaction design, UX research, design systems (tokens, components, Storybook), WCAG accessibility, information architecture, product strategy, production frontend engineering (React, TypeScript, Next.js, HTML/CSS), Python, Supabase, Cloudflare Workers, Docker, CI/CD, test-driven development, real-time systems, agent UX, LLM orchestration, multi-agent orchestration, agentic systems, evals and evaluation UX, guardrails and deterministic safety control, FSM/LLM safety, provenance and human-AI oversight, AI-native development, 0 to 1 product"
                     },
                     "seeks": { "@type": "Demand", "name": "Senior or lead IC design-engineering roles: Product Design Engineer, Design Engineer, Lead Design Engineer, Staff Design Engineer, UX Engineer, Design Systems Engineer, AI Product Engineer. Remote US, full-time." },
-                    "worksFor": {
+                    "affiliation": {
                         "@type": "Organization",
                         "name": "y30",
                         "url": "https://y30.ai",
-                        "description": "Voice AI for older adults and their caregivers"
+                        "description": "Voice AI for older adults and their caregivers. Chris operated as founding CPTO through Aug 2026 and has advised since."
                     },
                     "homeLocation": { "@type": "Place", "name": "Honolulu, HI" },
                     "workLocation": { "@type": "Place", "name": "Remote US from Honolulu. Works West Coast hours, travels to the Bay Area or Seattle quarterly." },
@@ -1081,12 +1081,14 @@ h2.sec#work{margin-top:16px}
 .work-panel-dates{flex:none;margin:2px 0 0;color:var(--muted);font-size:var(--t-xs);white-space:nowrap}
 .work-panel-company-role{margin:12px 0 0;color:var(--text);font-size:var(--t-sm);font-weight:600}
 .work-panel-context{max-width:62ch;margin:4px 0 0;color:var(--muted);font-size:var(--t-sm)}
+.work-panel.is-company-view .work-panel-context{max-width:none}
 .work-panel-kicker{display:block;color:var(--muted);font-size:var(--t-xs);
   letter-spacing:.12em;text-transform:uppercase;margin:22px 0 5px}
 .work-panel-kicker[hidden]{display:none}
 .work-panel h3{font-family:var(--serif);font-size:var(--t-xl);font-weight:400;margin:0 0 5px}
 .work-panel.is-company-view h3{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.work-panel:not(.is-company-view):not(.is-story-view) h3{display:none}
 .work-panel-story-meta[hidden]{display:none}
 .work-panel-story-meta{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 .work-panel-meta{color:var(--muted);font-size:var(--t-xs);margin:0 0 10px}
@@ -1136,17 +1138,23 @@ h2.sec#work{margin-top:16px}
 .work-panel.is-story-view .work-panel-facts dd{margin-top:3px;font-size:var(--t-sm);line-height:1.35}
 .work-panel.is-story-view .work-panel-outcome{grid-area:outcome}
 @media(min-width:761px){
-  .work-panel.is-company-view .work-panel-brief{grid-template-areas:"summary outcome" "facts facts";
-    gap:14px 42px}
+  .work-panel.is-company-view .work-panel-brief{grid-template-columns:1fr;
+    grid-template-areas:"summary" "facts" "outcome";gap:14px}
   .work-panel.is-company-view .work-panel-details{display:contents}
-  .work-panel.is-company-view .work-panel-summary{grid-area:summary}
-  .work-panel.is-company-view .work-panel-facts{grid-area:facts;grid-template-columns:1fr 1fr 2.2fr 1.45fr;
-    gap:1px;max-width:none;margin:0;border:1px solid var(--border);background:var(--border)}
+  .work-panel.is-company-view .work-panel-summary{grid-area:summary;max-width:78ch}
+  .work-panel.is-company-view .work-panel-facts{grid-area:facts;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px 32px;
+    max-width:none;margin:0;padding-top:13px;border-top:1px solid var(--border)}
   .work-panel.is-company-view .work-panel-facts div,
-  .work-panel.is-company-view .work-panel-facts div:nth-child(n+3){display:block;grid-column:auto;
-    padding:10px 13px;background:var(--bg)}
+  .work-panel.is-company-view .work-panel-facts div:nth-child(n+3){display:block;grid-column:auto;padding:0}
+  .work-panel.is-company-view .work-panel-facts dt{font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase}
   .work-panel.is-company-view .work-panel-facts dd{margin-top:3px;line-height:1.35}
-  .work-panel.is-company-view .work-panel-outcome{grid-area:outcome}
+  .work-panel.is-company-view .work-panel-outcome{grid-area:outcome;display:grid;
+    grid-template-columns:minmax(150px,.24fr) minmax(0,1fr);gap:16px 32px;
+    align-items:baseline;padding:13px 0 0;border-left:0;border-top:1px solid var(--border)}
+  .work-panel.is-company-view .work-panel-result{max-width:38ch;margin:0;
+    font-size:clamp(24px,2.4vw,32px)}
 }
 .work-focus-content{margin:0 0 18px}
 .work-focus-content[hidden]{display:none}
@@ -1531,7 +1539,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .work-panel.is-company-view .work-panel-details[open]>.work-panel-summary{margin-top:4px}
   .work-panel.is-company-view .work-panel-details[open]>.work-panel-facts{margin-bottom:12px}
   .work-panel-facts{grid-template-columns:1fr;gap:7px}
-  .work-panel-facts div,.work-panel-facts div:nth-child(n+3){grid-column:1;grid-template-columns:72px minmax(0,1fr)}
+  .work-panel-facts div,.work-panel-facts div:nth-child(n+3){grid-column:1;grid-template-columns:88px minmax(0,1fr)}
   .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr 1fr;gap:1px}
   .work-panel.is-story-view .work-panel-facts div,
   .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-column:auto;padding:10px 11px}
@@ -1691,7 +1699,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     point of view.</p>
     <p>In 2026 I co-founded y30 with Vijay Sivaji: voice AI for elder care, daily check-ins that
     help older adults stay connected while giving caregivers and clinicians real signal between
-    appointments. I own the product, the UX and the voice stack.</p>
+    appointments. I owned the product, the UX and the voice stack.</p>
     </div>
   </div>
 </header>
@@ -1937,8 +1945,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
      be removed after the interaction proves that recruiters still reach depth. -->
 <template id="legacy-v3-work-list">
 <div class="v3work">
-<article class="proj">  <div class="proj-head"><h3>y30</h3><p class="proj-meta">2026 – now &middot; Co-founder, CPTO <span class="with">(with <a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a>)</span></p></div>
-  <p class="lead">Voice AI for elders and support for longitudinal caregiving.</p>
+<article class="proj">  <div class="proj-head"><h3>y30</h3><p class="proj-meta">2026 &middot; Co-Founder &amp; CPTO <span class="with">(with <a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a>)</span></p></div>
+  <p class="lead">Operated as founding CPTO through Aug 2026; advising since. Voice AI for elders and support for longitudinal caregiving.</p>
   <div class="vids">
   <div class="embed">
   <button class="facade loom" type="button" data-loom="eb44015201554d11ac841cd1700653ce"
@@ -2011,7 +2019,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   <p class="lead">A two-sided marketplace for local help, mid-rebuild.</p>
   <a class="shot" href="work/taskrabbit-tasker.html"><img width="1400" height="450" src="images/craft/hero-taskrabbit.webp" alt="TaskRabbit" loading="lazy"></a>
   <p class="desc">Tasker side, through the rebrand and the move to direct hire. Client NPS reached the high-40s.</p>
-  <div class="claim"><div class="res"><span class="res-lbl">Result</span><span class="res-fig">NPS −5 → mid-50s</span></div><p class="proofline"><a href="https://web.archive.org/web/20150227060448/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Feb 2015</a><a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild</a></p></div>
+  <div class="claim"><div class="res"><span class="res-lbl">Result</span><span class="res-fig">NPS −5 → mid-50s</span></div><p class="proofline"><a href="https://web.archive.org/web/20140710183551/https://www.taskrabbit.com/" target="_blank" rel="noopener">TaskRabbit, archived Jul 2014</a><a href="https://techcrunch.com/2014/07/10/taskrabbit-debuts-revamped-platform-launches-new-website-and-mobile-apps/" target="_blank" rel="noopener">TechCrunch, the 2014 rebuild</a></p></div>
   <p class="acts"><a class="btn primary" href="work/taskrabbit-tasker.html">Tasker case study &rarr;</a> <a class="btn" href="work/taskrabbit-client.html">Client case study &rarr;</a></p>
   <div class="proj-foot"><span class="f-owned">Product design · iOS · Android · Marketplace · Rebrand</span></div>
 </article>
@@ -2188,10 +2196,10 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       y30: {
         name: "y30",
         portfolioShape: "founder",
-        dates: "2026–now",
-        role: "Co-Founder, CPTO",
-        context: "y30 uses conversation and games to help older adults feel less alone. It gives family caregivers and care professionals longitudinal conversational signals to support care. It does not diagnose or detect medical conditions.",
-        meta: "2026–now · Co-founder, CPTO",
+        dates: "2026",
+        role: "Co-Founder & CPTO",
+        context: "Operated as founding CPTO through Aug 2026; advising since. y30 uses conversation and games to help older adults feel less alone. It gives family caregivers and care professionals longitudinal conversational signals to support care. It does not diagnose or detect medical conditions.",
+        meta: "2026 · Co-Founder & CPTO",
         summary: "I owned the product, design, and engineering. I built the voice experience, games, caregiver tools, and the testing system we used to improve them.",
         facts: [
           ["Users", "Older adults · Family caregivers · Care professionals"],
