@@ -1,6 +1,6 @@
 # Chris Lam
 
-> Product Design Engineer for AI-native products, 14 years. "I design the product. I ship the code." Currently Co-Founder and CPTO at y30, voice AI for older adults and their caregivers. Open to senior or lead IC design-engineering roles, full-time, on small, fast, AI-native teams.
+> Product Design Engineer for AI-native products, 14 years. "I design the product. I ship the code." y30 · Co-Founder & CPTO · 2026. Operated as founding CPTO through Aug 2026; advising since. Open to senior or lead IC design-engineering roles, full-time, on small, fast, AI-native teams.
 
 Chris Lam (Christopher Lam) is a product design engineer with 14 years shipping healthcare, creative, developer, and consumer software. He built his career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today he owns products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. He is seeking senior or lead IC design-engineering roles on AI-native teams.
 
@@ -12,7 +12,7 @@ He is AI-native in how he works: he steers product, architecture, and systems, d
 
 He has been building with LLM APIs since January 2024, which is checkable rather than asserted: his first LLM integration, https://github.com/whoischrislam/ai-polyglot, has a first commit dated 2024-01-07. Cursor from November 2024. Per-repo agent harnesses (rules, file zones, pre-commit gates) from early 2026. Tools he works in: Figma, Sketch and Adobe Fireworks/Photoshop/Illustrator across fourteen years of design; VS Code, Cursor, Claude Code, Codex, Superset; GitHub, Render, Fly.io, Cloudflare, Supabase, PostHog. Models he runs routinely, including as a multi-model adversarial review panel over his own diffs: Claude, GPT, Gemini, Perplexity, and DeepSeek, Grok and Mistral via OpenRouter.
 
-He is currently Co-Founder and CPTO at y30, voice AI for older adults and their caregivers. y30 generates longitudinal conversational signals for clinician or caregiver review. It does not diagnose, screen for, or detect cognitive decline or any other condition, and it is not a medical device.
+At y30, he was Co-Founder & CPTO in 2026. Operated as founding CPTO through Aug 2026; advising since. y30 builds voice AI for older adults and their caregivers and generates longitudinal conversational signals for clinician or caregiver review. It does not diagnose, screen for, or detect cognitive decline or any other condition, and it is not a medical device.
 
 His exits, framed honestly and never as a trophy count: he was early at Clover Health and GoodRx (both later IPO'd), a rescue hire at Sharecare during its acquisition (which then went public), and did the 2014 TaskRabbit rebrand before IKEA acquired it. The signal is repeated high ownership at early or critical stages, not an exit count.
 
@@ -46,7 +46,7 @@ Full write-ups with artifacts, outcomes, and what went wrong. Index: https://who
 - University of Washington, MS Human-Centered Design & Engineering, 2012.
 
 ## Selected outcomes
-- Clover Health (Designer, the second designer, joined when it was about 30 people and founder-funded, months before the Series A; later IPO'd): ~7-8x lift in nurse visit-related revenue, ~2 hours saved per nurse per day.
+- Clover Health (Designer, the second designer, joined when it was about 30 people and founder-funded, months before the Series A; later IPO'd): ~7-8x lift in nurse visit-related revenue, 1-2 hours saved per nurse per night.
 - Iodine, acquired by GoodRx (first full-time designer): coupon conversion 2% to 5%. Iodine.com won the Webby for Best Health Website in 2018; he was the product's designer. On GoodRx Research he built data visualizations referenced in the New York Times and on Good Morning America and ABC News, and 50-state prescription-price fact sheets with co-CEO Doug Hirsch, used in advocacy around S.2554 and S.2553 on drug price transparency.
 - TaskRabbit (later acquired by IKEA): owned the Tasker experience; NPS recovered from about -5 to the mid-50s.
 - Amazon: prototyped the buy-and-gift Prime flow projected to drive 1M+ new subscribers.
