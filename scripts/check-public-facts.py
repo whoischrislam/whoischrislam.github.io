@@ -104,7 +104,7 @@ def main() -> int:
         print(f"\nFAIL  public facts have {len(failures)} blocking problem(s).")
         return 1
 
-    print("PASS  public facts align across five core surfaces and available draft evidence.")
+    print("PASS  public facts align across five core surfaces and available supporting evidence.")
     print("NOTE  run ../portfolio-voice-backend/test-facts.mjs for the sixth, hidden agent catalog.")
     return 0
 

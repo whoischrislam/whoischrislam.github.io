@@ -102,5 +102,5 @@ The reusable company-brief shape lives in
 procedures live in `.claude/skills/session-start/SKILL.md` and
 `.claude/skills/session-end/SKILL.md` and are shared by the supported agents.
 
-For the v3 portfolio, run `python3 scripts/check-portfolio-v3.py` after changing
+For the primary portfolio, run `python3 scripts/check-portfolio-v3.py` after changing
 company records, stories, visual placeholders, slugs, or referenced assets.

@@ -18,7 +18,7 @@ Turn the session into a reliable next-session starting point.
    public implementation, private evidence state, validation performed, next
    action, and deliberate deferrals. Do not create another dated handoff unless
    Chris requests a snapshot.
-4. Run `python3 scripts/check-agent-harness.py`. If v3 portfolio data or assets
+4. Run `python3 scripts/check-agent-harness.py`. If primary portfolio data or assets
    changed, also run `python3 scripts/check-portfolio-v3.py`. Run other checks
    required by `AGENTS.md` for the surfaces changed.
 5. Inspect `git diff` and `git status`. Verify private files remain ignored and
