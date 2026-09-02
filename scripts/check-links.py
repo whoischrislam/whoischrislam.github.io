@@ -9,7 +9,7 @@ that touches proof rows.
 """
 import concurrent.futures as cf, pathlib, re, subprocess, sys
 
-FILES = sys.argv[1:] or ["index-v2.html", "index.html", "candidate.html"]
+FILES = sys.argv[1:] or ["index.html", "candidate.html"]
 SKIP = ("fonts.googleapis.com", "fonts.gstatic.com")  # preconnect hints, not links
 
 def check(u):

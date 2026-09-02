@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Validate the inline v3 company/story model and its local assets.
+"""Validate the primary portfolio's inline company/story model and local assets.
 
-The v3 data remains inline while the information architecture is evolving. This
+The portfolio data remains inline while the information architecture is evolving. This
 check gives that temporary representation schema-like protection without making
 the renderer migration a prerequisite.
 
-    python3 scripts/check-portfolio-v3.py [index-v3.html]
+    python3 scripts/check-portfolio-v3.py [index.html]
 """
 
 from __future__ import annotations
@@ -115,7 +115,7 @@ def walk(value: Any, trail: str = ""):
 
 
 def main() -> int:
-    path = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "index-v3.html"
+    path = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "index.html"
     if not path.is_absolute():
         path = ROOT / path
     failures: list[str] = []
@@ -130,9 +130,13 @@ def main() -> int:
         return 1
 
     if "—" in source:
-        failures.append("public v3 copy contains an em dash")
+        failures.append("public portfolio copy contains an em dash")
 
     required_homepage_fragments = {
+        '<meta name="robots" content="index, follow">':
+            "primary homepage must remain indexable",
+        '<link rel="icon" href="favicon.svg" type="image/svg+xml" />':
+            "primary homepage must declare its favicon",
         'class="hero-lockup"': "homepage hero needs the one-line lockup hook",
         "I <span class=\"lit-word\">design</span> the product &amp; <span class=\"lit-word\">ship</span> the code.":
             "homepage hero statement changed",
@@ -156,6 +160,8 @@ def main() -> int:
             failures.append(message)
 
     forbidden_homepage_fragments = {
+        '<meta name="robots" content="noindex">':
+            "primary homepage must not retain the former draft noindex directive",
         'class="hero-availability"':
             "homepage hero must not restore the seniority/location availability strip",
         "Fourteen years": "homepage must not spell out the confirmed 14+ years notation",
@@ -171,6 +177,10 @@ def main() -> int:
     for fragment, message in forbidden_homepage_fragments.items():
         if fragment in source:
             failures.append(message)
+
+    for favicon in ("favicon.svg", "favicon.ico"):
+        if not (ROOT / favicon).is_file():
+            failures.append(f"primary homepage favicon is missing: {favicon}")
 
     hero_lockup_rule = re.search(r"\.hero h1\.hero-lockup\{([^}]*)\}", source, re.DOTALL)
     if not hero_lockup_rule or "white-space:nowrap" not in hero_lockup_rule.group(1):
@@ -262,9 +272,9 @@ def main() -> int:
         f"{len(slugs)} unique story slugs, and {len(tile_ids)} mosaic tiles"
     )
     if failures:
-        print(f"FAIL  v3 model has {len(failures)} blocking problem(s).")
+        print(f"FAIL  portfolio model has {len(failures)} blocking problem(s).")
         return 1
-    print(f"PASS  v3 model is coherent ({len(warnings)} migration warning(s)).")
+    print(f"PASS  portfolio model is coherent ({len(warnings)} migration warning(s)).")
     return 0
 
 

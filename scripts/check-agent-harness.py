@@ -55,8 +55,6 @@ HANDOFF_HEADINGS = [
 
 PUBLICATION_FILES = [
     "index.html",
-    "index-v2.html",
-    "index-v3.html",
     "candidate.html",
     "llms.txt",
     "resume.json",

@@ -129,11 +129,11 @@ node, delete the probe.
   was found three times: as `var(--accent)`, then again, then as a literal `#fff`. Same
   shape as the em-dash sweep that passed while `&mdash;` sat on live pages.
 
-## The card format checker
+## The portfolio model checker
 
-`python3 scripts/check-cards.py` — enforces tier, slot order, word caps, closed label sets,
-industry words in `transfers`, dash sweeps, and a renders-at-all check. **Must be 0 fail,
-0 warn before any commit.** It cannot see rendering; that is what the browser is for.
+`python3 scripts/check-portfolio-v3.py` validates the primary homepage's company records,
+stories, slugs, mosaic tiles, placeholders, and referenced assets. It must pass before any
+portfolio commit. It cannot see rendering; that is what the browser is for.
 
 ---
 
