@@ -13,7 +13,9 @@ memory.
 2. Inspect `git status` before making changes. Treat unrelated edits as Chris's
    work and preserve them.
 3. Run `python3 scripts/check-agent-harness.py`. Report warnings that affect the
-   current task; do not expand the session to unrelated cleanup.
+   current task; do not expand the session to unrelated cleanup. Once a month (if
+   `.harness-audit-last` is missing or older than ~30 days), run
+   `bash scripts/audit-harness.sh` and surface any findings before continuing.
 4. From the active handoff, identify the current company or workstream. Read only
    its section in `.jobhunt/CANONICAL_WORK_HISTORY.md`, its company brief, and the
    referenced artifacts or source files.
