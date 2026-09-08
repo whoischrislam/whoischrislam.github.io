@@ -1,0 +1,3 @@
+# Python deps for the repo's scripts. Install: pip install -r requirements.txt
+# (use a venv; macOS system Python is externally managed)
+reportlab>=4.0   # scripts/build-resume.py renders resume.json -> chris-lam-resume.pdf

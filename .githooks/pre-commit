@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Quality gate: runs the repo's checkers before every commit.
+# Emergency bypass (discouraged): git commit --no-verify
+exec bash "$(git rev-parse --show-toplevel)/scripts/verify.sh"
