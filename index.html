@@ -1658,12 +1658,12 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       <img src="images/work/y30-voice.png" width="1440" height="1230" alt="" loading="eager" decoding="async">
       <span class="work-tile-label"><b>y30</b><span>Voice as the interface</span></span>
     </button>
-    <button class="work-tile" type="button" data-kind="work" data-project="playsesh" data-tile-id="playsesh-prompt" data-shape="landscape" data-span="4" data-provider="youtube" data-video-id="Q0S-_WAea6Y" data-media-title="PlaySesh prompt-to-playable demo" data-pin>
-      <img src="https://img.youtube.com/vi/Q0S-_WAea6Y/maxresdefault.jpg" width="1280" height="720" alt="" loading="eager" decoding="async">
+    <button class="work-tile" type="button" data-kind="work" data-project="playsesh" data-tile-id="playsesh-prompt" data-shape="landscape" data-span="4" data-provider="youtube" data-video-id="Q0S-_WAea6Y" data-media-title="PlaySesh prompt-to-playable demo">
+      <img src="https://img.youtube.com/vi/Q0S-_WAea6Y/maxresdefault.jpg" width="1280" height="720" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>PlaySesh</b><span>Prompt to playable</span></span>
     </button>
-    <button class="work-tile" type="button" data-kind="experiment" data-project="hogware" data-tile-id="hogware-game" data-shape="landscape" data-span="2" data-pin>
-      <img src="images/hogware/og.png" width="2400" height="1350" alt="" loading="eager" decoding="async">
+    <button class="work-tile" type="button" data-kind="experiment" data-project="hogware" data-tile-id="hogware-game" data-shape="landscape" data-span="2">
+      <img src="images/hogware/og.png" width="2400" height="1350" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>HogWare</b><span>Product-engineering sprint</span></span>
     </button>
     <button class="work-tile" type="button" data-kind="work" data-project="y30" data-tile-id="y30-game" data-shape="landscape" data-span="2">
@@ -1718,8 +1718,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       <img src="images/work/goodrx-us-of-drugs.webp" width="2500" height="2274" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>GoodRx</b><span>United States of Drugs</span></span>
     </button>
-    <button class="work-tile" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-product" data-shape="wide" data-span="4" data-mobile-span="4">
-      <img src="images/craft/hero-goodrx.webp" width="1400" height="450" alt="" loading="lazy" decoding="async">
+    <button class="work-tile" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-product" data-shape="wide" data-span="4" data-mobile-span="4" data-pin>
+      <img src="images/craft/hero-goodrx.webp" width="1400" height="450" alt="" loading="eager" decoding="async">
       <span class="work-tile-label"><b>GoodRx</b><span>Consumer drug information</span></span>
     </button>
     <button class="work-tile" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-process" data-shape="square" data-span="2">
@@ -1730,8 +1730,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       <img src="images/craft/clover-care-visit_01.webp" width="1600" height="1200" alt="" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Clover Health</b><span>Field research into workflow</span></span>
     </button>
-    <button class="work-tile" type="button" data-kind="work" data-project="clover" data-tile-id="clover-form" data-shape="portrait" data-span="3">
-      <img src="images/craft/clover-care-visit_09.webp" width="768" height="1024" alt="" loading="lazy" decoding="async">
+    <button class="work-tile" type="button" data-kind="work" data-project="clover" data-tile-id="clover-form" data-shape="portrait" data-span="3" data-pin>
+      <img src="images/craft/clover-care-visit_09.webp" width="768" height="1024" alt="" loading="eager" decoding="async">
       <span class="work-tile-label"><b>Clover Health</b><span>Clinical visit interface</span></span>
     </button>
     <button class="work-tile" type="button" data-kind="work" data-project="clover" data-tile-id="clover-site" data-shape="wide" data-span="3">
@@ -5804,15 +5804,25 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       resetWork(true, {restoreScroll:workOverviewScrollY});
     }
 
+    /* Pinned anchors always lead the mosaic so a fast, non-hovering recruiter
+       scan lands on the strongest design proof first; everything behind them
+       stays freshly shuffled each load. PINNED_ORDER is the source of truth for
+       the lead sequence and must match the data-pin markers in the markup, which
+       also drive eager image loading for the anchors. */
+    var PINNED_ORDER = ["clover-form", "goodrx-product", "y30-voice"];
     function randomWorkOrder(){
-      var shuffled = curatedWorkTiles.slice();
-      for(var i = shuffled.length - 1; i > 0; i--){
+      var byId = new Map(curatedWorkTiles.map(function(tile){ return [tile.dataset.tileId, tile]; }));
+      var pinned = PINNED_ORDER.map(function(id){ return byId.get(id); }).filter(Boolean);
+      var rest = curatedWorkTiles.filter(function(tile){
+        return PINNED_ORDER.indexOf(tile.dataset.tileId) === -1;
+      });
+      for(var i = rest.length - 1; i > 0; i--){
         var j = Math.floor(Math.random() * (i + 1));
-        var swap = shuffled[i];
-        shuffled[i] = shuffled[j];
-        shuffled[j] = swap;
+        var swap = rest[i];
+        rest[i] = rest[j];
+        rest[j] = swap;
       }
-      return shuffled.map(function(tile){ return tile.dataset.tileId; });
+      return pinned.concat(rest).map(function(tile){ return tile.dataset.tileId; });
     }
 
     function applyWorkOrder(order){
