@@ -2,10 +2,10 @@
     "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
     "basics": {
         "name": "Chris Lam",
-        "label": "Product Design Engineer for AI-native products",
+        "label": "Senior Product Designer for AI-native products",
         "email": "whoischrislam@gmail.com",
         "url": "https://whoischrislam.github.io",
-        "summary": "Product design engineer with 14 years shipping healthcare, creative, developer, and consumer software. Built my career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today I own products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. Recent work includes a voice-AI system with deterministic safety controls and collaborative game-development tooling with a custom real-time engine. Seeking senior or lead IC design-engineering roles on AI-native teams.",
+        "summary": "Senior product designer with 14 years shipping healthcare, creative, developer, and consumer software. Built my career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today I own products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. Recent work includes a voice-AI system with deterministic safety controls and collaborative game-development tooling with a custom real-time engine. Seeking senior product design and design-engineering roles on AI-native teams.",
         "location": {
             "city": "Honolulu",
             "region": "HI",
@@ -249,7 +249,7 @@
     "meta": {
         "canonical": "https://whoischrislam.github.io/resume.json",
         "factSheet": "https://whoischrislam.github.io/candidate.html",
-        "note": "Seeking senior or lead IC design-engineering roles, full-time. Remote US from Honolulu, working West Coast hours, with quarterly travel to the Bay Area or Seattle.",
+        "note": "Seeking senior product design and design-engineering roles, full-time. Remote US from Honolulu, working West Coast hours, with quarterly travel to the Bay Area or Seattle.",
         "locationLine": "Remote US from Honolulu, HI · Works West Coast hours · Quarterly Bay Area and Seattle travel",
         "variants": {
             "_usage": "Role-family targeting for the PDF. Render with: python3 scripts/build-resume.py --variant <key>. Any empty field falls back to basics.label / basics.summary. Add a summary only when it is written in Chris's own voice.",
