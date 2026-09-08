@@ -140,8 +140,10 @@ def main() -> int:
         'class="hero-lockup"': "homepage hero needs the one-line lockup hook",
         "I <span class=\"lit-word\">design</span> the product &amp; <span class=\"lit-word\">ship</span> the code.":
             "homepage hero statement changed",
-        "Product design engineer &amp; 0→1 builder.":
-            "homepage market-facing line changed",
+        "<b>Senior Product Designer</b>":
+            "homepage primary label must lead with Senior Product Designer",
+        "product design engineer &amp; 0→1 builder.":
+            "homepage market-facing builder line changed",
         "14+ years shipping software across healthcare, marketplaces, education, and creative tools. I learn new domains and technologies quickly without compromising product judgment, design craft, or engineering rigor.":
             "homepage adaptability line changed",
         "14+ years": "homepage must use the confirmed 14+ years notation",
