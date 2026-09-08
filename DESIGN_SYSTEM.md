@@ -44,7 +44,7 @@ paragraph gap (2011: 2.5–3.5em vs 1em; 2014: 80px vs 20px; 2024: 4em vs 1em).
 **The rule goes above a section heading, never below.** His Squarespace case studies were
 `hr → h2 → content` for four years, eight rules deep in the Iodine page alone.
 
-## Colour
+## Color
 
 **Green, not coral.** Green recurs across four eras (`#00C131` 2010, `#7dd758` 2014,
 `#26AF55` and `#66FF02` 2024 — chosen twice independently). Coral had no precedent in
@@ -151,7 +151,7 @@ still inventing.
 
 **3. `.btn` radius.** 8px, now the only radius on the page.
 
-**4. ~90 raw px spacing values remain in card rules** despite the tokens existing. Cosmetic
+**4. \~90 raw px spacing values remain in card rules** despite the tokens existing. Cosmetic
 debt, no visible defect.
 
 **5. The asymmetric 31/69 split** from his 2014 work section — scan layer narrow-left, read

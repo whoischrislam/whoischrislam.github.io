@@ -40,3 +40,9 @@ images/companies/
 
 # y30 case study draft: on disk, deliberately untracked
 work/y30.html
+.claude/skills/open-knowledge/
+.cursor/skills/open-knowledge/
+.codex/skills/open-knowledge/
+.github/skills/open-knowledge/
+.opencode/skills/open-knowledge/
+.pi/skills/open-knowledge/
