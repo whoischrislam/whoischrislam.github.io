@@ -53,6 +53,63 @@ Speed is:
 
 ## Training modes
 
+### Break-it rep: 25 minutes — THE FLOOR
+
+**Use this every weekday. It outranks every other mode.** The 90-minute daily rep
+below is a good protocol with a zero-rep record across 38 days; it lost to shipping
+work every time. This mode exists because 25 minutes cannot lose to shipping work.
+
+Material comes from `BUILDER_TRAINING_BACKLOG.md`. Take the top unstruck line.
+**Do not choose.** Deciding what to practise is where the 25 minutes goes to die.
+
+| Time | Action |
+|---|---|
+| 0:00–0:08 | **Change something and watch.** Run it, add a log, break it on purpose. Do NOT read your way in. |
+| 0:08–0:18 | Write the failing case **by hand**. Fails before, passes after. |
+| 0:18–0:23 | Fix **by hand**. Narrowest fix that passes. No adjacent refactoring. |
+| 0:23–0:25 | Strike the backlog line, log one line, stop. |
+
+**Week 1 is all backlog. From week 2, the calendar decides the rep type:**
+
+| Day | Rep type | Material |
+|---|---|---|
+| Mon / Wed / Fri | **Handed** — defect is named, file:line given | `BUILDER_TRAINING_BACKLOG.md` |
+| Tue / Thu | **Cold find** — nobody tells you where | The last thing an agent shipped for y30, the portfolio, or voice-noir |
+
+A cold-find rep is the same 25 minutes and the same four steps, except step 1 is
+"find something that breaks" instead of "reproduce the reported thing." If you find
+nothing in 8 minutes, that is a logged result, not a failure — write down the three
+conditions you checked. Checking and finding nothing is different from not checking,
+and only the log can tell them apart later.
+
+Week 1 stays all-backlog because writing a failing case is itself a new skill. Learn
+to write one before hunting for what deserves one.
+
+**Step 1 is observation, not comprehension.** You do not need to understand the code to
+make the failure happen. Run it, click the buttons, add a `console.log`, break a line on
+purpose and see what changes. Practitioner writeups on how senior engineers read code
+converge on the same point: reading is passive, changing is active, and every small change
+is a hypothesis test. Reading your way in is the slow path even when your model is warm,
+and it is a dead end when it is cold. (Added 2026-08-25 after rep 1 stalled at minute three
+on exactly this.)
+
+Rules specific to this mode:
+
+- **Hard stop at 25 minutes, even mid-fix.** An unfinished rep still logs.
+- **No scope card.** The backlog line is the scope. Writing a scope card for a
+  25-minute rep is the overhead that killed the previous three systems.
+- **No scorecard.** One log line. See the break-it template in the log.
+- If the defect does not reproduce, mark it `NOT-REAL` and take the next line.
+  That outcome is a successful rep, not a wasted one.
+
+Why this specific exercise: a four-agent sweep of 43 pre-AI repositories
+(2026-08-24; 372 commits, **zero** test files) found one defect four times
+independently — verification against a single observer. Features are confirmed
+working once, on one machine, in one timezone, on the happy path, then shipped.
+That is the same shape agent-written code fails in, which makes it the highest-
+leverage gap to close. Full assessment:
+https://claude.ai/code/artifact/a938831f-2658-4291-bb1e-ea0e23faa745
+
 ### Daily rep: 90–120 minutes
 
 Use this on most practice days.
@@ -120,6 +177,13 @@ The out-of-scope section is mandatory. New ideas go into a parking lot and do no
 
 AI use is expected. The skill being trained is directing and evaluating it well.
 
+**Exception — the break-it rep runs AI as reference only, never as author.**
+The 90-minute and longer modes train *directing* AI. The break-it rep trains the
+thing that makes that direction trustworthy: hand-level judgment about whether
+code is actually correct. Asking how something works is allowed. Accepting
+generated code is not. Type every line. The two modes are not in tension; they
+train opposite halves of the same skill.
+
 Chris owns:
 
 - The problem framing and scope card.
@@ -132,6 +196,12 @@ Agents may research, scaffold, implement, test, and review, but they must not si
 - Keep the central judgment path with one primary agent.
 - Ask the agent to expose assumptions and tradeoffs.
 - Inspect the meaningful diff before calling the work complete.
+- **Before accepting any agent's work, answer one question out loud: "what condition
+  did I not observe?"** Name one. A second concurrent user, an empty list, a denied
+  permission, a timezone that is not yours, a response that is not 200. Then go look
+  at whether it holds. This costs zero minutes, happens ten times a day instead of
+  once, and is the single fastest path to closing the gap — faster than any number
+  of practice reps, because it runs on the code that actually ships.
 - Explain the critical execution path without reading the agent's summary verbatim.
 - Record any code or architectural decision that cannot yet be explained as comprehension debt.
 
@@ -171,6 +241,12 @@ Rotate these rather than always starting greenfield projects:
 At least half of all reps should modify an existing system. Greenfield work naturally flatters Chris's strengths and under-trains constraint handling.
 
 ## Leveling ladder
+
+### Level 0: The streak
+
+Ten consecutive weekdays of logged break-it reps. **Nothing above this level is
+scheduled until Level 0 closes.** The 90-minute rep is the reward for the streak,
+not a competitor to it. Three previous systems started at Level 1 and logged zero.
 
 ### Level 1: Consistent daily closure
 

@@ -2,12 +2,31 @@
 
 Append one entry after every deliberate practice rep. Keep entries short and factual.
 
+## Break-it rep template (25 min — use this one daily)
+
+One line. Sixty seconds. If logging takes longer than this, the log is wrong.
+
+```markdown
+- YYYY-MM-DD · <repo>:<file:line> · REPRODUCED|NOT-REAL · <what the failing case asserts> · FIXED|UNFINISHED · <term that stalled, or ->
+```
+
+Example:
+
+```markdown
+- 2026-08-25 · shotclock:Clock.jsx:31 · REPRODUCED · reset while paused restarts the countdown · FIXED · effect cleanup / stale closure
+```
+
+## Break-it reps
+
+<!-- append below, newest last -->
+- 2026-08-25 · shotclock:Clock.jsx:31 · NOT-REPRODUCED · stalled before running the app; read the code instead of observing it · UNFINISHED · recall gap hypothesis raised (React effect model cold since 2024-11)
+
 ## Entry template
 
 ```markdown
 ## YYYY-MM-DD — <repo>: <rep name>
 
-**Mode:** Daily / Half-day / SuperDay
+**Mode:** Daily (90–120) / Half-day / SuperDay  — NOT for break-it reps, see above
 **Timebox:** Planned / Actual
 **Outcome:**
 **Proof:**
