@@ -1,10 +1,10 @@
 # Chris Lam
 
-> Product Design Engineer for AI-native products, 14 years. "I design the product. I ship the code." y30 · Co-Founder & CPTO · 2026. Operated as founding CPTO through Aug 2026; advising since. Open to senior or lead IC design-engineering roles, full-time, on small, fast, AI-native teams.
+> Senior Product Designer for AI-native products, 14 years. "I design the product. I ship the code." y30 · Co-Founder & CPTO · 2026. Operated as founding CPTO through Aug 2026; advising since. Open to senior product design and design-engineering roles, full-time, on small, fast, AI-native teams.
 
-Chris Lam (Christopher Lam) is a product design engineer with 14 years shipping healthcare, creative, developer, and consumer software. He built his career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today he owns products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. He is seeking senior or lead IC design-engineering roles on AI-native teams.
+Chris Lam (Christopher Lam) is a senior product designer with 14 years shipping healthcare, creative, developer, and consumer software. He built his career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today he owns products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. He is seeking senior product design and design-engineering roles on AI-native teams.
 
-Role family for matching: Product Design Engineer, Design Engineer, Lead Design Engineer, Staff Design Engineer, UX Engineer, Design Systems Engineer, AI Product Engineer. These describe the shape of role he is targeting and the work he does, not official titles he has held.
+Role family for matching: Senior Product Designer, Product Designer, Product Design Engineer, Design Engineer, Lead Design Engineer, UX Engineer, Design Systems Engineer, AI Product Engineer. These describe the shape of role he is targeting and the work he does, not official titles he has held.
 
 Location: remote in the US, based in Honolulu. He works West Coast hours and travels to the Bay Area or Seattle quarterly. He is not seeking relocation.
 
