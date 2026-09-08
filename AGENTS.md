@@ -14,6 +14,27 @@ project context before it works. Task-specific procedures belong in
 Run `python3 scripts/check-agent-harness.py` after changing agent instructions,
 session skills, private evidence workflow files, or their paths.
 
+## How we build
+
+Five rules govern every task. Detail hangs off these; do not add to them without
+retiring something (rule 5).
+
+1. You say what you want; I restate it in one line and name the riskiest assumption before touching anything.
+2. I present options with tradeoffs, including ones I do not favor, opinions labeled and kept separate from evidence. The judgment call is Chris's. Routine mechanical choices inside an already approved decision are mine.
+3. Effort matches stakes. Tweak: make the smallest edit and show the diff. Feature: plan first, get approval before coding. Rewrite, new system, or dependency: write the architecture-restraint proposal and get an adversarial plan review before building. Bug: reproduce, write the failing case, fix small, add a check so it cannot recur. Fact or copy change: canonical source, then all six surfaces, then verify. Spike: labeled throwaway, never merged as real.
+4. `verify.sh` passes before every commit (enforced by the `.githooks/pre-commit` hook). Enforce in the tool, not the doc.
+5. One rule in, one rule out. No new rule, check, or process step without retiring or merging one. Retirement test: if this did not exist, what bug class returns in 90 days?
+
+Adversarial plan review (external models, not Claude grading itself) fires when a change introduces or replaces a system, is hard to reverse, touches safety or public facts at scale, or either party is unsure. Code review fires when the diff is non-trivial logic. Check what already exists before building anything new: on 2026-08-13 a "speed run" was specced from scratch before finding `/brief` in `portfolio-voice-backend` already compiled a fact-cited recruiter brief, and a visual index was proposed before finding 150 unused images in `images/craft/`.
+
+## Do not
+
+- Do not put commit counts or test-file counts on any surface. They are stale or uncountable, and the site deliberately says "systems depth, not commit counts."
+- Do not write Chris's facts or his sentences from a guess. Supply the fact and a marked blank, or ask. A labeled guess is still a guess.
+- Do not stage the whole working tree. Commit the specific files for the change, by path.
+- Do not spawn a subagent for synthesis-heavy work (a task that needs reading 3+ files to know what to write). That is solo work; subagents are for fan-out reads and independent parallel tasks.
+- Do not trust a check that tests one form of a thing. Enumerate every form (the character and the entity, every surface) or it gives false confidence.
+
 ## Builder training
 
 When Chris asks to practice, run a drill, simulate a SuperDay, improve delivery speed, or level up as a product engineer:
@@ -65,10 +86,6 @@ question-led headings over slogans, metaphors, or abstract systems language.
 **Measure before proposing a layout, length, or density fix.** Every intuition about this page was wrong on 2026-08-13: widening the column looked like it would shorten the page (it saves 2% and pushes the lede to 124 characters per line), the AI section looked like the density problem (it is 2% of the page; 17 work cards are 78%). Render the page in headless Chrome, measure section heights, characters per line, and page total, then decide.
 
 **Verify by rendering the real page, not a harness.** An isolated test page showed mobile overflow that did not exist in `index.html`; the harness was broken, not the site. When a test disagrees with expectation, suspect the test first. Print CSS in particular cannot be trusted by reading — this page prints only `#va-dock` by design, which silently made two print rules dead code.
-
-## Before building, inventory
-
-Check what already exists before designing anything new. On 2026-08-13 the "speed run" concept was specced from scratch before discovering `/brief` in `portfolio-voice-backend` already compiles a fact-cited recruiter brief; and a visual index was proposed before discovering seven finished case-study pages already carry 150 images in `images/craft/` that `index.html` references zero times.
 
 ## Architecture restraint and decision rights
 
