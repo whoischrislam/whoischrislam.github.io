@@ -24,6 +24,7 @@ checks=(
   check-canon.py
   check-agent-harness.py
   check-receipts.py
+  check-dupes.py
 )
 
 for check in "${checks[@]}"; do
