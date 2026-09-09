@@ -19,7 +19,7 @@ session skills, private evidence workflow files, or their paths.
 Five rules govern every task. Detail hangs off these; do not add to them without
 retiring something (rule 5).
 
-1. You say what you want; I restate it in one line and name the riskiest assumption before touching anything.
+1. You say what you want; I restate it in one line, name the riskiest assumption, and name what already exists that this should extend, before writing anything new. Extend it, do not rebuild a variant. (`check-dupes.py` blocks large copy-paste at the gate; conceptual reinvention is caught here, by hand.)
 2. I present options with tradeoffs, including ones I do not favor, opinions labeled and kept separate from evidence. The judgment call is Chris's. Routine mechanical choices inside an already approved decision are mine.
 3. Effort matches stakes. Tweak: make the smallest edit and show the diff. Feature: plan first, get approval before coding. Rewrite, new system, or dependency: write the architecture-restraint proposal and get an adversarial plan review before building. Bug: reproduce, write the failing case, fix small, add a check so it cannot recur. Fact or copy change: canonical source, then all six surfaces, then verify. Spike: labeled throwaway, never merged as real.
 4. `verify.sh` passes before every commit (enforced by the `.githooks/pre-commit` hook). Enforce in the tool, not the doc.
