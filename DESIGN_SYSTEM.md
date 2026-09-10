@@ -90,6 +90,39 @@ strongest template tell in the file.
 His 2024 pattern, and now this page's: at 640px, one type step down, section padding
 halved, one width step. **Nothing else changes at any breakpoint.**
 
+## Hero art direction (recovered)
+
+Recovered 2026-09-10 from the four `images/craft/hero-*.webp`, all authored at exactly
+1400x450: TaskRabbit, Clover, GoodRx, Iodine. One deliberate system, and it is the style
+the old Squarespace portfolio shipped.
+
+- **Full-bleed brand-colour canvas**, one hue per project: TaskRabbit green, Clover teal,
+  GoodRx yellow, Iodine purple. The canvas is the unifier.
+- **Device mockups on that canvas**: iPhone, iPad, iMac/desktop bezels, with the real
+  product screenshots composited inside them.
+- **A horizontal row of three to four devices** on a shared baseline, evenly spaced,
+  generous margin, the product shown across form factors.
+- Optional supporting mark (Iodine's Webby badge, GoodRx's infographic panels).
+
+**The mosaic is crops of the heroes, not a second set of tiles.** Each homepage mosaic
+piece is a fragment of one hero (a single device, a screen, a brand-colour corner). Because
+every piece derives from one styled master, the wall reads as one register. This replaces
+the earlier mix of finished composites, bare screenshots, and empty placeholder tiles that
+made the wall look assembled from scraps.
+
+**Crop discipline** (a 2026-09-10 concept spike proved CSS-cropping one hero clips the
+devices; deliberate export frames do not):
+
+- Export deliberately framed crops from Figma. Do not CSS-crop the hero image.
+- Device fully inside the frame, even background margin.
+- Consistent device scale across crops.
+
+**Tool.** Device-mockup compositing is Figma work (mockup frames, clean export), not
+paper.design (which builds live UI, not screenshot composites) and not hand-CSS. Per
+project: one 1400x450 hero for the case page, plus two to three exported crops for the
+mosaic. The full production masterlist and per-project status live in
+`PORTFOLIO_HERO_PLAN.md`.
+
 ---
 
 # How to verify — do this before claiming anything visual
@@ -144,10 +177,12 @@ portfolio commit. It cannot see rendering; that is what the browser is for.
 to point at. Highest-value remaining work: the converting format per the hiring research is
 a 500–800 word narrative tracing one decision from an ambiguous start to an outcome.
 
-**2. Six cards share the green fallback** — GoodRx, Clover Health, doc.ai, Modus Create,
-StartPlaying, Blue Startups. Needs a hex from Chris per company; the light-theme variant is
-then computed. No verifiable source was found locally, and inventing a brand colour is
-still inventing.
+**2. Brand colours still unknown for three cards** — Modus Create, StartPlaying, doc.ai/Omix.
+Needs a hex from Chris per company; the light-theme variant is then computed. No verifiable
+source was found locally, and inventing a brand colour is still inventing. Update 2026-09-10:
+the hero composites now supply canvas colours for TaskRabbit, Clover, GoodRx, and Iodine, and
+Amazon has gold `#DF9900` (fails light theme, needs a variant). These three unknowns gate three
+of the five hero composites in `PORTFOLIO_HERO_PLAN.md`. (Blue Startups is not a work tile.)
 
 **3. `.btn` radius.** 8px, now the only radius on the page.
 
