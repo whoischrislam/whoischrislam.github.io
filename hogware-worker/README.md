@@ -30,9 +30,9 @@ The Worker:
 
 The plausibility rule is intentionally lightweight. It prevents casual forged scores but is not a cryptographic proof of play.
 
-### Read a daily board
+### Read the overall board
 
-`GET /?day=N` runs one HogQL query and returns:
+`GET /` runs one HogQL query and returns:
 
 ```json
 [
@@ -40,7 +40,7 @@ The plausibility rule is intentionally lightweight. It prevents casual forged sc
 ]
 ```
 
-The query keeps the best score for each browser ID, applies the same scoring ceiling, returns the top 20, and scans only the last three days. Results are cached at the edge for 60 seconds.
+The query keeps the all-time best score for each browser ID, applies the same scoring ceiling, and returns the top 20. Results are cached at the edge for 60 seconds.
 
 Only the handle and score leave the Worker. Browser IDs and event payloads are not included in the response.
 
@@ -75,7 +75,7 @@ The deployed URL is configured as `WORKER_URL` in `hogware.js`.
 ## Verify
 
 1. Play a real run and submit a score.
-2. Open `https://hogware-leaderboard.whoischrislam.workers.dev/?day=<current-day-number>` and confirm the handle appears.
+2. Open `https://hogware-leaderboard.whoischrislam.workers.dev/` and confirm the handle appears.
 3. Send a test POST whose score exceeds `stages_cleared * 4` and confirm the Worker returns HTTP 422 with `implausible score`.
 4. Confirm the browser still receives `[{handle, best}]` when the PostHog browser script is blocked.
 5. Visit the game with `?notrack=1` and confirm the UI explains that the score will not be submitted.

@@ -19,7 +19,7 @@
   /* ---------------- Leaderboard endpoint ----------------
      Cloudflare Worker (source: hogware-worker/) that runs a HogQL query over
      hogware_score_submitted with a Query-Read-only personal API key held
-     server-side. Daily top-20, plausibility-gated, 60s edge cache. */
+     server-side. All-time top-20, plausibility-gated, 60s edge cache. */
   var WORKER_URL = "https://hogware-leaderboard.whoischrislam.workers.dev";
 
   /* ---------------- Tunables ---------------- */
@@ -47,8 +47,8 @@
   var _now = new Date();
   var _todayMidnight = new Date(_now.getFullYear(), _now.getMonth(), _now.getDate());
   var DAY_NUM = Math.max(1, Math.round((_todayMidnight - HW_EPOCH) / 86400000) + 1);
-  // ?day=N pins the seed (deterministic tests, replaying a past day) - harmless: it
-  // only picks which daily gauntlet you play, and the leaderboard is already per-day.
+  // ?day=N pins the seed (deterministic tests, replaying a past day). It affects the
+  // gauntlet only; the leaderboard compares every submitted score overall.
   try {
     var _dq = parseInt(new URLSearchParams(location.search).get("day"), 10);
     if (_dq >= 1 && _dq <= 100000) DAY_NUM = _dq;
@@ -2294,7 +2294,7 @@
         '<br><span>the global board loads on the live site</span></p>';
       return;
     }
-    el.innerHTML = '<p class="hw-lb-note">loading today’s board…</p>';
+    el.innerHTML = '<p class="hw-lb-note">loading overall board…</p>';
     // Never let the board hang on "loading": abort after 8s so a dead connection fails to a
     // clear, retryable message instead of an endless spinner. Any HTTP response (even a 502)
     // resolves normally and degrades to "no scores yet". Only a true network stall lands here.
@@ -2305,7 +2305,7 @@
       var b = el.querySelector(".hw-lb-retry");
       if (b) b.addEventListener("click", renderLeaderboard);
     };
-    fetch(WORKER_URL + "?day=" + DAY_NUM, ctrl ? { signal: ctrl.signal } : undefined).then(function (r) {
+    fetch(WORKER_URL, ctrl ? { signal: ctrl.signal } : undefined).then(function (r) {
       if (to) clearTimeout(to);
       return r.json();
     }).then(function (rows) {
@@ -2321,7 +2321,7 @@
           rows.sort(function (a, b) { return Number(b.best) - Number(a.best); });
         }
       }
-      if (!rows.length) { el.innerHTML = '<p class="hw-lb-note">No scores yet today. Be the first. 🦔</p>'; return; }
+      if (!rows.length) { el.innerHTML = '<p class="hw-lb-note">No scores yet. Be the first. 🦔</p>'; return; }
       var head = '<div class="hw-lb-row hw-lb-head"><span>#</span><span>who</span><span>score</span></div>';
       var body = rows.slice(0, 10).map(function (row, i) {
         var who = String(row.handle || "???").slice(0, 3);

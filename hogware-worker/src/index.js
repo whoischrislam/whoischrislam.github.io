@@ -9,7 +9,7 @@
      Worker, never to PostHog directly, so a content blocker can't stop a
      score from landing. Scores still live in PostHog - the story holds.
 
-   - GET /?day=N → read today's top 20 via one HogQL query. Reads off the
+   - GET / → read the all-time top 20 via one HogQL query. Reads off the
      submit event alone (its own stages_cleared property), so it doesn't
      depend on the per-clear events, which ad blockers also suppress.
 
@@ -102,13 +102,9 @@ export default {
 
     /* ---------------- READ: GET the board ---------------- */
     const url = new URL(request.url);
-    const day = parseInt(url.searchParams.get("day") || "0", 10);
-    if (!day || day < 1 || day > 100000) {
-      return new Response(JSON.stringify({ error: "day parameter required" }), { status: 400, headers: cors });
-    }
 
-    // 60s edge cache per day-URL: reshares hit cache, not PostHog's query API.
-    const cacheKey = new Request(url.origin + "/leaderboard?day=" + day, request);
+    // One 60s edge cache for the overall board: reshares hit cache, not PostHog's query API.
+    const cacheKey = new Request(url.origin + "/leaderboard", request);
     const cache = caches.default;
     const cached = await cache.match(cacheKey);
     if (cached) return cached;
@@ -116,18 +112,15 @@ export default {
     /* Plausibility gate lives IN the query, reading the submit event's own
        stages_cleared: score must be backed by cleared*4 (the real per-clear max).
        No JOIN, no dependency on the per-clear events (which ad blockers suppress).
-       One row per distinct_id (best score that browser posted), time-bounded to
-       3 days so the scan never grows with history. */
+       One row per distinct_id (the best score that browser has ever posted). */
     const hogql = `
       SELECT
         argMax(toString(properties.handle), toInt(properties.score)) AS handle,
         max(toInt(properties.score)) AS best
       FROM events
       WHERE event = 'hogware_score_submitted'
-        AND toInt(properties.day) = ${day}
         AND toInt(properties.score) BETWEEN 1 AND 400
         AND toInt(properties.stages_cleared) * 4 >= toInt(properties.score)
-        AND timestamp > now() - INTERVAL 3 DAY
       GROUP BY distinct_id
       ORDER BY best DESC
       LIMIT 20
