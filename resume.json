@@ -41,7 +41,7 @@
                 "Built an FSM safety engine where crisis paths are deterministic code, not prompt instructions, a hard state the model cannot override.",
                 "Architected a streaming speech-to-text to LLM to text-to-speech pipeline (multi-provider, deep fallback) fronted by a deterministic state machine.",
                 "Scoped the language model to phrasing and warmth while conversation flow runs as a deterministic state machine; about half of routing decisions resolve with no model call.",
-                "Built the first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the state-machine architecture and safety model across the rewrite.",
+                "Built an eval-driven safety loop: every production failure becomes a permanent regression scenario, so the same failure cannot recur.",
                 "Designed elder-first voice UX: no app, no screen, no login, just a phone call.",
                 "Tested with 11 people outside the founding team, including four elder-care professionals: a facility owner-operator, two geriatric physicians, and a senior-rehabilitation specialist."
             ],
@@ -170,7 +170,7 @@
     "skills": [
         {
             "name": "Product & Design",
-            "resumeShow": 11,
+            "resumeShow": 13,
             "keywords": [
                 "Product design (0 to 1)",
                 "Founding designer",
@@ -179,12 +179,13 @@
                 "Design tokens",
                 "UX research",
                 "Prototyping",
-                "Information architecture",
                 "WCAG accessibility",
                 "Product strategy",
+                "Elder-care UX",
+                "Healthcare / HIPAA-aware",
                 "Figma",
                 "Storybook & Chromatic",
-                "Elder-care UX",
+                "Information architecture",
                 "Sketch",
                 "Adobe Photoshop/Illustrator"
             ]
