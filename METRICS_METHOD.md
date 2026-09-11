@@ -54,7 +54,7 @@ workflow on `main` prints `Tests 291 passed (291)` and `Test Files 22 passed
 (22)`. A static count of `it(`/`test(` agrees exactly, because the suite has no
 parameterised or generated cases.
 
-Adoption figures for PlaySesh are governed separately by `PLAYSESH_METRICS.md`.
+Adoption figures for PlaySesh are governed separately by `.jobhunt/PLAYSESH_METRICS.md`.
 
 ---
 

@@ -66,9 +66,9 @@ confirm remembered ownership and delivery state. Numerical claims require a
 surviving written source or separately recoverable evidence and must retain the
 source's qualification (for example, projected versus measured).
 
-Before writing or changing any PlaySesh adoption claim in the resume, portfolio, or application materials, read `PLAYSESH_METRICS.md`. Keep Discord authorizations, server installs, individual-user installs, and PostHog engagement metrics separately labeled. Do not describe OAuth authorizations as active users or installs.
+Before writing or changing any PlaySesh adoption claim in the resume, portfolio, or application materials, read `.jobhunt/PLAYSESH_METRICS.md`. Keep Discord authorizations, server installs, individual-user installs, and PostHog engagement metrics separately labeled. Do not describe OAuth authorizations as active users or installs.
 
-**Six surfaces carry facts, not five.** `index.html`, `resume.json`, `llms.txt`, `candidate.html`, the résumé PDF, and `portfolio-voice-backend/src/facts.js` — the last one is the agent's catalog and it is the one that drifts unseen, because nothing on the site renders it. On 2026-08-13 it was found live with a fabricated "3.2s patience window", a test-file count removed everywhere else, and four PlaySesh figures that `PLAYSESH_METRICS.md` marks "Not supported." Change a number on one surface, change it on all six, and run `node test-facts.mjs` in the backend repo.
+**Six surfaces carry facts, not five.** `index.html`, `resume.json`, `llms.txt`, `candidate.html`, the résumé PDF, and `portfolio-voice-backend/src/facts.js` — the last one is the agent's catalog and it is the one that drifts unseen, because nothing on the site renders it. On 2026-08-13 it was found live with a fabricated "3.2s patience window", a test-file count removed everywhere else, and four PlaySesh figures that `.jobhunt/PLAYSESH_METRICS.md` marks "Not supported." Change a number on one surface, change it on all six, and run `node test-facts.mjs` in the backend repo.
 
 ## Public career-copy style
 
