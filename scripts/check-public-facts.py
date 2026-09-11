@@ -19,8 +19,8 @@ BANNED = {
     "1,400 commits": "y30 code-volume count is not a public claim",
     "product shipped July 2025": "PlaySesh's live Discord product launched November 2025",
     "100% on-time payouts": "StartPlaying has no verified percentage outcome",
-    "6,220 active users": "Discord authorizations are not active users",
-    "6,220 installs": "Discord authorizations are not installs",
+    "6,750 active users": "Discord authorizations are not active users",
+    "6,750 installs": "Discord authorizations are not installs",
     "127 test files": "the old y30 test-file count is stale",
     "pre-production, in pilot": "y30 was tested live but never entered a senior pilot",
     "no elder has ever evaluated": "at least one senior tried y30 by phone; sustained at-home evaluation did not happen",
@@ -29,9 +29,9 @@ BANNED = {
 
 PLAYSESH_REQUIRED = [
     "authorized",
-    "138",
+    "161",
     "server install",
-    "67",
+    "77",
     "individual-user install",
     "1,043",
 ]
