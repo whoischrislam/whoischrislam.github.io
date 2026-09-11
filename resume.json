@@ -213,13 +213,14 @@
         },
         {
             "name": "AI-Native Systems",
-            "resumeShow": 8,
+            "resumeShow": 9,
             "keywords": [
                 "Agent UX",
                 "LLM orchestration",
                 "Evals & evaluation UX",
                 "Deterministic safety",
-                "Prompt & system design",
+                "Prompt engineering & system design",
+                "RAG",
                 "Human-AI oversight",
                 "Voice AI",
                 "Claude Code",
