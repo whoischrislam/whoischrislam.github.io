@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -43,7 +44,10 @@ def pdf_text(path: pathlib.Path) -> str:
     result = subprocess.run(
         [executable, str(path), "-"], capture_output=True, text=True, check=True
     )
-    return result.stdout
+    # Collapse every run of whitespace (pdftotext inserts a newline at each visual
+    # line wrap) so a required phrase that wraps across two lines still matches.
+    # A check that only tests the unwrapped form gives false confidence.
+    return re.sub(r"\s+", " ", result.stdout)
 
 
 def main() -> int:

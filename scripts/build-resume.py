@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Render resume.json to a PDF.
+"""Render resume.json to a plain ATS-fallback PDF.
+
+The PRIMARY resume is now the designed build from build-resume-html.py (the
+locked two-column Instrument Serif layout, Chris-approved 2026-09-10), which
+writes chris-lam-resume.pdf and is the site download. This reportlab builder is
+kept as a no-Chrome, text-only fallback and writes chris-lam-resume-ats.pdf so
+it can never clobber the designed download.
 
 Deliberately dumb. It reads resume.json, optionally swaps the label and summary
 for a role-family variant, and lays the whole thing out. It does not select
@@ -172,7 +178,7 @@ def build_story(data, label, summary, styles):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--variant", help="key under meta.variants")
-    parser.add_argument("--out", default="chris-lam-resume.pdf")
+    parser.add_argument("--out", default="chris-lam-resume-ats.pdf")
     parser.add_argument("--source", default=str(REPO / "resume.json"))
     args = parser.parse_args()
 
