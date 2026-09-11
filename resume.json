@@ -43,7 +43,8 @@
                 "Scoped the language model to phrasing and warmth while conversation flow runs as a deterministic state machine; about half of routing decisions resolve with no model call.",
                 "Built the first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the state-machine architecture and safety model across the rewrite.",
                 "Designed elder-first voice UX: no app, no screen, no login, just a phone call."
-            ]
+            ],
+            "location": "Remote"
         },
         {
             "name": "PlaySesh",
@@ -56,7 +57,8 @@
                 "Shipped Whiteboard by PlaySesh inside Discord with TLDraw, Cloudflare Durable Objects, and R2; active development paused in March 2026 and the Discord product remains live.",
                 "Grew organically to over 6,200 authorized Discord accounts, 138 server installs, and 67 individual-user installs; peaked at 1,043 monthly active users (January 2026). Discord counts are approximate, as of August 1, 2026.",
                 "Pivoted from social gaming to game dev tooling based on user behavior signal."
-            ]
+            ],
+            "location": "Remote"
         },
         {
             "name": "Modus Create",
@@ -64,21 +66,24 @@
             "startDate": "2023-06",
             "endDate": "2024-02",
             "summary": "Designed and implemented cross-app dark mode and visual consistency for Jira and Confluence Cloud products serving a 500K+ installed/reachable user base. Shipped through PR review, automated tests, visual QA, and the team's existing CI/CD; authored README and setup documentation.",
-            "_gap_before": "Jan-Jun 2023: deliberate time off to build production engineering depth. Not an unexplained gap; it is the pivot the whole positioning rests on."
+            "_gap_before": "Jan-Jun 2023: deliberate time off to build production engineering depth. Not an unexplained gap; it is the pivot the whole positioning rests on.",
+            "location": "Remote"
         },
         {
             "name": "StartPlaying",
             "position": "Founding Product Designer",
             "startDate": "2022-07",
             "endDate": "2023-01",
-            "summary": "First designer at a YC W20, a16z-backed seed-stage TTRPG marketplace. Shipped Stripe-based marketplace money flows, refunds, and player-debt reconciliation, enabling correct and timely GM payouts and traceable accounting. Completed a GM onboarding redesign that was not launched."
+            "summary": "First designer at a YC W20, a16z-backed seed-stage TTRPG marketplace. Shipped Stripe-based marketplace money flows, refunds, and player-debt reconciliation, enabling correct and timely GM payouts and traceable accounting. Completed a GM onboarding redesign that was not launched.",
+            "location": "Remote"
         },
         {
             "name": "doc.ai (acquired by Sharecare)",
             "position": "Lead Product Designer",
             "startDate": "2021-02",
             "endDate": "2021-10",
-            "summary": "Hired by doc.ai; exited under Sharecare paperwork after the acquisition. Became sole design owner for Omix, consolidating fragmented clinical-study workflows into a working engineering build validated with researchers; canceled before public launch after the acquisition."
+            "summary": "Hired by doc.ai; exited under Sharecare paperwork after the acquisition. Became sole design owner for Omix, consolidating fragmented clinical-study workflows into a working engineering build validated with researchers; canceled before public launch after the acquisition.",
+            "location": "Remote"
         },
         {
             "name": "Pathstream",
@@ -92,7 +97,8 @@
                 "Ran the research that set the direction: a 26-screen product audit in week three, three rounds of usability testing, five course-author co-design sessions, and instructor interviews.",
                 "Audited the interface library and found the drift: sixteen colors where four grays were all labeled Text, two different values both called Primary Button, body copy at four sizes, and a 10.3px type size shipping to adult learners."
             ],
-            "_unverified": "Storybook confirmed by Chris 2026-08-02; the repo is Pathstream's and he has no access, which is normal for employed work. WCAG 2.1 AA still unconfirmed: the archive shows accessibility judgment (killed an icon-only progress timeline on ADA grounds, flagged a ~1.7:1 contrast failure) but no audit, conformance report, or CI gate. Ask before restoring that one."
+            "_unverified": "Storybook confirmed by Chris 2026-08-02; the repo is Pathstream's and he has no access, which is normal for employed work. WCAG 2.1 AA still unconfirmed: the archive shows accessibility judgment (killed an icon-only progress timeline on ADA grounds, flagged a ~1.7:1 contrast failure) but no audit, conformance report, or CI gate. Ask before restoring that one.",
+            "location": "San Francisco, CA"
         },
         {
             "name": "Iodine (acquired by GoodRx)",
@@ -106,7 +112,8 @@
                 "Contributed to GoodRx Research data visualizations referenced in the New York Times and on Good Morning America / ABC News.",
                 "Iodine.com won the Webby for Best Health Website (2018). I was the product's designer.",
                 "Built 50-state prescription-price fact sheets with GoodRx co-CEO Doug Hirsch, used in advocacy around S.2554 and S.2553 on drug price transparency."
-            ]
+            ],
+            "location": "San Francisco, CA"
         },
         {
             "name": "Clover Health",
@@ -118,7 +125,8 @@
                 "Helped build the design function as the second designer: established how design, engineering, and product worked together, sat in product development, and co-wrote PRDs with the product manager.",
                 "Redesigned the nurse practitioner home-visit iPad web app end to end through contextual shadowing. about 7-8x ROI on the increase in revenue; saved ~2 hours per nurse per day.",
                 "Led cross-functional alignment across design, engineering, product, data science, and medical."
-            ]
+            ],
+            "location": "San Francisco, CA"
         },
         {
             "name": "TaskRabbit",
@@ -130,7 +138,8 @@
                 "Hired by founder and CEO Leah Busque onto a new design team as TaskRabbit moved from bidding to direct hire. Owned the Tasker side of the experience outright and contributed to the consumer side.",
                 "Tasker NPS recovered from about -5 in mid-2014 to the mid-50s; Client NPS to the high-40s.",
                 "Led the mobile design system after the 2014 rebrand: one type scale, an icon set specified at six sizes, four named colour families each with a ten-step scale, and component specs through to empty states. Picked it up because nobody owned it and the design team had drifted, with each designer owning different pieces."
-            ]
+            ],
+            "location": "San Francisco, CA"
         },
         {
             "name": "Amazon",
@@ -140,7 +149,8 @@
             "highlights": [
                 "Prototyped the buy-and-gift Prime flow, projected to drive 1M+ new subscribers.",
                 "Partnered with Samsung on the Amazon Prime Music app for the Samsung Shape wireless speaker."
-            ]
+            ],
+            "location": "San Francisco, CA"
         }
     ],
     "education": [
@@ -160,61 +170,62 @@
     "skills": [
         {
             "name": "Product & Design",
+            "resumeShow": 10,
             "keywords": [
                 "Product design (0 to 1)",
                 "Interaction design",
                 "Design systems",
                 "Design tokens",
-                "Storybook & Chromatic",
                 "UX research",
                 "Prototyping",
                 "Information architecture",
                 "WCAG accessibility",
                 "Product strategy",
-                "Elder-care UX",
                 "Figma",
+                "Storybook & Chromatic",
+                "Elder-care UX",
                 "Sketch",
                 "Adobe Photoshop/Illustrator"
             ]
         },
         {
             "name": "Production Engineering",
+            "resumeShow": 8,
             "keywords": [
                 "React",
                 "TypeScript",
                 "Python",
                 "Next.js",
                 "HTML/CSS",
+                "Cloudflare Workers",
+                "CI/CD",
+                "Real-time systems",
                 "Vanilla JS",
                 "Supabase",
                 "Firebase",
                 "PostgreSQL",
-                "Cloudflare Workers",
                 "Docker",
-                "CI/CD",
                 "Test-driven development",
-                "Real-time systems",
                 "Telemetry & instrumentation"
             ]
         },
         {
             "name": "AI-Native Systems",
+            "resumeShow": 8,
             "keywords": [
                 "Agent UX",
                 "LLM orchestration",
+                "Evals & evaluation UX",
+                "Deterministic safety",
+                "Prompt & system design",
+                "Human-AI oversight",
+                "Voice AI",
+                "Claude Code",
                 "Multi-agent orchestration",
                 "Agentic systems",
-                "Evals & evaluation UX",
-                "Guardrails & deterministic safety control",
-                "FSM/LLM safety",
-                "Prompt & system-instruction design",
-                "Provenance & human-AI oversight",
-                "Agent frameworks",
                 "MCP",
                 "LiveKit",
                 "Real-time STT/TTS",
-                "Voice AI",
-                "Claude Code",
                 "Cursor",
                 "GitHub Copilot",
                 "Codex",
@@ -243,7 +254,7 @@
         "canonical": "https://whoischrislam.github.io/resume.json",
         "factSheet": "https://whoischrislam.github.io/candidate.html",
         "note": "Seeking senior product design roles, full-time. Remote US from Honolulu, working West Coast hours, with quarterly travel to the Bay Area or Seattle.",
-        "locationLine": "Remote US from Honolulu, HI · Works West Coast hours · Quarterly Bay Area and Seattle travel",
+        "locationLine": "Remote US from Honolulu, HI \u00b7 Works West Coast hours \u00b7 Quarterly Bay Area and Seattle travel",
         "variants": {
             "_usage": "Role-family targeting for the PDF. Render with: python3 scripts/build-resume.py --variant <key>. Any empty field falls back to basics.label / basics.summary. Add a summary only when it is written in Chris's own voice.",
             "product-design-engineer": {
