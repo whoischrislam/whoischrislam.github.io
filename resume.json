@@ -42,7 +42,8 @@
                 "Architected a streaming speech-to-text to LLM to text-to-speech pipeline (multi-provider, deep fallback) fronted by a deterministic state machine.",
                 "Scoped the language model to phrasing and warmth while conversation flow runs as a deterministic state machine; about half of routing decisions resolve with no model call.",
                 "Built the first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the state-machine architecture and safety model across the rewrite.",
-                "Designed elder-first voice UX: no app, no screen, no login, just a phone call."
+                "Designed elder-first voice UX: no app, no screen, no login, just a phone call.",
+                "Tested with 11 people outside the founding team, including four elder-care professionals: a facility owner-operator, two geriatric physicians, and a senior-rehabilitation specialist."
             ],
             "location": "Remote"
         },
@@ -55,8 +56,7 @@
             "highlights": [
                 "Started 0 to 1 solo, then recruited a co-founder and founding engineer; remained CEO, setting company and product direction, owning product and design, and contributing hands-on testing and implementation.",
                 "Shipped Whiteboard by PlaySesh inside Discord with TLDraw, Cloudflare Durable Objects, and R2; active development paused in March 2026 and the Discord product remains live.",
-                "Grew organically to over 6,200 authorized Discord accounts, 138 server installs, and 67 individual-user installs; peaked at 1,043 monthly active users (January 2026). Discord counts are approximate, as of August 1, 2026.",
-                "Pivoted from social gaming to game dev tooling based on user behavior signal."
+                "Grew organically to over 6,700 authorized Discord accounts, 161 server installs, and 77 individual-user installs; peaked at 1,043 monthly active users (January 2026). Discord counts are approximate, as of September 11, 2026."
             ],
             "location": "Remote"
         },
@@ -123,7 +123,7 @@
             "summary": "Second designer, joined when it was about 30 people and founder-funded, months before the Series A. The title was deliberately broad. Operated as a product design lead. Clover later IPO'd (NYSE: CLOV).",
             "highlights": [
                 "Helped build the design function as the second designer: established how design, engineering, and product worked together, sat in product development, and co-wrote PRDs with the product manager.",
-                "Redesigned the nurse practitioner home-visit iPad web app end to end through contextual shadowing. about 7-8x ROI on the increase in revenue; saved ~2 hours per nurse per day.",
+                "Redesigned the nurse-practitioner home-visit iPad web app end to end through contextual shadowing; nurses saved about two hours a day and no longer carried stacks of paper.",
                 "Led cross-functional alignment across design, engineering, product, data science, and medical."
             ],
             "location": "San Francisco, CA"
@@ -147,7 +147,7 @@
             "startDate": "2012-04",
             "endDate": "2013-09",
             "highlights": [
-                "Prototyped the buy-and-gift Prime flow, projected to drive 1M+ new subscribers.",
+                "Completed the implementation-ready design for the buy-and-gift Prime flow, projected to drive 1M+ new subscribers.",
                 "Partnered with Samsung on the Amazon Prime Music app for the Samsung Shape wireless speaker."
             ],
             "location": "San Francisco, CA"
@@ -170,9 +170,10 @@
     "skills": [
         {
             "name": "Product & Design",
-            "resumeShow": 10,
+            "resumeShow": 11,
             "keywords": [
                 "Product design (0 to 1)",
+                "Founding designer",
                 "Interaction design",
                 "Design systems",
                 "Design tokens",
