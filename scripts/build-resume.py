@@ -12,10 +12,14 @@ for a role-family variant, and lays the whole thing out. It does not select
 bullets, read job descriptions, or score anything. That is the resume compiler
 described in RESUME_COMPILER_PLAN.md, and it stays parked.
 
+This builder REFUSES to run without --ats-fallback, so it can never be reached
+for by mistake in place of the designed build. Use it only when you specifically
+need a no-Chrome, text-only ATS fallback.
+
 Usage:
-    uv run --with reportlab scripts/build-resume.py
-    uv run --with reportlab scripts/build-resume.py --variant design-engineer
-    uv run --with reportlab scripts/build-resume.py --variant design-engineer \
+    uv run --with reportlab scripts/build-resume.py --ats-fallback
+    uv run --with reportlab scripts/build-resume.py --ats-fallback --variant design-engineer
+    uv run --with reportlab scripts/build-resume.py --ats-fallback --variant design-engineer \
         --out chris-lam-resume-design-engineer.pdf
 
 Variants live in resume.json under meta.variants. An empty field falls back to
@@ -180,7 +184,22 @@ def main():
     parser.add_argument("--variant", help="key under meta.variants")
     parser.add_argument("--out", default="chris-lam-resume-ats.pdf")
     parser.add_argument("--source", default=str(REPO / "resume.json"))
+    parser.add_argument(
+        "--ats-fallback", action="store_true",
+        help="Required. Confirms you deliberately want the plain text-only "
+             "fallback, not the primary resume.")
     args = parser.parse_args()
+
+    if not args.ats_fallback:
+        sys.exit(
+            "Refusing to run: this is the plain reportlab text-only FALLBACK, "
+            "not the resume.\n"
+            "The primary resume is the designed build:\n"
+            "    uv run scripts/build-resume-html.py --source <resume.json> --out <pdf>\n"
+            "(two-column Instrument Serif layout, Chris-approved 2026-09-10, the "
+            "format that converted).\n"
+            "Only if you specifically need a no-Chrome, text-only ATS fallback, "
+            "re-run this with --ats-fallback.")
 
     data = json.loads(Path(args.source).read_text())
     label, summary = resolve_variant(data, args.variant)
