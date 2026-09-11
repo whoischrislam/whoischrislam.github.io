@@ -5,7 +5,7 @@
         "label": "Senior Product Designer for AI-native products",
         "email": "whoischrislam@gmail.com",
         "url": "https://whoischrislam.github.io",
-        "summary": "Senior product designer with 14 years shipping healthcare, creative, developer, and consumer software. Built my career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today I own products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. Recent work includes a voice-AI system with deterministic safety controls and collaborative game-development tooling with a custom real-time engine. Seeking senior product design and design-engineering roles on AI-native teams.",
+        "summary": "Senior product designer, 14 years shipping healthcare, marketplace, education, and consumer software. I own the work from research through interaction design to design systems, with measured outcomes: a Clover Health nurse home-visit redesign that saved nurses hours a day and drove a strong revenue lift, GoodRx conversion lifts (coupon flow 2% to 5%), and TaskRabbit NPS recovery from about -5 to the mid-50s. I also ship production code (React, TypeScript, Python), so design intent survives to what users actually touch. Seeking senior product design roles on AI-native teams.",
         "location": {
             "city": "Honolulu",
             "region": "HI",
@@ -44,13 +44,6 @@
                 "Built the first version in TypeScript, then deliberately rewrote it in Python to fit the real-time voice framework, carrying the state-machine architecture and safety model across the rewrite.",
                 "Designed elder-first voice UX: no app, no screen, no login, just a phone call."
             ]
-        },
-        {
-            "name": "Blue Startups",
-            "position": "Entrepreneur in Residence",
-            "startDate": "2024-07",
-            "endDate": "2024-11",
-            "summary": "Concurrent with PlaySesh, during a pivot. Conducted design and product audits for 10 early-stage startups in cohort 16. Advised on product strategy, MVP scope, and design-to-engineering handoffs."
         },
         {
             "name": "PlaySesh",
@@ -249,7 +242,7 @@
     "meta": {
         "canonical": "https://whoischrislam.github.io/resume.json",
         "factSheet": "https://whoischrislam.github.io/candidate.html",
-        "note": "Seeking senior product design and design-engineering roles, full-time. Remote US from Honolulu, working West Coast hours, with quarterly travel to the Bay Area or Seattle.",
+        "note": "Seeking senior product design roles, full-time. Remote US from Honolulu, working West Coast hours, with quarterly travel to the Bay Area or Seattle.",
         "locationLine": "Remote US from Honolulu, HI · Works West Coast hours · Quarterly Bay Area and Seattle travel",
         "variants": {
             "_usage": "Role-family targeting for the PDF. Render with: python3 scripts/build-resume.py --variant <key>. Any empty field falls back to basics.label / basics.summary. Add a summary only when it is written in Chris's own voice.",
