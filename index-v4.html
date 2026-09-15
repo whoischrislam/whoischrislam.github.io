@@ -1656,6 +1656,18 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .co-head h3{margin:0 0 6px}
   .co-head p{margin:0 0 18px}
   .work-cards{margin-top:18px}
+  /* ---- signature motion #1: Cosmos-style gentle image zoom on hover (bands + cards).
+     Frames already clip overflow; easing is a soft ease-out. Reduced-motion opts out. ---- */
+  .co-band[data-hero] .band-frame img,
+  .wcard-thumb img{transition:transform .55s cubic-bezier(.22,1,.36,1)}
+  .co-band[data-hero] .band-frame:hover img,
+  .work-tile.wcard:hover .wcard-thumb img{transform:scale(1.035)}
+  @media (prefers-reduced-motion: reduce){
+    .co-band[data-hero] .band-frame img,
+    .wcard-thumb img{transition:none}
+    .co-band[data-hero] .band-frame:hover img,
+    .work-tile.wcard:hover .wcard-thumb img{transform:none}
+  }
   </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
