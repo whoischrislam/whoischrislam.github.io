@@ -811,7 +811,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     #brief-print-root h4, #brief-print-root li, #brief-print-root p { break-inside: avoid; }
 }
 
-.hero-bio{color:var(--muted);max-width:46em;margin:0 0 2em}
+.hero-bio{color:var(--muted);max-width:none;margin:0 0 2em}
 
 .hero .sub-line{color:var(--muted);margin:0 0 4px;font-size:var(--t-sm)}
 .hero-credibility{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;
@@ -873,13 +873,13 @@ h2.sec#work{margin-top:8px}
 .hero .hero-hob a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
 .hero .hero-hob a:hover{color:var(--accent)}
 
-.outside{color:var(--muted);font-size:var(--t-sm);margin:0 0 26px}
+.outside{color:var(--muted);font-size:var(--t-sm);margin:28px 0 0}
 .outside a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
 .outside a:hover{color:var(--accent)}
 
 /* hero: variant B, keep the bold lead, close the gap and leading */
 .hero .sub{margin:0 0 2px;line-height:1.35}
-.hero .sub-line{margin:0;line-height:1.5;max-width:44em}
+.hero .sub-line{margin:0;line-height:1.5;max-width:none}
 
 .impact{margin:8px 0 0;font-size:var(--t-sm);color:var(--muted);line-height:1.8;
   display:flex;flex-wrap:wrap;gap:0 20px}
@@ -5388,6 +5388,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     }
 
     function previewWork(project){
+      return; /* hover de-emphasis retired: bands/cards don't need the mosaic dim-others behavior */
       if(workGrid.dataset.locked === "true") return;
       var related = workTiles.filter(function(tile){
         return !tile.hidden && tile.dataset.project === project;
