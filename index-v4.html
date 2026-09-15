@@ -1622,6 +1622,27 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   /* when a company/project is open (focus/locked), hide all company bands so only the case study shows */
   .work-grid[data-locked="true"] .co-groups{display:none!important}
   @media(max-width:600px){.band-frame{height:230px}.co-head h3{font-size:24px}}
+  /* featured single-hero bands: full-bleed baked-background art (no floating-card mat) */
+  .co-band[data-hero] .band-frame .work-tile{padding:0!important}
+  .co-band[data-hero] .band-frame .work-tile img{object-fit:contain!important;border-radius:0!important;box-shadow:none!important;max-height:100%!important}
+  /* compact "More work" row: non-featured roles as small click-through cards */
+  .more-lane{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
+  .more-lane .work-tile.more-tile{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:16px 18px!important;display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);opacity:1!important;pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
+  .more-lane .work-tile.more-tile:hover{border-color:var(--muted);transform:translateY(-1px)}
+  .more-co{font-weight:600;font-size:15px;color:inherit}
+  .more-desc{color:var(--muted);font-size:13px;line-height:1.35}
+  .more-go{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
+  /* unified card grid for More work + Experiments (image thumb + name + desc + CTA) */
+  .work-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:16px}
+  .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--surface-2);opacity:1!important;pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
+  .work-cards .work-tile.wcard:hover{border-color:var(--muted);transform:translateY(-2px)}
+  .wcard-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:var(--band,#222);overflow:hidden}
+  .wcard-thumb img{width:100%;height:100%;object-fit:contain}
+  .wcard-thumb-label{font-family:'Instrument Serif',serif;font-size:26px;line-height:1.1;color:rgba(255,255,255,.94);padding:0 18px;text-align:center}
+  .wcard-body{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}
+  .wcard-name{font-weight:700;font-size:19px;color:inherit;line-height:1.15}
+  .wcard-desc{color:var(--muted);font-size:15px;line-height:1.35}
+  .wcard-cta{margin-top:6px;font-weight:600;font-size:14px;color:var(--accent-strong)}
   </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
@@ -1682,228 +1703,89 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   <div id="work-grid" class="work-grid">
   <div class="co-groups">
     <div class="co-lane">
-    <section class="co-band" data-project="y30" data-n="4" style="--band:#e6ece2">
+    <section class="co-band" data-project="y30" data-n="4" data-hero style="--band:#edf0e7">
       <div class="co-head"><h3>y30</h3><p>Co-founder. Voice AI for older adults with a deterministic safety floor.</p></div>
       <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="y30" data-tile-id="y30-voice" data-shape="square" data-span="3" data-mobile-span="4" data-provider="loom" data-video-id="eb44015201554d11ac841cd1700653ce" data-media-title="y30 reminiscence call" data-pin>
-      <img src="images/work/y30-voice.png" width="1440" height="1230" alt="" loading="eager" decoding="async">
+        <button class="work-tile on" type="button" data-kind="work" data-project="y30" data-tile-id="y30-voice" data-shape="wide" data-span="3" data-provider="loom" data-video-id="eb44015201554d11ac841cd1700653ce" data-media-title="y30 reminiscence call" data-pin>
+      <img src="images/work/y30-hero.png" width="2360" height="680" alt="y30 voice-AI system: transport adapters around one safety-gated agent" loading="eager" decoding="async">
       <span class="work-tile-label"><b>y30</b><span>Voice as the interface</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="y30" data-tile-id="y30-game" data-shape="landscape" data-span="2">
-      <img src="images/work/y30-game.png" width="1440" height="1305" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>y30</b><span>Deterministic game structure</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="y30" data-tile-id="y30-signals" data-shape="portrait" data-span="3">
-      <img src="images/work/y30-signals.png" width="1440" height="1630" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>y30</b><span>Conversation to caregiver context</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="y30" data-tile-id="y30-system" data-shape="landscape" data-span="3">
-      <img src="images/work/y30-system.png" width="1440" height="1063" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>y30</b><span>Transport adapters around one agent</span></span>
     </button>
-        <div class="band-cycle"><button class="bc-arw" type="button" data-d="-1" aria-label="previous">&#8249;</button><div class="bc-dots"><button class="bc-dot on" data-i="0" type="button" aria-label="artifact 1"></button><button class="bc-dot" data-i="1" type="button" aria-label="artifact 2"></button><button class="bc-dot" data-i="2" type="button" aria-label="artifact 3"></button><button class="bc-dot" data-i="3" type="button" aria-label="artifact 4"></button></div><button class="bc-arw" type="button" data-d="1" aria-label="next">&#8250;</button></div>
       </div>
     </section>
-    <section class="co-band" data-project="playsesh" data-n="2" style="--band:#5b6ef0">
+    <section class="co-band" data-project="goodrx" data-n="4" data-hero style="--band:#fcef72">
+      <div class="co-head"><h3>GoodRx (Iodine)</h3><p>First full-time designer. Coupon flow 2% to 5%; data-viz cited in the NYT.</p></div>
+      <div class="band-frame">
+        <button class="work-tile on" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-product" data-shape="wide" data-span="4" data-pin>
+      <img src="images/work/goodrx-hero.png" width="2360" height="680" alt="GoodRx Research drug-price data-viz and the Webby-winning Iodine product" loading="eager" decoding="async">
+      <span class="work-tile-label"><b>GoodRx (Iodine)</b><span>Research data-viz to award-winning product</span></span>
+    </button>
+      </div>
+    </section>
+    <section class="co-band" data-project="clover" data-n="3" data-hero style="--band:#527369">
+      <div class="co-head"><h3>Clover Health</h3><p>Second designer. Rebuilt the nurse home-visit app; helped build the design function.</p></div>
+      <div class="band-frame">
+        <button class="work-tile on" type="button" data-kind="work" data-project="clover" data-tile-id="clover-form" data-shape="wide" data-span="3" data-pin>
+      <img src="images/work/clover-hero.png" width="2360" height="680" alt="Clover Health nurse home-visit clinical interface" loading="eager" decoding="async">
+      <span class="work-tile-label"><b>Clover Health</b><span>Clinical visit interface</span></span>
+    </button>
+      </div>
+    </section>
+    <section class="co-band" data-project="playsesh" data-n="2" data-hero style="--band:#deac7b">
       <div class="co-head"><h3>PlaySesh</h3><p>Co-founder & CEO. Collaborative game-dev tooling shipped inside Discord.</p></div>
       <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="playsesh" data-tile-id="playsesh-prompt" data-shape="landscape" data-span="4" data-provider="youtube" data-video-id="Q0S-_WAea6Y" data-media-title="PlaySesh prompt-to-playable demo">
-      <img src="images/work/playsesh-prompt.png" width="1600" height="1000" alt="" loading="lazy" decoding="async">
+        <button class="work-tile on" type="button" data-kind="work" data-project="playsesh" data-tile-id="playsesh-prompt" data-shape="wide" data-span="4" data-provider="youtube" data-video-id="Q0S-_WAea6Y" data-media-title="PlaySesh prompt-to-playable demo">
+      <img src="images/work/playsesh-hero.png" width="2360" height="680" alt="PlaySesh collaborative game-dev workspace inside Discord" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>PlaySesh</b><span>Prompt to playable</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="playsesh" data-tile-id="playsesh-multiplayer" data-shape="landscape" data-span="2" data-provider="youtube" data-video-id="Cuqu38j7-vQ" data-media-title="PlaySesh multiplayer workspace demo">
-      <img src="images/work/playsesh-multiplayer.png" width="1600" height="1000" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>PlaySesh</b><span>Multiplayer workspace in Discord</span></span>
     </button>
-        <div class="band-cycle"><button class="bc-arw" type="button" data-d="-1" aria-label="previous">&#8249;</button><div class="bc-dots"><button class="bc-dot on" data-i="0" type="button" aria-label="artifact 1"></button><button class="bc-dot" data-i="1" type="button" aria-label="artifact 2"></button></div><button class="bc-arw" type="button" data-d="1" aria-label="next">&#8250;</button></div>
       </div>
     </section>
-    <section class="co-band" data-project="modus" data-n="1" style="--band:#141414">
-      <div class="co-head"><h3>Modus Create</h3><p>Shipped cross-app dark mode in production TypeScript; 500K+ reachable users.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="modus" data-tile-id="modus-dark-mode" data-shape="landscape" data-span="3">
-      <img src="images/work/modus-dark-mode.png" width="1600" height="1000" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>Modus Create</b><span>Design and production TypeScript</span></span>
-    </button>
-        
-      </div>
-    </section>
-    <section class="co-band" data-project="startplaying" data-n="1" style="--band:#3b82f6">
-      <div class="co-head"><h3>StartPlaying</h3><p>Founding designer. Built the marketplace payment and payout system.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money" data-shape="landscape" data-span="3">
-      <span class="visual-placeholder" data-visual-status="CURATE" role="img"
-        aria-label="Visual placeholder: StartPlaying marketplace money system. Status: curate.">
-        <span class="visual-placeholder-status">CURATE</span>
-        <span class="visual-placeholder-title">Marketplace money system</span>
-      </span>
-      <span class="work-tile-label"><b>StartPlaying</b><span>Payments, payouts, and financial trust</span></span>
-    </button>
-        
-      </div>
-    </section>
-    <section class="co-band" data-project="sharecare" data-n="1" style="--band:#9cbfb0">
-      <div class="co-head"><h3>doc.ai · Omix</h3><p>Lead designer. Rescued a clinical-studies product through the acquisition.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder" data-shape="landscape" data-span="3">
-      <img src="images/work/omix-study-builder.png" width="1600" height="1000" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>doc.ai · Omix</b><span>From study idea to validation-ready build</span></span>
-    </button>
-        
-      </div>
-    </section>
-    <section class="co-band" data-project="pathstream" data-n="3" style="--band:#e5342b">
+    <section class="co-band" data-project="pathstream" data-n="3" data-hero style="--band:#de5d5a">
       <div class="co-head"><h3>Pathstream</h3><p>First design hire. Rebuilt the core lesson experience on a live platform.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="pathstream" data-tile-id="pathstream-lessons" data-shape="wide" data-span="3">
-      <img src="images/work/pathstream-lessons.png" width="1600" height="800" alt="" loading="lazy" decoding="async">
+      <img src="images/work/pathstream-hero.png" width="2360" height="680" alt="Pathstream lesson experience and course completion flow" loading="lazy" decoding="async">
       <span class="work-tile-label"><b>Pathstream</b><span>Lesson navigation system</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="pathstream" data-tile-id="pathstream-states" data-shape="portrait" data-span="2">
-      <img src="images/work/pathstream-states.png" width="1200" height="1600" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>Pathstream</b><span>Lesson state system</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="pathstream" data-tile-id="pathstream-complete" data-shape="landscape" data-span="2">
-      <img src="images/work/pathstream-complete.png" width="1600" height="1000" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>Pathstream</b><span>Course completion flow</span></span>
     </button>
-        <div class="band-cycle"><button class="bc-arw" type="button" data-d="-1" aria-label="previous">&#8249;</button><div class="bc-dots"><button class="bc-dot on" data-i="0" type="button" aria-label="artifact 1"></button><button class="bc-dot" data-i="1" type="button" aria-label="artifact 2"></button><button class="bc-dot" data-i="2" type="button" aria-label="artifact 3"></button></div><button class="bc-arw" type="button" data-d="1" aria-label="next">&#8250;</button></div>
-      </div>
-    </section>
-    <section class="co-band" data-project="goodrx" data-n="4" style="--band:#f5d021">
-      <div class="co-head"><h3>GoodRx</h3><p>First full-time designer. Coupon flow 2% to 5%; data-viz cited in the NYT.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-cities" data-shape="square" data-span="2">
-      <img src="images/work/goodrx-cities.png" width="1200" height="1200" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>GoodRx</b><span>Prescription-price research</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-states" data-shape="square" data-span="3" data-mobile-span="4">
-      <img src="images/work/goodrx-states.png" width="1200" height="1200" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>GoodRx</b><span>United States of Drugs</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-product" data-shape="wide" data-span="4" data-mobile-span="4" data-pin>
-      <img src="images/work/goodrx-product.png" width="930" height="464" alt="" loading="eager" decoding="async">
-      <span class="work-tile-label"><b>GoodRx</b><span>Consumer drug information</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-process" data-shape="square" data-span="2">
-      <img src="images/work/goodrx-process.png" width="1200" height="1200" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>GoodRx</b><span>From research to shipped product</span></span>
-    </button>
-        <div class="band-cycle"><button class="bc-arw" type="button" data-d="-1" aria-label="previous">&#8249;</button><div class="bc-dots"><button class="bc-dot on" data-i="0" type="button" aria-label="artifact 1"></button><button class="bc-dot" data-i="1" type="button" aria-label="artifact 2"></button><button class="bc-dot" data-i="2" type="button" aria-label="artifact 3"></button><button class="bc-dot" data-i="3" type="button" aria-label="artifact 4"></button></div><button class="bc-arw" type="button" data-d="1" aria-label="next">&#8250;</button></div>
-      </div>
-    </section>
-    <section class="co-band" data-project="clover" data-n="3" style="--band:#1f6f5b">
-      <div class="co-head"><h3>Clover Health</h3><p>Second designer. Rebuilt the nurse home-visit app; helped build the design function.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="clover" data-tile-id="clover-sketch" data-shape="square" data-span="2">
-      <img src="images/craft/clover-care-visit_01.webp" width="1600" height="1200" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>Clover Health</b><span>Field research into workflow</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="clover" data-tile-id="clover-form" data-shape="portrait" data-span="3" data-pin>
-      <img src="images/work/clover-form.png" width="692" height="922" alt="" loading="eager" decoding="async">
-      <span class="work-tile-label"><b>Clover Health</b><span>Clinical visit interface</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="clover" data-tile-id="clover-site" data-shape="wide" data-span="3">
-      <img src="images/craft/hero-clover.webp" width="1400" height="450" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>Clover Health</b><span>Care-delivery product and brand</span></span>
-    </button>
-        <div class="band-cycle"><button class="bc-arw" type="button" data-d="-1" aria-label="previous">&#8249;</button><div class="bc-dots"><button class="bc-dot on" data-i="0" type="button" aria-label="artifact 1"></button><button class="bc-dot" data-i="1" type="button" aria-label="artifact 2"></button><button class="bc-dot" data-i="2" type="button" aria-label="artifact 3"></button></div><button class="bc-arw" type="button" data-d="1" aria-label="next">&#8250;</button></div>
-      </div>
-    </section>
-    <section class="co-band" data-project="taskrabbit" data-n="3" style="--band:#4aa64a">
-      <div class="co-head"><h3>TaskRabbit</h3><p>Revamped the Tasker experience; NPS from about -5 to the mid-50s.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="taskrabbit" data-tile-id="taskrabbit-calendar" data-shape="tall" data-span="2">
-      <img src="images/craft/taskrabbit-tasker-experience_01.webp" width="640" height="1136" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>TaskRabbit</b><span>Tasker availability</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="taskrabbit" data-tile-id="taskrabbit-tasks" data-shape="tall" data-span="2">
-      <img src="images/craft/taskrabbit-tasker-experience_06.webp" width="720" height="1280" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>TaskRabbit</b><span>Assigned-task workflow</span></span>
-    </button><button class="work-tile" type="button" data-kind="work" data-project="taskrabbit" data-tile-id="taskrabbit-system" data-shape="wide" data-span="4">
-      <img src="images/craft/hero-taskrabbit.webp" width="1400" height="450" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>TaskRabbit</b><span>Marketplace redesign</span></span>
-    </button>
-        <div class="band-cycle"><button class="bc-arw" type="button" data-d="-1" aria-label="previous">&#8249;</button><div class="bc-dots"><button class="bc-dot on" data-i="0" type="button" aria-label="artifact 1"></button><button class="bc-dot" data-i="1" type="button" aria-label="artifact 2"></button><button class="bc-dot" data-i="2" type="button" aria-label="artifact 3"></button></div><button class="bc-arw" type="button" data-d="1" aria-label="next">&#8250;</button></div>
-      </div>
-    </section>
-    <section class="co-band" data-project="amazon" data-n="1" style="--band:#232f3e">
-      <div class="co-head"><h3>Amazon</h3><p>UX designer on Music: importer, playback, and platform work.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music" data-shape="landscape" data-span="3">
-      <span class="visual-placeholder" data-visual-status="RECREATE" role="img"
-        aria-label="Visual placeholder: Amazon Music across desktop and mobile. Status: recreate.">
-        <span class="visual-placeholder-status">RECREATE</span>
-        <span class="visual-placeholder-title">Music across desktop and mobile</span>
-      </span>
-      <span class="work-tile-label"><b>Amazon</b><span>Importer, playback, and platform work</span></span>
-    </button>
-        
       </div>
     </section>
     </div>
+    <h3 class="exp-head">More work</h3>
+    <div class="work-cards">
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="modus" data-tile-id="modus-dark-mode">
+        <span class="wcard-thumb" style="--band:#141414"><img src="images/work/modus-dark-mode.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-body"><span class="wcard-name">Modus Create</span><span class="wcard-desc">Cross-app dark mode in production TypeScript</span><span class="wcard-cta">Case study &#8594;</span></span>
+      </button>
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money">
+        <span class="wcard-thumb" style="--band:#3b82f6"><span class="wcard-thumb-label">StartPlaying</span></span>
+        <span class="wcard-body"><span class="wcard-name">StartPlaying</span><span class="wcard-desc">Marketplace payments and payouts</span><span class="wcard-cta">Case study &#8594;</span></span>
+      </button>
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder">
+        <span class="wcard-thumb" style="--band:#9cbfb0"><img src="images/work/omix-study-builder.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-body"><span class="wcard-name">doc.ai · Omix</span><span class="wcard-desc">Clinical-studies product rescued through acquisition</span><span class="wcard-cta">Case study &#8594;</span></span>
+      </button>
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="taskrabbit" data-tile-id="taskrabbit-calendar">
+        <span class="wcard-thumb" style="--band:#4aa64a"><img src="images/craft/hero-taskrabbit.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-body"><span class="wcard-name">TaskRabbit</span><span class="wcard-desc">Tasker experience, NPS -5 to mid-50s</span><span class="wcard-cta">Case study &#8594;</span></span>
+      </button>
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music">
+        <span class="wcard-thumb" style="--band:#232f3e"><span class="wcard-thumb-label">Amazon</span></span>
+        <span class="wcard-body"><span class="wcard-name">Amazon</span><span class="wcard-desc">Amazon Music: importer, playback, platform</span><span class="wcard-cta">Case study &#8594;</span></span>
+      </button>
+    </div>
     <h3 class="exp-head">Experiments</h3>
-    <div class="co-lane">
-    <section class="co-band" data-project="hogware" data-n="1" style="--band:#2f6f5b">
-      <div class="co-head"><h3>HogWare</h3><p>A daily microgame gauntlet built from PostHog’s handbook values.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="experiment" data-project="hogware" data-tile-id="hogware-game" data-shape="landscape" data-span="2">
-      <img src="images/work/hogware-game.png" width="1600" height="1000" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>HogWare</b><span>Product-engineering sprint</span></span>
-    </button>
-        
-      </div>
-    </section>
-    <section class="co-band" data-project="voice_noir" data-n="1" style="--band:#3a3a4a">
-      <div class="co-head"><h3>Voice Noir</h3><p>Speech as game input, an experiment.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="experiment" data-project="voice_noir" data-tile-id="voice-noir" data-shape="portrait" data-span="2">
-      <span class="visual-placeholder" data-visual-status="CAPTURE" role="img"
-        aria-label="Visual placeholder: Voice Noir voice-first detective game. Status: capture.">
-        <span class="visual-placeholder-status">CAPTURE</span>
-        <span class="visual-placeholder-title">Voice-first detective game</span>
-      </span>
-      <span class="work-tile-label"><b>Voice Noir</b><span>Speech as game input</span></span>
-    </button>
-        
-      </div>
-    </section>
-    <section class="co-band" data-project="evolve_die_repeat" data-n="1" style="--band:#6d5bc4">
-      <div class="co-head"><h3>Evolve, Die, Repeat</h3><p>Test-driven game systems.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="experiment" data-project="evolve_die_repeat" data-tile-id="evolve-die-repeat" data-shape="wide" data-span="4">
-      <img src="images/co/edr.webp" width="1544" height="579" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>Evolve, Die, Repeat</b><span>Test-driven game systems</span></span>
-    </button>
-        
-      </div>
-    </section>
-    <section class="co-band" data-project="zodiacus" data-n="1" style="--band:#b5432a">
-      <div class="co-head"><h3>Zodiacus</h3><p>A board game and playtesting side project.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="experiment" data-project="zodiacus" data-tile-id="zodiacus" data-shape="wide" data-span="3">
-      <img src="images/co/zodiacus.webp" width="1544" height="579" alt="" loading="lazy" decoding="async">
-      <span class="work-tile-label"><b>Zodiacus</b><span>Board game and playtesting</span></span>
-    </button>
-        
-      </div>
-    </section>
-    <section class="co-band" data-project="rat_with_wings" data-n="1" style="--band:#4a8f79">
-      <div class="co-head"><h3>Rat with Wings</h3><p>A Unity learning sprint.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="experiment" data-project="rat_with_wings" data-tile-id="rat-with-wings" data-shape="square" data-span="2">
-      <span class="visual-placeholder" data-visual-status="CAPTURE" role="img"
-        aria-label="Visual placeholder: Rat with Wings Unity game. Status: capture.">
-        <span class="visual-placeholder-status">CAPTURE</span>
-        <span class="visual-placeholder-title">Weekend Unity game</span>
-      </span>
-      <span class="work-tile-label"><b>Rat with Wings</b><span>Unity learning sprint</span></span>
-    </button>
-        
-      </div>
-    </section>
-    <section class="co-band" data-project="ai_polyglot" data-n="1" style="--band:#2f6fed">
-      <div class="co-head"><h3>AI Polyglot</h3><p>An early LLM-API translator experiment.</p></div>
-      <div class="band-frame">
-        <button class="work-tile on" type="button" data-kind="experiment" data-project="ai_polyglot" data-tile-id="ai-polyglot" data-shape="landscape" data-span="3">
-      <span class="visual-placeholder" data-visual-status="CAPTURE" role="img"
-        aria-label="Visual placeholder: Translator AI Polyglot. Status: capture.">
-        <span class="visual-placeholder-status">CAPTURE</span>
-        <span class="visual-placeholder-title">First LLM API experiment</span>
-      </span>
-      <span class="work-tile-label"><b>Translator: AI Polyglot</b><span>Early LLM product experiment</span></span>
-    </button>
-        
-      </div>
-    </section>
+    <div class="work-cards">
+      <button class="work-tile wcard" type="button" data-kind="experiment" data-project="hogware" data-tile-id="hogware-game">
+        <span class="wcard-thumb" style="--band:#2f6f5b"><img src="images/work/hogware-game.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-body"><span class="wcard-name">HogWare</span><span class="wcard-desc">Daily microgame gauntlet from PostHog values</span><span class="wcard-cta">View &#8594;</span></span>
+      </button>
+      <button class="work-tile wcard" type="button" data-kind="experiment" data-project="evolve_die_repeat" data-tile-id="evolve-die-repeat">
+        <span class="wcard-thumb" style="--band:#6d5bc4"><img src="images/co/edr.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-body"><span class="wcard-name">Evolve, Die, Repeat</span><span class="wcard-desc">Test-driven game systems</span><span class="wcard-cta">View &#8594;</span></span>
+      </button>
+      <button class="work-tile wcard" type="button" data-kind="experiment" data-project="zodiacus" data-tile-id="zodiacus">
+        <span class="wcard-thumb" style="--band:#b5432a"><img src="images/co/zodiacus.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-body"><span class="wcard-name">Zodiacus</span><span class="wcard-desc">Board game and playtesting side project</span><span class="wcard-cta">View &#8594;</span></span>
+      </button>
     </div>
   </div>
 
