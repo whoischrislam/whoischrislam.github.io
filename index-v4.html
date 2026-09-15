@@ -1634,7 +1634,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .more-go{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
   /* unified card grid for More work + Experiments (image thumb + name + desc + CTA) */
   .work-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:16px}
-  .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--surface-2);opacity:1!important;pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
+  .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--surface-2);pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
   .work-cards .work-tile.wcard:hover{border-color:var(--muted);transform:translateY(-2px)}
   .wcard-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:var(--band,#222);overflow:hidden}
   .wcard-thumb img{width:100%;height:100%;object-fit:contain}
@@ -1667,6 +1667,16 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     .wcard-thumb img{transition:none}
     .co-band[data-hero] .band-frame:hover img,
     .work-tile.wcard:hover .wcard-thumb img{transform:none}
+  }
+  /* ---- signature motion #2: cards reveal on scroll (own opacity/transition beats the
+     card base rule) with a light left-to-right stagger across each grid row ---- */
+  .js .work-cards .work-tile.wcard.reveal{opacity:0;transform:translateY(16px);
+    transition:opacity .55s ease,transform .55s cubic-bezier(.22,1,.36,1),border-color .15s ease}
+  .js .work-cards .work-tile.wcard.reveal.in{opacity:1;transform:none}
+  .js .work-cards .work-tile.wcard.reveal:nth-child(3n-1){transition-delay:.07s}
+  .js .work-cards .work-tile.wcard.reveal:nth-child(3n){transition-delay:.14s}
+  @media (prefers-reduced-motion:reduce){
+    .js .work-cards .work-tile.wcard.reveal{opacity:1;transform:none;transition:none}
   }
   </style>
   <h2 class="sec" id="work">Work</h2>
@@ -1830,9 +1840,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   <a class="media-lightbox-original" href="#" target="_blank" rel="noopener">Open original file &nearr;</a>
 </dialog>
 
-<h2 class="sec" id="looking-for">What I'm looking for</h2>
-<p class="lede">I design and engineer the same product, research to ship. Design intent survives all the way to production. I use AI as an engineer, not a shortcut. I&rsquo;m at my best on hard, ambiguous problems where judgment decides the outcome, not headcount.</p>
-<ul class="want">
+<h2 class="sec reveal" id="looking-for">What I'm looking for</h2>
+<p class="lede reveal">I design and engineer the same product, research to ship. Design intent survives all the way to production. I use AI as an engineer, not a shortcut. I&rsquo;m at my best on hard, ambiguous problems where judgment decides the outcome, not headcount.</p>
+<ul class="want reveal">
   <li>A small, high-output team, or a senior IC pocket inside a larger one, where I can go deep and stay. The work is the scoreboard.</li>
   <li>Products that put AI in front of real users, where trust, oversight and safety are the hard part. Healthcare, AI-native systems, developer tools, complex SaaS.</li>
   <li>Direct collaboration across product, design and engineering, with people who sweat the details.</li>
@@ -1845,9 +1855,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   <span class="t">Remote US from Honolulu</span><span class="t">West Coast hours</span>
   <span class="t">Quarterly Bay Area / Seattle</span><span class="t">Open to relocation</span></div>
 
-<h2 class="sec">Let&rsquo;s work together.</h2>
-<p class="avail">Open to senior product design and design-engineering roles. I&rsquo;m selective about the problem, not the introduction, so reach out directly.</p>
-<div class="refs" id="contact">
+<h2 class="sec reveal">Let&rsquo;s work together.</h2>
+<p class="avail reveal">Open to senior product design and design-engineering roles. I&rsquo;m selective about the problem, not the introduction, so reach out directly.</p>
+<div class="refs reveal" id="contact">
   <p><b>Talk to people who've built with me.</b> <a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> and <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> are glad to get on
   a call and tell you what it's really like. Just ask.</p>
   <a class="btn" href="mailto:whoischrislam@gmail.com?subject=Reference%20call" target="_blank" rel="noopener">Talk to a reference</a>
@@ -1855,8 +1865,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   <p class="links"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener">Or read what they already wrote &rarr;</a></p>
 </div>
 
-<p class="outside">I also <a href="https://www.instagram.com/p/CuxQjRwvGKw/" target="_blank" rel="noopener">play board games</a>, <a href="https://www.instagram.com/reel/CuoaWzXgtSR/" target="_blank" rel="noopener">dance</a>, and <a href="https://www.instagram.com/reel/C1DISysSMxZ/" target="_blank" rel="noopener">rollerskate</a>.</p>
-<div class="foot">
+<p class="outside reveal">I also <a href="https://www.instagram.com/p/CuxQjRwvGKw/" target="_blank" rel="noopener">play board games</a>, <a href="https://www.instagram.com/reel/CuoaWzXgtSR/" target="_blank" rel="noopener">dance</a>, and <a href="https://www.instagram.com/reel/C1DISysSMxZ/" target="_blank" rel="noopener">rollerskate</a>.</p>
+<div class="foot reveal">
   <p class="avail-line"><span class="upd">Updated August 2026.</span></p>
   <p class="links"><a href="mailto:whoischrislam@gmail.com?subject=Hello%20Chris" target="_blank" rel="noopener">whoischrislam@gmail.com</a>
      · <a href="/chris-lam-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute;</a>
