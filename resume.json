@@ -268,6 +268,10 @@
                 "label": "Design Engineer",
                 "summary": ""
             },
+            "product-engineer": {
+                "label": "Product Engineer",
+                "summary": ""
+            },
             "ai-product-engineer": {
                 "label": "AI Product Engineer",
                 "summary": ""
