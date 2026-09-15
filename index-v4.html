@@ -4906,21 +4906,14 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       placeholder.className = "visual-placeholder";
       placeholder.dataset.visualStatus = item.status || "CURATE";
       placeholder.setAttribute("role", "img");
-      placeholder.setAttribute("aria-label", "Visual placeholder: " + item.title +
-        ". Status: " + placeholder.dataset.visualStatus + ". " + (item.note || ""));
-      var status = document.createElement("span");
-      status.className = "visual-placeholder-status";
-      status.textContent = placeholder.dataset.visualStatus;
+      /* SHIP-SAFE: render only the descriptive title. The internal `note` (production
+         guidance like "redact institution names") and the CURATE/RECREATE status must
+         never reach visitors. Drop in real art later to replace the panel. */
+      placeholder.setAttribute("aria-label", item.title);
       var title = document.createElement("span");
       title.className = "visual-placeholder-title";
       title.textContent = item.title;
-      placeholder.append(status, title);
-      if(item.note){
-        var note = document.createElement("span");
-        note.className = "visual-placeholder-note";
-        note.textContent = item.note;
-        placeholder.appendChild(note);
-      }
+      placeholder.append(title);
       return placeholder;
     }
 
