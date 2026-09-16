@@ -1026,21 +1026,20 @@ h2.sec#work{margin-top:16px}
 .work-panel.is-story-view .work-panel-facts dd{margin-top:3px;font-size:var(--t-sm);line-height:1.35}
 .work-panel.is-story-view .work-panel-outcome{grid-area:outcome}
 @media(min-width:761px){
-  .work-panel.is-company-view .work-panel-brief{grid-template-columns:1fr;
-    grid-template-areas:"summary" "facts" "outcome";gap:26px}
+  .work-panel.is-company-view .work-panel-brief{display:block}
   .work-panel.is-company-view .work-panel-details{display:contents}
   .work-panel.is-company-view .work-panel-summary{grid-area:summary;max-width:78ch}
-  .work-panel.is-company-view .work-panel-facts{grid-area:facts;
+  .work-panel.is-company-view .work-panel-facts{
     grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px 36px;
-    max-width:none;margin:0;padding-top:18px;border-top:1px solid var(--border)}
+    max-width:none;margin:26px 0 0;padding-top:26px;border-top:1px solid var(--border)}
   .work-panel.is-company-view .work-panel-facts div,
   .work-panel.is-company-view .work-panel-facts div:nth-child(n+3){display:block;grid-column:auto;padding:0}
   .work-panel.is-company-view .work-panel-facts dt{font-size:11px;letter-spacing:.12em;
     text-transform:uppercase}
   .work-panel.is-company-view .work-panel-facts dd{margin-top:6px;line-height:1.4;font-size:var(--t-sm)}
-  .work-panel.is-company-view .work-panel-outcome{grid-area:outcome;display:grid;
+  .work-panel.is-company-view .work-panel-outcome{display:grid;
     grid-template-columns:minmax(150px,.24fr) minmax(0,1fr);gap:16px 36px;
-    align-items:baseline;padding:18px 0 0;border-left:0;border-top:1px solid var(--border)}
+    align-items:baseline;margin:26px 0 0;padding-top:26px;border-left:0;border-top:1px solid var(--border)}
   .work-panel.is-company-view .work-panel-result{max-width:38ch;margin:0;
     font-size:clamp(24px,2.4vw,32px)}
 }
