@@ -142,7 +142,7 @@ def main() -> int:
             "homepage hero statement changed",
         "<b>Senior Product Designer</b>":
             "homepage primary label must lead with Senior Product Designer",
-        "product design engineer &amp; 0→1 builder.":
+        "I also build in production React, TypeScript, and Python":
             "homepage market-facing builder line changed",
         "14+ years shipping software across healthcare, marketplaces, education, and creative tools. I learn new domains and technologies quickly without compromising product judgment, design craft, or engineering rigor.":
             "homepage adaptability line changed",
