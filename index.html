@@ -952,7 +952,7 @@ h2.sec#work{margin-top:16px}
   font:600 11px/1.2 var(--sans);white-space:nowrap}
 .work-panel-provenance-name[hidden],.work-panel-provenance-outcome[hidden],
 .work-panel-provenance-logo[hidden]{display:none}
-.work-panel-body{display:grid;gap:16px}
+.work-panel-body{display:grid;gap:22px}
 .work-panel-heading{min-width:0}
 .work-panel-company-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px 28px}
 .work-panel-identity{display:flex;align-items:center;gap:12px;min-width:0;flex-wrap:wrap}
@@ -966,7 +966,8 @@ h2.sec#work{margin-top:16px}
   border:1px solid var(--border);border-radius:999px;color:var(--muted);
   font:600 var(--t-xs)/1.2 var(--sans);white-space:nowrap}
 .work-panel-dates{flex:none;margin:2px 0 0;color:var(--muted);font-size:var(--t-xs);white-space:nowrap}
-.work-panel-company-role{margin:12px 0 0;color:var(--text);font-size:var(--t-sm);font-weight:600}
+.work-panel-company-role{margin:10px 0 0;color:var(--text);font-size:var(--t-sm);font-weight:600}
+.role-date{color:var(--muted);font-weight:400}
 .work-panel-context{max-width:62ch;margin:4px 0 0;color:var(--muted);font-size:var(--t-sm)}
 .work-panel.is-company-view .work-panel-context{max-width:none}
 .work-panel-kicker{display:block;color:var(--muted);font-size:var(--t-xs);
@@ -1026,20 +1027,20 @@ h2.sec#work{margin-top:16px}
 .work-panel.is-story-view .work-panel-outcome{grid-area:outcome}
 @media(min-width:761px){
   .work-panel.is-company-view .work-panel-brief{grid-template-columns:1fr;
-    grid-template-areas:"summary" "facts" "outcome";gap:14px}
+    grid-template-areas:"summary" "facts" "outcome";gap:26px}
   .work-panel.is-company-view .work-panel-details{display:contents}
   .work-panel.is-company-view .work-panel-summary{grid-area:summary;max-width:78ch}
   .work-panel.is-company-view .work-panel-facts{grid-area:facts;
-    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px 32px;
-    max-width:none;margin:0;padding-top:13px;border-top:1px solid var(--border)}
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px 36px;
+    max-width:none;margin:0;padding-top:18px;border-top:1px solid var(--border)}
   .work-panel.is-company-view .work-panel-facts div,
   .work-panel.is-company-view .work-panel-facts div:nth-child(n+3){display:block;grid-column:auto;padding:0}
   .work-panel.is-company-view .work-panel-facts dt{font-size:11px;letter-spacing:.12em;
     text-transform:uppercase}
-  .work-panel.is-company-view .work-panel-facts dd{margin-top:3px;line-height:1.35}
+  .work-panel.is-company-view .work-panel-facts dd{margin-top:6px;line-height:1.4;font-size:var(--t-sm)}
   .work-panel.is-company-view .work-panel-outcome{grid-area:outcome;display:grid;
-    grid-template-columns:minmax(150px,.24fr) minmax(0,1fr);gap:16px 32px;
-    align-items:baseline;padding:13px 0 0;border-left:0;border-top:1px solid var(--border)}
+    grid-template-columns:minmax(150px,.24fr) minmax(0,1fr);gap:16px 36px;
+    align-items:baseline;padding:18px 0 0;border-left:0;border-top:1px solid var(--border)}
   .work-panel.is-company-view .work-panel-result{max-width:38ch;margin:0;
     font-size:clamp(24px,2.4vw,32px)}
 }
@@ -5452,8 +5453,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       }
       workPanelCompanyOutcome.textContent = item.companyOutcome || "";
       workPanelCompanyOutcome.hidden = !item.companyOutcome;
-      workPanelDates.textContent = dates;
-      workPanelCompanyRole.textContent = role;
+      workPanelDates.textContent = "";
+      workPanelDates.hidden = true;
+      workPanelCompanyRole.innerHTML = dates ? role + ' <span class="role-date">· ' + dates + '</span>' : role;
       workPanelContext.textContent = item.context || "";
       workPanelContext.hidden = !item.context;
     }
