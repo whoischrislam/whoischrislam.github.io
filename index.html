@@ -820,7 +820,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .hero-credibility .lbl{display:flex;align-items:center;flex:none;color:var(--text);
   font-size:var(--t-xs);font-weight:600;margin:0;white-space:nowrap}
 .hero-logo-row{display:flex;align-items:center;gap:14px 28px;list-style:none;margin:0;padding:0;
-  min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
+  min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none}
 .hero-logo-row::-webkit-scrollbar{display:none}
 .hero-logo-row li{display:flex;flex:0 0 auto;align-items:center;height:var(--slot-h,var(--h))}
 .hero-logo-row .hero-logo-more{height:auto;color:var(--muted);font-size:var(--t-xs);white-space:nowrap}
@@ -1117,8 +1117,8 @@ h2.sec#work{margin-top:16px}
 button.work-vignette{cursor:zoom-in}
 button.work-vignette:hover,button.work-vignette:focus-visible{border-color:var(--accent);transform:translateY(-2px)}
 button.work-vignette:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.work-vignette-media{min-width:0;height:clamp(250px,29vw,360px);overflow:hidden;background:#ececea}
-.work-vignette-media img{display:block;width:100%;height:100%;object-fit:cover;object-position:left top;
+.work-vignette-media{min-width:0;height:clamp(180px,22vw,260px);overflow:hidden;background:#ececea}
+.work-vignette-media img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;
   transition:transform .42s cubic-bezier(.2,.75,.2,1)}
 button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-visible .work-vignette-media img{transform:scale(1.015)}
 .work-vignette-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:24px}
