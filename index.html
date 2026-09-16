@@ -2146,7 +2146,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           ["Instrumentation", "PostHog events · HogQL leaderboard · Flag · Survey"],
           ["Verification", "Adversarial review · Playtesting · Headless game suite"]
         ],
-        result: "Five microgames · one boss · instrumented and tested",
+        result: "Five microgames · one boss · instrumented in PostHog: 80 players, 948 microgames cleared",
         actions: [["hogware.html", "Play it"], ["HOGWARE.md", "Read the build log"]]
       },
       voice_noir: {
@@ -2297,9 +2297,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         companyOutcome: "Acquired by Sharecare",
         context: "Omix was a guided platform for configuring decentralized clinical studies before launch.",
         meta: "2021 · Lead Product Designer",
-        summary: "As Omix’s sole design owner, I audited fragmented clinical-study workflows and worked with clinical, product, and engineering partners to turn them into one coherent pre-launch study builder.",
+        summary: "As Omix’s lead designer, I audited fragmented clinical-study workflows and worked with clinical, product, and engineering partners to turn them into one coherent pre-launch study builder.",
         facts: [
-          ["Role shape", "Sole design owner · product-direction influence"],
+          ["Role shape", "Lead designer · product-direction influence"],
           ["Owned", "Audit · Domain synthesis · Product definition · End-to-end design"],
           ["Partners", "Clinical staff · Researchers · Founders · Product · Engineering"],
           ["Code boundary", "No production code · engineering built the working product"]
@@ -2568,7 +2568,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           ["Surfaces", "Web · Desktop · Mobile · Device integrations"]
         ],
         resultLabel: "Delivery",
-        result: "Unified music desktop app shipped · Windows Phone product reached working alpha",
+        result: "Unified importer and downloader shipped · Windows Phone product reached working alpha",
         supportTitle: "Earlier and supporting work",
         supportIntro: "Ownership ranged from complete product design to focused contribution; the labels keep those boundaries visible.",
         vignettes: [
@@ -3259,7 +3259,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           {
             step: "01 · Rescue the product",
             title: "The first task was not a redesign. It was reconstructing what the product was supposed to be.",
-            copy: "Omix arrived as disconnected workflows, inconsistent interface decisions, and unfinished design work. After the previous senior designer left, I became the sole design owner. I began with a product audit and interviews across engineering, founders, clinical staff, product, and design so the team could agree on the technical, business, and clinical system before consolidating screens.",
+            copy: "Omix arrived as disconnected workflows, inconsistent interface decisions, and unfinished design work. After the previous senior designer left, I became the lead designer. I began with a product audit and interviews across engineering, founders, clinical staff, product, and design so the team could agree on the technical, business, and clinical system before consolidating screens.",
             media: [
               {
                 visual: "Fragmented surfaces → one product model",
@@ -3650,6 +3650,10 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         delivery: "Published + shipped",
         summary: "I taught myself JavaScript and D3, then designed and built production interactives that made prescription-price and utilization data easier to explore.",
         result: "Production interactives · national media reach · federal policy support",
+        actions: [
+          ["https://www.goodrx.com/healthcare-access/research/the-most-popular-drugs-in-america-by-state", "See the live research map", true],
+          ["https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html", "As cited in the NYT", true]
+        ],
         cardMedia: [
           "images/craft/goodrx_01.webp",
           "images/craft/goodrx_02.webp",
@@ -5538,7 +5542,15 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       workPanelResultLabel.textContent = "Outcome";
       workPanelResult.textContent = story.result;
       workPanelActions.replaceChildren();
-      workPanelActions.hidden = true;
+      (story.actions || []).forEach(function(action, index){
+        var link = document.createElement("a");
+        link.href = action[0];
+        link.textContent = action[1] + " →";
+        link.className = index === 0 ? "btn primary" : "btn";
+        if(action[2]){ link.target = "_blank"; link.rel = "noopener"; }
+        workPanelActions.appendChild(link);
+      });
+      workPanelActions.hidden = !workPanelActions.children.length;
       workPanel.hidden = false;
     }
 
