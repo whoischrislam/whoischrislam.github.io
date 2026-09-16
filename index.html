@@ -1062,12 +1062,9 @@ h2.sec#work{margin-top:16px}
   color:var(--text);text-align:left;cursor:pointer;transition:border-color .2s ease,transform .3s cubic-bezier(.2,.75,.2,1)}
 .work-project-card:hover,.work-project-card:focus-visible{border-color:var(--accent);transform:translateY(-3px)}
 .work-project-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.work-project-card-media{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:2%;
-  height:clamp(220px,28vw,330px);padding:22px 22px 0;overflow:hidden;background:#009b5a}
-.work-project-card-scan-title{position:absolute;z-index:2;top:14px;left:14px;max-width:min(78%,360px);
-  padding:7px 10px;border:1px solid rgba(255,255,255,.18);border-radius:4px;
-  background:rgba(7,10,13,.76);color:#fff;font:600 var(--t-sm)/1.25 var(--sans);
-  box-shadow:0 8px 24px rgba(0,0,0,.16);backdrop-filter:blur(8px)}
+.work-project-card-media{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:2.5%;
+  height:clamp(168px,17vw,208px);padding:16px 18px 0;overflow:hidden;background:#009b5a}
+.work-project-card-scan-title{display:none}
 .work-project-card[data-work-story="tasker"] .work-project-card-media{background:#069b55}
 .work-project-card[data-work-story="client"] .work-project-card-media{background:#dfe8df}
 .work-project-card[data-work-company="clover"] .work-project-card-media{background:#08786b}
@@ -1101,13 +1098,13 @@ h2.sec#work{margin-top:16px}
 .work-project-card-result{grid-column:1/-1;color:var(--accent);font:400 var(--t-base)/1.35 var(--serif)}
 .work-project-card:only-child{grid-column:1/-1;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);
   grid-template-rows:1fr}
-.work-project-card:only-child .work-project-card-media{height:100%;min-height:360px}
+.work-project-card:only-child .work-project-card-media{height:100%;min-height:230px}
 .work-project-card:only-child .work-project-card-copy{align-content:center}
 @media (min-width:761px){
   .work-project-grid>.work-project-card:last-child:nth-child(odd){grid-column:1/-1;
     grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);grid-template-rows:1fr}
   .work-project-grid>.work-project-card:last-child:nth-child(odd) .work-project-card-media{
-    height:100%;min-height:360px}
+    height:100%;min-height:230px}
   .work-project-grid>.work-project-card:last-child:nth-child(odd) .work-project-card-copy{align-content:center}
 }
 .work-company-support{display:grid;gap:14px;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
