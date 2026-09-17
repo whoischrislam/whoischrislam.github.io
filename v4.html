@@ -83,7 +83,7 @@
         </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
   color-scheme:light;
@@ -94,9 +94,11 @@
   --accent-strong:#9a3618; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.07);
   --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(60,40,20,.10);
   --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;
+  --grid:rgba(74,144,226,.06); /* graph-paper substrate (PlaySesh Grid Blue, faint) */
   --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
-  /* Placeholders for Gotham (headers) + Proxima Nova (body): */
-  --serif:'Montserrat',system-ui,sans-serif; --sans:'Mulish',system-ui,sans-serif;
+  /* Closest free stand-ins for Gotham (headers) + Proxima Nova (body).
+     Upgrade path: Adobe Fonts Sofia Pro + real Proxima Nova via one web-project kit. */
+  --serif:'Sofia Sans',system-ui,sans-serif; --sans:'Figtree',system-ui,sans-serif;
   --head-h:56px;
   /* Type scale, seven steps. Was twenty-one sizes at half-pixel granularity,
      which is the granularity of a generator, not a decision. */
@@ -120,10 +122,12 @@
   --accent:#e0682f; --accent-soft:rgba(224,104,47,.14); --border:rgba(255,255,255,.10);
   --accent-strong:#ec7a42; --border-strong:rgba(255,255,255,.16); --border-soft:rgba(255,255,255,.06);
   --chip-bg:rgba(255,255,255,.05); --drop-shadow:0 14px 34px rgba(0,0,0,.45);
-  --on-accent:#1a1613; --surface-hover:var(--surface-2); --logo-filter:var(--logo-filter);}
+  --on-accent:#1a1613; --surface-hover:var(--surface-2); --logo-filter:invert(1); --grid:rgba(255,255,255,.035);}
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
-  font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased}
+body{margin:0;background-color:var(--bg);color:var(--text);font-family:var(--sans);
+  font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:26px 26px}
 body.work-focus-open{overflow:hidden}
 img{display:block;max-width:100%;height:auto}
 a{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border)}
