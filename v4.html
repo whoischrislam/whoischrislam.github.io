@@ -83,22 +83,25 @@
         </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
   color-scheme:light;
-  /* WARM EDITORIAL direction (Chris's live palette): cream + near-black + terracotta.
-     Directional pass only — real Gotham/Proxima and panel refinement come next. */
-  --bg:#faf9f7; --surface:#ffffff; --surface-2:#f2ede4; --text:#1a1a18; --muted:#6a675f;
-  --accent:#b8431f; --accent-soft:rgba(184,67,31,.10); --border:rgba(0,0,0,.10);
-  --accent-strong:#9a3618; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.07);
-  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(60,40,20,.10);
+  /* WORKING DRAWINGS system (Chris's own, 2026-09-16): off-white ground + very-dark-gray ink,
+     green as the ONE signature accent; color otherwise comes from the work (per-company bands).
+     Blueprint/editorial. NOT cream+terracotta — that was mis-sourced from an archive viewer's CSS. */
+  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --border:rgba(0,0,0,.10);
+  --accent-strong:#1e7a3c; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.06);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(30,40,30,.08);
   --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;
-  --grid:rgba(74,144,226,.06); /* graph-paper substrate (PlaySesh Grid Blue, faint) */
+  --grid:rgba(0,0,0,.045); /* structural-grid hairline — content aligns to it, not wallpaper */
   --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
-  /* Closest free stand-ins for Gotham (headers) + Proxima Nova (body).
-     Upgrade path: Adobe Fonts Sofia Pro + real Proxima Nova via one web-project kit. */
-  --serif:'Sofia Sans',system-ui,sans-serif; --sans:'Figtree',system-ui,sans-serif;
+  /* Newsreader = anti-slop serif display (NOT Fraunces/Instrument Serif). Figtree = Proxima Nova
+     stand-in (real Proxima pending Adobe kit). IBM Plex Mono = blueprint annotation layer. */
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;
+  --sans:'Figtree',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',monospace;
   --head-h:56px;
   /* Type scale, seven steps. Was twenty-one sizes at half-pixel granularity,
      which is the granularity of a generator, not a decision. */
@@ -110,24 +113,23 @@
 }
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
-  --bg:#faf9f7; --surface:#ffffff; --surface-2:#f2ede4; --text:#1a1a18; --muted:#6a675f;
-  --accent:#b8431f; --accent-soft:rgba(184,67,31,.10); --border:rgba(0,0,0,.10);
-  --accent-strong:#9a3618; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.07);
-  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(60,40,20,.10);
-  --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;}
+  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --border:rgba(0,0,0,.10);
+  --accent-strong:#1e7a3c; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.06);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(30,40,30,.08);
+  --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none; --grid:rgba(0,0,0,.045);}
 :root[data-theme="dark"], :root[data-theme="dark"] *{color-scheme:dark}
 :root[data-theme="dark"]{
-  /* WARM dark (espresso + terracotta), not the cold generic near-black. */
-  --bg:#1a1613; --surface:#241f19; --surface-2:#2e2820; --text:#f0ebe2; --muted:#a89f90;
-  --accent:#e0682f; --accent-soft:rgba(224,104,47,.14); --border:rgba(255,255,255,.10);
-  --accent-strong:#ec7a42; --border-strong:rgba(255,255,255,.16); --border-soft:rgba(255,255,255,.06);
-  --chip-bg:rgba(255,255,255,.05); --drop-shadow:0 14px 34px rgba(0,0,0,.45);
-  --on-accent:#1a1613; --surface-hover:var(--surface-2); --logo-filter:invert(1); --grid:rgba(255,255,255,.035);}
+  /* Neutral dark (not warm-espresso, not neon-ready). Green stays the signature. */
+  --bg:#17181a; --surface:#202225; --surface-2:#2a2c30; --text:#ece9e3; --muted:#9a978f;
+  --accent:#4fc276; --accent-soft:rgba(79,194,118,.14); --border:rgba(255,255,255,.12);
+  --accent-strong:#6ad189; --border-strong:rgba(255,255,255,.18); --border-soft:rgba(255,255,255,.06);
+  --chip-bg:rgba(255,255,255,.05); --drop-shadow:0 14px 34px rgba(0,0,0,.5);
+  --on-accent:#10231a; --surface-hover:var(--surface-2); --logo-filter:invert(1); --grid:rgba(255,255,255,.05);}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background-color:var(--bg);color:var(--text);font-family:var(--sans);
   font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased;
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:26px 26px}
+  }
 body.work-focus-open{overflow:hidden}
 img{display:block;max-width:100%;height:auto}
 a{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border)}
@@ -184,17 +186,16 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
   text-underline-offset:3px;white-space:nowrap}
 .hero .sub a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 
-/* The sentence has two halves doing the same job. Underline the two verbs so
-   the parallel is visible, and draw them in on load, staggered. */
-.lit-word{background-image:linear-gradient(var(--accent),var(--accent));
-  background-repeat:no-repeat;background-position:0 90%;background-size:0% 4px;
-  padding-bottom:2px;
-  transition:background-size .75s cubic-bezier(.22,.61,.36,1)}
-.lit-word:nth-of-type(2){transition-delay:.22s}
-.js .hero.lit .lit-word{background-size:100% 4px}
-@media (prefers-reduced-motion:reduce){
-  .lit-word{background-size:100% 4px!important;transition:none}
-}
+/* The two verbs were underlined on load; underlining is a named AI tell
+   (New Yorker slop list), so the words now carry on the serif alone. */
+.lit-word{padding-bottom:0}
+/* Working-drawing sheet header — a mono title bar above the page content. */
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);
+  padding:12px 0 14px;margin-bottom:6px;border-bottom:1px solid var(--border-soft)}
+.sheet-head span:last-child{white-space:nowrap}
+@media (max-width:560px){.sheet-head{font-size:10px;letter-spacing:.04em}}
 .cta{display:flex;flex-wrap:wrap;gap:10px}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;
   border-radius:8px;font-weight:600;font-size:var(--t-sm);text-decoration:none;
@@ -1674,7 +1675,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .co-band{position:relative}
   .co-head h3{font-family:'Instrument Serif',serif;font-weight:400;font-size:30px;line-height:1.05;margin:0 0 4px}
   .co-head p{color:var(--muted);max-width:none;margin:0 0 16px;font-size:15px}
-  .band-frame{position:relative;height:340px;border-radius:14px;overflow:hidden;background:var(--band);cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .band-frame{position:relative;height:340px;border-radius:2px;overflow:hidden;background:var(--band);cursor:pointer;border:1px solid var(--border)}
   .band-frame .work-tile{position:absolute!important;inset:0!important;left:0!important;top:0!important;width:100%!important;height:100%!important;margin:0!important;padding:24px;border:0;border-radius:0;background:transparent;opacity:0;pointer-events:none;transition:opacity .35s ease;display:flex;align-items:center;justify-content:center}
   .band-frame .work-tile.on{opacity:1;pointer-events:auto;z-index:1}
   .band-frame .work-tile img{width:100%!important;height:100%!important;object-fit:contain!important;min-height:0!important;max-height:100%!important;border-radius:5px;box-shadow:0 8px 26px rgba(0,0,0,.2)}
