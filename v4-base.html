@@ -1547,57 +1547,38 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 body{padding-bottom:104px!important}
 
 /* shared: the grid substrate (minor 24px, major 120px) painted on the page */
-body[class*="bl-after"].bl-1,body[class*="bl-after"].bl-2,
-body[class*="bl-after"].bl-3,body[class*="bl-after"].bl-4,body[class*="bl-after"].bl-5{
-  background-image:
-    linear-gradient(var(--grid) 1px,transparent 1px),
-    linear-gradient(90deg,var(--grid) 1px,transparent 1px),
-    linear-gradient(var(--grid-maj) 1px,transparent 1px),
-    linear-gradient(90deg,var(--grid-maj) 1px,transparent 1px);
-  background-size:24px 24px,24px 24px,120px 120px,120px 120px;
-  background-position:-1px -1px}
-
-/* 1 · Structure only — grid done precisely, content aligns to it */
-/* (uses the shared grid, nothing extra) */
-
-/* 2 · Material — grid over warm paper/vellum with fine fibre */
-body.bl-after.bl-2{background-color:#f3f1ec}
-body.bl-after.bl-2::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-  opacity:.5;mix-blend-mode:multiply;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.35'/%3E%3C/svg%3E")}
-:root[data-theme="dark"] body.bl-after.bl-2{background-color:#191a1c}
-
-/* 3 · Elevation — content sits as raised sheets on the grid "table" */
-body.bl-after.bl-3 .band-frame,
-body.bl-after.bl-3 .work-cards .wcard{
-  box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 34px rgba(0,0,0,.13)!important}
-body.bl-after.bl-3 .hero{background:var(--surface);border:1px solid var(--border);
-  border-radius:2px;padding:26px 26px 30px;box-shadow:0 1px 2px rgba(0,0,0,.05),0 14px 34px rgba(0,0,0,.10)}
-
-/* 4 · Grain — grid + subtle film grain over the whole page */
-body.bl-after.bl-4::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.06;
+/* Grain is the locked base texture (Chris chose it 2026-09-17). Always on in "after". */
+body.al-after::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.06;
   mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-:root[data-theme="dark"] body.bl-after.bl-4::after{mix-blend-mode:screen;opacity:.05}
+:root[data-theme="dark"] body.al-after::after{mix-blend-mode:screen;opacity:.05}
 
-/* 5 · Drafting sheet — grid + margin rules + A–D column ruler + corner ticks */
-body.bl-after.bl-5 .wrap{position:relative;border-left:1px solid var(--grid-maj);border-right:1px solid var(--grid-maj)}
-body.bl-after.bl-5 .wrap::before{content:"A                    B                    C                    D";
-  position:absolute;top:-2px;left:0;right:0;display:block;
-  font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.05em;color:var(--muted);
-  padding:4px 6px;border-bottom:1px solid var(--grid-maj);white-space:pre}
-body.bl-after.bl-5 .wrap::after{content:"DWG 01 · whoischrislam · HNL";position:absolute;bottom:8px;right:6px;
-  font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+/* A1 · Grain only — no ruled grid; pure subtle texture, no alignment burden. */
+/* (grain only) */
+
+/* A2 · Grain + hanging grid — a 32px module ANCHORED to the content column's
+   top-left (background-origin:content-box), so every element hangs off the same
+   lines. This is the fix: content sits ON the grid, not between it. */
+body.al-after.al-2 #top{
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:32px 32px;
+  background-origin:content-box;background-clip:border-box}
+
+/* A3 · Grain + column grid — the content column split into 12 equal columns,
+   anchored to content by construction; the overt drafting layout grid. */
+body.al-after.al-3 #top{
+  background-image:repeating-linear-gradient(90deg,
+     var(--grid) 0 1px,transparent 1px calc(100%/12));
+  background-origin:content-box;background-clip:content-box}
 </style>
 </head><body>
 <div class="read-progress" aria-hidden="true"></div>
 <div id="dv-bar">
   <div class="dv-row">
-    <button class="dv-chip on" data-bl="1">1</button>
-    <button class="dv-chip" data-bl="2">2</button>
-    <button class="dv-chip" data-bl="3">3</button>
-    <button class="dv-chip" data-bl="4">4</button>
-    <button class="dv-chip" data-bl="5">5</button>
+    <button class="dv-chip on" data-al="1">1</button>
+    <button class="dv-chip" data-al="2">2</button>
+    <button class="dv-chip" data-al="3">3</button>
     <button id="dv-toggle" type="button" aria-pressed="true">After &#10003;</button>
   </div>
   <p id="dv-cap"></p>
@@ -6364,26 +6345,24 @@ body.bl-after.bl-5 .wrap::after{content:"DWG 01 · whoischrislam · HNL";positio
 (function(){
   var bar=document.getElementById('dv-bar');
   var caps={
-    1:"1 · Structure — a precise blueprint grid; content aligns to it. Depth from structure, not texture.",
-    2:"2 · Material — grid over warm paper/vellum with fine fibre. Tactile, analog depth.",
-    3:"3 · Elevation — content sits as raised sheets on the grid 'table'. Real z-depth.",
-    4:"4 · Grain — grid + subtle film grain over everything. Kills the flat-digital feel.",
-    5:"5 · Drafting sheet — grid + margin rules, A–D column ruler, sheet stamp. Full blueprint character."};
-  var bl='1', after=true;
+    1:"1 · Grain only — the locked subtle texture, no ruled grid. Nothing to misalign.",
+    2:"2 · Grain + hanging grid — 32px module anchored to the content edge; every element now sits ON the grid.",
+    3:"3 · Grain + column grid — content column split into 12 columns; the overt drafting layout grid, content hangs off it."};
+  var al='1', after=true;
   function apply(){
     var b=document.body;
-    b.classList.remove('bl-1','bl-2','bl-3','bl-4','bl-5','bl-after');
-    b.classList.add('bl-'+bl);
-    if(after) b.classList.add('bl-after');
-    [].forEach.call(bar.querySelectorAll('.dv-chip'),function(c){c.classList.toggle('on',c.dataset.bl===bl)});
+    b.classList.remove('al-1','al-2','al-3','al-after');
+    b.classList.add('al-'+al);
+    if(after) b.classList.add('al-after');
+    [].forEach.call(bar.querySelectorAll('.dv-chip'),function(c){c.classList.toggle('on',c.dataset.al===al)});
     var t=document.getElementById('dv-toggle');
     t.setAttribute('aria-pressed',after?'true':'false');
     t.innerHTML=after?'After &#10003;':'Before';
-    document.getElementById('dv-cap').textContent='SPIKE · base layer · '+caps[bl]+'  —  tap Before/After.';
+    document.getElementById('dv-cap').textContent='SPIKE · base + alignment · '+caps[al]+'  —  tap Before/After.';
   }
   bar.addEventListener('click',function(e){
     var chip=e.target.closest('.dv-chip');
-    if(chip){bl=chip.dataset.bl; after=true; apply(); window.scrollTo({top:0,behavior:'smooth'}); return;}
+    if(chip){al=chip.dataset.al; after=true; apply(); window.scrollTo({top:0,behavior:'smooth'}); return;}
     if(e.target.closest('#dv-toggle')){after=!after; apply();}
   });
   apply();
