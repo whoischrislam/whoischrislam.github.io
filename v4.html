@@ -4830,6 +4830,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       var source;
       var media;
       mediaLightboxTitle.textContent = title;
+      mediaLightbox.querySelector(".media-lightbox-kicker").textContent = tile.dataset.mediaKicker || "Project artifact";
       mediaLightboxStage.replaceChildren();
       mediaLightboxOriginal.hidden = false;
       if(provider){
@@ -5169,7 +5170,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           }
           support.appendChild(vignetteCard);
         });
-        if(supportingItems.length){
+        if(supportingItems.length && !__vignettes.some(function(v){ return v.surface; })){
           var shipped = document.createElement("section");
           shipped.className = "work-also-shipped";
           var shippedTitle = document.createElement("h5");
@@ -5275,6 +5276,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
             tile.appendChild(meta);
             if(v.image && !v.href){
               tile.dataset.mediaTitle = v.name;
+              tile.dataset.mediaKicker = surface + (v.delivery ? " · " + v.delivery : "");
               tile.dataset.fullSrc = v.image;
               tile.setAttribute("aria-label", "Open full size: " + v.name);
               tile.addEventListener("click", function(){ openWorkMedia(tile); });
