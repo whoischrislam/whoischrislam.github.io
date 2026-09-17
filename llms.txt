@@ -1,6 +1,6 @@
 # Chris Lam
 
-> Senior Product Designer for AI-native products, 14 years. "I design the product. I ship the code." y30 · Co-Founder & CPTO · 2026. Operated as founding CPTO through Aug 2026; advising since. Open to senior product design and design-engineering roles, full-time, on small, fast, AI-native teams.
+> Senior Product Designer for AI-native products, 14 years. "I design the product. I ship code." y30 · Co-Founder & CPTO · 2026. Operated as founding CPTO through Aug 2026; advising since. Open to senior product design and design-engineering roles, full-time, on small, fast, AI-native teams.
 
 Chris Lam (Christopher Lam) is a senior product designer with 14 years shipping healthcare, creative, developer, and consumer software. He built his career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today he owns products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. He is seeking senior product design and design-engineering roles on AI-native teams.
 

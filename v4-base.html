@@ -4,10 +4,10 @@
 <meta name="robots" content="noindex, nofollow"><title>Chris Lam · v4 staging (hidden)</title>
 <link rel="canonical" href="https://whoischrislam.github.io/" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-<meta name="description" content="Chris Lam is a senior product designer and 0→1 builder. I design the product and ship the code, from research and interaction design through production engineering. 14+ years across healthcare, marketplaces, creative tools, and emerging technology." />
+<meta name="description" content="Chris Lam is a senior product designer and 0→1 builder. I design the product and ship code, from research and interaction design through production engineering. 14+ years across healthcare, marketplaces, creative tools, and emerging technology." />
         <meta property="og:type" content="profile" />
         <meta property="og:title" content="Chris Lam · Senior Product Designer &amp; 0→1 Builder" />
-        <meta property="og:description" content="I design the product and ship the code. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
+        <meta property="og:description" content="I design the product and ship code. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
         <meta property="og:url" content="https://whoischrislam.github.io/" />
         <meta property="og:site_name" content="Chris Lam" />
         <meta property="og:image" content="https://whoischrislam.github.io/images/og-image.png" />
@@ -16,7 +16,7 @@
         <meta property="og:image:alt" content="Chris Lam, senior product designer &amp; 0→1 builder" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Chris Lam · Senior Product Designer &amp; 0→1 Builder" />
-        <meta name="twitter:description" content="I design the product and ship the code. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
+        <meta name="twitter:description" content="I design the product and ship code. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
         <meta name="twitter:image" content="https://whoischrislam.github.io/images/og-image.png" />
 <script type="application/ld+json">
         {
@@ -867,8 +867,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .hero-company-logo:hover::after,.hero-company-logo:focus-visible::after{
   opacity:1;transform:translate(-50%,0)}
 @media(max-width:560px){
-  .hero-credibility{grid-template-columns:1fr;gap:10px}
-  .hero-logo-row{width:100%;gap:14px 22px}
+  .hero-credibility{grid-template-columns:minmax(0,1fr);gap:10px}
+  /* wrap the logos on small screens instead of the scroll-strip, which was blowing
+     out the page width (horizontal scroll). All logos stay visible, no page scroll. */
+  .hero-logo-row{width:100%;min-width:0;flex-wrap:wrap;overflow-x:visible;gap:14px 22px}
   .hero-company-logo::after{display:none}
 }
 .hero .tags{margin:10px 0 0}
@@ -1551,9 +1553,26 @@ body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:n
   mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 :root[data-theme="dark"] body.dv-base::after{mix-blend-mode:screen;opacity:.05}
-body.dv-base #top{
-  background-image:repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/12));
-  background-origin:content-box;background-clip:content-box}
+/* GRID DECIDED OUT (Chris 2026-09-17): no visible grid, grain only. */
+/* ---- B · Type-as-hero treatments. All on-system fonts (Newsreader/Figtree/Plex Mono),
+   no new copy — just treatment of the existing lockup + its two .lit-word verbs
+   ("design", "ship"). tb-1 = current baseline. ---- */
+
+/* tb-2 · Big, two-line — let it wrap and go display-scale, tight leading */
+body.tb-2 .hero h1.hero-lockup,body.tb-5 .hero h1.hero-lockup{
+  white-space:normal;width:auto;max-width:none;
+  font-size:clamp(2.6rem,8.5vw,5.8rem);line-height:.98;letter-spacing:-.02em}
+/* forced break after "&" — only in the two-line treatments */
+.hero-lockup .lb{display:none}
+body.tb-2 .hero-lockup .lb,body.tb-5 .hero-lockup .lb{display:inline}
+
+/* tb-3 · Italic verbs — draw the eye to the two actions, add voice */
+body.tb-3 .lit-word,body.tb-5 .lit-word{font-style:italic}
+
+/* tb-4 · Green verbs — the signature accent on the two actions */
+body.tb-4 .lit-word{color:var(--accent)}
+
+/* tb-5 = big two-line + italic verbs (combines 2 and 3) */
 
 /* ---- Spacing scale A/B. "Current" = untouched native tokens. 4px vs 8px remap the
    --sp ramp + the tokenized magic numbers (--sp-hb was 13px, --sp-16 was 100px).
@@ -1572,9 +1591,11 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
 <div class="read-progress" aria-hidden="true"></div>
 <div id="dv-bar">
   <div class="dv-row">
-    <button class="dv-chip" data-sc="cur">Current</button>
-    <button class="dv-chip on" data-sc="4">4px</button>
-    <button class="dv-chip" data-sc="8">8px</button>
+    <button class="dv-chip on" data-tb="1">1</button>
+    <button class="dv-chip" data-tb="2">2</button>
+    <button class="dv-chip" data-tb="3">3</button>
+    <button class="dv-chip" data-tb="4">4</button>
+    <button class="dv-chip" data-tb="5">5</button>
   </div>
   <p id="dv-cap"></p>
 </div>
@@ -1613,7 +1634,7 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
 
 <!-- 2. Hero -->
 <header class="hero">
-  <h1 class="hero-lockup">I <span class="lit-word">design</span> the product &amp; <span class="lit-word">ship</span> the code.</h1>
+  <h1 class="hero-lockup">I <span class="lit-word">design</span> the product &amp;<br class="lb"> <span class="lit-word">ship</span> code.</h1>
   <p class="sub"><b>Senior Product Designer</b>. I also build in production React, TypeScript, and Python, so design intent survives to launch.</p>
   <p class="sub-line">14+ years shipping software across healthcare, marketplaces, education, and creative tools. I learn new domains and technologies quickly without compromising product judgment, design craft, or engineering rigor.</p>
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
@@ -6339,22 +6360,24 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
 <script id="bl-js">
 (function(){
   var bar=document.getElementById('dv-bar');
-  document.body.classList.add('dv-base'); // grain + 12-col grid locked on
+  document.body.classList.add('dv-base'); // grain locked on
   var caps={
-    cur:"Current — the live spacing: irregular scale + magic numbers (13, 22, 30, 36, 38, 100).",
-    "4":"4px scale — every gap snaps to a 4px step; finer control (12, 44 allowed). Card grid fixed to equal 3-up.",
-    "8":"8px scale — every gap snaps to an 8px step; coarser (rounds to 16, 48). Card grid fixed to equal 3-up."};
-  var sc='4';
+    "1":"1 · Current — Newsreader serif, one line.",
+    "2":"2 · Big two-line — display-scale, wraps to two lines, tight leading. The editorial statement.",
+    "3":"3 · Italic verbs — 'design' and 'ship' in italic; draws the eye to the two actions, adds voice.",
+    "4":"4 · Green verbs — the signature accent on 'design' and 'ship'.",
+    "5":"5 · Big two-line + italic verbs — scale and voice combined."};
+  var tb='5';
   function apply(){
     var b=document.body;
-    b.classList.remove('sc-4','sc-8');
-    if(sc==='4') b.classList.add('sc-4'); else if(sc==='8') b.classList.add('sc-8');
-    [].forEach.call(bar.querySelectorAll('.dv-chip'),function(c){c.classList.toggle('on',c.dataset.sc===sc)});
-    document.getElementById('dv-cap').textContent='SPIKE · spacing scale · '+caps[sc];
+    b.classList.remove('tb-1','tb-2','tb-3','tb-4','tb-5');
+    b.classList.add('tb-'+tb);
+    [].forEach.call(bar.querySelectorAll('.dv-chip'),function(c){c.classList.toggle('on',c.dataset.tb===tb)});
+    document.getElementById('dv-cap').textContent='SPIKE · type as hero · '+caps[tb];
   }
   bar.addEventListener('click',function(e){
     var chip=e.target.closest('.dv-chip');
-    if(chip){sc=chip.dataset.sc; apply();} // stay in place so the A/B is visible where you are
+    if(chip){tb=chip.dataset.tb; apply();} // stay in place
   });
   apply();
 })();
