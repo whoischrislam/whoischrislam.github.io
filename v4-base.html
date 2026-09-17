@@ -1553,23 +1553,27 @@ body.al-after::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 :root[data-theme="dark"] body.al-after::after{mix-blend-mode:screen;opacity:.05}
 
-/* A1 · Grain only — no ruled grid; pure subtle texture, no alignment burden. */
-/* (grain only) */
+/* Vertical column grid anchored to content (background-origin:content-box on #top),
+   so content-left = line 0. NO horizontal lines on purpose: fine horizontal baseline
+   alignment across fluid text is not reliably achievable, and arbitrary horizontals
+   are exactly what read as off in the square grid. Horizontal structure comes from
+   the real section rules, which already align to the content width. */
 
-/* A2 · Grain + hanging grid — a 32px module ANCHORED to the content column's
-   top-left (background-origin:content-box), so every element hangs off the same
-   lines. This is the fix: content sits ON the grid, not between it. */
+/* 1 · 12-column, equal weight — clean, minimal */
+body.al-after.al-1 #top{
+  background-image:repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/12));
+  background-origin:content-box;background-clip:content-box}
+
+/* 2 · 12-column + major quarter lines — hierarchy makes it read intentional */
 body.al-after.al-2 #top{
-  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
-                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-  background-size:32px 32px;
-  background-origin:content-box;background-clip:border-box}
+  background-image:
+    repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/12)),
+    repeating-linear-gradient(90deg,var(--grid-maj) 0 1px,transparent 1px calc(100%/4));
+  background-origin:content-box;background-clip:content-box}
 
-/* A3 · Grain + column grid — the content column split into 12 equal columns,
-   anchored to content by construction; the overt drafting layout grid. */
+/* 3 · 6-column — calmer, fewer lines */
 body.al-after.al-3 #top{
-  background-image:repeating-linear-gradient(90deg,
-     var(--grid) 0 1px,transparent 1px calc(100%/12));
+  background-image:repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/6));
   background-origin:content-box;background-clip:content-box}
 </style>
 </head><body>
@@ -6345,9 +6349,9 @@ body.al-after.al-3 #top{
 (function(){
   var bar=document.getElementById('dv-bar');
   var caps={
-    1:"1 · Grain only — the locked subtle texture, no ruled grid. Nothing to misalign.",
-    2:"2 · Grain + hanging grid — 32px module anchored to the content edge; every element now sits ON the grid.",
-    3:"3 · Grain + column grid — content column split into 12 columns; the overt drafting layout grid, content hangs off it."};
+    1:"1 · 12-column, equal weight — clean and minimal, anchored to the content edge.",
+    2:"2 · 12-column + major quarter lines — hierarchy so the grid reads intentional, not wallpaper.",
+    3:"3 · 6-column — calmer, fewer lines."};
   var al='1', after=true;
   function apply(){
     var b=document.body;
@@ -6358,7 +6362,7 @@ body.al-after.al-3 #top{
     var t=document.getElementById('dv-toggle');
     t.setAttribute('aria-pressed',after?'true':'false');
     t.innerHTML=after?'After &#10003;':'Before';
-    document.getElementById('dv-cap').textContent='SPIKE · base + alignment · '+caps[al]+'  —  tap Before/After.';
+    document.getElementById('dv-cap').textContent='SPIKE · column grid · '+caps[al]+'  —  tap Before/After.';
   }
   bar.addEventListener('click',function(e){
     var chip=e.target.closest('.dv-chip');
