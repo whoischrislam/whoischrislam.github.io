@@ -1036,13 +1036,18 @@ h2.sec#work{margin-top:16px}
   grid-template-areas:"summary outcome" "facts facts";gap:14px 34px}
 .work-panel.is-story-view .work-panel-details{display:contents}
 .work-panel.is-story-view .work-panel-summary{grid-area:summary;max-width:62ch}
-.work-panel.is-story-view .work-panel-facts{grid-area:facts;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:1px;max-width:none;margin:0;border:1px solid var(--border);background:var(--border)}
+.work-panel.is-story-view .work-panel-facts{grid-area:facts;grid-template-columns:repeat(2,1fr);gap:0;max-width:840px;margin:8px 0 0;
+  border:1px solid var(--border-soft);border-radius:12px;overflow:hidden;background:var(--surface-2)}
 .work-panel.is-story-view .work-panel-facts div,
-.work-panel.is-story-view .work-panel-facts div:nth-child(n+3){display:block;grid-column:auto;
-  padding:11px 14px;background:var(--bg)}
-.work-panel.is-story-view .work-panel-facts dt{font-size:11px;letter-spacing:.12em;text-transform:uppercase}
-.work-panel.is-story-view .work-panel-facts dd{margin-top:3px;font-size:var(--t-sm);line-height:1.35}
+.work-panel.is-story-view .work-panel-facts div:nth-child(n+3){
+  display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:12px;align-items:start;align-content:start;grid-column:auto;
+  min-width:0;padding:14px 16px;border-right:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft)}
+.work-panel.is-story-view .work-panel-facts .fact-icon{grid-row:1;width:18px;height:18px;
+  stroke:var(--accent-strong);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.85;margin-top:1px}
+.work-panel.is-story-view .work-panel-facts dt{grid-column:2;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.work-panel.is-story-view .work-panel-facts dd{grid-column:1/-1;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--text)}
+.work-panel.is-story-view .work-panel-facts dd.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.work-panel.is-story-view .work-panel-facts dd.tags .tok{display:inline-flex;border:1px solid var(--border-strong);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--text)}
 .work-panel.is-story-view .work-panel-outcome{grid-area:outcome}
 @media(min-width:761px){
   .work-panel.is-company-view .work-panel-brief{display:block}
@@ -1473,10 +1478,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .work-panel.is-company-view .work-panel-details[open]>.work-panel-facts{margin-bottom:12px}
   .work-panel-facts{grid-template-columns:1fr;gap:7px}
   .work-panel-facts div,.work-panel-facts div:nth-child(n+3){grid-column:1;grid-template-columns:88px minmax(0,1fr)}
-  .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr 1fr;gap:1px}
+  .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr}
   .work-panel.is-story-view .work-panel-facts div,
-  .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-column:auto;padding:10px 11px}
-  .work-panel.is-story-view .work-panel-facts div:last-child:nth-child(odd){grid-column:1/-1}
+  .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:22px minmax(0,1fr);grid-column:1;padding:14px 16px}
   .work-project-card-media{height:250px;padding:16px 14px 0}
   .work-project-card-copy{padding:15px}
   .work-vignette-copy{padding:18px}
@@ -5767,7 +5771,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       workPanelDelivery.textContent = story.delivery || "Project";
       workPanelStoryMeta.hidden = false;
       workPanelSummary.textContent = story.summary;
-      renderWorkFacts(story.facts || null);
+      renderWorkFacts(story.facts || null, true);
       workPanelDetails.open = true;
       workPanelResultLabel.textContent = "Outcome";
       workPanelResult.textContent = story.result;
