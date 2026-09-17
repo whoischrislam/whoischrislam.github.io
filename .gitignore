@@ -49,3 +49,6 @@ work/y30.html
 
 # harness audit timestamp (local)
 .harness-audit-last
+
+# Dropbox artifact renders (staging) — private-derived, PHI-review before any go public
+images/_staging/
