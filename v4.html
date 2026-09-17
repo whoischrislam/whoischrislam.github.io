@@ -83,18 +83,20 @@
         </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#0F0F11; --surface:#17171A; --surface-2:#1E1E22; --text:#ECEAE4; --muted:#9A988F;
-  --accent:#26AF55; --accent-soft:rgba(38,175,85,.13); --border:rgba(255,255,255,.10);
-  /* Agent token shim: the hiring guide's CSS was written against the old
-     stylesheet's names. Mapped onto v2's tokens rather than duplicating values. */
-  --accent-strong:#3FD070; --border-strong:rgba(255,255,255,.18); --border-soft:rgba(255,255,255,.06);
-  --chip-bg:rgba(255,255,255,.06); --drop-shadow:0 10px 30px rgba(0,0,0,.35);
-  --on-accent:#15110F; --surface-hover:var(--surface-2);
+  color-scheme:light;
+  /* WARM EDITORIAL direction (Chris's live palette): cream + near-black + terracotta.
+     Directional pass only — real Gotham/Proxima and panel refinement come next. */
+  --bg:#faf9f7; --surface:#ffffff; --surface-2:#f2ede4; --text:#1a1a18; --muted:#6a675f;
+  --accent:#b8431f; --accent-soft:rgba(184,67,31,.10); --border:rgba(0,0,0,.10);
+  --accent-strong:#9a3618; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.07);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(60,40,20,.10);
+  --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;
   --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
-  --serif:'Instrument Serif',Georgia,serif; --sans:'Open Sans',system-ui,sans-serif;
+  /* Placeholders for Gotham (headers) + Proxima Nova (body): */
+  --serif:'Montserrat',system-ui,sans-serif; --sans:'Mulish',system-ui,sans-serif;
   --head-h:56px;
   /* Type scale, seven steps. Was twenty-one sizes at half-pixel granularity,
      which is the granularity of a generator, not a decision. */
@@ -106,11 +108,19 @@
 }
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
-  --bg:#FBF8F4; --surface:#FFFFFF; --surface-2:#F4F1EB; --text:#1A1A18; --muted:#6A675F;
-  --accent:#177537; --accent-soft:rgba(23,117,55,.10); --border:rgba(0,0,0,.10);
-  --accent-strong:#0F5F2C; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.07);
-  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 10px 30px rgba(60,40,20,.10);
-  --on-accent:#FFFFFF; --surface-hover:var(--surface-2);}
+  --bg:#faf9f7; --surface:#ffffff; --surface-2:#f2ede4; --text:#1a1a18; --muted:#6a675f;
+  --accent:#b8431f; --accent-soft:rgba(184,67,31,.10); --border:rgba(0,0,0,.10);
+  --accent-strong:#9a3618; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.07);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(60,40,20,.10);
+  --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;}
+:root[data-theme="dark"], :root[data-theme="dark"] *{color-scheme:dark}
+:root[data-theme="dark"]{
+  /* WARM dark (espresso + terracotta), not the cold generic near-black. */
+  --bg:#1a1613; --surface:#241f19; --surface-2:#2e2820; --text:#f0ebe2; --muted:#a89f90;
+  --accent:#e0682f; --accent-soft:rgba(224,104,47,.14); --border:rgba(255,255,255,.10);
+  --accent-strong:#ec7a42; --border-strong:rgba(255,255,255,.16); --border-soft:rgba(255,255,255,.06);
+  --chip-bg:rgba(255,255,255,.05); --drop-shadow:0 14px 34px rgba(0,0,0,.45);
+  --on-accent:#1a1613; --surface-hover:var(--surface-2); --logo-filter:var(--logo-filter);}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
   font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased}
@@ -825,7 +835,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .hero-logo-row li{display:flex;flex:0 0 auto;align-items:center;height:var(--slot-h,var(--h))}
 .hero-logo-row .hero-logo-more{height:auto;color:var(--muted);font-size:var(--t-xs);white-space:nowrap}
 .hero-logo-row img{display:block;width:auto;height:100%;padding-top:var(--logo-pad-top,0);
-  opacity:.78;filter:invert(1)}
+  opacity:.78;filter:var(--logo-filter)}
 [data-theme="light"] .hero-logo-row img{filter:none}
 .hero-company-logo{appearance:none;position:relative;display:block;width:auto;height:100%;padding:0;
   border:0;background:transparent;color:inherit;cursor:pointer}
@@ -945,7 +955,7 @@ h2.sec#work{margin-top:16px}
 .work-panel-back:hover,.work-panel-back:focus-visible{color:var(--accent)}
 .work-panel-back:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 .work-panel-provenance{display:none;align-items:center;gap:10px;min-width:0;color:var(--muted)}
-.work-panel-provenance-logo{display:block;width:auto;height:18px;max-width:154px;filter:invert(1)}
+.work-panel-provenance-logo{display:block;width:auto;height:18px;max-width:154px;filter:var(--logo-filter)}
 [data-theme="light"] .work-panel-provenance-logo{filter:none}
 .work-panel-provenance-name{font:400 var(--t-base)/1 var(--serif);color:var(--text)}
 .work-panel-provenance-outcome{padding:3px 8px;border:1px solid var(--border);border-radius:999px;
@@ -956,7 +966,7 @@ h2.sec#work{margin-top:16px}
 .work-panel-heading{min-width:0}
 .work-panel-company-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px 28px}
 .work-panel-identity{display:flex;align-items:center;gap:12px;min-width:0;flex-wrap:wrap}
-.work-panel-logo{display:block;width:auto;height:28px;max-width:220px;margin:0;filter:invert(1)}
+.work-panel-logo{display:block;width:auto;height:28px;max-width:220px;margin:0;filter:var(--logo-filter)}
 [data-theme="light"] .work-panel-logo{filter:none}
 .work-panel-logo[hidden]{display:none}
 .work-panel-company-name{font:400 var(--t-xl)/1 var(--serif);color:var(--text)}
@@ -1961,7 +1971,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 
   var saved=localStorage.getItem(k);
   if(saved) r.setAttribute("data-theme",saved);
-  else if(window.matchMedia("(prefers-color-scheme: light)").matches) r.setAttribute("data-theme","light");
+  else if(window.matchMedia("(prefers-color-scheme: dark)").matches) r.setAttribute("data-theme","dark");
   /* Swap the facade for the real player on click. Nothing loads until asked. */
   /* The story panel is a native popover: the platform handles open, close,
      light-dismiss, Escape and focus return. No JS needed here. */
@@ -1982,13 +1992,13 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 
   var tt = document.getElementById("theme-toggle");
   function syncToggle(){
-    var dark = r.getAttribute("data-theme") !== "light";
+    var dark = r.getAttribute("data-theme") === "dark";
     tt.setAttribute("aria-checked", String(dark));
     tt.setAttribute("aria-label", dark ? "Dark mode. Switch to light." : "Light mode. Switch to dark.");
   }
   syncToggle();
   tt.addEventListener("click", function(){
-    var next = r.getAttribute("data-theme") === "light" ? "dark" : "light";
+    var next = r.getAttribute("data-theme") === "dark" ? "light" : "dark";
     r.setAttribute("data-theme", next);
     localStorage.setItem(k, next);
     syncToggle();
