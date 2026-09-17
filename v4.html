@@ -1695,22 +1695,29 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .co-band[data-hero] .band-frame .work-tile img{object-fit:contain!important;border-radius:0!important;box-shadow:none!important;max-height:100%!important}
   /* compact "More work" row: non-featured roles as small click-through cards */
   .more-lane{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
-  .more-lane .work-tile.more-tile{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:16px 18px!important;display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);opacity:1!important;pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
+  .more-lane .work-tile.more-tile{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:16px 18px!important;display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid var(--border);border-radius:2px;background:var(--surface-2);opacity:1!important;pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
   .more-lane .work-tile.more-tile:hover{border-color:var(--muted);transform:translateY(-1px)}
   .more-co{font-weight:600;font-size:15px;color:inherit}
   .more-desc{color:var(--muted);font-size:13px;line-height:1.35}
   .more-go{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
   /* unified card grid for More work + Experiments (image thumb + name + desc + CTA) */
   .work-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:16px}
-  .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--surface-2);pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
+  .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:2px;overflow:hidden;background:var(--surface-2);pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
   .work-cards .work-tile.wcard:hover{border-color:var(--muted);transform:translateY(-2px)}
   .wcard-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:var(--band,#222);overflow:hidden}
   .wcard-thumb img{width:100%;height:100%;object-fit:contain}
   .wcard-thumb-label{font-family:'Instrument Serif',serif;font-size:26px;line-height:1.1;color:rgba(255,255,255,.94);padding:0 18px;text-align:center}
   .wcard-body{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}
-  .wcard-name{font-weight:700;font-size:19px;color:inherit;line-height:1.15}
+  .wcard-name{font-weight:700;font-size:19px;color:var(--text);line-height:1.15}
   .wcard-desc{color:var(--muted);font-size:15px;line-height:1.35}
   .wcard-cta{margin-top:6px;font-weight:600;font-size:14px;color:var(--accent-strong)}
+  /* Dark mode: mute the exposed brand-color field so it recedes into the dark
+     ground instead of vibrating. Layered as background-image over the color, so
+     it sits above background-color but below child <img>/labels — the work and
+     the wordmarks stay bright; only the raw color mat is desaturated. One knob. */
+  :root[data-theme="dark"] .band-frame,
+  :root[data-theme="dark"] .wcard-thumb{
+    background-image:linear-gradient(rgba(20,20,22,.32),rgba(20,20,22,.32))}
   .tag-outcome{display:inline-block;margin-left:9px;padding:2px 8px;border:1px solid var(--border);border-radius:99px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--muted);vertical-align:middle;white-space:nowrap;text-transform:none}
   /* ---- homepage vertical rhythm: one consolidated source, supersedes the scattered
      hero/#work patches above. Scale in use: 6 / 12 / 18 / 24 / 44 / 60 px ---- */
