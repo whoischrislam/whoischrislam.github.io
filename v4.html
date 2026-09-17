@@ -1167,15 +1167,13 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .work-also-shipped-list .work-supporting-delivery{margin:8px 0 0;color:var(--accent);
   font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
 /* Product map (breadth): surface-grouped tiles opening a lightbox or linking out */
-.work-product-map{margin:8px 0 0;padding-top:22px;border-top:1px solid var(--border)}
-.work-map-group{display:grid;grid-template-columns:minmax(150px,190px) minmax(0,1fr);column-gap:30px;
-  align-items:start;margin:0;padding:20px 0;border-top:1px solid var(--border-soft)}
-.work-map-group:first-of-type{border-top:0;padding-top:2px}
+.work-product-map{margin:8px 0 0;padding-top:22px;border-top:1px solid var(--border);column-count:2;column-gap:32px}
+.work-map-group{display:block;break-inside:avoid;margin:0 0 24px;padding:0}
 .work-map-group:last-child{margin-bottom:0}
-.work-map-group-head{margin:0;border-bottom:0;padding-bottom:0}
+.work-map-group-head{margin:0 0 10px;border-bottom:1px solid var(--border-soft);padding-bottom:7px}
 .work-map-group-head .t{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);font-weight:700}
 .work-map-group-head .d{font-size:12.5px;color:var(--muted);margin-top:3px}
-.work-map-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.work-map-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .work-map-tile{position:relative;appearance:none;text-align:left;border:1px solid var(--border-soft);
   background:var(--surface);border-radius:9px;padding:0;cursor:pointer;overflow:hidden;transition:.15s;
   color:inherit;font:inherit;display:block;text-decoration:none}
@@ -1192,7 +1190,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .work-map-tile-dot.todo{background:var(--muted)}
 .work-map-tile-ico{position:absolute;top:7px;right:8px;font-size:12px;color:#fff;background:rgba(0,0,0,.42);
   border-radius:5px;width:20px;height:20px;display:flex;align-items:center;justify-content:center}
-@media(max-width:600px){.work-map-group{grid-template-columns:1fr;row-gap:12px}.work-map-tiles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.work-product-map{column-count:1}}
+@media(max-width:600px){.work-map-tiles{grid-template-columns:repeat(2,1fr)}}
 .project-story{display:grid;gap:clamp(46px,7vw,86px)}
 .project-story-opening{display:grid}
 .project-story-hero{appearance:none;position:relative;display:block;width:100%;padding:0;overflow:hidden;
