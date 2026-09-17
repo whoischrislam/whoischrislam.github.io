@@ -264,7 +264,7 @@ body.work-focus-open .read-progress{opacity:0}
 h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   /* Rule above the heading, not below it. It terminates the previous block and
      introduces this one, which is how his Squarespace case studies were built. */
-  border-top:1px solid var(--border);padding-top:var(--sp-4);margin:var(--sp-12) 0 13px}
+  border-top:1px solid var(--border);padding-top:var(--sp-4);margin:var(--sp-12) 0 var(--sp-hb)}
 /* Card surfaces. The inline version read as one continuous document, so nothing told
    the eye where a project began. This is his 2014 work list: a bordered block whose
    LEFT edge carries the project colour. */
@@ -538,7 +538,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 .refs > *:last-child{margin-bottom:0}
 .refs p{margin:0 0 16px}
 
-.foot{border-top:1px solid var(--border);margin-top:var(--sp-12);padding:38px 0 100px;
+.foot{border-top:1px solid var(--border);margin-top:var(--sp-12);padding:var(--sp-8) 0 var(--sp-16);
   color:var(--muted);font-size:var(--t-sm)}
 .foot .signoff{font-family:var(--serif);font-size:var(--t-lg);line-height:1.35;color:var(--text);margin:0 0 26px}
 .foot .avail-line{margin:0 0 20px}
@@ -1530,14 +1530,14 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
    "before" = untouched v4. "after" = body.bl-after.bl-<n>.
    Goal: a blueprint/grid base with real depth that HELPS (D lenses onto this).
    ============================================================ */
-:root{--grid-maj:color-mix(in srgb, var(--text) 9%, transparent)}
+:root{--grid-maj:color-mix(in srgb, var(--text) 9%, transparent);--sp-hb:13px;--sp-16:100px}
 #dv-bar{position:fixed;left:0;right:0;bottom:0;z-index:99999;background:rgba(15,16,18,.94);
   color:#eee;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
   border-top:1px solid rgba(255,255,255,.15);padding:8px 12px calc(8px + env(safe-area-inset-bottom));
   font-family:'IBM Plex Mono',ui-monospace,monospace}
 #dv-bar .dv-row{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap}
-#dv-bar .dv-chip{width:40px;height:40px;border-radius:6px;border:1px solid rgba(255,255,255,.25);
-  background:transparent;color:#eee;font:600 15px 'IBM Plex Mono',monospace;cursor:pointer}
+#dv-bar .dv-chip{min-width:44px;height:40px;padding:0 14px;border-radius:6px;border:1px solid rgba(255,255,255,.25);
+  background:transparent;color:#eee;font:600 14px 'IBM Plex Mono',monospace;cursor:pointer}
 #dv-bar .dv-chip.on{background:#2a9d4f;border-color:#2a9d4f;color:#fff}
 #dv-bar #dv-toggle{margin-left:10px;min-height:40px;padding:0 16px;border-radius:6px;
   border:1px solid rgba(255,255,255,.35);background:#eee;color:#111;
@@ -1546,44 +1546,34 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 #dv-cap{margin:7px auto 0;max-width:660px;text-align:center;opacity:.9;font-size:12px;line-height:1.45}
 body{padding-bottom:104px!important}
 
-/* shared: the grid substrate (minor 24px, major 120px) painted on the page */
-/* Grain is the locked base texture (Chris chose it 2026-09-17). Always on in "after". */
-body.al-after::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.06;
+/* Base is LOCKED (Chris, 2026-09-17): grain + 12-column grid, always on. */
+body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.06;
   mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-:root[data-theme="dark"] body.al-after::after{mix-blend-mode:screen;opacity:.05}
-
-/* Vertical column grid anchored to content (background-origin:content-box on #top),
-   so content-left = line 0. NO horizontal lines on purpose: fine horizontal baseline
-   alignment across fluid text is not reliably achievable, and arbitrary horizontals
-   are exactly what read as off in the square grid. Horizontal structure comes from
-   the real section rules, which already align to the content width. */
-
-/* 1 · 12-column, equal weight — clean, minimal */
-body.al-after.al-1 #top{
+:root[data-theme="dark"] body.dv-base::after{mix-blend-mode:screen;opacity:.05}
+body.dv-base #top{
   background-image:repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/12));
   background-origin:content-box;background-clip:content-box}
 
-/* 2 · 12-column + major quarter lines — hierarchy makes it read intentional */
-body.al-after.al-2 #top{
-  background-image:
-    repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/12)),
-    repeating-linear-gradient(90deg,var(--grid-maj) 0 1px,transparent 1px calc(100%/4));
-  background-origin:content-box;background-clip:content-box}
-
-/* 3 · 6-column — calmer, fewer lines */
-body.al-after.al-3 #top{
-  background-image:repeating-linear-gradient(90deg,var(--grid) 0 1px,transparent 1px calc(100%/6));
-  background-origin:content-box;background-clip:content-box}
+/* ---- Spacing scale A/B. "Current" = untouched native tokens. 4px vs 8px remap the
+   --sp ramp + the tokenized magic numbers (--sp-hb was 13px, --sp-16 was 100px).
+   Difference shows at values not on an 8-grid: 4/12/44/... snap finer on 4px. ---- */
+body.sc-4{--sp-1:4px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:44px;--sp-12:88px;--sp-hb:12px;--sp-16:96px}
+body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;--sp-12:96px;--sp-hb:16px;--sp-16:96px}
+@media (max-width:640px){
+  body.sc-4{--sp-12:44px;--sp-8:28px}
+  body.sc-8{--sp-12:48px;--sp-8:32px}
+}
+/* card grid fix (equal 3-up; the last row no longer stretches) under either scale */
+body.sc-4 .work-cards,body.sc-8 .work-cards{grid-template-columns:repeat(3,minmax(0,1fr))!important}
 </style>
 </head><body>
 <div class="read-progress" aria-hidden="true"></div>
 <div id="dv-bar">
   <div class="dv-row">
-    <button class="dv-chip on" data-al="1">1</button>
-    <button class="dv-chip" data-al="2">2</button>
-    <button class="dv-chip" data-al="3">3</button>
-    <button id="dv-toggle" type="button" aria-pressed="true">After &#10003;</button>
+    <button class="dv-chip" data-sc="cur">Current</button>
+    <button class="dv-chip on" data-sc="4">4px</button>
+    <button class="dv-chip" data-sc="8">8px</button>
   </div>
   <p id="dv-cap"></p>
 </div>
@@ -1762,7 +1752,7 @@ body.al-after.al-3 #top{
   .more-desc{color:var(--muted);font-size:13px;line-height:1.35}
   .more-go{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
   /* unified card grid for More work + Experiments (image thumb + name + desc + CTA) */
-  .work-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:16px}
+  .work-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--sp-4);margin-top:16px}
   .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:2px;overflow:hidden;background:var(--surface-2);pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
   .work-cards .work-tile.wcard:hover{border-color:var(--muted);transform:translateY(-2px)}
   .wcard-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:var(--band,#222);overflow:hidden}
@@ -6348,26 +6338,22 @@ body.al-after.al-3 #top{
 <script id="bl-js">
 (function(){
   var bar=document.getElementById('dv-bar');
+  document.body.classList.add('dv-base'); // grain + 12-col grid locked on
   var caps={
-    1:"1 · 12-column, equal weight — clean and minimal, anchored to the content edge.",
-    2:"2 · 12-column + major quarter lines — hierarchy so the grid reads intentional, not wallpaper.",
-    3:"3 · 6-column — calmer, fewer lines."};
-  var al='1', after=true;
+    cur:"Current — the live spacing: irregular scale + magic numbers (13, 22, 30, 36, 38, 100).",
+    "4":"4px scale — every gap snaps to a 4px step; finer control (12, 44 allowed). Card grid fixed to equal 3-up.",
+    "8":"8px scale — every gap snaps to an 8px step; coarser (rounds to 16, 48). Card grid fixed to equal 3-up."};
+  var sc='4';
   function apply(){
     var b=document.body;
-    b.classList.remove('al-1','al-2','al-3','al-after');
-    b.classList.add('al-'+al);
-    if(after) b.classList.add('al-after');
-    [].forEach.call(bar.querySelectorAll('.dv-chip'),function(c){c.classList.toggle('on',c.dataset.al===al)});
-    var t=document.getElementById('dv-toggle');
-    t.setAttribute('aria-pressed',after?'true':'false');
-    t.innerHTML=after?'After &#10003;':'Before';
-    document.getElementById('dv-cap').textContent='SPIKE · column grid · '+caps[al]+'  —  tap Before/After.';
+    b.classList.remove('sc-4','sc-8');
+    if(sc==='4') b.classList.add('sc-4'); else if(sc==='8') b.classList.add('sc-8');
+    [].forEach.call(bar.querySelectorAll('.dv-chip'),function(c){c.classList.toggle('on',c.dataset.sc===sc)});
+    document.getElementById('dv-cap').textContent='SPIKE · spacing scale · '+caps[sc];
   }
   bar.addEventListener('click',function(e){
     var chip=e.target.closest('.dv-chip');
-    if(chip){al=chip.dataset.al; after=true; apply(); window.scrollTo({top:0,behavior:'smooth'}); return;}
-    if(e.target.closest('#dv-toggle')){after=!after; apply();}
+    if(chip){sc=chip.dataset.sc; apply(); window.scrollTo({top:0,behavior:'smooth'});}
   });
   apply();
 })();
