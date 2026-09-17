@@ -138,7 +138,7 @@ def main() -> int:
         '<link rel="icon" href="favicon.svg" type="image/svg+xml" />':
             "primary homepage must declare its favicon",
         'class="hero-lockup"': "homepage hero needs the one-line lockup hook",
-        "I <span class=\"lit-word\">design</span> the product &amp; <span class=\"lit-word\">ship</span> the code.":
+        "I <span class=\"lit-word\">design</span> the product &amp; <span class=\"lit-word\">ship</span> code.":
             "homepage hero statement changed",
         "<b>Senior Product Designer</b>":
             "homepage primary label must lead with Senior Product Designer",
