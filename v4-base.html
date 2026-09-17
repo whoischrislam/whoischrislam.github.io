@@ -1559,12 +1559,12 @@ body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:n
    ("design", "ship"). tb-1 = current baseline. ---- */
 
 /* tb-2 · Big, two-line — let it wrap and go display-scale, tight leading */
-body.tb-2 .hero h1.hero-lockup,body.tb-5 .hero h1.hero-lockup{
+body.tb-2 .hero h1.hero-lockup,body.tb-5 .hero h1.hero-lockup,body.tb-6 .hero h1.hero-lockup,body.tb-7 .hero h1.hero-lockup{
   white-space:normal;width:auto;max-width:none;
   font-size:clamp(2.6rem,8.5vw,5.8rem);line-height:.98;letter-spacing:-.02em}
 /* forced break after "&" — only in the two-line treatments */
 .hero-lockup .lb{display:none}
-body.tb-2 .hero-lockup .lb,body.tb-5 .hero-lockup .lb{display:inline}
+body.tb-2 .hero-lockup .lb,body.tb-5 .hero-lockup .lb,body.tb-6 .hero-lockup .lb,body.tb-7 .hero-lockup .lb{display:inline}
 
 /* tb-3 · Italic verbs — draw the eye to the two actions, add voice */
 body.tb-3 .lit-word,body.tb-5 .lit-word{font-style:italic}
@@ -1573,6 +1573,64 @@ body.tb-3 .lit-word,body.tb-5 .lit-word{font-style:italic}
 body.tb-4 .lit-word{color:var(--accent)}
 
 /* tb-5 = big two-line + italic verbs (combines 2 and 3) */
+
+/* ── ALIVE hero (Chris's concept): the design half reveals, the green "&" pivots,
+   "ship code" types out, then "." lands for emphasis. Font unchanged (serif throughout).
+   tb-6 and tb-7 differ ONLY in the design-half reveal. ── */
+
+/* verbs stay italic in the alive treatments */
+body.tb-6 .lit-word,body.tb-7 .lit-word{font-style:italic}
+
+/* beat 2 — the green "&" pops in as the pivot/breath */
+body.tb-6 .hl-amp,body.tb-7 .hl-amp{display:inline-block;color:var(--accent);opacity:0;
+  transform:scale(.3) rotate(-12deg);transform-origin:center;
+  animation:hl-amp .55s cubic-bezier(.2,1.5,.4,1) 1s forwards}
+@keyframes hl-amp{0%{opacity:0;transform:scale(.3) rotate(-12deg)}
+  60%{opacity:1;transform:scale(1.16) rotate(3deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+
+/* beat 3 — "ship code" typed out by JS (caret tracks the writing edge), then "." pops.
+   JS rebuilds .hl-ship-text into per-char spans and inserts a .hl-caret that advances. */
+/* zero-width caret: takes no horizontal space (no gap, no char displacement as it moves);
+   the visible bar is drawn by an out-of-flow ::before. Height keeps line metrics constant. */
+.hl-caret{display:inline-block;width:0;height:.72em;vertical-align:baseline;position:relative}
+.hl-caret::before{content:"";position:absolute;left:.02em;bottom:0;width:.05em;height:.72em;
+  background:var(--accent);animation:hl-blink .62s steps(1,end) infinite}
+@keyframes hl-blink{0%,100%{opacity:1}50%{opacity:0}}
+.hl-dot{display:inline-block}
+body.tb-6 .hl-dot.in,body.tb-7 .hl-dot.in{animation:hl-dot .45s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes hl-dot{0%{opacity:0;transform:scale(.4)}60%{opacity:1;transform:scale(1.35)}100%{opacity:1;transform:scale(1)}}
+
+/* tb-6 · design reveal = PENCIL WRITING: the words reveal L→R while a graphite pencil
+   tip draws along the writing edge (crisp, dark, angled, with a slight hand bob). */
+body.tb-6 .hl-design{display:inline-block;position:relative;
+  clip-path:inset(0 100% 0 0);animation:hl-wipe 1.15s cubic-bezier(.6,0,.4,1) forwards}
+@keyframes hl-wipe{to{clip-path:inset(0 0 0 0)}}
+body.tb-6 .hl-design::after{content:"";position:absolute;left:0;top:14%;width:.085em;height:.46em;
+  background:var(--text);border-radius:1px;opacity:.85;
+  transform:translateX(-50%) rotate(25deg);transform-origin:bottom;
+  animation:hl-pencil 1.15s cubic-bezier(.6,0,.4,1) forwards}
+@keyframes hl-pencil{
+  0%{left:0;top:14%;opacity:.9}20%{top:10%}40%{top:15%}60%{top:9%}80%{top:14%}
+  90%{opacity:.9}100%{left:100%;top:12%;opacity:0}}
+
+/* tb-7 · design reveal = PEN UNDERLINE: a stroke draws L→R under the words (sketching a
+   baseline), then the words rise/fade in above it. */
+body.tb-7 .hl-design{display:inline-block;position:relative;
+  opacity:0;transform:translateY(.12em);animation:hl-rise .6s ease .4s forwards}
+@keyframes hl-rise{to{opacity:1;transform:none}}
+body.tb-7 .hl-design::after{content:"";position:absolute;left:0;right:0;bottom:-.04em;height:.045em;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  animation:hl-underline .5s ease forwards}
+@keyframes hl-underline{to{transform:scaleX(1)}}
+
+@media (prefers-reduced-motion:reduce){
+  body.tb-6 .hl-design,body.tb-7 .hl-design{clip-path:none;opacity:1;transform:none;animation:none}
+  body.tb-6 .hl-design::after,body.tb-7 .hl-design::after{display:none}
+  body.tb-6 .hl-amp,body.tb-7 .hl-amp{opacity:1;transform:none;animation:none}
+  body.tb-6 .hl-ship-text,body.tb-7 .hl-ship-text{clip-path:none;animation:none}
+  body.tb-6 .hl-caret,body.tb-7 .hl-caret{display:none}
+  body.tb-6 .hl-dot,body.tb-7 .hl-dot{opacity:1;transform:none;animation:none}
+}
 
 /* ---- Spacing scale A/B. "Current" = untouched native tokens. 4px vs 8px remap the
    --sp ramp + the tokenized magic numbers (--sp-hb was 13px, --sp-16 was 100px).
@@ -1591,11 +1649,14 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
 <div class="read-progress" aria-hidden="true"></div>
 <div id="dv-bar">
   <div class="dv-row">
-    <button class="dv-chip on" data-tb="1">1</button>
+    <button class="dv-chip" data-tb="1">1</button>
     <button class="dv-chip" data-tb="2">2</button>
     <button class="dv-chip" data-tb="3">3</button>
     <button class="dv-chip" data-tb="4">4</button>
     <button class="dv-chip" data-tb="5">5</button>
+    <button class="dv-chip on" data-tb="6">6</button>
+    <button class="dv-chip" data-tb="7">7</button>
+    <button class="dv-chip" id="dv-replay" type="button" title="Replay animation">&#8635;</button>
   </div>
   <p id="dv-cap"></p>
 </div>
@@ -1634,7 +1695,7 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
 
 <!-- 2. Hero -->
 <header class="hero">
-  <h1 class="hero-lockup">I <span class="lit-word">design</span> the product &amp;<br class="lb"> <span class="lit-word">ship</span> code.</h1>
+  <h1 class="hero-lockup"><span class="hl-design">I <span class="lit-word">design</span> the product</span> <span class="hl-amp">&amp;</span><br class="lb"><span class="hl-ship"><span class="hl-ship-text"><span class="lit-word">ship</span> code</span><span class="hl-dot">.</span></span></h1>
   <p class="sub"><b>Senior Product Designer</b>. I also build in production React, TypeScript, and Python, so design intent survives to launch.</p>
   <p class="sub-line">14+ years shipping software across healthcare, marketplaces, education, and creative tools. I learn new domains and technologies quickly without compromising product judgment, design craft, or engineering rigor.</p>
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
@@ -6363,23 +6424,76 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
   document.body.classList.add('dv-base'); // grain locked on
   var caps={
     "1":"1 · Current — Newsreader serif, one line.",
-    "2":"2 · Big two-line — display-scale, wraps to two lines, tight leading. The editorial statement.",
-    "3":"3 · Italic verbs — 'design' and 'ship' in italic; draws the eye to the two actions, adds voice.",
-    "4":"4 · Green verbs — the signature accent on 'design' and 'ship'.",
-    "5":"5 · Big two-line + italic verbs — scale and voice combined."};
-  var tb='5';
-  function apply(){
+    "2":"2 · Big two-line — display-scale, wraps to two lines, tight leading.",
+    "3":"3 · Italic verbs — 'design' and 'ship' in italic.",
+    "4":"4 · Green verbs — signature accent on 'design' and 'ship'.",
+    "5":"5 · Big two-line + italic verbs (static).",
+    "6":"6 · ALIVE, pencil — 'I design the product' is drawn in by a graphite pencil tip; the green '&' pops; 'ship code' types out (caret tracks it) then '.' lands. Tap ↻ to replay.",
+    "7":"7 · ALIVE, pen underline — a stroke draws under 'I design the product' and it rises in; '&' pops; 'ship code' types out then '.' lands. Tap ↻ to replay."};
+  var tb='6';
+
+  /* ── JS typewriter for "ship code": per-char reveal so the caret advances with the
+     text (CSS clip couldn't expose the writing edge). Restores plain text off-alive. ── */
+  var timers=[];
+  function clearT(){timers.forEach(clearTimeout);timers=[];}
+  var shipHost=document.querySelector('.hl-ship-text');
+  var shipHTML=shipHost?shipHost.innerHTML:'';
+  var shipText=shipHost?shipHost.textContent:'';
+  var dotEl=document.querySelector('.hl-ship .hl-dot');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function restoreShip(){
+    clearT();
+    if(shipHost) shipHost.innerHTML=shipHTML;
+    if(dotEl){dotEl.classList.remove('in');dotEl.style.opacity='';}
+  }
+  function typewriter(){
+    clearT();
+    if(!shipHost) return;
+    if(reduce){ shipHost.innerHTML=shipHTML; if(dotEl){dotEl.style.opacity='';dotEl.classList.add('in');} return; }
+    shipHost.innerHTML='';
+    var caret=document.createElement('span'); caret.className='hl-caret'; caret.setAttribute('aria-hidden','true');
+    var chars=[];
+    for(var i=0;i<shipText.length;i++){
+      var sp=document.createElement('span');
+      sp.textContent = shipText[i]===' ' ? ' ' : shipText[i];
+      if(i<4) sp.style.fontStyle='italic';           // "ship"
+      sp.style.visibility='hidden';
+      shipHost.appendChild(sp); chars.push(sp);
+    }
+    caret.style.visibility='hidden';                 // in the flow from t=0 so line height is constant
+    shipHost.insertBefore(caret, shipHost.firstChild);
+    if(dotEl){dotEl.style.opacity='0'; dotEl.classList.remove('in');}
+    // caret only appears AFTER the pencil ("I design the product") and the "&" pop finish,
+    // blinks a beat, then "ship code" types. Toggled by visibility (space stays reserved).
+    var caretAt=1650, typeAt=1950, step=85;
+    timers.push(setTimeout(function(){ caret.style.visibility='visible'; }, caretAt));
+    chars.forEach(function(sp,idx){
+      timers.push(setTimeout(function(){
+        sp.style.visibility='visible';
+        shipHost.insertBefore(caret, sp.nextSibling);  // caret follows the last-typed char
+      }, typeAt+idx*step));
+    });
+    timers.push(setTimeout(function(){
+      caret.style.visibility='hidden';               // hide but keep in flow (no reflow)
+      if(dotEl){dotEl.style.opacity=''; dotEl.classList.add('in');}
+    }, typeAt+chars.length*step+430));
+  }
+
+  function paint(){
     var b=document.body;
-    b.classList.remove('tb-1','tb-2','tb-3','tb-4','tb-5');
+    b.classList.remove('tb-1','tb-2','tb-3','tb-4','tb-5','tb-6','tb-7');
+    void b.offsetWidth;               // reflow so animations restart
     b.classList.add('tb-'+tb);
-    [].forEach.call(bar.querySelectorAll('.dv-chip'),function(c){c.classList.toggle('on',c.dataset.tb===tb)});
+    [].forEach.call(bar.querySelectorAll('.dv-chip'),function(c){if(c.dataset.tb)c.classList.toggle('on',c.dataset.tb===tb)});
     document.getElementById('dv-cap').textContent='SPIKE · type as hero · '+caps[tb];
+    if(tb==='6'||tb==='7') typewriter(); else restoreShip();
   }
   bar.addEventListener('click',function(e){
+    if(e.target.closest('#dv-replay')){ paint(); return; }
     var chip=e.target.closest('.dv-chip');
-    if(chip){tb=chip.dataset.tb; apply();} // stay in place
+    if(chip&&chip.dataset.tb){tb=chip.dataset.tb; paint();}
   });
-  apply();
+  paint();
 })();
 </script>
 </body></html>
