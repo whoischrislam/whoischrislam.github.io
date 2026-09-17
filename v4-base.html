@@ -1564,8 +1564,9 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
   body.sc-4{--sp-12:44px;--sp-8:28px}
   body.sc-8{--sp-12:48px;--sp-8:32px}
 }
-/* card grid fix (equal 3-up; the last row no longer stretches) under either scale */
-body.sc-4 .work-cards,body.sc-8 .work-cards{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+/* (card-grid "fix" removed: auto-fill already renders equal-width tracks at every
+   width; forcing repeat(3,1fr) squished cards to 135px on phones. The real "2 wider
+   blocks" is elsewhere — awaiting Chris to point at it, no guessing.) */
 </style>
 </head><body>
 <div class="read-progress" aria-hidden="true"></div>
@@ -6353,7 +6354,7 @@ body.sc-4 .work-cards,body.sc-8 .work-cards{grid-template-columns:repeat(3,minma
   }
   bar.addEventListener('click',function(e){
     var chip=e.target.closest('.dv-chip');
-    if(chip){sc=chip.dataset.sc; apply(); window.scrollTo({top:0,behavior:'smooth'});}
+    if(chip){sc=chip.dataset.sc; apply();} // stay in place so the A/B is visible where you are
   });
   apply();
 })();
