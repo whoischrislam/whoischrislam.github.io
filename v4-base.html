@@ -270,7 +270,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
    LEFT edge carries the project colour. */
 .card{background:var(--surface);border:1px solid var(--border);
   border-left:3px solid var(--proj-accent,var(--accent));
-  padding:var(--sp-4) 30px;margin:0 0 var(--sp-8)}
+  padding:var(--sp-4) var(--sp-6);margin:0 0 var(--sp-8)}
 /* Internal hierarchy. Every gap inside a card was the same 15px, so the card read as
    one uniform drum with no beats. Blocks that OPEN a beat get 28px; paragraphs
    continuing a beat keep 15px. 28 stays under the 44px card gap on purpose. */
@@ -528,7 +528,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 .tags span.t{font-size:var(--t-xs);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:4px 11px}
 /* Same kind of object as a work card, so: square, bordered, same padding. */
 .refs{background:var(--surface);border:1px solid var(--border);border-radius:0;
-  padding:var(--sp-4) 30px;margin:36px 0 0}
+  padding:var(--sp-4) var(--sp-6);margin:var(--sp-6) 0 0}
 /* The two buttons sat 5px apart, which was just collapsed inline whitespace, and the
    tertiary link sat flush against them at 0px. Three tiers, three gaps. */
 .refs > p:first-of-type{margin:0 0 26px}
@@ -1541,7 +1541,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
    "before" = untouched v4. "after" = body.bl-after.bl-<n>.
    Goal: a blueprint/grid base with real depth that HELPS (D lenses onto this).
    ============================================================ */
-:root{--grid-maj:color-mix(in srgb, var(--text) 9%, transparent);--sp-hb:13px;--sp-16:100px}
+:root{--grid-maj:color-mix(in srgb, var(--text) 9%, transparent);--sp-hb:12px;--sp-16:96px}
 
 /* Base is LOCKED (Chris, 2026-09-17): grain + 12-column grid, always on. */
 body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.06;
@@ -1644,15 +1644,9 @@ body.tb-6 .hl-special.in .hl-prod{animation:hl-create .75s cubic-bezier(.3,.7,.2
   .hl-caret,.hl-underline,.hl-dot::after{display:none}
 }
 
-/* ---- Spacing scale A/B. "Current" = untouched native tokens. 4px vs 8px remap the
-   --sp ramp + the tokenized magic numbers (--sp-hb was 13px, --sp-16 was 100px).
-   Difference shows at values not on an 8-grid: 4/12/44/... snap finer on 4px. ---- */
-body.sc-4{--sp-1:4px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:44px;--sp-12:88px;--sp-hb:12px;--sp-16:96px}
-body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;--sp-12:96px;--sp-hb:16px;--sp-16:96px}
-@media (max-width:640px){
-  body.sc-4{--sp-12:44px;--sp-8:28px}
-  body.sc-8{--sp-12:48px;--sp-8:32px}
-}
+/* ---- Spacing scale RESOLVED 2026-09-17: Chris chose 4px granularity. The 4px ramp
+   is now the baseline in :root (--sp-1:4px kept, --sp-hb:12px, --sp-16:96px). The old
+   sc-4/sc-8 A/B classes are retired. ---- */
 /* (card-grid "fix" removed: auto-fill already renders equal-width tracks at every
    width; forcing repeat(3,1fr) squished cards to 135px on phones. The real "2 wider
    blocks" is elsewhere — awaiting Chris to point at it, no guessing.) */
@@ -1747,6 +1741,419 @@ body.tag-text-accent .tag-outcome{color:var(--accent-strong);font-weight:700}
    from the serif company names. Serif brings them into the same name hierarchy. ---- */
 body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:23px;
   line-height:1.1;letter-spacing:.005em}
+
+/* ---- BLUEPRINT PLACEHOLDER (Chris chose 2026-09-17). A .wcard-thumb that still has a
+   text label (i.e. no <img> yet) gets a subtle structural grid over its brand field, so
+   it reads as an intentional working-drawing placeholder instead of missing art. It's
+   reusable: as real screenshots drop in over time the <img> replaces the label and the
+   grid disappears automatically. Ties to the living-blueprint DNA of the whole page. ---- */
+.wcard-thumb:has(.wcard-thumb-label){position:relative}
+.wcard-thumb:has(.wcard-thumb-label)::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(to right, rgba(255,255,255,.11) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(to bottom, rgba(255,255,255,.11) 0 1px, transparent 1px 44px);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3));
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3))}
+
+/* ==== BLUEPRINT-SYSTEM exploration — the working-drawings visual language, i.e. the
+   design↔code seam as the site's identity. SPIKE ONLY, flip via #bp-bar. Graphic-only
+   (marks / ticks / dimension + leader lines); NO invented words. One bp class at a time.
+   Desktop-first: gutter elements are guarded so they never cause mobile h-scroll. ==== */
+body[class*="bp-"] #top{position:relative}
+
+/* bp-1 · Sheet — accent crop marks at the content-column top corners (reads: a drawing sheet) */
+body.bp-1 #top::before,body.bp-1 #top::after{content:"";position:absolute;top:4px;width:14px;height:14px;
+  pointer-events:none;border-top:1.5px solid var(--accent);opacity:.85}
+body.bp-1 #top::before{left:24px;border-left:1.5px solid var(--accent)}
+body.bp-1 #top::after{right:24px;border-right:1.5px solid var(--accent)}
+
+/* bp-2 · Ruler — a measured tick strip across the top of the content column, pitched to the 44px grid */
+body.bp-2 #top::before{content:"";position:absolute;left:24px;right:24px;top:2px;height:9px;pointer-events:none;
+  background-image:repeating-linear-gradient(to right, var(--grid-maj) 0 1px, transparent 1px 44px);
+  border-bottom:1px solid var(--border)}
+
+/* bp-3 · Dimension line — a vertical measured line with end ticks down the hero (in the gutter, desktop only) */
+body.bp-3 .hero{position:relative}
+@media (min-width:1040px){
+  body.bp-3 .hero::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:1px;background:var(--accent);opacity:.55}
+  body.bp-3 .hero::after{content:"";position:absolute;left:-20px;top:8px;width:9px;height:1px;background:var(--accent);opacity:.7;
+    box-shadow:0 0 0 0 var(--accent)}
+}
+
+/* bp-4 · Registration — a short accent rule above each section heading (a drafting register mark) */
+body.bp-4 h2.sec,body.bp-4 .exp-head{position:relative}
+body.bp-4 h2.sec::before,body.bp-4 .exp-head::before{content:"";position:absolute;left:0;top:-12px;
+  width:40px;height:1.5px;background:var(--accent);opacity:.75}
+
+/* bp-5 · Detail frames — corner ticks on every work thumb, like a plate on a drawing set */
+body.bp-5 .wcard-thumb::after,body.bp-5 .band-frame::after{content:"";position:absolute;right:9px;bottom:9px;
+  width:15px;height:15px;pointer-events:none;z-index:3;
+  border-right:1.5px solid rgba(255,255,255,.72);border-bottom:1.5px solid rgba(255,255,255,.72)}
+body.bp-5 .band-frame{position:relative}
+
+/* spike flipper */
+#bp-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;display:flex;
+  gap:4px;padding:6px;background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:var(--sans);backdrop-filter:blur(6px)}
+#bp-bar button{appearance:none;border:0;background:transparent;color:#ddd;font-size:12px;font-weight:600;
+  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
+#bp-bar button:hover{background:rgba(255,255,255,.08)}
+#bp-bar button.on{background:var(--accent);color:#fff}
+
+/* ==== WORLDS prototype — GoodRx only. Hover-stir on the band + a circular expand
+   reveal (View Transitions API) into a per-project "world" that takes over the viewport
+   while the baseline chrome (the "ship") persists. SPIKE; CSS-only motion so it stays
+   buttery on a MacBook Air (no per-world WebGL). ==== */
+/* hover-stir: the band strains to break out of the page */
+.co-band[data-project="goodrx"] .band-frame{transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s ease}
+.co-band[data-project="goodrx"]:hover .band-frame,
+.co-band[data-project="goodrx"]:focus-within .band-frame{
+  transform:scale(1.014);box-shadow:0 22px 66px rgba(252,239,114,.30),0 0 0 1px rgba(252,239,114,.6)}
+.co-band[data-project="goodrx"] .world-cue{position:absolute;right:14px;bottom:14px;z-index:2;
+  display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;
+  background:rgba(0,0,0,.72);color:#fff;font:600 var(--t-xs)/1 var(--sans);letter-spacing:.02em;
+  opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+.co-band[data-project="goodrx"]:hover .world-cue,
+.co-band[data-project="goodrx"]:focus-within .world-cue{opacity:1;transform:none}
+
+/* the GoodRx world */
+#world-goodrx{position:fixed;inset:0;z-index:1200;display:none;overflow-y:auto;background:#fcef72;color:#141210}
+body.world-goodrx-open{overflow:hidden}
+body.world-goodrx-open #world-goodrx{display:block}
+/* the "ship" — baseline chrome, constant across every world */
+.world-chrome{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:14px 24px;background:var(--bg);color:var(--text);border-bottom:1px solid var(--border)}
+.world-chrome .logo{font:400 var(--t-lg)/1 var(--serif);color:var(--text)}
+.world-back{appearance:none;border:0;background:none;display:inline-flex;align-items:center;gap:8px;
+  color:var(--text);font:600 var(--t-sm)/1 var(--sans);cursor:pointer;min-height:44px;padding:0}
+.world-back:hover{color:var(--accent)}
+/* world body — his baseline type system, re-skinned to GoodRx */
+.world-goodrx-inner{max-width:1228px;margin:0 auto;padding:64px 24px 96px}
+.wgx-logo{display:block;height:32px;width:auto;filter:brightness(0);margin-bottom:22px}
+.wgx-kicker{font:600 var(--t-xs)/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(20,18,16,.62);margin:0}
+.world-goodrx-inner h2{font:400 clamp(40px,7vw,88px)/1.02 var(--serif);letter-spacing:-.01em;margin:10px 0 18px}
+.wgx-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:36ch;color:#26221c;margin:0}
+.wgx-demo{margin-top:48px;border-radius:5px;overflow:hidden;border:1px solid rgba(20,18,16,.28);box-shadow:0 20px 60px rgba(20,18,16,.18)}
+.wgx-demo img{display:block;width:100%;height:auto}
+
+/* Circular expand reveal — override the default root crossfade only during a world transition */
+html.vt-world::view-transition-old(root){animation:none}
+html.vt-world::view-transition-new(root){animation:none;z-index:2147483646}
+html.vt-world-exit::view-transition-new(root){animation:none}
+html.vt-world-exit::view-transition-old(root){animation:none;z-index:2147483646}
+@media (prefers-reduced-motion: reduce){
+  .co-band[data-project="goodrx"] .band-frame{transition:none}
+}
+
+/* ==== HOVER-BREAKOUT A/B (GoodRx band) — how the card strains to escape its box on hover.
+   Flip via #hb-bar. Default (no class) = the subtle "Stir". Each mode overrides the stir. ==== */
+/* BLEED — the work spills past the frame edges (the box can't contain it) */
+body.hb-bleed .co-band[data-project="goodrx"] .band-frame{overflow:visible;transition:box-shadow .4s ease}
+body.hb-bleed .co-band[data-project="goodrx"] .band-frame .work-tile img{transition:transform .45s cubic-bezier(.22,1,.36,1),border-radius .45s ease}
+body.hb-bleed .co-band[data-project="goodrx"]:hover .band-frame,
+body.hb-bleed .co-band[data-project="goodrx"]:focus-within .band-frame{transform:none;box-shadow:0 24px 60px rgba(0,0,0,.28)}
+body.hb-bleed .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
+body.hb-bleed .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{transform:scale(1.07);border-radius:8px;position:relative;z-index:2}
+
+/* LIFT — the card peels off the page toward you, edges detaching */
+body.hb-lift .co-band[data-project="goodrx"]:hover .band-frame,
+body.hb-lift .co-band[data-project="goodrx"]:focus-within .band-frame{
+  transform:scale(1.03) translateY(-10px);box-shadow:0 34px 80px rgba(0,0,0,.34),0 0 0 1px rgba(252,239,114,.5)}
+
+/* BREACH — the world's colour leaks out past the box before you enter */
+body.hb-breach .co-band[data-project="goodrx"] .band-frame{transition:box-shadow .5s ease,transform .45s cubic-bezier(.22,1,.36,1)}
+body.hb-breach .co-band[data-project="goodrx"]:hover .band-frame,
+body.hb-breach .co-band[data-project="goodrx"]:focus-within .band-frame{
+  transform:scale(1.008);box-shadow:0 0 0 6px rgba(252,239,114,.55),0 0 48px 20px rgba(252,239,114,.5),0 24px 60px rgba(0,0,0,.22)}
+
+/* PORTAL (aggressive) — breaks the 2D-page illusion. The world is a 3D object that tilts and
+   parallax-shifts with the cursor and punches FORWARD out of the frame toward you. It escapes
+   the rectangle (overflow visible; body clips x so the spill never adds a scrollbar). The steep
+   perspective is what reads as depth. --prx/--pry (tilt) and --ptx/--pty (parallax) set by JS. */
+body.hb-portal{overflow-x:clip}
+body.hb-portal .co-band[data-project="goodrx"]{perspective:760px;perspective-origin:var(--porg,50% 50%)}
+body.hb-portal .co-band[data-project="goodrx"] .band-frame{overflow:visible;transform-style:preserve-3d;
+  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s ease}
+body.hb-portal .co-band[data-project="goodrx"] .band-frame .work-tile{transform-style:preserve-3d}
+body.hb-portal .co-band[data-project="goodrx"] .band-frame .work-tile img{
+  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s ease;will-change:transform;backface-visibility:hidden}
+body.hb-portal .co-band[data-project="goodrx"]:hover .band-frame,
+body.hb-portal .co-band[data-project="goodrx"]:focus-within .band-frame{
+  transform:rotateX(var(--pry,0deg)) rotateY(var(--prx,0deg));
+  box-shadow:0 110px 140px -44px rgba(0,0,0,.62)}
+body.hb-portal .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
+body.hb-portal .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{
+  transform:translate3d(var(--ptx,0px),var(--pty,0px),165px) scale(1.16);
+  border-radius:10px;box-shadow:0 80px 120px rgba(0,0,0,.55);position:relative;z-index:2}
+@media (prefers-reduced-motion: reduce){
+  body.hb-portal .co-band[data-project="goodrx"]:hover .band-frame,
+  body.hb-portal .co-band[data-project="goodrx"]:hover .band-frame .work-tile img{transform:none}
+}
+
+/* ==== WORLD-OPENING A/B (GoodRx band) — on hover the surface OPENS to reveal the world that
+   sits beneath it (sci-fi/fantasy portal traversal). A dark "veil" covers the world at rest and
+   parts on hover. Flip via the bottom bar. Transforms/mask only — cheap on the Air. ==== */
+@property --wo-r{syntax:'<percentage>';inherits:false;initial-value:0%}
+.world-veil{position:absolute;inset:0;z-index:1;pointer-events:none;display:none;overflow:hidden}
+body[class*="wo-"] .co-band[data-project="goodrx"] .world-veil{display:block}
+.world-veil .vh{position:absolute;background:rgba(17,18,20,.82);transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .5s ease}
+
+/* DOORS — two halves slide apart horizontally (blast doors) */
+body.wo-doors .world-veil .vh-a{inset:0 50% 0 0}
+body.wo-doors .world-veil .vh-b{inset:0 0 0 50%}
+body.wo-doors .co-band[data-project="goodrx"]:hover .world-veil .vh-a,
+body.wo-doors .co-band[data-project="goodrx"]:focus-within .world-veil .vh-a{transform:translateX(-101%)}
+body.wo-doors .co-band[data-project="goodrx"]:hover .world-veil .vh-b,
+body.wo-doors .co-band[data-project="goodrx"]:focus-within .world-veil .vh-b{transform:translateX(101%)}
+
+/* SHUTTER — two halves retract vertically */
+body.wo-shutter .world-veil .vh-a{inset:0 0 50% 0}
+body.wo-shutter .world-veil .vh-b{inset:50% 0 0 0}
+body.wo-shutter .co-band[data-project="goodrx"]:hover .world-veil .vh-a,
+body.wo-shutter .co-band[data-project="goodrx"]:focus-within .world-veil .vh-a{transform:translateY(-101%)}
+body.wo-shutter .co-band[data-project="goodrx"]:hover .world-veil .vh-b,
+body.wo-shutter .co-band[data-project="goodrx"]:focus-within .world-veil .vh-b{transform:translateY(101%)}
+
+/* RIFT — a glowing seam tears open down the middle */
+body.wo-rift .world-veil .vh-a{inset:0 50% 0 0;border-right:2px solid rgba(252,239,114,.95);box-shadow:8px 0 30px rgba(252,239,114,.6)}
+body.wo-rift .world-veil .vh-b{inset:0 0 0 50%;border-left:2px solid rgba(252,239,114,.95);box-shadow:-8px 0 30px rgba(252,239,114,.6)}
+body.wo-rift .co-band[data-project="goodrx"]:hover .world-veil .vh-a,
+body.wo-rift .co-band[data-project="goodrx"]:focus-within .world-veil .vh-a{transform:translateX(-101%)}
+body.wo-rift .co-band[data-project="goodrx"]:hover .world-veil .vh-b,
+body.wo-rift .co-band[data-project="goodrx"]:focus-within .world-veil .vh-b{transform:translateX(101%)}
+
+/* DILATE — an aperture opens from the centre (mask hole grows) */
+body.wo-dilate .world-veil .vh-b{display:none}
+body.wo-dilate .world-veil .vh-a{inset:0;--wo-r:0%;
+  -webkit-mask-image:radial-gradient(circle at 50% 50%, transparent var(--wo-r), #000 calc(var(--wo-r) + 2%));
+  mask-image:radial-gradient(circle at 50% 50%, transparent var(--wo-r), #000 calc(var(--wo-r) + 2%));
+  transition:--wo-r .65s ease}
+body.wo-dilate .co-band[data-project="goodrx"]:hover .world-veil .vh-a,
+body.wo-dilate .co-band[data-project="goodrx"]:focus-within .world-veil .vh-a{--wo-r:150%}
+
+@media (prefers-reduced-motion: reduce){ .world-veil .vh{transition:none} }
+
+/* BREAKOUT — the world is NOT bound to the card. It's the full-viewport #world-goodrx layer,
+   revealed through a portal that grows FROM the card centre and out past the frame's rectangle
+   (a partial "enter"). Radius + centre are set by JS. Click finishes the same gesture to full. */
+body.wo-breakout .co-band[data-project="goodrx"] .world-veil{display:none}
+body.wo-breakout .co-band[data-project="goodrx"] .band-frame{cursor:zoom-in}
+#world-goodrx.peek{display:block;pointer-events:none;z-index:1150;
+  clip-path:circle(var(--peek-r,0px) at var(--cx,50%) var(--cy,50%));
+  -webkit-clip-path:circle(var(--peek-r,0px) at var(--cx,50%) var(--cy,50%));
+  transition:clip-path .6s cubic-bezier(.22,1,.36,1),-webkit-clip-path .6s cubic-bezier(.22,1,.36,1)}
+@media (prefers-reduced-motion:reduce){ #world-goodrx.peek{transition:none} }
+
+/* ==== HERO REACTION (GoodRx) — the hero IMAGE ITSELF deforms at the cursor (not a decal floating on
+   top: the pixels move with the effect). --mx/--my (cursor position within the frame, %) and --tx/--ty
+   (tilt) set by JS. Flipped via #hx-bar. ==== */
+
+/* Drop the whole-frame "Stir" glow/scale so the image's own reaction reads (tilt owns its transform). */
+body.hov-warp .co-band[data-project="goodrx"]:hover .band-frame,
+body.hov-lens .co-band[data-project="goodrx"]:hover .band-frame,
+body.hov-melt .co-band[data-project="goodrx"]:hover .band-frame,
+body.hov-none .co-band[data-project="goodrx"]:hover .band-frame,
+body.hov-warp .co-band[data-project="goodrx"]:focus-within .band-frame,
+body.hov-lens .co-band[data-project="goodrx"]:focus-within .band-frame,
+body.hov-melt .co-band[data-project="goodrx"]:focus-within .band-frame{transform:none;box-shadow:0 18px 44px rgba(0,0,0,.16)}
+body.hov-none .co-band[data-project="goodrx"]:hover .band-frame{box-shadow:0 12px 34px rgba(0,0,0,.12)}
+
+body.hov-warp .co-band[data-project="goodrx"] .band-frame,
+body.hov-lens .co-band[data-project="goodrx"] .band-frame,
+body.hov-melt .co-band[data-project="goodrx"] .band-frame{position:relative;overflow:hidden}
+body.hov-warp .co-band[data-project="goodrx"] .band-frame .work-tile img,
+body.hov-lens .co-band[data-project="goodrx"] .band-frame .work-tile img{transition:filter .35s ease,transform .3s ease}
+
+/* WARP — the photo turns to liquid and ripples (SVG feDisplacementMap, self-animating) on hover. The
+   pixels of the image are what move. */
+body.hov-warp .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
+body.hov-warp .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{filter:url(#fx-ripple-f)}
+
+/* LENS — the photo magnifies at the cursor point (real zoom; the origin follows the cursor). */
+body.hov-lens .co-band[data-project="goodrx"] .band-frame .work-tile img{transform-origin:var(--mx,50%) var(--my,50%)}
+body.hov-lens .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
+body.hov-lens .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{transform:scale(1.18)}
+
+/* MELT — the photo erodes at the cursor into the GoodRx world beneath (a soft hole in the image itself
+   reveals the world; the image gives way where you point). The ::before is the world under the photo. */
+body.hov-melt .co-band[data-project="goodrx"] .band-frame::before{content:"";position:absolute;inset:0;z-index:1;
+  background:#fcef72 url("images/logos/goodrx.svg") center/140px no-repeat;background-blend-mode:multiply}
+body.hov-melt .co-band[data-project="goodrx"] .band-frame .work-tile{position:relative;z-index:2}
+body.hov-melt .co-band[data-project="goodrx"] .band-frame:hover .work-tile img,
+body.hov-melt .co-band[data-project="goodrx"] .band-frame:focus-within .work-tile img{
+  -webkit-mask:radial-gradient(circle 104px at var(--mx,50%) var(--my,50%),transparent 32%,#000 74%) no-repeat;
+  mask:radial-gradient(circle 104px at var(--mx,50%) var(--my,50%),transparent 32%,#000 74%) no-repeat}
+
+/* RIPPLE — cursor-local WebGL ripple: rings radiate through the PHOTO itself from the cursor (the
+   ripple IIFE overlays a WebGL canvas on the frame). Here we just prep the frame + drop the stir glow. */
+body.hov-ripple .co-band[data-project="goodrx"] .band-frame{position:relative;overflow:hidden}
+body.hov-ripple .co-band[data-project="goodrx"]:hover .band-frame,
+body.hov-ripple .co-band[data-project="goodrx"]:focus-within .band-frame{transform:none;box-shadow:0 18px 44px rgba(0,0,0,.16)}
+
+/* TILT — the hero tips in 3D toward the cursor (the whole surface reacts, image included). */
+body.hov-tilt .co-band[data-project="goodrx"]{perspective:900px}
+body.hov-tilt .co-band[data-project="goodrx"] .band-frame{transform-style:preserve-3d;
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease}
+body.hov-tilt .co-band[data-project="goodrx"]:hover .band-frame,
+body.hov-tilt .co-band[data-project="goodrx"]:focus-within .band-frame{
+  transform:rotateX(var(--ty,0deg)) rotateY(var(--tx,0deg)) scale(1.02);
+  box-shadow:0 40px 80px -30px rgba(0,0,0,.45)}
+@media (prefers-reduced-motion:reduce){
+  body.hov-warp .co-band[data-project="goodrx"] .band-frame .work-tile img{filter:none}
+}
+
+/* ==== CURSOR (GoodRx) — LOCKED (Chris, 2026-09-18): the regular system arrow stays (links stay
+   clickable); an "Enter world →" label trails to its right. #gx-cursor is a fixed label JS moves. */
+#gx-cursor{position:fixed;left:0;top:0;z-index:1260;pointer-events:none;opacity:0;
+  transform:translate(15px,14px);transition:opacity .2s ease;
+  padding:7px 12px;border-radius:999px;background:#141210;color:#fff;font:600 12px/1 var(--sans);white-space:nowrap;
+  box-shadow:0 6px 18px rgba(0,0,0,.28)}
+#gx-cursor::after{content:"Enter world \2192"}
+/* the old static corner cue is now redundant with the trailing label */
+.co-band[data-project="goodrx"] .world-cue{display:none}
+@media (prefers-reduced-motion:reduce){ #gx-cursor{transition:none} }
+
+/* ==== REALITY-FX (GoodRx) — page-level effects that break OUTSIDE the card. #rfx is a fixed
+   viewport layer anchored to the card centre (--cx/--cy from JS); effects spread across the whole
+   page, not the rectangle. Stacked on top of the aggressive Portal 3D. Flip via the bar. ==== */
+#rfx{position:fixed;inset:0;pointer-events:none;z-index:1100;display:none;overflow:hidden}
+body[class*="fx-"] #rfx{display:block}
+
+/* light bleed — world colour washes across the page from the card */
+#rfx .rfx-bleed{position:absolute;inset:0;opacity:0;transition:opacity .5s ease;
+  background:radial-gradient(circle at var(--cx,50%) var(--cy,50%), rgba(252,239,114,.55), rgba(252,239,114,.16) 170px, transparent 360px)}
+body.rfx-on.fx-bleed #rfx .rfx-bleed,
+body.rfx-on.fx-cracks #rfx .rfx-bleed{opacity:1}
+
+/* cracks — fractures spread from the card across the page, world glowing through the seams */
+#rfx .rfx-cracks{position:absolute;left:var(--cx,50%);top:var(--cy,50%);width:860px;height:860px;
+  transform:translate(-50%,-50%);overflow:visible;opacity:0;transition:opacity .25s ease,left .12s linear,top .12s linear;
+  filter:drop-shadow(0 0 2px rgba(0,0,0,.9)) drop-shadow(0 0 10px rgba(252,239,114,.6))}
+#rfx .rfx-cracks path{fill:none;stroke:rgba(255,240,150,.98);stroke-width:3;stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+  stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .6s cubic-bezier(.2,.7,.2,1)}
+body.rfx-on.fx-cracks #rfx .rfx-cracks{opacity:1}
+body.rfx-on.fx-cracks #rfx .rfx-cracks path{stroke-dashoffset:0}
+#rfx .rfx-cracks path:nth-child(2){transition-delay:.02s}
+#rfx .rfx-cracks path:nth-child(3){transition-delay:.04s}
+#rfx .rfx-cracks path:nth-child(4){transition-delay:.06s}
+#rfx .rfx-cracks path:nth-child(5){transition-delay:.08s}
+#rfx .rfx-cracks path:nth-child(6){transition-delay:.10s}
+#rfx .rfx-cracks path:nth-child(7){transition-delay:.12s}
+#rfx .rfx-cracks path:nth-child(8){transition-delay:.14s}
+
+/* shards — fragments of the world fly out into the page */
+#rfx .rfx-shards i{position:absolute;left:var(--cx,50%);top:var(--cy,50%);width:34px;height:34px;
+  background:#fcef72;clip-path:polygon(0 0,100% 22%,72% 100%,10% 68%);opacity:0;
+  transform:translate(-50%,-50%) scale(.2) rotate(0deg);
+  transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .6s ease}
+body.rfx-on.fx-shards #rfx .rfx-shards i{opacity:1;
+  transform:translate(calc(-50% + var(--tx) * .62),calc(-50% + var(--ty) * .62)) scale(1) rotate(var(--rot))}
+
+@media (prefers-reduced-motion:reduce){
+  #rfx .rfx-cracks path,#rfx .rfx-shards i,#rfx .rfx-bleed{transition:none}
+}
+
+/* ==== EDGE-SHATTER (FFX-style field→battle) — the panel's EDGES break apart: shards fly off the
+   perimeter in 3D + a bloom builds, so it reads as the screen transitioning into a world, not 2D
+   decoration. Frame-anchored so the EDGES react; rides the Portal tilt (pairs with hb-portal). ==== */
+.fx-edge{position:absolute;inset:0;pointer-events:none;z-index:3;display:none;transform-style:preserve-3d}
+body.fx-shatter .co-band[data-project="goodrx"] .fx-edge{display:block}
+.fx-edge::before{content:"";position:absolute;inset:-8%;pointer-events:none;border-radius:14px;
+  background:radial-gradient(circle at 50% 50%, rgba(255,242,170,.6), transparent 62%);
+  opacity:0;transition:opacity .5s ease;mix-blend-mode:screen}
+.fx-edge i{position:absolute;width:var(--sz,20px);height:var(--sz,20px);
+  background:#fcef72;clip-path:polygon(0 0,100% 22%,72% 100%,14% 72%);box-shadow:0 6px 16px rgba(0,0,0,.35);
+  transform:translate(-50%,-50%) scale(.12) rotate(0deg);opacity:0;
+  transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .55s ease}
+body.fx-shatter .co-band[data-project="goodrx"]:hover .fx-edge::before,
+body.fx-shatter .co-band[data-project="goodrx"]:focus-within .fx-edge::before{opacity:1}
+body.fx-shatter .co-band[data-project="goodrx"]:hover .fx-edge i,
+body.fx-shatter .co-band[data-project="goodrx"]:focus-within .fx-edge i{opacity:1;
+  transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) translateZ(var(--dz,40px)) scale(1) rotate(var(--r))}
+@media (prefers-reduced-motion:reduce){ .fx-edge i,.fx-edge::before{transition:none} }
+
+/* ==== MORE EDGE-DRIVEN "materials" — each mocks a different way the panel's edge breaks/transforms
+   to transition into the world. Rough mocks to flip + feel; not polished. ==== */
+/* the perimeter-piece layer is reused by shatter / dissolve / warp */
+body.fx-warp .co-band[data-project="goodrx"] .fx-edge{display:block}
+
+/* DISSOLVE — edges disintegrate into points-of-light (ties to the dot-viz/particle aesthetic) */
+@keyframes fx-diss{0%{opacity:0;transform:translate(-50%,-50%) scale(.25)}22%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) translateZ(var(--dz,40px)) scale(.4)}}
+body.fx-dissolve .fx-edge i{clip-path:circle(50%);background:radial-gradient(circle,#fff7cf,#fcef72 72%);
+  box-shadow:0 0 10px 2px rgba(252,239,114,.8);width:calc(var(--sz)*.6);height:calc(var(--sz)*.6)}
+body.fx-dissolve .co-band[data-project="goodrx"]:hover .fx-edge i,
+body.fx-dissolve .co-band[data-project="goodrx"]:focus-within .fx-edge i{animation:fx-diss 1.15s ease-out infinite}
+body.fx-dissolve .fx-edge i:nth-child(3n){animation-delay:.35s}
+body.fx-dissolve .fx-edge i:nth-child(3n+1){animation-delay:.7s}
+
+/* WARP — edges streak toward the vanishing point as you're pulled in (FFX zoom / hyperspace) */
+body.fx-warp .fx-edge i{clip-path:none;border-radius:2px;height:3px;width:calc(var(--sz)*.9);
+  background:linear-gradient(90deg,rgba(255,240,150,0),rgba(255,240,150,.95));box-shadow:0 0 8px rgba(252,239,114,.6)}
+body.fx-warp .co-band[data-project="goodrx"]:hover .fx-edge i,
+body.fx-warp .co-band[data-project="goodrx"]:focus-within .fx-edge i{opacity:.9;
+  transform:translate(calc(-50% + var(--dx)*2.4),calc(-50% + var(--dy)*2.4)) rotate(var(--r)) scaleX(3.4)}
+
+/* FOLD — the panel folds away on an edge hinge (Inception / Doctor Strange), revealing behind */
+body.fx-fold .co-band[data-project="goodrx"] .band-frame{overflow:visible;transform-origin:left center;
+  transition:transform .6s cubic-bezier(.22,1,.36,1),box-shadow .6s ease}
+body.fx-fold .co-band[data-project="goodrx"]:hover .band-frame,
+body.fx-fold .co-band[data-project="goodrx"]:focus-within .band-frame{
+  transform:perspective(1000px) rotateY(-52deg);box-shadow:40px 40px 90px rgba(0,0,0,.5)}
+
+/* PEEL — the panel peels up from a corner like a page, revealing the layer beneath */
+body.fx-peel .co-band[data-project="goodrx"] .band-frame{overflow:visible;transform-origin:top left;
+  transition:transform .6s cubic-bezier(.22,1,.36,1),box-shadow .6s ease}
+body.fx-peel .co-band[data-project="goodrx"]:hover .band-frame,
+body.fx-peel .co-band[data-project="goodrx"]:focus-within .band-frame{
+  transform:perspective(1200px) rotate3d(-1,1,0,44deg);box-shadow:0 70px 100px rgba(0,0,0,.5)}
+
+/* BURN — light eats the panel from its edges inward (film burn / bloom wipe) */
+body.fx-burn .co-band[data-project="goodrx"] .band-frame{position:relative}
+body.fx-burn .co-band[data-project="goodrx"] .band-frame::after{content:"";position:absolute;inset:0;pointer-events:none;
+  z-index:4;box-shadow:inset 0 0 0 0 rgba(255,246,196,0);transition:box-shadow .6s ease}
+body.fx-burn .co-band[data-project="goodrx"]:hover .band-frame::after,
+body.fx-burn .co-band[data-project="goodrx"]:focus-within .band-frame::after{
+  box-shadow:inset 0 0 70px 34px rgba(255,246,196,.95)}
+
+/* RIPPLE — the surface distorts like water/heat (SVG displacement). Perf-heavier; mock only. */
+body.fx-ripple .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
+body.fx-ripple .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{filter:url(#fx-ripple-f)}
+
+#hb-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;display:flex;
+  gap:4px;padding:6px;background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:var(--sans);backdrop-filter:blur(6px)}
+#hb-bar button{appearance:none;border:0;background:transparent;color:#ddd;font-size:12px;font-weight:600;
+  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
+#hb-bar button:hover{background:rgba(255,255,255,.08)}
+#hb-bar button.on{background:var(--accent);color:#fff}
+body.world-goodrx-open #hb-bar{display:none}
+#hx-bar{position:fixed;left:50%;bottom:58px;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;
+  gap:3px;padding:5px 8px;background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:var(--sans);backdrop-filter:blur(6px)}
+#hx-bar span{color:#8a8f98;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:0 5px 0 3px}
+#hx-bar span.sep{border-left:1px solid rgba(255,255,255,.14);margin-left:4px;padding-left:9px}
+#hx-bar button{appearance:none;border:0;background:transparent;color:#ddd;font-size:12px;font-weight:600;
+  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
+#hx-bar button:hover{background:rgba(255,255,255,.08)}
+#hx-bar button.on{background:var(--accent);color:#fff}
+body.world-goodrx-open #hx-bar{display:none}
+#tune{position:fixed;top:12px;right:12px;z-index:10000;width:212px;max-height:88vh;overflow:auto;
+  background:rgba(20,20,22,.94);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px 12px;
+  box-shadow:0 8px 30px rgba(0,0,0,.45);font-family:var(--sans);color:#ddd;backdrop-filter:blur(6px)}
+#tune h4{margin:8px 0 3px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8a8f98;font-weight:700}
+#tune h4:first-child{margin-top:0}
+#tune .row{display:flex;align-items:center;gap:6px;margin:5px 0}
+#tune label{flex:0 0 58px;font-size:11px;color:#cfd3d8}
+#tune input[type=range]{flex:1;height:16px;accent-color:var(--accent,#2a9d4f);min-width:0}
+#tune .val{flex:0 0 30px;font-size:10px;text-align:right;color:#8a8f98;font-variant-numeric:tabular-nums}
+#tune .sw{width:100%;height:9px;border-radius:4px;margin-top:4px;border:1px solid rgba(255,255,255,.12)}
+#tune button{margin-top:8px;width:100%;appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;
+  color:#ddd;font:600 11px/1 var(--sans);padding:6px;border-radius:6px;cursor:pointer}
+#tune button:hover{background:rgba(255,255,255,.08)}
+body.world-goodrx-open #tune{display:none}
 </style>
 </head><body>
 
@@ -1956,7 +2363,7 @@ body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400
   .co-head h3{margin:0 0 6px}
   .co-head p{margin:0 0 18px}
   .work-cards{margin-top:18px}
-  /* ---- signature motion #1: Cosmos-style gentle image zoom on hover (bands + cards).
+  /* ---- signature motion #1: gentle image zoom on hover (bands + cards).
      Frames already clip overflow; easing is a soft ease-out. Reduced-motion opts out. ---- */
   .co-band[data-hero] .band-frame img,
   .wcard-thumb img{transition:transform .55s cubic-bezier(.22,1,.36,1)}
@@ -2054,6 +2461,26 @@ body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400
       <img src="images/work/goodrx-hero.png" width="2360" height="680" alt="GoodRx Research drug-price data-viz and the Webby-winning Iodine product" loading="eager" decoding="async">
       <span class="work-tile-label"><b>GoodRx (Iodine)</b><span>Research data-viz to award-winning product</span></span>
     </button>
+      <span class="world-cue">Enter world →</span>
+      <div class="world-veil" aria-hidden="true"><span class="vh vh-a"></span><span class="vh vh-b"></span></div>
+      <div class="fx-edge" aria-hidden="true">
+        <i style="left:10%;top:0;--dx:-24px;--dy:-78px;--r:-32deg;--sz:24px;--dz:70px"></i>
+        <i style="left:28%;top:0;--dx:-10px;--dy:-96px;--r:18deg;--sz:18px;--dz:50px"></i>
+        <i style="left:46%;top:0;--dx:2px;--dy:-104px;--r:-22deg;--sz:26px;--dz:92px"></i>
+        <i style="left:64%;top:0;--dx:12px;--dy:-90px;--r:26deg;--sz:16px;--dz:44px"></i>
+        <i style="left:84%;top:0;--dx:28px;--dy:-72px;--r:-16deg;--sz:22px;--dz:64px"></i>
+        <i style="left:14%;top:100%;--dx:-28px;--dy:78px;--r:22deg;--sz:20px;--dz:56px"></i>
+        <i style="left:34%;top:100%;--dx:-8px;--dy:98px;--r:-20deg;--sz:24px;--dz:80px"></i>
+        <i style="left:54%;top:100%;--dx:6px;--dy:106px;--r:30deg;--sz:16px;--dz:48px"></i>
+        <i style="left:76%;top:100%;--dx:20px;--dy:88px;--r:-24deg;--sz:22px;--dz:66px"></i>
+        <i style="left:92%;top:100%;--dx:30px;--dy:66px;--r:16deg;--sz:18px;--dz:52px"></i>
+        <i style="left:0;top:32%;--dx:-88px;--dy:-16px;--r:-28deg;--sz:22px;--dz:60px"></i>
+        <i style="left:0;top:66%;--dx:-100px;--dy:14px;--r:24deg;--sz:18px;--dz:50px"></i>
+        <i style="left:100%;top:30%;--dx:90px;--dy:-18px;--r:26deg;--sz:20px;--dz:58px"></i>
+        <i style="left:100%;top:68%;--dx:104px;--dy:16px;--r:-22deg;--sz:24px;--dz:74px"></i>
+        <i style="left:0;top:0;--dx:-66px;--dy:-66px;--r:-30deg;--sz:20px;--dz:60px"></i>
+        <i style="left:100%;top:100%;--dx:70px;--dy:70px;--r:30deg;--sz:22px;--dz:70px"></i>
+      </div>
       </div>
     </section>
     <section class="co-band reveal" data-project="clover" data-n="3" data-hero style="--band:#527369">
@@ -2091,7 +2518,7 @@ body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400
         <span class="wcard-body"><span class="wcard-name">Modus Create</span><span class="wcard-desc">Cross-app dark mode shipped to a 500K+ user base, in production TypeScript.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money">
-        <span class="wcard-thumb" style="--band:#3b82f6"><span class="wcard-thumb-label">StartPlaying</span></span>
+        <span class="wcard-thumb" style="--band:#3b82f6" data-kicker="YC W20 · a16z"><span class="wcard-thumb-label">StartPlaying</span></span>
         <span class="wcard-body"><span class="wcard-name">StartPlaying<span class="tag-outcome">YC W20 · a16z</span></span><span class="wcard-desc">Founding designer. Shipped the payment and payout system.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder">
@@ -2103,7 +2530,7 @@ body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400
         <span class="wcard-body"><span class="wcard-name">TaskRabbit<span class="tag-outcome">Acq. IKEA</span></span><span class="wcard-desc">Tasker experience, NPS -5 to mid-50s.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music">
-        <span class="wcard-thumb" style="--band:#232f3e"><span class="wcard-thumb-label">Amazon</span></span>
+        <span class="wcard-thumb" style="--band:#232f3e" data-kicker="Amazon Music"><span class="wcard-thumb-label">Amazon</span></span>
         <span class="wcard-body"><span class="wcard-name">Amazon</span><span class="wcard-desc">Amazon Music. Built the importer and matcher that brought local and cloud music into one library.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
     </div>
@@ -6610,6 +7037,479 @@ body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400
   document.body.classList.add('tag-chip-accent'); // chip-accent outcome metadata
   renderHero();
 
+})();
+</script>
+<!-- SPIKE-ONLY hover-breakout flipper (GoodRx band). Remove before porting. -->
+<div id="hb-bar" role="group" aria-label="Reality-break treatment">
+  <button data-mode="fx-dissolve" class="on">Dissolve</button>
+  <button data-mode="fx-fold">Fold</button>
+  <button data-mode="hb-portal fx-warp">Warp</button>
+  <button data-mode="fx-peel">Peel</button>
+  <button data-mode="hb-portal fx-ripple">Ripple</button>
+  <button data-mode="hb-portal fx-burn">Burn</button>
+  <button data-mode="hb-portal fx-shatter">Shatter</button>
+  <button data-mode="hb-portal">Portal</button>
+</div>
+<!-- SPIKE-ONLY hover/enter tuning (GoodRx band). Two orthogonal questions. Remove before porting. -->
+<div id="gx-cursor" aria-hidden="true"></div>
+<div id="hx-bar" role="group" aria-label="Material: one language across hover, enter and exit">
+  <span>Transition</span>
+  <button data-g="mat" data-v="mat-dissolve" class="on">Dissolve</button>
+  <button data-g="mat" data-v="mat-ripple">Ripple</button>
+  <span class="sep">Look</span>
+  <button data-g="skin" data-v="skin-digital" class="on">Digital</button>
+  <button data-g="skin" data-v="skin-blueprint">Blueprint</button>
+</div>
+<script>
+(function(){
+  var bar=document.getElementById('hx-bar'); if(!bar) return;
+  var groups={mat:['mat-ripple','mat-dissolve'],skin:['skin-blueprint','skin-digital']};
+  function pick(btn){ var g=btn.getAttribute('data-g'), v=btn.getAttribute('data-v');
+    groups[g].forEach(function(c){document.body.classList.remove(c);});
+    document.body.classList.add(v);
+    [].forEach.call(bar.querySelectorAll('button[data-g="'+g+'"]'),function(b){b.classList.toggle('on',b===btn);});
+  }
+  document.body.classList.add('mat-dissolve'); document.body.classList.add('skin-digital'); // transition + look
+  bar.addEventListener('click',function(e){var b=e.target.closest('button'); if(b) pick(b);});
+})();
+</script>
+<script>
+(function(){
+  var bar=document.getElementById('hb-bar');if(!bar)return;
+  var all=['hb-portal','wo-doors','wo-shutter','wo-rift','wo-dilate','wo-breakout','fx-cracks','fx-bleed','fx-shards','fx-shatter','fx-dissolve','fx-warp','fx-fold','fx-peel','fx-burn','fx-ripple'];
+  var btns=[].slice.call(bar.querySelectorAll('button'));
+  function set(v){
+    all.forEach(function(c){document.body.classList.remove(c);});
+    v.split(' ').forEach(function(c){ if(c) document.body.classList.add(c); });
+    btns.forEach(function(x){x.classList.toggle('on',x.getAttribute('data-mode')===v);});
+  }
+  set('fx-dissolve');
+  bar.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; set(b.getAttribute('data-mode')); });
+
+  var band=document.querySelector('.co-band[data-project="goodrx"]');
+  var frame=band&&band.querySelector('.band-frame');
+  var world=document.getElementById('world-goodrx');
+  var rfx=document.getElementById('rfx');
+  if(!band||!frame) return;
+
+  function setFx(x,y){ if(!rfx) return; rfx.style.setProperty('--cx',Math.round(x)+'px'); rfx.style.setProperty('--cy',Math.round(y)+'px'); }
+
+  // Effects originate at + follow the cursor; Portal tilts toward it
+  band.addEventListener('mousemove',function(e){
+    if(document.body.className.indexOf('fx-')>-1) setFx(e.clientX,e.clientY);
+    if(!document.body.classList.contains('hb-portal'))return;
+    var r=frame.getBoundingClientRect();
+    var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+    frame.style.setProperty('--prx',(px*22).toFixed(2)+'deg');
+    frame.style.setProperty('--pry',(-py*22).toFixed(2)+'deg');
+    frame.style.setProperty('--ptx',(-px*54).toFixed(1)+'px');
+    frame.style.setProperty('--pty',(-py*54).toFixed(1)+'px');
+    band.style.setProperty('--porg',(50+px*100).toFixed(0)+'% '+(50+py*100).toFixed(0)+'%');
+  });
+
+  band.addEventListener('mouseenter',function(e){
+    // reality-fx: originate at the cursor and fire (edge-focused, not viewport-wide)
+    if(document.body.className.indexOf('fx-')>-1){ setFx(e.clientX,e.clientY); document.body.classList.add('rfx-on'); }
+    // breakout peek (kept for reference)
+    if(document.body.classList.contains('wo-breakout') && !document.body.classList.contains('world-goodrx-open')){
+      var r=frame.getBoundingClientRect();
+      world.style.setProperty('--cx',Math.round(r.left+r.width/2)+'px');
+      world.style.setProperty('--cy',Math.round(r.top+r.height/2)+'px');
+      world.style.setProperty('--peek-r','0px'); world.classList.add('peek');
+      requestAnimationFrame(function(){requestAnimationFrame(function(){ world.style.setProperty('--peek-r','46vmax'); });});
+    }
+  });
+
+  band.addEventListener('mouseleave',function(){
+    frame.style.setProperty('--prx','0deg'); frame.style.setProperty('--pry','0deg');
+    frame.style.setProperty('--ptx','0px'); frame.style.setProperty('--pty','0px');
+    band.style.setProperty('--porg','50% 50%');
+    document.body.classList.remove('rfx-on');
+    if(world && world.classList.contains('peek') && !document.body.classList.contains('world-goodrx-open')){
+      world.style.setProperty('--peek-r','0px');
+      var onEnd=function(){ if(!document.body.classList.contains('world-goodrx-open')) world.classList.remove('peek'); world.removeEventListener('transitionend',onEnd); };
+      world.addEventListener('transitionend',onEnd);
+    }
+  });
+})();
+</script>
+<!-- SPIKE-ONLY svg filter for the ripple material -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="fx-ripple-f" x="-25%" y="-25%" width="150%" height="150%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="7" result="n">
+    <animate attributeName="baseFrequency" dur="9s" values="0.012 0.02;0.02 0.014;0.012 0.02" repeatCount="indefinite"/>
+  </feTurbulence>
+  <feDisplacementMap in="SourceGraphic" in2="n" scale="24" xChannelSelector="R" yChannelSelector="G"/>
+</filter></svg>
+<!-- SPIKE-ONLY reality-fx layer (GoodRx). Effects break outside the card into the page. -->
+<div id="rfx" aria-hidden="true">
+  <div class="rfx-bleed"></div>
+  <svg class="rfx-cracks" viewBox="0 0 2400 2400" fill="none" aria-hidden="true">
+    <path pathLength="1" d="M1200 1200 L1180 950 L1244 720 L1176 430 L1212 120"/>
+    <path pathLength="1" d="M1200 1200 L1424 1082 L1652 986 L1904 802 L2170 624"/>
+    <path pathLength="1" d="M1200 1200 L1472 1232 L1724 1180 L2028 1236 L2330 1190"/>
+    <path pathLength="1" d="M1200 1200 L1430 1362 L1652 1560 L1884 1764 L2124 2010"/>
+    <path pathLength="1" d="M1200 1200 L1232 1470 L1170 1724 L1236 2014 L1192 2306"/>
+    <path pathLength="1" d="M1200 1200 L978 1352 L740 1544 L468 1742 L196 1986"/>
+    <path pathLength="1" d="M1200 1200 L940 1168 L680 1232 L356 1180 L74 1234"/>
+    <path pathLength="1" d="M1200 1200 L980 1040 L758 858 L468 700 L176 468"/>
+  </svg>
+  <div class="rfx-shards">
+    <i style="--tx:-232px;--ty:-168px;--rot:-26deg"></i>
+    <i style="--tx:214px;--ty:-196px;--rot:22deg"></i>
+    <i style="--tx:312px;--ty:44px;--rot:36deg"></i>
+    <i style="--tx:248px;--ty:224px;--rot:-18deg"></i>
+    <i style="--tx:24px;--ty:308px;--rot:28deg"></i>
+    <i style="--tx:-248px;--ty:246px;--rot:20deg"></i>
+    <i style="--tx:-324px;--ty:26px;--rot:-32deg"></i>
+    <i style="--tx:-70px;--ty:-306px;--rot:-22deg"></i>
+  </div>
+</div>
+<!-- SPIKE-ONLY: GoodRx "world" prototype (circular expand reveal). Not wired to the real company view yet. -->
+<div id="world-goodrx" aria-hidden="true">
+  <div class="world-chrome">
+    <button class="world-back" type="button"><span aria-hidden="true">←</span> All work</button>
+    <span class="logo">Chris Lam</span>
+  </div>
+  <div class="world-goodrx-inner">
+    <img class="wgx-logo" src="images/logos/goodrx.svg" alt="GoodRx">
+    <p class="wgx-kicker">First full-time designer</p>
+    <h2>GoodRx (Iodine)</h2>
+    <p class="wgx-lede">Coupon conversion 2% to 5%, a Webby-winning product, and data-viz cited in the NYT.</p>
+    <div class="wgx-demo"><img src="images/work/goodrx-hero.png" alt="GoodRx Research data-viz and the Iodine product"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var band = document.querySelector('.co-band[data-project="goodrx"]');
+  var world = document.getElementById('world-goodrx');
+  if(!band || !world) return;
+  var heroEl = band.querySelector('.band-frame') || band; // the interactive zone is the hero IMAGE, not the title text
+  var origin = { x: window.innerWidth/2, y: window.innerHeight/2 };
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function maxR(x,y){ return Math.hypot(Math.max(x, innerWidth-x), Math.max(y, innerHeight-y)); }
+
+  function enter(x,y){
+    origin = { x:x, y:y };
+    var show = function(){ world.classList.remove('peek'); world.style.clipPath=''; world.style.webkitClipPath=''; document.body.classList.add('world-goodrx-open'); world.setAttribute('aria-hidden','false'); world.scrollTop = 0; };
+    if(reduce.matches || !document.startViewTransition){ show(); return; }
+    var root = document.documentElement, r = maxR(x,y);
+    root.classList.add('vt-world');
+    var vt = document.startViewTransition(show);
+    vt.ready.then(function(){
+      root.animate(
+        { clipPath: ['circle(0px at '+x+'px '+y+'px)', 'circle('+r+'px at '+x+'px '+y+'px)'] },
+        { duration: 640, easing: 'cubic-bezier(.22,1,.36,1)', pseudoElement: '::view-transition-new(root)' }
+      );
+    }).catch(function(){});
+    vt.finished.finally(function(){ root.classList.remove('vt-world'); });
+  }
+  // Exit mirrors the entry: a radial collapse. Anchored where you click "back", or centered on Esc.
+  function exit(x,y){
+    if(typeof x!=='number'){ x=innerWidth/2; y=innerHeight/2; }
+    dissolveExit(x,y);
+  }
+  // ---- DISSOLVE material: sample the card into particles that scatter from the EDGES inward,
+  //      revealing the full world beneath. Canvas (one pass, typed loop) — fine on a MacBook Air. ----
+  var dcanvas, dctx, draf;
+  function ensureCanvas(){
+    if(dcanvas) return;
+    dcanvas=document.createElement('canvas');
+    dcanvas.id='fx-canvas';
+    dcanvas.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1250;display:none';
+    document.body.appendChild(dcanvas); dctx=dcanvas.getContext('2d');
+  }
+  function showWorld(){ world.classList.remove('peek'); world.style.clipPath=''; world.style.webkitClipPath=''; document.body.classList.add('world-goodrx-open'); world.setAttribute('aria-hidden','false'); world.scrollTop=0; }
+  // Offscreen low-res copy of the hero so the dissolve-wave dots carry the PHOTO'S colours (the image
+  // dissolving into Chris's data-viz dots), not generic sparks. Sampled once into a buffer.
+  var heroData=null, heroW=0, heroH=0;
+  function ensureHeroSample(){ if(heroData) return; var im=heroEl.querySelector('img');
+    if(!im || !im.complete || im.naturalWidth===0) return;
+    heroW=160; heroH=Math.max(1,Math.round(160*im.naturalHeight/im.naturalWidth));
+    var oc=document.createElement('canvas'); oc.width=heroW; oc.height=heroH; var octx=oc.getContext('2d');
+    try{ octx.drawImage(im,0,0,heroW,heroH); heroData=octx.getImageData(0,0,heroW,heroH).data; }catch(e){ heroData=null; } }
+  function sampleHero(px,py){ if(!heroData) return null; var r=heroEl.getBoundingClientRect();
+    if(px<r.left||px>r.right||py<r.top||py>r.bottom) return null;
+    var ix=Math.min(heroW-1,Math.max(0,Math.floor((px-r.left)/r.width*heroW))),
+        iy=Math.min(heroH-1,Math.max(0,Math.floor((py-r.top)/r.height*heroH))), o=(iy*heroW+ix)*4;
+    return 'rgb('+heroData[o]+','+heroData[o+1]+','+heroData[o+2]+')'; }
+  // Anchored radial expand-reveal from the click point (the "pull-in"), with the material
+  // (dissolving particles) riding the EXPANDING EDGE. Scaffold for all materials — swap the edge
+  // renderer for warp/ripple later; the reveal geometry stays.
+  // opening=true expands to reveal the world (the pull-in); opening=false collapses to hide it.
+  // Dense dust (snap-density) rides the moving edge. Scaffold for all materials.
+  function material(){ return document.body.classList.contains('mat-ripple') ? 'ripple' : 'dissolve'; }
+  function radialTransition(x,y,opening,startR){
+    origin={x:x,y:y}; startR=startR||0;
+    var mat=material();
+    ensureHeroSample();
+    var T=window.__TUNE||{}, DIGI=T.digiCss||['#4fc276','#2a9d4f','#8fe6ab'];
+    var COUNT=T.count||160, CSZ=T.size!==undefined?T.size:2.6, GREEN=T.greenFrac!==undefined?T.greenFrac:0.32, TDUR=T.tdur||1;
+    var maxR=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
+    var dpr=Math.min(window.devicePixelRatio||1,2);
+    ensureCanvas(); dcanvas.width=Math.round(innerWidth*dpr); dcanvas.height=Math.round(innerHeight*dpr); dctx.setTransform(dpr,0,0,dpr,0,0); dcanvas.style.display='block';
+    function clip(r){ var c='circle('+Math.max(0,r)+'px at '+x+'px '+y+'px)'; world.style.clipPath=c; world.style.webkitClipPath=c; }
+    if(opening){ world.classList.remove('peek'); world.style.transition='none'; document.body.classList.add('world-goodrx-open'); world.setAttribute('aria-hidden','false'); world.scrollTop=0; }
+    var parts=[], start=performance.now(), DUR=(opening?860:660)*TDUR;
+    function done(){ dctx.clearRect(0,0,innerWidth,innerHeight); dcanvas.style.display='none'; world.style.clipPath=''; world.style.webkitClipPath='';
+      if(!opening){ document.body.classList.remove('world-goodrx-open'); world.setAttribute('aria-hidden','true'); } }
+    function tick(now){
+      var p=Math.min(1,(now-start)/DUR), e=1-Math.pow(1-p,3), r=opening?(startR+e*(maxR-startR)):(1-e)*maxR;
+      dctx.clearRect(0,0,innerWidth,innerHeight);
+      if(mat==='ripple'){
+        // DISSOLVE-AS-WAVE (best of both): the reveal boundary wobbles like a wave rippling out from the
+        // click, and the wavefront IS the hero dissolving into dots — each dot sampled from the photo's
+        // colours, then dispersing outward and fading (dissolve trail). Wave motion + dissolve texture +
+        // his data-viz dots, one gesture.
+        var phase=now*0.006, amp=Math.min(18, r*0.16);
+        var poly=[], N=Math.max(48, Math.min(120, Math.floor(r*0.25)));
+        for(var a=0;a<=N;a++){ var ang=a/N*6.2832, rr=Math.max(0, r+Math.sin(ang*7+phase)*amp);
+          poly.push((x+Math.cos(ang)*rr).toFixed(1)+'px '+(y+Math.sin(ang)*rr).toFixed(1)+'px'); }
+        var cp='polygon('+poly.join(',')+')'; world.style.clipPath=cp; world.style.webkitClipPath=cp;
+        // spawn a rippling ring of dissolving dots at the wavefront
+        if(p<0.96 && r>2){ var cnt=Math.max(30, Math.min(150, Math.floor(r*0.30)));
+          for(var b=0;b<cnt;b++){ var a3=(b/cnt)*6.2832, rr3=r+Math.sin(a3*7+phase)*amp+(Math.random()*12-4),
+            sx=x+Math.cos(a3)*rr3, sy=y+Math.sin(a3)*rr3, col=sampleHero(sx,sy);
+            parts.push({x:sx,y:sy, vx:Math.cos(a3)*(0.4+Math.random()*1.3), vy:Math.sin(a3)*(0.4+Math.random()*1.3),
+              life:0.42+Math.random()*0.34, sz:1.6+Math.random()*2.0,
+              col: col || ((b%6===0)?'#141210':(Math.random()<0.5?'#fff7cf':'#fcef72'))}); } }
+        for(var k=parts.length-1;k>=0;k--){ var q=parts[k]; q.x+=q.vx; q.y+=q.vy; q.life-=0.03; if(q.life<=0){parts.splice(k,1);continue;}
+          dctx.globalAlpha=Math.max(0,Math.min(1,q.life*1.7)); dctx.fillStyle=q.col; dctx.fillRect(q.x,q.y,q.sz,q.sz); }
+        if(p<1 || parts.length) draf=requestAnimationFrame(tick); else done();
+        return;
+      }
+      clip(r);
+      // DISSOLVE — the hero breaks into GRAINY GREEN square data-cells scattering off the moving edge
+      // (same digital vocabulary as the hover). Most sample the photo; some detach as bright green cells.
+      if(p<0.95 && r>2){ for(var n=0;n<COUNT;n++){ var a2=Math.random()*6.2832, rr2=r+(Math.random()*44-30),
+        sx=x+Math.cos(a2)*rr2, sy=y+Math.sin(a2)*rr2, hc=sampleHero(sx,sy);
+        parts.push({x:sx, y:sy,
+          vx:Math.cos(a2)*(0.4+Math.random()*1.9)+(Math.random()-0.5)*0.9,
+          vy:Math.sin(a2)*(0.4+Math.random()*1.9)-(0.5+Math.random()*1.2),
+          life:0.55+Math.random()*0.5, sz:1.6+Math.random()*CSZ,
+          col:(Math.random()<GREEN)?DIGI[(Math.random()*DIGI.length)|0]:(hc||DIGI[1])}); } }
+      for(var k=parts.length-1;k>=0;k--){ var q=parts[k]; q.x+=q.vx; q.y+=q.vy; q.vy-=0.008; q.life-=0.026; if(q.life<=0){parts.splice(k,1);continue;}
+        dctx.globalAlpha=Math.max(0,q.life*(0.6+0.5*Math.random())); dctx.fillStyle=q.col; dctx.fillRect(q.x,q.y,q.sz,q.sz); } // per-frame flicker = grain
+      if(p<1 || parts.length) draf=requestAnimationFrame(tick); else done();
+    }
+    cancelAnimationFrame(draf); draf=requestAnimationFrame(tick);
+  }
+  function closeWorld(){ document.body.classList.remove('world-goodrx-open'); world.setAttribute('aria-hidden','true'); }
+  function dissolveEnter(x,y,startR){ if(reduce.matches){ showWorld(); return; } radialTransition(x,y,true,startR||0); }
+  function dissolveExit(x,y){ if(reduce.matches){ closeWorld(); return; } radialTransition(x,y,false); }
+
+  // ---- Hover charge: the dissolve dust FOLLOWS the cursor while over the hero, so hover→click is
+  //      one continuous motion (the transition launches from where the charge already is). ----
+  var hoverOn=false, hraf, hx=innerWidth/2, hy=innerHeight/2, hparts=[], PEEK_R=58;
+  function sizeDcanvas(){ var d=Math.min(window.devicePixelRatio||1,2); dcanvas.width=Math.round(innerWidth*d); dcanvas.height=Math.round(innerHeight*d); dctx.setTransform(d,0,0,d,0,0); }
+  function hloop(){
+    if(document.body.classList.contains('world-goodrx-open')) hoverOn=false;
+    if(hoverOn){
+      for(var n=0;n<8;n++){ var a=Math.random()*6.2832, rr=42+(Math.random()*16-8);
+        hparts.push({x:hx+Math.cos(a)*rr, y:hy+Math.sin(a)*rr, vx:Math.cos(a)*(0.3+Math.random()*0.7), vy:Math.sin(a)*(0.3+Math.random()*0.7), life:0.30+Math.random()*0.24, sz:1.5+Math.random()*1.8, col:(Math.random()<0.5?'#fff7cf':'#fcef72')}); }
+    }
+    dctx.clearRect(0,0,innerWidth,innerHeight);
+    for(var k=hparts.length-1;k>=0;k--){ var q=hparts[k]; q.x+=q.vx; q.y+=q.vy; q.life-=0.07; if(q.life<=0){hparts.splice(k,1);continue;} dctx.globalAlpha=Math.max(0,q.life); dctx.fillStyle=q.col; dctx.fillRect(q.x,q.y,q.sz,q.sz); }
+    if(hoverOn || hparts.length) hraf=requestAnimationFrame(hloop);
+    else { dctx.clearRect(0,0,innerWidth,innerHeight); dcanvas.style.display='none'; }
+  }
+  function endHoverPeek(){ if(!document.body.classList.contains('world-goodrx-open')) world.setAttribute('aria-hidden','true'); }
+  function startHover(x,y){ if(hoverOn) return; if(document.body.classList.contains('world-goodrx-open')) return; hx=x; hy=y; hoverOn=true; ensureCanvas(); sizeDcanvas(); dcanvas.style.display='block'; cancelAnimationFrame(hraf); hraf=requestAnimationFrame(hloop); }
+  // Dissolve HOVER = a dust bloom that follows the cursor (the dissolve material's charge). The ripple
+  // material's hover is the WebGL ripple in the IIFE below. Enter/exit read the material either way, so
+  // the whole gesture — hover, enter, exit — speaks one language.
+  function dissolveHover(){ return false; } // retired: the strong WebGL dissolve-into-dots hover now serves both materials
+
+  var gxCursor=document.getElementById('gx-cursor');
+  heroEl.addEventListener('mousemove', function(e){
+    if(gxCursor){ gxCursor.style.left=e.clientX+'px'; gxCursor.style.top=e.clientY+'px'; }
+    if(dissolveHover()){ hx=e.clientX; hy=e.clientY; if(!hoverOn && !document.body.classList.contains('world-goodrx-open')) startHover(e.clientX,e.clientY); }
+  });
+  heroEl.addEventListener('mouseenter', function(e){ if(gxCursor) gxCursor.style.opacity='1'; if(dissolveHover()) startHover(e.clientX,e.clientY); });
+  heroEl.addEventListener('mouseleave', function(){ if(gxCursor) gxCursor.style.opacity='0'; hoverOn=false; endHoverPeek(); });
+
+  // Intercept the hero-image click in the capture phase so the existing company-view open does not also fire.
+  heroEl.addEventListener('click', function(e){
+    e.preventDefault(); e.stopPropagation();
+    hoverOn=false; hparts.length=0; cancelAnimationFrame(hraf); // hand the hover charge off to the transition
+    var xx=e.clientX || origin.x, yy=e.clientY || origin.y; // enter LOCKED to the cursor click point
+    if(document.body.classList.contains('fx-dissolve')) dissolveEnter(xx,yy,0);
+    else enter(xx,yy);
+  }, true);
+  var backBtn = world.querySelector('.world-back');
+  function backPoint(){ if(backBtn){ var r=backBtn.getBoundingClientRect(); return {x:r.left+r.width/2, y:r.top+r.height/2}; } return {x:innerWidth/2,y:innerHeight/2}; }
+  if(backBtn) backBtn.addEventListener('click', function(){ var pt=backPoint(); exit(pt.x, pt.y); }); // always collapse from the back button
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && document.body.classList.contains('world-goodrx-open')){ var pt=backPoint(); exit(pt.x, pt.y); }
+  });
+})();
+</script>
+<!-- SPIKE-ONLY: cursor-local WebGL ripple on the GoodRx hero (hov-ripple). Rings radiate through the
+     photo's pixels from the cursor. One hero, lazy-init on first hover, loop only while hovering.
+     Reduced-motion / no-WebGL fall back to the static image. Remove before porting. -->
+<script>
+(function(){
+  var band=document.querySelector('.co-band[data-project="goodrx"]');
+  if(!band) return;
+  var frame=band.querySelector('.band-frame');
+  var tile=frame && frame.querySelector('.work-tile');
+  var img=tile && tile.querySelector('img');
+  if(!frame || !img) return;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var cv, gl, prog, tex, texReady=false, raf=0, running=false, uni={};
+  var mx=0.5, my=0.5, amp=0, startT=0;
+
+  function active(){ return document.body.classList.contains('fx-dissolve') && !reduce.matches; } // strong dissolve-into-dots hover serves BOTH materials
+  function compile(t,src){ var s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+
+  function init(){
+    if(cv) return !!gl;
+    cv=document.createElement('canvas');
+    cv.style.cssText='position:absolute;left:0;top:0;display:none;z-index:2;pointer-events:none';
+    frame.appendChild(cv);
+    gl=cv.getContext('webgl',{premultipliedAlpha:false,antialias:true})||cv.getContext('experimental-webgl');
+    if(!gl){ return false; }
+    var vs='attribute vec2 p;varying vec2 uv;void main(){uv=p*0.5+0.5;gl_Position=vec4(p,0.0,1.0);}';
+    // RIPPLE-IN-DOTS: the ripple wavefront resolves the photo into a field of high-contrast discs
+    // (Chris's dot-density vocabulary). Hard-edged discs + darkened gaps so the dots actually POP
+    // (the old dissolve-as-dots failed on contrast). Tunables: DENS (dot count), disc radius, gap gain.
+    // DIGITAL WAVE / DISSOLVE hover: the photo resolves into a grid of data-cells that ripples out from
+    // the cursor. Two skins on the SAME mechanic (uniform `skin`): 0 = BLUEPRINT (round data-viz dots on
+    // ink, faint green hairline grid — on-brand, calm); 1 = DIGITAL/Digimon (square glowing data-cells,
+    // bright green grid — materialisation). Each cell samples the photo, so it stays his data-viz colour.
+    var fs='precision highp float;varying vec2 uv;uniform sampler2D tx;uniform vec2 mouse;uniform float t;uniform float aspect;uniform float amp;uniform float dens;uniform float skin;'
+      +'uniform vec3 uCol;uniform float uGlow;uniform float uGrain;uniform float uFlick;uniform float uReach;uniform float uInten;'  // live tuning
+      +'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}'
+      +'void main(){vec2 d=vec2((uv.x-mouse.x)*aspect,uv.y-mouse.y);float dist=length(d);'
+      +'float ring=sin(dist*32.0 - t*6.0);float env=exp(-dist*uReach)*amp;'
+      +'vec2 dir=dist>0.0001?d/dist:vec2(0.0);'
+      +'vec2 off=dir*ring*0.022*env;off.x/=aspect;'
+      +'vec2 suv=uv+off;'
+      +'vec3 img=texture2D(tx,suv).rgb;'
+      +'vec2 gsz=vec2(dens*aspect,dens);'
+      +'vec2 cell=suv*gsz;vec2 fp=fract(cell);vec2 cc=(floor(cell)+0.5)/gsz;'
+      +'vec3 dc=texture2D(tx,cc).rgb;'
+      +'float dd=length(fp-0.5);'
+      +'float grid=max(smoothstep(0.07,0.0,min(fp.x,1.0-fp.x)),smoothstep(0.07,0.0,min(fp.y,1.0-fp.y)));'
+      +'vec3 dotted;'
+      +'if(skin<0.5){'                                       // BLUEPRINT — quiet, monochrome-technical, NO green
+      +'  float disc=smoothstep(0.5,0.30,dd);'
+      +'  dotted=mix(dc*0.55,dc,disc);'
+      +'  dotted=mix(dotted,vec3(0.11,0.10,0.09),grid*0.16);'
+      +'}else{'                                              // DIGITAL — GRAINY glowing data-grid, squares kept (all live-tunable)
+      +'  float sq=1.0-smoothstep(0.26,0.44,max(abs(fp.x-0.5),abs(fp.y-0.5)));'
+      +'  float flick=(1.0-uFlick*0.5)+uFlick*hash(floor(cell)+floor(t*6.0));'  // per-cell flicker, centred ~1
+      +'  dotted=mix(vec3(0.01,0.03,0.02),dc*1.2*flick,sq);'
+      +'  dotted+=uCol*grid*uGlow;'                          // glowing grid in the chosen colour
+      +'  dotted+=uCol*0.32*sq;'                             // cell glow, same colour
+      +'  dotted+=(hash(uv*vec2(760.0,440.0)+t*11.0)-0.5)*uGrain;'  // film grain
+      +'}'
+      +'float infl=clamp(env*(uInten+0.28*ring),0.0,1.0);'
+      +'vec3 col=mix(img,dotted,infl);'
+      +'gl_FragColor=vec4(col,1.0);}';
+    prog=gl.createProgram();
+    gl.attachShader(prog,compile(gl.VERTEX_SHADER,vs)); gl.attachShader(prog,compile(gl.FRAGMENT_SHADER,fs));
+    gl.linkProgram(prog); gl.useProgram(prog);
+    var buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var loc=gl.getAttribLocation(prog,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    uni.mouse=gl.getUniformLocation(prog,'mouse'); uni.t=gl.getUniformLocation(prog,'t');
+    uni.aspect=gl.getUniformLocation(prog,'aspect'); uni.amp=gl.getUniformLocation(prog,'amp'); uni.tx=gl.getUniformLocation(prog,'tx'); uni.dens=gl.getUniformLocation(prog,'dens'); uni.skin=gl.getUniformLocation(prog,'skin');
+    uni.col=gl.getUniformLocation(prog,'uCol'); uni.glow=gl.getUniformLocation(prog,'uGlow'); uni.grain=gl.getUniformLocation(prog,'uGrain');
+    uni.flick=gl.getUniformLocation(prog,'uFlick'); uni.reach=gl.getUniformLocation(prog,'uReach'); uni.inten=gl.getUniformLocation(prog,'uInten');
+    tex=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,tex);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    uploadTex();
+    return true;
+  }
+  function uploadTex(){
+    if(!img.complete || img.naturalWidth===0){ img.addEventListener('load',uploadTex,{once:true}); return; }
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+    gl.bindTexture(gl.TEXTURE_2D,tex); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,img); texReady=true;
+  }
+  function size(){ // match the image's actual rendered box exactly (it is width:100%/height:auto, not the frame)
+    var fr=frame.getBoundingClientRect(), ir=img.getBoundingClientRect();
+    var w=Math.max(1,ir.width), h=Math.max(1,ir.height), dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.style.left=(ir.left-fr.left)+'px'; cv.style.top=(ir.top-fr.top)+'px'; cv.style.width=w+'px'; cv.style.height=h+'px';
+    cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+    gl.viewport(0,0,cv.width,cv.height); gl.uniform1f(uni.aspect, w/h); }
+  function loop(now){
+    if(!running) return;
+    if(!active() || document.body.classList.contains('world-goodrx-open')){ stop(); return; }
+    if(!startT) startT=now;
+    amp=Math.min(1, amp+0.08);
+    gl.uniform2f(uni.mouse, mx, my); gl.uniform1f(uni.t,(now-startT)/1000); gl.uniform1f(uni.amp,amp); gl.uniform1i(uni.tx,0);
+    gl.uniform1f(uni.skin, document.body.classList.contains('skin-digital')?1.0:0.0);
+    var T=window.__TUNE||{};
+    gl.uniform3fv(uni.col, T.col||[0.20,0.86,0.46]);
+    gl.uniform1f(uni.glow, T.glow!==undefined?T.glow:0.95);
+    gl.uniform1f(uni.grain, T.grain!==undefined?T.grain:0.16);
+    gl.uniform1f(uni.flick, T.flicker!==undefined?T.flicker:0.6);
+    gl.uniform1f(uni.reach, T.reach!==undefined?T.reach:4.5);
+    gl.uniform1f(uni.inten, T.intensity!==undefined?T.intensity:0.78);
+    gl.uniform1f(uni.dens, T.density!==undefined?T.density:48.0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    raf=requestAnimationFrame(loop);
+  }
+  function start(){ if(running || !active()) return; if(!init()){ return; } if(!texReady){ uploadTex(); }
+    size(); cv.style.display='block'; img.style.visibility='hidden'; running=true; amp=0; startT=0;
+    cancelAnimationFrame(raf); raf=requestAnimationFrame(loop); }
+  function stop(){ running=false; cancelAnimationFrame(raf); if(cv) cv.style.display='none'; img.style.visibility=''; }
+  function setMouse(e){ var ir=img.getBoundingClientRect(); mx=(e.clientX-ir.left)/ir.width; my=1-(e.clientY-ir.top)/ir.height; }
+
+  frame.addEventListener('mouseenter', function(e){ if(active()){ setMouse(e); start(); } });
+  frame.addEventListener('mousemove', function(e){ if(active()){ setMouse(e); if(!running) start(); } });
+  frame.addEventListener('mouseleave', stop);
+  frame.addEventListener('click', stop); // hand off to the ripple transition (restore the DOM hero)
+  window.addEventListener('resize', function(){ if(running) size(); });
+})();
+</script>
+<!-- SPIKE-ONLY live tuning panel (GoodRx dissolve/digital). Writes window.__TUNE, read by the shader +
+     transition each frame. Remove before porting. -->
+<script>
+(function(){
+  var CFG=[
+    {sec:'Hover'},
+    {k:'hue',l:'Hue',min:0,max:360,step:1,v:145},
+    {k:'glow',l:'Glow',min:0,max:2,step:0.05,v:0.95},
+    {k:'grain',l:'Grain',min:0,max:0.4,step:0.01,v:0.16},
+    {k:'flicker',l:'Flicker',min:0,max:1.2,step:0.05,v:0.6},
+    {k:'density',l:'Density',min:24,max:90,step:1,v:48},
+    {k:'reach',l:'Falloff',min:2,max:9,step:0.1,v:4.5},
+    {k:'intensity',l:'Intensity',min:0.3,max:1,step:0.02,v:0.78},
+    {sec:'Transition'},
+    {k:'count',l:'Cells',min:40,max:260,step:5,v:160},
+    {k:'size',l:'Cell size',min:1,max:5,step:0.2,v:2.6},
+    {k:'greenFrac',l:'% color',min:0,max:1,step:0.05,v:0.32},
+    {k:'tdur',l:'Speed',min:0.5,max:1.5,step:0.05,v:1}
+  ];
+  function hsv(h,s,v){ h/=60; var i=Math.floor(h), f=h-i, pp=v*(1-s), q=v*(1-s*f), tt=v*(1-s*(1-f)), r,g,b;
+    switch(((i%6)+6)%6){case 0:r=v;g=tt;b=pp;break;case 1:r=q;g=v;b=pp;break;case 2:r=pp;g=v;b=tt;break;
+      case 3:r=pp;g=q;b=v;break;case 4:r=tt;g=pp;b=v;break;default:r=v;g=pp;b=q;} return [r,g,b]; }
+  function css(a){ return 'rgb('+Math.round(a[0]*255)+','+Math.round(a[1]*255)+','+Math.round(a[2]*255)+')'; }
+  var T=window.__TUNE={};
+  CFG.forEach(function(c){ if(c.k) T[c.k]=c.v; });
+  function applyColor(){ var h=T.hue; T.col=hsv(h,0.72,0.92); T.digiCss=[css(hsv(h,0.5,0.82)),css(hsv(h,0.68,0.62)),css(hsv(h,0.4,0.95))]; }
+  applyColor();
+  var p=document.createElement('div'); p.id='tune';
+  var sw=document.createElement('div'); sw.className='sw'; sw.style.background=css(T.col);
+  CFG.forEach(function(c){
+    if(c.sec){ var h=document.createElement('h4'); h.textContent=c.sec; p.appendChild(h); return; }
+    var row=document.createElement('div'); row.className='row';
+    var lab=document.createElement('label'); lab.textContent=c.l;
+    var inp=document.createElement('input'); inp.type='range'; inp.min=c.min; inp.max=c.max; inp.step=c.step; inp.value=c.v;
+    var val=document.createElement('span'); val.className='val'; val.textContent=c.step<1?(+c.v).toFixed(2):c.v;
+    inp.addEventListener('input',function(){ var n=parseFloat(inp.value); T[c.k]=n; val.textContent=c.step<1?n.toFixed(2):n;
+      if(c.k==='hue'){ applyColor(); sw.style.background=css(T.col); } });
+    row.appendChild(lab); row.appendChild(inp); row.appendChild(val); p.appendChild(row);
+  });
+  p.appendChild(sw);
+  var btn=document.createElement('button'); btn.textContent='Copy settings';
+  btn.addEventListener('click',function(){ var out=JSON.stringify(T);
+    try{ navigator.clipboard.writeText(out); }catch(e){} console.log('TUNE '+out);
+    btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
+  p.appendChild(btn);
+  document.body.appendChild(p);
 })();
 </script>
 </body></html>
