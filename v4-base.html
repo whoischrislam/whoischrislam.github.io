@@ -253,7 +253,11 @@ details.more[open] summary::before{transform:rotate(90deg)}
 /* The header is sticky, so every anchor target landed underneath it: the nav links,
    the in-page CTAs, and all seven of the agent's navigation targets. scroll-padding
    on the scroll container fixes all of them at once. */
-html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth}
+/* Reserve the scrollbar gutter so opening a world (which flips body to overflow:hidden) does NOT
+   change the viewport width mid-transition — that width change aborts the View Transition
+   ("invalid state. Viewport size changed") and the enter clip silently doesn't run. macOS overlay
+   scrollbars = 0px gutter (no visual change); classic scrollbars reserve a stable gutter. */
+html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth;scrollbar-gutter:stable}
 /* Read-progress, lifted from his own styles.css. Scroll-driven animation, no JS at all.
    Browsers without animation-timeline never scale it up, so it stays invisible. */
 .read-progress{position:absolute;left:0;bottom:0;z-index:1;width:100%;height:3px;
@@ -1819,6 +1823,9 @@ body.bp-5 .band-frame{position:relative}
 
 /* the GoodRx world */
 #world-goodrx{position:fixed;inset:0;z-index:1200;display:none;overflow-y:auto;background:#fcef72;color:#141210}
+/* the dissolve now hands off to the REAL themed panel, so #world-goodrx is just a plain-yellow reveal
+   surface — hide its old prototype content so it never flashes before the real page. */
+#world-goodrx .world-chrome,#world-goodrx .world-goodrx-inner{display:none}
 body.world-goodrx-open{overflow:hidden}
 body.world-goodrx-open #world-goodrx{display:block}
 /* the "ship" — baseline chrome, constant across every world */
@@ -1837,11 +1844,27 @@ body.world-goodrx-open #world-goodrx{display:block}
 .wgx-demo{margin-top:48px;border-radius:5px;overflow:hidden;border:1px solid rgba(20,18,16,.28);box-shadow:0 20px 60px rgba(20,18,16,.18)}
 .wgx-demo img{display:block;width:100%;height:auto}
 
-/* Circular expand reveal — override the default root crossfade only during a world transition */
-html.vt-world::view-transition-old(root){animation:none}
-html.vt-world::view-transition-new(root){animation:none;z-index:2147483646}
-html.vt-world-exit::view-transition-new(root){animation:none}
-html.vt-world-exit::view-transition-old(root){animation:none;z-index:2147483646}
+/* World reveal (see __openWorldClip / closeWorldClip). No View Transitions API.
+   #world-layer wraps the panel + focus content. Normally display:contents, so the focused layout is
+   unchanged. During the reveal (body.world-entering) it becomes an opaque overlay ABOVE the still-visible
+   homepage, clipped to a growing circle — so you see the real homepage everywhere outside the circle and
+   the world inside it. The circle CENTER is static (only --reveal-r animates) so the origin can't be
+   dropped mid-interpolation the way an animated clip position was in some Chromium forks. */
+@property --reveal-r{syntax:"<length>";inherits:false;initial-value:0px}
+#world-layer{display:contents}
+/* Overlay covers the full viewport (opaque bg + clip reach the corners) but pads its content to the SAME
+   centered 1180px column the focused shell uses, so the layout doesn't jump wide mid-transition. */
+body.world-entering #world-layer{display:block;position:fixed;inset:var(--head-h) 0 0;z-index:60;
+  overflow-y:auto;background:var(--world-bg,#fff);padding:0 max(24px,calc((100vw - 1180px)/2)) 64px}
+#world-layer.world-revealing{clip-path:circle(var(--reveal-r,0px) at var(--reveal-x,50%) var(--reveal-y,50%))}
+/* keep the homepage visible BEHIND the layer during the reveal (bands + neutral backdrop, not the yellow flood) */
+body.world-entering .work-grid[data-locked="true"] .co-groups{display:block!important}
+body.work-focus-open[data-world].world-entering,
+body.work-focus-open[data-world].world-entering #top,
+body.work-focus-open[data-world].world-entering .work-shell{background:var(--bg)!important}
+/* Debug/spike panels hidden — locked base. Full removal of these scripts + their CSS is the pending
+   scaffolding-purge pass (also removes the retired enter()/radialTransition prototype and #world-goodrx). */
+#tune,#hx-bar,#hb-bar,#vt-tune{display:none!important}
 @media (prefers-reduced-motion: reduce){
   .co-band[data-project="goodrx"] .band-frame{transition:none}
 }
@@ -2154,6 +2177,50 @@ body.world-goodrx-open #hx-bar{display:none}
   color:#ddd;font:600 11px/1 var(--sans);padding:6px;border-radius:6px;cursor:pointer}
 #tune button:hover{background:rgba(255,255,255,.08)}
 body.world-goodrx-open #tune{display:none}
+
+/* ==== PER-COMPANY WORLD (spike) — the SAME work-panel structure, re-skinned per company via tokens,
+   led by a HERO-FORWARD top (logo · mono kicker · big serif title · punchy lede · full-bleed work
+   image), Image-#4 style. body[data-world="<co>"] is set on company open; JS injects .world-hero and
+   hides the default heading. The spec-grid depth flows below on readable cards. ==== */
+body[data-world="goodrx"]{
+  --world-bg:#fcef72; --world-ink:#1a1710; --world-ink-soft:rgba(26,23,16,.62);
+  --world-line:rgba(26,23,16,.22); --world-accent:#6d4bd8; --world-surface:#fffdf0;}
+
+body.work-focus-open[data-world="goodrx"]{background:var(--world-bg)}
+/* Header is CONSTANT chrome — never re-themed per world. It stays the persistent frame ("ship") the
+   world reveals beneath, so there's no color snap and nothing to transition. */
+body.work-focus-open[data-world="goodrx"] #work-panel{
+  --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
+  --accent:var(--world-accent);--surface:var(--world-surface);background:var(--world-bg);color:var(--world-ink)}
+/* the colour OVERTAKES the whole focused page — every wrapper + the Selected-projects area */
+body.work-focus-open[data-world="goodrx"] #top,
+body.work-focus-open[data-world="goodrx"] .work-shell,
+body.work-focus-open[data-world="goodrx"] #work-focus-content{background:var(--world-bg)}
+body.work-focus-open[data-world="goodrx"] #work-focus-content{
+  --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
+  --accent:var(--world-accent);--surface:var(--world-surface);color:var(--world-ink)}
+
+/* hero-forward top (Image #4). JS hides the default heading and inserts .world-hero before it. */
+.work-panel-heading.world-hidden{display:none}
+.world-hero{max-width:1040px;margin:0 auto;padding:36px 0 6px}
+.world-hero-logo{display:block;height:34px;width:auto;margin:0 0 22px;filter:brightness(0)}
+.world-hero-kicker{font:600 var(--t-xs)/1 var(--mono,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--world-ink-soft);margin:0}
+.world-hero-title{font:400 clamp(44px,7vw,92px)/1.02 var(--serif);letter-spacing:-.01em;color:var(--world-ink);margin:8px 0 16px}
+.world-hero-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:42ch;color:var(--world-ink);margin:0}
+.world-hero-media{margin:46px 0 8px}
+.world-hero-media img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 24px 60px rgba(26,23,16,.18)}
+
+/* body depth (spec grid, outcome, decisions) — readable cards on the brand ground */
+body.work-focus-open[data-world="goodrx"] .work-panel-summary,
+body.work-focus-open[data-world="goodrx"] .work-panel-result,
+body.work-focus-open[data-world="goodrx"] .work-panel-outcome{color:var(--world-ink)}
+body.work-focus-open[data-world="goodrx"] .work-panel-brief,
+body.work-focus-open[data-world="goodrx"] .work-panel-details,
+body.work-focus-open[data-world="goodrx"] .work-panel-facts,
+body.work-focus-open[data-world="goodrx"] .work-panel-outcome{background:var(--world-surface);border-color:var(--world-line)}
+body.work-focus-open[data-world="goodrx"] .work-panel-facts .tok{border-color:var(--world-line);color:var(--world-ink)}
+body.work-focus-open[data-world="goodrx"] .work-project-card{background:#1a1710;color:#fff;border-color:transparent}
+body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
 </style>
 </head><body>
 
@@ -2399,6 +2466,7 @@ body.world-goodrx-open #tune{display:none}
 </div>
 <section class="work-explorer" aria-labelledby="work">
   <p id="work-status" class="work-status" aria-live="polite"></p>
+  <div id="world-layer"><!-- display:contents normally (no layout impact); becomes a clipped overlay only during the world reveal -->
   <aside id="work-panel" class="work-panel" tabindex="-1" hidden>
     <div class="work-panel-navline">
       <button class="work-panel-back" type="button">← All work</button>
@@ -2442,6 +2510,7 @@ body.world-goodrx-open #tune{display:none}
     </div>
   </aside>
   <div id="work-focus-content" class="work-focus-content" hidden></div>
+  </div><!-- /#world-layer -->
   <div id="work-grid" class="work-grid">
   <div class="co-groups">
     <div class="co-lane">
@@ -6399,6 +6468,30 @@ body.world-goodrx-open #tune{display:none}
       workPanelFacts.hidden = !facts || !facts.length;
     }
 
+    var WORLD_HERO = { goodrx: "images/work/goodrx-hero.png" }; // per-company bold hero image (Image #4)
+    function clearWorldHero(){
+      var h = workPanel.querySelector(".work-panel-heading"); if(h) h.classList.remove("world-hidden");
+      var ex = workPanel.querySelector(".world-hero"); if(ex) ex.remove();
+    }
+    function applyWorldHero(project){
+      clearWorldHero();
+      var src = WORLD_HERO[project]; if(!src) return;
+      var item = workProjects[project]; var heading = workPanel.querySelector(".work-panel-heading");
+      if(!item || !heading) return;
+      var bandP = document.querySelector('.co-band[data-project="'+project+'"] .co-head p');
+      var lede = bandP ? bandP.textContent : (item.context || "");
+      var hero = document.createElement("header"); hero.className = "world-hero";
+      if(item.logo){ var l=document.createElement("img"); l.className="world-hero-logo"; l.src=item.logo; l.alt=item.name; hero.appendChild(l); }
+      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role; hero.appendChild(k); }
+      var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
+      if(lede){ var p=document.createElement("p"); p.className="world-hero-lede"; p.textContent=lede; hero.appendChild(p); }
+      var m=document.createElement("div"); m.className="world-hero-media";
+      // eager, not lazy: this hero is above the fold in the world; lazy leaves it blank during/after
+      // the reveal (reads as "still loading"). Same file the homepage band already loaded, so it's cached.
+      var mi=document.createElement("img"); mi.src=src; mi.alt=item.name+" — selected work"; mi.loading="eager"; mi.decoding="async"; m.appendChild(mi); hero.appendChild(m);
+      heading.classList.add("world-hidden");
+      heading.parentNode.insertBefore(hero, heading);
+    }
     function renderWorkPanel(project, source){
       var item = workProjects[project];
       var companyView = source === "company";
@@ -6430,10 +6523,12 @@ body.world-goodrx-open #tune{display:none}
         workPanelActions.appendChild(link);
       });
       workPanelActions.hidden = !workPanelActions.children.length;
+      if(companyView) applyWorldHero(project); else clearWorldHero();
       workPanel.hidden = false;
     }
 
     function renderStoryPanel(storyKey){
+      clearWorldHero();
       var story = workStories[storyKey];
       var company = workProjects[story.company];
       workPanelBack.textContent = "← " + company.name + " work";
@@ -6545,6 +6640,7 @@ body.world-goodrx-open #tune{display:none}
         workShell.classList.remove("is-focused");
         workShell.classList.remove("is-story-focused");
         setWorkFocusEnvironment(false);
+        document.body.removeAttribute("data-world"); // clear the per-company world theme
         clearProjectGallery();
         workTiles.forEach(function(tile){
           tile.hidden = activeWorkKind !== "all" && tile.dataset.kind !== activeWorkKind;
@@ -6605,6 +6701,7 @@ body.world-goodrx-open #tune{display:none}
         setWorkFocusEnvironment(true);
         if(companyFocus){
           workGrid.hidden = true;
+          document.body.setAttribute("data-world", project); // per-company world theme (see CSS)
           mountCompanyFocus(project);
           selectedWorkProject = project;
           if(returningStory){
@@ -6665,6 +6762,66 @@ body.world-goodrx-open #tune{display:none}
       });
       return finished;
     }
+
+    // ── World reveal: #world-layer (wrapping the panel + focus content) becomes an opaque overlay ABOVE
+    //    the still-visible homepage during body.world-entering, and a clip-path circle grows/shrinks it
+    //    from the click point. On finish we commit to the normal focused state. No View Transitions API.
+    //    Deterministic and browser-agnostic. ─────────────────────────────────────────────────────────
+    var worldLayer = document.getElementById("world-layer");
+    function worldCircle(vx, vy){                       // viewport point → clip geometry local to #world-layer
+      var b = worldLayer.getBoundingClientRect();       // (only has a box once body.world-entering is set)
+      var x = vx - b.left, y = vy - b.top;
+      var r = Math.hypot(Math.max(x, b.width - x), Math.max(y, b.height - y));
+      return { x: x, y: y, r: r };
+    }
+    // Read the live tuning vars (set by the #vt-tune panel) so the feel stays tweakable; fall back to defaults.
+    function tuneMs(name, defSec){ var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)); return (v > 0 ? v : defSec) * 1000; }
+    function tuneEase(name, def){ var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim(); return v || def; }
+    function setWorldCenter(c){                              // static circle center — never animated
+      worldLayer.style.setProperty("--reveal-x", c.x + "px");
+      worldLayer.style.setProperty("--reveal-y", c.y + "px");
+    }
+    window.__openWorldClip = function(project, origin){
+      if(!hasCompanyFocus(project)) return;
+      workOverviewScrollY = window.scrollY;                 // remember homepage scroll (history:false skips the usual capture)
+      groupWork(project, { source:"company", scroll:false, history:false, animate:false }); // build the focus state
+      document.body.classList.add("world-entering");       // homepage stays visible; layer becomes an overlay
+      var commit = function(){ document.body.classList.remove("world-entering"); worldLayer.classList.remove("world-revealing"); };
+      if(reduceWorkMotion.matches || !worldLayer.animate){ commit(); return; } // instant fallback
+      var c = worldCircle(origin.x, origin.y);
+      setWorldCenter(c);
+      worldLayer.classList.add("world-revealing");         // clip-path: circle(var(--reveal-r) at fixed center)
+      var a = worldLayer.animate([{ "--reveal-r":"0px" }, { "--reveal-r":c.r + "px" }],
+        { duration:tuneMs("--vt-in-dur",0.85), easing:tuneEase("--vt-in-ease","linear") });
+      a.onfinish = commit; // drop the overlay/clip → commit to the normal focused state (covered, no flash)
+    };
+    function closeWorldClip(origin){
+      if(reduceWorkMotion.matches || !worldLayer.animate){ resetWork(false, { restoreScroll: workOverviewScrollY }); return; }
+      document.body.classList.add("world-entering");        // re-expose the homepage behind the (still full) layer
+      var c = worldCircle(origin.x, origin.y);
+      setWorldCenter(c);
+      worldLayer.style.setProperty("--reveal-r", c.r + "px"); // hold full before clipping in, no flash
+      worldLayer.classList.add("world-revealing");
+      var a = worldLayer.animate([{ "--reveal-r":c.r + "px" }, { "--reveal-r":"0px" }],
+        { duration:tuneMs("--vt-out-dur",0.6), easing:tuneEase("--vt-out-ease","cubic-bezier(.4,0,.7,.2)"), fill:"forwards" });
+      a.onfinish = function(){
+        resetWork(false, { restoreScroll: workOverviewScrollY }); // return to the exact homepage scroll
+        document.body.classList.remove("world-entering");
+        worldLayer.classList.remove("world-revealing");
+        worldLayer.style.removeProperty("--reveal-r");
+        try{ a.cancel(); }catch(e){}
+      };
+    }
+    function backButtonOrigin(){
+      var r = workPanelBack.getBoundingClientRect();
+      return { x: r.width ? r.left + r.width/2 : 40, y: r.height ? r.top + r.height/2 : 80 };
+    }
+    // Intercept back-button clicks while in a world: run the clip close instead of the app's plain close.
+    workPanelBack.addEventListener("click", function(e){
+      if(!document.body.getAttribute("data-world")) return;
+      e.preventDefault(); e.stopImmediatePropagation();      // block the app's leaveFocusedWork on this element
+      closeWorldClip(backButtonOrigin());
+    }, true);
 
     function openWorkStory(storyKey, options){
       options = options || {};
@@ -6850,6 +7007,7 @@ body.world-goodrx-open #tune{display:none}
     document.addEventListener("keydown", function(event){
       if(event.key === "Escape" && !mediaLightbox.open && workGrid.dataset.locked === "true"){
         event.preventDefault();
+        if(document.body.getAttribute("data-world")){ closeWorldClip(backButtonOrigin()); return; } // clip close for worlds
         leaveFocusedWork();
       }
     });
@@ -7238,7 +7396,7 @@ body.world-goodrx-open #tune{display:none}
   // opening=true expands to reveal the world (the pull-in); opening=false collapses to hide it.
   // Dense dust (snap-density) rides the moving edge. Scaffold for all materials.
   function material(){ return document.body.classList.contains('mat-ripple') ? 'ripple' : 'dissolve'; }
-  function radialTransition(x,y,opening,startR){
+  function radialTransition(x,y,opening,startR,onDone){
     origin={x:x,y:y}; startR=startR||0;
     var mat=material();
     ensureHeroSample();
@@ -7251,7 +7409,8 @@ body.world-goodrx-open #tune{display:none}
     if(opening){ world.classList.remove('peek'); world.style.transition='none'; document.body.classList.add('world-goodrx-open'); world.setAttribute('aria-hidden','false'); world.scrollTop=0; }
     var parts=[], start=performance.now(), DUR=(opening?860:660)*TDUR;
     function done(){ dctx.clearRect(0,0,innerWidth,innerHeight); dcanvas.style.display='none'; world.style.clipPath=''; world.style.webkitClipPath='';
-      if(!opening){ document.body.classList.remove('world-goodrx-open'); world.setAttribute('aria-hidden','true'); } }
+      if(!opening){ document.body.classList.remove('world-goodrx-open'); world.setAttribute('aria-hidden','true'); }
+      if(opening && typeof onDone==='function') onDone(); }
     function tick(now){
       var p=Math.min(1,(now-start)/DUR), e=1-Math.pow(1-p,3), r=opening?(startR+e*(maxR-startR)):(1-e)*maxR;
       dctx.clearRect(0,0,innerWidth,innerHeight);
@@ -7294,7 +7453,9 @@ body.world-goodrx-open #tune{display:none}
     cancelAnimationFrame(draf); draf=requestAnimationFrame(tick);
   }
   function closeWorld(){ document.body.classList.remove('world-goodrx-open'); world.setAttribute('aria-hidden','true'); }
-  function dissolveEnter(x,y,startR){ if(reduce.matches){ showWorld(); return; } radialTransition(x,y,true,startR||0); }
+  // Band → REAL themed world via a clip-path circle grown from the click point (see __openWorldClip
+  // in the main app script). No View Transitions API — deterministic across browsers.
+  function dissolveEnter(x,y){ if(window.__openWorldClip){ window.__openWorldClip('goodrx', {x:x,y:y}); } }
   function dissolveExit(x,y){ if(reduce.matches){ closeWorld(); return; } radialTransition(x,y,false); }
 
   // ---- Hover charge: the dissolve dust FOLLOWS the cursor while over the hero, so hover→click is
@@ -7331,9 +7492,9 @@ body.world-goodrx-open #tune{display:none}
   heroEl.addEventListener('click', function(e){
     e.preventDefault(); e.stopPropagation();
     hoverOn=false; hparts.length=0; cancelAnimationFrame(hraf); // hand the hover charge off to the transition
-    var xx=e.clientX || origin.x, yy=e.clientY || origin.y; // enter LOCKED to the cursor click point
-    if(document.body.classList.contains('fx-dissolve')) dissolveEnter(xx,yy,0);
-    else enter(xx,yy);
+    // enter LOCKED to the cursor click point. Use == null (not ||) so a legit click at x=0 isn't lost.
+    var xx=(e.clientX==null?origin.x:e.clientX), yy=(e.clientY==null?origin.y:e.clientY);
+    dissolveEnter(xx,yy); // ALWAYS the real themed world from the cursor; the old prototype enter() is retired
   }, true);
   var backBtn = world.querySelector('.world-back');
   function backPoint(){ if(backBtn){ var r=backBtn.getBoundingClientRect(); return {x:r.left+r.width/2, y:r.top+r.height/2}; } return {x:innerWidth/2,y:innerHeight/2}; }
@@ -7435,7 +7596,7 @@ body.world-goodrx-open #tune{display:none}
     gl.viewport(0,0,cv.width,cv.height); gl.uniform1f(uni.aspect, w/h); }
   function loop(now){
     if(!running) return;
-    if(!active() || document.body.classList.contains('world-goodrx-open')){ stop(); return; }
+    if(!active() || document.body.classList.contains('world-goodrx-open') || document.body.classList.contains('work-focus-open')){ stop(); return; }
     if(!startT) startT=now;
     amp=Math.min(1, amp+0.08);
     gl.uniform2f(uni.mouse, mx, my); gl.uniform1f(uni.t,(now-startT)/1000); gl.uniform1f(uni.amp,amp); gl.uniform1i(uni.tx,0);
@@ -7510,6 +7671,76 @@ body.world-goodrx-open #tune{display:none}
     btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
   p.appendChild(btn);
   document.body.appendChild(p);
+})();
+</script>
+<!-- SPIKE-ONLY: live tuning for the world VIEW-TRANSITION timing (duration + easing, enter & exit).
+     Writes --vt-in-dur/--vt-in-ease/--vt-out-dur/--vt-out-ease on :root; __openWorldClip/closeWorldClip read them.
+     "Copy CSS" dumps the chosen values. Strip this whole block (and revert the vars to literals) at port. -->
+<script>
+(function(){
+  var EASES = [
+    ["Ease-out expo (default)","cubic-bezier(.22,1,.36,1)"],
+    ["Ease-out cubic (gentler tail)","cubic-bezier(.33,1,.68,1)"],
+    ["Ease-out quart","cubic-bezier(.25,1,.5,1)"],
+    ["Snappy in-out","cubic-bezier(.65,0,.35,1)"],
+    ["Material standard","cubic-bezier(.4,0,.2,1)"],
+    ["Overshoot (back)","cubic-bezier(.34,1.56,.64,1)"],
+    ["Linear","linear"]
+  ];
+  var DEF = { inDur:0.85, inEase:"linear", outDur:0.6, outEase:"cubic-bezier(.4,0,.7,.2)" };
+  var root = document.documentElement;
+  function set(){
+    root.style.setProperty("--vt-in-dur", state.inDur+"s");
+    root.style.setProperty("--vt-in-ease", state.inEase);
+    root.style.setProperty("--vt-out-dur", state.outDur+"s");
+    root.style.setProperty("--vt-out-ease", state.outEase);
+  }
+  var state = Object.assign({}, DEF);
+  var wrap = document.createElement("div");
+  wrap.id = "vt-tune";
+  wrap.style.cssText = "position:fixed;left:12px;top:64px;z-index:2147483647;width:236px;"+
+    "background:rgba(20,18,16,.92);color:#eee;font:600 11px/1.3 -apple-system,sans-serif;"+
+    "padding:12px 12px 10px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4)";
+  function row(label, node){
+    var r=document.createElement("label"); r.style.cssText="display:block;margin:0 0 9px";
+    var t=document.createElement("div"); t.textContent=label; t.style.cssText="opacity:.72;margin:0 0 3px;letter-spacing:.02em";
+    r.appendChild(t); r.appendChild(node); return r;
+  }
+  function slider(key, min, max){
+    var s=document.createElement("input"); s.type="range"; s.min=min; s.max=max; s.step="0.02"; s.value=state[key];
+    s.style.cssText="width:100%;accent-color:#6d4bd8";
+    var v=document.createElement("span"); v.textContent=" "+state[key]+"s"; v.style.opacity=".9";
+    s.oninput=function(){ state[key]=parseFloat(s.value); v.textContent=" "+state[key]+"s"; set(); };
+    var box=document.createElement("div"); var vt=document.createElement("div"); vt.appendChild(v);
+    box.appendChild(s); box.appendChild(vt); return box;
+  }
+  function select(key){
+    var s=document.createElement("select");
+    s.style.cssText="width:100%;background:#2a2723;color:#eee;border:1px solid #444;border-radius:6px;padding:4px";
+    EASES.forEach(function(e){ var o=document.createElement("option"); o.value=e[1]; o.textContent=e[0];
+      if(e[1]===state[key]) o.selected=true; s.appendChild(o); });
+    // exit default isn't in the list; prepend it so it shows
+    if(!EASES.some(function(e){return e[1]===state[key];})){ var o=document.createElement("option"); o.value=state[key]; o.textContent="Exit default (in→out)"; o.selected=true; s.insertBefore(o,s.firstChild); }
+    s.onchange=function(){ state[key]=s.value; set(); };
+    return s;
+  }
+  var head=document.createElement("div"); head.textContent="World transition — tune";
+  head.style.cssText="font-weight:700;margin:0 0 10px;color:#c9b6ff"; wrap.appendChild(head);
+  wrap.appendChild(row("Enter duration", slider("inDur",0.2,1.6)));
+  wrap.appendChild(row("Enter easing", select("inEase")));
+  wrap.appendChild(row("Exit duration", slider("outDur",0.2,1.6)));
+  wrap.appendChild(row("Exit easing", select("outEase")));
+  var btns=document.createElement("div"); btns.style.cssText="display:flex;gap:6px;margin-top:4px";
+  function mkbtn(label){ var b=document.createElement("button"); b.textContent=label; b.type="button";
+    b.style.cssText="flex:1;background:#3a3530;color:#eee;border:1px solid #555;border-radius:6px;padding:6px;cursor:pointer;font:inherit"; return b; }
+  var copy=mkbtn("Copy CSS"), reset=mkbtn("Reset");
+  copy.onclick=function(){
+    var css="--vt-in-dur:"+state.inDur+"s; --vt-in-ease:"+state.inEase+";\n--vt-out-dur:"+state.outDur+"s; --vt-out-ease:"+state.outEase+";";
+    navigator.clipboard&&navigator.clipboard.writeText(css); copy.textContent="Copied!"; setTimeout(function(){copy.textContent="Copy CSS";},1200);
+  };
+  reset.onclick=function(){ location.reload(); };
+  btns.appendChild(copy); btns.appendChild(reset); wrap.appendChild(btns);
+  set(); document.body.appendChild(wrap);
 })();
 </script>
 </body></html>
