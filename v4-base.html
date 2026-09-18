@@ -1633,14 +1633,6 @@ body.tb-6 .hl-special.in .hl-prod{animation:hl-create .75s cubic-bezier(.3,.7,.2
 @keyframes hl-sparkle{0%{opacity:0;transform:scale(0) rotate(0)}45%{opacity:.9;transform:scale(1) rotate(35deg)}100%{opacity:0;transform:scale(.4) rotate(70deg)}}
 
 /* discreet review toggle (removed for the real flip) */
-#dv-replay{position:fixed;bottom:16px;left:16px;z-index:60;width:34px;height:34px;border-radius:50%;
-  border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:15px;line-height:1;
-  cursor:pointer;opacity:.5;transition:opacity .15s ease,color .15s ease}
-#dv-replay:hover{opacity:1;color:var(--accent);border-color:var(--accent)}
-#dv-strip{position:fixed;bottom:16px;left:58px;z-index:60;display:flex;gap:6px}
-#dv-strip button{min-width:42px;height:30px;padding:0 10px;border-radius:6px;border:1px solid var(--border);
-  background:var(--surface);color:var(--muted);font:600 12px 'IBM Plex Mono',ui-monospace,monospace;cursor:pointer;opacity:.7}
-#dv-strip button.on{background:var(--accent);border-color:var(--accent);color:#fff;opacity:1}
 
 @media (prefers-reduced-motion:reduce){
   body.tb-6 .hl-design{-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;opacity:1!important}
@@ -1670,11 +1662,6 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
    animates its two pieces — .co-head (name + line) and .band-frame (image) — so the
    company "arrives" with character instead of lifting as one lump. Company bands
    only; the rest of the page keeps its quiet reveal. ── */
-#dv-anim{position:fixed;bottom:58px;left:16px;z-index:60;display:flex;gap:6px;flex-wrap:wrap;max-width:62vw}
-#dv-anim button{height:28px;padding:0 9px;border-radius:6px;border:1px solid var(--border);
-  background:var(--surface);color:var(--muted);font:600 11px 'IBM Plex Mono',ui-monospace,monospace;cursor:pointer;opacity:.7}
-#dv-anim button.on{background:var(--accent);border-color:var(--accent);color:#fff;opacity:1}
-
 /* Variants take over the parent (kill the base 14px lump-rise) and drive the pieces. */
 body.anim-1 .co-band.reveal,
 body.anim-2 .co-band.reveal,
@@ -1723,16 +1710,45 @@ body.anim-4 .co-band.reveal.in .band-frame::after{transform:scaleX(0)}
   body.anim-4 .co-band.reveal .band-frame::after{display:none}
 }
 
+/* ── Section-heading hierarchy + outcome metadata (spike toggles #dv-hier, #dv-tag).
+   Two problems Chris flagged: (1) "Work" is styled smaller and rule-less than its peer
+   sections ("What I'm looking for", "Let's work together"), and "More work"/"Experiments"
+   don't read as a distinct sub-tier; (2) the de-pilled outcome should lose the dot but
+   keep the pill's sense of a defined marker. Pure CSS, static class swaps. ── */
+
+/* ---- L2 group labels for "More work"/"Experiments" (spike toggle #dv-l2). These live
+   UNDER Work, so they must carry NO horizontal rule — rules are reserved for breaks
+   between L1 sections. Subordination is shown by small size, uppercase, letterspacing,
+   and whitespace; an optional non-rule marker adds definition. Never an item name. ---- */
+body.l2-kick .exp-head,body.l2-tick .exp-head,body.l2-tab .exp-head{
+  font-family:var(--serif);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:54px 0 16px}
+/* Kicker: size + case + whitespace only. */
+/* Tick: a short vertical accent bar (not a horizontal rule) flags the sub-group. */
+body.l2-tick .exp-head::before{content:"";display:inline-block;width:3px;height:13px;background:var(--accent);
+  border-radius:2px;margin-right:11px;vertical-align:-1px}
+/* Tab: the label sits in a soft chip — a defined marker echoing the metadata chips, no rule. */
+body.l2-tab .exp-head{display:inline-block;background:var(--surface-2);color:var(--muted);padding:5px 11px;border-radius:6px}
+
+/* ---- OUTCOME METADATA: de-pilled, no dot. Down to soft chip vs de-pilled text, each in
+   neutral or the hero's highlight color. ---- */
+/* soft chip — filled, borderless; keeps the pill's marker feel without the hard outline */
+body.tag-chip .tag-outcome,body.tag-chip-accent .tag-outcome{border:0;margin-left:10px;
+  padding:3px 9px;border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.03em;
+  text-transform:none;vertical-align:middle}
+body.tag-chip .tag-outcome{background:var(--surface-2);color:var(--muted)}
+body.tag-chip-accent .tag-outcome{background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent-strong)}
+/* de-pilled text — no dot; case, size, and a gap (or the accent color) do the separating */
+body.tag-text .tag-outcome,body.tag-text-accent .tag-outcome{border:0;padding:0;background:none;border-radius:0;
+  margin-left:12px;font-size:12px;letter-spacing:.07em;text-transform:uppercase}
+body.tag-text .tag-outcome{color:var(--muted);font-weight:600}
+body.tag-text-accent .tag-outcome{color:var(--accent-strong);font-weight:700}
+
+/* ---- CARD TITLES (More work + Experiments): base is bold sans 19px, a different voice
+   from the serif company names. Serif brings them into the same name hierarchy. ---- */
+body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:23px;
+  line-height:1.1;letter-spacing:.005em}
 </style>
 </head><body>
-<button id="dv-replay" type="button" title="Replay" aria-label="Replay hero animation">&#8635;</button>
-<div id="dv-anim" aria-label="Band reveal style (spike)">
-  <button type="button" data-anim="">Base</button>
-  <button type="button" data-anim="1">Slide</button>
-  <button type="button" data-anim="2" class="on">Settle</button>
-  <button type="button" data-anim="3">Cascade</button>
-  <button type="button" data-anim="4">Wash</button>
-</div>
 
 <!-- 1. Sticky header -->
 <header class="site-head">
@@ -6586,41 +6602,13 @@ body.anim-4 .co-band.reveal.in .band-frame::after{transform:scaleX(0)}
     });
   }
 
-  function replay(){
-    var b=document.body; b.classList.remove('tb-6'); void b.offsetWidth; b.classList.add('tb-6');
-    renderHero();
-  }
-  document.body.classList.add('dv-base');
-  document.body.classList.add('tb-6');
-  document.body.classList.add('strip-mono');   // default to the monochrome-balanced rail
+  document.body.classList.add('dv-base');       // paper grain
+  document.body.classList.add('tb-6');          // authored hero treatment
+  document.body.classList.add('strip-mono');    // monochrome-balanced credibility rail
   document.body.classList.add('anim-2');        // Settle: bands come into existence like the hero
+  document.body.classList.add('card-serif');    // serif card titles
+  document.body.classList.add('tag-chip-accent'); // chip-accent outcome metadata
   renderHero();
-  var rb=document.getElementById('dv-replay');
-  if(rb) rb.addEventListener('click', replay);
-
-  /* Band reveal-style toggle (spike). Switching a style resets the company bands'
-     reveal state and re-observes them, so the new entrance plays immediately for
-     bands in view and again as you scroll. Company bands only; nothing else changes. */
-  var animBtns=document.querySelectorAll('#dv-anim button');
-  var animReduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function setAnim(mode){
-    var b=document.body;
-    b.classList.remove('anim-1','anim-2','anim-3','anim-4');
-    if(mode) b.classList.add('anim-'+mode);
-    animBtns.forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-anim')===mode); });
-    var bands=document.querySelectorAll('.co-band.reveal');
-    bands.forEach(function(el){ el.classList.remove('in'); });
-    void b.offsetWidth; /* reflow so the reset paints before we re-reveal */
-    if(animReduce || !('IntersectionObserver' in window)){
-      bands.forEach(function(el){ el.classList.add('in'); });
-      return;
-    }
-    var aio=new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); aio.unobserve(e.target); } });
-    },{rootMargin:"0px 0px -8% 0px",threshold:.05});
-    bands.forEach(function(el){ aio.observe(el); });
-  }
-  animBtns.forEach(function(x){ x.addEventListener('click', function(){ setAnim(x.getAttribute('data-anim')); }); });
 
 })();
 </script>
