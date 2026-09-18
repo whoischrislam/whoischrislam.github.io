@@ -256,7 +256,7 @@ details.more[open] summary::before{transform:rotate(90deg)}
 html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth}
 /* Read-progress, lifted from his own styles.css. Scroll-driven animation, no JS at all.
    Browsers without animation-timeline never scale it up, so it stays invisible. */
-.read-progress{position:fixed;top:var(--head-h);left:0;z-index:49;width:100%;height:3px;
+.read-progress{position:absolute;left:0;bottom:0;z-index:1;width:100%;height:3px;
   background:var(--accent);transform-origin:left;scale:0 1;
   animation:read-progress linear;animation-timeline:scroll(root);transition:opacity .16s ease}
 body.work-focus-open .read-progress{opacity:0}
@@ -842,6 +842,15 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .hero-logo-row img{display:block;width:auto;height:100%;padding-top:var(--logo-pad-top,0);
   opacity:.78;filter:var(--logo-filter)}
 [data-theme="light"] .hero-logo-row img{filter:none}
+/* monochrome, muted, optically-balanced credibility rail (toggle: body.strip-mono) */
+body.strip-mono .hero-logo-row img{filter:brightness(0)!important;opacity:.48}
+:root[data-theme="dark"] body.strip-mono .hero-logo-row img{filter:brightness(0) invert(1)!important;opacity:.58}
+body.strip-mono .hero-company-logo:hover img,body.strip-mono .hero-company-logo:focus-visible img{opacity:.85}
+body.strip-mono .hero-logo-row li:has([data-work-company="amazon"]){--h:20px}
+body.strip-mono .hero-logo-row li:has([data-work-company="taskrabbit"]){--h:14px}
+body.strip-mono .hero-logo-row li:has([data-work-company="clover"]){--h:12px}
+body.strip-mono .hero-logo-row li:has([data-work-company="goodrx"]){--h:16px}
+body.strip-mono .hero-logo-row li:has([data-work-company="sharecare"]){--h:15px}
 .hero-company-logo{appearance:none;position:relative;display:block;width:auto;height:100%;padding:0;
   border:0;background:transparent;color:inherit;cursor:pointer}
 .hero-company-logo[data-work-company="amazon"]{--logo-mask:url("images/logos/amazon.svg")}
@@ -1628,6 +1637,10 @@ body.tb-6 .hl-special.in .hl-prod{animation:hl-create .75s cubic-bezier(.3,.7,.2
   border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:15px;line-height:1;
   cursor:pointer;opacity:.5;transition:opacity .15s ease,color .15s ease}
 #dv-replay:hover{opacity:1;color:var(--accent);border-color:var(--accent)}
+#dv-strip{position:fixed;bottom:16px;left:58px;z-index:60;display:flex;gap:6px}
+#dv-strip button{min-width:42px;height:30px;padding:0 10px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface);color:var(--muted);font:600 12px 'IBM Plex Mono',ui-monospace,monospace;cursor:pointer;opacity:.7}
+#dv-strip button.on{background:var(--accent);border-color:var(--accent);color:#fff;opacity:1}
 
 @media (prefers-reduced-motion:reduce){
   body.tb-6 .hl-design{-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;opacity:1!important}
@@ -1653,7 +1666,6 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
    blocks" is elsewhere — awaiting Chris to point at it, no guessing.) */
 </style>
 </head><body>
-<div class="read-progress" aria-hidden="true"></div>
 <button id="dv-replay" type="button" title="Replay" aria-label="Replay hero animation">&#8635;</button>
 
 <!-- 1. Sticky header -->
@@ -1684,6 +1696,7 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
           <rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 6.5 9 6.5 9-6.5"/></svg></a>
     </nav>
   </div>
+  <div class="read-progress" aria-hidden="true"></div>
 </header>
 
 <div class="wrap" id="top">
@@ -6513,6 +6526,7 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
   }
   document.body.classList.add('dv-base');
   document.body.classList.add('tb-6');
+  document.body.classList.add('strip-mono');   // default to the monochrome-balanced rail
   renderHero();
   var rb=document.getElementById('dv-replay');
   if(rb) rb.addEventListener('click', replay);
