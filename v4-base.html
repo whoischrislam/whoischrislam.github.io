@@ -1664,9 +1664,75 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
 /* (card-grid "fix" removed: auto-fill already renders equal-width tracks at every
    width; forcing repeat(3,1fr) squished cards to 135px on phones. The real "2 wider
    blocks" is elsewhere — awaiting Chris to point at it, no guessing.) */
+
+/* ── Band reveal styles (spike toggle #dv-anim). Baseline (no class) keeps the
+   current uniform 14px .reveal. Each variant holds the band section visible and
+   animates its two pieces — .co-head (name + line) and .band-frame (image) — so the
+   company "arrives" with character instead of lifting as one lump. Company bands
+   only; the rest of the page keeps its quiet reveal. ── */
+#dv-anim{position:fixed;bottom:58px;left:16px;z-index:60;display:flex;gap:6px;flex-wrap:wrap;max-width:62vw}
+#dv-anim button{height:28px;padding:0 9px;border-radius:6px;border:1px solid var(--border);
+  background:var(--surface);color:var(--muted);font:600 11px 'IBM Plex Mono',ui-monospace,monospace;cursor:pointer;opacity:.7}
+#dv-anim button.on{background:var(--accent);border-color:var(--accent);color:#fff;opacity:1}
+
+/* Variants take over the parent (kill the base 14px lump-rise) and drive the pieces. */
+body.anim-1 .co-band.reveal,
+body.anim-2 .co-band.reveal,
+body.anim-3 .co-band.reveal,
+body.anim-4 .co-band.reveal{opacity:1;transform:none}
+
+/* R1 Slide — head enters from the left, image from the right, they meet. Editorial. */
+body.anim-1 .co-band.reveal .co-head{opacity:0;transform:translateX(-24px);
+  transition:opacity .5s ease,transform .62s cubic-bezier(.22,1,.36,1)}
+body.anim-1 .co-band.reveal .band-frame{opacity:0;transform:translateX(24px);
+  transition:opacity .55s ease .05s,transform .66s cubic-bezier(.22,1,.36,1) .05s}
+body.anim-1 .co-band.reveal.in .co-head,
+body.anim-1 .co-band.reveal.in .band-frame{opacity:1;transform:none}
+
+/* R2 Settle — image starts soft + slightly small and snaps sharp; the hero's
+   "product coming into existence" blur, carried down the page. */
+body.anim-2 .co-band.reveal .co-head{opacity:0;transform:translateY(10px);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+body.anim-2 .co-band.reveal .band-frame{opacity:0;transform:scale(.985);filter:blur(6px);
+  transition:opacity .55s ease,transform .7s cubic-bezier(.22,1,.36,1),filter .6s ease}
+body.anim-2 .co-band.reveal.in .co-head{opacity:1;transform:none}
+body.anim-2 .co-band.reveal.in .band-frame{opacity:1;transform:none;filter:none}
+
+/* R3 Cascade — name lands first, image follows a beat later. Clear sequence. */
+body.anim-3 .co-band.reveal .co-head{opacity:0;transform:translateY(18px);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+body.anim-3 .co-band.reveal .band-frame{opacity:0;transform:translateY(26px);
+  transition:opacity .55s ease .12s,transform .66s cubic-bezier(.22,1,.36,1) .12s}
+body.anim-3 .co-band.reveal.in .co-head,
+body.anim-3 .co-band.reveal.in .band-frame{opacity:1;transform:none}
+
+/* R4 Wash — the band's own color curtains off the image, left to right. A taste of
+   the per-company "lens/world" idea, contained to one entrance. */
+body.anim-4 .co-band.reveal .co-head{opacity:0;transform:translateY(10px);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+body.anim-4 .co-band.reveal.in .co-head{opacity:1;transform:none}
+body.anim-4 .co-band.reveal .band-frame{position:relative;overflow:hidden;border-radius:14px}
+body.anim-4 .co-band.reveal .band-frame::after{content:"";position:absolute;inset:0;z-index:3;
+  background:var(--band);transform-origin:right;transform:scaleX(1);
+  transition:transform .72s cubic-bezier(.76,0,.24,1)}
+body.anim-4 .co-band.reveal.in .band-frame::after{transform:scaleX(0)}
+
+@media (prefers-reduced-motion:reduce){
+  body[class*="anim-"] .co-band.reveal .co-head,
+  body[class*="anim-"] .co-band.reveal .band-frame{opacity:1!important;transform:none!important;filter:none!important}
+  body.anim-4 .co-band.reveal .band-frame::after{display:none}
+}
+
 </style>
 </head><body>
 <button id="dv-replay" type="button" title="Replay" aria-label="Replay hero animation">&#8635;</button>
+<div id="dv-anim" aria-label="Band reveal style (spike)">
+  <button type="button" data-anim="">Base</button>
+  <button type="button" data-anim="1">Slide</button>
+  <button type="button" data-anim="2" class="on">Settle</button>
+  <button type="button" data-anim="3">Cascade</button>
+  <button type="button" data-anim="4">Wash</button>
+</div>
 
 <!-- 1. Sticky header -->
 <header class="site-head">
@@ -6527,9 +6593,35 @@ body.sc-8{--sp-1:8px;--sp-2:8px;--sp-3:16px;--sp-4:24px;--sp-6:32px;--sp-8:48px;
   document.body.classList.add('dv-base');
   document.body.classList.add('tb-6');
   document.body.classList.add('strip-mono');   // default to the monochrome-balanced rail
+  document.body.classList.add('anim-2');        // Settle: bands come into existence like the hero
   renderHero();
   var rb=document.getElementById('dv-replay');
   if(rb) rb.addEventListener('click', replay);
+
+  /* Band reveal-style toggle (spike). Switching a style resets the company bands'
+     reveal state and re-observes them, so the new entrance plays immediately for
+     bands in view and again as you scroll. Company bands only; nothing else changes. */
+  var animBtns=document.querySelectorAll('#dv-anim button');
+  var animReduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function setAnim(mode){
+    var b=document.body;
+    b.classList.remove('anim-1','anim-2','anim-3','anim-4');
+    if(mode) b.classList.add('anim-'+mode);
+    animBtns.forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-anim')===mode); });
+    var bands=document.querySelectorAll('.co-band.reveal');
+    bands.forEach(function(el){ el.classList.remove('in'); });
+    void b.offsetWidth; /* reflow so the reset paints before we re-reveal */
+    if(animReduce || !('IntersectionObserver' in window)){
+      bands.forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    var aio=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); aio.unobserve(e.target); } });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.05});
+    bands.forEach(function(el){ aio.observe(el); });
+  }
+  animBtns.forEach(function(x){ x.addEventListener('click', function(){ setAnim(x.getAttribute('data-anim')); }); });
+
 })();
 </script>
 </body></html>
