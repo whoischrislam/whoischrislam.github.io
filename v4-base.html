@@ -2267,6 +2267,26 @@ body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts dt{grid
 body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:1/-1;grid-row:2;margin:10px 0 0;font-size:var(--t-sm);line-height:1.5;color:var(--world-ink)}
 body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{grid-column:1/-1}
 body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font-size:var(--t-base)}
+/* D · HYBRID A — serif WHAT I DID lede (from Two-tier), then scannable Credits side-by-side rows */
+body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
+body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:210px minmax(0,1fr);gap:28px;align-items:baseline;border-bottom:1px solid var(--world-line);padding:15px 0}
+body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
+body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft);margin:0}
+body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:2;grid-row:1;margin:0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
+body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{grid-template-columns:1fr;padding:4px 0 22px}
+body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{grid-column:1;grid-row:2;margin-top:8px;font:400 var(--t-lg)/1.5 var(--serif)}
+
+/* E · HYBRID B — serif WHAT I DID lede, then stacked label-over-value rows, full width */
+body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
+body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:1fr;border-bottom:1px solid var(--world-line);padding:14px 0}
+body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
+body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
+body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
+body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{padding:4px 0 22px}
+body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
+
 body.work-focus-open[data-world="goodrx"] .work-project-card{background:#1a1710;color:#fff;border-color:transparent}
 body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
 </style>
@@ -7793,14 +7813,14 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
 </style>
 <script>
 (function(){
-  var opts=[["Credits","gd-credits"],["Two-tier","gd-tier"],["Tokens","gd-tokens"]];
+  var opts=[["Credits","gd-credits"],["Two-tier","gd-tier"],["Tokens","gd-tokens"],["Hybrid A","gd-hyba"],["Hybrid B","gd-hybb"]];
   var all=opts.map(function(o){return o[1];});
   var bar=document.createElement("div"); bar.id="grid-bar";
   var l=document.createElement("span"); l.className="lbl"; l.textContent="grid"; bar.appendChild(l);
   function apply(cls){ all.forEach(function(c){document.body.classList.remove(c);}); document.body.classList.add(cls);
     Array.prototype.forEach.call(bar.querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.cls===cls); }); }
   opts.forEach(function(o){ var b=document.createElement("button"); b.textContent=o[0]; b.dataset.cls=o[1]; b.onclick=function(){ apply(o[1]); }; bar.appendChild(b); });
-  document.body.appendChild(bar); apply("gd-tier");
+  document.body.appendChild(bar); apply("gd-hyba");
 })();
 </script>
 </body></html>
