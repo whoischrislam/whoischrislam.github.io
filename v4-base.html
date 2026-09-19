@@ -2299,9 +2299,13 @@ body[data-world] .work-panel.is-story-view .work-panel-facts dd{grid-column:1;gr
 body[data-world] .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;grid-template-areas:"summary" "facts" "outcome"}
 body[data-world] .work-panel.is-story-view .work-panel-outcome{max-width:none;margin-top:26px;padding-top:24px!important;border-top:1px solid var(--world-line)!important}
 
-/* #13 · provenance — hide the washed-out logo (company is named in the back-link); keep the status pill in world colors */
-body[data-world] .work-panel.is-story-view .work-panel-provenance-logo{display:none}
-body[data-world] .work-panel-provenance-outcome{border-color:var(--world-line);color:var(--world-ink-soft)}
+/* #13/#17 · provenance — company is named in the back-link, so drop the whole lockup (logo + IPO pill) in-world */
+body[data-world] .work-panel.is-story-view .work-panel-provenance{display:none}
+
+/* #18 · category + status read as a one-liner dek directly under the title, left-aligned (not floated top-right) */
+body[data-world] .work-panel.is-story-view .work-panel-heading{grid-template-columns:1fr;align-items:start}
+body[data-world] .work-panel.is-story-view .work-panel-story-meta{justify-content:flex-start;margin-top:14px}
+body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;margin:0}
 
 /* #14 · JUMP TO nav — world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
 body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent)}
