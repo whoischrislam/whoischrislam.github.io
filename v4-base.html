@@ -1873,29 +1873,25 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   margin-inline:calc(50% - 50vw);padding:12px calc(50vw - 50%);
   background:var(--world-bg);border-bottom:1px solid var(--world-line)}
 
-/* ==== REGION transition (planet↔region: company ↔ case study), Mass-Effect model. Five feels flipped via
-   #rt-bar. Deterministic CSS → animates in Safari too. The animated els are #work-panel + #work-focus-content. ==== */
-.region-in{will-change:transform,opacity}
-/* 1 · Descend into the card — grows from the tapped card's position (origin set in JS) */
-body.rt-descend .region-in{transform-origin:var(--region-ox,50%) var(--region-oy,0%);
-  animation:rgn-descend .46s cubic-bezier(.22,1,.36,1) both}
-@keyframes rgn-descend{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
-/* 2 · Orbital → surface (depth push) — comes forward from depth */
-body.rt-depth .region-in{animation:rgn-depth .42s cubic-bezier(.22,1,.36,1) both}
-@keyframes rgn-depth{from{opacity:0;transform:scale(1.08)}to{opacity:1;transform:none}}
-/* 3 · Scanner sweep — content resolves; a luminous line passes (JS spawns .rgn-sweep) */
-body.rt-scan .region-in{animation:rgn-scan .5s ease-out both}
-@keyframes rgn-scan{from{opacity:0}45%{opacity:.35}to{opacity:1}}
-.rgn-sweep{position:fixed;inset:var(--head-h) 0 0;z-index:70;pointer-events:none;mix-blend-mode:screen;
-  background:linear-gradient(100deg,transparent 42%,var(--world-accent,#6d4bd8) 50%,transparent 58%);
-  animation:rgn-sweepmove .55s ease-out both}
-@keyframes rgn-sweepmove{from{transform:translateX(-70%);opacity:.9}to{transform:translateX(170%);opacity:.2}}
-/* 4 · Lateral surface pan — slides in from the side */
-body.rt-pan .region-in{animation:rgn-pan .44s cubic-bezier(.22,1,.36,1) both}
-@keyframes rgn-pan{from{opacity:0;transform:translateX(64px)}to{opacity:1;transform:none}}
-/* 5 · Hold-the-frame morph — subtlest, chrome stays put */
-body.rt-morph .region-in{animation:rgn-morph .34s ease both}
-@keyframes rgn-morph{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+/* ==== REGION transition (planet↔region) — EXPERIMENTAL sci-fi/game-UI batch, flipped via #rt-bar.
+   Animated els = #work-panel + #work-focus-content. Tech labeled per variant. ==== */
+.region-in{will-change:transform,opacity,clip-path}
+/* MATERIALIZE [canvas] — Star Trek transporter × the grainy green data-cells; canvas assembles the cells */
+body.rt-materialize .region-in{animation:rgn-mat .72s ease-out both}
+@keyframes rgn-mat{from{opacity:0}55%{opacity:.35}to{opacity:1}}
+/* HOLO [CSS] — ME-codex boot: wipes down behind scanlines with a wireframe flash */
+body.rt-holo .region-in{animation:rgn-holo .55s cubic-bezier(.4,0,.2,1) both}
+@keyframes rgn-holo{from{opacity:0;clip-path:inset(0 0 100% 0);filter:brightness(1.9) saturate(.35)}
+  60%{opacity:1;clip-path:inset(0 0 0 0)}to{opacity:1;clip-path:inset(0 0 0 0);filter:none}}
+.rgn-scanlines{position:fixed;inset:var(--head-h) 0 0;z-index:70;pointer-events:none;mix-blend-mode:overlay;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.16) 0 1px,transparent 1px 4px);animation:rgn-scanfade .55s ease-out both}
+@keyframes rgn-scanfade{from{opacity:.9}to{opacity:0}}
+/* ZOOM [CSS 3D] — camera push: region scales up from the tapped card with perspective + blur (origin set in JS) */
+body.rt-zoom .region-in{transform-origin:var(--region-ox,50%) var(--region-oy,0%);animation:rgn-zoom .52s cubic-bezier(.22,1,.36,1) both}
+@keyframes rgn-zoom{from{opacity:0;transform:perspective(1200px) translateZ(-360px) scale(.72);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+/* WARP [canvas] — hyperspace star-streaks (canvas); content resolves after the streaks */
+body.rt-warp .region-in{animation:rgn-warp .62s ease-out both}
+@keyframes rgn-warp{from{opacity:0}45%{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){ .region-in{animation:none!important} }
 #rt-bar{position:fixed;right:12px;bottom:12px;z-index:2147483647;display:flex;gap:4px;
   background:rgba(20,18,16,.92);padding:5px;border-radius:9px;font:600 11px/1 -apple-system,sans-serif}
@@ -6317,20 +6313,57 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     // deterministic CSS "region" transition instead of the native View Transition — subtler than the world
     // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
     // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
+    // A short-lived full-region canvas for the effects that need particles/streaks (materialize, warp).
+    function regionCanvasFX(type){
+      var headH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--head-h")) || 64;
+      var W = innerWidth, H = innerHeight - headH, dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var cv = document.createElement("canvas");
+      cv.style.cssText = "position:fixed;left:0;top:" + headH + "px;width:" + W + "px;height:" + H + "px;z-index:71;pointer-events:none";
+      cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+      document.body.appendChild(cv);
+      var g = cv.getContext("2d"); g.scale(dpr, dpr);
+      var accent = (getComputedStyle(document.body).getPropertyValue("--world-accent") || "#6d4bd8").trim();
+      var greens = ["#4fc276", "#2a9d4f", "#8fe6ab", accent];
+      var parts = [], start = performance.now(), DUR = type === "warp" ? 620 : 720;
+      if(type === "materialize"){
+        for(var i=0;i<440;i++){ var tx=Math.random()*W, ty=Math.random()*H;
+          parts.push({tx:tx, ty:ty, x:tx+(Math.random()-.5)*260, y:ty+(Math.random()-.5)*200, sz:2+Math.random()*3,
+            col:greens[(Math.random()*greens.length)|0]}); }
+      }else{
+        for(var j=0;j<170;j++){ parts.push({a:Math.random()*6.2832, sp:0.15+Math.random()*0.85}); }
+      }
+      function frame(now){
+        var p = Math.min(1, (now-start)/DUR), e = 1-Math.pow(1-p,3);
+        g.clearRect(0,0,W,H);
+        if(type === "materialize"){
+          for(var k=0;k<parts.length;k++){ var q=parts[k];
+            var x=q.x+(q.tx-q.x)*e, y=q.y+(q.ty-q.y)*e;
+            g.globalAlpha = (1-e)*(0.5+Math.random()*0.5); g.fillStyle=q.col; g.fillRect(x,y,q.sz,q.sz); }
+        }else{
+          var cx=W/2, cy=H*0.42, maxR=Math.hypot(W,H); g.strokeStyle=accent; g.lineWidth=1.6;
+          g.globalAlpha=Math.sin(p*Math.PI)*0.85;
+          for(var m=0;m<parts.length;m++){ var s=parts[m];
+            var r0=e*maxR*s.sp, r1=r0+30+e*160;
+            g.beginPath(); g.moveTo(cx+Math.cos(s.a)*r0, cy+Math.sin(s.a)*r0); g.lineTo(cx+Math.cos(s.a)*r1, cy+Math.sin(s.a)*r1); g.stroke(); }
+        }
+        if(p<1) requestAnimationFrame(frame); else cv.remove();
+      }
+      requestAnimationFrame(frame);
+    }
     function regionTransition(change, trigger){
+      // Capture the trigger card's position BEFORE change() removes it, so zoom grows from where it was.
+      var c = (trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
       change();
       if(reduceWorkMotion.matches) return Promise.resolve();
-      var els = [workPanel, workFocusContent].filter(function(e){ return e && !e.hidden; });
-      if(document.body.classList.contains("rt-descend") && trigger && trigger.getBoundingClientRect){
-        var c = trigger.getBoundingClientRect(); // grow the region from the tapped card's position
+      var b = document.body, els = [workPanel, workFocusContent].filter(function(e){ return e && !e.hidden; });
+      if(b.classList.contains("rt-zoom") && c){
         els.forEach(function(el){ var r = el.getBoundingClientRect();
           el.style.setProperty("--region-ox", (r.width ? (c.left + c.width/2 - r.left)/r.width*100 : 50) + "%");
           el.style.setProperty("--region-oy", (r.height ? (c.top + c.height/2 - r.top)/r.height*100 : 0) + "%"); });
       }
-      if(document.body.classList.contains("rt-scan")){ // spawn the scanner sweep
-        var sweep = document.createElement("div"); sweep.className = "rgn-sweep";
-        document.body.appendChild(sweep); setTimeout(function(){ sweep.remove(); }, 650);
-      }
+      if(b.classList.contains("rt-holo")){ var sl=document.createElement("div"); sl.className="rgn-scanlines"; document.body.appendChild(sl); setTimeout(function(){ sl.remove(); }, 620); }
+      if(b.classList.contains("rt-materialize")) regionCanvasFX("materialize");
+      if(b.classList.contains("rt-warp")) regionCanvasFX("warp");
       els.forEach(function(el){ el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); }); // restart
       return Promise.resolve();
     }
@@ -7849,7 +7882,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
 <!-- CHOOSER (temporary): flip the region (case study ↔ company) transition feel. Remove once Chris picks. -->
 <script>
 (function(){
-  var opts=[["Descend","rt-descend"],["Depth","rt-depth"],["Scan","rt-scan"],["Pan","rt-pan"],["Morph","rt-morph"]];
+  var opts=[["Materialize","rt-materialize"],["Holo","rt-holo"],["Zoom","rt-zoom"],["Warp","rt-warp"]];
   var all=opts.map(function(o){return o[1];});
   var bar=document.createElement("div"); bar.id="rt-bar";
   var lbl=document.createElement("span"); lbl.textContent="region"; bar.appendChild(lbl);
@@ -7857,7 +7890,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     Array.prototype.forEach.call(bar.querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.cls===cls); }); }
   opts.forEach(function(o){ var b=document.createElement("button"); b.textContent=o[0]; b.dataset.cls=o[1];
     b.onclick=function(){ apply(o[1]); }; bar.appendChild(b); });
-  document.body.appendChild(bar); apply("rt-descend");
+  document.body.appendChild(bar); apply("rt-materialize");
 })();
 </script>
 </body></html>
