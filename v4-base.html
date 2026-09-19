@@ -1873,12 +1873,10 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   margin-inline:calc(50% - 50vw);padding:12px calc(50vw - 50%);
   background:var(--world-bg);border-bottom:1px solid var(--world-line)}
 
-/* ==== REGION transition (planet↔region: company ↔ case study) — a clip REVEAL (same principle as the
-   world reveal): the content stays perfectly still and a circle wipes it in from the tapped card. No
-   scale/translate → no vestibular motion. Used for open AND close. ==== */
-.region-in{will-change:clip-path;animation:rgn-reveal .44s cubic-bezier(.4,0,.2,1) both}
-@keyframes rgn-reveal{from{clip-path:circle(0% at var(--region-ox,50%) var(--region-oy,30%))}
-  to{clip-path:circle(150% at var(--region-ox,50%) var(--region-oy,30%))}}
+/* ==== REGION transition (company ↔ case study) — a case study is a reading surface, so it just fades in
+   quietly. No set-piece (the world reveal is the one signature moment). ==== */
+.region-in{animation:rgn-fade .16s ease both}
+@keyframes rgn-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){ .region-in{animation:none} }
 
 @media (prefers-reduced-motion: reduce){
@@ -6295,21 +6293,13 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     // deterministic CSS "region" transition instead of the native View Transition — subtler than the world
     // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
     // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
-    function regionTransition(change, trigger, entering){
-      // clip REVEAL — content stays still; a circle wipes it in. Open from the tapped card; close from center.
-      var c = (entering && trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
+    function regionTransition(change){
+      // case study is a reading surface — quiet fade, no set-piece.
       change();
       if(reduceWorkMotion.matches) return Promise.resolve();
       [workPanel, workFocusContent].forEach(function(el){
         if(!el || el.hidden) return;
-        var r = el.getBoundingClientRect();
-        // anchor the circle to the tapped card's true VIEWPORT point (px) so both panels reveal from the
-        // same spot you clicked; on close, from the panel's own center.
-        var ox = c ? (c.left + c.width/2 - r.left) : r.width/2;
-        var oy = c ? (c.top + c.height/2 - r.top) : r.height*0.3;
-        el.style.setProperty("--region-ox", Math.round(ox) + "px");
-        el.style.setProperty("--region-oy", Math.round(oy) + "px");
-        el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); // restart
+        el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); // restart the fade
       });
       return Promise.resolve();
     }
