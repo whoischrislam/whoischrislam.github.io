@@ -2239,6 +2239,11 @@ body.work-focus-open[data-world] #work-focus-content{
 .world-hero-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:72ch;color:var(--world-ink);margin:0}
 .world-hero-media{margin:46px 0 8px}
 .world-hero-media img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 24px 60px rgba(26,23,16,.18)}
+/* BLUEPRINT hero — schematic placeholder for an unskinned world (no hero image yet) */
+.world-hero-media-blueprint .visual-placeholder{width:100%;min-height:clamp(220px,30vw,340px);
+  border:1px solid var(--world-line);border-radius:6px;background:transparent;color:var(--world-ink)}
+.world-hero-media-blueprint .visual-placeholder::before{border-color:var(--world-line)}
+.world-hero-media-blueprint .visual-placeholder-title{color:var(--world-ink)}
 
 /* body depth (spec grid, outcome, decisions) — readable cards on the brand ground */
 body.work-focus-open[data-world] .work-panel-summary,
@@ -3244,6 +3249,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       goodrx: {
         name: "GoodRx + Iodine",
         logo: "images/logos/goodrx.svg",
+        hero: "images/work/goodrx-hero.png", // per-world bold hero image (Image #4); omit to fall back to the blueprint hero
         dates: "2017–2018",
         role: "Lead Product Designer",
         companyOutcome: "IPO · 2020",
@@ -5495,6 +5501,22 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
         Boolean(companyData.alsoShipped && companyData.alsoShipped.length);
     }
 
+    // A "world" is any top-level HOMEPAGE entry (a company band or a work/experiment tile). Homepage
+    // membership IS the explicit declaration of world-ness — deriving the set from the DOM keeps it DRY:
+    // add a homepage tile and it becomes a world with the blueprint fallback, nothing to hand-tag.
+    // (Companies and standalone projects are peers; the difference is only which data/regions each carries.)
+    var __worldSlugs = null;
+    function isWorldEntry(project){
+      if(!workProjects[project]) return false;
+      if(!__worldSlugs){
+        __worldSlugs = new Set();
+        document.querySelectorAll('.co-band[data-project], .work-tile[data-project]').forEach(function(el){
+          if(el.dataset.project) __worldSlugs.add(el.dataset.project);
+        });
+      }
+      return __worldSlugs.has(project);
+    }
+
     function setWorkFocusEnvironment(active){
       document.body.classList.toggle("work-focus-open", active);
       workBackgroundItems.forEach(function(item){ item.inert = active; });
@@ -6556,28 +6578,35 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       workPanelFacts.hidden = !facts || !facts.length;
     }
 
-    var WORLD_HERO = { goodrx: "images/work/goodrx-hero.png" }; // per-company bold hero image (Image #4)
     function clearWorldHero(){
       var h = workPanel.querySelector(".work-panel-heading"); if(h) h.classList.remove("world-hidden");
       var ex = workPanel.querySelector(".world-hero"); if(ex) ex.remove();
     }
     function applyWorldHero(project){
       clearWorldHero();
-      var src = WORLD_HERO[project]; if(!src) return;
       var item = workProjects[project]; var heading = workPanel.querySelector(".work-panel-heading");
       if(!item || !heading) return;
+      var isCompany = hasCompanyStories(project); // companies read "role @ Company"; standalone projects just "role"
       var bandP = document.querySelector('.co-band[data-project="'+project+'"] .co-head p');
       var hero = document.createElement("header"); hero.className = "world-hero";
-      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + " @"; hero.appendChild(k); } // #3: role @ company
+      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + (isCompany ? " @" : ""); hero.appendChild(k); } // #3: role @ company
       var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
       // #3: merge the impact one-liner (band tagline) with the company context into one lede paragraph (both existing copy).
       var impact = bandP ? bandP.textContent : "";
       var merged = [impact, item.context || ""].filter(Boolean).join("  ");
       if(merged){ var p=document.createElement("p"); p.className="world-hero-lede"; p.textContent=merged; hero.appendChild(p); }
       var m=document.createElement("div"); m.className="world-hero-media";
-      // eager, not lazy: this hero is above the fold in the world; lazy leaves it blank during/after
-      // the reveal (reads as "still loading"). Same file the homepage band already loaded, so it's cached.
-      var mi=document.createElement("img"); mi.src=src; mi.alt=item.name+" — selected work"; mi.loading="eager"; mi.decoding="async"; m.appendChild(mi); hero.appendChild(m);
+      if(item.hero){
+        // eager, not lazy: this hero is above the fold in the world; lazy leaves it blank during/after
+        // the reveal (reads as "still loading"). Same file the homepage band already loaded, so it's cached.
+        var mi=document.createElement("img"); mi.src=item.hero; mi.alt=item.name+" — selected work"; mi.loading="eager"; mi.decoding="async"; m.appendChild(mi);
+      } else {
+        // BLUEPRINT fallback: an unskinned world gets a schematic placeholder hero (the .visual-placeholder
+        // primitive), so new work reads as an intentional blueprint, never broken.
+        m.classList.add("world-hero-media-blueprint");
+        m.appendChild(createVisualPlaceholder({ title: item.name, status: "BLUEPRINT" }));
+      }
+      hero.appendChild(m);
       heading.classList.add("world-hidden");
       heading.parentNode.insertBefore(hero, heading);
     }
@@ -6605,7 +6634,9 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       workPanelResultLabel.textContent = companyView ? (item.resultLabel || "Company impact") : "Outcome";
       workPanelResult.textContent = item.result;
       workPanelActions.replaceChildren();
-      (companyView ? [] : item.actions).forEach(function(action, index){
+      // Actions render in both views: a project-world (e.g. HogWare) surfaces its Play it / build-log
+      // buttons; companies that carry no actions simply render none.
+      (item.actions || []).forEach(function(action, index){
         var link = document.createElement("a");
         link.href = action[0];
         link.textContent = action[1] + " →";
@@ -6767,7 +6798,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     function groupWork(project, options){
       options = options || {};
       var source = options.source || "project";
-      var companyFocus = source === "company" && hasCompanyFocus(project);
+      var companyFocus = source === "company" && isWorldEntry(project);
       var sourceButton = options.trigger && options.trigger.closest
         ? options.trigger.closest("[data-work-company]") : null;
       var sourceImage = sourceButton && sourceButton.querySelector("img");
@@ -6900,7 +6931,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     }
     window.__openWorldClip = function(project, origin, opts){
       opts = opts || {};
-      if(!hasCompanyFocus(project)) return;
+      if(!isWorldEntry(project)) return;
       var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-exit
       if(!interrupting){
         workOverviewScrollY = window.scrollY;               // remember homepage scroll
@@ -7075,7 +7106,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
           openWorkMedia(tile);
         }else{
           if(window.posthog) posthog.capture("work_company_opened", {company:p, kind:tile.dataset.kind||""});
-          if(hasCompanyFocus(p)){
+          if(isWorldEntry(p)){
             groupWork(p, {trigger:tile, source:"company"});
           }else{
             groupWork(p, {trigger:tile, source:"project"});
@@ -7107,7 +7138,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
         if(project === "all") leaveFocusedWork();
         else groupWork(project, {
           trigger:button,
-          source:hasCompanyFocus(project) ? "company" : "project"
+          source:isWorldEntry(project) ? "company" : "project"
         });
       });
     });
@@ -7590,7 +7621,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   function closeWorld(){ document.body.classList.remove('world-goodrx-open'); world.setAttribute('aria-hidden','true'); }
   // Band → REAL themed world via a clip-path circle grown from the click point (see __openWorldClip
   // in the main app script). No View Transitions API — deterministic across browsers.
-  function dissolveEnter(x,y){ if(window.__openWorldClip){ window.__openWorldClip('goodrx', {x:x,y:y}); } }
+  function dissolveEnter(x,y){ if(window.__openWorldClip){ var band=heroEl.closest('[data-project]'); window.__openWorldClip((band&&band.dataset.project)||'goodrx', {x:x,y:y}); } }
   function dissolveExit(x,y){ if(reduce.matches){ closeWorld(); return; } radialTransition(x,y,false); }
 
   // ---- Hover charge: the dissolve dust FOLLOWS the cursor while over the hero, so hover→click is
