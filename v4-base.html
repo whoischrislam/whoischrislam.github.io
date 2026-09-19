@@ -2035,6 +2035,10 @@ body.hov-tilt .co-band[data-project="goodrx"]:focus-within .band-frame{
 #gx-cursor::after{content:"Enter world \2192"}
 /* the old static corner cue is now redundant with the trailing label */
 .co-band[data-project="goodrx"] .world-cue{display:none}
+/* The "Enter world →" label is a desktop cursor affordance — on touch there's no mouseleave, so it
+   lingers after tapping in. Kill it on touch devices, and hide it whenever a world is open/opening. */
+@media (hover:none){ #gx-cursor{display:none!important} }
+body.work-focus-open #gx-cursor,body.world-entering #gx-cursor{opacity:0!important}
 @media (prefers-reduced-motion:reduce){ #gx-cursor{transition:none} }
 
 /* ==== REALITY-FX (GoodRx) — page-level effects that break OUTSIDE the card. #rfx is a fixed
