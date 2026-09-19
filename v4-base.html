@@ -1866,21 +1866,26 @@ body.work-focus-open[data-world].world-entering .work-shell{background:var(--bg)
    scaffolding-purge pass (also removes the retired enter()/radialTransition prototype and #world-goodrx). */
 #tune,#hx-bar,#hb-bar,#vt-tune{display:none!important}
 
-/* ==== SUB-BAR options (world back affordance) — flip via #sb-bar to pick one; default = floating link.
-   Scoped to worlds so they theme with the world tokens. Pure CSS, works in every engine. ==== */
-/* A · Slim: a hairline sub-bar separating the back control from the content */
-body.sb-a[data-world] .work-panel-navline{border-bottom:1px solid var(--world-line);padding-bottom:12px;margin-bottom:24px}
-/* B · Sticky: the sub-bar pins under the header while you scroll the world */
-body.sb-b[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;background:var(--world-bg);
-  padding:12px 0;margin:0 0 20px;border-bottom:1px solid var(--world-line)}
-/* C · Pill: the back reads as an actionable control, not floating text */
-body.sb-c[data-world] .work-panel-back{border:1px solid var(--world-line);border-radius:999px;
-  padding:8px 15px;background:var(--world-surface,#fff)}
-/* #sb-bar flip control (temporary, for choosing) */
-#sb-bar{position:fixed;right:12px;bottom:12px;z-index:2147483647;display:flex;gap:4px;
+/* World back = a sticky, FULL-BLEED sub-bar pinned under the header (Chris's pick). The margin/padding-inline
+   breakout makes its background span the whole viewport while the content stays in the 1180px column — a
+   plain sticky only spans the padded column, which is why it looked narrow on mobile. */
+body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
+  margin-inline:calc(50% - 50vw);padding:12px calc(50vw - 50%);
+  background:var(--world-bg);border-bottom:1px solid var(--world-line)}
+
+/* ==== REGION transition (planet↔region: company ↔ case study). The new content animates in; feel flipped
+   via #rt-bar. Deterministic CSS → animates in Safari too. ==== */
+.region-in{animation:region-in var(--region-dur,.36s) var(--region-ease,cubic-bezier(.33,1,.68,1)) both}
+@keyframes region-in{from{opacity:0;transform:translate(var(--region-dx,0),var(--region-dy,16px))}to{opacity:1;transform:none}}
+body.rt-fade{--region-dy:0px;--region-dx:0px}
+body.rt-slide{--region-dy:0px;--region-dx:34px}
+body.rt-rise{--region-dy:16px;--region-dx:0px}
+@media (prefers-reduced-motion:reduce){ .region-in{animation:none} }
+#rt-bar{position:fixed;right:12px;bottom:12px;z-index:2147483647;display:flex;gap:4px;
   background:rgba(20,18,16,.92);padding:5px;border-radius:9px;font:600 11px/1 -apple-system,sans-serif}
-#sb-bar button{appearance:none;border:0;background:transparent;color:#ddd;padding:6px 9px;border-radius:6px;cursor:pointer;font:inherit}
-#sb-bar button.on{background:#6d4bd8;color:#fff}
+#rt-bar span{color:#8a8f98;padding:6px 4px 6px 6px}
+#rt-bar button{appearance:none;border:0;background:transparent;color:#ddd;padding:6px 9px;border-radius:6px;cursor:pointer;font:inherit}
+#rt-bar button.on{background:#6d4bd8;color:#fff}
 
 @media (prefers-reduced-motion: reduce){
   .co-band[data-project="goodrx"] .band-frame{transition:none}
@@ -6292,7 +6297,21 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
       workLayoutFrame = requestAnimationFrame(layoutWorkGrid);
     }
 
+    // Within a world (galaxy→planet already done), navigating planet↔region (company ↔ case study) uses a
+    // deterministic CSS "region" transition instead of the native View Transition — subtler than the world
+    // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
+    // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
+    function regionTransition(change){
+      change();
+      if(reduceWorkMotion.matches) return Promise.resolve();
+      [workPanel, workFocusContent].forEach(function(el){
+        if(!el || el.hidden) return;
+        el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); // restart the anim
+      });
+      return Promise.resolve();
+    }
     function transitionWork(change){
+      if(document.body.getAttribute("data-world")) return regionTransition(change); // in-world region move
       if(!reduceWorkMotion.matches && document.startViewTransition){
         try{
           var viewTransition = document.startViewTransition(change);
@@ -7803,18 +7822,17 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
   set(); document.body.appendChild(wrap);
 })();
 </script>
-<!-- CHOOSER (temporary): flip the world back-affordance treatment. Remove once Chris picks one. -->
+<!-- CHOOSER (temporary): flip the region (case study ↔ company) transition feel. Remove once Chris picks. -->
 <script>
 (function(){
-  var opts=[["Default",""],["Slim","sb-a"],["Sticky","sb-b"],["Pill","sb-c"]];
-  var bar=document.createElement("div"); bar.id="sb-bar";
-  var lbl=document.createElement("span"); lbl.textContent="back"; lbl.style.cssText="color:#8a8f98;padding:6px 4px 6px 6px";
-  bar.appendChild(lbl);
-  function apply(cls){ ["sb-a","sb-b","sb-c"].forEach(function(c){document.body.classList.remove(c);}); if(cls) document.body.classList.add(cls);
+  var opts=[["Rise","rt-rise"],["Fade","rt-fade"],["Slide","rt-slide"]];
+  var bar=document.createElement("div"); bar.id="rt-bar";
+  var lbl=document.createElement("span"); lbl.textContent="region"; bar.appendChild(lbl);
+  function apply(cls){ ["rt-rise","rt-fade","rt-slide"].forEach(function(c){document.body.classList.remove(c);}); document.body.classList.add(cls);
     Array.prototype.forEach.call(bar.querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.cls===cls); }); }
   opts.forEach(function(o){ var b=document.createElement("button"); b.textContent=o[0]; b.dataset.cls=o[1];
     b.onclick=function(){ apply(o[1]); }; bar.appendChild(b); });
-  document.body.appendChild(bar); apply("");
+  document.body.appendChild(bar); apply("rt-rise");
 })();
 </script>
 </body></html>
