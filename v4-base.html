@@ -2287,6 +2287,23 @@ body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{g
 body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{padding:4px 0 22px}
 body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
 
+/* ===== Case study (story) view: mirror the company editorial treatment in-world ===== */
+/* #12 · fact grid — drop icons + boxy cells; hairline rows, mono label over plain value (like Hybrid B) */
+body[data-world] .work-panel.is-story-view .work-panel-facts{gap:0 44px;max-width:none;background:transparent;border:0;border-radius:0;border-top:1px solid var(--world-line)}
+body[data-world] .work-panel.is-story-view .work-panel-facts div,
+body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:1fr;padding:14px 0;border:0;border-bottom:1px solid var(--world-line)}
+body[data-world] .work-panel.is-story-view .work-panel-facts .fact-icon{display:none}
+body[data-world] .work-panel.is-story-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
+body[data-world] .work-panel.is-story-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+
+/* #13 · provenance — hide the washed-out logo (company is named in the back-link); keep the status pill in world colors */
+body[data-world] .work-panel.is-story-view .work-panel-provenance-logo{display:none}
+body[data-world] .work-panel-provenance-outcome{border-color:var(--world-line);color:var(--world-ink-soft)}
+
+/* #14 · JUMP TO nav — world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
+body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent)}
+body[data-world] .project-story-nav button[aria-current="true"]{color:#fff}
+
 body.work-focus-open[data-world="goodrx"] .work-project-card{background:#1a1710;color:#fff;border-color:transparent}
 body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
 </style>
