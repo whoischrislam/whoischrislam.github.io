@@ -2246,6 +2246,14 @@ body.work-focus-open[data-world] #work-focus-content{
   border:1px solid var(--world-line);border-radius:6px;background:transparent;color:var(--world-ink)}
 .world-hero-media-blueprint .visual-placeholder::before{border-color:var(--world-line)}
 .world-hero-media-blueprint .visual-placeholder-title{color:var(--world-ink)}
+/* Project-world Artifacts region — image grid opening the lightbox */
+.work-artifact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:18px}
+.work-artifact{appearance:none;display:block;padding:0;overflow:hidden;cursor:pointer;
+  border:1px solid var(--world-line,var(--border));border-radius:8px;background:transparent;
+  transition:border-color .16s ease}
+.work-artifact img{display:block;width:100%;height:auto}
+.work-artifact:hover,.work-artifact:focus-visible{border-color:var(--world-ink-soft,var(--border-strong))}
+.work-artifact:focus-visible{outline:2px solid var(--world-accent,var(--accent));outline-offset:2px}
 
 /* body depth (spec grid, outcome, decisions) — readable cards on the brand ground */
 body.work-focus-open[data-world] .work-panel-summary,
@@ -6027,6 +6035,41 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
         }
         workFocusContent.appendChild(support);
       }
+      // Project-world artifacts: a standalone project (no case-study stories) surfaces its own artifact
+      // media as an "Artifacts" region below the fact grid (reuses the lightbox via openWorkMedia).
+      if(!companyStories.length){
+        var artMedia = projectMedia[company] || [];
+        if(artMedia.length){
+          var artifacts = document.createElement("section");
+          artifacts.className = "work-company-support work-artifacts";
+          artifacts.setAttribute("aria-label", "Artifacts from " + companyData.name);
+          var artHead = document.createElement("div");
+          artHead.className = "work-company-support-head";
+          var artTitle = document.createElement("h4");
+          artTitle.textContent = companyData.artifactsTitle || "Artifacts";
+          var artIntro = document.createElement("p");
+          artIntro.textContent = companyData.artifactsIntro || "Screens and pieces from the build.";
+          artHead.append(artTitle, artIntro);
+          artifacts.appendChild(artHead);
+          var artGrid = document.createElement("div");
+          artGrid.className = "work-artifact-grid";
+          artMedia.forEach(function(item){
+            var card = document.createElement("button");
+            card.type = "button";
+            card.className = "work-artifact";
+            card.dataset.fullSrc = item.src;
+            card.dataset.mediaTitle = item.title || companyData.name;
+            card.setAttribute("aria-label", "Open full size: " + (item.title || companyData.name));
+            var img = document.createElement("img");
+            img.src = item.src; img.alt = ""; img.loading = "lazy"; img.decoding = "async";
+            card.appendChild(img);
+            card.addEventListener("click", function(){ openWorkMedia(card); });
+            artGrid.appendChild(card);
+          });
+          artifacts.appendChild(artGrid);
+          workFocusContent.appendChild(artifacts);
+        }
+      }
       // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
       // blank gap that reads as broken; hero + fact grid + actions still render above it.
       workFocusContent.hidden = !workFocusContent.children.length;
@@ -6626,7 +6669,9 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       if(inWorld && item.summary) facts = [["WHAT I DID", item.summary]].concat(item.facts || []);
       renderWorkFacts(facts, Boolean(companyView));
       workPanelDetails.open = !(companyView && window.matchMedia("(max-width:520px)").matches);
-      workPanelResultLabel.textContent = companyView ? (item.resultLabel || "Company impact") : "Outcome";
+      workPanelResultLabel.textContent = companyView
+        ? (item.resultLabel || (hasCompanyStories(project) ? "Company impact" : "Outcome"))
+        : "Outcome";
       workPanelResult.textContent = item.result;
       workPanelActions.replaceChildren();
       // Actions render in both views: a project-world (e.g. HogWare) surfaces its Play it / build-log
