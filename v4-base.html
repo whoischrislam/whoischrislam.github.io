@@ -1873,25 +1873,19 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   margin-inline:calc(50% - 50vw);padding:12px calc(50vw - 50%);
   background:var(--world-bg);border-bottom:1px solid var(--world-line)}
 
-/* ==== REGION transition (planet↔region) — EXPERIMENTAL sci-fi/game-UI batch, flipped via #rt-bar.
+/* ==== REGION transition (planet↔region) — EXPERIMENTAL batch v2 (Chris's directions), flipped via #rt-bar.
    Animated els = #work-panel + #work-focus-content. Tech labeled per variant. ==== */
 .region-in{will-change:transform,opacity,clip-path}
-/* MATERIALIZE [canvas] — Star Trek transporter × the grainy green data-cells; canvas assembles the cells */
-body.rt-materialize .region-in{animation:rgn-mat .72s ease-out both}
-@keyframes rgn-mat{from{opacity:0}55%{opacity:.35}to{opacity:1}}
-/* HOLO [CSS] — ME-codex boot: wipes down behind scanlines with a wireframe flash */
-body.rt-holo .region-in{animation:rgn-holo .55s cubic-bezier(.4,0,.2,1) both}
-@keyframes rgn-holo{from{opacity:0;clip-path:inset(0 0 100% 0);filter:brightness(1.9) saturate(.35)}
-  60%{opacity:1;clip-path:inset(0 0 0 0)}to{opacity:1;clip-path:inset(0 0 0 0);filter:none}}
-.rgn-scanlines{position:fixed;inset:var(--head-h) 0 0;z-index:70;pointer-events:none;mix-blend-mode:overlay;
-  background:repeating-linear-gradient(0deg,rgba(255,255,255,.16) 0 1px,transparent 1px 4px);animation:rgn-scanfade .55s ease-out both}
-@keyframes rgn-scanfade{from{opacity:.9}to{opacity:0}}
-/* ZOOM [CSS 3D] — camera push: region scales up from the tapped card with perspective + blur (origin set in JS) */
-body.rt-zoom .region-in{transform-origin:var(--region-ox,50%) var(--region-oy,0%);animation:rgn-zoom .52s cubic-bezier(.22,1,.36,1) both}
-@keyframes rgn-zoom{from{opacity:0;transform:perspective(1200px) translateZ(-360px) scale(.72);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
-/* WARP [canvas] — hyperspace star-streaks (canvas); content resolves after the streaks */
-body.rt-warp .region-in{animation:rgn-warp .62s ease-out both}
-@keyframes rgn-warp{from{opacity:0}45%{opacity:0}to{opacity:1}}
+/* REPLICATOR [canvas] — Star Trek replicator: content BUILDS UP behind a bright energized line sweeping
+   bottom→top; canvas draws a dense fine sparkle band at the build line. */
+body.rt-replicator .region-in{animation:rgn-repl .82s cubic-bezier(.45,0,.15,1) both}
+@keyframes rgn-repl{from{opacity:.15;clip-path:inset(100% 0 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+/* SCROLL [CSS] — a long continuous scroll-in: travel to the region rather than swap it */
+body.rt-scroll .region-in{animation:rgn-scroll .66s cubic-bezier(.16,.84,.28,1) both}
+@keyframes rgn-scroll{from{opacity:0;transform:translateY(78vh)}to{opacity:1;transform:none}}
+/* MAPS [CSS] — Google-Maps smooth deep zoom from the tapped card (flat, no perspective; origin set in JS) */
+body.rt-maps .region-in{transform-origin:var(--region-ox,50%) var(--region-oy,0%);animation:rgn-maps .62s cubic-bezier(.25,1,.3,1) both}
+@keyframes rgn-maps{from{opacity:0;transform:scale(.32)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){ .region-in{animation:none!important} }
 #rt-bar{position:fixed;right:12px;bottom:12px;z-index:2147483647;display:flex;gap:4px;
   background:rgba(20,18,16,.92);padding:5px;border-radius:9px;font:600 11px/1 -apple-system,sans-serif}
@@ -6313,8 +6307,8 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     // deterministic CSS "region" transition instead of the native View Transition — subtler than the world
     // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
     // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
-    // A short-lived full-region canvas for the effects that need particles/streaks (materialize, warp).
-    function regionCanvasFX(type){
+    // REPLICATOR canvas: a dense fine sparkle band rides the build line (bottom→top), matter fabricating.
+    function regionReplicatorFX(){
       var headH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--head-h")) || 64;
       var W = innerWidth, H = innerHeight - headH, dpr = Math.min(window.devicePixelRatio || 1, 2);
       var cv = document.createElement("canvas");
@@ -6323,47 +6317,33 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
       document.body.appendChild(cv);
       var g = cv.getContext("2d"); g.scale(dpr, dpr);
       var accent = (getComputedStyle(document.body).getPropertyValue("--world-accent") || "#6d4bd8").trim();
-      var greens = ["#4fc276", "#2a9d4f", "#8fe6ab", accent];
-      var parts = [], start = performance.now(), DUR = type === "warp" ? 620 : 720;
-      if(type === "materialize"){
-        for(var i=0;i<440;i++){ var tx=Math.random()*W, ty=Math.random()*H;
-          parts.push({tx:tx, ty:ty, x:tx+(Math.random()-.5)*260, y:ty+(Math.random()-.5)*200, sz:2+Math.random()*3,
-            col:greens[(Math.random()*greens.length)|0]}); }
-      }else{
-        for(var j=0;j<170;j++){ parts.push({a:Math.random()*6.2832, sp:0.15+Math.random()*0.85}); }
-      }
+      var cols = ["#4fc276", "#8fe6ab", "#ffe9a8", accent];
+      var start = performance.now(), DUR = 820;
       function frame(now){
-        var p = Math.min(1, (now-start)/DUR), e = 1-Math.pow(1-p,3);
-        g.clearRect(0,0,W,H);
-        if(type === "materialize"){
-          for(var k=0;k<parts.length;k++){ var q=parts[k];
-            var x=q.x+(q.tx-q.x)*e, y=q.y+(q.ty-q.y)*e;
-            g.globalAlpha = (1-e)*(0.5+Math.random()*0.5); g.fillStyle=q.col; g.fillRect(x,y,q.sz,q.sz); }
-        }else{
-          var cx=W/2, cy=H*0.42, maxR=Math.hypot(W,H); g.strokeStyle=accent; g.lineWidth=1.6;
-          g.globalAlpha=Math.sin(p*Math.PI)*0.85;
-          for(var m=0;m<parts.length;m++){ var s=parts[m];
-            var r0=e*maxR*s.sp, r1=r0+30+e*160;
-            g.beginPath(); g.moveTo(cx+Math.cos(s.a)*r0, cy+Math.sin(s.a)*r0); g.lineTo(cx+Math.cos(s.a)*r1, cy+Math.sin(s.a)*r1); g.stroke(); }
+        var p = Math.min(1, (now-start)/DUR), e = 1 - Math.pow(1-p, 2.2); // ~matches the clip reveal
+        var lineY = H * (1 - e); g.clearRect(0,0,W,H);
+        if(p < 0.98){
+          for(var i=0;i<360;i++){ var x=Math.random()*W, y=lineY + (Math.random()-0.5)*52;
+            g.globalAlpha = 0.2 + Math.random()*0.6; g.fillStyle = cols[(Math.random()*cols.length)|0];
+            var s = 1 + Math.random()*1.4; g.fillRect(x, y, s, s); }
+          g.globalAlpha = 0.55; g.fillStyle = accent; g.fillRect(0, lineY-1, W, 2); // bright build line
         }
-        if(p<1) requestAnimationFrame(frame); else cv.remove();
+        if(p < 1) requestAnimationFrame(frame); else cv.remove();
       }
       requestAnimationFrame(frame);
     }
     function regionTransition(change, trigger){
-      // Capture the trigger card's position BEFORE change() removes it, so zoom grows from where it was.
+      // Capture the trigger card's position BEFORE change() removes it, so Maps zoom grows from where it was.
       var c = (trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
       change();
       if(reduceWorkMotion.matches) return Promise.resolve();
       var b = document.body, els = [workPanel, workFocusContent].filter(function(e){ return e && !e.hidden; });
-      if(b.classList.contains("rt-zoom") && c){
+      if(b.classList.contains("rt-maps") && c){
         els.forEach(function(el){ var r = el.getBoundingClientRect();
           el.style.setProperty("--region-ox", (r.width ? (c.left + c.width/2 - r.left)/r.width*100 : 50) + "%");
           el.style.setProperty("--region-oy", (r.height ? (c.top + c.height/2 - r.top)/r.height*100 : 0) + "%"); });
       }
-      if(b.classList.contains("rt-holo")){ var sl=document.createElement("div"); sl.className="rgn-scanlines"; document.body.appendChild(sl); setTimeout(function(){ sl.remove(); }, 620); }
-      if(b.classList.contains("rt-materialize")) regionCanvasFX("materialize");
-      if(b.classList.contains("rt-warp")) regionCanvasFX("warp");
+      if(b.classList.contains("rt-replicator")) regionReplicatorFX();
       els.forEach(function(el){ el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); }); // restart
       return Promise.resolve();
     }
@@ -7882,7 +7862,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
 <!-- CHOOSER (temporary): flip the region (case study ↔ company) transition feel. Remove once Chris picks. -->
 <script>
 (function(){
-  var opts=[["Materialize","rt-materialize"],["Holo","rt-holo"],["Zoom","rt-zoom"],["Warp","rt-warp"]];
+  var opts=[["Replicator","rt-replicator"],["Scroll","rt-scroll"],["Maps","rt-maps"]];
   var all=opts.map(function(o){return o[1];});
   var bar=document.createElement("div"); bar.id="rt-bar";
   var lbl=document.createElement("span"); lbl.textContent="region"; bar.appendChild(lbl);
@@ -7890,7 +7870,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     Array.prototype.forEach.call(bar.querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.cls===cls); }); }
   opts.forEach(function(o){ var b=document.createElement("button"); b.textContent=o[0]; b.dataset.cls=o[1];
     b.onclick=function(){ apply(o[1]); }; bar.appendChild(b); });
-  document.body.appendChild(bar); apply("rt-materialize");
+  document.body.appendChild(bar); apply("rt-replicator");
 })();
 </script>
 </body></html>
