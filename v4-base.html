@@ -2289,7 +2289,7 @@ body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div:first
 
 /* ===== Case study (story) view: mirror the company editorial treatment in-world ===== */
 /* #12 · fact grid — drop icons + boxy cells; hairline rows, mono label over plain value (like Hybrid B) */
-body[data-world] .work-panel.is-story-view .work-panel-facts{gap:0 44px;max-width:none;background:transparent;border:0;border-radius:0;border-top:1px solid var(--world-line)}
+body[data-world] .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr;gap:0;max-width:none;background:transparent;border:0;border-radius:0;border-top:1px solid var(--world-line)}
 body[data-world] .work-panel.is-story-view .work-panel-facts div,
 body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:1fr;padding:14px 0;border:0;border-bottom:1px solid var(--world-line)}
 body[data-world] .work-panel.is-story-view .work-panel-facts .fact-icon{display:none}
