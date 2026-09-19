@@ -6313,14 +6313,14 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
             lastRegionOy = (r.height ? (c.top + c.height/2 - r.top)/r.height*100 : 0) + "%";
           }else{ lastRegionOx = "50%"; lastRegionOy = "0%"; }
           el.style.setProperty("--region-ox", lastRegionOx); el.style.setProperty("--region-oy", lastRegionOy);
-          el.classList.remove("region-out","region-fade","region-in"); void el.offsetWidth; el.classList.add("region-in");
+          el.classList.remove("region-in","region-back"); void el.offsetWidth; el.classList.add("region-in");
         });
         return Promise.resolve();
       }
       // region → company: the company settles in from slightly enlarged — a "zoom out" of the file.
       change();
       if(reduceWorkMotion.matches) return Promise.resolve();
-      regionEls().forEach(function(el){ el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-back"); });
+      regionEls().forEach(function(el){ el.classList.remove("region-in","region-back"); void el.offsetWidth; el.classList.add("region-back"); });
       return Promise.resolve();
     }
     function transitionWork(change, trigger, entering){
