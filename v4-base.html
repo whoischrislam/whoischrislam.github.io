@@ -6848,9 +6848,13 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
         if(opts.history !== false) writeFocusedWorkHistory(project, "company"); // push ?work= so browser back closes the world
         groupWork(project, { source:"company", scroll:false, history:false, animate:false }); // build the focus state
         document.body.classList.add("world-entering");       // homepage stays visible; layer becomes an overlay
+        workShell.classList.remove("is-focused");            // keep the shell in normal flow so the homepage-behind
+                                                             // stays exactly where it was (no downward jump). #world-layer
+                                                             // is its own fixed overlay and reveals over it.
         setWorldCenter(worldCircle(origin.x, origin.y));     // fresh open: grow from the click; interrupt: keep current center
       }
-      var commit = function(){ document.body.classList.remove("world-entering"); worldLayer.classList.remove("world-revealing"); };
+      var commit = function(){ document.body.classList.remove("world-entering"); worldLayer.classList.remove("world-revealing");
+        workShell.classList.add("is-focused"); workShell.scrollTop = 0; }; // now the company fully covers → fix the shell
       if(reduceWorkMotion.matches || !worldLayer.animate){ commit(); return; } // instant fallback
       runReveal(interrupting ? currentRevealR() : 0, worldFullR(),
         tuneMs("--vt-in-dur",0.5), tuneEase("--vt-in-ease","linear"), commit);
@@ -6862,7 +6866,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
       var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-enter
       var startR;
       if(interrupting){ startR = currentRevealR(); }         // keep the enter's center; shrink from where it is
-      else { document.body.classList.add("world-entering"); setWorldCenter(worldCircle(origin.x, origin.y)); startR = worldFullR(); }
+      else { document.body.classList.add("world-entering"); workShell.classList.remove("is-focused"); setWorldCenter(worldCircle(origin.x, origin.y)); startR = worldFullR(); }
       runReveal(startR, 0, tuneMs("--vt-out-dur",0.4), tuneEase("--vt-out-ease","cubic-bezier(.4,0,.7,.2)"), function(){
         resetWork(false, { restoreScroll: workOverviewScrollY }); // return to the exact homepage scroll
         document.body.classList.remove("world-entering");
