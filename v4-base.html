@@ -6531,7 +6531,8 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
         var value = fact[1];
         if(companyView){
           item.appendChild(makeFactIcon(fact[0]));
-          if(typeof value === "string" && value.indexOf(" · ") >= 0){
+          var inWorld = !!document.body.getAttribute("data-world");
+          if(typeof value === "string" && value.indexOf(" · ") >= 0 && !inWorld){
             detail.className = "tags";
             value.split(" · ").forEach(function(token){
               var tok = document.createElement("span");
@@ -6539,6 +6540,9 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
               tok.textContent = token;
               detail.appendChild(tok);
             });
+          } else if(typeof value === "string" && value.indexOf(" · ") >= 0){
+            // In-world (editorial treatment): multi-value facts read as plain English, not chips.
+            detail.textContent = value.split(" · ").join(", ");
           } else {
             detail.textContent = value;
           }
@@ -7820,7 +7824,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
   function apply(cls){ all.forEach(function(c){document.body.classList.remove(c);}); document.body.classList.add(cls);
     Array.prototype.forEach.call(bar.querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.cls===cls); }); }
   opts.forEach(function(o){ var b=document.createElement("button"); b.textContent=o[0]; b.dataset.cls=o[1]; b.onclick=function(){ apply(o[1]); }; bar.appendChild(b); });
-  document.body.appendChild(bar); apply("gd-hyba");
+  document.body.appendChild(bar); apply("gd-hybb");
 })();
 </script>
 </body></html>
