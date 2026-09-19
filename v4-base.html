@@ -1873,20 +1873,36 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   margin-inline:calc(50% - 50vw);padding:12px calc(50vw - 50%);
   background:var(--world-bg);border-bottom:1px solid var(--world-line)}
 
-/* ==== REGION transition (planet↔region) — EXPERIMENTAL batch v2 (Chris's directions), flipped via #rt-bar.
-   Animated els = #work-panel + #work-focus-content. Tech labeled per variant. ==== */
-.region-in{will-change:transform,opacity,clip-path}
-/* REPLICATOR [canvas] — Star Trek replicator: content BUILDS UP behind a bright energized line sweeping
-   bottom→top; canvas draws a dense fine sparkle band at the build line. */
-body.rt-replicator .region-in{animation:rgn-repl .82s cubic-bezier(.45,0,.15,1) both}
-@keyframes rgn-repl{from{opacity:.15;clip-path:inset(100% 0 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
-/* SCROLL [CSS] — a long continuous scroll-in: travel to the region rather than swap it */
-body.rt-scroll .region-in{animation:rgn-scroll .66s cubic-bezier(.16,.84,.28,1) both}
-@keyframes rgn-scroll{from{opacity:0;transform:translateY(78vh)}to{opacity:1;transform:none}}
-/* MAPS [CSS] — Google-Maps smooth deep zoom from the tapped card (flat, no perspective; origin set in JS) */
-body.rt-maps .region-in{transform-origin:var(--region-ox,50%) var(--region-oy,0%);animation:rgn-maps .62s cubic-bezier(.25,1,.3,1) both}
-@keyframes rgn-maps{from{opacity:0;transform:scale(.32)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){ .region-in{animation:none!important} }
+/* ==== REGION MODELS (planet↔region) — the PLANET (company) stays visible during the transition via a
+   cloned backdrop; each model behaves differently over it. Flipped via #rt-bar. Animated region els =
+   #work-panel + #work-focus-content. ==== */
+.region-in{will-change:transform,opacity}
+.planet-backdrop{position:fixed;left:0;top:var(--head-h);right:0;bottom:0;z-index:38;overflow:hidden;
+  background:var(--world-bg);padding:0 max(24px,calc((100vw - 1180px)/2)) 64px;pointer-events:none;
+  transform-origin:var(--region-ox,50%) var(--region-oy,40%)}
+/* while entering a region, the shell goes clear so the planet backdrop shows; region content stays opaque */
+body.region-active .work-shell{background:transparent!important}
+body.region-active #work-panel,body.region-active #work-focus-content{position:relative;z-index:40;background:var(--world-bg)}
+
+/* A · ZOOM-PLANE — camera pushes into the plane toward the card; planet zooms + fades, region resolves */
+body.rm-zoomplane .planet-backdrop{animation:planet-zoom .62s cubic-bezier(.5,0,.2,1) both}
+@keyframes planet-zoom{from{transform:scale(1);opacity:1}to{transform:scale(2.6);opacity:0}}
+body.rm-zoomplane .region-in{animation:rgn-plane .62s cubic-bezier(.3,1,.3,1) both}
+@keyframes rgn-plane{from{opacity:0;transform:scale(1.18)}35%{opacity:0}to{opacity:1;transform:none}}
+
+/* B · DROP-IN — region grows out of its card; planet dims + recedes behind (my rec, restrained) */
+body.rm-dropin .planet-backdrop{animation:planet-recede .6s ease both}
+@keyframes planet-recede{from{transform:scale(1);filter:none}to{transform:scale(.94);filter:brightness(.66)}}
+body.rm-dropin .region-in{transform-origin:var(--region-ox,50%) var(--region-oy,0%);animation:rgn-drop .55s cubic-bezier(.22,1,.36,1) both}
+@keyframes rgn-drop{from{opacity:0;transform:scale(.42)}to{opacity:1;transform:none}}
+
+/* C · MAP-HUB — planet stays as a pushed-back framed map; region rises as the focused site */
+body.rm-maphub .planet-backdrop{animation:planet-frame .55s ease both}
+@keyframes planet-frame{from{transform:scale(1);filter:none}to{transform:scale(.8) translateY(-4%);filter:saturate(.7) brightness(.85)}}
+body.rm-maphub .region-in{animation:rgn-map .55s cubic-bezier(.22,1,.36,1) both}
+@keyframes rgn-map{from{opacity:0;transform:translateY(52px) scale(.94)}to{opacity:1;transform:none}}
+
+@media (prefers-reduced-motion:reduce){ .region-in,.planet-backdrop{animation:none!important} }
 #rt-bar{position:fixed;right:12px;bottom:12px;z-index:2147483647;display:flex;gap:4px;
   background:rgba(20,18,16,.92);padding:5px;border-radius:9px;font:600 11px/1 -apple-system,sans-serif}
 #rt-bar span{color:#8a8f98;padding:6px 4px 6px 6px}
@@ -6307,48 +6323,44 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     // deterministic CSS "region" transition instead of the native View Transition — subtler than the world
     // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
     // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
-    // REPLICATOR canvas: a dense fine sparkle band rides the build line (bottom→top), matter fabricating.
-    function regionReplicatorFX(){
-      var headH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--head-h")) || 64;
-      var W = innerWidth, H = innerHeight - headH, dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var cv = document.createElement("canvas");
-      cv.style.cssText = "position:fixed;left:0;top:" + headH + "px;width:" + W + "px;height:" + H + "px;z-index:71;pointer-events:none";
-      cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
-      document.body.appendChild(cv);
-      var g = cv.getContext("2d"); g.scale(dpr, dpr);
-      var accent = (getComputedStyle(document.body).getPropertyValue("--world-accent") || "#6d4bd8").trim();
-      var cols = ["#4fc276", "#8fe6ab", "#ffe9a8", accent];
-      var start = performance.now(), DUR = 820;
-      function frame(now){
-        var p = Math.min(1, (now-start)/DUR), e = 1 - Math.pow(1-p, 2.2); // ~matches the clip reveal
-        var lineY = H * (1 - e); g.clearRect(0,0,W,H);
-        if(p < 0.98){
-          for(var i=0;i<360;i++){ var x=Math.random()*W, y=lineY + (Math.random()-0.5)*52;
-            g.globalAlpha = 0.2 + Math.random()*0.6; g.fillStyle = cols[(Math.random()*cols.length)|0];
-            var s = 1 + Math.random()*1.4; g.fillRect(x, y, s, s); }
-          g.globalAlpha = 0.55; g.fillStyle = accent; g.fillRect(0, lineY-1, W, 2); // bright build line
-        }
-        if(p < 1) requestAnimationFrame(frame); else cv.remove();
-      }
-      requestAnimationFrame(frame);
+    // The PLANET backdrop: a static clone of the company view that stays visible behind while you drop into
+    // a region, so the transition feels like moving to a place ON the planet — not swapping a page.
+    var planetEl = null;
+    function removePlanetBackdrop(){ try{ if(planetEl) planetEl.remove(); }catch(e){} planetEl = null; document.body.classList.remove("region-active"); }
+    function makePlanetBackdrop(cardRect){
+      removePlanetBackdrop();
+      try{
+        var clone = worldLayer.cloneNode(true);
+        clone.removeAttribute("id");
+        var ided = clone.querySelectorAll("[id]"); for(var i=0;i<ided.length;i++) ided[i].removeAttribute("id");
+        clone.style.display = "block"; clone.classList.add("planet-backdrop");
+        if(cardRect){ var headH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--head-h")) || 64;
+          clone.style.setProperty("--region-ox", (cardRect.left + cardRect.width/2)/innerWidth*100 + "%");
+          clone.style.setProperty("--region-oy", ((cardRect.top + cardRect.height/2 - headH)/(innerHeight - headH)*100) + "%"); }
+        document.body.appendChild(clone); planetEl = clone;
+      }catch(e){ planetEl = null; }
     }
-    function regionTransition(change, trigger){
-      // Capture the trigger card's position BEFORE change() removes it, so Maps zoom grows from where it was.
-      var c = (trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
+    function regionTransition(change, trigger, entering){
+      var cardRect = (trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
+      if(entering && !reduceWorkMotion.matches) makePlanetBackdrop(cardRect); // clone the planet BEFORE the swap
       change();
-      if(reduceWorkMotion.matches) return Promise.resolve();
-      var b = document.body, els = [workPanel, workFocusContent].filter(function(e){ return e && !e.hidden; });
-      if(b.classList.contains("rt-maps") && c){
-        els.forEach(function(el){ var r = el.getBoundingClientRect();
-          el.style.setProperty("--region-ox", (r.width ? (c.left + c.width/2 - r.left)/r.width*100 : 50) + "%");
-          el.style.setProperty("--region-oy", (r.height ? (c.top + c.height/2 - r.top)/r.height*100 : 0) + "%"); });
+      if(reduceWorkMotion.matches){ removePlanetBackdrop(); return Promise.resolve(); }
+      var els = [workPanel, workFocusContent].filter(function(e){ return e && !e.hidden; });
+      if(entering){                                          // company → region
+        document.body.classList.add("region-active");
+        if(cardRect){ els.forEach(function(el){ var r = el.getBoundingClientRect();
+          el.style.setProperty("--region-ox", (r.width ? (cardRect.left + cardRect.width/2 - r.left)/r.width*100 : 50) + "%");
+          el.style.setProperty("--region-oy", (r.height ? (cardRect.top + cardRect.height/2 - r.top)/r.height*100 : 0) + "%"); }); }
+        els.forEach(function(el){ el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); });
+        setTimeout(removePlanetBackdrop, 720);               // backdrop only lives through the transition
+      }else{                                                 // region → company (or other in-world render)
+        removePlanetBackdrop();
+        els.forEach(function(el){ el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); });
       }
-      if(b.classList.contains("rt-replicator")) regionReplicatorFX();
-      els.forEach(function(el){ el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); }); // restart
       return Promise.resolve();
     }
-    function transitionWork(change, trigger){
-      if(document.body.getAttribute("data-world")) return regionTransition(change, trigger); // in-world region move
+    function transitionWork(change, trigger, entering){
+      if(document.body.getAttribute("data-world")) return regionTransition(change, trigger, entering); // in-world region move
       if(!reduceWorkMotion.matches && document.startViewTransition){
         try{
           var viewTransition = document.startViewTransition(change);
@@ -6718,6 +6730,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
         workShell.classList.remove("is-story-focused");
         setWorkFocusEnvironment(false);
         document.body.removeAttribute("data-world"); // clear the per-company world theme
+        removePlanetBackdrop();                       // never leave a region backdrop behind
         clearProjectGallery();
         workTiles.forEach(function(tile){
           tile.hidden = activeWorkKind !== "all" && tile.dataset.kind !== activeWorkKind;
@@ -6949,7 +6962,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
         });
         workStatus.textContent = "Showing " + story.name + ".";
       };
-      var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change, options.trigger);
+      var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change, options.trigger, true /* entering a region */);
       finished.then(function(){
         if(sourceMedia) sourceMedia.style.viewTransitionName = "none";
         if(storyHero) storyHero.style.viewTransitionName = "none";
@@ -7862,15 +7875,15 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
 <!-- CHOOSER (temporary): flip the region (case study ↔ company) transition feel. Remove once Chris picks. -->
 <script>
 (function(){
-  var opts=[["Replicator","rt-replicator"],["Scroll","rt-scroll"],["Maps","rt-maps"]];
+  var opts=[["Zoom-plane","rm-zoomplane"],["Drop-in","rm-dropin"],["Map-hub","rm-maphub"]];
   var all=opts.map(function(o){return o[1];});
   var bar=document.createElement("div"); bar.id="rt-bar";
-  var lbl=document.createElement("span"); lbl.textContent="region"; bar.appendChild(lbl);
+  var lbl=document.createElement("span"); lbl.textContent="model"; bar.appendChild(lbl);
   function apply(cls){ all.forEach(function(c){document.body.classList.remove(c);}); document.body.classList.add(cls);
     Array.prototype.forEach.call(bar.querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.cls===cls); }); }
   opts.forEach(function(o){ var b=document.createElement("button"); b.textContent=o[0]; b.dataset.cls=o[1];
     b.onclick=function(){ apply(o[1]); }; bar.appendChild(b); });
-  document.body.appendChild(bar); apply("rt-replicator");
+  document.body.appendChild(bar); apply("rm-dropin");
 })();
 </script>
 </body></html>
