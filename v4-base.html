@@ -2295,6 +2295,9 @@ body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){
 body[data-world] .work-panel.is-story-view .work-panel-facts .fact-icon{display:none}
 body[data-world] .work-panel.is-story-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
 body[data-world] .work-panel.is-story-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+/* stack the brief in one column (summary, facts, then OUTCOME as a full-width serif bookend — like the company MEASURED OUTCOMES) */
+body[data-world] .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;grid-template-areas:"summary" "facts" "outcome"}
+body[data-world] .work-panel.is-story-view .work-panel-outcome{max-width:none;margin-top:26px;padding-top:24px!important;border-top:1px solid var(--world-line)!important}
 
 /* #13 · provenance — hide the washed-out logo (company is named in the back-link); keep the status pill in world colors */
 body[data-world] .work-panel.is-story-view .work-panel-provenance-logo{display:none}
