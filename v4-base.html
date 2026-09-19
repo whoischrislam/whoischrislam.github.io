@@ -6781,47 +6781,67 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
       worldLayer.style.setProperty("--reveal-x", c.x + "px");
       worldLayer.style.setProperty("--reveal-y", c.y + "px");
     }
-    window.__openWorldClip = function(project, origin){
+    // ── Interruptible clip driver ────────────────────────────────────────────────────────────────────
+    // A single in-flight animation, tracked so a mid-flight reverse (click back while entering, or
+    // re-open while exiting) picks up from the CURRENT radius instead of snapping. Duration scales with
+    // the distance left to travel, so an interruption feels snappy rather than replaying the full run.
+    var worldAnim = null;
+    function currentRevealR(){ return parseFloat(getComputedStyle(worldLayer).getPropertyValue("--reveal-r")) || 0; }
+    function worldFullR(){                                   // max radius from the current (static) center
+      var b = worldLayer.getBoundingClientRect();
+      var x = parseFloat(worldLayer.style.getPropertyValue("--reveal-x")) || b.width/2;
+      var y = parseFloat(worldLayer.style.getPropertyValue("--reveal-y")) || b.height/2;
+      return Math.hypot(Math.max(x, b.width - x), Math.max(y, b.height - y));
+    }
+    function runReveal(fromR, toR, baseMs, ease, onDone){
+      if(worldAnim){ try{ worldAnim.onfinish = null; worldAnim.cancel(); }catch(e){} worldAnim = null; }
+      worldLayer.classList.add("world-revealing");
+      var range = worldFullR() || 1;
+      var dur = Math.max(140, baseMs * Math.min(1, Math.abs(toR - fromR) / range));
+      var a = worldLayer.animate([{ "--reveal-r": fromR + "px" }, { "--reveal-r": toR + "px" }],
+        { duration: dur, easing: ease, fill: "forwards" });
+      worldAnim = a;
+      a.onfinish = function(){ worldAnim = null; onDone(); };
+      return a;
+    }
+    window.__openWorldClip = function(project, origin, opts){
+      opts = opts || {};
       if(!hasCompanyFocus(project)) return;
-      workOverviewScrollY = window.scrollY;                 // remember homepage scroll (history:false skips the usual capture)
-      groupWork(project, { source:"company", scroll:false, history:false, animate:false }); // build the focus state
-      document.body.classList.add("world-entering");       // homepage stays visible; layer becomes an overlay
+      var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-exit
+      if(!interrupting){
+        workOverviewScrollY = window.scrollY;               // remember homepage scroll
+        if(opts.history !== false) writeFocusedWorkHistory(project, "company"); // push ?work= so browser back closes the world
+        groupWork(project, { source:"company", scroll:false, history:false, animate:false }); // build the focus state
+        document.body.classList.add("world-entering");       // homepage stays visible; layer becomes an overlay
+        setWorldCenter(worldCircle(origin.x, origin.y));     // fresh open: grow from the click; interrupt: keep current center
+      }
       var commit = function(){ document.body.classList.remove("world-entering"); worldLayer.classList.remove("world-revealing"); };
       if(reduceWorkMotion.matches || !worldLayer.animate){ commit(); return; } // instant fallback
-      var c = worldCircle(origin.x, origin.y);
-      setWorldCenter(c);
-      worldLayer.classList.add("world-revealing");         // clip-path: circle(var(--reveal-r) at fixed center)
-      var a = worldLayer.animate([{ "--reveal-r":"0px" }, { "--reveal-r":c.r + "px" }],
-        { duration:tuneMs("--vt-in-dur",0.85), easing:tuneEase("--vt-in-ease","linear") });
-      a.onfinish = commit; // drop the overlay/clip → commit to the normal focused state (covered, no flash)
+      runReveal(interrupting ? currentRevealR() : 0, worldFullR(),
+        tuneMs("--vt-in-dur",0.85), tuneEase("--vt-in-ease","linear"), commit);
     };
     function closeWorldClip(origin){
-      if(reduceWorkMotion.matches || !worldLayer.animate){ resetWork(false, { restoreScroll: workOverviewScrollY }); return; }
-      document.body.classList.add("world-entering");        // re-expose the homepage behind the (still full) layer
-      var c = worldCircle(origin.x, origin.y);
-      setWorldCenter(c);
-      worldLayer.style.setProperty("--reveal-r", c.r + "px"); // hold full before clipping in, no flash
-      worldLayer.classList.add("world-revealing");
-      var a = worldLayer.animate([{ "--reveal-r":c.r + "px" }, { "--reveal-r":"0px" }],
-        { duration:tuneMs("--vt-out-dur",0.6), easing:tuneEase("--vt-out-ease","cubic-bezier(.4,0,.7,.2)"), fill:"forwards" });
-      a.onfinish = function(){
+      if(reduceWorkMotion.matches || !worldLayer.animate){
+        resetWork(false, { restoreScroll: workOverviewScrollY }); document.body.classList.remove("world-entering"); return;
+      }
+      var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-enter
+      var startR;
+      if(interrupting){ startR = currentRevealR(); }         // keep the enter's center; shrink from where it is
+      else { document.body.classList.add("world-entering"); setWorldCenter(worldCircle(origin.x, origin.y)); startR = worldFullR(); }
+      runReveal(startR, 0, tuneMs("--vt-out-dur",0.6), tuneEase("--vt-out-ease","cubic-bezier(.4,0,.7,.2)"), function(){
         resetWork(false, { restoreScroll: workOverviewScrollY }); // return to the exact homepage scroll
         document.body.classList.remove("world-entering");
         worldLayer.classList.remove("world-revealing");
         worldLayer.style.removeProperty("--reveal-r");
-        try{ a.cancel(); }catch(e){}
-      };
+      });
     }
     function backButtonOrigin(){
       var r = workPanelBack.getBoundingClientRect();
       return { x: r.width ? r.left + r.width/2 : 40, y: r.height ? r.top + r.height/2 : 80 };
     }
-    // Intercept back-button clicks while in a world: run the clip close instead of the app's plain close.
-    workPanelBack.addEventListener("click", function(e){
-      if(!document.body.getAttribute("data-world")) return;
-      e.preventDefault(); e.stopImmediatePropagation();      // block the app's leaveFocusedWork on this element
-      closeWorldClip(backButtonOrigin());
-    }, true);
+    // Back/Esc/logo all go through history.back() → the popstate handler is the single place that picks the
+    // transition (clip for the galaxy↔planet boundary, plain for planet↔region). Keeps browser back/forward
+    // and the URL consistent for free.
 
     function openWorkStory(storyKey, options){
       options = options || {};
@@ -6967,6 +6987,17 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
         }
       });
     }
+    // Header logo = consistent "home" escape. On the homepage it's a normal #top jump; inside a world
+    // (any depth) it closes fully to the galaxy and cleans the URL.
+    var siteLogo = document.querySelector(".site-head .logo");
+    if(siteLogo) siteLogo.addEventListener("click", function(e){
+      if(!document.body.classList.contains("work-focus-open")) return; // homepage: let #top jump happen
+      e.preventDefault();
+      var origin = { x: innerWidth/2, y: innerHeight*0.42 };
+      if(document.body.getAttribute("data-world")) closeWorldClip(origin);
+      else resetWork(false, { restoreScroll: workOverviewScrollY });
+      history.replaceState({}, "", location.pathname);       // we're home now — drop ?work=/?project=
+    });
     curatedWorkTiles.forEach(bindWorkTile);
     workGrid.addEventListener("pointerleave", clearWorkPreview);
     workGrid.addEventListener("focusout", function(){
@@ -7007,23 +7038,31 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     document.addEventListener("keydown", function(event){
       if(event.key === "Escape" && !mediaLightbox.open && workGrid.dataset.locked === "true"){
         event.preventDefault();
-        if(document.body.getAttribute("data-world")){ closeWorldClip(backButtonOrigin()); return; } // clip close for worlds
-        leaveFocusedWork();
+        leaveFocusedWork(); // history.back() → popstate picks the transition (clip at the world boundary)
       }
     });
     window.addEventListener("popstate", function(event){
       var story = storyFromWorkURL();
       var project = projectFromWorkURL();
+      var inWorld = document.body.getAttribute("data-world");
       if(story){
         openWorkStory(story, {history:false, animate:true});
       }else if(project){
-        groupWork(project, {
-          history:false,
-          source:event.state && event.state.portfolioWorkSource ||
-            (hasCompanyFocus(project) ? "company" : "project"),
-          restoreCompanyScroll:event.state && event.state.portfolioCompanyScrollTop,
-          animate:true
-        });
+        // In the world already (backing out of a case study) → planet↔region, plain transition.
+        // Arriving at a world fresh (browser forward/deep link) → galaxy→planet, clip from a neutral point.
+        if(inWorld !== project && hasCompanyFocus(project)){
+          window.__openWorldClip(project, {x:innerWidth/2, y:innerHeight*0.42}, {history:false});
+        }else{
+          groupWork(project, {
+            history:false,
+            source:event.state && event.state.portfolioWorkSource ||
+              (hasCompanyFocus(project) ? "company" : "project"),
+            restoreCompanyScroll:event.state && event.state.portfolioCompanyScrollTop,
+            animate:true
+          });
+        }
+      }else if(inWorld){
+        closeWorldClip(backButtonOrigin());                 // planet → galaxy: clip close
       }else{
         resetWork(true, {
           restoreScroll:event.state && event.state.portfolioOverviewScrollY != null
