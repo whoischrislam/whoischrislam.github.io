@@ -1877,11 +1877,11 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
    scales up from the tapped card's position. Familiar, restrained, cross-engine. ==== */
 .region-in{will-change:transform,opacity;transform-origin:var(--region-ox,50%) var(--region-oy,0%);
   animation:rgn-open .34s cubic-bezier(.2,.8,.25,1) both}
-@keyframes rgn-open{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
+@keyframes rgn-open{from{opacity:0;transform:scale(.965)}to{opacity:1;transform:none}}
 /* closing (region → company) zooms OUT: the company settles in from a slightly enlarged state, like the
    camera pulling back out of the file. */
 .region-back{will-change:transform,opacity;animation:rgn-back .34s cubic-bezier(.2,.8,.25,1) both}
-@keyframes rgn-back{from{opacity:0;transform:scale(1.12)}to{opacity:1;transform:none}}
+@keyframes rgn-back{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){ .region-in,.region-back{animation:none} }
 
 @media (prefers-reduced-motion: reduce){
