@@ -1878,7 +1878,11 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
 .region-in{will-change:transform,opacity;transform-origin:var(--region-ox,50%) var(--region-oy,0%);
   animation:rgn-open .34s cubic-bezier(.2,.8,.25,1) both}
 @keyframes rgn-open{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){ .region-in{animation:none} }
+/* closing (region → company) zooms OUT: the company settles in from a slightly enlarged state, like the
+   camera pulling back out of the file. */
+.region-back{will-change:transform,opacity;animation:rgn-back .34s cubic-bezier(.2,.8,.25,1) both}
+@keyframes rgn-back{from{opacity:0;transform:scale(1.12)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){ .region-in,.region-back{animation:none} }
 
 @media (prefers-reduced-motion: reduce){
   .co-band[data-project="goodrx"] .band-frame{transition:none}
@@ -6294,23 +6298,33 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     // deterministic CSS "region" transition instead of the native View Transition — subtler than the world
     // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
     // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
-    // Region ("open a file") zoom: the region scales up from the tapped card's position. Deterministic CSS.
-    function regionTransition(change, trigger){
-      var c = (trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
+    // Region ("open a file") zoom: opening scales the region UP from the tapped card; closing scales the
+    // current case study back DOWN toward that card, then the company fades in. Deterministic CSS.
+    var lastRegionOx = "50%", lastRegionOy = "0%";
+    function regionTransition(change, trigger, entering){
+      var regionEls = function(){ return [workPanel, workFocusContent].filter(function(e){ return e && !e.hidden; }); };
+      if(entering){                                          // company → region: zoom in from the card
+        var c = (trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
+        change();
+        if(reduceWorkMotion.matches) return Promise.resolve();
+        regionEls().forEach(function(el){
+          if(c){ var r = el.getBoundingClientRect();
+            lastRegionOx = (r.width ? (c.left + c.width/2 - r.left)/r.width*100 : 50) + "%";
+            lastRegionOy = (r.height ? (c.top + c.height/2 - r.top)/r.height*100 : 0) + "%";
+          }else{ lastRegionOx = "50%"; lastRegionOy = "0%"; }
+          el.style.setProperty("--region-ox", lastRegionOx); el.style.setProperty("--region-oy", lastRegionOy);
+          el.classList.remove("region-out","region-fade","region-in"); void el.offsetWidth; el.classList.add("region-in");
+        });
+        return Promise.resolve();
+      }
+      // region → company: the company settles in from slightly enlarged — a "zoom out" of the file.
       change();
       if(reduceWorkMotion.matches) return Promise.resolve();
-      [workPanel, workFocusContent].forEach(function(el){
-        if(!el || el.hidden) return;
-        if(c){ var r = el.getBoundingClientRect();               // open from the tapped card
-          el.style.setProperty("--region-ox", (r.width ? (c.left + c.width/2 - r.left)/r.width*100 : 50) + "%");
-          el.style.setProperty("--region-oy", (r.height ? (c.top + c.height/2 - r.top)/r.height*100 : 0) + "%");
-        }else{ el.style.setProperty("--region-ox","50%"); el.style.setProperty("--region-oy","0%"); }
-        el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); // restart
-      });
+      regionEls().forEach(function(el){ el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-back"); });
       return Promise.resolve();
     }
-    function transitionWork(change, trigger){
-      if(document.body.getAttribute("data-world")) return regionTransition(change, trigger); // in-world region move
+    function transitionWork(change, trigger, entering){
+      if(document.body.getAttribute("data-world")) return regionTransition(change, trigger, entering); // in-world region move
       if(!reduceWorkMotion.matches && document.startViewTransition){
         try{
           var viewTransition = document.startViewTransition(change);
@@ -6910,16 +6924,14 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
           button.setAttribute("aria-pressed", String(button.dataset.workCompany === story.company));
         });
         workStatus.textContent = "Showing " + story.name + ".";
+        workShell.scrollTop = 0; // a case study always opens at the top
       };
-      var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change, options.trigger);
+      var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change, options.trigger, true /* entering a region */);
       finished.then(function(){
         if(sourceMedia) sourceMedia.style.viewTransitionName = "none";
         if(storyHero) storyHero.style.viewTransitionName = "none";
         if(options.scroll !== false){
-          workPanel.scrollIntoView({
-            behavior: reduceWorkMotion.matches || options.animate === false ? "auto" : "smooth",
-            block: "start"
-          });
+          workShell.scrollTop = 0;                 // case study starts at the very top (no scroll-margin offset)
           workPanel.focus({preventScroll:true});
         }
       });
