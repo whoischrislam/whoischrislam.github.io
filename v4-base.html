@@ -1873,16 +1873,13 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   margin-inline:calc(50% - 50vw);padding:12px calc(50vw - 50%);
   background:var(--world-bg);border-bottom:1px solid var(--world-line)}
 
-/* ==== REGION transition (planet↔region: company ↔ case study) — a clean "open a file" zoom: the region
-   scales up from the tapped card's position. Familiar, restrained, cross-engine. ==== */
-.region-in{will-change:transform,opacity;transform-origin:var(--region-ox,50%) var(--region-oy,0%);
-  animation:rgn-open .34s cubic-bezier(.2,.8,.25,1) both}
-@keyframes rgn-open{from{opacity:0;transform:scale(.965)}to{opacity:1;transform:none}}
-/* closing (region → company) zooms OUT: the company settles in from a slightly enlarged state, like the
-   camera pulling back out of the file. */
-.region-back{will-change:transform,opacity;animation:rgn-back .34s cubic-bezier(.2,.8,.25,1) both}
-@keyframes rgn-back{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){ .region-in,.region-back{animation:none} }
+/* ==== REGION transition (planet↔region: company ↔ case study) — a clip REVEAL (same principle as the
+   world reveal): the content stays perfectly still and a circle wipes it in from the tapped card. No
+   scale/translate → no vestibular motion. Used for open AND close. ==== */
+.region-in{will-change:clip-path;animation:rgn-reveal .44s cubic-bezier(.4,0,.2,1) both}
+@keyframes rgn-reveal{from{clip-path:circle(0% at var(--region-ox,50%) var(--region-oy,30%))}
+  to{clip-path:circle(150% at var(--region-ox,50%) var(--region-oy,30%))}}
+@media (prefers-reduced-motion:reduce){ .region-in{animation:none} }
 
 @media (prefers-reduced-motion: reduce){
   .co-band[data-project="goodrx"] .band-frame{transition:none}
@@ -6298,29 +6295,22 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     // deterministic CSS "region" transition instead of the native View Transition — subtler than the world
     // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
     // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
-    // Region ("open a file") zoom: opening scales the region UP from the tapped card; closing scales the
-    // current case study back DOWN toward that card, then the company fades in. Deterministic CSS.
-    var lastRegionOx = "50%", lastRegionOy = "0%";
     function regionTransition(change, trigger, entering){
-      var regionEls = function(){ return [workPanel, workFocusContent].filter(function(e){ return e && !e.hidden; }); };
-      if(entering){                                          // company → region: zoom in from the card
-        var c = (trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
-        change();
-        if(reduceWorkMotion.matches) return Promise.resolve();
-        regionEls().forEach(function(el){
-          if(c){ var r = el.getBoundingClientRect();
-            lastRegionOx = (r.width ? (c.left + c.width/2 - r.left)/r.width*100 : 50) + "%";
-            lastRegionOy = (r.height ? (c.top + c.height/2 - r.top)/r.height*100 : 0) + "%";
-          }else{ lastRegionOx = "50%"; lastRegionOy = "0%"; }
-          el.style.setProperty("--region-ox", lastRegionOx); el.style.setProperty("--region-oy", lastRegionOy);
-          el.classList.remove("region-in","region-back"); void el.offsetWidth; el.classList.add("region-in");
-        });
-        return Promise.resolve();
-      }
-      // region → company: the company settles in from slightly enlarged — a "zoom out" of the file.
+      // clip REVEAL — content stays still; a circle wipes it in. Open from the tapped card; close from center.
+      var c = (entering && trigger && trigger.getBoundingClientRect) ? trigger.getBoundingClientRect() : null;
       change();
       if(reduceWorkMotion.matches) return Promise.resolve();
-      regionEls().forEach(function(el){ el.classList.remove("region-in","region-back"); void el.offsetWidth; el.classList.add("region-back"); });
+      [workPanel, workFocusContent].forEach(function(el){
+        if(!el || el.hidden) return;
+        var r = el.getBoundingClientRect();
+        // anchor the circle to the tapped card's true VIEWPORT point (px) so both panels reveal from the
+        // same spot you clicked; on close, from the panel's own center.
+        var ox = c ? (c.left + c.width/2 - r.left) : r.width/2;
+        var oy = c ? (c.top + c.height/2 - r.top) : r.height*0.3;
+        el.style.setProperty("--region-ox", Math.round(ox) + "px");
+        el.style.setProperty("--region-oy", Math.round(oy) + "px");
+        el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); // restart
+      });
       return Promise.resolve();
     }
     function transitionWork(change, trigger, entering){
