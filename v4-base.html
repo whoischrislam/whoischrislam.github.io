@@ -2222,11 +2222,17 @@ body.work-focus-open[data-world="goodrx"] #work-focus-content{
 
 /* hero-forward top (Image #4). JS hides the default heading and inserts .world-hero before it. */
 .work-panel-heading.world-hidden{display:none}
-.world-hero{max-width:1040px;margin:0 auto;padding:36px 0 6px}
+.world-hero{max-width:1040px;margin:0 auto;padding:36px 0 6px;position:relative}
 .world-hero-logo{display:block;height:34px;width:auto;margin:0 0 22px;filter:brightness(0)}
 .world-hero-kicker{font:600 var(--t-xs)/1 var(--mono,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--world-ink-soft);margin:0}
 .world-hero-title{font:400 clamp(44px,7vw,92px)/1.02 var(--serif);letter-spacing:-.01em;color:var(--world-ink);margin:8px 0 16px}
+.world-hero-context{font:400 var(--t-base)/1.5 var(--sans);color:var(--world-ink-soft);margin:0 0 16px;max-width:48ch}
 .world-hero-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:42ch;color:var(--world-ink);margin:0}
+/* LOGO placement — flip via #hero-bar. Default (no class) = above. */
+body.lg-right .world-hero-logo{position:absolute;top:36px;right:0;margin:0;height:30px}
+body.lg-none .world-hero-logo{display:none}
+/* COMPANY one-liner — flip via #hero-bar. Default = hero line. */
+body.ctx-none .world-hero-context{display:none}
 .world-hero-media{margin:46px 0 8px}
 .world-hero-media img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 24px 60px rgba(26,23,16,.18)}
 
@@ -6517,8 +6523,11 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
       var lede = bandP ? bandP.textContent : (item.context || "");
       var hero = document.createElement("header"); hero.className = "world-hero";
       if(item.logo){ var l=document.createElement("img"); l.className="world-hero-logo"; l.src=item.logo; l.alt=item.name; hero.appendChild(l); }
-      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role; hero.appendChild(k); }
+      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + " @"; hero.appendChild(k); } // #3: role @ company
       var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
+      // company one-liner (what the company/product is). Uses existing item.context; bracketed if absent (never fabricated).
+      var ctxText = item.context || "[what the company does — one line]";
+      var cx=document.createElement("p"); cx.className="world-hero-context"; cx.textContent=ctxText; hero.appendChild(cx);
       if(lede){ var p=document.createElement("p"); p.className="world-hero-lede"; p.textContent=lede; hero.appendChild(p); }
       var m=document.createElement("div"); m.className="world-hero-media";
       // eager, not lazy: this hero is above the fold in the world; lazy leaves it blank during/after
@@ -7747,6 +7756,33 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
   p.appendChild(btn);
   document.body.appendChild(p);
+})();
+</script>
+<!-- CHOOSER (temporary): flip hero logo placement + company one-liner. Remove once Chris picks. -->
+<style>
+#hero-bar{position:fixed;right:12px;bottom:12px;z-index:2147483647;display:flex;flex-direction:column;gap:5px;
+  background:rgba(20,18,16,.92);padding:7px;border-radius:9px;font:600 11px/1 -apple-system,sans-serif}
+#hero-bar .row{display:flex;gap:4px;align-items:center}
+#hero-bar .lbl{color:#8a8f98;width:52px}
+#hero-bar button{appearance:none;border:0;background:transparent;color:#ddd;padding:6px 9px;border-radius:6px;cursor:pointer;font:inherit}
+#hero-bar button.on{background:#6d4bd8;color:#fff}
+</style>
+<script>
+(function(){
+  var groups=[
+    {lbl:"logo", key:["lg-above","lg-right","lg-none"], opts:[["Above",""],["Top-right","lg-right"],["None","lg-none"]], def:""},
+    {lbl:"company", key:["ctx-none"], opts:[["Line",""],["None","ctx-none"]], def:""}
+  ];
+  var bar=document.createElement("div"); bar.id="hero-bar";
+  groups.forEach(function(g){
+    var row=document.createElement("div"); row.className="row";
+    var l=document.createElement("span"); l.className="lbl"; l.textContent=g.lbl; row.appendChild(l);
+    function apply(cls){ g.key.forEach(function(c){document.body.classList.remove(c);}); if(cls) document.body.classList.add(cls);
+      Array.prototype.forEach.call(row.querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.cls===cls); }); }
+    g.opts.forEach(function(o){ var b=document.createElement("button"); b.textContent=o[0]; b.dataset.cls=o[1]; b.onclick=function(){ apply(o[1]); }; row.appendChild(b); });
+    bar.appendChild(row); apply(g.def);
+  });
+  document.body.appendChild(bar);
 })();
 </script>
 </body></html>
