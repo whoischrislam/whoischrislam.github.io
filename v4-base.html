@@ -7457,265 +7457,34 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   }
   set('fx-dissolve');
   bar.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; set(b.getAttribute('data-mode')); });
-
-  var band=document.querySelector('.co-band[data-project="goodrx"]');
-  var frame=band&&band.querySelector('.band-frame');
-  var world=document.getElementById('world-goodrx');
-  var rfx=document.getElementById('rfx');
-  if(!band||!frame) return;
-
-  function setFx(x,y){ if(!rfx) return; rfx.style.setProperty('--cx',Math.round(x)+'px'); rfx.style.setProperty('--cy',Math.round(y)+'px'); }
-
-  // Effects originate at + follow the cursor; Portal tilts toward it
-  band.addEventListener('mousemove',function(e){
-    if(document.body.className.indexOf('fx-')>-1) setFx(e.clientX,e.clientY);
-    if(!document.body.classList.contains('hb-portal'))return;
-    var r=frame.getBoundingClientRect();
-    var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
-    frame.style.setProperty('--prx',(px*22).toFixed(2)+'deg');
-    frame.style.setProperty('--pry',(-py*22).toFixed(2)+'deg');
-    frame.style.setProperty('--ptx',(-px*54).toFixed(1)+'px');
-    frame.style.setProperty('--pty',(-py*54).toFixed(1)+'px');
-    band.style.setProperty('--porg',(50+px*100).toFixed(0)+'% '+(50+py*100).toFixed(0)+'%');
-  });
-
-  band.addEventListener('mouseenter',function(e){
-    // reality-fx: originate at the cursor and fire (edge-focused, not viewport-wide)
-    if(document.body.className.indexOf('fx-')>-1){ setFx(e.clientX,e.clientY); document.body.classList.add('rfx-on'); }
-    // breakout peek (kept for reference)
-    if(document.body.classList.contains('wo-breakout') && !document.body.classList.contains('world-goodrx-open')){
-      var r=frame.getBoundingClientRect();
-      world.style.setProperty('--cx',Math.round(r.left+r.width/2)+'px');
-      world.style.setProperty('--cy',Math.round(r.top+r.height/2)+'px');
-      world.style.setProperty('--peek-r','0px'); world.classList.add('peek');
-      requestAnimationFrame(function(){requestAnimationFrame(function(){ world.style.setProperty('--peek-r','46vmax'); });});
-    }
-  });
-
-  band.addEventListener('mouseleave',function(){
-    frame.style.setProperty('--prx','0deg'); frame.style.setProperty('--pry','0deg');
-    frame.style.setProperty('--ptx','0px'); frame.style.setProperty('--pty','0px');
-    band.style.setProperty('--porg','50% 50%');
-    document.body.classList.remove('rfx-on');
-    if(world && world.classList.contains('peek') && !document.body.classList.contains('world-goodrx-open')){
-      world.style.setProperty('--peek-r','0px');
-      var onEnd=function(){ if(!document.body.classList.contains('world-goodrx-open')) world.classList.remove('peek'); world.removeEventListener('transitionend',onEnd); };
-      world.addEventListener('transitionend',onEnd);
-    }
-  });
 })();
 </script>
-<!-- SPIKE-ONLY svg filter for the ripple material -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="fx-ripple-f" x="-25%" y="-25%" width="150%" height="150%">
-  <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="7" result="n">
-    <animate attributeName="baseFrequency" dur="9s" values="0.012 0.02;0.02 0.014;0.012 0.02" repeatCount="indefinite"/>
-  </feTurbulence>
-  <feDisplacementMap in="SourceGraphic" in2="n" scale="24" xChannelSelector="R" yChannelSelector="G"/>
-</filter></svg>
-<!-- SPIKE-ONLY reality-fx layer (GoodRx). Effects break outside the card into the page. -->
-<div id="rfx" aria-hidden="true">
-  <div class="rfx-bleed"></div>
-  <svg class="rfx-cracks" viewBox="0 0 2400 2400" fill="none" aria-hidden="true">
-    <path pathLength="1" d="M1200 1200 L1180 950 L1244 720 L1176 430 L1212 120"/>
-    <path pathLength="1" d="M1200 1200 L1424 1082 L1652 986 L1904 802 L2170 624"/>
-    <path pathLength="1" d="M1200 1200 L1472 1232 L1724 1180 L2028 1236 L2330 1190"/>
-    <path pathLength="1" d="M1200 1200 L1430 1362 L1652 1560 L1884 1764 L2124 2010"/>
-    <path pathLength="1" d="M1200 1200 L1232 1470 L1170 1724 L1236 2014 L1192 2306"/>
-    <path pathLength="1" d="M1200 1200 L978 1352 L740 1544 L468 1742 L196 1986"/>
-    <path pathLength="1" d="M1200 1200 L940 1168 L680 1232 L356 1180 L74 1234"/>
-    <path pathLength="1" d="M1200 1200 L980 1040 L758 858 L468 700 L176 468"/>
-  </svg>
-  <div class="rfx-shards">
-    <i style="--tx:-232px;--ty:-168px;--rot:-26deg"></i>
-    <i style="--tx:214px;--ty:-196px;--rot:22deg"></i>
-    <i style="--tx:312px;--ty:44px;--rot:36deg"></i>
-    <i style="--tx:248px;--ty:224px;--rot:-18deg"></i>
-    <i style="--tx:24px;--ty:308px;--rot:28deg"></i>
-    <i style="--tx:-248px;--ty:246px;--rot:20deg"></i>
-    <i style="--tx:-324px;--ty:26px;--rot:-32deg"></i>
-    <i style="--tx:-70px;--ty:-306px;--rot:-22deg"></i>
-  </div>
-</div>
-<!-- SPIKE-ONLY: GoodRx "world" prototype (circular expand reveal). Not wired to the real company view yet. -->
-<div id="world-goodrx" aria-hidden="true">
-  <div class="world-chrome">
-    <button class="world-back" type="button"><span aria-hidden="true">←</span> All work</button>
-    <span class="logo">Chris Lam</span>
-  </div>
-  <div class="world-goodrx-inner">
-    <img class="wgx-logo" src="images/logos/goodrx.svg" alt="GoodRx">
-    <p class="wgx-kicker">First full-time designer</p>
-    <h2>GoodRx (Iodine)</h2>
-    <p class="wgx-lede">Coupon conversion 2% to 5%, a Webby-winning product, and data-viz cited in the NYT.</p>
-    <div class="wgx-demo"><img src="images/work/goodrx-hero.png" alt="GoodRx Research data-viz and the Iodine product"></div>
-  </div>
-</div>
 <script>
 (function(){
+  // GoodRx hero: custom cursor on hover + clip reveal on click. The grain material is the WebGL IIFE
+  // below; the reveal is the shared __openWorldClip. (Retired #world-goodrx prototype removed.)
   var band = document.querySelector('.co-band[data-project="goodrx"]');
-  var world = document.getElementById('world-goodrx');
-  if(!band || !world) return;
-  var heroEl = band.querySelector('.band-frame') || band; // the interactive zone is the hero IMAGE, not the title text
+  if(!band) return;
+  var heroEl = band.querySelector('.band-frame') || band; // the interactive zone is the hero IMAGE
   var origin = { x: window.innerWidth/2, y: window.innerHeight/2 };
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  function maxR(x,y){ return Math.hypot(Math.max(x, innerWidth-x), Math.max(y, innerHeight-y)); }
 
-  function enter(x,y){
-    origin = { x:x, y:y };
-    var show = function(){ world.classList.remove('peek'); world.style.clipPath=''; world.style.webkitClipPath=''; document.body.classList.add('world-goodrx-open'); world.setAttribute('aria-hidden','false'); world.scrollTop = 0; };
-    if(reduce.matches || !document.startViewTransition){ show(); return; }
-    var root = document.documentElement, r = maxR(x,y);
-    root.classList.add('vt-world');
-    var vt = document.startViewTransition(show);
-    vt.ready.then(function(){
-      root.animate(
-        { clipPath: ['circle(0px at '+x+'px '+y+'px)', 'circle('+r+'px at '+x+'px '+y+'px)'] },
-        { duration: 640, easing: 'cubic-bezier(.22,1,.36,1)', pseudoElement: '::view-transition-new(root)' }
-      );
-    }).catch(function(){});
-    vt.finished.finally(function(){ root.classList.remove('vt-world'); });
-  }
-  // Exit mirrors the entry: a radial collapse. Anchored where you click "back", or centered on Esc.
-  function exit(x,y){
-    if(typeof x!=='number'){ x=innerWidth/2; y=innerHeight/2; }
-    dissolveExit(x,y);
-  }
-  // ---- DISSOLVE material: sample the card into particles that scatter from the EDGES inward,
-  //      revealing the full world beneath. Canvas (one pass, typed loop) — fine on a MacBook Air. ----
-  var dcanvas, dctx, draf;
-  function ensureCanvas(){
-    if(dcanvas) return;
-    dcanvas=document.createElement('canvas');
-    dcanvas.id='fx-canvas';
-    dcanvas.style.cssText='position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1250;display:none';
-    document.body.appendChild(dcanvas); dctx=dcanvas.getContext('2d');
-  }
-  function showWorld(){ world.classList.remove('peek'); world.style.clipPath=''; world.style.webkitClipPath=''; document.body.classList.add('world-goodrx-open'); world.setAttribute('aria-hidden','false'); world.scrollTop=0; }
-  // Offscreen low-res copy of the hero so the dissolve-wave dots carry the PHOTO'S colours (the image
-  // dissolving into Chris's data-viz dots), not generic sparks. Sampled once into a buffer.
-  var heroData=null, heroW=0, heroH=0;
-  function ensureHeroSample(){ if(heroData) return; var im=heroEl.querySelector('img');
-    if(!im || !im.complete || im.naturalWidth===0) return;
-    heroW=160; heroH=Math.max(1,Math.round(160*im.naturalHeight/im.naturalWidth));
-    var oc=document.createElement('canvas'); oc.width=heroW; oc.height=heroH; var octx=oc.getContext('2d');
-    try{ octx.drawImage(im,0,0,heroW,heroH); heroData=octx.getImageData(0,0,heroW,heroH).data; }catch(e){ heroData=null; } }
-  function sampleHero(px,py){ if(!heroData) return null; var r=heroEl.getBoundingClientRect();
-    if(px<r.left||px>r.right||py<r.top||py>r.bottom) return null;
-    var ix=Math.min(heroW-1,Math.max(0,Math.floor((px-r.left)/r.width*heroW))),
-        iy=Math.min(heroH-1,Math.max(0,Math.floor((py-r.top)/r.height*heroH))), o=(iy*heroW+ix)*4;
-    return 'rgb('+heroData[o]+','+heroData[o+1]+','+heroData[o+2]+')'; }
-  // Anchored radial expand-reveal from the click point (the "pull-in"), with the material
-  // (dissolving particles) riding the EXPANDING EDGE. Scaffold for all materials — swap the edge
-  // renderer for warp/ripple later; the reveal geometry stays.
-  // opening=true expands to reveal the world (the pull-in); opening=false collapses to hide it.
-  // Dense dust (snap-density) rides the moving edge. Scaffold for all materials.
-  function material(){ return document.body.classList.contains('mat-ripple') ? 'ripple' : 'dissolve'; }
-  function radialTransition(x,y,opening,startR,onDone){
-    origin={x:x,y:y}; startR=startR||0;
-    var mat=material();
-    ensureHeroSample();
-    var T=window.__TUNE||{}, DIGI=T.digiCss||['#4fc276','#2a9d4f','#8fe6ab'];
-    var COUNT=T.count||160, CSZ=T.size!==undefined?T.size:2.6, GREEN=T.greenFrac!==undefined?T.greenFrac:0.32, TDUR=T.tdur||1;
-    var maxR=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
-    var dpr=Math.min(window.devicePixelRatio||1,2);
-    ensureCanvas(); dcanvas.width=Math.round(innerWidth*dpr); dcanvas.height=Math.round(innerHeight*dpr); dctx.setTransform(dpr,0,0,dpr,0,0); dcanvas.style.display='block';
-    function clip(r){ var c='circle('+Math.max(0,r)+'px at '+x+'px '+y+'px)'; world.style.clipPath=c; world.style.webkitClipPath=c; }
-    if(opening){ world.classList.remove('peek'); world.style.transition='none'; document.body.classList.add('world-goodrx-open'); world.setAttribute('aria-hidden','false'); world.scrollTop=0; }
-    var parts=[], start=performance.now(), DUR=(opening?860:660)*TDUR;
-    function done(){ dctx.clearRect(0,0,innerWidth,innerHeight); dcanvas.style.display='none'; world.style.clipPath=''; world.style.webkitClipPath='';
-      if(!opening){ document.body.classList.remove('world-goodrx-open'); world.setAttribute('aria-hidden','true'); }
-      if(opening && typeof onDone==='function') onDone(); }
-    function tick(now){
-      var p=Math.min(1,(now-start)/DUR), e=1-Math.pow(1-p,3), r=opening?(startR+e*(maxR-startR)):(1-e)*maxR;
-      dctx.clearRect(0,0,innerWidth,innerHeight);
-      if(mat==='ripple'){
-        // DISSOLVE-AS-WAVE (best of both): the reveal boundary wobbles like a wave rippling out from the
-        // click, and the wavefront IS the hero dissolving into dots — each dot sampled from the photo's
-        // colours, then dispersing outward and fading (dissolve trail). Wave motion + dissolve texture +
-        // his data-viz dots, one gesture.
-        var phase=now*0.006, amp=Math.min(18, r*0.16);
-        var poly=[], N=Math.max(48, Math.min(120, Math.floor(r*0.25)));
-        for(var a=0;a<=N;a++){ var ang=a/N*6.2832, rr=Math.max(0, r+Math.sin(ang*7+phase)*amp);
-          poly.push((x+Math.cos(ang)*rr).toFixed(1)+'px '+(y+Math.sin(ang)*rr).toFixed(1)+'px'); }
-        var cp='polygon('+poly.join(',')+')'; world.style.clipPath=cp; world.style.webkitClipPath=cp;
-        // spawn a rippling ring of dissolving dots at the wavefront
-        if(p<0.96 && r>2){ var cnt=Math.max(30, Math.min(150, Math.floor(r*0.30)));
-          for(var b=0;b<cnt;b++){ var a3=(b/cnt)*6.2832, rr3=r+Math.sin(a3*7+phase)*amp+(Math.random()*12-4),
-            sx=x+Math.cos(a3)*rr3, sy=y+Math.sin(a3)*rr3, col=sampleHero(sx,sy);
-            parts.push({x:sx,y:sy, vx:Math.cos(a3)*(0.4+Math.random()*1.3), vy:Math.sin(a3)*(0.4+Math.random()*1.3),
-              life:0.42+Math.random()*0.34, sz:1.6+Math.random()*2.0,
-              col: col || ((b%6===0)?'#141210':(Math.random()<0.5?'#fff7cf':'#fcef72'))}); } }
-        for(var k=parts.length-1;k>=0;k--){ var q=parts[k]; q.x+=q.vx; q.y+=q.vy; q.life-=0.03; if(q.life<=0){parts.splice(k,1);continue;}
-          dctx.globalAlpha=Math.max(0,Math.min(1,q.life*1.7)); dctx.fillStyle=q.col; dctx.fillRect(q.x,q.y,q.sz,q.sz); }
-        if(p<1 || parts.length) draf=requestAnimationFrame(tick); else done();
-        return;
-      }
-      clip(r);
-      // DISSOLVE — the hero breaks into GRAINY GREEN square data-cells scattering off the moving edge
-      // (same digital vocabulary as the hover). Most sample the photo; some detach as bright green cells.
-      if(p<0.95 && r>2){ for(var n=0;n<COUNT;n++){ var a2=Math.random()*6.2832, rr2=r+(Math.random()*44-30),
-        sx=x+Math.cos(a2)*rr2, sy=y+Math.sin(a2)*rr2, hc=sampleHero(sx,sy);
-        parts.push({x:sx, y:sy,
-          vx:Math.cos(a2)*(0.4+Math.random()*1.9)+(Math.random()-0.5)*0.9,
-          vy:Math.sin(a2)*(0.4+Math.random()*1.9)-(0.5+Math.random()*1.2),
-          life:0.55+Math.random()*0.5, sz:1.6+Math.random()*CSZ,
-          col:(Math.random()<GREEN)?DIGI[(Math.random()*DIGI.length)|0]:(hc||DIGI[1])}); } }
-      for(var k=parts.length-1;k>=0;k--){ var q=parts[k]; q.x+=q.vx; q.y+=q.vy; q.vy-=0.008; q.life-=0.026; if(q.life<=0){parts.splice(k,1);continue;}
-        dctx.globalAlpha=Math.max(0,q.life*(0.6+0.5*Math.random())); dctx.fillStyle=q.col; dctx.fillRect(q.x,q.y,q.sz,q.sz); } // per-frame flicker = grain
-      if(p<1 || parts.length) draf=requestAnimationFrame(tick); else done();
-    }
-    cancelAnimationFrame(draf); draf=requestAnimationFrame(tick);
-  }
-  function closeWorld(){ document.body.classList.remove('world-goodrx-open'); world.setAttribute('aria-hidden','true'); }
   // Band → REAL themed world via a clip-path circle grown from the click point (see __openWorldClip
   // in the main app script). No View Transitions API — deterministic across browsers.
   function dissolveEnter(x,y){ if(window.__openWorldClip){ var band=heroEl.closest('[data-project]'); window.__openWorldClip((band&&band.dataset.project)||'goodrx', {x:x,y:y}); } }
-  function dissolveExit(x,y){ if(reduce.matches){ closeWorld(); return; } radialTransition(x,y,false); }
-
-  // ---- Hover charge: the dissolve dust FOLLOWS the cursor while over the hero, so hover→click is
-  //      one continuous motion (the transition launches from where the charge already is). ----
-  var hoverOn=false, hraf, hx=innerWidth/2, hy=innerHeight/2, hparts=[], PEEK_R=58;
-  function sizeDcanvas(){ var d=Math.min(window.devicePixelRatio||1,2); dcanvas.width=Math.round(innerWidth*d); dcanvas.height=Math.round(innerHeight*d); dctx.setTransform(d,0,0,d,0,0); }
-  function hloop(){
-    if(document.body.classList.contains('world-goodrx-open')) hoverOn=false;
-    if(hoverOn){
-      for(var n=0;n<8;n++){ var a=Math.random()*6.2832, rr=42+(Math.random()*16-8);
-        hparts.push({x:hx+Math.cos(a)*rr, y:hy+Math.sin(a)*rr, vx:Math.cos(a)*(0.3+Math.random()*0.7), vy:Math.sin(a)*(0.3+Math.random()*0.7), life:0.30+Math.random()*0.24, sz:1.5+Math.random()*1.8, col:(Math.random()<0.5?'#fff7cf':'#fcef72')}); }
-    }
-    dctx.clearRect(0,0,innerWidth,innerHeight);
-    for(var k=hparts.length-1;k>=0;k--){ var q=hparts[k]; q.x+=q.vx; q.y+=q.vy; q.life-=0.07; if(q.life<=0){hparts.splice(k,1);continue;} dctx.globalAlpha=Math.max(0,q.life); dctx.fillStyle=q.col; dctx.fillRect(q.x,q.y,q.sz,q.sz); }
-    if(hoverOn || hparts.length) hraf=requestAnimationFrame(hloop);
-    else { dctx.clearRect(0,0,innerWidth,innerHeight); dcanvas.style.display='none'; }
-  }
-  function endHoverPeek(){ if(!document.body.classList.contains('world-goodrx-open')) world.setAttribute('aria-hidden','true'); }
-  function startHover(x,y){ if(hoverOn) return; if(document.body.classList.contains('world-goodrx-open')) return; hx=x; hy=y; hoverOn=true; ensureCanvas(); sizeDcanvas(); dcanvas.style.display='block'; cancelAnimationFrame(hraf); hraf=requestAnimationFrame(hloop); }
-  // Dissolve HOVER = a dust bloom that follows the cursor (the dissolve material's charge). The ripple
-  // material's hover is the WebGL ripple in the IIFE below. Enter/exit read the material either way, so
-  // the whole gesture — hover, enter, exit — speaks one language.
-  function dissolveHover(){ return false; } // retired: the strong WebGL dissolve-into-dots hover now serves both materials
-
   var gxCursor=document.getElementById('gx-cursor');
   heroEl.addEventListener('mousemove', function(e){
     if(gxCursor){ gxCursor.style.left=e.clientX+'px'; gxCursor.style.top=e.clientY+'px'; }
-    if(dissolveHover()){ hx=e.clientX; hy=e.clientY; if(!hoverOn && !document.body.classList.contains('world-goodrx-open')) startHover(e.clientX,e.clientY); }
   });
-  heroEl.addEventListener('mouseenter', function(e){ if(gxCursor) gxCursor.style.opacity='1'; if(dissolveHover()) startHover(e.clientX,e.clientY); });
-  heroEl.addEventListener('mouseleave', function(){ if(gxCursor) gxCursor.style.opacity='0'; hoverOn=false; endHoverPeek(); });
+  heroEl.addEventListener('mouseenter', function(){ if(gxCursor) gxCursor.style.opacity='1'; });
+  heroEl.addEventListener('mouseleave', function(){ if(gxCursor) gxCursor.style.opacity='0'; });
 
-  // Intercept the hero-image click in the capture phase so the existing company-view open does not also fire.
+  // Intercept the hero-image click in the capture phase so the normal tile-open doesn't also fire; the
+  // reveal is the shared clip grown from the click point. Esc-close is the app's global handler.
   heroEl.addEventListener('click', function(e){
     e.preventDefault(); e.stopPropagation();
-    hoverOn=false; hparts.length=0; cancelAnimationFrame(hraf); // hand the hover charge off to the transition
-    // enter LOCKED to the cursor click point. Use == null (not ||) so a legit click at x=0 isn't lost.
     var xx=(e.clientX==null?origin.x:e.clientX), yy=(e.clientY==null?origin.y:e.clientY);
-    dissolveEnter(xx,yy); // ALWAYS the real themed world from the cursor; the old prototype enter() is retired
+    dissolveEnter(xx,yy);
   }, true);
-  var backBtn = world.querySelector('.world-back');
-  function backPoint(){ if(backBtn){ var r=backBtn.getBoundingClientRect(); return {x:r.left+r.width/2, y:r.top+r.height/2}; } return {x:innerWidth/2,y:innerHeight/2}; }
-  if(backBtn) backBtn.addEventListener('click', function(){ var pt=backPoint(); exit(pt.x, pt.y); }); // always collapse from the back button
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && document.body.classList.contains('world-goodrx-open')){ var pt=backPoint(); exit(pt.x, pt.y); }
-  });
 })();
 </script>
 <!-- SPIKE-ONLY: cursor-local WebGL ripple on the GoodRx hero (hov-ripple). Rings radiate through the
