@@ -1444,7 +1444,6 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .work-shell.is-focused{width:100%;padding-right:16px;padding-left:16px;padding-bottom:40px}
   .work-panel-brief{grid-template-columns:1fr;gap:14px}
   .work-panel-outcome{padding:12px 0 0;border-left:0;border-top:1px solid var(--border)}
-  .work-panel-actions{justify-content:flex-start}
   .work-project-grid{grid-template-columns:none;grid-auto-flow:column;
     grid-auto-columns:calc(100% - 28px);gap:12px;padding:0 16px 2px 0;margin-right:-16px;
     overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
@@ -2202,12 +2201,15 @@ body.work-focus-open[data-world] #tune{display:none}
    BASE: blueprint defaults on body[data-world] — the solid fallback for any new/unskinned world
    (neutral paper ground; unskinned worlds also fall back to the .visual-placeholder hero).
    ENTRY: each body[data-world="<slug>"] overrides only its tokens for a unique identity.
-   Override order is by SPECIFICITY (no @layer): [data-world="slug"] > [data-world] > base component rules.
-   Adding a skinned world = one token row below + a hero in its data. body[data-world="<slug>"] is set on
-   world open; JS injects .world-hero and hides the default heading. ==== */
+   Override order: [data-world="slug"] beats [data-world] by SOURCE ORDER (both are specificity (0,1,1) —
+   an attribute VALUE adds no specificity — so the per-world ENTRY rows must stay BELOW the base block).
+   The world block as a whole beats base component rules by specificity (body[data-world] ... vs .x).
+   No @layer. Adding a skinned world = one ENTRY token row below + a hero in its data. body[data-world="<slug>"]
+   is set on world open; JS injects .world-hero and hides the default heading. ==== */
 body[data-world]{
-  /* BASE blueprint palette — the fallback identity (neutral paper + slate accent) */
-  --world-bg:#edeae2; --world-ink:#1b1b19; --world-ink-soft:rgba(27,27,25,.6);
+  /* BASE blueprint palette — the fallback identity (neutral paper + slate accent).
+     --world-ink-soft is .72 (not .6) so the 11px mono labels clear WCAG AA (~5.8:1) on the paper bg. */
+  --world-bg:#edeae2; --world-ink:#1b1b19; --world-ink-soft:rgba(27,27,25,.72);
   --world-line:rgba(27,27,25,.18); --world-accent:#3f6ea6; --world-surface:#f7f6f1;
   --world-card-bg:#1c1a17; --world-card-ink:#ffffff;}
 
@@ -5492,15 +5494,6 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       });
     }
 
-    function hasCompanyFocus(company){
-      var companyData = workProjects[company];
-      if(!companyData) return false;
-      return hasCompanyStories(company) ||
-        Boolean(companyData.vignettes && companyData.vignettes.length) ||
-        Boolean(companyData.supportingItems && companyData.supportingItems.length) ||
-        Boolean(companyData.alsoShipped && companyData.alsoShipped.length);
-    }
-
     // A "world" is any top-level HOMEPAGE entry (a company band or a work/experiment tile). Homepage
     // membership IS the explicit declaration of world-ness — deriving the set from the DOM keeps it DRY:
     // add a homepage tile and it becomes a world with the blueprint fallback, nothing to hand-tag.
@@ -6034,7 +6027,9 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
         }
         workFocusContent.appendChild(support);
       }
-      workFocusContent.hidden = false;
+      // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
+      // blank gap that reads as broken; hero + fact grid + actions still render above it.
+      workFocusContent.hidden = !workFocusContent.children.length;
       return grid;
     }
 
@@ -6604,7 +6599,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
         // BLUEPRINT fallback: an unskinned world gets a schematic placeholder hero (the .visual-placeholder
         // primitive), so new work reads as an intentional blueprint, never broken.
         m.classList.add("world-hero-media-blueprint");
-        m.appendChild(createVisualPlaceholder({ title: item.name, status: "BLUEPRINT" }));
+        m.appendChild(createVisualPlaceholder({ title: item.name }));
       }
       hero.appendChild(m);
       heading.classList.add("world-hidden");
@@ -6835,6 +6830,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
             if(returningCardMedia) returningCardMedia.style.viewTransitionName = "selected-project-visual";
           }
         }else{
+          document.body.removeAttribute("data-world"); // clear any prior world theme (non-world gallery path)
           workFocusContent.hidden = true;
           workFocusContent.replaceChildren();
           workGrid.hidden = false;
@@ -7177,13 +7173,13 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       }else if(project){
         // In the world already (backing out of a case study) → planet↔region, plain transition.
         // Arriving at a world fresh (browser forward/deep link) → galaxy→planet, clip from a neutral point.
-        if(inWorld !== project && hasCompanyFocus(project)){
+        if(inWorld !== project && isWorldEntry(project)){
           window.__openWorldClip(project, {x:innerWidth/2, y:innerHeight*0.42}, {history:false});
         }else{
           groupWork(project, {
             history:false,
             source:event.state && event.state.portfolioWorkSource ||
-              (hasCompanyFocus(project) ? "company" : "project"),
+              (isWorldEntry(project) ? "company" : "project"),
             restoreCompanyScroll:event.state && event.state.portfolioCompanyScrollTop,
             animate:true
           });
@@ -7229,7 +7225,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     }else if(initialWorkProject){
       groupWork(initialWorkProject, {
         history:false,
-        source:hasCompanyFocus(initialWorkProject) ? "company" : "project",
+        source:isWorldEntry(initialWorkProject) ? "company" : "project",
         animate:false
       });
     }
