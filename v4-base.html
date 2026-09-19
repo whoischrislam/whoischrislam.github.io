@@ -6977,7 +6977,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       if(!interrupting){
         workOverviewScrollY = window.scrollY;               // remember homepage scroll
         if(opts.history !== false) writeFocusedWorkHistory(project, "company"); // push ?work= so browser back closes the world
-        groupWork(project, { source:"company", scroll:false, history:false, animate:false }); // build the focus state
+        groupWork(project, { source:"company", scroll:false, history:false, animate:false, trigger:opts.trigger }); // build the focus state
         document.body.classList.add("world-entering");       // homepage stays visible; layer becomes an overlay
         workShell.classList.remove("is-focused");            // keep the shell in normal flow so the homepage-behind
                                                              // stays exactly where it was (no downward jump). #world-layer
@@ -7141,14 +7141,21 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     function bindWorkTile(tile){
       tile.addEventListener("pointerenter", function(){ previewWork(tile.dataset.project); });
       tile.addEventListener("focus", function(){ previewWork(tile.dataset.project); });
-      tile.addEventListener("click", function(){
+      tile.addEventListener("click", function(e){
         var p = tile.dataset.project;
         if(workGrid.dataset.locked === "true" && selectedWorkProject === p){
           openWorkMedia(tile);
         }else{
           if(window.posthog) posthog.capture("work_company_opened", {company:p, kind:tile.dataset.kind||""});
           if(isWorldEntry(p)){
-            groupWork(p, {trigger:tile, source:"company"});
+            // Every world enters via the clip reveal grown from the click point (GoodRx layers its
+            // own WebGL dissolve on top via its band). Keyboard activation (no pointer coords) grows
+            // from the tile centre. Falls back to an instant open if the clip fn isn't available.
+            var r = tile.getBoundingClientRect();
+            var ox = (e && e.clientX) ? e.clientX : Math.round(r.left + r.width / 2);
+            var oy = (e && e.clientY) ? e.clientY : Math.round(r.top + r.height / 2);
+            if(window.__openWorldClip){ window.__openWorldClip(p, {x:ox, y:oy}, {trigger:tile}); }
+            else { groupWork(p, {trigger:tile, source:"company"}); }
           }else{
             groupWork(p, {trigger:tile, source:"project"});
           }
