@@ -2196,27 +2196,38 @@ body.world-goodrx-open #hx-bar{display:none}
 #tune button{margin-top:8px;width:100%;appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;
   color:#ddd;font:600 11px/1 var(--sans);padding:6px;border-radius:6px;cursor:pointer}
 #tune button:hover{background:rgba(255,255,255,.08)}
-body.world-goodrx-open #tune{display:none}
+body.work-focus-open[data-world] #tune{display:none}
 
-/* ==== PER-COMPANY WORLD (spike) — the SAME work-panel structure, re-skinned per company via tokens,
-   led by a HERO-FORWARD top (logo · mono kicker · big serif title · punchy lede · full-bleed work
-   image), Image-#4 style. body[data-world="<co>"] is set on company open; JS injects .world-hero and
-   hides the default heading. The spec-grid depth flows below on readable cards. ==== */
+/* ==== PER-WORLD SYSTEM — ONE generic treatment, re-skinned per world via TOKENS.
+   BASE: blueprint defaults on body[data-world] — the solid fallback for any new/unskinned world
+   (neutral paper ground; unskinned worlds also fall back to the .visual-placeholder hero).
+   ENTRY: each body[data-world="<slug>"] overrides only its tokens for a unique identity.
+   Override order is by SPECIFICITY (no @layer): [data-world="slug"] > [data-world] > base component rules.
+   Adding a skinned world = one token row below + a hero in its data. body[data-world="<slug>"] is set on
+   world open; JS injects .world-hero and hides the default heading. ==== */
+body[data-world]{
+  /* BASE blueprint palette — the fallback identity (neutral paper + slate accent) */
+  --world-bg:#edeae2; --world-ink:#1b1b19; --world-ink-soft:rgba(27,27,25,.6);
+  --world-line:rgba(27,27,25,.18); --world-accent:#3f6ea6; --world-surface:#f7f6f1;
+  --world-card-bg:#1c1a17; --world-card-ink:#ffffff;}
+
+/* ── ENTRY overrides · per-world identity (one row per skinned world) ── */
 body[data-world="goodrx"]{
   --world-bg:#fcef72; --world-ink:#1a1710; --world-ink-soft:rgba(26,23,16,.62);
-  --world-line:rgba(26,23,16,.22); --world-accent:#6d4bd8; --world-surface:#fffdf0;}
+  --world-line:rgba(26,23,16,.22); --world-accent:#6d4bd8; --world-surface:#fffdf0;
+  --world-card-bg:#1a1710; --world-card-ink:#ffffff;}
 
-body.work-focus-open[data-world="goodrx"]{background:var(--world-bg)}
+body.work-focus-open[data-world]{background:var(--world-bg)}
 /* Header is CONSTANT chrome — never re-themed per world. It stays the persistent frame ("ship") the
    world reveals beneath, so there's no color snap and nothing to transition. */
-body.work-focus-open[data-world="goodrx"] #work-panel{
+body.work-focus-open[data-world] #work-panel{
   --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
   --accent:var(--world-accent);--surface:var(--world-surface);background:var(--world-bg);color:var(--world-ink)}
 /* the colour OVERTAKES the whole focused page — every wrapper + the Selected-projects area */
-body.work-focus-open[data-world="goodrx"] #top,
-body.work-focus-open[data-world="goodrx"] .work-shell,
-body.work-focus-open[data-world="goodrx"] #work-focus-content{background:var(--world-bg)}
-body.work-focus-open[data-world="goodrx"] #work-focus-content{
+body.work-focus-open[data-world] #top,
+body.work-focus-open[data-world] .work-shell,
+body.work-focus-open[data-world] #work-focus-content{background:var(--world-bg)}
+body.work-focus-open[data-world] #work-focus-content{
   --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
   --accent:var(--world-accent);--surface:var(--world-surface);color:var(--world-ink)}
 
@@ -2230,10 +2241,10 @@ body.work-focus-open[data-world="goodrx"] #work-focus-content{
 .world-hero-media img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 24px 60px rgba(26,23,16,.18)}
 
 /* body depth (spec grid, outcome, decisions) — readable cards on the brand ground */
-body.work-focus-open[data-world="goodrx"] .work-panel-summary,
-body.work-focus-open[data-world="goodrx"] .work-panel-result,
-body.work-focus-open[data-world="goodrx"] .work-panel-outcome{color:var(--world-ink)}
-/* ==== Fact/spec section — on the world bg (no white card). Three grid treatments flip via #grid-bar. ==== */
+body.work-focus-open[data-world] .work-panel-summary,
+body.work-focus-open[data-world] .work-panel-result,
+body.work-focus-open[data-world] .work-panel-outcome{color:var(--world-ink)}
+/* ==== Fact/spec section — on the world bg (no white card). ==== */
 body[data-world] #work-panel .work-panel-brief,
 body[data-world] #work-panel .work-panel-details,
 body[data-world] #work-panel .work-panel-facts,
@@ -2242,50 +2253,16 @@ body[data-world] .work-panel.is-company-view .work-panel-facts{max-width:none;ma
 body[data-world] .work-panel.is-company-view .work-panel-outcome{max-width:none;padding-top:24px!important;border-top:1px solid var(--world-line)!important;margin-top:26px}
 body[data-world] .work-panel-facts .tok{border-color:var(--world-line);color:var(--world-ink)}
 
-/* A · CREDITS — editorial label→value rows, hairline-divided, full width */
-body.gd-credits[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
-body.gd-credits[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:210px minmax(0,1fr);gap:28px;align-items:baseline;border-bottom:1px solid var(--world-line);padding:15px 0}
-body.gd-credits[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
-body.gd-credits[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft);margin:0}
-body.gd-credits[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:2;grid-row:1;margin:0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
-body.gd-credits[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
-
-/* B · TWO-TIER — WHAT I DID leads (serif, prominent); the rest is a compact metadata strip */
-body.gd-tier[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 44px;border-top:1px solid var(--world-line)}
-body.gd-tier[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:1fr;border-bottom:1px solid var(--world-line);padding:15px 0}
-body.gd-tier[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
-body.gd-tier[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
-body.gd-tier[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-sm);line-height:1.5;color:var(--world-ink)}
-body.gd-tier[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{grid-column:1/-1;padding:20px 0 22px}
-body.gd-tier[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
-
-/* C · TOKENS — spec-sheet tiles (bordered, not white), values as chips */
-body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:18px minmax(0,1fr);border:1px solid var(--world-line);border-radius:12px;padding:16px 18px;align-content:start}
-body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{grid-row:1;width:16px;height:16px}
-body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:2;grid-row:1;font:600 10.5px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--world-ink-soft)}
-body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:1/-1;grid-row:2;margin:10px 0 0;font-size:var(--t-sm);line-height:1.5;color:var(--world-ink)}
-body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{grid-column:1/-1}
-body.gd-tokens[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font-size:var(--t-base)}
-/* D · HYBRID A — serif WHAT I DID lede (from Two-tier), then scannable Credits side-by-side rows */
-body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
-body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:210px minmax(0,1fr);gap:28px;align-items:baseline;border-bottom:1px solid var(--world-line);padding:15px 0}
-body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
-body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft);margin:0}
-body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:2;grid-row:1;margin:0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
-body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
-body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{grid-template-columns:1fr;padding:4px 0 22px}
-body.gd-hyba[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{grid-column:1;grid-row:2;margin-top:8px;font:400 var(--t-lg)/1.5 var(--serif)}
-
-/* E · HYBRID B — serif WHAT I DID lede, then stacked label-over-value rows, full width */
-body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
-body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:1fr;border-bottom:1px solid var(--world-line);padding:14px 0}
-body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
-body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
-body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
-body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
-body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{padding:4px 0 22px}
-body.gd-hybb[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
+/* FACT GRID — the locked treatment (was "Hybrid B"): serif WHAT-I-DID lede + MEASURED-OUTCOMES
+   bookend, stacked label-over-value hairline rows. Unconditional — every world inherits it. */
+body[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
+body[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:1fr;border-bottom:1px solid var(--world-line);padding:14px 0}
+body[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
+body[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
+body[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+body[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
+body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{padding:4px 0 22px}
+body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
 
 /* ===== Case study (story) view: mirror the company editorial treatment in-world ===== */
 /* #12 · fact grid — drop icons + boxy cells; hairline rows, mono label over plain value (like Hybrid B) */
@@ -2311,8 +2288,8 @@ body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;marg
 body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent)}
 body[data-world] .project-story-nav button[aria-current="true"]{color:#fff}
 
-body.work-focus-open[data-world="goodrx"] .work-project-card{background:#1a1710;color:#fff;border-color:transparent}
-body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
+body.work-focus-open[data-world] .work-project-card{background:var(--world-card-bg);color:var(--world-card-ink);border-color:transparent}
+body.work-focus-open[data-world] .work-project-card *{color:inherit}
 </style>
 </head><body>
 
@@ -7829,26 +7806,6 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
   p.appendChild(btn);
   document.body.appendChild(p);
-})();
-</script>
-<!-- CHOOSER (temporary): flip the fact-grid treatment. Remove once Chris picks. -->
-<style>
-#grid-bar{position:fixed;right:12px;bottom:12px;z-index:2147483647;display:flex;gap:4px;align-items:center;
-  background:rgba(20,18,16,.92);padding:6px;border-radius:9px;font:600 11px/1 -apple-system,sans-serif}
-#grid-bar .lbl{color:#8a8f98;padding:0 6px 0 4px}
-#grid-bar button{appearance:none;border:0;background:transparent;color:#ddd;padding:6px 10px;border-radius:6px;cursor:pointer;font:inherit}
-#grid-bar button.on{background:#6d4bd8;color:#fff}
-</style>
-<script>
-(function(){
-  var opts=[["Credits","gd-credits"],["Two-tier","gd-tier"],["Tokens","gd-tokens"],["Hybrid A","gd-hyba"],["Hybrid B","gd-hybb"]];
-  var all=opts.map(function(o){return o[1];});
-  var bar=document.createElement("div"); bar.id="grid-bar";
-  var l=document.createElement("span"); l.className="lbl"; l.textContent="grid"; bar.appendChild(l);
-  function apply(cls){ all.forEach(function(c){document.body.classList.remove(c);}); document.body.classList.add(cls);
-    Array.prototype.forEach.call(bar.querySelectorAll("button"),function(b){ b.classList.toggle("on", b.dataset.cls===cls); }); }
-  opts.forEach(function(o){ var b=document.createElement("button"); b.textContent=o[0]; b.dataset.cls=o[1]; b.onclick=function(){ apply(o[1]); }; bar.appendChild(b); });
-  document.body.appendChild(bar); apply("gd-hybb");
 })();
 </script>
 </body></html>
