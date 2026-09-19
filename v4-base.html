@@ -6807,7 +6807,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
       var r = Math.hypot(Math.max(x, b.width - x), Math.max(y, b.height - y));
       return { x: x, y: y, r: r };
     }
-    // Read the live tuning vars (set by the #vt-tune panel) so the feel stays tweakable; fall back to defaults.
+    // World-reveal timing: reads an optional CSS var override, else the default (seconds).
     function tuneMs(name, defSec){ var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)); return (v > 0 ? v : defSec) * 1000; }
     function tuneEase(name, def){ var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim(); return v || def; }
     function setWorldCenter(c){                              // static circle center — never animated
@@ -6851,7 +6851,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
       var commit = function(){ document.body.classList.remove("world-entering"); worldLayer.classList.remove("world-revealing"); };
       if(reduceWorkMotion.matches || !worldLayer.animate){ commit(); return; } // instant fallback
       runReveal(interrupting ? currentRevealR() : 0, worldFullR(),
-        tuneMs("--vt-in-dur",0.85), tuneEase("--vt-in-ease","linear"), commit);
+        tuneMs("--vt-in-dur",0.5), tuneEase("--vt-in-ease","linear"), commit);
     };
     function closeWorldClip(origin){
       if(reduceWorkMotion.matches || !worldLayer.animate){
@@ -6861,7 +6861,7 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
       var startR;
       if(interrupting){ startR = currentRevealR(); }         // keep the enter's center; shrink from where it is
       else { document.body.classList.add("world-entering"); setWorldCenter(worldCircle(origin.x, origin.y)); startR = worldFullR(); }
-      runReveal(startR, 0, tuneMs("--vt-out-dur",0.6), tuneEase("--vt-out-ease","cubic-bezier(.4,0,.7,.2)"), function(){
+      runReveal(startR, 0, tuneMs("--vt-out-dur",0.4), tuneEase("--vt-out-ease","cubic-bezier(.4,0,.7,.2)"), function(){
         resetWork(false, { restoreScroll: workOverviewScrollY }); // return to the exact homepage scroll
         document.body.classList.remove("world-entering");
         worldLayer.classList.remove("world-revealing");
@@ -7741,76 +7741,6 @@ body.work-focus-open[data-world="goodrx"] .work-project-card *{color:inherit}
     btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
   p.appendChild(btn);
   document.body.appendChild(p);
-})();
-</script>
-<!-- SPIKE-ONLY: live tuning for the world VIEW-TRANSITION timing (duration + easing, enter & exit).
-     Writes --vt-in-dur/--vt-in-ease/--vt-out-dur/--vt-out-ease on :root; __openWorldClip/closeWorldClip read them.
-     "Copy CSS" dumps the chosen values. Strip this whole block (and revert the vars to literals) at port. -->
-<script>
-(function(){
-  var EASES = [
-    ["Ease-out expo (default)","cubic-bezier(.22,1,.36,1)"],
-    ["Ease-out cubic (gentler tail)","cubic-bezier(.33,1,.68,1)"],
-    ["Ease-out quart","cubic-bezier(.25,1,.5,1)"],
-    ["Snappy in-out","cubic-bezier(.65,0,.35,1)"],
-    ["Material standard","cubic-bezier(.4,0,.2,1)"],
-    ["Overshoot (back)","cubic-bezier(.34,1.56,.64,1)"],
-    ["Linear","linear"]
-  ];
-  var DEF = { inDur:0.85, inEase:"linear", outDur:0.6, outEase:"cubic-bezier(.4,0,.7,.2)" };
-  var root = document.documentElement;
-  function set(){
-    root.style.setProperty("--vt-in-dur", state.inDur+"s");
-    root.style.setProperty("--vt-in-ease", state.inEase);
-    root.style.setProperty("--vt-out-dur", state.outDur+"s");
-    root.style.setProperty("--vt-out-ease", state.outEase);
-  }
-  var state = Object.assign({}, DEF);
-  var wrap = document.createElement("div");
-  wrap.id = "vt-tune";
-  wrap.style.cssText = "position:fixed;left:12px;top:64px;z-index:2147483647;width:236px;"+
-    "background:rgba(20,18,16,.92);color:#eee;font:600 11px/1.3 -apple-system,sans-serif;"+
-    "padding:12px 12px 10px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4)";
-  function row(label, node){
-    var r=document.createElement("label"); r.style.cssText="display:block;margin:0 0 9px";
-    var t=document.createElement("div"); t.textContent=label; t.style.cssText="opacity:.72;margin:0 0 3px;letter-spacing:.02em";
-    r.appendChild(t); r.appendChild(node); return r;
-  }
-  function slider(key, min, max){
-    var s=document.createElement("input"); s.type="range"; s.min=min; s.max=max; s.step="0.02"; s.value=state[key];
-    s.style.cssText="width:100%;accent-color:#6d4bd8";
-    var v=document.createElement("span"); v.textContent=" "+state[key]+"s"; v.style.opacity=".9";
-    s.oninput=function(){ state[key]=parseFloat(s.value); v.textContent=" "+state[key]+"s"; set(); };
-    var box=document.createElement("div"); var vt=document.createElement("div"); vt.appendChild(v);
-    box.appendChild(s); box.appendChild(vt); return box;
-  }
-  function select(key){
-    var s=document.createElement("select");
-    s.style.cssText="width:100%;background:#2a2723;color:#eee;border:1px solid #444;border-radius:6px;padding:4px";
-    EASES.forEach(function(e){ var o=document.createElement("option"); o.value=e[1]; o.textContent=e[0];
-      if(e[1]===state[key]) o.selected=true; s.appendChild(o); });
-    // exit default isn't in the list; prepend it so it shows
-    if(!EASES.some(function(e){return e[1]===state[key];})){ var o=document.createElement("option"); o.value=state[key]; o.textContent="Exit default (in→out)"; o.selected=true; s.insertBefore(o,s.firstChild); }
-    s.onchange=function(){ state[key]=s.value; set(); };
-    return s;
-  }
-  var head=document.createElement("div"); head.textContent="World transition — tune";
-  head.style.cssText="font-weight:700;margin:0 0 10px;color:#c9b6ff"; wrap.appendChild(head);
-  wrap.appendChild(row("Enter duration", slider("inDur",0.2,1.6)));
-  wrap.appendChild(row("Enter easing", select("inEase")));
-  wrap.appendChild(row("Exit duration", slider("outDur",0.2,1.6)));
-  wrap.appendChild(row("Exit easing", select("outEase")));
-  var btns=document.createElement("div"); btns.style.cssText="display:flex;gap:6px;margin-top:4px";
-  function mkbtn(label){ var b=document.createElement("button"); b.textContent=label; b.type="button";
-    b.style.cssText="flex:1;background:#3a3530;color:#eee;border:1px solid #555;border-radius:6px;padding:6px;cursor:pointer;font:inherit"; return b; }
-  var copy=mkbtn("Copy CSS"), reset=mkbtn("Reset");
-  copy.onclick=function(){
-    var css="--vt-in-dur:"+state.inDur+"s; --vt-in-ease:"+state.inEase+";\n--vt-out-dur:"+state.outDur+"s; --vt-out-ease:"+state.outEase+";";
-    navigator.clipboard&&navigator.clipboard.writeText(css); copy.textContent="Copied!"; setTimeout(function(){copy.textContent="Copy CSS";},1200);
-  };
-  reset.onclick=function(){ location.reload(); };
-  btns.appendChild(copy); btns.appendChild(reset); wrap.appendChild(btns);
-  set(); document.body.appendChild(wrap);
 })();
 </script>
 </body></html>
