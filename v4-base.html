@@ -257,7 +257,10 @@ details.more[open] summary::before{transform:rotate(90deg)}
    change the viewport width mid-transition — that width change aborts the View Transition
    ("invalid state. Viewport size changed") and the enter clip silently doesn't run. macOS overlay
    scrollbars = 0px gutter (no visual change); classic scrollbars reserve a stable gutter. */
-html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth;scrollbar-gutter:stable}
+/* Always show the document scrollbar so its width is permanently reserved. Otherwise opening a world
+   (body overflow:hidden) removes it and centered content shifts ~7.5px — a visible jitter. overflow-y:scroll
+   is more reliable here than scrollbar-gutter (which doesn't hold under overflow:hidden in Chromium). */
+html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth;overflow-y:scroll}
 /* Read-progress, lifted from his own styles.css. Scroll-driven animation, no JS at all.
    Browsers without animation-timeline never scale it up, so it stays invisible. */
 .read-progress{position:absolute;left:0;bottom:0;z-index:1;width:100%;height:3px;
