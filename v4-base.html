@@ -151,6 +151,22 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 /* Icon links get a square target; text links keep their padding. */
 .site-head nav a[aria-label]{min-width:44px;padding:0}
 .site-head nav svg{width:19px;height:19px;display:block}
+
+/* Availability status pill (beside the name) — a small confident soft-accent chip, brand-green pulse dot.
+   It's a LINK to the contact close (not decoration): hover inverts to filled accent = "click to get in touch". */
+.head-left{display:flex;align-items:center;gap:12px;min-width:0}
+.status-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent-strong);font:600 var(--t-xs)/1 var(--mono);
+  letter-spacing:.02em;white-space:nowrap;text-decoration:none;transition:background .2s ease,color .2s ease}
+.status-pill:hover,.status-pill:focus-visible{background:var(--accent);color:var(--on-accent,#fff)}
+.status-pill:hover .sp-dot,.status-pill:focus-visible .sp-dot{background:var(--on-accent,#fff)}
+.status-pill:hover .sp-dot::after,.status-pill:focus-visible .sp-dot::after{background:var(--on-accent,#fff)}
+.sp-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;position:relative}
+.sp-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--accent);
+  animation:sp-pulse 2.4s ease-out infinite}
+@keyframes sp-pulse{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(2.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){ .sp-dot::after{animation:none} }
+@media (max-width:520px){ .status-pill{display:none} }                                     /* hide on narrow phones */
 /* A track with a knob, so it reads as a switch rather than an icon that
    happens to change. Both states stay visible; the knob says which is live. */
 #theme-toggle{position:relative;flex:none;width:52px;height:27px;margin:0 4px;padding:0;
@@ -1815,35 +1831,7 @@ body.bp-5 .band-frame{position:relative}
 .co-band[data-project="goodrx"]:hover .band-frame,
 .co-band[data-project="goodrx"]:focus-within .band-frame{
   transform:scale(1.014);box-shadow:0 22px 66px rgba(252,239,114,.30),0 0 0 1px rgba(252,239,114,.6)}
-.co-band[data-project="goodrx"] .world-cue{position:absolute;right:14px;bottom:14px;z-index:2;
-  display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:999px;
-  background:rgba(0,0,0,.72);color:#fff;font:600 var(--t-xs)/1 var(--sans);letter-spacing:.02em;
-  opacity:0;transform:translateY(6px);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
-.co-band[data-project="goodrx"]:hover .world-cue,
-.co-band[data-project="goodrx"]:focus-within .world-cue{opacity:1;transform:none}
 
-/* the GoodRx world */
-#world-goodrx{position:fixed;inset:0;z-index:1200;display:none;overflow-y:auto;background:#fcef72;color:#141210}
-/* the dissolve now hands off to the REAL themed panel, so #world-goodrx is just a plain-yellow reveal
-   surface — hide its old prototype content so it never flashes before the real page. */
-#world-goodrx .world-chrome,#world-goodrx .world-goodrx-inner{display:none}
-body.world-goodrx-open{overflow:hidden}
-body.world-goodrx-open #world-goodrx{display:block}
-/* the "ship" — baseline chrome, constant across every world */
-.world-chrome{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;
-  gap:16px;padding:14px 24px;background:var(--bg);color:var(--text);border-bottom:1px solid var(--border)}
-.world-chrome .logo{font:400 var(--t-lg)/1 var(--serif);color:var(--text)}
-.world-back{appearance:none;border:0;background:none;display:inline-flex;align-items:center;gap:8px;
-  color:var(--text);font:600 var(--t-sm)/1 var(--sans);cursor:pointer;min-height:44px;padding:0}
-.world-back:hover{color:var(--accent)}
-/* world body — his baseline type system, re-skinned to GoodRx */
-.world-goodrx-inner{max-width:1228px;margin:0 auto;padding:64px 24px 96px}
-.wgx-logo{display:block;height:32px;width:auto;filter:brightness(0);margin-bottom:22px}
-.wgx-kicker{font:600 var(--t-xs)/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(20,18,16,.62);margin:0}
-.world-goodrx-inner h2{font:400 clamp(40px,7vw,88px)/1.02 var(--serif);letter-spacing:-.01em;margin:10px 0 18px}
-.wgx-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:36ch;color:#26221c;margin:0}
-.wgx-demo{margin-top:48px;border-radius:5px;overflow:hidden;border:1px solid rgba(20,18,16,.28);box-shadow:0 20px 60px rgba(20,18,16,.18)}
-.wgx-demo img{display:block;width:100%;height:auto}
 
 /* World reveal (see __openWorldClip / closeWorldClip). No View Transitions API.
    #world-layer wraps the panel + focus content. Normally display:contents, so the focused layout is
@@ -1863,39 +1851,15 @@ body.world-entering .work-grid[data-locked="true"] .co-groups{display:block!impo
 body.work-focus-open[data-world].world-entering,
 body.work-focus-open[data-world].world-entering #top,
 body.work-focus-open[data-world].world-entering .work-shell{background:var(--bg)!important}
-/* Debug/spike panels hidden — locked base. Full removal of these scripts + their CSS is the pending
-   scaffolding-purge pass (also removes the retired enter()/radialTransition prototype and #world-goodrx). */
-#tune,#hx-bar,#hb-bar,#vt-tune{display:none!important}
 
 /* ==== SHARED cheap dissolve edge (#2, 2026-09-20) — the INVERTED base effect. A 2D-canvas pixel-block
    dissolve rides the SHARED __openWorldClip reveal circle for EVERY world: cheap on the Air, verifiable
    headless (2D, no GPU), drawn over the real homepage backdrop that world-entering keeps behind the layer.
    Blocks BORROW the incoming world's palette (--world-bg mass / --world-ink grit / --world-accent sparks) —
    no fixed brand colour; per-world identity comes for free. GoodRx's WebGL grain stays a per-world OVERRIDE.
-   Reduced-motion falls back to the clean clip. Toggle via #de-bar; tune via #dtune — BOTH SPIKE-ONLY,
-   strip after Chris picks/bakes (with the two IIFEs at end of body). ==== */
+   Reduced-motion falls back to the clean clip. Tuned values are baked in window.__DTUNE (live tuner removed). ==== */
 #world-dissolve{position:fixed;inset:0;z-index:61;pointer-events:none;display:none}
 body.dissolve-edge.world-entering #world-dissolve{display:block}
-#de-bar{position:fixed;left:12px;bottom:12px;z-index:10000;display:flex;gap:2px;align-items:center;
-  background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:4px 5px;
-  box-shadow:0 8px 30px rgba(0,0,0,.4);backdrop-filter:blur(6px)}
-#de-bar span{color:#8a8f98;font:700 10px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;padding:0 6px 0 4px}
-#de-bar button{appearance:none;border:0;background:transparent;color:#ddd;font:600 12px/1 var(--sans);
-  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
-#de-bar button:hover{background:rgba(255,255,255,.08)}
-#de-bar button.on{background:var(--accent);color:#fff}
-body.work-focus-open[data-world] #de-bar,body.work-focus-open[data-world] #dtune{display:none}
-#dtune{position:fixed;top:12px;left:12px;z-index:10000;width:206px;max-height:88vh;overflow:auto;
-  background:rgba(20,20,22,.94);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px 12px;
-  box-shadow:0 8px 30px rgba(0,0,0,.45);font-family:var(--sans);color:#ddd;backdrop-filter:blur(6px)}
-#dtune h4{margin:0 0 3px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8a8f98;font-weight:700}
-#dtune .row{display:flex;align-items:center;gap:6px;margin:5px 0}
-#dtune label{flex:0 0 60px;font-size:11px;color:#cfd3d8}
-#dtune input[type=range]{flex:1;height:16px;accent-color:var(--accent,#2a9d4f);min-width:0}
-#dtune .val{flex:0 0 30px;font-size:10px;text-align:right;color:#8a8f98;font-variant-numeric:tabular-nums}
-#dtune button{margin-top:8px;width:100%;appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;
-  color:#ddd;font:600 11px/1 var(--sans);padding:6px;border-radius:6px;cursor:pointer}
-#dtune button:hover{background:rgba(255,255,255,.08)}
 @media (prefers-reduced-motion:reduce){ #world-dissolve{display:none!important} }
 
 /* World back = a sticky, FULL-BLEED sub-bar pinned under the header (Chris's pick). The margin/padding-inline
@@ -1915,163 +1879,6 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   .co-band[data-project="goodrx"] .band-frame{transition:none}
 }
 
-/* ==== HOVER-BREAKOUT A/B (GoodRx band) — how the card strains to escape its box on hover.
-   Flip via #hb-bar. Default (no class) = the subtle "Stir". Each mode overrides the stir. ==== */
-/* BLEED — the work spills past the frame edges (the box can't contain it) */
-body.hb-bleed .co-band[data-project="goodrx"] .band-frame{overflow:visible;transition:box-shadow .4s ease}
-body.hb-bleed .co-band[data-project="goodrx"] .band-frame .work-tile img{transition:transform .45s cubic-bezier(.22,1,.36,1),border-radius .45s ease}
-body.hb-bleed .co-band[data-project="goodrx"]:hover .band-frame,
-body.hb-bleed .co-band[data-project="goodrx"]:focus-within .band-frame{transform:none;box-shadow:0 24px 60px rgba(0,0,0,.28)}
-body.hb-bleed .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
-body.hb-bleed .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{transform:scale(1.07);border-radius:8px;position:relative;z-index:2}
-
-/* LIFT — the card peels off the page toward you, edges detaching */
-body.hb-lift .co-band[data-project="goodrx"]:hover .band-frame,
-body.hb-lift .co-band[data-project="goodrx"]:focus-within .band-frame{
-  transform:scale(1.03) translateY(-10px);box-shadow:0 34px 80px rgba(0,0,0,.34),0 0 0 1px rgba(252,239,114,.5)}
-
-/* BREACH — the world's colour leaks out past the box before you enter */
-body.hb-breach .co-band[data-project="goodrx"] .band-frame{transition:box-shadow .5s ease,transform .45s cubic-bezier(.22,1,.36,1)}
-body.hb-breach .co-band[data-project="goodrx"]:hover .band-frame,
-body.hb-breach .co-band[data-project="goodrx"]:focus-within .band-frame{
-  transform:scale(1.008);box-shadow:0 0 0 6px rgba(252,239,114,.55),0 0 48px 20px rgba(252,239,114,.5),0 24px 60px rgba(0,0,0,.22)}
-
-/* PORTAL (aggressive) — breaks the 2D-page illusion. The world is a 3D object that tilts and
-   parallax-shifts with the cursor and punches FORWARD out of the frame toward you. It escapes
-   the rectangle (overflow visible; body clips x so the spill never adds a scrollbar). The steep
-   perspective is what reads as depth. --prx/--pry (tilt) and --ptx/--pty (parallax) set by JS. */
-body.hb-portal{overflow-x:clip}
-body.hb-portal .co-band[data-project="goodrx"]{perspective:760px;perspective-origin:var(--porg,50% 50%)}
-body.hb-portal .co-band[data-project="goodrx"] .band-frame{overflow:visible;transform-style:preserve-3d;
-  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s ease}
-body.hb-portal .co-band[data-project="goodrx"] .band-frame .work-tile{transform-style:preserve-3d}
-body.hb-portal .co-band[data-project="goodrx"] .band-frame .work-tile img{
-  transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s ease;will-change:transform;backface-visibility:hidden}
-body.hb-portal .co-band[data-project="goodrx"]:hover .band-frame,
-body.hb-portal .co-band[data-project="goodrx"]:focus-within .band-frame{
-  transform:rotateX(var(--pry,0deg)) rotateY(var(--prx,0deg));
-  box-shadow:0 110px 140px -44px rgba(0,0,0,.62)}
-body.hb-portal .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
-body.hb-portal .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{
-  transform:translate3d(var(--ptx,0px),var(--pty,0px),165px) scale(1.16);
-  border-radius:10px;box-shadow:0 80px 120px rgba(0,0,0,.55);position:relative;z-index:2}
-@media (prefers-reduced-motion: reduce){
-  body.hb-portal .co-band[data-project="goodrx"]:hover .band-frame,
-  body.hb-portal .co-band[data-project="goodrx"]:hover .band-frame .work-tile img{transform:none}
-}
-
-/* ==== WORLD-OPENING A/B (GoodRx band) — on hover the surface OPENS to reveal the world that
-   sits beneath it (sci-fi/fantasy portal traversal). A dark "veil" covers the world at rest and
-   parts on hover. Flip via the bottom bar. Transforms/mask only — cheap on the Air. ==== */
-@property --wo-r{syntax:'<percentage>';inherits:false;initial-value:0%}
-.world-veil{position:absolute;inset:0;z-index:1;pointer-events:none;display:none;overflow:hidden}
-body[class*="wo-"] .co-band[data-project="goodrx"] .world-veil{display:block}
-.world-veil .vh{position:absolute;background:rgba(17,18,20,.82);transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .5s ease}
-
-/* DOORS — two halves slide apart horizontally (blast doors) */
-body.wo-doors .world-veil .vh-a{inset:0 50% 0 0}
-body.wo-doors .world-veil .vh-b{inset:0 0 0 50%}
-body.wo-doors .co-band[data-project="goodrx"]:hover .world-veil .vh-a,
-body.wo-doors .co-band[data-project="goodrx"]:focus-within .world-veil .vh-a{transform:translateX(-101%)}
-body.wo-doors .co-band[data-project="goodrx"]:hover .world-veil .vh-b,
-body.wo-doors .co-band[data-project="goodrx"]:focus-within .world-veil .vh-b{transform:translateX(101%)}
-
-/* SHUTTER — two halves retract vertically */
-body.wo-shutter .world-veil .vh-a{inset:0 0 50% 0}
-body.wo-shutter .world-veil .vh-b{inset:50% 0 0 0}
-body.wo-shutter .co-band[data-project="goodrx"]:hover .world-veil .vh-a,
-body.wo-shutter .co-band[data-project="goodrx"]:focus-within .world-veil .vh-a{transform:translateY(-101%)}
-body.wo-shutter .co-band[data-project="goodrx"]:hover .world-veil .vh-b,
-body.wo-shutter .co-band[data-project="goodrx"]:focus-within .world-veil .vh-b{transform:translateY(101%)}
-
-/* RIFT — a glowing seam tears open down the middle */
-body.wo-rift .world-veil .vh-a{inset:0 50% 0 0;border-right:2px solid rgba(252,239,114,.95);box-shadow:8px 0 30px rgba(252,239,114,.6)}
-body.wo-rift .world-veil .vh-b{inset:0 0 0 50%;border-left:2px solid rgba(252,239,114,.95);box-shadow:-8px 0 30px rgba(252,239,114,.6)}
-body.wo-rift .co-band[data-project="goodrx"]:hover .world-veil .vh-a,
-body.wo-rift .co-band[data-project="goodrx"]:focus-within .world-veil .vh-a{transform:translateX(-101%)}
-body.wo-rift .co-band[data-project="goodrx"]:hover .world-veil .vh-b,
-body.wo-rift .co-band[data-project="goodrx"]:focus-within .world-veil .vh-b{transform:translateX(101%)}
-
-/* DILATE — an aperture opens from the centre (mask hole grows) */
-body.wo-dilate .world-veil .vh-b{display:none}
-body.wo-dilate .world-veil .vh-a{inset:0;--wo-r:0%;
-  -webkit-mask-image:radial-gradient(circle at 50% 50%, transparent var(--wo-r), #000 calc(var(--wo-r) + 2%));
-  mask-image:radial-gradient(circle at 50% 50%, transparent var(--wo-r), #000 calc(var(--wo-r) + 2%));
-  transition:--wo-r .65s ease}
-body.wo-dilate .co-band[data-project="goodrx"]:hover .world-veil .vh-a,
-body.wo-dilate .co-band[data-project="goodrx"]:focus-within .world-veil .vh-a{--wo-r:150%}
-
-@media (prefers-reduced-motion: reduce){ .world-veil .vh{transition:none} }
-
-/* BREAKOUT — the world is NOT bound to the card. It's the full-viewport #world-goodrx layer,
-   revealed through a portal that grows FROM the card centre and out past the frame's rectangle
-   (a partial "enter"). Radius + centre are set by JS. Click finishes the same gesture to full. */
-body.wo-breakout .co-band[data-project="goodrx"] .world-veil{display:none}
-body.wo-breakout .co-band[data-project="goodrx"] .band-frame{cursor:zoom-in}
-#world-goodrx.peek{display:block;pointer-events:none;z-index:1150;
-  clip-path:circle(var(--peek-r,0px) at var(--cx,50%) var(--cy,50%));
-  -webkit-clip-path:circle(var(--peek-r,0px) at var(--cx,50%) var(--cy,50%));
-  transition:clip-path .6s cubic-bezier(.22,1,.36,1),-webkit-clip-path .6s cubic-bezier(.22,1,.36,1)}
-@media (prefers-reduced-motion:reduce){ #world-goodrx.peek{transition:none} }
-
-/* ==== HERO REACTION (GoodRx) — the hero IMAGE ITSELF deforms at the cursor (not a decal floating on
-   top: the pixels move with the effect). --mx/--my (cursor position within the frame, %) and --tx/--ty
-   (tilt) set by JS. Flipped via #hx-bar. ==== */
-
-/* Drop the whole-frame "Stir" glow/scale so the image's own reaction reads (tilt owns its transform). */
-body.hov-warp .co-band[data-project="goodrx"]:hover .band-frame,
-body.hov-lens .co-band[data-project="goodrx"]:hover .band-frame,
-body.hov-melt .co-band[data-project="goodrx"]:hover .band-frame,
-body.hov-none .co-band[data-project="goodrx"]:hover .band-frame,
-body.hov-warp .co-band[data-project="goodrx"]:focus-within .band-frame,
-body.hov-lens .co-band[data-project="goodrx"]:focus-within .band-frame,
-body.hov-melt .co-band[data-project="goodrx"]:focus-within .band-frame{transform:none;box-shadow:0 18px 44px rgba(0,0,0,.16)}
-body.hov-none .co-band[data-project="goodrx"]:hover .band-frame{box-shadow:0 12px 34px rgba(0,0,0,.12)}
-
-body.hov-warp .co-band[data-project="goodrx"] .band-frame,
-body.hov-lens .co-band[data-project="goodrx"] .band-frame,
-body.hov-melt .co-band[data-project="goodrx"] .band-frame{position:relative;overflow:hidden}
-body.hov-warp .co-band[data-project="goodrx"] .band-frame .work-tile img,
-body.hov-lens .co-band[data-project="goodrx"] .band-frame .work-tile img{transition:filter .35s ease,transform .3s ease}
-
-/* WARP — the photo turns to liquid and ripples (SVG feDisplacementMap, self-animating) on hover. The
-   pixels of the image are what move. */
-body.hov-warp .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
-body.hov-warp .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{filter:url(#fx-ripple-f)}
-
-/* LENS — the photo magnifies at the cursor point (real zoom; the origin follows the cursor). */
-body.hov-lens .co-band[data-project="goodrx"] .band-frame .work-tile img{transform-origin:var(--mx,50%) var(--my,50%)}
-body.hov-lens .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
-body.hov-lens .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{transform:scale(1.18)}
-
-/* MELT — the photo erodes at the cursor into the GoodRx world beneath (a soft hole in the image itself
-   reveals the world; the image gives way where you point). The ::before is the world under the photo. */
-body.hov-melt .co-band[data-project="goodrx"] .band-frame::before{content:"";position:absolute;inset:0;z-index:1;
-  background:#fcef72 url("images/logos/goodrx.svg") center/140px no-repeat;background-blend-mode:multiply}
-body.hov-melt .co-band[data-project="goodrx"] .band-frame .work-tile{position:relative;z-index:2}
-body.hov-melt .co-band[data-project="goodrx"] .band-frame:hover .work-tile img,
-body.hov-melt .co-band[data-project="goodrx"] .band-frame:focus-within .work-tile img{
-  -webkit-mask:radial-gradient(circle 104px at var(--mx,50%) var(--my,50%),transparent 32%,#000 74%) no-repeat;
-  mask:radial-gradient(circle 104px at var(--mx,50%) var(--my,50%),transparent 32%,#000 74%) no-repeat}
-
-/* RIPPLE — cursor-local WebGL ripple: rings radiate through the PHOTO itself from the cursor (the
-   ripple IIFE overlays a WebGL canvas on the frame). Here we just prep the frame + drop the stir glow. */
-body.hov-ripple .co-band[data-project="goodrx"] .band-frame{position:relative;overflow:hidden}
-body.hov-ripple .co-band[data-project="goodrx"]:hover .band-frame,
-body.hov-ripple .co-band[data-project="goodrx"]:focus-within .band-frame{transform:none;box-shadow:0 18px 44px rgba(0,0,0,.16)}
-
-/* TILT — the hero tips in 3D toward the cursor (the whole surface reacts, image included). */
-body.hov-tilt .co-band[data-project="goodrx"]{perspective:900px}
-body.hov-tilt .co-band[data-project="goodrx"] .band-frame{transform-style:preserve-3d;
-  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease}
-body.hov-tilt .co-band[data-project="goodrx"]:hover .band-frame,
-body.hov-tilt .co-band[data-project="goodrx"]:focus-within .band-frame{
-  transform:rotateX(var(--ty,0deg)) rotateY(var(--tx,0deg)) scale(1.02);
-  box-shadow:0 40px 80px -30px rgba(0,0,0,.45)}
-@media (prefers-reduced-motion:reduce){
-  body.hov-warp .co-band[data-project="goodrx"] .band-frame .work-tile img{filter:none}
-}
-
 /* ==== CURSOR (GoodRx) — LOCKED (Chris, 2026-09-18): the regular system arrow stays (links stay
    clickable); an "Enter world →" label trails to its right. #gx-cursor is a fixed label JS moves. */
 #gx-cursor{position:fixed;left:0;top:0;z-index:1260;pointer-events:none;opacity:0;
@@ -2080,153 +1887,12 @@ body.hov-tilt .co-band[data-project="goodrx"]:focus-within .band-frame{
   box-shadow:0 6px 18px rgba(0,0,0,.28)}
 #gx-cursor::after{content:"Enter world \2192"}
 /* the old static corner cue is now redundant with the trailing label */
-.co-band[data-project="goodrx"] .world-cue{display:none}
 /* The "Enter world →" label is a desktop cursor affordance — on touch there's no mouseleave, so it
    lingers after tapping in. Kill it on touch devices, and hide it whenever a world is open/opening. */
 @media (hover:none){ #gx-cursor{display:none!important} }
 body.work-focus-open #gx-cursor,body.world-entering #gx-cursor{opacity:0!important}
 @media (prefers-reduced-motion:reduce){ #gx-cursor{transition:none} }
 
-/* ==== REALITY-FX (GoodRx) — page-level effects that break OUTSIDE the card. #rfx is a fixed
-   viewport layer anchored to the card centre (--cx/--cy from JS); effects spread across the whole
-   page, not the rectangle. Stacked on top of the aggressive Portal 3D. Flip via the bar. ==== */
-#rfx{position:fixed;inset:0;pointer-events:none;z-index:1100;display:none;overflow:hidden}
-body[class*="fx-"] #rfx{display:block}
-
-/* light bleed — world colour washes across the page from the card */
-#rfx .rfx-bleed{position:absolute;inset:0;opacity:0;transition:opacity .5s ease;
-  background:radial-gradient(circle at var(--cx,50%) var(--cy,50%), rgba(252,239,114,.55), rgba(252,239,114,.16) 170px, transparent 360px)}
-body.rfx-on.fx-bleed #rfx .rfx-bleed,
-body.rfx-on.fx-cracks #rfx .rfx-bleed{opacity:1}
-
-/* cracks — fractures spread from the card across the page, world glowing through the seams */
-#rfx .rfx-cracks{position:absolute;left:var(--cx,50%);top:var(--cy,50%);width:860px;height:860px;
-  transform:translate(-50%,-50%);overflow:visible;opacity:0;transition:opacity .25s ease,left .12s linear,top .12s linear;
-  filter:drop-shadow(0 0 2px rgba(0,0,0,.9)) drop-shadow(0 0 10px rgba(252,239,114,.6))}
-#rfx .rfx-cracks path{fill:none;stroke:rgba(255,240,150,.98);stroke-width:3;stroke-linecap:round;
-  vector-effect:non-scaling-stroke;
-  stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .6s cubic-bezier(.2,.7,.2,1)}
-body.rfx-on.fx-cracks #rfx .rfx-cracks{opacity:1}
-body.rfx-on.fx-cracks #rfx .rfx-cracks path{stroke-dashoffset:0}
-#rfx .rfx-cracks path:nth-child(2){transition-delay:.02s}
-#rfx .rfx-cracks path:nth-child(3){transition-delay:.04s}
-#rfx .rfx-cracks path:nth-child(4){transition-delay:.06s}
-#rfx .rfx-cracks path:nth-child(5){transition-delay:.08s}
-#rfx .rfx-cracks path:nth-child(6){transition-delay:.10s}
-#rfx .rfx-cracks path:nth-child(7){transition-delay:.12s}
-#rfx .rfx-cracks path:nth-child(8){transition-delay:.14s}
-
-/* shards — fragments of the world fly out into the page */
-#rfx .rfx-shards i{position:absolute;left:var(--cx,50%);top:var(--cy,50%);width:34px;height:34px;
-  background:#fcef72;clip-path:polygon(0 0,100% 22%,72% 100%,10% 68%);opacity:0;
-  transform:translate(-50%,-50%) scale(.2) rotate(0deg);
-  transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .6s ease}
-body.rfx-on.fx-shards #rfx .rfx-shards i{opacity:1;
-  transform:translate(calc(-50% + var(--tx) * .62),calc(-50% + var(--ty) * .62)) scale(1) rotate(var(--rot))}
-
-@media (prefers-reduced-motion:reduce){
-  #rfx .rfx-cracks path,#rfx .rfx-shards i,#rfx .rfx-bleed{transition:none}
-}
-
-/* ==== EDGE-SHATTER (FFX-style field→battle) — the panel's EDGES break apart: shards fly off the
-   perimeter in 3D + a bloom builds, so it reads as the screen transitioning into a world, not 2D
-   decoration. Frame-anchored so the EDGES react; rides the Portal tilt (pairs with hb-portal). ==== */
-.fx-edge{position:absolute;inset:0;pointer-events:none;z-index:3;display:none;transform-style:preserve-3d}
-body.fx-shatter .co-band[data-project="goodrx"] .fx-edge{display:block}
-.fx-edge::before{content:"";position:absolute;inset:-8%;pointer-events:none;border-radius:14px;
-  background:radial-gradient(circle at 50% 50%, rgba(255,242,170,.6), transparent 62%);
-  opacity:0;transition:opacity .5s ease;mix-blend-mode:screen}
-.fx-edge i{position:absolute;width:var(--sz,20px);height:var(--sz,20px);
-  background:#fcef72;clip-path:polygon(0 0,100% 22%,72% 100%,14% 72%);box-shadow:0 6px 16px rgba(0,0,0,.35);
-  transform:translate(-50%,-50%) scale(.12) rotate(0deg);opacity:0;
-  transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .55s ease}
-body.fx-shatter .co-band[data-project="goodrx"]:hover .fx-edge::before,
-body.fx-shatter .co-band[data-project="goodrx"]:focus-within .fx-edge::before{opacity:1}
-body.fx-shatter .co-band[data-project="goodrx"]:hover .fx-edge i,
-body.fx-shatter .co-band[data-project="goodrx"]:focus-within .fx-edge i{opacity:1;
-  transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) translateZ(var(--dz,40px)) scale(1) rotate(var(--r))}
-@media (prefers-reduced-motion:reduce){ .fx-edge i,.fx-edge::before{transition:none} }
-
-/* ==== MORE EDGE-DRIVEN "materials" — each mocks a different way the panel's edge breaks/transforms
-   to transition into the world. Rough mocks to flip + feel; not polished. ==== */
-/* the perimeter-piece layer is reused by shatter / dissolve / warp */
-body.fx-warp .co-band[data-project="goodrx"] .fx-edge{display:block}
-
-/* DISSOLVE — edges disintegrate into points-of-light (ties to the dot-viz/particle aesthetic) */
-@keyframes fx-diss{0%{opacity:0;transform:translate(-50%,-50%) scale(.25)}22%{opacity:1}
-  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) translateZ(var(--dz,40px)) scale(.4)}}
-body.fx-dissolve .fx-edge i{clip-path:circle(50%);background:radial-gradient(circle,#fff7cf,#fcef72 72%);
-  box-shadow:0 0 10px 2px rgba(252,239,114,.8);width:calc(var(--sz)*.6);height:calc(var(--sz)*.6)}
-body.fx-dissolve .co-band[data-project="goodrx"]:hover .fx-edge i,
-body.fx-dissolve .co-band[data-project="goodrx"]:focus-within .fx-edge i{animation:fx-diss 1.15s ease-out infinite}
-body.fx-dissolve .fx-edge i:nth-child(3n){animation-delay:.35s}
-body.fx-dissolve .fx-edge i:nth-child(3n+1){animation-delay:.7s}
-
-/* WARP — edges streak toward the vanishing point as you're pulled in (FFX zoom / hyperspace) */
-body.fx-warp .fx-edge i{clip-path:none;border-radius:2px;height:3px;width:calc(var(--sz)*.9);
-  background:linear-gradient(90deg,rgba(255,240,150,0),rgba(255,240,150,.95));box-shadow:0 0 8px rgba(252,239,114,.6)}
-body.fx-warp .co-band[data-project="goodrx"]:hover .fx-edge i,
-body.fx-warp .co-band[data-project="goodrx"]:focus-within .fx-edge i{opacity:.9;
-  transform:translate(calc(-50% + var(--dx)*2.4),calc(-50% + var(--dy)*2.4)) rotate(var(--r)) scaleX(3.4)}
-
-/* FOLD — the panel folds away on an edge hinge (Inception / Doctor Strange), revealing behind */
-body.fx-fold .co-band[data-project="goodrx"] .band-frame{overflow:visible;transform-origin:left center;
-  transition:transform .6s cubic-bezier(.22,1,.36,1),box-shadow .6s ease}
-body.fx-fold .co-band[data-project="goodrx"]:hover .band-frame,
-body.fx-fold .co-band[data-project="goodrx"]:focus-within .band-frame{
-  transform:perspective(1000px) rotateY(-52deg);box-shadow:40px 40px 90px rgba(0,0,0,.5)}
-
-/* PEEL — the panel peels up from a corner like a page, revealing the layer beneath */
-body.fx-peel .co-band[data-project="goodrx"] .band-frame{overflow:visible;transform-origin:top left;
-  transition:transform .6s cubic-bezier(.22,1,.36,1),box-shadow .6s ease}
-body.fx-peel .co-band[data-project="goodrx"]:hover .band-frame,
-body.fx-peel .co-band[data-project="goodrx"]:focus-within .band-frame{
-  transform:perspective(1200px) rotate3d(-1,1,0,44deg);box-shadow:0 70px 100px rgba(0,0,0,.5)}
-
-/* BURN — light eats the panel from its edges inward (film burn / bloom wipe) */
-body.fx-burn .co-band[data-project="goodrx"] .band-frame{position:relative}
-body.fx-burn .co-band[data-project="goodrx"] .band-frame::after{content:"";position:absolute;inset:0;pointer-events:none;
-  z-index:4;box-shadow:inset 0 0 0 0 rgba(255,246,196,0);transition:box-shadow .6s ease}
-body.fx-burn .co-band[data-project="goodrx"]:hover .band-frame::after,
-body.fx-burn .co-band[data-project="goodrx"]:focus-within .band-frame::after{
-  box-shadow:inset 0 0 70px 34px rgba(255,246,196,.95)}
-
-/* RIPPLE — the surface distorts like water/heat (SVG displacement). Perf-heavier; mock only. */
-body.fx-ripple .co-band[data-project="goodrx"]:hover .band-frame .work-tile img,
-body.fx-ripple .co-band[data-project="goodrx"]:focus-within .band-frame .work-tile img{filter:url(#fx-ripple-f)}
-
-#hb-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;display:flex;
-  gap:4px;padding:6px;background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);
-  border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:var(--sans);backdrop-filter:blur(6px)}
-#hb-bar button{appearance:none;border:0;background:transparent;color:#ddd;font-size:12px;font-weight:600;
-  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
-#hb-bar button:hover{background:rgba(255,255,255,.08)}
-#hb-bar button.on{background:var(--accent);color:#fff}
-body.world-goodrx-open #hb-bar{display:none}
-#hx-bar{position:fixed;left:50%;bottom:58px;transform:translateX(-50%);z-index:9999;display:flex;align-items:center;
-  gap:3px;padding:5px 8px;background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);
-  border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:var(--sans);backdrop-filter:blur(6px)}
-#hx-bar span{color:#8a8f98;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:0 5px 0 3px}
-#hx-bar span.sep{border-left:1px solid rgba(255,255,255,.14);margin-left:4px;padding-left:9px}
-#hx-bar button{appearance:none;border:0;background:transparent;color:#ddd;font-size:12px;font-weight:600;
-  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
-#hx-bar button:hover{background:rgba(255,255,255,.08)}
-#hx-bar button.on{background:var(--accent);color:#fff}
-body.world-goodrx-open #hx-bar{display:none}
-#tune{position:fixed;top:12px;right:12px;z-index:10000;width:212px;max-height:88vh;overflow:auto;
-  background:rgba(20,20,22,.94);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px 12px;
-  box-shadow:0 8px 30px rgba(0,0,0,.45);font-family:var(--sans);color:#ddd;backdrop-filter:blur(6px)}
-#tune h4{margin:8px 0 3px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8a8f98;font-weight:700}
-#tune h4:first-child{margin-top:0}
-#tune .row{display:flex;align-items:center;gap:6px;margin:5px 0}
-#tune label{flex:0 0 58px;font-size:11px;color:#cfd3d8}
-#tune input[type=range]{flex:1;height:16px;accent-color:var(--accent,#2a9d4f);min-width:0}
-#tune .val{flex:0 0 30px;font-size:10px;text-align:right;color:#8a8f98;font-variant-numeric:tabular-nums}
-#tune .sw{width:100%;height:9px;border-radius:4px;margin-top:4px;border:1px solid rgba(255,255,255,.12)}
-#tune button{margin-top:8px;width:100%;appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;
-  color:#ddd;font:600 11px/1 var(--sans);padding:6px;border-radius:6px;cursor:pointer}
-#tune button:hover{background:rgba(255,255,255,.08)}
-body.work-focus-open[data-world] #tune{display:none}
 
 /* ==== PER-WORLD SYSTEM — ONE generic treatment, re-skinned per world via TOKENS.
    BASE: blueprint defaults on body[data-world] — the solid fallback for any new/unskinned world
@@ -2342,7 +2008,10 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
 <!-- 1. Sticky header -->
 <header class="site-head">
   <div class="wrap">
-    <a class="logo" href="#top">Chris Lam</a>
+    <div class="head-left">
+      <a class="logo" href="#top">Chris Lam</a>
+      <a class="status-pill" href="#contact" aria-label="Open to new roles — get in touch"><span class="sp-dot" aria-hidden="true"></span>Open to new roles</a>
+    </div>
     <nav aria-label="Primary">
       <a href="#top" class="hide-sm">About</a>
       <a href="#work">Work</a>
@@ -2645,26 +2314,6 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       <img src="images/work/goodrx-hero.png" width="2360" height="680" alt="GoodRx Research drug-price data-viz and the Webby-winning Iodine product" loading="eager" decoding="async">
       <span class="work-tile-label"><b>GoodRx (Iodine)</b><span>Research data-viz to award-winning product</span></span>
     </button>
-      <span class="world-cue">Enter world →</span>
-      <div class="world-veil" aria-hidden="true"><span class="vh vh-a"></span><span class="vh vh-b"></span></div>
-      <div class="fx-edge" aria-hidden="true">
-        <i style="left:10%;top:0;--dx:-24px;--dy:-78px;--r:-32deg;--sz:24px;--dz:70px"></i>
-        <i style="left:28%;top:0;--dx:-10px;--dy:-96px;--r:18deg;--sz:18px;--dz:50px"></i>
-        <i style="left:46%;top:0;--dx:2px;--dy:-104px;--r:-22deg;--sz:26px;--dz:92px"></i>
-        <i style="left:64%;top:0;--dx:12px;--dy:-90px;--r:26deg;--sz:16px;--dz:44px"></i>
-        <i style="left:84%;top:0;--dx:28px;--dy:-72px;--r:-16deg;--sz:22px;--dz:64px"></i>
-        <i style="left:14%;top:100%;--dx:-28px;--dy:78px;--r:22deg;--sz:20px;--dz:56px"></i>
-        <i style="left:34%;top:100%;--dx:-8px;--dy:98px;--r:-20deg;--sz:24px;--dz:80px"></i>
-        <i style="left:54%;top:100%;--dx:6px;--dy:106px;--r:30deg;--sz:16px;--dz:48px"></i>
-        <i style="left:76%;top:100%;--dx:20px;--dy:88px;--r:-24deg;--sz:22px;--dz:66px"></i>
-        <i style="left:92%;top:100%;--dx:30px;--dy:66px;--r:16deg;--sz:18px;--dz:52px"></i>
-        <i style="left:0;top:32%;--dx:-88px;--dy:-16px;--r:-28deg;--sz:22px;--dz:60px"></i>
-        <i style="left:0;top:66%;--dx:-100px;--dy:14px;--r:24deg;--sz:18px;--dz:50px"></i>
-        <i style="left:100%;top:30%;--dx:90px;--dy:-18px;--r:26deg;--sz:20px;--dz:58px"></i>
-        <i style="left:100%;top:68%;--dx:104px;--dy:16px;--r:-22deg;--sz:24px;--dz:74px"></i>
-        <i style="left:0;top:0;--dx:-66px;--dy:-66px;--r:-30deg;--sz:20px;--dz:60px"></i>
-        <i style="left:100%;top:100%;--dx:70px;--dy:70px;--r:30deg;--sz:22px;--dz:70px"></i>
-      </div>
       </div>
     </section>
     <section class="co-band reveal" data-project="clover" data-n="3" data-hero style="--band:#527369">
@@ -7450,53 +7099,12 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
 
 })();
 </script>
-<!-- SPIKE-ONLY hover-breakout flipper (GoodRx band). Remove before porting. -->
-<div id="hb-bar" role="group" aria-label="Reality-break treatment">
-  <button data-mode="fx-dissolve" class="on">Dissolve</button>
-  <button data-mode="fx-fold">Fold</button>
-  <button data-mode="hb-portal fx-warp">Warp</button>
-  <button data-mode="fx-peel">Peel</button>
-  <button data-mode="hb-portal fx-ripple">Ripple</button>
-  <button data-mode="hb-portal fx-burn">Burn</button>
-  <button data-mode="hb-portal fx-shatter">Shatter</button>
-  <button data-mode="hb-portal">Portal</button>
-</div>
-<!-- SPIKE-ONLY hover/enter tuning (GoodRx band). Two orthogonal questions. Remove before porting. -->
+<!-- GoodRx hover: custom cursor element (the WebGL hover material is the IIFE below). -->
 <div id="gx-cursor" aria-hidden="true"></div>
-<div id="hx-bar" role="group" aria-label="Material: one language across hover, enter and exit">
-  <span>Transition</span>
-  <button data-g="mat" data-v="mat-dissolve" class="on">Dissolve</button>
-  <button data-g="mat" data-v="mat-ripple">Ripple</button>
-  <span class="sep">Look</span>
-  <button data-g="skin" data-v="skin-digital" class="on">Digital</button>
-  <button data-g="skin" data-v="skin-blueprint">Blueprint</button>
-</div>
 <script>
-(function(){
-  var bar=document.getElementById('hx-bar'); if(!bar) return;
-  var groups={mat:['mat-ripple','mat-dissolve'],skin:['skin-blueprint','skin-digital']};
-  function pick(btn){ var g=btn.getAttribute('data-g'), v=btn.getAttribute('data-v');
-    groups[g].forEach(function(c){document.body.classList.remove(c);});
-    document.body.classList.add(v);
-    [].forEach.call(bar.querySelectorAll('button[data-g="'+g+'"]'),function(b){b.classList.toggle('on',b===btn);});
-  }
-  document.body.classList.add('mat-dissolve'); document.body.classList.add('skin-digital'); // transition + look
-  bar.addEventListener('click',function(e){var b=e.target.closest('button'); if(b) pick(b);});
-})();
-</script>
-<script>
-(function(){
-  var bar=document.getElementById('hb-bar');if(!bar)return;
-  var all=['hb-portal','wo-doors','wo-shutter','wo-rift','wo-dilate','wo-breakout','fx-cracks','fx-bleed','fx-shards','fx-shatter','fx-dissolve','fx-warp','fx-fold','fx-peel','fx-burn','fx-ripple'];
-  var btns=[].slice.call(bar.querySelectorAll('button'));
-  function set(v){
-    all.forEach(function(c){document.body.classList.remove(c);});
-    v.split(' ').forEach(function(c){ if(c) document.body.classList.add(c); });
-    btns.forEach(function(x){x.classList.toggle('on',x.getAttribute('data-mode')===v);});
-  }
-  set('fx-dissolve');
-  bar.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; set(b.getAttribute('data-mode')); });
-})();
+// Locked GoodRx hover material (the flipper UIs that used to set these were removed in the panel purge).
+// The WebGL hover IIFE reads body.fx-dissolve (active gate) + body.skin-digital (look). Keep these applied.
+document.body.classList.add('fx-dissolve','skin-digital');
 </script>
 <script>
 (function(){
@@ -7647,58 +7255,10 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   window.addEventListener('resize', function(){ if(running) size(); });
 })();
 </script>
-<!-- SPIKE-ONLY live tuning panel (GoodRx dissolve/digital). Writes window.__TUNE, read by the shader +
-     transition each frame. Remove before porting. -->
-<script>
-(function(){
-  var CFG=[
-    {sec:'Hover'},
-    {k:'hue',l:'Hue',min:0,max:360,step:1,v:145},
-    {k:'glow',l:'Glow',min:0,max:2,step:0.05,v:0.95},
-    {k:'grain',l:'Grain',min:0,max:0.4,step:0.01,v:0.16},
-    {k:'flicker',l:'Flicker',min:0,max:1.2,step:0.05,v:0.6},
-    {k:'density',l:'Density',min:24,max:90,step:1,v:48},
-    {k:'reach',l:'Falloff',min:2,max:9,step:0.1,v:4.5},
-    {k:'intensity',l:'Intensity',min:0.3,max:1,step:0.02,v:0.78},
-    {sec:'Transition'},
-    {k:'count',l:'Cells',min:40,max:260,step:5,v:160},
-    {k:'size',l:'Cell size',min:1,max:5,step:0.2,v:2.6},
-    {k:'greenFrac',l:'% color',min:0,max:1,step:0.05,v:0.32},
-    {k:'tdur',l:'Speed',min:0.5,max:1.5,step:0.05,v:1}
-  ];
-  function hsv(h,s,v){ h/=60; var i=Math.floor(h), f=h-i, pp=v*(1-s), q=v*(1-s*f), tt=v*(1-s*(1-f)), r,g,b;
-    switch(((i%6)+6)%6){case 0:r=v;g=tt;b=pp;break;case 1:r=q;g=v;b=pp;break;case 2:r=pp;g=v;b=tt;break;
-      case 3:r=pp;g=q;b=v;break;case 4:r=tt;g=pp;b=v;break;default:r=v;g=pp;b=q;} return [r,g,b]; }
-  function css(a){ return 'rgb('+Math.round(a[0]*255)+','+Math.round(a[1]*255)+','+Math.round(a[2]*255)+')'; }
-  var T=window.__TUNE={};
-  CFG.forEach(function(c){ if(c.k) T[c.k]=c.v; });
-  function applyColor(){ var h=T.hue; T.col=hsv(h,0.72,0.92); T.digiCss=[css(hsv(h,0.5,0.82)),css(hsv(h,0.68,0.62)),css(hsv(h,0.4,0.95))]; }
-  applyColor();
-  var p=document.createElement('div'); p.id='tune';
-  var sw=document.createElement('div'); sw.className='sw'; sw.style.background=css(T.col);
-  CFG.forEach(function(c){
-    if(c.sec){ var h=document.createElement('h4'); h.textContent=c.sec; p.appendChild(h); return; }
-    var row=document.createElement('div'); row.className='row';
-    var lab=document.createElement('label'); lab.textContent=c.l;
-    var inp=document.createElement('input'); inp.type='range'; inp.min=c.min; inp.max=c.max; inp.step=c.step; inp.value=c.v;
-    var val=document.createElement('span'); val.className='val'; val.textContent=c.step<1?(+c.v).toFixed(2):c.v;
-    inp.addEventListener('input',function(){ var n=parseFloat(inp.value); T[c.k]=n; val.textContent=c.step<1?n.toFixed(2):n;
-      if(c.k==='hue'){ applyColor(); sw.style.background=css(T.col); } });
-    row.appendChild(lab); row.appendChild(inp); row.appendChild(val); p.appendChild(row);
-  });
-  p.appendChild(sw);
-  var btn=document.createElement('button'); btn.textContent='Copy settings';
-  btn.addEventListener('click',function(){ var out=JSON.stringify(T);
-    try{ navigator.clipboard.writeText(out); }catch(e){} console.log('TUNE '+out);
-    btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
-  p.appendChild(btn);
-  document.body.appendChild(p);
-})();
-</script>
-<!-- SPIKE(#2): SHARED cheap dissolve edge — 2D-canvas grainy brand-green cells that scatter off the
-     growing __openWorldClip reveal circle, for EVERY world. Cheap on the Air + verifiable headless;
-     GoodRx WebGL stays a per-world override. window.__worldDissolve.{start,stop} is called by
-     __openWorldClip. window.__DTUNE tunes it (see #dtune bar). Strip with #de-bar/#dtune after baking. -->
+<!-- SHARED dissolve edge — 2D-canvas retro pixel-block particles that blow off the growing __openWorldClip
+     reveal circle, for EVERY world (world's own palette, outward leading-edge, pixel-grid snap). Cheap on the
+     Air + verifiable headless; GoodRx WebGL stays a per-world hover override. window.__worldDissolve.{start,stop}
+     is called by __openWorldClip. Tuned values are BAKED in window.__DTUNE below (the live tuner was removed). -->
 <script>
 (function(){
   var layer=document.getElementById('world-layer');
@@ -7706,12 +7266,13 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   var cv=document.createElement('canvas'); cv.id='world-dissolve'; document.body.appendChild(cv);
   var ctx=cv.getContext('2d');
   if(!ctx){ window.__worldDissolve={start:function(){},stop:function(){}}; return; } // no 2d ctx → no-op, never blocks navigation
+  document.body.classList.add('dissolve-edge'); // effect on by default (was set by the now-removed spike panel)
   var dpr=Math.min(window.devicePixelRatio||1,2);
   var W=0,H=0, raf=0, running=false, cx=0, cy=0, fullR=1, headClip=0;
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  // Defaults — Chris tunes live via #dtune (window.__DTUNE), then we bake the chosen JSON.
-  // Sand / Dr-Strange-portal defaults: very high density, tiny cells, tight scatter, palette from the world.
+  // BAKED tuning (Chris-approved 2026-09-19): high density, small blocks, tight outward scatter, pixel-grid snap,
+  // palette borrowed from the world (accentFrac low = mostly world-bg blocks). Kept on window.__DTUNE for reference.
   var D=window.__DTUNE={ count:2150, size:5, scatter:0.6, grain:0.5, accentFrac:0.04, glow:0.25, band:0.21, snap:10 };
 
   // Fixed particle field: each grain activates as the wavefront reaches its trigger radius, then detaches
@@ -7810,65 +7371,63 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   window.addEventListener('resize',function(){ if(running) resize(); });
 })();
 </script>
-<!-- SPIKE(#2): dissolve-edge toggle (#de-bar) + live tuner (#dtune). Strip with the module after baking. -->
+<!-- ═══ Reusable dev tuning panel — the ONE standard for tuning effects (replaces bespoke per-effect panels).
+     window.devPanel(cfg) renders ONLY when the URL has ?dev, so nothing dev-only ever ships to users; no
+     more "strip before porting" debt. cfg = { title, target, sliders:[{k,label,min,max,step}],
+     toggles:[{options:[{label,value,on}], onPick}], onChange, pos:'left'|'bottom', copy:false }. ═══ -->
 <script>
 (function(){
-  document.body.classList.add('dissolve-edge'); // default ON so Chris sees it; "Clean clip" = the A/B
-  var bar=document.createElement('div'); bar.id='de-bar';
-  var lab0=document.createElement('span'); lab0.textContent='Reveal'; bar.appendChild(lab0);
-  [['Dissolve edge',true],['Clean clip',false]].forEach(function(o){
-    var b=document.createElement('button'); b.textContent=o[0];
-    if(o[1]) b.classList.add('on');
-    b.addEventListener('click',function(){
-      document.body.classList.toggle('dissolve-edge',o[1]);
-      if(!o[1] && window.__worldDissolve) window.__worldDissolve.stop(); // "Clean clip" mid-reveal must kill the loop, not just hide it
-      bar.querySelectorAll('button').forEach(function(x){x.classList.remove('on');}); b.classList.add('on');
+  var DEV=/[?&]dev\b/.test(location.search);
+  var styled=false;
+  function injectCSS(){ if(styled) return; styled=true;
+    var s=document.createElement('style');
+    s.textContent='.devpanel{position:fixed;top:12px;right:12px;z-index:100000;width:214px;max-height:88vh;'
+     +'overflow:auto;background:rgba(20,20,22,.94);border:1px solid rgba(255,255,255,.14);border-radius:10px;'
+     +'padding:10px 12px;box-shadow:0 8px 30px rgba(0,0,0,.45);font-family:var(--sans,sans-serif);color:#ddd;backdrop-filter:blur(6px)}'
+     +'.devpanel.left{right:auto;left:12px}.devpanel.bottom{top:auto;bottom:12px}'
+     +'.devpanel h4{margin:0 0 6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8a8f98;font-weight:700}'
+     +'.devpanel .row{display:flex;align-items:center;gap:6px;margin:5px 0}'
+     +'.devpanel label{flex:0 0 62px;font-size:11px;color:#cfd3d8}'
+     +'.devpanel input[type=range]{flex:1;height:16px;accent-color:var(--accent,#2a9d4f);min-width:0}'
+     +'.devpanel .val{flex:0 0 32px;font-size:10px;text-align:right;color:#8a8f98;font-variant-numeric:tabular-nums}'
+     +'.devpanel .tg{display:flex;gap:2px;margin:6px 0}'
+     +'.devpanel .tg button{flex:1;appearance:none;border:0;background:transparent;color:#ddd;font:600 11px/1 var(--sans);padding:5px;border-radius:6px;cursor:pointer}'
+     +'.devpanel .tg button:hover{background:rgba(255,255,255,.08)}.devpanel .tg button.on{background:var(--accent,#2a9d4f);color:#fff}'
+     +'.devpanel .copy{margin-top:8px;width:100%;appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;color:#ddd;font:600 11px/1 var(--sans);padding:6px;border-radius:6px;cursor:pointer}';
+    document.head.appendChild(s);
+  }
+  window.devPanel=function(cfg){
+    if(!DEV) return null;                 // no-op unless ?dev — never ships to users
+    injectCSS();
+    cfg=cfg||{}; var t=cfg.target||{};
+    var p=document.createElement('div'); p.className='devpanel'+(cfg.pos?' '+cfg.pos:'');
+    if(cfg.title){ var h=document.createElement('h4'); h.textContent=cfg.title; p.appendChild(h); }
+    (cfg.sliders||[]).forEach(function(c){
+      var row=document.createElement('div'); row.className='row';
+      var l=document.createElement('label'); l.textContent=c.label||c.k;
+      var inp=document.createElement('input'); inp.type='range'; inp.min=c.min; inp.max=c.max; inp.step=c.step; inp.value=(t[c.k]!=null?t[c.k]:c.min);
+      var fmt=function(n){ return c.step<1?(+n).toFixed(2):n; };
+      var v=document.createElement('span'); v.className='val'; v.textContent=fmt(inp.value);
+      inp.addEventListener('input',function(){ var n=parseFloat(inp.value); t[c.k]=n; v.textContent=fmt(n); if(cfg.onChange) cfg.onChange(t,c.k,n); });
+      row.appendChild(l); row.appendChild(inp); row.appendChild(v); p.appendChild(row);
     });
-    bar.appendChild(b);
-  });
-  document.body.appendChild(bar);
-
-  var T=window.__DTUNE||{}; // the module made the defaults
-  var CFG=[
-    {k:'count',l:'Density',min:100,max:4000,step:50},
-    {k:'size',l:'Cell size',min:1,max:24,step:0.2},
-    {k:'scatter',l:'Scatter',min:0.1,max:2,step:0.05},
-    {k:'grain',l:'Grain',min:0,max:1,step:0.05},
-    {k:'accentFrac',l:'Accent %',min:0,max:1,step:0.02},
-    {k:'glow',l:'Glow',min:0,max:1.5,step:0.05},
-    {k:'band',l:'Edge band',min:0.05,max:0.4,step:0.01},
-    {k:'snap',l:'Pixel grid',min:0,max:28,step:1}
-  ];
-  var p=document.createElement('div'); p.id='dtune';
-  var h=document.createElement('h4'); h.textContent='Dissolve edge'; p.appendChild(h);
-  CFG.forEach(function(c){
-    var row=document.createElement('div'); row.className='row';
-    var l=document.createElement('label'); l.textContent=c.l;
-    var inp=document.createElement('input'); inp.type='range'; inp.min=c.min; inp.max=c.max; inp.step=c.step; inp.value=T[c.k];
-    var val=document.createElement('span'); val.className='val'; val.textContent=(c.step<1?(+T[c.k]).toFixed(2):T[c.k]);
-    inp.addEventListener('input',function(){ var v=parseFloat(inp.value); T[c.k]=v; val.textContent=c.step<1?v.toFixed(2):v; });
-    row.appendChild(l); row.appendChild(inp); row.appendChild(val); p.appendChild(row);
-  });
-  // Timing (slow-mo for inspection). Sets --vt-in-dur/--vt-out-dur on :root, read fresh by runReveal each
-  // transition; the dissolve canvas follows --reveal-r so it slows proportionally. Exit = 0.8x enter.
-  var rootS=document.documentElement.style;
-  rootS.setProperty('--vt-in-dur','0.5'); rootS.setProperty('--vt-out-dur','0.4');
-  var th=document.createElement('h4'); th.textContent='Timing'; p.appendChild(th);
-  (function(){
-    var row=document.createElement('div'); row.className='row';
-    var l=document.createElement('label'); l.textContent='Duration s';
-    var inp=document.createElement('input'); inp.type='range'; inp.min=0.3; inp.max=8; inp.step=0.1; inp.value=0.5;
-    var val=document.createElement('span'); val.className='val'; val.textContent='0.5';
-    inp.addEventListener('input',function(){ var v=parseFloat(inp.value); val.textContent=v.toFixed(1);
-      rootS.setProperty('--vt-in-dur', String(v)); rootS.setProperty('--vt-out-dur', String((v*0.8).toFixed(2))); });
-    row.appendChild(l); row.appendChild(inp); row.appendChild(val); p.appendChild(row);
-  })();
-  var btn=document.createElement('button'); btn.textContent='Copy settings';
-  btn.addEventListener('click',function(){ var out=JSON.stringify(window.__DTUNE);
-    try{ navigator.clipboard.writeText(out); }catch(e){} console.log('DTUNE '+out);
-    btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
-  p.appendChild(btn);
-  document.body.appendChild(p);
+    (cfg.toggles||[]).forEach(function(g){
+      var tg=document.createElement('div'); tg.className='tg';
+      (g.options||[]).forEach(function(o){
+        var b=document.createElement('button'); b.textContent=o.label; if(o.on) b.classList.add('on');
+        b.addEventListener('click',function(){ tg.querySelectorAll('button').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); if(g.onPick) g.onPick(o.value); });
+        tg.appendChild(b);
+      });
+      p.appendChild(tg);
+    });
+    if(cfg.copy!==false){
+      var btn=document.createElement('button'); btn.className='copy'; btn.textContent='Copy settings';
+      btn.addEventListener('click',function(){ var out=JSON.stringify(t); try{navigator.clipboard.writeText(out);}catch(e){} console.log((cfg.title||'devPanel')+' '+out); btn.textContent='Copied ✓'; setTimeout(function(){btn.textContent='Copy settings';},1200); });
+      p.appendChild(btn);
+    }
+    document.body.appendChild(p);
+    return p;
+  };
 })();
 </script>
 </body></html>
