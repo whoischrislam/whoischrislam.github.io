@@ -7149,6 +7149,24 @@ document.body.classList.add('fx-dissolve','skin-digital');
   var cv, gl, prog, tex, texReady=false, raf=0, running=false, uni={};
   var mx=0.5, my=0.5, amp=0, startT=0;
 
+  // Preview-hint palette: read the DESTINATION world's real --world-* tokens (no duplicated source of truth).
+  // The tokens live on `body[data-world="<slug>"]`, so we set the attribute, read computed values, and revert
+  // synchronously — no rAF between set and revert, so no frame ever paints with the world flood. Cached (once).
+  var PAL=null, palTried=false;
+  function getPalette(){
+    if(palTried) return PAL;
+    palTried=true;
+    var slug=band.getAttribute('data-project'); if(!slug) return null;
+    var b=document.body, prev=b.getAttribute('data-world');
+    b.setAttribute('data-world',slug);
+    var cs=getComputedStyle(b), acc=cs.getPropertyValue('--world-accent').trim(), bg=cs.getPropertyValue('--world-bg').trim();
+    if(prev===null) b.removeAttribute('data-world'); else b.setAttribute('data-world',prev);
+    function hx(h){ h=h.replace('#',''); if(!/^[0-9a-f]{6}$/i.test(h)) return null;
+      return [parseInt(h.substr(0,2),16)/255,parseInt(h.substr(2,2),16)/255,parseInt(h.substr(4,2),16)/255]; }
+    var a=hx(acc), g=hx(bg); if(!a||!g) return null;
+    PAL={acc:a,bg:g}; return PAL;
+  }
+
   function active(){ return document.body.classList.contains('fx-dissolve') && !reduce.matches; } // strong dissolve-into-dots hover serves BOTH materials
   function compile(t,src){ var s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s); return s; }
 
@@ -7169,6 +7187,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     // bright green grid — materialisation). Each cell samples the photo, so it stays his data-viz colour.
     var fs='precision highp float;varying vec2 uv;uniform sampler2D tx;uniform vec2 mouse;uniform float t;uniform float aspect;uniform float amp;uniform float dens;uniform float skin;'
       +'uniform vec3 uCol;uniform float uGlow;uniform float uGrain;uniform float uFlick;uniform float uReach;uniform float uInten;'  // live tuning
+      +'uniform vec3 uBg;uniform float uImgMix;'  // preview-hint: cell ground colour + true-photo blend
       +'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}'
       +'void main(){vec2 d=vec2((uv.x-mouse.x)*aspect,uv.y-mouse.y);float dist=length(d);'
       +'float ring=sin(dist*32.0 - t*6.0);float env=exp(-dist*uReach)*amp;'
@@ -7189,9 +7208,13 @@ document.body.classList.add('fx-dissolve','skin-digital');
       +'}else{'                                              // DIGITAL — GRAINY glowing data-grid, squares kept (all live-tunable)
       +'  float sq=1.0-smoothstep(0.26,0.44,max(abs(fp.x-0.5),abs(fp.y-0.5)));'
       +'  float flick=(1.0-uFlick*0.5)+uFlick*hash(floor(cell)+floor(t*6.0));'  // per-cell flicker, centred ~1
-      +'  dotted=mix(vec3(0.01,0.03,0.02),dc*1.2*flick,sq);'
-      +'  dotted+=uCol*grid*uGlow;'                          // glowing grid in the chosen colour
-      +'  dotted+=uCol*0.32*sq;'                             // cell glow, same colour
+      +'  vec3 cimg=dc*1.2*flick;'                            // cell sampled from the destination hero (true colour = image-sample)
+      +'  float lum=dot(dc,vec3(0.299,0.587,0.114));'         // its luminance
+      +'  vec3 ctint=uCol*(0.35+lum*1.15)*flick;'             // that luminance recoloured toward the hint colour = palette-hint
+      +'  vec3 ccol=mix(ctint,cimg,uImgMix);'                 // uImgMix 0 = pure palette recolour, 1 = true photo (both, blended)
+      +'  dotted=mix(uBg,ccol,sq);'                           // cells over the hint ground
+      +'  dotted+=uCol*grid*uGlow;'                           // glowing grid in the hint colour
+      +'  dotted+=uCol*0.32*sq;'                              // cell glow, same colour
       +'  dotted+=(hash(uv*vec2(760.0,440.0)+t*11.0)-0.5)*uGrain;'  // film grain
       +'}'
       +'float infl=clamp(env*(uInten+0.28*ring),0.0,1.0);'
@@ -7207,6 +7230,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     uni.aspect=gl.getUniformLocation(prog,'aspect'); uni.amp=gl.getUniformLocation(prog,'amp'); uni.tx=gl.getUniformLocation(prog,'tx'); uni.dens=gl.getUniformLocation(prog,'dens'); uni.skin=gl.getUniformLocation(prog,'skin');
     uni.col=gl.getUniformLocation(prog,'uCol'); uni.glow=gl.getUniformLocation(prog,'uGlow'); uni.grain=gl.getUniformLocation(prog,'uGrain');
     uni.flick=gl.getUniformLocation(prog,'uFlick'); uni.reach=gl.getUniformLocation(prog,'uReach'); uni.inten=gl.getUniformLocation(prog,'uInten');
+    uni.bg=gl.getUniformLocation(prog,'uBg'); uni.imgmix=gl.getUniformLocation(prog,'uImgMix');
     tex=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,tex);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
@@ -7232,7 +7256,15 @@ document.body.classList.add('fx-dissolve','skin-digital');
     gl.uniform2f(uni.mouse, mx, my); gl.uniform1f(uni.t,(now-startT)/1000); gl.uniform1f(uni.amp,amp); gl.uniform1i(uni.tx,0);
     gl.uniform1f(uni.skin, document.body.classList.contains('skin-digital')?1.0:0.0);
     var T=window.__TUNE||{};
-    gl.uniform3fv(uni.col, T.col||[0.20,0.86,0.46]);
+    // Preview-hint: hue toggle picks green (baseline, confirmed) vs the destination world's accent; the cell
+    // ground borrows the world bg (darkened by bgTint); imgMix blends cells toward the true photo. All ?dev-tunable.
+    // Chris's baked preview-hint defaults (2026-09-19): World palette on, photo/palette 50/50, field showing through.
+    var GREEN=[0.20,0.86,0.46], P=getPalette();
+    var hint=(T.hue!==undefined?T.hue:1)>0.5 && P;
+    var bt=(T.bgTint!==undefined?T.bgTint:0.76);
+    gl.uniform3fv(uni.col, hint?P.acc:(T.col||GREEN));
+    gl.uniform3fv(uni.bg, hint?[P.bg[0]*bt,P.bg[1]*bt,P.bg[2]*bt]:[0.01,0.03,0.02]);
+    gl.uniform1f(uni.imgmix, T.imgMix!==undefined?T.imgMix:0.5);
     gl.uniform1f(uni.glow, T.glow!==undefined?T.glow:0.95);
     gl.uniform1f(uni.grain, T.grain!==undefined?T.grain:0.16);
     gl.uniform1f(uni.flick, T.flicker!==undefined?T.flicker:0.6);
@@ -7428,6 +7460,25 @@ document.body.classList.add('fx-dissolve','skin-digital');
     document.body.appendChild(p);
     return p;
   };
+})();
+</script>
+<!-- ?dev tuner for the GoodRx hover PREVIEW-HINT — flip Green vs destination World palette, blend in the true
+     photo, tint the ground. No-op without ?dev; the default page keeps the confirmed green hover untouched. -->
+<script>
+(function(){
+  window.__TUNE=window.__TUNE||{}; var T=window.__TUNE;
+  if(T.hue===undefined)T.hue=1; if(T.imgMix===undefined)T.imgMix=0.5; if(T.bgTint===undefined)T.bgTint=0.76;
+  window.devPanel({
+    title:'GoodRx hover preview', target:T, pos:'left',
+    toggles:[{options:[
+      {label:'Green',value:0,on:T.hue<0.5},
+      {label:'World palette',value:1,on:T.hue>=0.5}
+    ],onPick:function(v){T.hue=v;}}],
+    sliders:[
+      {k:'imgMix',label:'Photo',min:0,max:1,step:0.05},
+      {k:'bgTint',label:'Field',min:0,max:1,step:0.02}
+    ]
+  });
 })();
 </script>
 </body></html>
