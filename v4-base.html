@@ -1626,10 +1626,11 @@ body.tb-6 .hl-amp{display:inline-block;color:var(--text);opacity:0;transform:tra
 @keyframes hl-ampin{to{opacity:1;transform:none}}
 
 /* colour story: the signature green marks the story words (toggled by col-* class) */
-/* colour locked to "all": design, code and products carry the green */
+/* colour: tagline is one uniform ink (--text) — no green accents (Chris 2026-09-19).
+   --text is near-white in dark mode / near-black in light, so it reads correctly on both grounds. */
 body.tb-6 .hl-design .lit-word,
 body.tb-6 .hl-codechar,
-body.tb-6 .hl-prod{color:var(--accent)}
+body.tb-6 .hl-prod{color:var(--text)}
 
 /* caret + "ship code." (all options) */
 .hl-caret{display:inline-block;width:0;height:.72em;vertical-align:baseline;position:relative}
@@ -7134,47 +7135,44 @@ document.body.classList.add('fx-dissolve','skin-digital');
   }, true);
 })();
 </script>
-<!-- SPIKE-ONLY: cursor-local WebGL ripple on the GoodRx hero (hov-ripple). Rings radiate through the
-     photo's pixels from the cursor. One hero, lazy-init on first hover, loop only while hovering.
-     Reduced-motion / no-WebGL fall back to the static image. Remove before porting. -->
+<!-- SHARED hover materialisation — the GoodRx digital data-grid is the BASELINE hover for EVERY band hero
+     and every more-work/experiment card. ONE WebGL context, re-parented into whichever surface is hovered
+     (no per-card contexts → no context-ceiling). Texture = the card's own image, or a palette swatch for
+     blueprint (imageless) cards. Palette is read per world slug, so each card previews ITS world (blueprint
+     fallback until per-world skins land). Reduced-motion / no-WebGL fall back to the CSS zoom. The click
+     dissolve stays the separate cheap 2D-canvas effect below. Tuning: window.__TUNE via the ?dev devPanel. -->
 <script>
 (function(){
-  var band=document.querySelector('.co-band[data-project="goodrx"]');
-  if(!band) return;
-  var frame=band.querySelector('.band-frame');
-  var tile=frame && frame.querySelector('.work-tile');
-  var img=tile && tile.querySelector('img');
-  if(!frame || !img) return;
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
-  var cv, gl, prog, tex, texReady=false, raf=0, running=false, uni={};
+  var cv, gl, prog, raf=0, running=false, uni={};
   var mx=0.5, my=0.5, amp=0, startT=0;
+  var cur=null, texMap=Object.create(null);
 
-  // Preview-hint palette: read the DESTINATION world's real --world-* tokens (no duplicated source of truth).
-  // The tokens live on `body[data-world="<slug>"]`, so we set the attribute, read computed values, and revert
-  // synchronously — no rAF between set and revert, so no frame ever paints with the world flood. Cached (once).
-  var PAL=null, palTried=false;
-  function getPalette(){
-    if(palTried) return PAL;
-    palTried=true;
-    var slug=band.getAttribute('data-project'); if(!slug) return null;
+  // Palette: read a world's real --world-* tokens (no duplicated source of truth). Tokens live on
+  // `body[data-world="<slug>"]`, so we set the attribute, read computed values, and revert synchronously —
+  // no rAF between set and revert, so no frame ever paints with the world flood. Cached per slug.
+  var palCache=Object.create(null);
+  function getPalette(slug){
+    if(!slug) return null;
+    if(slug in palCache) return palCache[slug];
     var b=document.body, prev=b.getAttribute('data-world');
     b.setAttribute('data-world',slug);
     var cs=getComputedStyle(b), acc=cs.getPropertyValue('--world-accent').trim(), bg=cs.getPropertyValue('--world-bg').trim();
     if(prev===null) b.removeAttribute('data-world'); else b.setAttribute('data-world',prev);
     function hx(h){ h=h.replace('#',''); if(!/^[0-9a-f]{6}$/i.test(h)) return null;
       return [parseInt(h.substr(0,2),16)/255,parseInt(h.substr(2,2),16)/255,parseInt(h.substr(4,2),16)/255]; }
-    var a=hx(acc), g=hx(bg); if(!a||!g) return null;
-    PAL={acc:a,bg:g}; return PAL;
+    var a=hx(acc), g=hx(bg); palCache[slug]=(a&&g)?{acc:a,bg:g}:null; return palCache[slug];
   }
 
-  function active(){ return document.body.classList.contains('fx-dissolve') && !reduce.matches; } // strong dissolve-into-dots hover serves BOTH materials
+  function active(){ return document.body.classList.contains('fx-dissolve') && !reduce.matches
+    && !document.body.classList.contains('work-focus-open'); }
   function compile(t,src){ var s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s); return s; }
 
   function init(){
     if(cv) return !!gl;
     cv=document.createElement('canvas');
     cv.style.cssText='position:absolute;left:0;top:0;display:none;z-index:2;pointer-events:none';
-    frame.appendChild(cv);
+    document.body.appendChild(cv);   // parked on body; re-parented into the hovered surface on start()
     gl=cv.getContext('webgl',{premultipliedAlpha:false,antialias:true})||cv.getContext('experimental-webgl');
     if(!gl){ return false; }
     var vs='attribute vec2 p;varying vec2 uv;void main(){uv=p*0.5+0.5;gl_Position=vec4(p,0.0,1.0);}';
@@ -7231,35 +7229,51 @@ document.body.classList.add('fx-dissolve','skin-digital');
     uni.col=gl.getUniformLocation(prog,'uCol'); uni.glow=gl.getUniformLocation(prog,'uGlow'); uni.grain=gl.getUniformLocation(prog,'uGrain');
     uni.flick=gl.getUniformLocation(prog,'uFlick'); uni.reach=gl.getUniformLocation(prog,'uReach'); uni.inten=gl.getUniformLocation(prog,'uInten');
     uni.bg=gl.getUniformLocation(prog,'uBg'); uni.imgmix=gl.getUniformLocation(prog,'uImgMix');
-    tex=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,tex);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-    uploadTex();
     return true;
   }
-  function uploadTex(){
-    if(!img.complete || img.naturalWidth===0){ img.addEventListener('load',uploadTex,{once:true}); return; }
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
-    gl.bindTexture(gl.TEXTURE_2D,tex); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,img); texReady=true;
+  // Texture per hovered target, cached: image cards upload their <img>; blueprint cards get a palette swatch
+  // so the same data-grid can materialise over them. Keyed by image src (or blueprint slug).
+  function texKey(t){ return t.img ? (t.img.currentSrc||t.img.src) : ('bp:'+(t.slug||'')); }
+  function makeSwatch(pal){
+    var c=document.createElement('canvas'); c.width=c.height=64; var x=c.getContext('2d');
+    var bg=pal?pal.bg:[0.9,0.9,0.88], ac=pal?pal.acc:[0.4,0.44,0.5], I=function(v){return Math.round(v*255);};
+    x.fillStyle='rgb('+I(bg[0])+','+I(bg[1])+','+I(bg[2])+')'; x.fillRect(0,0,64,64);
+    x.strokeStyle='rgba('+I(ac[0])+','+I(ac[1])+','+I(ac[2])+',0.5)'; x.lineWidth=1;
+    for(var i=8;i<64;i+=8){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,64); x.moveTo(0,i); x.lineTo(64,i); x.stroke(); }
+    return c;
   }
-  function size(){ // match the image's actual rendered box exactly (it is width:100%/height:auto, not the frame)
-    var fr=frame.getBoundingClientRect(), ir=img.getBoundingClientRect();
-    var w=Math.max(1,ir.width), h=Math.max(1,ir.height), dpr=Math.min(window.devicePixelRatio||1,2);
-    cv.style.left=(ir.left-fr.left)+'px'; cv.style.top=(ir.top-fr.top)+'px'; cv.style.width=w+'px'; cv.style.height=h+'px';
+  function upload(rec,el){ gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+    gl.bindTexture(gl.TEXTURE_2D,rec.tex); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,el); rec.ready=true; }
+  function ensureTex(t){
+    var k=texKey(t); if(texMap[k]) return texMap[k];
+    var rec={tex:gl.createTexture(),ready:false}; texMap[k]=rec;
+    gl.bindTexture(gl.TEXTURE_2D,rec.tex);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    var im=t.img;
+    if(im && im.complete && im.naturalWidth>0){ upload(rec,im); }
+    else { upload(rec,makeSwatch(getPalette(t.slug)));           // swatch placeholder until the image decodes
+      if(im) im.addEventListener('load',function(){ upload(rec,im); if(running&&cur&&cur.rec===rec) gl.bindTexture(gl.TEXTURE_2D,rec.tex); },{once:true}); }
+    return rec;
+  }
+  function size(){
+    var s=cur.surface, sr=s.getBoundingClientRect(), box=cur.img||s, br=box.getBoundingClientRect();
+    var w=Math.max(1,br.width), h=Math.max(1,br.height), dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.style.left=(br.left-sr.left)+'px'; cv.style.top=(br.top-sr.top)+'px'; cv.style.width=w+'px'; cv.style.height=h+'px';
     cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
     gl.viewport(0,0,cv.width,cv.height); gl.uniform1f(uni.aspect, w/h); }
   function loop(now){
     if(!running) return;
-    if(!active() || document.body.classList.contains('world-goodrx-open') || document.body.classList.contains('work-focus-open')){ stop(); return; }
+    if(!active()){ stop(); return; }
     if(!startT) startT=now;
     amp=Math.min(1, amp+0.08);
+    gl.bindTexture(gl.TEXTURE_2D, cur.rec.tex);            // keep THIS card's texture bound (async loads can rebind)
     gl.uniform2f(uni.mouse, mx, my); gl.uniform1f(uni.t,(now-startT)/1000); gl.uniform1f(uni.amp,amp); gl.uniform1i(uni.tx,0);
     gl.uniform1f(uni.skin, document.body.classList.contains('skin-digital')?1.0:0.0);
     var T=window.__TUNE||{};
-    // Preview-hint: hue toggle picks green (baseline, confirmed) vs the destination world's accent; the cell
-    // ground borrows the world bg (darkened by bgTint); imgMix blends cells toward the true photo. All ?dev-tunable.
-    // Chris's baked preview-hint defaults (2026-09-19): World palette on, photo/palette 50/50, field showing through.
-    var GREEN=[0.20,0.86,0.46], P=getPalette();
+    // Baked preview-hint defaults (Chris 2026-09-19): World palette on, photo/palette 50/50, field bleed-through.
+    // Palette is read per HOVERED card's world, so each card previews its own world (blueprint until skins land).
+    var GREEN=[0.20,0.86,0.46], P=getPalette(cur.slug);
     var hint=(T.hue!==undefined?T.hue:1)>0.5 && P;
     var bt=(T.bgTint!==undefined?T.bgTint:0.76);
     gl.uniform3fv(uni.col, hint?P.acc:(T.col||GREEN));
@@ -7274,17 +7288,35 @@ document.body.classList.add('fx-dissolve','skin-digital');
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     raf=requestAnimationFrame(loop);
   }
-  function start(){ if(running || !active()) return; if(!init()){ return; } if(!texReady){ uploadTex(); }
-    size(); cv.style.display='block'; img.style.visibility='hidden'; running=true; amp=0; startT=0;
+  function start(t){
+    if(!active() || !init()) return;
+    cur=t; cur.rec=ensureTex(t);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,cur.rec.tex);
+    t.surface.appendChild(cv);                              // re-parent the ONE canvas into the hovered surface
+    size(); cv.style.display='block';
+    if(t.img) t.img.style.visibility='hidden';
+    running=true; amp=0; startT=0;
     cancelAnimationFrame(raf); raf=requestAnimationFrame(loop); }
-  function stop(){ running=false; cancelAnimationFrame(raf); if(cv) cv.style.display='none'; img.style.visibility=''; }
-  function setMouse(e){ var ir=img.getBoundingClientRect(); mx=(e.clientX-ir.left)/ir.width; my=1-(e.clientY-ir.top)/ir.height; }
+  function stop(){ running=false; cancelAnimationFrame(raf); if(cv) cv.style.display='none';
+    if(cur && cur.img) cur.img.style.visibility=''; cur=null; }
+  function setMouse(e){ var box=cur&&(cur.img||cur.surface); if(!box) return; var r=box.getBoundingClientRect();
+    mx=(e.clientX-r.left)/r.width; my=1-(e.clientY-r.top)/r.height; }
 
-  frame.addEventListener('mouseenter', function(e){ if(active()){ setMouse(e); start(); } });
-  frame.addEventListener('mousemove', function(e){ if(active()){ setMouse(e); if(!running) start(); } });
-  frame.addEventListener('mouseleave', stop);
-  frame.addEventListener('click', stop); // hand off to the ripple transition (restore the DOM hero)
+  function bind(surface){
+    if(!surface || surface.__hoverBound) return; surface.__hoverBound=true;
+    if(getComputedStyle(surface).position==='static') surface.style.position='relative';
+    var host=surface.closest('[data-project]'), slug=host?host.getAttribute('data-project'):null;
+    var target={surface:surface, img:surface.querySelector('img'), slug:slug, rec:null};
+    surface.addEventListener('mouseenter', function(e){ if(active()){ start(target); setMouse(e); } });
+    surface.addEventListener('mousemove', function(e){ if(active()){ if(!running||cur!==target) start(target); setMouse(e); } });
+    surface.addEventListener('mouseleave', stop);
+    surface.addEventListener('click', stop);   // hand off to the click reveal (restore the DOM content)
+  }
+  // The GoodRx data-grid is now the BASELINE hover for every band hero + every more-work/experiment card.
+  document.querySelectorAll('.co-band[data-hero] .band-frame').forEach(bind);
+  document.querySelectorAll('.work-tile.wcard .wcard-thumb').forEach(bind);
   window.addEventListener('resize', function(){ if(running) size(); });
+  window.addEventListener('scroll', function(){ if(running) size(); }, {passive:true});
 })();
 </script>
 <!-- SHARED dissolve edge — 2D-canvas retro pixel-block particles that blow off the growing __openWorldClip
@@ -7469,7 +7501,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   window.__TUNE=window.__TUNE||{}; var T=window.__TUNE;
   if(T.hue===undefined)T.hue=1; if(T.imgMix===undefined)T.imgMix=0.5; if(T.bgTint===undefined)T.bgTint=0.76;
   window.devPanel({
-    title:'GoodRx hover preview', target:T, pos:'left',
+    title:'Hover materialisation', target:T, pos:'left',
     toggles:[{options:[
       {label:'Green',value:0,on:T.hue<0.5},
       {label:'World palette',value:1,on:T.hue>=0.5}
