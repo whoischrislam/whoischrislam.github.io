@@ -1867,6 +1867,37 @@ body.work-focus-open[data-world].world-entering .work-shell{background:var(--bg)
    scaffolding-purge pass (also removes the retired enter()/radialTransition prototype and #world-goodrx). */
 #tune,#hx-bar,#hb-bar,#vt-tune{display:none!important}
 
+/* ==== SHARED cheap dissolve edge (#2, 2026-09-20) — the INVERTED base effect. A 2D-canvas pixel-block
+   dissolve rides the SHARED __openWorldClip reveal circle for EVERY world: cheap on the Air, verifiable
+   headless (2D, no GPU), drawn over the real homepage backdrop that world-entering keeps behind the layer.
+   Blocks BORROW the incoming world's palette (--world-bg mass / --world-ink grit / --world-accent sparks) —
+   no fixed brand colour; per-world identity comes for free. GoodRx's WebGL grain stays a per-world OVERRIDE.
+   Reduced-motion falls back to the clean clip. Toggle via #de-bar; tune via #dtune — BOTH SPIKE-ONLY,
+   strip after Chris picks/bakes (with the two IIFEs at end of body). ==== */
+#world-dissolve{position:fixed;inset:0;z-index:61;pointer-events:none;display:none}
+body.dissolve-edge.world-entering #world-dissolve{display:block}
+#de-bar{position:fixed;left:12px;bottom:12px;z-index:10000;display:flex;gap:2px;align-items:center;
+  background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);border-radius:9px;padding:4px 5px;
+  box-shadow:0 8px 30px rgba(0,0,0,.4);backdrop-filter:blur(6px)}
+#de-bar span{color:#8a8f98;font:700 10px/1 var(--sans);letter-spacing:.05em;text-transform:uppercase;padding:0 6px 0 4px}
+#de-bar button{appearance:none;border:0;background:transparent;color:#ddd;font:600 12px/1 var(--sans);
+  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
+#de-bar button:hover{background:rgba(255,255,255,.08)}
+#de-bar button.on{background:var(--accent);color:#fff}
+body.work-focus-open[data-world] #de-bar,body.work-focus-open[data-world] #dtune{display:none}
+#dtune{position:fixed;top:12px;left:12px;z-index:10000;width:206px;max-height:88vh;overflow:auto;
+  background:rgba(20,20,22,.94);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px 12px;
+  box-shadow:0 8px 30px rgba(0,0,0,.45);font-family:var(--sans);color:#ddd;backdrop-filter:blur(6px)}
+#dtune h4{margin:0 0 3px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8a8f98;font-weight:700}
+#dtune .row{display:flex;align-items:center;gap:6px;margin:5px 0}
+#dtune label{flex:0 0 60px;font-size:11px;color:#cfd3d8}
+#dtune input[type=range]{flex:1;height:16px;accent-color:var(--accent,#2a9d4f);min-width:0}
+#dtune .val{flex:0 0 30px;font-size:10px;text-align:right;color:#8a8f98;font-variant-numeric:tabular-nums}
+#dtune button{margin-top:8px;width:100%;appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;
+  color:#ddd;font:600 11px/1 var(--sans);padding:6px;border-radius:6px;cursor:pointer}
+#dtune button:hover{background:rgba(255,255,255,.08)}
+@media (prefers-reduced-motion:reduce){ #world-dissolve{display:none!important} }
+
 /* World back = a sticky, FULL-BLEED sub-bar pinned under the header (Chris's pick). The margin/padding-inline
    breakout makes its background span the whole viewport while the content stays in the 1180px column — a
    plain sticky only spans the padded column, which is why it looked narrow on mobile. */
@@ -6985,12 +7016,20 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
         setWorldCenter(worldCircle(origin.x, origin.y));     // fresh open: grow from the click; interrupt: keep current center
       }
       var commit = function(){ document.body.classList.remove("world-entering"); worldLayer.classList.remove("world-revealing");
-        workShell.classList.add("is-focused"); workShell.scrollTop = 0; }; // now the company fully covers → fix the shell
+        workShell.classList.add("is-focused"); workShell.scrollTop = 0;
+        if(window.__worldDissolve) window.__worldDissolve.stop(); }; // now the company fully covers → fix the shell
       if(reduceWorkMotion.matches || !worldLayer.animate){ commit(); return; } // instant fallback
+      // Shared cheap dissolve edge rides the growing circle (all worlds). GoodRx WebGL stays its override.
+      // Fire on fresh AND interrupt (reopen) so a reversed close still gets particles; start() reads the clip's
+      // own centre/radius. try/catch: this optional effect must never abort the world-open navigation below.
+      if(document.body.classList.contains("dissolve-edge") && window.__worldDissolve){
+        try{ window.__worldDissolve.start(); }catch(e){}
+      }
       runReveal(interrupting ? currentRevealR() : 0, worldFullR(),
         tuneMs("--vt-in-dur",0.5), tuneEase("--vt-in-ease","linear"), commit);
     };
     function closeWorldClip(origin){
+      if(window.__worldDissolve) window.__worldDissolve.stop(); // kill the dissolve rAF on any close (incl. interrupt-close, which bypasses commit)
       if(reduceWorkMotion.matches || !worldLayer.animate){
         resetWork(false, { restoreScroll: workOverviewScrollY }); document.body.classList.remove("world-entering"); return;
       }
@@ -7651,6 +7690,182 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   var btn=document.createElement('button'); btn.textContent='Copy settings';
   btn.addEventListener('click',function(){ var out=JSON.stringify(T);
     try{ navigator.clipboard.writeText(out); }catch(e){} console.log('TUNE '+out);
+    btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
+  p.appendChild(btn);
+  document.body.appendChild(p);
+})();
+</script>
+<!-- SPIKE(#2): SHARED cheap dissolve edge — 2D-canvas grainy brand-green cells that scatter off the
+     growing __openWorldClip reveal circle, for EVERY world. Cheap on the Air + verifiable headless;
+     GoodRx WebGL stays a per-world override. window.__worldDissolve.{start,stop} is called by
+     __openWorldClip. window.__DTUNE tunes it (see #dtune bar). Strip with #de-bar/#dtune after baking. -->
+<script>
+(function(){
+  var layer=document.getElementById('world-layer');
+  if(!layer){ window.__worldDissolve={start:function(){},stop:function(){}}; return; }
+  var cv=document.createElement('canvas'); cv.id='world-dissolve'; document.body.appendChild(cv);
+  var ctx=cv.getContext('2d');
+  if(!ctx){ window.__worldDissolve={start:function(){},stop:function(){}}; return; } // no 2d ctx → no-op, never blocks navigation
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var W=0,H=0, raf=0, running=false, cx=0, cy=0, fullR=1, headClip=0;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // Defaults — Chris tunes live via #dtune (window.__DTUNE), then we bake the chosen JSON.
+  // Sand / Dr-Strange-portal defaults: very high density, tiny cells, tight scatter, palette from the world.
+  var D=window.__DTUNE={ count:2150, size:5, scatter:0.6, grain:0.5, accentFrac:0.04, glow:0.25, band:0.21, snap:10 };
+
+  // Fixed particle field: each grain activates as the wavefront reaches its trigger radius, then detaches
+  // and flings outward while fading — "the incoming world materialising as a rim of sand off the edge".
+  var CELLS=[];
+  (function seed(n){ for(var i=0;i<n;i++){ CELLS.push({
+      a:Math.random()*Math.PI*2,        // angle around the center
+      u:Math.pow(Math.random(),0.85),   // position across the outward spray: 0 = on the edge → 1 = farthest out
+      j:(Math.random()-0.5),            // tangential wobble seed
+      s:0.55+Math.random()*1.1,         // size multiplier
+      g:Math.random(),                  // colour-role selector (accent / grit / mass)
+      f:Math.random()*6.283,            // flicker phase
+      b:0.7+Math.random()*0.55          // per-grain brightness (tonal variation of the sand)
+    }); } })(4200);
+
+  // Palette borrowed from the world being revealed (no fixed brand colour): mass = bg, grit = ink, spark = accent.
+  var BG=[255,255,255], SURF=[255,255,255], INK=[20,20,20], ACC=[136,136,136];
+  function hex2rgb(v,fb){ var m=/#?([0-9a-f]{6})/i.exec((v||'').trim()); return m?[parseInt(m[1].slice(0,2),16),parseInt(m[1].slice(2,4),16),parseInt(m[1].slice(4,6),16)]:fb; }
+  function refreshColors(){
+    var cs=getComputedStyle(layer);
+    BG  =hex2rgb(cs.getPropertyValue('--world-bg'),  [255,255,255]);
+    SURF=hex2rgb(cs.getPropertyValue('--world-surface'), BG);
+    INK =hex2rgb(cs.getPropertyValue('--world-ink'), [20,20,20]);
+    ACC =hex2rgb(cs.getPropertyValue('--world-accent'), INK);
+  }
+  function resize(){
+    W=window.innerWidth; H=window.innerHeight;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    cv.style.width=W+'px'; cv.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function frame(now){
+    if(!running) return;
+    var r=parseFloat(getComputedStyle(layer).getPropertyValue('--reveal-r'))||0;
+    ctx.clearRect(0,0,W,H);
+    var t=now/1000;
+    var n=Math.min(CELLS.length, D.count|0);
+    var band=Math.max(0.04,D.band)*fullR;   // width of the active leading-edge ring
+    var base=D.size, af=D.accentFrac, glow=D.glow, grain=D.grain, scatter=D.scatter;
+    var rimHalf=Math.max(6, band*0.5);        // band = D.band*fullR (px)
+    var reach=rimHalf*(0.5 + scatter*3.2);    // how far the farthest blocks blow off the leading edge (scatter)
+    var snap=D.snap||0;                        // retro pixel-lattice snap (0 = organic)
+    for(var i=0;i<n;i++){
+      var c=CELLS[i];
+      // OUTWARD leading-edge spray: blocks live from the edge OUTWARD only — the world stays solid inside and
+      // the pixels blow off the front (retro indie-game dissolve). edge: 0 = on the edge, 1 = farthest out.
+      var edge=c.u;
+      var rad=r - rimHalf*0.08 + Math.pow(edge,1.7)*reach + Math.sin(c.f)*rimHalf*0.22; // dense at edge, thinning out
+      if(rad<2) continue;
+      var alpha=1-edge; if(alpha<=0.03) continue;            // brightest on the edge, fading outward
+      var ang=c.a + (c.b-1)*0.05;               // tiny angular wobble breaks the perfect ring
+      var x=cx+Math.cos(ang)*rad, y=cy+Math.sin(ang)*rad;
+      var sz=base*c.s;
+      if(snap>0){ x=Math.round(x/snap)*snap; y=Math.round(y/snap)*snap; } // snap to a pixel grid = sprite-particle look
+      if(y - sz/2 < headClip) continue; // keep particles out of the sticky header strip (canvas is full-viewport, above the header)
+      var flick=1 - grain*0.45 + grain*0.45*Math.sin(t*9+c.f);   // alpha twinkle (grain)
+      var a=alpha*flick; if(a<0)a=0; if(a>1)a=1;
+      // colour borrowed from the incoming world: spark=accent, grit=ink, then surface, mass=bg
+      var col, spark=false;
+      if(c.g<af){ col=ACC; spark=true; }
+      else if(c.g<af+0.16){ col=INK; }
+      else if(c.g<af+0.40){ col=SURF; }
+      else { col=BG; }
+      var br=c.b*(1 - grain*0.28 + grain*0.28*Math.sin(t*7+c.f*1.7)); // tonal shimmer (sand grains catch light)
+      var rr=Math.min(255,col[0]*br)|0, gg=Math.min(255,col[1]*br)|0, bb=Math.min(255,col[2]*br)|0;
+      if(spark && glow>0){                    // soft ember glow behind accent sparks only
+        ctx.globalAlpha=a*0.4*glow;
+        ctx.fillStyle='rgb('+rr+','+gg+','+bb+')';
+        ctx.fillRect(x-sz*1.6,y-sz*1.6,sz*3.2,sz*3.2);
+      }
+      ctx.globalAlpha=spark?a:a*0.92;
+      ctx.fillStyle='rgb('+rr+','+gg+','+bb+')';
+      ctx.fillRect(x-sz/2,y-sz/2,sz,sz);
+    }
+    ctx.globalAlpha=1;
+    raf=requestAnimationFrame(frame);
+  }
+  window.__worldDissolve={
+    // No args: derive centre + radius + header clip from the clip's OWN state (the --reveal-x/y that
+    // setWorldCenter set, and the layer rect that worldFullR() uses) so the sand always matches the real
+    // circle — for fresh opens AND interrupt-reopens (where setWorldCenter is skipped but the vars persist).
+    start:function(){
+      if(reduce.matches) return;
+      var b=layer.getBoundingClientRect();               // same source of truth as the app's worldFullR()
+      var lx=parseFloat(getComputedStyle(layer).getPropertyValue('--reveal-x'));
+      var ly=parseFloat(getComputedStyle(layer).getPropertyValue('--reveal-y'));
+      if(isNaN(lx)) lx=b.width/2; if(isNaN(ly)) ly=b.height/2;
+      cx=b.left+lx; cy=b.top+ly;                          // clip centre in viewport space
+      headClip=b.top;                                     // header strip height (layer is inset var(--head-h))
+      fullR=Math.hypot(Math.max(lx,b.width-lx),Math.max(ly,b.height-ly))||1;
+      refreshColors(); resize();
+      running=true; cancelAnimationFrame(raf); raf=requestAnimationFrame(frame);
+    },
+    stop:function(){ running=false; cancelAnimationFrame(raf); if(ctx) ctx.clearRect(0,0,W,H); }
+  };
+  window.addEventListener('resize',function(){ if(running) resize(); });
+})();
+</script>
+<!-- SPIKE(#2): dissolve-edge toggle (#de-bar) + live tuner (#dtune). Strip with the module after baking. -->
+<script>
+(function(){
+  document.body.classList.add('dissolve-edge'); // default ON so Chris sees it; "Clean clip" = the A/B
+  var bar=document.createElement('div'); bar.id='de-bar';
+  var lab0=document.createElement('span'); lab0.textContent='Reveal'; bar.appendChild(lab0);
+  [['Dissolve edge',true],['Clean clip',false]].forEach(function(o){
+    var b=document.createElement('button'); b.textContent=o[0];
+    if(o[1]) b.classList.add('on');
+    b.addEventListener('click',function(){
+      document.body.classList.toggle('dissolve-edge',o[1]);
+      if(!o[1] && window.__worldDissolve) window.__worldDissolve.stop(); // "Clean clip" mid-reveal must kill the loop, not just hide it
+      bar.querySelectorAll('button').forEach(function(x){x.classList.remove('on');}); b.classList.add('on');
+    });
+    bar.appendChild(b);
+  });
+  document.body.appendChild(bar);
+
+  var T=window.__DTUNE||{}; // the module made the defaults
+  var CFG=[
+    {k:'count',l:'Density',min:100,max:4000,step:50},
+    {k:'size',l:'Cell size',min:1,max:24,step:0.2},
+    {k:'scatter',l:'Scatter',min:0.1,max:2,step:0.05},
+    {k:'grain',l:'Grain',min:0,max:1,step:0.05},
+    {k:'accentFrac',l:'Accent %',min:0,max:1,step:0.02},
+    {k:'glow',l:'Glow',min:0,max:1.5,step:0.05},
+    {k:'band',l:'Edge band',min:0.05,max:0.4,step:0.01},
+    {k:'snap',l:'Pixel grid',min:0,max:28,step:1}
+  ];
+  var p=document.createElement('div'); p.id='dtune';
+  var h=document.createElement('h4'); h.textContent='Dissolve edge'; p.appendChild(h);
+  CFG.forEach(function(c){
+    var row=document.createElement('div'); row.className='row';
+    var l=document.createElement('label'); l.textContent=c.l;
+    var inp=document.createElement('input'); inp.type='range'; inp.min=c.min; inp.max=c.max; inp.step=c.step; inp.value=T[c.k];
+    var val=document.createElement('span'); val.className='val'; val.textContent=(c.step<1?(+T[c.k]).toFixed(2):T[c.k]);
+    inp.addEventListener('input',function(){ var v=parseFloat(inp.value); T[c.k]=v; val.textContent=c.step<1?v.toFixed(2):v; });
+    row.appendChild(l); row.appendChild(inp); row.appendChild(val); p.appendChild(row);
+  });
+  // Timing (slow-mo for inspection). Sets --vt-in-dur/--vt-out-dur on :root, read fresh by runReveal each
+  // transition; the dissolve canvas follows --reveal-r so it slows proportionally. Exit = 0.8x enter.
+  var rootS=document.documentElement.style;
+  rootS.setProperty('--vt-in-dur','0.5'); rootS.setProperty('--vt-out-dur','0.4');
+  var th=document.createElement('h4'); th.textContent='Timing'; p.appendChild(th);
+  (function(){
+    var row=document.createElement('div'); row.className='row';
+    var l=document.createElement('label'); l.textContent='Duration s';
+    var inp=document.createElement('input'); inp.type='range'; inp.min=0.3; inp.max=8; inp.step=0.1; inp.value=0.5;
+    var val=document.createElement('span'); val.className='val'; val.textContent='0.5';
+    inp.addEventListener('input',function(){ var v=parseFloat(inp.value); val.textContent=v.toFixed(1);
+      rootS.setProperty('--vt-in-dur', String(v)); rootS.setProperty('--vt-out-dur', String((v*0.8).toFixed(2))); });
+    row.appendChild(l); row.appendChild(inp); row.appendChild(val); p.appendChild(row);
+  })();
+  var btn=document.createElement('button'); btn.textContent='Copy settings';
+  btn.addEventListener('click',function(){ var out=JSON.stringify(window.__DTUNE);
+    try{ navigator.clipboard.writeText(out); }catch(e){} console.log('DTUNE '+out);
     btn.textContent='Copied ✓'; setTimeout(function(){ btn.textContent='Copy settings'; },1200); });
   p.appendChild(btn);
   document.body.appendChild(p);
