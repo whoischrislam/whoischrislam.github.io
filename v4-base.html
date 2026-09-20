@@ -7146,7 +7146,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
   var cv, gl, prog, raf=0, running=false, uni={};
   var mx=0.5, my=0.5, amp=0, startT=0;
-  var cur=null, texMap=Object.create(null);
+  var cur=null, texMap=Object.create(null), texOrder=[];
 
   // Palette: read a world's real --world-* tokens (no duplicated source of truth). Tokens live on
   // `body[data-world="<slug>"]`, so we set the attribute, read computed values, and revert synchronously —
@@ -7169,12 +7169,19 @@ document.body.classList.add('fx-dissolve','skin-digital');
   function compile(t,src){ var s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s); return s; }
 
   function init(){
-    if(cv) return !!gl;
-    cv=document.createElement('canvas');
-    cv.style.cssText='position:absolute;left:0;top:0;display:none;z-index:2;pointer-events:none';
-    document.body.appendChild(cv);   // parked on body; re-parented into the hovered surface on start()
+    if(gl) return true;
+    if(!cv){
+      cv=document.createElement('canvas');
+      cv.style.cssText='position:absolute;left:0;top:0;display:none;z-index:2;pointer-events:none';
+      document.body.appendChild(cv);   // parked on body; re-parented into the hovered surface on start()
+      // Context-loss recovery: Safari/iOS can evict a backgrounded WebGL context under memory pressure.
+      // On loss: stop + drop gl so the next hover rebuilds the program. On restore: drop the now-dead
+      // textures so ensureTex recreates them. Without this the hover would break silently for the session.
+      cv.addEventListener('webglcontextlost',function(e){ e.preventDefault(); stop(); gl=null; },false);
+      cv.addEventListener('webglcontextrestored',function(){ texMap=Object.create(null); texOrder.length=0; },false);
+    }
     gl=cv.getContext('webgl',{premultipliedAlpha:false,antialias:true})||cv.getContext('experimental-webgl');
-    if(!gl){ return false; }
+    if(!gl || gl.isContextLost()){ gl=null; return false; }
     var vs='attribute vec2 p;varying vec2 uv;void main(){uv=p*0.5+0.5;gl_Position=vec4(p,0.0,1.0);}';
     // RIPPLE-IN-DOTS: the ripple wavefront resolves the photo into a field of high-contrast discs
     // (Chris's dot-density vocabulary). Hard-edged discs + darkened gaps so the dots actually POP
@@ -7245,15 +7252,21 @@ document.body.classList.add('fx-dissolve','skin-digital');
   function upload(rec,el){ gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
     gl.bindTexture(gl.TEXTURE_2D,rec.tex); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,el); rec.ready=true; }
   function ensureTex(t){
-    var k=texKey(t); if(texMap[k]) return texMap[k];
-    var rec={tex:gl.createTexture(),ready:false}; texMap[k]=rec;
+    var k=texKey(t);
+    if(texMap[k]){ var j=texOrder.indexOf(k); if(j>=0){ texOrder.splice(j,1); texOrder.push(k); } return texMap[k]; }
+    var rec={tex:gl.createTexture(),ready:false}; texMap[k]=rec; texOrder.push(k);
+    // Bounded LRU: free the oldest texture we're not currently showing (deleteTexture) so GPU memory stays capped.
+    while(texOrder.length>10){ var old=texOrder.shift();
+      if(texMap[old] && !(cur&&cur.rec===texMap[old])){ gl.deleteTexture(texMap[old].tex); delete texMap[old]; }
+      else { texOrder.push(old); break; } }
     gl.bindTexture(gl.TEXTURE_2D,rec.tex);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
     var im=t.img;
     if(im && im.complete && im.naturalWidth>0){ upload(rec,im); }
     else { upload(rec,makeSwatch(getPalette(t.slug)));           // swatch placeholder until the image decodes
-      if(im) im.addEventListener('load',function(){ upload(rec,im); if(running&&cur&&cur.rec===rec) gl.bindTexture(gl.TEXTURE_2D,rec.tex); },{once:true}); }
+      if(im){ im.addEventListener('load',function(){ if(!texMap[k]||!gl) return; upload(rec,im); if(running&&cur&&cur.rec===rec) gl.bindTexture(gl.TEXTURE_2D,rec.tex); },{once:true});
+        im.addEventListener('error',function(){ /* image 404/failed: keep the palette swatch as the graceful fallback */ },{once:true}); } }
     return rec;
   }
   function size(){
@@ -7290,6 +7303,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   }
   function start(t){
     if(!active() || !init()) return;
+    if(cur && cur!==t && cur.img) cur.img.style.visibility='';   // restore the card we're leaving (fast A->B sweeps coalesce mouseleave)
     cur=t; cur.rec=ensureTex(t);
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,cur.rec.tex);
     t.surface.appendChild(cv);                              // re-parent the ONE canvas into the hovered surface
@@ -7310,7 +7324,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     surface.addEventListener('mouseenter', function(e){ if(active()){ start(target); setMouse(e); } });
     surface.addEventListener('mousemove', function(e){ if(active()){ if(!running||cur!==target) start(target); setMouse(e); } });
     surface.addEventListener('mouseleave', stop);
-    surface.addEventListener('click', stop);   // hand off to the click reveal (restore the DOM content)
+    surface.addEventListener('click', stop, true);   // capture: GoodRx's own capture-phase stopPropagation() must not eat this teardown
   }
   // The GoodRx data-grid is now the BASELINE hover for every band hero + every more-work/experiment card.
   document.querySelectorAll('.co-band[data-hero] .band-frame').forEach(bind);
