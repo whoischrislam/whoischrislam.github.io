@@ -2019,6 +2019,12 @@ body[data-world] .project-story-nav button[aria-current="true"]{color:#fff}
 
 body.work-focus-open[data-world] .work-project-card{background:var(--world-card-bg);color:var(--world-card-ink);border-color:transparent}
 body.work-focus-open[data-world] .work-project-card *{color:inherit}
+/* Product-map ("supporting work") cards: the li used the GLOBAL --bg (dark) but text used --world-ink
+   (dark on light worlds) -> dark-on-dark. Pair them with the world CARD tokens so text is always legible. */
+body.work-focus-open[data-world] .work-also-shipped-list li{background:var(--world-card-bg)}
+body.work-focus-open[data-world] .work-also-shipped-list li b{color:var(--world-card-ink)}
+body.work-focus-open[data-world] .work-also-shipped-list li span{color:color-mix(in srgb,var(--world-card-ink) 72%,transparent)}
+body.work-focus-open[data-world] .work-also-shipped-list li .work-supporting-delivery{color:color-mix(in srgb,var(--world-accent) 66%,var(--world-card-ink))}
 </style>
 </head><body>
 
