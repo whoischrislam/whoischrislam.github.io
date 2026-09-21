@@ -2569,7 +2569,9 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     var companyWorkScrollTop = {};
     var companyButtons = Array.from(document.querySelectorAll("[data-work-company]"));
     var workBackgroundItems = Array.from(workShell.parentElement.children).filter(function(item){
-      return item !== workShell;
+      // Exclude the media lightbox: it is a sibling of the shell, so inert-ing the world background
+      // would also inert the modal (it paints but eats every click - broken close + "open original").
+      return item !== workShell && item.id !== "media-lightbox";
     });
     var workPreloadImages = [];
     var companyFocusPreloaded = false;
