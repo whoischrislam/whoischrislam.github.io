@@ -6735,6 +6735,7 @@ body.work-focus-open[data-world] .work-also-shipped-list li .work-supporting-del
         workShell.classList.add("is-focused");
         workShell.classList.add("is-story-focused");
         setWorkFocusEnvironment(true);
+        document.body.setAttribute("data-world", story.company); // a story lives inside its company's world: inherit the world theme (see CSS)
         renderStoryPanel(storyKey);
         storyHero = mountProjectStory(storyKey);
         storyHero.style.viewTransitionName = "selected-project-visual";
