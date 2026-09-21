@@ -1305,12 +1305,15 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .project-story-footer button:hover,.project-story-footer button:focus-visible{border-color:var(--accent);color:var(--accent)}
 .project-story-footer button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .visual-placeholder{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
-  min-width:0;min-height:180px;padding:20px;overflow:hidden;border:1px dashed var(--border-strong);
-  background:
-    linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,transparent),transparent 58%),
-    repeating-linear-gradient(135deg,transparent 0 18px,color-mix(in srgb,var(--border) 48%,transparent) 18px 19px),
-    var(--surface-2);color:var(--text);text-align:left}
-.visual-placeholder::before{content:"";position:absolute;inset:14px;border:1px solid var(--border);pointer-events:none}
+  min-width:0;min-height:180px;padding:24px;overflow:hidden;border:0;
+  background:var(--world-bg,var(--band,var(--surface-2)));color:var(--world-ink,var(--text));text-align:left}
+/* #5 dot-density placeholder: a faint dot matrix in the ink colour, fading toward the title, over the
+   world/company brand field. Themes per company for free; reads as "part of the system, art pending". */
+.visual-placeholder::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(color-mix(in srgb,currentColor 24%,transparent) 1.3px,transparent 1.6px);
+  background-size:16px 16px;
+  -webkit-mask-image:radial-gradient(130% 130% at 16% 94%,#000 26%,transparent 74%);
+          mask-image:radial-gradient(130% 130% at 16% 94%,#000 26%,transparent 74%)}
 .visual-placeholder-status{position:absolute;top:26px;left:26px;display:inline-flex;align-items:center;
   min-height:24px;padding:4px 8px;border:1px solid var(--border-strong);border-radius:999px;
   background:color-mix(in srgb,var(--bg) 88%,transparent);color:var(--muted);
@@ -1409,7 +1412,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .work-grid[data-layout="mosaic"] .work-tile[data-shape="tall"]{aspect-ratio:9/16}
 .work-tile>.visual-placeholder{width:100%;min-height:220px;border:0;padding:18px}
 .work-grid[data-layout="mosaic"] .work-tile>.visual-placeholder{height:100%;min-height:0}
-.work-tile>.visual-placeholder::before{inset:10px}
+.work-tile>.visual-placeholder::before{inset:0}
 .work-tile>.visual-placeholder .visual-placeholder-status{top:18px;left:18px}
 .work-tile>.visual-placeholder .visual-placeholder-title{position:absolute;top:64px;left:18px;right:18px;
   max-width:22ch;font-size:clamp(18px,2.1vw,28px)}
@@ -1617,7 +1620,7 @@ body.tb-6.ho-a .hl-design .hg:nth-child(2),body.tb-6.ho-d .hl-design .hg:nth-chi
 /* C - serif clean + a hand-drawn underline that strokes on (real SVG path draw) */
 body.tb-6.ho-c .hl-design{opacity:0;animation:hc-in .45s ease forwards}
 @keyframes hc-in{to{opacity:1}}
-.hl-underline{position:absolute;left:0;bottom:-.14em;width:104%;height:.4em;overflow:visible;pointer-events:none}
+.hl-underline{position:absolute;left:0;bottom:.02em;width:104%;height:.32em;overflow:visible;pointer-events:none}
 .hl-underline path{fill:none;stroke:var(--text);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
 
 /* the green "&" as a single clean accent (all options) */
@@ -1916,6 +1919,18 @@ body[data-world="goodrx"]{
   --world-bg:#fcef72; --world-ink:#1a1710; --world-ink-soft:rgba(26,23,16,.62);
   --world-line:rgba(26,23,16,.22); --world-accent:#6d4bd8; --world-surface:#fffdf0;
   --world-card-bg:#1a1710; --world-card-ink:#ffffff;}
+/* Chris's palettes 2026-09-21. bg/ink his; ACCENT = my suggestion pending his confirm; surface derived
+   from bg (his literal white/black surfaces conflicted with the single ink). Cards inherit the base. */
+body[data-world="y30"]{--world-bg:#edf0e7;--world-ink:#111111;--world-ink-soft:rgba(17,17,17,.70);--world-line:rgba(17,17,17,.16);--world-accent:#2E7DDD;--world-surface:color-mix(in srgb,var(--world-bg) 90%,var(--world-ink) 10%);}
+body[data-world="clover"]{--world-bg:#2D6154;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.72);--world-line:rgba(255,255,255,.22);--world-accent:#333333;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);}
+body[data-world="playsesh"]{--world-bg:#FEFEFE;--world-ink:#2C3E50;--world-ink-soft:rgba(44,62,80,.72);--world-line:rgba(44,62,80,.18);--world-accent:#4A90E2;--world-surface:color-mix(in srgb,var(--world-bg) 92%,var(--world-ink) 8%);}
+body[data-world="pathstream"]{--world-bg:#F05154;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#2698D4;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);}
+body[data-world="taskrabbit"]{--world-bg:#038F49;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#0089AB;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);}
+body[data-world="sharecare"]{--world-bg:#C6E2DA;--world-ink:#111111;--world-ink-soft:rgba(17,17,17,.68);--world-line:rgba(17,17,17,.16);--world-accent:#14857A;--world-surface:color-mix(in srgb,var(--world-bg) 90%,var(--world-ink) 10%);}
+body[data-world="startplaying"]{--world-bg:#428AF7;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.76);--world-line:rgba(255,255,255,.26);--world-accent:#212121;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);}
+body[data-world="modus"]{--world-bg:#000000;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.66);--world-line:rgba(255,255,255,.20);--world-accent:#3872E7;--world-surface:color-mix(in srgb,var(--world-bg) 80%,var(--world-ink) 20%);}
+body[data-world="amazon"]{--world-bg:#131921;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.70);--world-line:rgba(255,255,255,.20);--world-accent:#FF6301;--world-surface:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);}
+body[data-world="zodiacus"]{--world-bg:#AA381E;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#E0A657;--world-surface:color-mix(in srgb,var(--world-bg) 86%,var(--world-ink) 14%);}
 
 body.work-focus-open[data-world]{background:var(--world-bg)}
 /* Header is CONSTANT chrome - never re-themed per world. It stays the persistent frame ("ship") the
@@ -2219,8 +2234,8 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
      Frames already clip overflow; easing is a soft ease-out. Reduced-motion opts out. ---- */
   .co-band[data-hero] .band-frame img,
   .wcard-thumb img{transition:transform .55s cubic-bezier(.22,1,.36,1)}
-  .co-band[data-hero] .band-frame:hover img,
-  .work-tile.wcard:hover .wcard-thumb img{transform:scale(1.035)}
+  body:not(.has-webgl-hover) .co-band[data-hero] .band-frame:hover img,
+  body:not(.has-webgl-hover) .work-tile.wcard:hover .wcard-thumb img{transform:scale(1.035)}
   @media (prefers-reduced-motion: reduce){
     .co-band[data-hero] .band-frame img,
     .wcard-thumb img{transition:none}
@@ -5511,6 +5526,10 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       title.className = "visual-placeholder-title";
       title.textContent = item.title;
       placeholder.append(title);
+      var note = document.createElement("span");           // #5: generic "coming soon" (never the internal note)
+      note.className = "visual-placeholder-note";
+      note.textContent = "Visuals coming soon";
+      placeholder.append(note);
       return placeholder;
     }
 
@@ -6659,15 +6678,21 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
         tuneMs("--vt-in-dur",0.5), tuneEase("--vt-in-ease","linear"), commit);
     };
     function closeWorldClip(origin){
-      if(window.__worldDissolve) window.__worldDissolve.stop(); // kill the dissolve rAF on any close (incl. interrupt-close, which bypasses commit)
       if(reduceWorkMotion.matches || !worldLayer.animate){
+        if(window.__worldDissolve) window.__worldDissolve.stop();
         resetWork(false, { restoreScroll: workOverviewScrollY }); document.body.classList.remove("world-entering"); return;
       }
       var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-enter
       var startR;
       if(interrupting){ startR = currentRevealR(); }         // keep the enter's center; shrink from where it is
       else { document.body.classList.add("world-entering"); workShell.classList.remove("is-focused"); setWorldCenter(worldCircle(origin.x, origin.y)); startR = worldFullR(); }
+      // Mirror the enter: the dissolve edge rides the SHRINKING circle so the world de-materialises
+      // (particles off the collapsing rim) instead of clipping flat. Stopped in the onDone below.
+      if(document.body.classList.contains("dissolve-edge") && window.__worldDissolve){
+        try{ window.__worldDissolve.start(); }catch(e){}
+      }
       runReveal(startR, 0, tuneMs("--vt-out-dur",0.4), tuneEase("--vt-out-ease","cubic-bezier(.4,0,.7,.2)"), function(){
+        if(window.__worldDissolve) window.__worldDissolve.stop();
         resetWork(false, { restoreScroll: workOverviewScrollY }); // return to the exact homepage scroll
         document.body.classList.remove("world-entering");
         worldLayer.classList.remove("world-revealing");
@@ -6837,7 +6862,8 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     if(siteLogo) siteLogo.addEventListener("click", function(e){
       if(!document.body.classList.contains("work-focus-open")) return; // homepage: let #top jump happen
       e.preventDefault();
-      var origin = { x: innerWidth/2, y: innerHeight*0.42 };
+      var lr = siteLogo.getBoundingClientRect();             // grow/shrink the reveal from the name itself, not screen centre
+      var origin = { x: lr.left + lr.width/2, y: lr.top + lr.height/2 };
       if(document.body.getAttribute("data-world")) closeWorldClip(origin);
       else resetWork(false, { restoreScroll: workOverviewScrollY });
       history.replaceState({}, "", location.pathname);       // we're home now - drop ?work=/?project=
@@ -7124,6 +7150,9 @@ document.body.classList.add('fx-dissolve','skin-digital');
 <script>
 (function(){
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  // WebGL hover REPLACES the CSS zoom (the zoom scaling the hidden img under the effect caused the
+  // mouse-out flicker). Flag support up-front so the CSS zoom applies only as the no-WebGL fallback.
+  try{ var _t=document.createElement('canvas'); if(_t.getContext('webgl')||_t.getContext('experimental-webgl')) document.body.classList.add('has-webgl-hover'); }catch(e){}
   var cv, gl, prog, raf=0, running=false, uni={};
   var mx=0.5, my=0.5, amp=0, startT=0;
   var cur=null, texMap=Object.create(null), texOrder=[];
@@ -7281,9 +7310,14 @@ document.body.classList.add('fx-dissolve','skin-digital');
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     raf=requestAnimationFrame(loop);
   }
+  // Restore a card's <img> after the WebGL hover WITHOUT the CSS :hover zoom animating back.
+  // The img was hidden at scale(1.035) during hover; revealing it mid-transition is the mouse-out
+  // "bounce". Snap it to rest with the transition suppressed, then hand styling back to CSS next frame.
+  function restoreImg(im){ if(!im) return; im.style.transition='none'; im.style.transform='none'; im.style.visibility='';
+    requestAnimationFrame(function(){ im.style.transition=''; im.style.transform=''; }); }
   function start(t){
     if(!active() || !init()) return;
-    if(cur && cur!==t && cur.img) cur.img.style.visibility='';   // restore the card we're leaving (fast A->B sweeps coalesce mouseleave)
+    if(cur && cur!==t && cur.img) restoreImg(cur.img);   // restore the card we're leaving (fast A->B sweeps coalesce mouseleave)
     cur=t; cur.rec=ensureTex(t);
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,cur.rec.tex);
     t.surface.appendChild(cv);                              // re-parent the ONE canvas into the hovered surface
@@ -7292,7 +7326,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     running=true; amp=0; startT=0;
     cancelAnimationFrame(raf); raf=requestAnimationFrame(loop); }
   function stop(){ running=false; cancelAnimationFrame(raf); if(cv) cv.style.display='none';
-    if(cur && cur.img) cur.img.style.visibility=''; cur=null; }
+    if(cur && cur.img) restoreImg(cur.img); cur=null; }
   function setMouse(e){ var box=cur&&(cur.img||cur.surface); if(!box) return; var r=box.getBoundingClientRect();
     mx=(e.clientX-r.left)/r.width; my=1-(e.clientY-r.top)/r.height; }
 
