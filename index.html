@@ -7550,4 +7550,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   });
 })();
 </script>
+<!-- Hidden design-system catalog. Loads ONLY on ?ds; no-op (and no requests) for normal visitors.
+     Renders components with the site's own classes so the catalog is the live CSS. -->
+<script>if(/[?&]ds\b/.test(location.search)){var d=document.createElement('link');d.rel='stylesheet';d.href='assets/ds/design-system.css';document.head.appendChild(d);var s=document.createElement('script');s.src='assets/ds/design-system.js';s.defer=true;document.body.appendChild(s);}</script>
 </body></html>
