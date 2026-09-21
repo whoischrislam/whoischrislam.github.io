@@ -4,10 +4,10 @@
 <meta name="robots" content="index, follow"><title>Chris Lam · Senior Product Designer &amp; 0→1 Builder</title>
 <link rel="canonical" href="https://whoischrislam.github.io/" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-<meta name="description" content="Chris Lam is a senior product designer and 0→1 builder. I design the product and ship code, from research and interaction design through production engineering. 14+ years across healthcare, marketplaces, creative tools, and emerging technology." />
+<meta name="description" content="Chris Lam is a senior product designer and 0→1 builder. I design and code to ship products, from research and interaction design through production engineering. 14+ years across healthcare, marketplaces, creative tools, and emerging technology." />
         <meta property="og:type" content="profile" />
         <meta property="og:title" content="Chris Lam · Senior Product Designer &amp; 0→1 Builder" />
-        <meta property="og:description" content="I design the product and ship code. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
+        <meta property="og:description" content="I design and code to ship products. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
         <meta property="og:url" content="https://whoischrislam.github.io/" />
         <meta property="og:site_name" content="Chris Lam" />
         <meta property="og:image" content="https://whoischrislam.github.io/images/og-image.png" />
@@ -16,7 +16,7 @@
         <meta property="og:image:alt" content="Chris Lam, senior product designer &amp; 0→1 builder" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Chris Lam · Senior Product Designer &amp; 0→1 Builder" />
-        <meta name="twitter:description" content="I design the product and ship code. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
+        <meta name="twitter:description" content="I design and code to ship products. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
         <meta name="twitter:image" content="https://whoischrislam.github.io/images/og-image.png" />
 <script type="application/ld+json">
         {
@@ -83,18 +83,25 @@
         </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --bg:#0F0F11; --surface:#17171A; --surface-2:#1E1E22; --text:#ECEAE4; --muted:#9A988F;
-  --accent:#26AF55; --accent-soft:rgba(38,175,85,.13); --border:rgba(255,255,255,.10);
-  /* Agent token shim: the hiring guide's CSS was written against the old
-     stylesheet's names. Mapped onto v2's tokens rather than duplicating values. */
-  --accent-strong:#3FD070; --border-strong:rgba(255,255,255,.18); --border-soft:rgba(255,255,255,.06);
-  --chip-bg:rgba(255,255,255,.06); --drop-shadow:0 10px 30px rgba(0,0,0,.35);
-  --on-accent:#15110F; --surface-hover:var(--surface-2);
+  color-scheme:light;
+  /* WORKING DRAWINGS system (Chris's own, 2026-09-16): off-white ground + very-dark-gray ink,
+     green as the ONE signature accent; color otherwise comes from the work (per-company bands).
+     Blueprint/editorial. NOT cream+terracotta - that was mis-sourced from an archive viewer's CSS. */
+  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --border:rgba(0,0,0,.10);
+  --accent-strong:#1e7a3c; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.06);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(30,40,30,.08);
+  --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;
+  --grid:rgba(0,0,0,.045); /* structural-grid hairline - content aligns to it, not wallpaper */
   --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
-  --serif:'Instrument Serif',Georgia,serif; --sans:'Open Sans',system-ui,sans-serif;
+  /* Newsreader = anti-slop serif display (NOT Fraunces/Instrument Serif). Figtree = Proxima Nova
+     stand-in (real Proxima pending Adobe kit). IBM Plex Mono = blueprint annotation layer. */
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;
+  --sans:'Figtree',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',monospace;
   --head-h:56px;
   /* Type scale, seven steps. Was twenty-one sizes at half-pixel granularity,
      which is the granularity of a generator, not a decision. */
@@ -106,14 +113,23 @@
 }
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
-  --bg:#FBF8F4; --surface:#FFFFFF; --surface-2:#F4F1EB; --text:#1A1A18; --muted:#6A675F;
-  --accent:#177537; --accent-soft:rgba(23,117,55,.10); --border:rgba(0,0,0,.10);
-  --accent-strong:#0F5F2C; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.07);
-  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 10px 30px rgba(60,40,20,.10);
-  --on-accent:#FFFFFF; --surface-hover:var(--surface-2);}
+  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --border:rgba(0,0,0,.10);
+  --accent-strong:#1e7a3c; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.06);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(30,40,30,.08);
+  --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none; --grid:rgba(0,0,0,.045);}
+:root[data-theme="dark"], :root[data-theme="dark"] *{color-scheme:dark}
+:root[data-theme="dark"]{
+  /* Neutral dark (not warm-espresso, not neon-ready). Green stays the signature. */
+  --bg:#17181a; --surface:#202225; --surface-2:#2a2c30; --text:#ece9e3; --muted:#9a978f;
+  --accent:#4fc276; --accent-soft:rgba(79,194,118,.14); --border:rgba(255,255,255,.12);
+  --accent-strong:#6ad189; --border-strong:rgba(255,255,255,.18); --border-soft:rgba(255,255,255,.06);
+  --chip-bg:rgba(255,255,255,.05); --drop-shadow:0 14px 34px rgba(0,0,0,.5);
+  --on-accent:#10231a; --surface-hover:var(--surface-2); --logo-filter:invert(1); --grid:rgba(255,255,255,.05);}
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
-  font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased}
+body{margin:0;background-color:var(--bg);color:var(--text);font-family:var(--sans);
+  font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased;
+  }
 body.work-focus-open{overflow:hidden}
 img{display:block;max-width:100%;height:auto}
 a{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border)}
@@ -135,6 +151,22 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 /* Icon links get a square target; text links keep their padding. */
 .site-head nav a[aria-label]{min-width:44px;padding:0}
 .site-head nav svg{width:19px;height:19px;display:block}
+
+/* Availability status pill (beside the name) - a small confident soft-accent chip, brand-green pulse dot.
+   It's a LINK to the contact close (not decoration): hover inverts to filled accent = "click to get in touch". */
+.head-left{display:flex;align-items:center;gap:12px;min-width:0}
+.status-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;
+  background:var(--accent-soft);color:var(--accent-strong);font:600 var(--t-xs)/1 var(--mono);
+  letter-spacing:.02em;white-space:nowrap;text-decoration:none;transition:background .2s ease,color .2s ease}
+.status-pill:hover,.status-pill:focus-visible{background:var(--accent);color:var(--on-accent,#fff)}
+.status-pill:hover .sp-dot,.status-pill:focus-visible .sp-dot{background:var(--on-accent,#fff)}
+.status-pill:hover .sp-dot::after,.status-pill:focus-visible .sp-dot::after{background:var(--on-accent,#fff)}
+.sp-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;position:relative}
+.sp-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--accent);
+  animation:sp-pulse 2.4s ease-out infinite}
+@keyframes sp-pulse{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(2.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){ .sp-dot::after{animation:none} }
+@media (max-width:520px){ .status-pill{display:none} }                                     /* hide on narrow phones */
 /* A track with a knob, so it reads as a switch rather than an icon that
    happens to change. Both states stay visible; the knob says which is live. */
 #theme-toggle{position:relative;flex:none;width:52px;height:27px;margin:0 4px;padding:0;
@@ -170,17 +202,16 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
   text-underline-offset:3px;white-space:nowrap}
 .hero .sub a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 
-/* The sentence has two halves doing the same job. Underline the two verbs so
-   the parallel is visible, and draw them in on load, staggered. */
-.lit-word{background-image:linear-gradient(var(--accent),var(--accent));
-  background-repeat:no-repeat;background-position:0 90%;background-size:0% 4px;
-  padding-bottom:2px;
-  transition:background-size .75s cubic-bezier(.22,.61,.36,1)}
-.lit-word:nth-of-type(2){transition-delay:.22s}
-.js .hero.lit .lit-word{background-size:100% 4px}
-@media (prefers-reduced-motion:reduce){
-  .lit-word{background-size:100% 4px!important;transition:none}
-}
+/* The two verbs were underlined on load; underlining is a named AI tell
+   (New Yorker slop list), so the words now carry on the serif alone. */
+.lit-word{padding-bottom:0}
+/* Working-drawing sheet header - a mono title bar above the page content. */
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);
+  padding:12px 0 14px;margin-bottom:6px;border-bottom:1px solid var(--border-soft)}
+.sheet-head span:last-child{white-space:nowrap}
+@media (max-width:560px){.sheet-head{font-size:10px;letter-spacing:.04em}}
 .cta{display:flex;flex-wrap:wrap;gap:10px}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;
   border-radius:8px;font-weight:600;font-size:var(--t-sm);text-decoration:none;
@@ -238,10 +269,16 @@ details.more[open] summary::before{transform:rotate(90deg)}
 /* The header is sticky, so every anchor target landed underneath it: the nav links,
    the in-page CTAs, and all seven of the agent's navigation targets. scroll-padding
    on the scroll container fixes all of them at once. */
-html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth}
+/* Reserve the scrollbar gutter so opening a world (which flips body to overflow:hidden) does NOT
+   change the viewport width mid-transition - that width change aborts the View Transition
+   ("invalid state. Viewport size changed") and the enter clip silently doesn't run. macOS overlay
+   scrollbars = 0px gutter (no visual change); classic scrollbars reserve a stable gutter. */
+/* scrollbar-gutter:stable reserves the scrollbar gutter (0 on macOS overlay scrollbars, so invisible there;
+   prevents the width shift on classic-scrollbar systems). */
+html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth;scrollbar-gutter:stable}
 /* Read-progress, lifted from his own styles.css. Scroll-driven animation, no JS at all.
    Browsers without animation-timeline never scale it up, so it stays invisible. */
-.read-progress{position:fixed;top:var(--head-h);left:0;z-index:49;width:100%;height:3px;
+.read-progress{position:absolute;left:0;bottom:0;z-index:1;width:100%;height:3px;
   background:var(--accent);transform-origin:left;scale:0 1;
   animation:read-progress linear;animation-timeline:scroll(root);transition:opacity .16s ease}
 body.work-focus-open .read-progress{opacity:0}
@@ -249,13 +286,13 @@ body.work-focus-open .read-progress{opacity:0}
 h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   /* Rule above the heading, not below it. It terminates the previous block and
      introduces this one, which is how his Squarespace case studies were built. */
-  border-top:1px solid var(--border);padding-top:var(--sp-4);margin:var(--sp-12) 0 13px}
+  border-top:1px solid var(--border);padding-top:var(--sp-4);margin:var(--sp-12) 0 var(--sp-hb)}
 /* Card surfaces. The inline version read as one continuous document, so nothing told
    the eye where a project began. This is his 2014 work list: a bordered block whose
    LEFT edge carries the project colour. */
 .card{background:var(--surface);border:1px solid var(--border);
   border-left:3px solid var(--proj-accent,var(--accent));
-  padding:var(--sp-4) 30px;margin:0 0 var(--sp-8)}
+  padding:var(--sp-4) var(--sp-6);margin:0 0 var(--sp-8)}
 /* Internal hierarchy. Every gap inside a card was the same 15px, so the card read as
    one uniform drum with no beats. Blocks that OPEN a beat get 28px; paragraphs
    continuing a beat keep 15px. 28 stays under the 44px card gap on purpose. */
@@ -513,7 +550,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 .tags span.t{font-size:var(--t-xs);color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:4px 11px}
 /* Same kind of object as a work card, so: square, bordered, same padding. */
 .refs{background:var(--surface);border:1px solid var(--border);border-radius:0;
-  padding:var(--sp-4) 30px;margin:36px 0 0}
+  padding:var(--sp-4) var(--sp-6);margin:var(--sp-6) 0 0}
 /* The two buttons sat 5px apart, which was just collapsed inline whitespace, and the
    tertiary link sat flush against them at 0px. Three tiers, three gaps. */
 .refs > p:first-of-type{margin:0 0 26px}
@@ -523,7 +560,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 .refs > *:last-child{margin-bottom:0}
 .refs p{margin:0 0 16px}
 
-.foot{border-top:1px solid var(--border);margin-top:var(--sp-12);padding:38px 0 100px;
+.foot{border-top:1px solid var(--border);margin-top:var(--sp-12);padding:var(--sp-8) 0 var(--sp-16);
   color:var(--muted);font-size:var(--t-sm)}
 .foot .signoff{font-family:var(--serif);font-size:var(--t-lg);line-height:1.35;color:var(--text);margin:0 0 26px}
 .foot .avail-line{margin:0 0 20px}
@@ -825,8 +862,17 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .hero-logo-row li{display:flex;flex:0 0 auto;align-items:center;height:var(--slot-h,var(--h))}
 .hero-logo-row .hero-logo-more{height:auto;color:var(--muted);font-size:var(--t-xs);white-space:nowrap}
 .hero-logo-row img{display:block;width:auto;height:100%;padding-top:var(--logo-pad-top,0);
-  opacity:.78;filter:invert(1)}
+  opacity:.78;filter:var(--logo-filter)}
 [data-theme="light"] .hero-logo-row img{filter:none}
+/* monochrome, muted, optically-balanced credibility rail (toggle: body.strip-mono) */
+body.strip-mono .hero-logo-row img{filter:brightness(0)!important;opacity:.48}
+:root[data-theme="dark"] body.strip-mono .hero-logo-row img{filter:brightness(0) invert(1)!important;opacity:.58}
+body.strip-mono .hero-company-logo:hover img,body.strip-mono .hero-company-logo:focus-visible img{opacity:.85}
+body.strip-mono .hero-logo-row li:has([data-work-company="amazon"]){--h:20px}
+body.strip-mono .hero-logo-row li:has([data-work-company="taskrabbit"]){--h:14px}
+body.strip-mono .hero-logo-row li:has([data-work-company="clover"]){--h:12px}
+body.strip-mono .hero-logo-row li:has([data-work-company="goodrx"]){--h:16px}
+body.strip-mono .hero-logo-row li:has([data-work-company="sharecare"]){--h:15px}
 .hero-company-logo{appearance:none;position:relative;display:block;width:auto;height:100%;padding:0;
   border:0;background:transparent;color:inherit;cursor:pointer}
 .hero-company-logo[data-work-company="amazon"]{--logo-mask:url("images/logos/amazon.svg")}
@@ -852,8 +898,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .hero-company-logo:hover::after,.hero-company-logo:focus-visible::after{
   opacity:1;transform:translate(-50%,0)}
 @media(max-width:560px){
-  .hero-credibility{grid-template-columns:1fr;gap:10px}
-  .hero-logo-row{width:100%;gap:14px 22px}
+  .hero-credibility{grid-template-columns:minmax(0,1fr);gap:10px}
+  /* wrap the logos on small screens instead of the scroll-strip, which was blowing
+     out the page width (horizontal scroll). All logos stay visible, no page scroll. */
+  .hero-logo-row{width:100%;min-width:0;flex-wrap:wrap;overflow-x:visible;gap:14px 22px}
   .hero-company-logo::after{display:none}
 }
 .hero .tags{margin:10px 0 0}
@@ -945,7 +993,7 @@ h2.sec#work{margin-top:16px}
 .work-panel-back:hover,.work-panel-back:focus-visible{color:var(--accent)}
 .work-panel-back:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 .work-panel-provenance{display:none;align-items:center;gap:10px;min-width:0;color:var(--muted)}
-.work-panel-provenance-logo{display:block;width:auto;height:18px;max-width:154px;filter:invert(1)}
+.work-panel-provenance-logo{display:block;width:auto;height:18px;max-width:154px;filter:var(--logo-filter)}
 [data-theme="light"] .work-panel-provenance-logo{filter:none}
 .work-panel-provenance-name{font:400 var(--t-base)/1 var(--serif);color:var(--text)}
 .work-panel-provenance-outcome{padding:3px 8px;border:1px solid var(--border);border-radius:999px;
@@ -956,7 +1004,7 @@ h2.sec#work{margin-top:16px}
 .work-panel-heading{min-width:0}
 .work-panel-company-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px 28px}
 .work-panel-identity{display:flex;align-items:center;gap:12px;min-width:0;flex-wrap:wrap}
-.work-panel-logo{display:block;width:auto;height:28px;max-width:220px;margin:0;filter:invert(1)}
+.work-panel-logo{display:block;width:auto;height:28px;max-width:220px;margin:0;filter:var(--logo-filter)}
 [data-theme="light"] .work-panel-logo{filter:none}
 .work-panel-logo[hidden]{display:none}
 .work-panel-company-name{font:400 var(--t-xl)/1 var(--serif);color:var(--text)}
@@ -1018,7 +1066,7 @@ h2.sec#work{margin-top:16px}
   letter-spacing:.12em;text-transform:uppercase}
 .work-panel-result{color:var(--accent);font-family:var(--serif);
   font-size:clamp(24px,3vw,var(--t-lg));line-height:1.15;margin:6px 0 0}
-.work-panel-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.work-panel-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
 .work-panel-actions[hidden]{display:none}
 .work-panel.is-story-view{padding-top:10px}
 .work-panel.is-story-view .work-panel-navline{margin-bottom:12px;padding-bottom:10px;
@@ -1036,13 +1084,18 @@ h2.sec#work{margin-top:16px}
   grid-template-areas:"summary outcome" "facts facts";gap:14px 34px}
 .work-panel.is-story-view .work-panel-details{display:contents}
 .work-panel.is-story-view .work-panel-summary{grid-area:summary;max-width:62ch}
-.work-panel.is-story-view .work-panel-facts{grid-area:facts;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:1px;max-width:none;margin:0;border:1px solid var(--border);background:var(--border)}
+.work-panel.is-story-view .work-panel-facts{grid-area:facts;grid-template-columns:repeat(2,1fr);gap:0;max-width:840px;margin:8px 0 0;
+  border:1px solid var(--border-soft);border-radius:12px;overflow:hidden;background:var(--surface-2)}
 .work-panel.is-story-view .work-panel-facts div,
-.work-panel.is-story-view .work-panel-facts div:nth-child(n+3){display:block;grid-column:auto;
-  padding:11px 14px;background:var(--bg)}
-.work-panel.is-story-view .work-panel-facts dt{font-size:11px;letter-spacing:.12em;text-transform:uppercase}
-.work-panel.is-story-view .work-panel-facts dd{margin-top:3px;font-size:var(--t-sm);line-height:1.35}
+.work-panel.is-story-view .work-panel-facts div:nth-child(n+3){
+  display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:12px;align-items:start;align-content:start;grid-column:auto;
+  min-width:0;padding:14px 16px;border-right:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft)}
+.work-panel.is-story-view .work-panel-facts .fact-icon{grid-row:1;width:18px;height:18px;
+  stroke:var(--accent-strong);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.85;margin-top:1px}
+.work-panel.is-story-view .work-panel-facts dt{grid-column:2;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.work-panel.is-story-view .work-panel-facts dd{grid-column:1/-1;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--text)}
+.work-panel.is-story-view .work-panel-facts dd.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.work-panel.is-story-view .work-panel-facts dd.tags .tok{display:inline-flex;border:1px solid var(--border-strong);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--text)}
 .work-panel.is-story-view .work-panel-outcome{grid-area:outcome}
 @media(min-width:761px){
   .work-panel.is-company-view .work-panel-brief{display:block}
@@ -1072,14 +1125,14 @@ h2.sec#work{margin-top:16px}
 .work-story-section-head{display:block}
 .work-story-section-head h4{font:400 clamp(26px,3vw,38px)/1.05 var(--serif);margin:0}
 .work-story-section-head p{max-width:none;margin:8px 0 0;color:var(--muted);font-size:var(--t-sm);line-height:1.5}
-.work-project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.work-project-card{appearance:none;position:relative;display:grid;grid-template-rows:auto 1fr;width:100%;
+.work-project-grid{display:flex;flex-direction:column;gap:16px}
+.work-project-card{appearance:none;position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);grid-template-rows:1fr;width:100%;
   min-width:0;padding:0;overflow:hidden;border:1px solid var(--border);background:var(--surface);
   color:var(--text);text-align:left;cursor:pointer;transition:border-color .2s ease,transform .3s cubic-bezier(.2,.75,.2,1)}
 .work-project-card:hover,.work-project-card:focus-visible{border-color:var(--accent);transform:translateY(-3px)}
 .work-project-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .work-project-card-media{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:2.5%;
-  height:clamp(168px,17vw,208px);padding:16px 18px 0;overflow:hidden;background:#009b5a}
+  height:100%;min-height:290px;padding:22px 22px 0;overflow:hidden;background:#009b5a}
 .work-project-card-scan-title{display:none}
 .work-project-card[data-work-story="tasker"] .work-project-card-media{background:#069b55}
 .work-project-card[data-work-story="client"] .work-project-card-media{background:#dfe8df}
@@ -1103,7 +1156,7 @@ h2.sec#work{margin-top:16px}
 .work-project-card:focus-visible .work-project-card-media img:nth-child(odd){transform:translateY(-8px) rotate(-1deg)}
 .work-project-card:hover .work-project-card-media img:nth-child(even),
 .work-project-card:focus-visible .work-project-card-media img:nth-child(even){transform:translateY(-12px) rotate(1deg)}
-.work-project-card-copy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 18px;padding:18px}
+.work-project-card-copy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 18px;padding:26px 30px;align-content:center}
 .work-project-card-kicker{grid-column:1;color:var(--muted);font-size:var(--t-xs);
   letter-spacing:.12em;text-transform:uppercase}
 .work-project-card-delivery{grid-column:2;grid-row:1;justify-self:end;align-self:start}
@@ -1122,6 +1175,14 @@ h2.sec#work{margin-top:16px}
   .work-project-grid>.work-project-card:last-child:nth-child(odd) .work-project-card-media{
     height:100%;min-height:230px}
   .work-project-grid>.work-project-card:last-child:nth-child(odd) .work-project-card-copy{align-content:center}
+}
+.work-project-grid>.work-project-card:nth-child(even){grid-template-columns:minmax(320px,.8fr) minmax(0,1.2fr)}
+.work-project-grid>.work-project-card:nth-child(even)>.work-project-card-media{order:2}
+@media(max-width:760px){
+  .work-project-card,.work-project-grid>.work-project-card:nth-child(even){grid-template-columns:1fr;grid-template-rows:auto auto}
+  .work-project-card-media{min-height:200px}
+  .work-project-grid>.work-project-card:nth-child(even)>.work-project-card-media{order:0}
+  .work-project-card-copy{padding:20px}
 }
 .work-company-support{display:grid;gap:14px;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
 .work-company-support-head{display:block}
@@ -1153,6 +1214,33 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .work-also-shipped-list span{display:block;color:var(--muted);font-size:var(--t-xs);line-height:1.45}
 .work-also-shipped-list .work-supporting-delivery{margin:8px 0 0;color:var(--accent);
   font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+/* Product map (breadth): surface-grouped tiles opening a lightbox or linking out */
+.work-product-map{margin:8px 0 0;padding-top:22px;border-top:1px solid var(--border)}
+.work-map-group{display:grid;grid-template-columns:minmax(150px,190px) minmax(0,1fr);column-gap:30px;
+  align-items:start;margin:0;padding:20px 0;border-top:1px solid var(--border-soft)}
+.work-map-group:first-of-type{border-top:0;padding-top:2px}
+.work-map-group:last-child{margin-bottom:0}
+.work-map-group-head{margin:0;border-bottom:0;padding-bottom:0}
+.work-map-group-head .t{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);font-weight:700}
+.work-map-group-head .d{font-size:12.5px;color:var(--muted);margin-top:3px}
+.work-map-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.work-map-tile{position:relative;appearance:none;text-align:left;border:1px solid var(--border-soft);
+  background:var(--surface);border-radius:9px;padding:0;cursor:pointer;overflow:hidden;transition:.15s;
+  color:inherit;font:inherit;display:block;text-decoration:none}
+.work-map-tile:hover,.work-map-tile:focus-visible{border-color:var(--accent);transform:translateY(-2px);outline:none}
+.work-map-tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.work-map-tile-thumb{height:96px;border-bottom:1px solid var(--border-soft);background:#ececea;overflow:hidden}
+.work-map-tile-thumb img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.work-map-tile-meta{padding:9px 11px 10px}
+.work-map-tile-name{font-size:12.5px;font-weight:600;line-height:1.25;color:var(--text)}
+.work-map-tile-desc{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.3}
+.work-map-tile-state{font-size:11px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:5px}
+.work-map-tile-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;flex:none}
+.work-map-tile-dot.warn{background:#c9a227}
+.work-map-tile-dot.todo{background:var(--muted)}
+.work-map-tile-ico{position:absolute;top:7px;right:8px;font-size:12px;color:#fff;background:rgba(0,0,0,.42);
+  border-radius:5px;width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+@media(max-width:600px){.work-map-group{grid-template-columns:1fr;row-gap:12px}.work-map-tiles{grid-template-columns:repeat(2,1fr)}}
 .project-story{display:grid;gap:clamp(46px,7vw,86px)}
 .project-story-opening{display:grid}
 .project-story-hero{appearance:none;position:relative;display:block;width:100%;padding:0;overflow:hidden;
@@ -1372,7 +1460,6 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .work-shell.is-focused{width:100%;padding-right:16px;padding-left:16px;padding-bottom:40px}
   .work-panel-brief{grid-template-columns:1fr;gap:14px}
   .work-panel-outcome{padding:12px 0 0;border-left:0;border-top:1px solid var(--border)}
-  .work-panel-actions{justify-content:flex-start}
   .work-project-grid{grid-template-columns:none;grid-auto-flow:column;
     grid-auto-columns:calc(100% - 28px);gap:12px;padding:0 16px 2px 0;margin-right:-16px;
     overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
@@ -1440,10 +1527,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .work-panel.is-company-view .work-panel-details[open]>.work-panel-facts{margin-bottom:12px}
   .work-panel-facts{grid-template-columns:1fr;gap:7px}
   .work-panel-facts div,.work-panel-facts div:nth-child(n+3){grid-column:1;grid-template-columns:88px minmax(0,1fr)}
-  .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr 1fr;gap:1px}
+  .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr}
   .work-panel.is-story-view .work-panel-facts div,
-  .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-column:auto;padding:10px 11px}
-  .work-panel.is-story-view .work-panel-facts div:last-child:nth-child(odd){grid-column:1/-1}
+  .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:22px minmax(0,1fr);grid-column:1;padding:14px 16px}
   .work-project-card-media{height:250px;padding:16px 14px 0}
   .work-project-card-copy{padding:15px}
   .work-vignette-copy{padding:18px}
@@ -1470,13 +1556,463 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 <script type="text/javascript" src="analytics-init.js"></script>
 <script type="text/javascript" src="analytics.js" defer></script>
 <script type="text/javascript" src="voice-agent.js" defer></script>
+<style id="bl-styles">
+/* ============================================================
+   SPIKE ONLY - base-layer / substrate exploration. Not production.
+   "before" = untouched v4. "after" = body.bl-after.bl-<n>.
+   Goal: a blueprint/grid base with real depth that HELPS (D lenses onto this).
+   ============================================================ */
+:root{--grid-maj:color-mix(in srgb, var(--text) 9%, transparent);--sp-hb:12px;--sp-16:96px}
+
+/* Base is LOCKED (Chris, 2026-09-17): grain + 12-column grid, always on. */
+body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.06;
+  mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+:root[data-theme="dark"] body.dv-base::after{mix-blend-mode:screen;opacity:.05}
+/* GRID DECIDED OUT (Chris 2026-09-17): no visible grid, grain only. */
+/* ---- B · Type-as-hero treatments. All on-system fonts (Newsreader/Figtree/Plex Mono),
+   no new copy - just treatment of the existing lockup + its two .lit-word verbs
+   ("design", "ship"). tb-1 = current baseline. ---- */
+
+/* tb-2 · Big, two-line - let it wrap and go display-scale, tight leading */
+body.tb-2 .hero h1.hero-lockup,body.tb-5 .hero h1.hero-lockup,body.tb-6 .hero h1.hero-lockup{
+  white-space:normal;width:auto;max-width:none;
+  font-size:clamp(2.6rem,8.5vw,5.8rem);line-height:.98;letter-spacing:-.02em}
+/* forced break after "&" - only in the two-line treatments */
+.hero-lockup .lb{display:none}
+body.tb-2 .hero-lockup .lb,body.tb-5 .hero-lockup .lb,body.tb-6 .hero-lockup .lb{display:inline}
+
+/* tb-3 · Italic verbs - draw the eye to the two actions, add voice */
+body.tb-3 .lit-word,body.tb-5 .lit-word{font-style:italic}
+
+/* tb-4 · Green verbs - the signature accent on the two actions */
+body.tb-4 .lit-word{color:var(--accent)}
+
+/* tb-5 = big two-line + italic verbs (combines 2 and 3) */
+
+/* ── ALIVE hero (Chris's authored-pencil brief): the designer sketches "I design the
+   product" in graphite stroke-groups; a beat; the green "&" arrives as one confident
+   mark; "ship code" types crisply with a tracking caret; "." lands last. Serif throughout,
+   JS-orchestrated (drawHero6), <2.5s, reduced-motion = static. ── */
+body.tb-6 .lit-word{font-style:normal;position:relative}
+body.tb-6 .hl-design{display:inline-block;position:relative}
+
+/* B - serif graphite mask reveal (baseline) */
+body.tb-6.ho-b .hl-design{
+  -webkit-mask-image:linear-gradient(90deg,#000 60%,rgba(0,0,0,0) 90%);
+  mask-image:linear-gradient(90deg,#000 60%,rgba(0,0,0,0) 90%);
+  -webkit-mask-size:235% 100%;mask-size:235% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;
+  animation:hl-draw .7s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes hl-draw{to{-webkit-mask-position:0 0;mask-position:0 0}}
+
+/* A / D - handwriting (Caveat), revealed in 2 grouped beats (not letters, not a wipe) */
+body.tb-6.ho-a .hl-design,body.tb-6.ho-d .hl-design{font-family:'Caveat',cursive;font-weight:600;
+  font-style:normal;font-size:1.06em;letter-spacing:.005em}
+body.tb-6.ho-a .hl-design .lit-word,body.tb-6.ho-d .hl-design .lit-word{font-style:normal}
+.hl-design .hg{display:inline-block;opacity:0;transform:translateY(.14em) rotate(-.5deg)}
+body.tb-6.ho-a .hl-design .hg,body.tb-6.ho-d .hl-design .hg{animation:hg-in .5s cubic-bezier(.3,.8,.3,1) forwards}
+body.tb-6.ho-a .hl-design .hg:nth-child(2),body.tb-6.ho-d .hl-design .hg:nth-child(2){animation-delay:.3s}
+@keyframes hg-in{to{opacity:1;transform:none}}
+
+/* C - serif clean + a hand-drawn underline that strokes on (real SVG path draw) */
+body.tb-6.ho-c .hl-design{opacity:0;animation:hc-in .45s ease forwards}
+@keyframes hc-in{to{opacity:1}}
+.hl-underline{position:absolute;left:0;bottom:-.14em;width:104%;height:.4em;overflow:visible;pointer-events:none}
+.hl-underline path{fill:none;stroke:var(--text);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+
+/* the green "&" as a single clean accent (all options) */
+body.tb-6 .hl-amp{display:inline-block;color:var(--text);opacity:0;transform:translateY(.05em) scale(.96);
+  animation:hl-ampin .3s cubic-bezier(.3,.9,.3,1) .82s forwards}
+@keyframes hl-ampin{to{opacity:1;transform:none}}
+
+/* colour story: the signature green marks the story words (toggled by col-* class) */
+/* colour: tagline is one uniform ink (--text) - no green accents (Chris 2026-09-19).
+   --text is near-white in dark mode / near-black in light, so it reads correctly on both grounds. */
+body.tb-6 .hl-design .lit-word,
+body.tb-6 .hl-codechar,
+body.tb-6 .hl-prod{color:var(--text)}
+
+/* caret + "ship code." (all options) */
+.hl-caret{display:inline-block;width:0;height:.72em;vertical-align:baseline;position:relative}
+.hl-caret::before{content:"";position:absolute;left:.02em;bottom:0;width:.05em;height:.72em;background:var(--accent);animation:hl-blink .6s steps(1,end) infinite}
+@keyframes hl-blink{0%,100%{opacity:1}50%{opacity:0}}
+/* the period sparkles in together with "products" as it materialises */
+.hl-dot{display:inline-block;opacity:0;position:relative}
+body.tb-6 .hl-special.in .hl-dot{animation:hl-dotin .55s cubic-bezier(.3,.7,.25,1) .12s forwards}
+@keyframes hl-dotin{0%{opacity:0;transform:scale(.5)}60%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+.hl-dot::after{content:"";position:absolute;left:50%;top:-.02em;width:.26em;height:.26em;background:var(--accent);
+  opacity:0;transform:translate(-50%,0) scale(0);pointer-events:none;
+  clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}
+body.tb-6 .hl-special.in .hl-dot::after{animation:hl-sparkle2 .6s ease-out .18s forwards}
+@keyframes hl-sparkle2{0%{opacity:0;transform:translate(-50%,0) scale(0) rotate(0)}45%{opacity:.9;transform:translate(-50%,0) scale(1) rotate(30deg)}100%{opacity:0;transform:translate(-50%,0) scale(.4) rotate(60deg)}}
+/* line 2: "products" fades into existence (from nothing, blur->sharp) with a sparkle -
+   a product being created; the period is static (no animation). */
+.hl-special{display:inline-block}
+.hl-prod{display:inline-block;position:relative;opacity:0}
+body.tb-6 .hl-special.in .hl-prod{animation:hl-create .75s cubic-bezier(.3,.7,.25,1) forwards}
+@keyframes hl-create{0%{opacity:0;transform:scale(.9);filter:blur(4px)}55%{opacity:1;filter:blur(.4px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
+/* sparkle keyframe (used by "products" as it materialises) */
+@keyframes hl-sparkle{0%{opacity:0;transform:scale(0) rotate(0)}45%{opacity:.9;transform:scale(1) rotate(35deg)}100%{opacity:0;transform:scale(.4) rotate(70deg)}}
+
+/* discreet review toggle (removed for the real flip) */
+
+@media (prefers-reduced-motion:reduce){
+  body.tb-6 .hl-design{-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;opacity:1!important}
+  body.tb-6 .hl-design .hg{opacity:1!important;transform:none!important;animation:none!important}
+  body.tb-6 .hl-amp{opacity:1;transform:none;animation:none}
+  body.tb-6 .hl-dot{opacity:1;transform:none;animation:none}
+  body.tb-6 .hl-special{opacity:1;transform:none;animation:none}
+  body.tb-6 .hl-prod{opacity:1;transform:none;filter:none;animation:none}
+  .hl-caret,.hl-underline,.hl-dot::after{display:none}
+}
+
+/* ---- Spacing scale RESOLVED 2026-09-17: Chris chose 4px granularity. The 4px ramp
+   is now the baseline in :root (--sp-1:4px kept, --sp-hb:12px, --sp-16:96px). The old
+   sc-4/sc-8 A/B classes are retired. ---- */
+/* (card-grid "fix" removed: auto-fill already renders equal-width tracks at every
+   width; forcing repeat(3,1fr) squished cards to 135px on phones. The real "2 wider
+   blocks" is elsewhere - awaiting Chris to point at it, no guessing.) */
+
+/* ── Band reveal styles (spike toggle #dv-anim). Baseline (no class) keeps the
+   current uniform 14px .reveal. Each variant holds the band section visible and
+   animates its two pieces - .co-head (name + line) and .band-frame (image) - so the
+   company "arrives" with character instead of lifting as one lump. Company bands
+   only; the rest of the page keeps its quiet reveal. ── */
+/* Variants take over the parent (kill the base 14px lump-rise) and drive the pieces. */
+body.anim-1 .co-band.reveal,
+body.anim-2 .co-band.reveal,
+body.anim-3 .co-band.reveal,
+body.anim-4 .co-band.reveal{opacity:1;transform:none}
+
+/* R1 Slide - head enters from the left, image from the right, they meet. Editorial. */
+body.anim-1 .co-band.reveal .co-head{opacity:0;transform:translateX(-24px);
+  transition:opacity .5s ease,transform .62s cubic-bezier(.22,1,.36,1)}
+body.anim-1 .co-band.reveal .band-frame{opacity:0;transform:translateX(24px);
+  transition:opacity .55s ease .05s,transform .66s cubic-bezier(.22,1,.36,1) .05s}
+body.anim-1 .co-band.reveal.in .co-head,
+body.anim-1 .co-band.reveal.in .band-frame{opacity:1;transform:none}
+
+/* R2 Settle - image starts soft + slightly small and snaps sharp; the hero's
+   "product coming into existence" blur, carried down the page. */
+body.anim-2 .co-band.reveal .co-head{opacity:0;transform:translateY(10px);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+body.anim-2 .co-band.reveal .band-frame{opacity:0;transform:scale(.985);filter:blur(6px);
+  transition:opacity .55s ease,transform .7s cubic-bezier(.22,1,.36,1),filter .6s ease}
+body.anim-2 .co-band.reveal.in .co-head{opacity:1;transform:none}
+body.anim-2 .co-band.reveal.in .band-frame{opacity:1;transform:none;filter:none}
+
+/* R3 Cascade - name lands first, image follows a beat later. Clear sequence. */
+body.anim-3 .co-band.reveal .co-head{opacity:0;transform:translateY(18px);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+body.anim-3 .co-band.reveal .band-frame{opacity:0;transform:translateY(26px);
+  transition:opacity .55s ease .12s,transform .66s cubic-bezier(.22,1,.36,1) .12s}
+body.anim-3 .co-band.reveal.in .co-head,
+body.anim-3 .co-band.reveal.in .band-frame{opacity:1;transform:none}
+
+/* R4 Wash - the band's own color curtains off the image, left to right. A taste of
+   the per-company "lens/world" idea, contained to one entrance. */
+body.anim-4 .co-band.reveal .co-head{opacity:0;transform:translateY(10px);
+  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+body.anim-4 .co-band.reveal.in .co-head{opacity:1;transform:none}
+body.anim-4 .co-band.reveal .band-frame{position:relative;overflow:hidden;border-radius:14px}
+body.anim-4 .co-band.reveal .band-frame::after{content:"";position:absolute;inset:0;z-index:3;
+  background:var(--band);transform-origin:right;transform:scaleX(1);
+  transition:transform .72s cubic-bezier(.76,0,.24,1)}
+body.anim-4 .co-band.reveal.in .band-frame::after{transform:scaleX(0)}
+
+@media (prefers-reduced-motion:reduce){
+  body[class*="anim-"] .co-band.reveal .co-head,
+  body[class*="anim-"] .co-band.reveal .band-frame{opacity:1!important;transform:none!important;filter:none!important}
+  body.anim-4 .co-band.reveal .band-frame::after{display:none}
+}
+
+/* ── Section-heading hierarchy + outcome metadata (spike toggles #dv-hier, #dv-tag).
+   Two problems Chris flagged: (1) "Work" is styled smaller and rule-less than its peer
+   sections ("What I'm looking for", "Let's work together"), and "More work"/"Experiments"
+   don't read as a distinct sub-tier; (2) the de-pilled outcome should lose the dot but
+   keep the pill's sense of a defined marker. Pure CSS, static class swaps. ── */
+
+/* ---- L2 group labels for "More work"/"Experiments" (spike toggle #dv-l2). These live
+   UNDER Work, so they must carry NO horizontal rule - rules are reserved for breaks
+   between L1 sections. Subordination is shown by small size, uppercase, letterspacing,
+   and whitespace; an optional non-rule marker adds definition. Never an item name. ---- */
+body.l2-kick .exp-head,body.l2-tick .exp-head,body.l2-tab .exp-head{
+  font-family:var(--serif);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:54px 0 16px}
+/* Kicker: size + case + whitespace only. */
+/* Tick: a short vertical accent bar (not a horizontal rule) flags the sub-group. */
+body.l2-tick .exp-head::before{content:"";display:inline-block;width:3px;height:13px;background:var(--accent);
+  border-radius:2px;margin-right:11px;vertical-align:-1px}
+/* Tab: the label sits in a soft chip - a defined marker echoing the metadata chips, no rule. */
+body.l2-tab .exp-head{display:inline-block;background:var(--surface-2);color:var(--muted);padding:5px 11px;border-radius:6px}
+
+/* ---- OUTCOME METADATA: de-pilled, no dot. Down to soft chip vs de-pilled text, each in
+   neutral or the hero's highlight color. ---- */
+/* soft chip - filled, borderless; keeps the pill's marker feel without the hard outline */
+body.tag-chip .tag-outcome,body.tag-chip-accent .tag-outcome{border:0;margin-left:10px;
+  padding:3px 9px;border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.03em;
+  text-transform:none;vertical-align:middle}
+body.tag-chip .tag-outcome{background:var(--surface-2);color:var(--muted)}
+body.tag-chip-accent .tag-outcome{background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent-strong)}
+/* de-pilled text - no dot; case, size, and a gap (or the accent color) do the separating */
+body.tag-text .tag-outcome,body.tag-text-accent .tag-outcome{border:0;padding:0;background:none;border-radius:0;
+  margin-left:12px;font-size:12px;letter-spacing:.07em;text-transform:uppercase}
+body.tag-text .tag-outcome{color:var(--muted);font-weight:600}
+body.tag-text-accent .tag-outcome{color:var(--accent-strong);font-weight:700}
+
+/* ---- CARD TITLES (More work + Experiments): base is bold sans 19px, a different voice
+   from the serif company names. Serif brings them into the same name hierarchy. ---- */
+body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:23px;
+  line-height:1.1;letter-spacing:.005em}
+
+/* ---- BLUEPRINT PLACEHOLDER (Chris chose 2026-09-17). A .wcard-thumb that still has a
+   text label (i.e. no <img> yet) gets a subtle structural grid over its brand field, so
+   it reads as an intentional working-drawing placeholder instead of missing art. It's
+   reusable: as real screenshots drop in over time the <img> replaces the label and the
+   grid disappears automatically. Ties to the living-blueprint DNA of the whole page. ---- */
+.wcard-thumb:has(.wcard-thumb-label){position:relative}
+.wcard-thumb:has(.wcard-thumb-label)::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    repeating-linear-gradient(to right, rgba(255,255,255,.11) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(to bottom, rgba(255,255,255,.11) 0 1px, transparent 1px 44px);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3));
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3))}
+
+/* ==== BLUEPRINT-SYSTEM exploration - the working-drawings visual language, i.e. the
+   design↔code seam as the site's identity. SPIKE ONLY, flip via #bp-bar. Graphic-only
+   (marks / ticks / dimension + leader lines); NO invented words. One bp class at a time.
+   Desktop-first: gutter elements are guarded so they never cause mobile h-scroll. ==== */
+body[class*="bp-"] #top{position:relative}
+
+/* bp-1 · Sheet - accent crop marks at the content-column top corners (reads: a drawing sheet) */
+body.bp-1 #top::before,body.bp-1 #top::after{content:"";position:absolute;top:4px;width:14px;height:14px;
+  pointer-events:none;border-top:1.5px solid var(--accent);opacity:.85}
+body.bp-1 #top::before{left:24px;border-left:1.5px solid var(--accent)}
+body.bp-1 #top::after{right:24px;border-right:1.5px solid var(--accent)}
+
+/* bp-2 · Ruler - a measured tick strip across the top of the content column, pitched to the 44px grid */
+body.bp-2 #top::before{content:"";position:absolute;left:24px;right:24px;top:2px;height:9px;pointer-events:none;
+  background-image:repeating-linear-gradient(to right, var(--grid-maj) 0 1px, transparent 1px 44px);
+  border-bottom:1px solid var(--border)}
+
+/* bp-3 · Dimension line - a vertical measured line with end ticks down the hero (in the gutter, desktop only) */
+body.bp-3 .hero{position:relative}
+@media (min-width:1040px){
+  body.bp-3 .hero::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:1px;background:var(--accent);opacity:.55}
+  body.bp-3 .hero::after{content:"";position:absolute;left:-20px;top:8px;width:9px;height:1px;background:var(--accent);opacity:.7;
+    box-shadow:0 0 0 0 var(--accent)}
+}
+
+/* bp-4 · Registration - a short accent rule above each section heading (a drafting register mark) */
+body.bp-4 h2.sec,body.bp-4 .exp-head{position:relative}
+body.bp-4 h2.sec::before,body.bp-4 .exp-head::before{content:"";position:absolute;left:0;top:-12px;
+  width:40px;height:1.5px;background:var(--accent);opacity:.75}
+
+/* bp-5 · Detail frames - corner ticks on every work thumb, like a plate on a drawing set */
+body.bp-5 .wcard-thumb::after,body.bp-5 .band-frame::after{content:"";position:absolute;right:9px;bottom:9px;
+  width:15px;height:15px;pointer-events:none;z-index:3;
+  border-right:1.5px solid rgba(255,255,255,.72);border-bottom:1.5px solid rgba(255,255,255,.72)}
+body.bp-5 .band-frame{position:relative}
+
+/* spike flipper */
+#bp-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;display:flex;
+  gap:4px;padding:6px;background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:var(--sans);backdrop-filter:blur(6px)}
+#bp-bar button{appearance:none;border:0;background:transparent;color:#ddd;font-size:12px;font-weight:600;
+  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
+#bp-bar button:hover{background:rgba(255,255,255,.08)}
+#bp-bar button.on{background:var(--accent);color:#fff}
+
+/* ==== WORLDS prototype - GoodRx only. Hover-stir on the band + a circular expand
+   reveal (View Transitions API) into a per-project "world" that takes over the viewport
+   while the baseline chrome (the "ship") persists. SPIKE; CSS-only motion so it stays
+   buttery on a MacBook Air (no per-world WebGL). ==== */
+/* hover-stir: the band strains to break out of the page */
+.co-band[data-project="goodrx"] .band-frame{transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s ease}
+.co-band[data-project="goodrx"]:hover .band-frame,
+.co-band[data-project="goodrx"]:focus-within .band-frame{
+  transform:scale(1.014);box-shadow:0 22px 66px rgba(252,239,114,.30),0 0 0 1px rgba(252,239,114,.6)}
+
+
+/* World reveal (see __openWorldClip / closeWorldClip). No View Transitions API.
+   #world-layer wraps the panel + focus content. Normally display:contents, so the focused layout is
+   unchanged. During the reveal (body.world-entering) it becomes an opaque overlay ABOVE the still-visible
+   homepage, clipped to a growing circle - so you see the real homepage everywhere outside the circle and
+   the world inside it. The circle CENTER is static (only --reveal-r animates) so the origin can't be
+   dropped mid-interpolation the way an animated clip position was in some Chromium forks. */
+@property --reveal-r{syntax:"<length>";inherits:false;initial-value:0px}
+#world-layer{display:contents}
+/* Overlay covers the full viewport (opaque bg + clip reach the corners) but pads its content to the SAME
+   centered 1180px column the focused shell uses, so the layout doesn't jump wide mid-transition. */
+body.world-entering #world-layer{display:block;position:fixed;inset:var(--head-h) 0 0;z-index:60;
+  overflow-y:auto;background:var(--world-bg,#fff);padding:0 max(24px,calc((100vw - 1180px)/2)) 64px}
+#world-layer.world-revealing{clip-path:circle(var(--reveal-r,0px) at var(--reveal-x,50%) var(--reveal-y,50%))}
+/* keep the homepage visible BEHIND the layer during the reveal (bands + neutral backdrop, not the yellow flood) */
+body.world-entering .work-grid[data-locked="true"] .co-groups{display:block!important}
+body.work-focus-open[data-world].world-entering,
+body.work-focus-open[data-world].world-entering #top,
+body.work-focus-open[data-world].world-entering .work-shell{background:var(--bg)!important}
+
+/* ==== SHARED cheap dissolve edge (#2, 2026-09-20) - the INVERTED base effect. A 2D-canvas pixel-block
+   dissolve rides the SHARED __openWorldClip reveal circle for EVERY world: cheap on the Air, verifiable
+   headless (2D, no GPU), drawn over the real homepage backdrop that world-entering keeps behind the layer.
+   Blocks BORROW the incoming world's palette (--world-bg mass / --world-ink grit / --world-accent sparks) -
+   no fixed brand colour; per-world identity comes for free. GoodRx's WebGL grain stays a per-world OVERRIDE.
+   Reduced-motion falls back to the clean clip. Tuned values are baked in window.__DTUNE (live tuner removed). ==== */
+#world-dissolve{position:fixed;inset:0;z-index:61;pointer-events:none;display:none}
+body.dissolve-edge.world-entering #world-dissolve{display:block}
+@media (prefers-reduced-motion:reduce){ #world-dissolve{display:none!important} }
+
+/* World back = a sticky, FULL-BLEED sub-bar pinned under the header (Chris's pick). The margin/padding-inline
+   breakout makes its background span the whole viewport while the content stays in the 1180px column - a
+   plain sticky only spans the padded column, which is why it looked narrow on mobile. */
+body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
+  margin-inline:calc(50% - 50vw);padding:12px calc(50vw - 50%);
+  background:var(--world-bg);border-bottom:1px solid var(--world-line)}
+
+/* ==== REGION transition (company ↔ case study) - a case study is a reading surface, so it just fades in
+   quietly. No set-piece (the world reveal is the one signature moment). ==== */
+.region-in{animation:rgn-fade .16s ease both}
+@keyframes rgn-fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){ .region-in{animation:none} }
+
+@media (prefers-reduced-motion: reduce){
+  .co-band[data-project="goodrx"] .band-frame{transition:none}
+}
+
+/* ==== CURSOR (GoodRx) - LOCKED (Chris, 2026-09-18): the regular system arrow stays (links stay
+   clickable); an "Enter world →" label trails to its right. #gx-cursor is a fixed label JS moves. */
+#gx-cursor{position:fixed;left:0;top:0;z-index:1260;pointer-events:none;opacity:0;
+  transform:translate(15px,14px);transition:opacity .2s ease;
+  padding:7px 12px;border-radius:999px;background:#141210;color:#fff;font:600 12px/1 var(--sans);white-space:nowrap;
+  box-shadow:0 6px 18px rgba(0,0,0,.28)}
+#gx-cursor::after{content:"Enter world \2192"}
+/* the old static corner cue is now redundant with the trailing label */
+/* The "Enter world →" label is a desktop cursor affordance - on touch there's no mouseleave, so it
+   lingers after tapping in. Kill it on touch devices, and hide it whenever a world is open/opening. */
+@media (hover:none){ #gx-cursor{display:none!important} }
+body.work-focus-open #gx-cursor,body.world-entering #gx-cursor{opacity:0!important}
+@media (prefers-reduced-motion:reduce){ #gx-cursor{transition:none} }
+
+
+/* ==== PER-WORLD SYSTEM - ONE generic treatment, re-skinned per world via TOKENS.
+   BASE: blueprint defaults on body[data-world] - the solid fallback for any new/unskinned world
+   (neutral paper ground; unskinned worlds also fall back to the .visual-placeholder hero).
+   ENTRY: each body[data-world="<slug>"] overrides only its tokens for a unique identity.
+   Override order: [data-world="slug"] beats [data-world] by SOURCE ORDER (both are specificity (0,1,1) -
+   an attribute VALUE adds no specificity - so the per-world ENTRY rows must stay BELOW the base block).
+   The world block as a whole beats base component rules by specificity (body[data-world] ... vs .x).
+   No @layer. Adding a skinned world = one ENTRY token row below + a hero in its data. body[data-world="<slug>"]
+   is set on world open; JS injects .world-hero and hides the default heading. ==== */
+body[data-world]{
+  /* BASE blueprint palette - the fallback identity (neutral paper + slate accent).
+     --world-ink-soft is .72 (not .6) so the 11px mono labels clear WCAG AA (~5.8:1) on the paper bg. */
+  --world-bg:#edeae2; --world-ink:#1b1b19; --world-ink-soft:rgba(27,27,25,.72);
+  --world-line:rgba(27,27,25,.18); --world-accent:#3f6ea6; --world-surface:#f7f6f1;
+  --world-card-bg:#1c1a17; --world-card-ink:#ffffff;}
+
+/* ── ENTRY overrides · per-world identity (one row per skinned world) ── */
+body[data-world="goodrx"]{
+  --world-bg:#fcef72; --world-ink:#1a1710; --world-ink-soft:rgba(26,23,16,.62);
+  --world-line:rgba(26,23,16,.22); --world-accent:#6d4bd8; --world-surface:#fffdf0;
+  --world-card-bg:#1a1710; --world-card-ink:#ffffff;}
+
+body.work-focus-open[data-world]{background:var(--world-bg)}
+/* Header is CONSTANT chrome - never re-themed per world. It stays the persistent frame ("ship") the
+   world reveals beneath, so there's no color snap and nothing to transition. */
+body.work-focus-open[data-world] #work-panel{
+  --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
+  --accent:var(--world-accent);--surface:var(--world-surface);background:var(--world-bg);color:var(--world-ink)}
+/* the colour OVERTAKES the whole focused page - every wrapper + the Selected-projects area */
+body.work-focus-open[data-world] #top,
+body.work-focus-open[data-world] .work-shell,
+body.work-focus-open[data-world] #work-focus-content{background:var(--world-bg)}
+body.work-focus-open[data-world] #work-focus-content{
+  --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
+  --accent:var(--world-accent);--surface:var(--world-surface);color:var(--world-ink)}
+
+/* hero-forward top (Image #4). JS hides the default heading and inserts .world-hero before it. */
+.work-panel-heading.world-hidden{display:none}
+.world-hero{max-width:1040px;margin:0 auto;padding:40px 0 6px}
+.world-hero-kicker{font:600 var(--t-xs)/1 var(--mono,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--world-ink-soft);margin:0 0 16px}
+.world-hero-title{font:400 clamp(44px,7vw,92px)/1.02 var(--serif);letter-spacing:-.01em;color:var(--world-ink);margin:0 0 26px}
+.world-hero-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:72ch;color:var(--world-ink);margin:0}
+.world-hero-media{margin:46px 0 8px}
+.world-hero-media img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 24px 60px rgba(26,23,16,.18)}
+/* BLUEPRINT hero - schematic placeholder for an unskinned world (no hero image yet) */
+.world-hero-media-blueprint .visual-placeholder{width:100%;min-height:clamp(220px,30vw,340px);
+  border:1px solid var(--world-line);border-radius:6px;background:transparent;color:var(--world-ink)}
+.world-hero-media-blueprint .visual-placeholder::before{border-color:var(--world-line)}
+.world-hero-media-blueprint .visual-placeholder-title{color:var(--world-ink)}
+/* Project-world Artifacts region - image grid opening the lightbox */
+.work-artifact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:18px}
+.work-artifact{appearance:none;display:block;padding:0;overflow:hidden;cursor:pointer;
+  border:1px solid var(--world-line,var(--border));border-radius:8px;background:transparent;
+  transition:border-color .16s ease}
+.work-artifact img{display:block;width:100%;height:auto}
+.work-artifact:hover,.work-artifact:focus-visible{border-color:var(--world-ink-soft,var(--border-strong))}
+.work-artifact:focus-visible{outline:2px solid var(--world-accent,var(--accent));outline-offset:2px}
+
+/* body depth (spec grid, outcome, decisions) - readable cards on the brand ground */
+body.work-focus-open[data-world] .work-panel-summary,
+body.work-focus-open[data-world] .work-panel-result,
+body.work-focus-open[data-world] .work-panel-outcome{color:var(--world-ink)}
+/* ==== Fact/spec section - on the world bg (no white card). ==== */
+body[data-world] #work-panel .work-panel-brief,
+body[data-world] #work-panel .work-panel-details,
+body[data-world] #work-panel .work-panel-facts,
+body[data-world] #work-panel .work-panel-outcome{background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important}
+body[data-world] .work-panel.is-company-view .work-panel-facts{max-width:none;margin:30px 0 0}
+body[data-world] .work-panel.is-company-view .work-panel-outcome{max-width:none;padding-top:24px!important;border-top:1px solid var(--world-line)!important;margin-top:26px}
+body[data-world] .work-panel-facts .tok{border-color:var(--world-line);color:var(--world-ink)}
+
+/* FACT GRID - the locked treatment (was "Hybrid B"): serif WHAT-I-DID lede + MEASURED-OUTCOMES
+   bookend, stacked label-over-value hairline rows. Unconditional - every world inherits it. */
+body[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
+body[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:1fr;border-bottom:1px solid var(--world-line);padding:14px 0}
+body[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
+body[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
+body[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+body[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
+body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{padding:4px 0 22px}
+body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
+
+/* ===== Case study (story) view: mirror the company editorial treatment in-world ===== */
+/* #12 · fact grid - drop icons + boxy cells; hairline rows, mono label over plain value (like Hybrid B) */
+body[data-world] .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr;gap:0;max-width:none;background:transparent;border:0;border-radius:0;border-top:1px solid var(--world-line)}
+body[data-world] .work-panel.is-story-view .work-panel-facts div,
+body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:1fr;padding:14px 0;border:0;border-bottom:1px solid var(--world-line)}
+body[data-world] .work-panel.is-story-view .work-panel-facts .fact-icon{display:none}
+body[data-world] .work-panel.is-story-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
+body[data-world] .work-panel.is-story-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+/* stack the brief in one column (summary, facts, then OUTCOME as a full-width serif bookend - like the company MEASURED OUTCOMES) */
+body[data-world] .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;grid-template-areas:"summary" "facts" "outcome"}
+body[data-world] .work-panel.is-story-view .work-panel-outcome{max-width:none;margin-top:26px;padding-top:24px!important;border-top:1px solid var(--world-line)!important}
+
+/* #13/#17 · provenance - company is named in the back-link, so drop the whole lockup (logo + IPO pill) in-world */
+body[data-world] .work-panel.is-story-view .work-panel-provenance{display:none}
+
+/* #18 · category + status read as a one-liner dek directly under the title, left-aligned (not floated top-right) */
+body[data-world] .work-panel.is-story-view .work-panel-heading{grid-template-columns:1fr;align-items:start}
+body[data-world] .work-panel.is-story-view .work-panel-story-meta{justify-content:flex-start;margin-top:14px}
+body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;margin:0}
+
+/* #14 · JUMP TO nav - world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
+body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent)}
+body[data-world] .project-story-nav button[aria-current="true"]{color:#fff}
+
+body.work-focus-open[data-world] .work-project-card{background:var(--world-card-bg);color:var(--world-card-ink);border-color:transparent}
+body.work-focus-open[data-world] .work-project-card *{color:inherit}
+</style>
 </head><body>
-<div class="read-progress" aria-hidden="true"></div>
 
 <!-- 1. Sticky header -->
 <header class="site-head">
   <div class="wrap">
-    <a class="logo" href="#top">Chris Lam</a>
+    <div class="head-left">
+      <a class="logo" href="#top">Chris Lam</a>
+      <a class="status-pill" href="#contact" aria-label="Open to new roles - get in touch"><span class="sp-dot" aria-hidden="true"></span>Open to new roles</a>
+    </div>
     <nav aria-label="Primary">
       <a href="#top" class="hide-sm">About</a>
       <a href="#work">Work</a>
@@ -1501,13 +2037,14 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           <rect x="2" y="4.5" width="20" height="15" rx="2.5"/><path d="m3 6.5 9 6.5 9-6.5"/></svg></a>
     </nav>
   </div>
+  <div class="read-progress" aria-hidden="true"></div>
 </header>
 
 <div class="wrap" id="top">
 
 <!-- 2. Hero -->
 <header class="hero">
-  <h1 class="hero-lockup">I <span class="lit-word">design</span> the product &amp; <span class="lit-word">ship</span> code.</h1>
+  <h1 class="hero-lockup"><span class="hl-design">I <span class="lit-word">design</span></span> <span class="hl-ship"><span class="hl-ship-text"></span></span><br class="lb"><span class="hl-ship2"><span class="hl-ship-text2"></span></span> <span class="hl-special"><span class="hl-prod">products</span><span class="hl-dot">.</span></span></h1>
   <p class="sub"><b>Senior Product Designer</b>. I also build in production React, TypeScript, and Python, so design intent survives to launch.</p>
   <p class="sub-line">14+ years shipping software across healthcare, marketplaces, education, and creative tools. I learn new domains and technologies quickly without compromising product judgment, design craft, or engineering rigor.</p>
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
@@ -1621,7 +2158,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .co-band{position:relative}
   .co-head h3{font-family:'Instrument Serif',serif;font-weight:400;font-size:30px;line-height:1.05;margin:0 0 4px}
   .co-head p{color:var(--muted);max-width:none;margin:0 0 16px;font-size:15px}
-  .band-frame{position:relative;height:340px;border-radius:14px;overflow:hidden;background:var(--band);cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+  .band-frame{position:relative;height:340px;border-radius:2px;overflow:hidden;background:var(--band);cursor:pointer;border:1px solid var(--border)}
   .band-frame .work-tile{position:absolute!important;inset:0!important;left:0!important;top:0!important;width:100%!important;height:100%!important;margin:0!important;padding:24px;border:0;border-radius:0;background:transparent;opacity:0;pointer-events:none;transition:opacity .35s ease;display:flex;align-items:center;justify-content:center}
   .band-frame .work-tile.on{opacity:1;pointer-events:auto;z-index:1}
   .band-frame .work-tile img{width:100%!important;height:100%!important;object-fit:contain!important;min-height:0!important;max-height:100%!important;border-radius:5px;box-shadow:0 8px 26px rgba(0,0,0,.2)}
@@ -1641,22 +2178,29 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .co-band[data-hero] .band-frame .work-tile img{object-fit:contain!important;border-radius:0!important;box-shadow:none!important;max-height:100%!important}
   /* compact "More work" row: non-featured roles as small click-through cards */
   .more-lane{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
-  .more-lane .work-tile.more-tile{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:16px 18px!important;display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);opacity:1!important;pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
+  .more-lane .work-tile.more-tile{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:16px 18px!important;display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid var(--border);border-radius:2px;background:var(--surface-2);opacity:1!important;pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
   .more-lane .work-tile.more-tile:hover{border-color:var(--muted);transform:translateY(-1px)}
   .more-co{font-weight:600;font-size:15px;color:inherit}
   .more-desc{color:var(--muted);font-size:13px;line-height:1.35}
   .more-go{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
   /* unified card grid for More work + Experiments (image thumb + name + desc + CTA) */
-  .work-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:16px}
-  .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--surface-2);pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
+  .work-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--sp-4);margin-top:16px}
+  .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:2px;overflow:hidden;background:var(--surface-2);pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
   .work-cards .work-tile.wcard:hover{border-color:var(--muted);transform:translateY(-2px)}
   .wcard-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:var(--band,#222);overflow:hidden}
   .wcard-thumb img{width:100%;height:100%;object-fit:contain}
   .wcard-thumb-label{font-family:'Instrument Serif',serif;font-size:26px;line-height:1.1;color:rgba(255,255,255,.94);padding:0 18px;text-align:center}
   .wcard-body{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}
-  .wcard-name{font-weight:700;font-size:19px;color:inherit;line-height:1.15}
+  .wcard-name{font-weight:700;font-size:19px;color:var(--text);line-height:1.15}
   .wcard-desc{color:var(--muted);font-size:15px;line-height:1.35}
   .wcard-cta{margin-top:6px;font-weight:600;font-size:14px;color:var(--accent-strong)}
+  /* Dark mode: mute the exposed brand-color field so it recedes into the dark
+     ground instead of vibrating. Layered as background-image over the color, so
+     it sits above background-color but below child <img>/labels - the work and
+     the wordmarks stay bright; only the raw color mat is desaturated. One knob. */
+  :root[data-theme="dark"] .band-frame,
+  :root[data-theme="dark"] .wcard-thumb{
+    background-image:linear-gradient(rgba(20,20,22,.32),rgba(20,20,22,.32))}
   .tag-outcome{display:inline-block;margin-left:9px;padding:2px 8px;border:1px solid var(--border);border-radius:99px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--muted);vertical-align:middle;white-space:nowrap;text-transform:none}
   /* ---- homepage vertical rhythm: one consolidated source, supersedes the scattered
      hero/#work patches above. Scale in use: 6 / 12 / 18 / 24 / 44 / 60 px ---- */
@@ -1671,7 +2215,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .co-head h3{margin:0 0 6px}
   .co-head p{margin:0 0 18px}
   .work-cards{margin-top:18px}
-  /* ---- signature motion #1: Cosmos-style gentle image zoom on hover (bands + cards).
+  /* ---- signature motion #1: gentle image zoom on hover (bands + cards).
      Frames already clip overflow; easing is a soft ease-out. Reduced-motion opts out. ---- */
   .co-band[data-hero] .band-frame img,
   .wcard-thumb img{transition:transform .55s cubic-bezier(.22,1,.36,1)}
@@ -1707,6 +2251,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 </div>
 <section class="work-explorer" aria-labelledby="work">
   <p id="work-status" class="work-status" aria-live="polite"></p>
+  <div id="world-layer"><!-- display:contents normally (no layout impact); becomes a clipped overlay only during the world reveal -->
   <aside id="work-panel" class="work-panel" tabindex="-1" hidden>
     <div class="work-panel-navline">
       <button class="work-panel-back" type="button">← All work</button>
@@ -1750,6 +2295,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     </div>
   </aside>
   <div id="work-focus-content" class="work-focus-content" hidden></div>
+  </div><!-- /#world-layer -->
   <div id="work-grid" class="work-grid">
   <div class="co-groups">
     <div class="co-lane">
@@ -1806,7 +2352,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         <span class="wcard-body"><span class="wcard-name">Modus Create</span><span class="wcard-desc">Cross-app dark mode shipped to a 500K+ user base, in production TypeScript.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money">
-        <span class="wcard-thumb" style="--band:#3b82f6"><span class="wcard-thumb-label">StartPlaying</span></span>
+        <span class="wcard-thumb" style="--band:#3b82f6" data-kicker="YC W20 · a16z"><span class="wcard-thumb-label">StartPlaying</span></span>
         <span class="wcard-body"><span class="wcard-name">StartPlaying<span class="tag-outcome">YC W20 · a16z</span></span><span class="wcard-desc">Founding designer. Shipped the payment and payout system.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder">
@@ -1818,7 +2364,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         <span class="wcard-body"><span class="wcard-name">TaskRabbit<span class="tag-outcome">Acq. IKEA</span></span><span class="wcard-desc">Tasker experience, NPS -5 to mid-50s.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music">
-        <span class="wcard-thumb" style="--band:#232f3e"><span class="wcard-thumb-label">Amazon</span></span>
+        <span class="wcard-thumb" style="--band:#232f3e" data-kicker="Amazon Music"><span class="wcard-thumb-label">Amazon</span></span>
         <span class="wcard-body"><span class="wcard-name">Amazon</span><span class="wcard-desc">Amazon Music. Built the importer and matcher that brought local and cloud music into one library.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
     </div>
@@ -1922,7 +2468,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 
   var saved=localStorage.getItem(k);
   if(saved) r.setAttribute("data-theme",saved);
-  else if(window.matchMedia("(prefers-color-scheme: light)").matches) r.setAttribute("data-theme","light");
+  else if(window.matchMedia("(prefers-color-scheme: dark)").matches) r.setAttribute("data-theme","dark");
   /* Swap the facade for the real player on click. Nothing loads until asked. */
   /* The story panel is a native popover: the platform handles open, close,
      light-dismiss, Escape and focus return. No JS needed here. */
@@ -1943,13 +2489,13 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 
   var tt = document.getElementById("theme-toggle");
   function syncToggle(){
-    var dark = r.getAttribute("data-theme") !== "light";
+    var dark = r.getAttribute("data-theme") === "dark";
     tt.setAttribute("aria-checked", String(dark));
     tt.setAttribute("aria-label", dark ? "Dark mode. Switch to light." : "Light mode. Switch to dark.");
   }
   syncToggle();
   tt.addEventListener("click", function(){
-    var next = r.getAttribute("data-theme") === "light" ? "dark" : "light";
+    var next = r.getAttribute("data-theme") === "dark" ? "light" : "dark";
     r.setAttribute("data-theme", next);
     localStorage.setItem(k, next);
     syncToggle();
@@ -2266,26 +2812,18 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         supportTitle: "More of the platform",
         supportIntro: "The role crossed student, instructor, authoring, and company surfaces. Delivery labels separate what shipped from what was completed or only explored.",
         vignettes: [
-          {
-            name: "Labs and browser workspace",
-            kicker: "Learning tools · Student experience",
-            summary: "I redesigned the browser-based lab and virtual-machine experience around loading, orientation, progress, recovery, and returning to work. The broader three-audience vision extended into instructor and course-author workflows.",
-            delivery: "Student update shipped · broader vision partial",
-            result: "Student browser / VM improvements shipped, not every planned workflow did",
-            visual: {
-              title: "Lab loading, progress, and recovery states",
-              status: "CURATE",
-              note: "Export the safe student-facing states; do not use recorded sessions or screen shares."
-            }
-          },
-          {
-            name: "Motion specifications",
-            kicker: "Interaction design · Principle",
-            summary: "I prototyped and specified seven connected lesson interactions, including location tracking, part completion, auto-scroll, lesson completion, tab overflow, and section navigation.",
-            delivery: "Prototyped + handed off",
-            result: "Seven documented interactions, implementation boundary preserved",
-            image: "images/craft/pathstream-menuscrolling.webp"
-          }
+          {name:"Instructor grading", surface:"Product & flows", desc:"Instructor grading flow", delivery:"To confirm", image:"images/work/pathstream/instructor-grading.png"},
+          {name:"Dependencies", surface:"Product & flows", desc:"Lesson dependency concept", delivery:"To confirm", image:"images/work/pathstream/dependencies.png"},
+          {name:"Instructor dashboard", surface:"Product & flows", desc:"Dashboard in context", delivery:"To confirm", image:"images/work/pathstream/instructor-dashboard-states.png"},
+          {name:"Chunking prototype", surface:"Product & flows", desc:"Chunking prototype screen", delivery:"To confirm", image:"images/work/pathstream/chunking-prototype.png"},
+          {name:"Short-term UI fixes", surface:"Product & flows", desc:"Small component fixes", delivery:"To confirm", image:"images/work/pathstream/short-term-fixes.png"},
+          {name:"UI Library", surface:"Design systems & components", desc:"Shared component library", delivery:"To confirm", image:"images/work/pathstream/ui-library.png"},
+          {name:"Social cover lockup", surface:"Web & brand", desc:"Wordmark social cover", delivery:"To confirm", image:"images/work/pathstream/fb-cover.png"},
+          {name:"Scroll interaction", surface:"Prototypes & experiments", desc:"Scroll interaction spec", delivery:"To confirm", image:"images/work/pathstream/chunking-scroll-interaction.png"},
+          {name:"Lab diagrams", surface:"Prototypes & experiments", desc:"Lab flow diagrams", delivery:"To confirm", image:"images/work/pathstream/lab-diagrams.png"},
+          {name:"Office wall decal", surface:"Physical & ops", desc:"Pathstream office decal", delivery:"To confirm", image:"images/work/pathstream/office-decal-wallpaper.png"},
+          {name:"Product roadmap session", surface:"Physical & ops", desc:"Roadmap planning whiteboard", delivery:"To confirm", image:"images/work/pathstream/product-roadmap-session.png"},
+          {name:"System map", surface:"Physical & ops", desc:"Product system / IA map", delivery:"To confirm", image:"images/work/pathstream/system-map.png"}
         ],
         supportingTitle: "Additional completed design work",
         supportingItems: [
@@ -2399,6 +2937,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       goodrx: {
         name: "GoodRx + Iodine",
         logo: "images/logos/goodrx.svg",
+        hero: "images/work/goodrx-hero.png", // per-world bold hero image (Image #4); omit to fall back to the blueprint hero
         dates: "2017–2018",
         role: "Lead Product Designer",
         companyOutcome: "IPO · 2020",
@@ -2415,9 +2954,19 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         result: "Iodine coupon conversion 2% → 5%, GoodRx drug-page coupon conversion +10% mobile / +25% desktop",
         supportTitle: "Also shipped and explored",
         supportIntro: "Smaller contributions stay visible with their real delivery state instead of becoming artificial case studies.",
+        surfaceNotes: {
+          "Product & flows": "Consumer flows across Iodine and GoodRx",
+          "Design systems & components": "Reusable layouts and fact sheets",
+          "Web & brand": "The brand and editorial surfaces",
+          "Prototypes & experiments": "Explorations that tested an idea",
+          "Physical & ops": "Artifacts from the shipping rituals",
+          "Data-journalism / editorial": "GoodRx Research: public data stories"
+        },
         vignettes: [
           {
             name: "How GoodRx Works on mobile",
+            surface: "Product & flows",
+            desc: "Mobile product education",
             kicker: "Product education · Responsive web",
             summary: "GoodRx had no mobile version of this explanation, so I updated the design while adding a usable mobile experience.",
             delivery: "Shipped",
@@ -2425,7 +2974,30 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
             image: "images/craft/goodrx_11.webp"
           },
           {
+            name: "Drug coupons",
+            surface: "Product & flows",
+            desc: "Coupon redemption flow",
+            delivery: "To confirm",
+            image: "images/work/goodrx/drug-coupons.png"
+          },
+          {
+            name: "Ask a pharmacist",
+            surface: "Product & flows",
+            desc: "Ask-a-pharmacist flow",
+            delivery: "To confirm",
+            image: "images/work/goodrx/ask-a-pharmacist.png"
+          },
+          {
+            name: "Drug fact sheet",
+            surface: "Design systems & components",
+            desc: "Fact-sheet layout",
+            delivery: "To confirm",
+            image: "images/work/goodrx/drug-fact-sheet.png"
+          },
+          {
             name: "Iodine blog integration",
+            surface: "Web & brand",
+            desc: "Editorial and product blended",
             kicker: "Editorial system · Web",
             summary: "I updated the blog so product information and editorial content felt like parts of the same Iodine experience.",
             delivery: "Supporting contribution",
@@ -2434,23 +3006,41 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           },
           {
             name: "Conditions exploration",
+            surface: "Prototypes & experiments",
+            desc: "Conditions IA exploration",
             kicker: "Product expansion · Research",
             summary: "I explored how Iodine could organize information around health conditions before the team shifted toward broader GoodRx priorities.",
-            delivery: "Exploration · canceled",
+            delivery: "Exploration, canceled",
             result: "Direction explored, not launched",
             image: "images/craft/iodine_24.webp"
           },
           {
             name: "Price-page social proof",
-            kicker: "Conversion experiment · Framer",
-            summary: "I prototyped motion and usage signals around pharmacy price rows. The source survives, but I no longer remember which treatment shipped.",
+            surface: "Prototypes & experiments",
+            desc: "Price-row nudge prototype",
             delivery: "Prototype evidence",
-            result: "Interactive exploration, no release claim",
-            visual: {
-              title: "Price-page nudge prototype",
-              status: "CURATE",
-              note: "Capture the surviving Framer prototype; do not label a variant as shipped."
-            }
+            image: "images/work/goodrx/drug-pricing-ux.png"
+          },
+          {
+            name: "Coupon sticker",
+            surface: "Physical & ops",
+            desc: "Coupon sticker artifact",
+            delivery: "To confirm",
+            image: "images/work/goodrx/coupon-sticker.png"
+          },
+          {
+            name: "The US of Worry",
+            surface: "Data-journalism / editorial",
+            desc: "Anxiety-med state map",
+            delivery: "To confirm",
+            image: "images/work/goodrx/research-us-of-worry.png"
+          },
+          {
+            name: "ED-drug fills",
+            surface: "Data-journalism / editorial",
+            desc: "ED-drug fills, 2018",
+            delivery: "To confirm",
+            image: "images/work/goodrx/research-ed-drugs.png"
           }
         ],
         supportingTitle: "Team and release artifacts",
@@ -2589,30 +3179,10 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         supportTitle: "Earlier and supporting work",
         supportIntro: "Ownership ranged from complete product design to focused contribution; the labels keep those boundaries visible.",
         vignettes: [
-          {
-            name: "Post-purchase conversion",
-            kicker: "Amazon.com · Checkout follow-through",
-            summary: "After an MP3 purchase, I partnered with a TPM to simplify download choices and improve the path into another purchase, Cloud Player, or Downloader.",
-            delivery: "Shipped + tested",
-            result: "A/B test improved purchase conversion, magnitude unavailable",
-            visual: {
-              title: "Purchase confirmation to download and upsell",
-              status: "TEXT ONLY",
-              note: "Keep compact unless a safe abstract flow is deliberately recreated."
-            }
-          },
-          {
-            name: "Prime buy and gift",
-            kicker: "Internship · End-to-end concept",
-            summary: "I completed the specification, interactive prototype, redlines, and high-fidelity screens for a Prime gifting flow that another owner later carried through engineering.",
-            delivery: "Completed · launched later",
-            result: "Implementation-ready design; projected 1M+ subscribers, not a measured result",
-            visual: {
-              title: "Prime buy-and-gift lifecycle",
-              status: "TEXT ONLY",
-              note: "Do not publish the old confidential board or turn the projection into an outcome."
-            }
-          }
+          {name:"Music desktop", surface:"Product & flows", desc:"Desktop player redesign", delivery:"To confirm", image:"images/work/amazon/amd-music-desktop.png"},
+          {name:"Samsung Music", surface:"Product & flows", desc:"Samsung device screen", delivery:"To confirm", image:"images/work/amazon/samsung-music.png"},
+          {name:"Win8 Store album", surface:"Web & brand", desc:"Windows 8 Store detail", delivery:"To confirm", image:"images/work/amazon/win8-store.png"},
+          {name:"Music Curator", surface:"Prototypes & experiments", desc:"Playlists hackday concept", delivery:"Concept", image:"images/work/amazon/playlists-curator.png"}
         ],
         supportingTitle: "Focused contributions",
         supportingItems: [
@@ -2647,14 +3217,14 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         resultLabel: "Measured outcomes",
         result: "Tasker NPS −5 → mid-50s, Client NPS → high-40s",
         vignettes: [
-          {
-            name: "Mobile Design System",
-            kicker: "System leadership · iOS / Android",
-            summary: "I led and consolidated TaskRabbit’s mobile design language from the company’s inception through 2015, turning years of legacy interface decisions into a shared system with the design team and engineers.",
-            delivery: "Shipped system",
-            result: "One source for type, color, navigation, forms, states, components, and interaction patterns",
-            image: "images/taskrabbit-design-system.png"
-          }
+          {name:"Sign-in flow", surface:"Product & flows", desc:"V3 sign-in", delivery:"Shipped V3", image:"images/work/taskrabbit/sign-in-flow.png"},
+          {name:"Other flow", surface:"Product & flows", desc:"Other task-search path", delivery:"Shipped V3", image:"images/work/taskrabbit/other-flow.png"},
+          {name:"Your Taskers", surface:"Product & flows", desc:"Saved Taskers view", delivery:"Shipped V3", image:"images/work/taskrabbit/your-taskers.png"},
+          {name:"Transaction history", surface:"Product & flows", desc:"Transaction history", delivery:"To confirm", image:"images/work/taskrabbit/transaction-history.png"},
+          {name:"Browse & triage", surface:"Product & flows", desc:"Task browse and triage", delivery:"To confirm", image:"images/work/taskrabbit/browsing-triage-tasks.png"},
+          {name:"Client experience map", surface:"Design systems & components", desc:"Client flow map", delivery:"To confirm", image:"images/work/taskrabbit/tr-user-experiences.png"},
+          {name:"Task template", surface:"Prototypes & experiments", desc:"Task template map view", delivery:"To confirm", image:"images/work/taskrabbit/task-template.png"},
+          {name:"Design Show & Tell", surface:"Physical & ops", desc:"Bi-weekly team ritual", delivery:"To confirm", image:"images/work/taskrabbit/show-and-tell.png"}
         ],
         alsoShipped: [
           ["Authentication and hiring", "Account entry and the gateway into direct hire"],
@@ -4593,13 +5163,20 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       });
     }
 
-    function hasCompanyFocus(company){
-      var companyData = workProjects[company];
-      if(!companyData) return false;
-      return hasCompanyStories(company) ||
-        Boolean(companyData.vignettes && companyData.vignettes.length) ||
-        Boolean(companyData.supportingItems && companyData.supportingItems.length) ||
-        Boolean(companyData.alsoShipped && companyData.alsoShipped.length);
+    // A "world" is any top-level HOMEPAGE entry (a company band or a work/experiment tile). Homepage
+    // membership IS the explicit declaration of world-ness - deriving the set from the DOM keeps it DRY:
+    // add a homepage tile and it becomes a world with the blueprint fallback, nothing to hand-tag.
+    // (Companies and standalone projects are peers; the difference is only which data/regions each carries.)
+    var __worldSlugs = null;
+    function isWorldEntry(project){
+      if(!workProjects[project]) return false;
+      if(!__worldSlugs){
+        __worldSlugs = new Set();
+        document.querySelectorAll('.co-band[data-project], .work-tile[data-project]').forEach(function(el){
+          if(el.dataset.project) __worldSlugs.add(el.dataset.project);
+        });
+      }
+      return __worldSlugs.has(project);
     }
 
     function setWorkFocusEnvironment(active){
@@ -4748,6 +5325,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       var source;
       var media;
       mediaLightboxTitle.textContent = title;
+      mediaLightbox.querySelector(".media-lightbox-kicker").textContent = tile.dataset.mediaKicker || "Project artifact";
       mediaLightboxStage.replaceChildren();
       mediaLightboxOriginal.hidden = false;
       if(provider){
@@ -5041,7 +5619,11 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           "Foundational and smaller surfaces that add context without becoming full case studies.";
         supportHead.append(supportTitle, supportIntro);
         support.appendChild(supportHead);
-        (companyData.vignettes || []).forEach(function(vignette){
+        var __vignettes = companyData.vignettes || [];
+        if(__vignettes.some(function(v){ return v.surface; })){
+          renderProductMap(support, __vignettes, companyData);
+        }
+        else __vignettes.forEach(function(vignette){
           var vignetteCard = document.createElement(vignette.image ? "button" : "article");
           if(vignette.image) vignetteCard.type = "button";
           vignetteCard.className = "work-vignette";
@@ -5083,7 +5665,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           }
           support.appendChild(vignetteCard);
         });
-        if(supportingItems.length){
+        if(supportingItems.length && !__vignettes.some(function(v){ return v.surface; })){
           var shipped = document.createElement("section");
           shipped.className = "work-also-shipped";
           var shippedTitle = document.createElement("h5");
@@ -5114,8 +5696,129 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         }
         workFocusContent.appendChild(support);
       }
-      workFocusContent.hidden = false;
+      // Project-world artifacts: a standalone project (no case-study stories) surfaces its own artifact
+      // media as an "Artifacts" region below the fact grid (reuses the lightbox via openWorkMedia).
+      if(!companyStories.length){
+        var artMedia = projectMedia[company] || [];
+        if(artMedia.length){
+          var artifacts = document.createElement("section");
+          artifacts.className = "work-company-support work-artifacts";
+          artifacts.setAttribute("aria-label", "Artifacts from " + companyData.name);
+          var artHead = document.createElement("div");
+          artHead.className = "work-company-support-head";
+          var artTitle = document.createElement("h4");
+          artTitle.textContent = companyData.artifactsTitle || "Artifacts";
+          var artIntro = document.createElement("p");
+          artIntro.textContent = companyData.artifactsIntro || "Screens and pieces from the build.";
+          artHead.append(artTitle, artIntro);
+          artifacts.appendChild(artHead);
+          var artGrid = document.createElement("div");
+          artGrid.className = "work-artifact-grid";
+          artMedia.forEach(function(item){
+            var card = document.createElement("button");
+            card.type = "button";
+            card.className = "work-artifact";
+            card.dataset.fullSrc = item.src;
+            card.dataset.mediaTitle = item.title || companyData.name;
+            card.setAttribute("aria-label", "Open full size: " + (item.title || companyData.name));
+            var img = document.createElement("img");
+            img.src = item.src; img.alt = ""; img.loading = "lazy"; img.decoding = "async";
+            card.appendChild(img);
+            card.addEventListener("click", function(){ openWorkMedia(card); });
+            artGrid.appendChild(card);
+          });
+          artifacts.appendChild(artGrid);
+          workFocusContent.appendChild(artifacts);
+        }
+      }
+      // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
+      // blank gap that reads as broken; hero + fact grid + actions still render above it.
+      workFocusContent.hidden = !workFocusContent.children.length;
       return grid;
+    }
+
+    var SURFACE_SPINE = ["Product & flows", "Design systems & components", "Web & brand",
+      "Prototypes & experiments", "Physical & ops"];
+    function surfaceOrder(name){ var i = SURFACE_SPINE.indexOf(name); return i < 0 ? 99 : i; }
+    function mapDotClass(delivery){
+      var d = String(delivery || "").toLowerCase();
+      if(/confirm|unknown|unresolved|tbd/.test(d)) return "todo";
+      if(/concept|prototype|exploration|explored|alpha|demo|not launched|paused|incomplete|cancel/.test(d)) return "warn";
+      return "";
+    }
+    function renderProductMap(support, vignettes, companyData){
+      var map = document.createElement("div");
+      map.className = "work-product-map";
+      var groups = {};
+      vignettes.forEach(function(v){ var s = v.surface || "Other"; (groups[s] = groups[s] || []).push(v); });
+      Object.keys(groups).sort(function(a, b){ return (surfaceOrder(a) - surfaceOrder(b)) || a.localeCompare(b); })
+        .forEach(function(surface){
+          var grp = document.createElement("div");
+          grp.className = "work-map-group";
+          var head = document.createElement("div");
+          head.className = "work-map-group-head";
+          var t = document.createElement("div");
+          t.className = "t";
+          t.textContent = surface;
+          head.appendChild(t);
+          var note = (companyData.surfaceNotes || {})[surface];
+          if(note){ var dn = document.createElement("div"); dn.className = "d"; dn.textContent = note; head.appendChild(dn); }
+          grp.appendChild(head);
+          var tiles = document.createElement("div");
+          tiles.className = "work-map-tiles";
+          groups[surface].forEach(function(v){
+            var tile;
+            if(v.href){ tile = document.createElement("a"); tile.href = v.href; tile.target = "_blank"; tile.rel = "noopener"; }
+            else { tile = document.createElement("button"); tile.type = "button"; }
+            tile.className = "work-map-tile";
+            var ico = document.createElement("span");
+            ico.className = "work-map-tile-ico";
+            ico.setAttribute("aria-hidden", "true");
+            ico.textContent = v.href ? "↗" : "⤢";
+            tile.appendChild(ico);
+            var thumb = document.createElement("div");
+            thumb.className = "work-map-tile-thumb";
+            if(v.image){
+              var img = document.createElement("img");
+              img.src = v.image; img.alt = ""; img.loading = "lazy"; img.decoding = "async";
+              thumb.appendChild(img);
+            }
+            tile.appendChild(thumb);
+            var meta = document.createElement("div");
+            meta.className = "work-map-tile-meta";
+            var nm = document.createElement("div");
+            nm.className = "work-map-tile-name";
+            nm.textContent = v.name;
+            meta.appendChild(nm);
+            if(v.desc || v.summary){
+              var ds = document.createElement("div");
+              ds.className = "work-map-tile-desc";
+              ds.textContent = v.desc || v.summary;
+              meta.appendChild(ds);
+            }
+            if(v.delivery){
+              var st = document.createElement("div");
+              st.className = "work-map-tile-state";
+              var dot = document.createElement("span");
+              dot.className = "work-map-tile-dot " + mapDotClass(v.delivery);
+              st.appendChild(dot);
+              st.appendChild(document.createTextNode(v.delivery));
+              meta.appendChild(st);
+            }
+            tile.appendChild(meta);
+            if(v.image && !v.href){
+              tile.dataset.mediaTitle = v.name;
+              tile.dataset.mediaKicker = surface + (v.delivery ? " · " + v.delivery : "");
+              tile.dataset.fullSrc = v.image;
+              tile.setAttribute("aria-label", "Open full size: " + v.name);
+              tile.addEventListener("click", function(){ openWorkMedia(tile); });
+            }
+            tiles.appendChild(tile);
+          });
+          grp.appendChild(tiles);
+          map.appendChild(grp);
+        });
+      support.appendChild(map);
     }
 
     function mountProjectStory(storyKey){
@@ -5358,7 +6061,22 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       workLayoutFrame = requestAnimationFrame(layoutWorkGrid);
     }
 
-    function transitionWork(change){
+    // Within a world (galaxy→planet already done), navigating planet↔region (company ↔ case study) uses a
+    // deterministic CSS "region" transition instead of the native View Transition - subtler than the world
+    // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
+    // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
+    function regionTransition(change){
+      // case study is a reading surface - quiet fade, no set-piece.
+      change();
+      if(reduceWorkMotion.matches) return Promise.resolve();
+      [workPanel, workFocusContent].forEach(function(el){
+        if(!el || el.hidden) return;
+        el.classList.remove("region-in"); void el.offsetWidth; el.classList.add("region-in"); // restart the fade
+      });
+      return Promise.resolve();
+    }
+    function transitionWork(change, trigger, entering){
+      if(document.body.getAttribute("data-world")) return regionTransition(change, trigger, entering); // in-world region move
       if(!reduceWorkMotion.matches && document.startViewTransition){
         try{
           var viewTransition = document.startViewTransition(change);
@@ -5535,7 +6253,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         var value = fact[1];
         if(companyView){
           item.appendChild(makeFactIcon(fact[0]));
-          if(typeof value === "string" && value.indexOf(" · ") >= 0){
+          var inWorld = !!document.body.getAttribute("data-world");
+          if(typeof value === "string" && value.indexOf(" · ") >= 0 && !inWorld){
             detail.className = "tags";
             value.split(" · ").forEach(function(token){
               var tok = document.createElement("span");
@@ -5543,6 +6262,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
               tok.textContent = token;
               detail.appendChild(tok);
             });
+          } else if(typeof value === "string" && value.indexOf(" · ") >= 0){
+            // In-world (editorial treatment): multi-value facts read as plain English, not chips.
+            detail.textContent = value.split(" · ").join(", ");
           } else {
             detail.textContent = value;
           }
@@ -5555,6 +6277,38 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       workPanelFacts.hidden = !facts || !facts.length;
     }
 
+    function clearWorldHero(){
+      var h = workPanel.querySelector(".work-panel-heading"); if(h) h.classList.remove("world-hidden");
+      var ex = workPanel.querySelector(".world-hero"); if(ex) ex.remove();
+    }
+    function applyWorldHero(project){
+      clearWorldHero();
+      var item = workProjects[project]; var heading = workPanel.querySelector(".work-panel-heading");
+      if(!item || !heading) return;
+      var isCompany = hasCompanyStories(project); // companies read "role @ Company"; standalone projects just "role"
+      var bandP = document.querySelector('.co-band[data-project="'+project+'"] .co-head p');
+      var hero = document.createElement("header"); hero.className = "world-hero";
+      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + (isCompany ? " @" : ""); hero.appendChild(k); } // #3: role @ company
+      var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
+      // #3: merge the impact one-liner (band tagline) with the company context into one lede paragraph (both existing copy).
+      var impact = bandP ? bandP.textContent : "";
+      var merged = [impact, item.context || ""].filter(Boolean).join("  ");
+      if(merged){ var p=document.createElement("p"); p.className="world-hero-lede"; p.textContent=merged; hero.appendChild(p); }
+      var m=document.createElement("div"); m.className="world-hero-media";
+      if(item.hero){
+        // eager, not lazy: this hero is above the fold in the world; lazy leaves it blank during/after
+        // the reveal (reads as "still loading"). Same file the homepage band already loaded, so it's cached.
+        var mi=document.createElement("img"); mi.src=item.hero; mi.alt=item.name+" - selected work"; mi.loading="eager"; mi.decoding="async"; m.appendChild(mi);
+      } else {
+        // BLUEPRINT fallback: an unskinned world gets a schematic placeholder hero (the .visual-placeholder
+        // primitive), so new work reads as an intentional blueprint, never broken.
+        m.classList.add("world-hero-media-blueprint");
+        m.appendChild(createVisualPlaceholder({ title: item.name }));
+      }
+      hero.appendChild(m);
+      heading.classList.add("world-hidden");
+      heading.parentNode.insertBefore(hero, heading);
+    }
     function renderWorkPanel(project, source){
       var item = workProjects[project];
       var companyView = source === "company";
@@ -5569,12 +6323,21 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       workPanelMeta.textContent = "";
       workPanelDelivery.textContent = "";
       workPanelSummary.textContent = item.summary;
-      renderWorkFacts(companyView ? item.facts : null, Boolean(companyView));
+      // In a world, fold the summary into the grid as the lead "WHAT I DID" cell (and hide the loose paragraph).
+      var inWorld = companyView && document.body.getAttribute("data-world");
+      workPanelSummary.hidden = !!inWorld;
+      var facts = companyView ? item.facts : null;
+      if(inWorld && item.summary) facts = [["WHAT I DID", item.summary]].concat(item.facts || []);
+      renderWorkFacts(facts, Boolean(companyView));
       workPanelDetails.open = !(companyView && window.matchMedia("(max-width:520px)").matches);
-      workPanelResultLabel.textContent = companyView ? (item.resultLabel || "Company impact") : "Outcome";
+      workPanelResultLabel.textContent = companyView
+        ? (item.resultLabel || (hasCompanyStories(project) ? "Company impact" : "Outcome"))
+        : "Outcome";
       workPanelResult.textContent = item.result;
       workPanelActions.replaceChildren();
-      (companyView ? [] : item.actions).forEach(function(action, index){
+      // Actions render in both views: a project-world (e.g. HogWare) surfaces its Play it / build-log
+      // buttons; companies that carry no actions simply render none.
+      (item.actions || []).forEach(function(action, index){
         var link = document.createElement("a");
         link.href = action[0];
         link.textContent = action[1] + " →";
@@ -5586,10 +6349,12 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         workPanelActions.appendChild(link);
       });
       workPanelActions.hidden = !workPanelActions.children.length;
+      if(companyView) applyWorldHero(project); else clearWorldHero();
       workPanel.hidden = false;
     }
 
     function renderStoryPanel(storyKey){
+      clearWorldHero();
       var story = workStories[storyKey];
       var company = workProjects[story.company];
       workPanelBack.textContent = "← " + company.name + " work";
@@ -5604,7 +6369,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       workPanelDelivery.textContent = story.delivery || "Project";
       workPanelStoryMeta.hidden = false;
       workPanelSummary.textContent = story.summary;
-      renderWorkFacts(story.facts || null);
+      renderWorkFacts(story.facts || null, true);
       workPanelDetails.open = true;
       workPanelResultLabel.textContent = "Outcome";
       workPanelResult.textContent = story.result;
@@ -5701,6 +6466,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         workShell.classList.remove("is-focused");
         workShell.classList.remove("is-story-focused");
         setWorkFocusEnvironment(false);
+        document.body.removeAttribute("data-world"); // clear the per-company world theme
         clearProjectGallery();
         workTiles.forEach(function(tile){
           tile.hidden = activeWorkKind !== "all" && tile.dataset.kind !== activeWorkKind;
@@ -5733,7 +6499,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     function groupWork(project, options){
       options = options || {};
       var source = options.source || "project";
-      var companyFocus = source === "company" && hasCompanyFocus(project);
+      var companyFocus = source === "company" && isWorldEntry(project);
       var sourceButton = options.trigger && options.trigger.closest
         ? options.trigger.closest("[data-work-company]") : null;
       var sourceImage = sourceButton && sourceButton.querySelector("img");
@@ -5761,6 +6527,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         setWorkFocusEnvironment(true);
         if(companyFocus){
           workGrid.hidden = true;
+          document.body.setAttribute("data-world", project); // per-company world theme (see CSS)
           mountCompanyFocus(project);
           selectedWorkProject = project;
           if(returningStory){
@@ -5769,6 +6536,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
             if(returningCardMedia) returningCardMedia.style.viewTransitionName = "selected-project-visual";
           }
         }else{
+          document.body.removeAttribute("data-world"); // clear any prior world theme (non-world gallery path)
           workFocusContent.hidden = true;
           workFocusContent.replaceChildren();
           workGrid.hidden = false;
@@ -5822,6 +6590,98 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
       return finished;
     }
 
+    // ── World reveal: #world-layer (wrapping the panel + focus content) becomes an opaque overlay ABOVE
+    //    the still-visible homepage during body.world-entering, and a clip-path circle grows/shrinks it
+    //    from the click point. On finish we commit to the normal focused state. No View Transitions API.
+    //    Deterministic and browser-agnostic. ─────────────────────────────────────────────────────────
+    var worldLayer = document.getElementById("world-layer");
+    function worldCircle(vx, vy){                       // viewport point → clip geometry local to #world-layer
+      var b = worldLayer.getBoundingClientRect();       // (only has a box once body.world-entering is set)
+      var x = vx - b.left, y = vy - b.top;
+      var r = Math.hypot(Math.max(x, b.width - x), Math.max(y, b.height - y));
+      return { x: x, y: y, r: r };
+    }
+    // World-reveal timing: reads an optional CSS var override, else the default (seconds).
+    function tuneMs(name, defSec){ var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)); return (v > 0 ? v : defSec) * 1000; }
+    function tuneEase(name, def){ var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim(); return v || def; }
+    function setWorldCenter(c){                              // static circle center - never animated
+      worldLayer.style.setProperty("--reveal-x", c.x + "px");
+      worldLayer.style.setProperty("--reveal-y", c.y + "px");
+    }
+    // ── Interruptible clip driver ────────────────────────────────────────────────────────────────────
+    // A single in-flight animation, tracked so a mid-flight reverse (click back while entering, or
+    // re-open while exiting) picks up from the CURRENT radius instead of snapping. Duration scales with
+    // the distance left to travel, so an interruption feels snappy rather than replaying the full run.
+    var worldAnim = null;
+    function currentRevealR(){ return parseFloat(getComputedStyle(worldLayer).getPropertyValue("--reveal-r")) || 0; }
+    function worldFullR(){                                   // max radius from the current (static) center
+      var b = worldLayer.getBoundingClientRect();
+      var x = parseFloat(worldLayer.style.getPropertyValue("--reveal-x")) || b.width/2;
+      var y = parseFloat(worldLayer.style.getPropertyValue("--reveal-y")) || b.height/2;
+      return Math.hypot(Math.max(x, b.width - x), Math.max(y, b.height - y));
+    }
+    function runReveal(fromR, toR, baseMs, ease, onDone){
+      if(worldAnim){ try{ worldAnim.onfinish = null; worldAnim.cancel(); }catch(e){} worldAnim = null; }
+      worldLayer.classList.add("world-revealing");
+      var range = worldFullR() || 1;
+      var dur = Math.max(140, baseMs * Math.min(1, Math.abs(toR - fromR) / range));
+      var a = worldLayer.animate([{ "--reveal-r": fromR + "px" }, { "--reveal-r": toR + "px" }],
+        { duration: dur, easing: ease, fill: "forwards" });
+      worldAnim = a;
+      a.onfinish = function(){ worldAnim = null; onDone(); };
+      return a;
+    }
+    window.__openWorldClip = function(project, origin, opts){
+      opts = opts || {};
+      if(!isWorldEntry(project)) return;
+      var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-exit
+      if(!interrupting){
+        workOverviewScrollY = window.scrollY;               // remember homepage scroll
+        if(opts.history !== false) writeFocusedWorkHistory(project, "company"); // push ?work= so browser back closes the world
+        groupWork(project, { source:"company", scroll:false, history:false, animate:false, trigger:opts.trigger }); // build the focus state
+        document.body.classList.add("world-entering");       // homepage stays visible; layer becomes an overlay
+        workShell.classList.remove("is-focused");            // keep the shell in normal flow so the homepage-behind
+                                                             // stays exactly where it was (no downward jump). #world-layer
+                                                             // is its own fixed overlay and reveals over it.
+        setWorldCenter(worldCircle(origin.x, origin.y));     // fresh open: grow from the click; interrupt: keep current center
+      }
+      var commit = function(){ document.body.classList.remove("world-entering"); worldLayer.classList.remove("world-revealing");
+        workShell.classList.add("is-focused"); workShell.scrollTop = 0;
+        if(window.__worldDissolve) window.__worldDissolve.stop(); }; // now the company fully covers → fix the shell
+      if(reduceWorkMotion.matches || !worldLayer.animate){ commit(); return; } // instant fallback
+      // Shared cheap dissolve edge rides the growing circle (all worlds). GoodRx WebGL stays its override.
+      // Fire on fresh AND interrupt (reopen) so a reversed close still gets particles; start() reads the clip's
+      // own centre/radius. try/catch: this optional effect must never abort the world-open navigation below.
+      if(document.body.classList.contains("dissolve-edge") && window.__worldDissolve){
+        try{ window.__worldDissolve.start(); }catch(e){}
+      }
+      runReveal(interrupting ? currentRevealR() : 0, worldFullR(),
+        tuneMs("--vt-in-dur",0.5), tuneEase("--vt-in-ease","linear"), commit);
+    };
+    function closeWorldClip(origin){
+      if(window.__worldDissolve) window.__worldDissolve.stop(); // kill the dissolve rAF on any close (incl. interrupt-close, which bypasses commit)
+      if(reduceWorkMotion.matches || !worldLayer.animate){
+        resetWork(false, { restoreScroll: workOverviewScrollY }); document.body.classList.remove("world-entering"); return;
+      }
+      var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-enter
+      var startR;
+      if(interrupting){ startR = currentRevealR(); }         // keep the enter's center; shrink from where it is
+      else { document.body.classList.add("world-entering"); workShell.classList.remove("is-focused"); setWorldCenter(worldCircle(origin.x, origin.y)); startR = worldFullR(); }
+      runReveal(startR, 0, tuneMs("--vt-out-dur",0.4), tuneEase("--vt-out-ease","cubic-bezier(.4,0,.7,.2)"), function(){
+        resetWork(false, { restoreScroll: workOverviewScrollY }); // return to the exact homepage scroll
+        document.body.classList.remove("world-entering");
+        worldLayer.classList.remove("world-revealing");
+        worldLayer.style.removeProperty("--reveal-r");
+      });
+    }
+    function backButtonOrigin(){
+      var r = workPanelBack.getBoundingClientRect();
+      return { x: r.width ? r.left + r.width/2 : 40, y: r.height ? r.top + r.height/2 : 80 };
+    }
+    // Back/Esc/logo all go through history.back() → the popstate handler is the single place that picks the
+    // transition (clip for the galaxy↔planet boundary, plain for planet↔region). Keeps browser back/forward
+    // and the URL consistent for free.
+
     function openWorkStory(storyKey, options){
       options = options || {};
       var story = workStories[storyKey];
@@ -5850,16 +6710,14 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
           button.setAttribute("aria-pressed", String(button.dataset.workCompany === story.company));
         });
         workStatus.textContent = "Showing " + story.name + ".";
+        workShell.scrollTop = 0; // a case study always opens at the top
       };
-      var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change);
+      var finished = options.animate === false ? (change(), Promise.resolve()) : transitionWork(change, options.trigger, true /* entering a region */);
       finished.then(function(){
         if(sourceMedia) sourceMedia.style.viewTransitionName = "none";
         if(storyHero) storyHero.style.viewTransitionName = "none";
         if(options.scroll !== false){
-          workPanel.scrollIntoView({
-            behavior: reduceWorkMotion.matches || options.animate === false ? "auto" : "smooth",
-            block: "start"
-          });
+          workShell.scrollTop = 0;                 // case study starts at the very top (no scroll-margin offset)
           workPanel.focus({preventScroll:true});
         }
       });
@@ -5952,20 +6810,38 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     function bindWorkTile(tile){
       tile.addEventListener("pointerenter", function(){ previewWork(tile.dataset.project); });
       tile.addEventListener("focus", function(){ previewWork(tile.dataset.project); });
-      tile.addEventListener("click", function(){
+      tile.addEventListener("click", function(e){
         var p = tile.dataset.project;
         if(workGrid.dataset.locked === "true" && selectedWorkProject === p){
           openWorkMedia(tile);
         }else{
           if(window.posthog) posthog.capture("work_company_opened", {company:p, kind:tile.dataset.kind||""});
-          if(hasCompanyFocus(p)){
-            groupWork(p, {trigger:tile, source:"company"});
+          if(isWorldEntry(p)){
+            // Every world enters via the clip reveal grown from the click point (GoodRx layers its
+            // own WebGL dissolve on top via its band). Keyboard activation (no pointer coords) grows
+            // from the tile centre. Falls back to an instant open if the clip fn isn't available.
+            var r = tile.getBoundingClientRect();
+            var ox = (e && e.clientX) ? e.clientX : Math.round(r.left + r.width / 2);
+            var oy = (e && e.clientY) ? e.clientY : Math.round(r.top + r.height / 2);
+            if(window.__openWorldClip){ window.__openWorldClip(p, {x:ox, y:oy}, {trigger:tile}); }
+            else { groupWork(p, {trigger:tile, source:"company"}); }
           }else{
             groupWork(p, {trigger:tile, source:"project"});
           }
         }
       });
     }
+    // Header logo = consistent "home" escape. On the homepage it's a normal #top jump; inside a world
+    // (any depth) it closes fully to the galaxy and cleans the URL.
+    var siteLogo = document.querySelector(".site-head .logo");
+    if(siteLogo) siteLogo.addEventListener("click", function(e){
+      if(!document.body.classList.contains("work-focus-open")) return; // homepage: let #top jump happen
+      e.preventDefault();
+      var origin = { x: innerWidth/2, y: innerHeight*0.42 };
+      if(document.body.getAttribute("data-world")) closeWorldClip(origin);
+      else resetWork(false, { restoreScroll: workOverviewScrollY });
+      history.replaceState({}, "", location.pathname);       // we're home now - drop ?work=/?project=
+    });
     curatedWorkTiles.forEach(bindWorkTile);
     workGrid.addEventListener("pointerleave", clearWorkPreview);
     workGrid.addEventListener("focusout", function(){
@@ -5979,7 +6855,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
         if(project === "all") leaveFocusedWork();
         else groupWork(project, {
           trigger:button,
-          source:hasCompanyFocus(project) ? "company" : "project"
+          source:isWorldEntry(project) ? "company" : "project"
         });
       });
     });
@@ -6006,22 +6882,31 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     document.addEventListener("keydown", function(event){
       if(event.key === "Escape" && !mediaLightbox.open && workGrid.dataset.locked === "true"){
         event.preventDefault();
-        leaveFocusedWork();
+        leaveFocusedWork(); // history.back() → popstate picks the transition (clip at the world boundary)
       }
     });
     window.addEventListener("popstate", function(event){
       var story = storyFromWorkURL();
       var project = projectFromWorkURL();
+      var inWorld = document.body.getAttribute("data-world");
       if(story){
         openWorkStory(story, {history:false, animate:true});
       }else if(project){
-        groupWork(project, {
-          history:false,
-          source:event.state && event.state.portfolioWorkSource ||
-            (hasCompanyFocus(project) ? "company" : "project"),
-          restoreCompanyScroll:event.state && event.state.portfolioCompanyScrollTop,
-          animate:true
-        });
+        // In the world already (backing out of a case study) → planet↔region, plain transition.
+        // Arriving at a world fresh (browser forward/deep link) → galaxy→planet, clip from a neutral point.
+        if(inWorld !== project && isWorldEntry(project)){
+          window.__openWorldClip(project, {x:innerWidth/2, y:innerHeight*0.42}, {history:false});
+        }else{
+          groupWork(project, {
+            history:false,
+            source:event.state && event.state.portfolioWorkSource ||
+              (isWorldEntry(project) ? "company" : "project"),
+            restoreCompanyScroll:event.state && event.state.portfolioCompanyScrollTop,
+            animate:true
+          });
+        }
+      }else if(inWorld){
+        closeWorldClip(backButtonOrigin());                 // planet → galaxy: clip close
       }else{
         resetWork(true, {
           restoreScroll:event.state && event.state.portfolioOverviewScrollY != null
@@ -6061,7 +6946,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     }else if(initialWorkProject){
       groupWork(initialWorkProject, {
         history:false,
-        source:hasCompanyFocus(initialWorkProject) ? "company" : "project",
+        source:isWorldEntry(initialWorkProject) ? "company" : "project",
         animate:false
       });
     }
@@ -6088,6 +6973,537 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
     dots.forEach(function(d){
       d.addEventListener("click",function(e){e.stopPropagation();show(parseInt(d.getAttribute("data-i"),10));});
     });
+  });
+})();
+</script>
+<script id="bl-js">
+(function(){
+  var bar=document.getElementById('dv-bar');
+  document.body.classList.add('dv-base'); // grain locked on
+  var caps={
+    "1":"1 · Current - Newsreader serif, one line.",
+    "2":"2 · Big two-line - display-scale, wraps to two lines, tight leading.",
+    "3":"3 · Italic verbs - 'design' and 'ship' in italic.",
+    "4":"4 · Green verbs - signature accent on 'design' and 'ship'.",
+    "5":"5 · Big two-line + italic verbs (static).",
+    "6":"6 · ALIVE, pencil - 'I design the product' is drawn in by a graphite pencil tip; the green '&' pops; 'ship code' types out (caret tracks it) then '.' lands. Tap ↻ to replay.",
+    "7":"7 · ALIVE, pen underline - a stroke draws under 'I design the product' and it rises in; '&' pops; 'ship code' types out then '.' lands. Tap ↻ to replay."};
+  var tb='6';
+
+  /* ── JS typewriter for "ship code": per-char reveal so the caret advances with the
+     text (CSS clip couldn't expose the writing edge). Restores plain text off-alive. ── */
+  var timers=[];
+  function clearT(){timers.forEach(clearTimeout);timers=[];}
+  var designHost=document.querySelector('.hl-design');
+  var designHTML=designHost?designHost.innerHTML:'';
+  var ampEl=document.querySelector('.hl-amp');
+  var shipHost=document.querySelector('.hl-ship-text');
+  var shipHTML=shipHost?shipHost.innerHTML:'';
+  var shipText=shipHost?shipHost.textContent:'';
+  var dotEl=document.querySelector('.hl-dot');
+  var specialEl=document.querySelector('.hl-special');
+  var prodEl=document.querySelector('.hl-prod');
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function drawUnderline(){
+    var target = designHost.querySelector('.lit-word') || designHost;
+    var ns='http://www.w3.org/2000/svg';
+    var svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('class','hl-underline'); svg.setAttribute('viewBox','0 0 300 20');
+    svg.setAttribute('preserveAspectRatio','none'); svg.setAttribute('aria-hidden','true');
+    var p=document.createElementNS(ns,'path');
+    p.setAttribute('d','M2 12 C 55 6, 115 16, 175 9 S 275 7, 298 12');
+    svg.appendChild(p); target.appendChild(svg);
+    var len=p.getTotalLength();
+    p.style.strokeDasharray=len; p.style.strokeDashoffset=len;
+    timers.push(setTimeout(function(){
+      p.style.transition='stroke-dashoffset .6s cubic-bezier(.5,0,.3,1)';
+      p.style.strokeDashoffset='0';
+    }, 320));
+  }
+
+  function typeSegments(segs, startMs, done){
+    var caret=document.createElement('span'); caret.className='hl-caret'; caret.setAttribute('aria-hidden','true');
+    caret.style.visibility='hidden';
+    var step=48, t=startMs;
+    segs.forEach(function(seg){
+      if(!seg.el) return;
+      seg.el.innerHTML='';
+      for(var i=0;i<seg.text.length;i++){
+        (function(ch, green, host){
+          var sp=document.createElement('span');
+          sp.textContent = ch===' ' ? '\u00a0' : ch;
+          if(green) sp.className='hl-codechar';
+          sp.style.visibility='hidden';
+          host.appendChild(sp);
+          timers.push(setTimeout(function(){
+            sp.style.visibility='visible';
+            if(sp.nextSibling) host.insertBefore(caret, sp.nextSibling); else host.appendChild(caret);
+          }, t));
+          t += step;
+        })(seg.text[i], seg.green && seg.green(i), seg.el);
+      }
+    });
+    timers.push(setTimeout(function(){ if(segs[0].el){ segs[0].el.insertBefore(caret, segs[0].el.firstChild); caret.style.visibility='visible'; } }, Math.max(0,startMs-120)));
+    timers.push(setTimeout(function(){ caret.style.visibility='hidden'; if(done) done(); }, t+140));
+  }
+
+  function renderHero(){
+    clearT();
+    document.body.classList.add('ho-c');
+    designHost.className='hl-design'; designHost.innerHTML=designHTML;
+    var s1=document.querySelector('.hl-ship-text'), s2=document.querySelector('.hl-ship-text2');
+    if(s1) s1.innerHTML=''; if(s2) s2.innerHTML='';
+    if(specialEl) specialEl.classList.remove('in');
+    if(reduce){
+      if(s1) s1.textContent='& code to'; if(s2) s2.textContent='ship';
+      if(specialEl) specialEl.classList.add('in');
+      return;
+    }
+    drawUnderline();
+    var segs=[
+      {el:s1, text:'& code to', green:function(i){return i>=2 && i<=5;}},   // "code" green
+      {el:s2, text:'ship'}
+    ];
+    typeSegments(segs, 1000, function(){
+      timers.push(setTimeout(function(){ if(specialEl) specialEl.classList.add('in'); }, 200));  // "products" fades into existence
+    });
+  }
+
+  document.body.classList.add('dv-base');       // paper grain
+  document.body.classList.add('tb-6');          // authored hero treatment
+  document.body.classList.add('strip-mono');    // monochrome-balanced credibility rail
+  document.body.classList.add('anim-2');        // Settle: bands come into existence like the hero
+  document.body.classList.add('card-serif');    // serif card titles
+  document.body.classList.add('tag-chip-accent'); // chip-accent outcome metadata
+  renderHero();
+
+})();
+</script>
+<!-- GoodRx hover: custom cursor element (the WebGL hover material is the IIFE below). -->
+<div id="gx-cursor" aria-hidden="true"></div>
+<script>
+// Locked GoodRx hover material (the flipper UIs that used to set these were removed in the panel purge).
+// The WebGL hover IIFE reads body.fx-dissolve (active gate) + body.skin-digital (look). Keep these applied.
+document.body.classList.add('fx-dissolve','skin-digital');
+</script>
+<script>
+(function(){
+  // GoodRx hero: custom cursor on hover + clip reveal on click. The grain material is the WebGL IIFE
+  // below; the reveal is the shared __openWorldClip. (Retired #world-goodrx prototype removed.)
+  var band = document.querySelector('.co-band[data-project="goodrx"]');
+  if(!band) return;
+  var heroEl = band.querySelector('.band-frame') || band; // the interactive zone is the hero IMAGE
+  var origin = { x: window.innerWidth/2, y: window.innerHeight/2 };
+
+  // Band → REAL themed world via a clip-path circle grown from the click point (see __openWorldClip
+  // in the main app script). No View Transitions API - deterministic across browsers.
+  function dissolveEnter(x,y){ if(window.__openWorldClip){ var band=heroEl.closest('[data-project]'); window.__openWorldClip((band&&band.dataset.project)||'goodrx', {x:x,y:y}); } }
+  var gxCursor=document.getElementById('gx-cursor');
+  heroEl.addEventListener('mousemove', function(e){
+    if(gxCursor){ gxCursor.style.left=e.clientX+'px'; gxCursor.style.top=e.clientY+'px'; }
+  });
+  heroEl.addEventListener('mouseenter', function(){ if(gxCursor) gxCursor.style.opacity='1'; });
+  heroEl.addEventListener('mouseleave', function(){ if(gxCursor) gxCursor.style.opacity='0'; });
+
+  // Intercept the hero-image click in the capture phase so the normal tile-open doesn't also fire; the
+  // reveal is the shared clip grown from the click point. Esc-close is the app's global handler.
+  heroEl.addEventListener('click', function(e){
+    e.preventDefault(); e.stopPropagation();
+    var xx=(e.clientX==null?origin.x:e.clientX), yy=(e.clientY==null?origin.y:e.clientY);
+    dissolveEnter(xx,yy);
+  }, true);
+})();
+</script>
+<!-- SHARED hover materialisation - the GoodRx digital data-grid is the BASELINE hover for EVERY band hero
+     and every more-work/experiment card. ONE WebGL context, re-parented into whichever surface is hovered
+     (no per-card contexts → no context-ceiling). Texture = the card's own image, or a palette swatch for
+     blueprint (imageless) cards. Palette is read per world slug, so each card previews ITS world (blueprint
+     fallback until per-world skins land). Reduced-motion / no-WebGL fall back to the CSS zoom. The click
+     dissolve stays the separate cheap 2D-canvas effect below. Tuning: window.__TUNE via the ?dev devPanel. -->
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  var cv, gl, prog, raf=0, running=false, uni={};
+  var mx=0.5, my=0.5, amp=0, startT=0;
+  var cur=null, texMap=Object.create(null), texOrder=[];
+
+  // Palette: read a world's real --world-* tokens (no duplicated source of truth). Tokens live on
+  // `body[data-world="<slug>"]`, so we set the attribute, read computed values, and revert synchronously -
+  // no rAF between set and revert, so no frame ever paints with the world flood. Cached per slug.
+  var palCache=Object.create(null);
+  function getPalette(slug){
+    if(!slug) return null;
+    if(slug in palCache) return palCache[slug];
+    var b=document.body, prev=b.getAttribute('data-world');
+    b.setAttribute('data-world',slug);
+    var cs=getComputedStyle(b), acc=cs.getPropertyValue('--world-accent').trim(), bg=cs.getPropertyValue('--world-bg').trim();
+    if(prev===null) b.removeAttribute('data-world'); else b.setAttribute('data-world',prev);
+    function hx(h){ h=h.replace('#',''); if(!/^[0-9a-f]{6}$/i.test(h)) return null;
+      return [parseInt(h.substr(0,2),16)/255,parseInt(h.substr(2,2),16)/255,parseInt(h.substr(4,2),16)/255]; }
+    var a=hx(acc), g=hx(bg); palCache[slug]=(a&&g)?{acc:a,bg:g}:null; return palCache[slug];
+  }
+
+  function active(){ return document.body.classList.contains('fx-dissolve') && !reduce.matches
+    && !document.body.classList.contains('work-focus-open'); }
+  function compile(t,src){ var s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s); return s; }
+
+  function init(){
+    if(gl) return true;
+    if(!cv){
+      cv=document.createElement('canvas');
+      cv.style.cssText='position:absolute;left:0;top:0;display:none;z-index:2;pointer-events:none';
+      document.body.appendChild(cv);   // parked on body; re-parented into the hovered surface on start()
+      // Context-loss recovery: Safari/iOS can evict a backgrounded WebGL context under memory pressure.
+      // On loss: stop + drop gl so the next hover rebuilds the program. On restore: drop the now-dead
+      // textures so ensureTex recreates them. Without this the hover would break silently for the session.
+      cv.addEventListener('webglcontextlost',function(e){ e.preventDefault(); stop(); gl=null; },false);
+      cv.addEventListener('webglcontextrestored',function(){ texMap=Object.create(null); texOrder.length=0; },false);
+    }
+    gl=cv.getContext('webgl',{premultipliedAlpha:false,antialias:true})||cv.getContext('experimental-webgl');
+    if(!gl || gl.isContextLost()){ gl=null; return false; }
+    var vs='attribute vec2 p;varying vec2 uv;void main(){uv=p*0.5+0.5;gl_Position=vec4(p,0.0,1.0);}';
+    // RIPPLE-IN-DOTS: the ripple wavefront resolves the photo into a field of high-contrast discs
+    // (Chris's dot-density vocabulary). Hard-edged discs + darkened gaps so the dots actually POP
+    // (the old dissolve-as-dots failed on contrast). Tunables: DENS (dot count), disc radius, gap gain.
+    // DIGITAL WAVE / DISSOLVE hover: the photo resolves into a grid of data-cells that ripples out from
+    // the cursor. Two skins on the SAME mechanic (uniform `skin`): 0 = BLUEPRINT (round data-viz dots on
+    // ink, faint green hairline grid - on-brand, calm); 1 = DIGITAL/Digimon (square glowing data-cells,
+    // bright green grid - materialisation). Each cell samples the photo, so it stays his data-viz colour.
+    var fs='precision highp float;varying vec2 uv;uniform sampler2D tx;uniform vec2 mouse;uniform float t;uniform float aspect;uniform float amp;uniform float dens;uniform float skin;'
+      +'uniform vec3 uCol;uniform float uGlow;uniform float uGrain;uniform float uFlick;uniform float uReach;uniform float uInten;'  // live tuning
+      +'uniform vec3 uBg;uniform float uImgMix;'  // preview-hint: cell ground colour + true-photo blend
+      +'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}'
+      +'void main(){vec2 d=vec2((uv.x-mouse.x)*aspect,uv.y-mouse.y);float dist=length(d);'
+      +'float ring=sin(dist*32.0 - t*6.0);float env=exp(-dist*uReach)*amp;'
+      +'vec2 dir=dist>0.0001?d/dist:vec2(0.0);'
+      +'vec2 off=dir*ring*0.022*env;off.x/=aspect;'
+      +'vec2 suv=uv+off;'
+      +'vec3 img=texture2D(tx,suv).rgb;'
+      +'vec2 gsz=vec2(dens*aspect,dens);'
+      +'vec2 cell=suv*gsz;vec2 fp=fract(cell);vec2 cc=(floor(cell)+0.5)/gsz;'
+      +'vec3 dc=texture2D(tx,cc).rgb;'
+      +'float dd=length(fp-0.5);'
+      +'float grid=max(smoothstep(0.07,0.0,min(fp.x,1.0-fp.x)),smoothstep(0.07,0.0,min(fp.y,1.0-fp.y)));'
+      +'vec3 dotted;'
+      +'if(skin<0.5){'                                       // BLUEPRINT - quiet, monochrome-technical, NO green
+      +'  float disc=smoothstep(0.5,0.30,dd);'
+      +'  dotted=mix(dc*0.55,dc,disc);'
+      +'  dotted=mix(dotted,vec3(0.11,0.10,0.09),grid*0.16);'
+      +'}else{'                                              // DIGITAL - GRAINY glowing data-grid, squares kept (all live-tunable)
+      +'  float sq=1.0-smoothstep(0.26,0.44,max(abs(fp.x-0.5),abs(fp.y-0.5)));'
+      +'  float flick=(1.0-uFlick*0.5)+uFlick*hash(floor(cell)+floor(t*6.0));'  // per-cell flicker, centred ~1
+      +'  vec3 cimg=dc*1.2*flick;'                            // cell sampled from the destination hero (true colour = image-sample)
+      +'  float lum=dot(dc,vec3(0.299,0.587,0.114));'         // its luminance
+      +'  vec3 ctint=uCol*(0.35+lum*1.15)*flick;'             // that luminance recoloured toward the hint colour = palette-hint
+      +'  vec3 ccol=mix(ctint,cimg,uImgMix);'                 // uImgMix 0 = pure palette recolour, 1 = true photo (both, blended)
+      +'  dotted=mix(uBg,ccol,sq);'                           // cells over the hint ground
+      +'  dotted+=uCol*grid*uGlow;'                           // glowing grid in the hint colour
+      +'  dotted+=uCol*0.32*sq;'                              // cell glow, same colour
+      +'  dotted+=(hash(uv*vec2(760.0,440.0)+t*11.0)-0.5)*uGrain;'  // film grain
+      +'}'
+      +'float infl=clamp(env*(uInten+0.28*ring),0.0,1.0);'
+      +'vec3 col=mix(img,dotted,infl);'
+      +'gl_FragColor=vec4(col,1.0);}';
+    prog=gl.createProgram();
+    gl.attachShader(prog,compile(gl.VERTEX_SHADER,vs)); gl.attachShader(prog,compile(gl.FRAGMENT_SHADER,fs));
+    gl.linkProgram(prog); gl.useProgram(prog);
+    var buf=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    var loc=gl.getAttribLocation(prog,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    uni.mouse=gl.getUniformLocation(prog,'mouse'); uni.t=gl.getUniformLocation(prog,'t');
+    uni.aspect=gl.getUniformLocation(prog,'aspect'); uni.amp=gl.getUniformLocation(prog,'amp'); uni.tx=gl.getUniformLocation(prog,'tx'); uni.dens=gl.getUniformLocation(prog,'dens'); uni.skin=gl.getUniformLocation(prog,'skin');
+    uni.col=gl.getUniformLocation(prog,'uCol'); uni.glow=gl.getUniformLocation(prog,'uGlow'); uni.grain=gl.getUniformLocation(prog,'uGrain');
+    uni.flick=gl.getUniformLocation(prog,'uFlick'); uni.reach=gl.getUniformLocation(prog,'uReach'); uni.inten=gl.getUniformLocation(prog,'uInten');
+    uni.bg=gl.getUniformLocation(prog,'uBg'); uni.imgmix=gl.getUniformLocation(prog,'uImgMix');
+    return true;
+  }
+  // Texture per hovered target, cached: image cards upload their <img>; blueprint cards get a palette swatch
+  // so the same data-grid can materialise over them. Keyed by image src (or blueprint slug).
+  function texKey(t){ return t.img ? (t.img.currentSrc||t.img.src) : ('bp:'+(t.slug||'')); }
+  function makeSwatch(pal){
+    var c=document.createElement('canvas'); c.width=c.height=64; var x=c.getContext('2d');
+    var bg=pal?pal.bg:[0.9,0.9,0.88], ac=pal?pal.acc:[0.4,0.44,0.5], I=function(v){return Math.round(v*255);};
+    x.fillStyle='rgb('+I(bg[0])+','+I(bg[1])+','+I(bg[2])+')'; x.fillRect(0,0,64,64);
+    x.strokeStyle='rgba('+I(ac[0])+','+I(ac[1])+','+I(ac[2])+',0.5)'; x.lineWidth=1;
+    for(var i=8;i<64;i+=8){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,64); x.moveTo(0,i); x.lineTo(64,i); x.stroke(); }
+    return c;
+  }
+  function upload(rec,el){ gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+    gl.bindTexture(gl.TEXTURE_2D,rec.tex); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,el); rec.ready=true; }
+  function ensureTex(t){
+    var k=texKey(t);
+    if(texMap[k]){ var j=texOrder.indexOf(k); if(j>=0){ texOrder.splice(j,1); texOrder.push(k); } return texMap[k]; }
+    var rec={tex:gl.createTexture(),ready:false}; texMap[k]=rec; texOrder.push(k);
+    // Bounded LRU: free the oldest texture we're not currently showing (deleteTexture) so GPU memory stays capped.
+    while(texOrder.length>10){ var old=texOrder.shift();
+      if(texMap[old] && !(cur&&cur.rec===texMap[old])){ gl.deleteTexture(texMap[old].tex); delete texMap[old]; }
+      else { texOrder.push(old); break; } }
+    gl.bindTexture(gl.TEXTURE_2D,rec.tex);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    var im=t.img;
+    if(im && im.complete && im.naturalWidth>0){ upload(rec,im); }
+    else { upload(rec,makeSwatch(getPalette(t.slug)));           // swatch placeholder until the image decodes
+      if(im){ im.addEventListener('load',function(){ if(!texMap[k]||!gl) return; upload(rec,im); if(running&&cur&&cur.rec===rec) gl.bindTexture(gl.TEXTURE_2D,rec.tex); },{once:true});
+        im.addEventListener('error',function(){ /* image 404/failed: keep the palette swatch as the graceful fallback */ },{once:true}); } }
+    return rec;
+  }
+  function size(){
+    var s=cur.surface, sr=s.getBoundingClientRect(), box=cur.img||s, br=box.getBoundingClientRect();
+    var w=Math.max(1,br.width), h=Math.max(1,br.height), dpr=Math.min(window.devicePixelRatio||1,2);
+    cv.style.left=(br.left-sr.left)+'px'; cv.style.top=(br.top-sr.top)+'px'; cv.style.width=w+'px'; cv.style.height=h+'px';
+    cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+    gl.viewport(0,0,cv.width,cv.height); gl.uniform1f(uni.aspect, w/h); }
+  function loop(now){
+    if(!running) return;
+    if(!active()){ stop(); return; }
+    if(!startT) startT=now;
+    amp=Math.min(1, amp+0.08);
+    gl.bindTexture(gl.TEXTURE_2D, cur.rec.tex);            // keep THIS card's texture bound (async loads can rebind)
+    gl.uniform2f(uni.mouse, mx, my); gl.uniform1f(uni.t,(now-startT)/1000); gl.uniform1f(uni.amp,amp); gl.uniform1i(uni.tx,0);
+    gl.uniform1f(uni.skin, document.body.classList.contains('skin-digital')?1.0:0.0);
+    var T=window.__TUNE||{};
+    // Baked preview-hint defaults (Chris 2026-09-19): World palette on, photo/palette 50/50, field bleed-through.
+    // Palette is read per HOVERED card's world, so each card previews its own world (blueprint until skins land).
+    var GREEN=[0.20,0.86,0.46], P=getPalette(cur.slug);
+    var hint=(T.hue!==undefined?T.hue:1)>0.5 && P;
+    var bt=(T.bgTint!==undefined?T.bgTint:0.76);
+    gl.uniform3fv(uni.col, hint?P.acc:(T.col||GREEN));
+    gl.uniform3fv(uni.bg, hint?[P.bg[0]*bt,P.bg[1]*bt,P.bg[2]*bt]:[0.01,0.03,0.02]);
+    gl.uniform1f(uni.imgmix, T.imgMix!==undefined?T.imgMix:0.5);
+    gl.uniform1f(uni.glow, T.glow!==undefined?T.glow:0.95);
+    gl.uniform1f(uni.grain, T.grain!==undefined?T.grain:0.16);
+    gl.uniform1f(uni.flick, T.flicker!==undefined?T.flicker:0.6);
+    gl.uniform1f(uni.reach, T.reach!==undefined?T.reach:4.5);
+    gl.uniform1f(uni.inten, T.intensity!==undefined?T.intensity:0.78);
+    gl.uniform1f(uni.dens, T.density!==undefined?T.density:48.0);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    raf=requestAnimationFrame(loop);
+  }
+  function start(t){
+    if(!active() || !init()) return;
+    if(cur && cur!==t && cur.img) cur.img.style.visibility='';   // restore the card we're leaving (fast A->B sweeps coalesce mouseleave)
+    cur=t; cur.rec=ensureTex(t);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,cur.rec.tex);
+    t.surface.appendChild(cv);                              // re-parent the ONE canvas into the hovered surface
+    size(); cv.style.display='block';
+    if(t.img) t.img.style.visibility='hidden';
+    running=true; amp=0; startT=0;
+    cancelAnimationFrame(raf); raf=requestAnimationFrame(loop); }
+  function stop(){ running=false; cancelAnimationFrame(raf); if(cv) cv.style.display='none';
+    if(cur && cur.img) cur.img.style.visibility=''; cur=null; }
+  function setMouse(e){ var box=cur&&(cur.img||cur.surface); if(!box) return; var r=box.getBoundingClientRect();
+    mx=(e.clientX-r.left)/r.width; my=1-(e.clientY-r.top)/r.height; }
+
+  function bind(surface){
+    if(!surface || surface.__hoverBound) return; surface.__hoverBound=true;
+    if(getComputedStyle(surface).position==='static') surface.style.position='relative';
+    var host=surface.closest('[data-project]'), slug=host?host.getAttribute('data-project'):null;
+    var target={surface:surface, img:surface.querySelector('img'), slug:slug, rec:null};
+    surface.addEventListener('mouseenter', function(e){ if(active()){ start(target); setMouse(e); } });
+    surface.addEventListener('mousemove', function(e){ if(active()){ if(!running||cur!==target) start(target); setMouse(e); } });
+    surface.addEventListener('mouseleave', stop);
+    surface.addEventListener('click', stop, true);   // capture: GoodRx's own capture-phase stopPropagation() must not eat this teardown
+  }
+  // The GoodRx data-grid is now the BASELINE hover for every band hero + every more-work/experiment card.
+  document.querySelectorAll('.co-band[data-hero] .band-frame').forEach(bind);
+  document.querySelectorAll('.work-tile.wcard .wcard-thumb').forEach(bind);
+  window.addEventListener('resize', function(){ if(running) size(); });
+  window.addEventListener('scroll', function(){ if(running) size(); }, {passive:true});
+})();
+</script>
+<!-- SHARED dissolve edge - 2D-canvas retro pixel-block particles that blow off the growing __openWorldClip
+     reveal circle, for EVERY world (world's own palette, outward leading-edge, pixel-grid snap). Cheap on the
+     Air + verifiable headless; GoodRx WebGL stays a per-world hover override. window.__worldDissolve.{start,stop}
+     is called by __openWorldClip. Tuned values are BAKED in window.__DTUNE below (the live tuner was removed). -->
+<script>
+(function(){
+  var layer=document.getElementById('world-layer');
+  if(!layer){ window.__worldDissolve={start:function(){},stop:function(){}}; return; }
+  var cv=document.createElement('canvas'); cv.id='world-dissolve'; document.body.appendChild(cv);
+  var ctx=cv.getContext('2d');
+  if(!ctx){ window.__worldDissolve={start:function(){},stop:function(){}}; return; } // no 2d ctx → no-op, never blocks navigation
+  document.body.classList.add('dissolve-edge'); // effect on by default (was set by the now-removed spike panel)
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  var W=0,H=0, raf=0, running=false, cx=0, cy=0, fullR=1, headClip=0;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  // BAKED tuning (Chris-approved 2026-09-19): high density, small blocks, tight outward scatter, pixel-grid snap,
+  // palette borrowed from the world (accentFrac low = mostly world-bg blocks). Kept on window.__DTUNE for reference.
+  var D=window.__DTUNE={ count:2150, size:5, scatter:0.6, grain:0.5, accentFrac:0.04, glow:0.25, band:0.21, snap:10 };
+
+  // Fixed particle field: each grain activates as the wavefront reaches its trigger radius, then detaches
+  // and flings outward while fading - "the incoming world materialising as a rim of sand off the edge".
+  var CELLS=[];
+  (function seed(n){ for(var i=0;i<n;i++){ CELLS.push({
+      a:Math.random()*Math.PI*2,        // angle around the center
+      u:Math.pow(Math.random(),0.85),   // position across the outward spray: 0 = on the edge → 1 = farthest out
+      j:(Math.random()-0.5),            // tangential wobble seed
+      s:0.55+Math.random()*1.1,         // size multiplier
+      g:Math.random(),                  // colour-role selector (accent / grit / mass)
+      f:Math.random()*6.283,            // flicker phase
+      b:0.7+Math.random()*0.55          // per-grain brightness (tonal variation of the sand)
+    }); } })(4200);
+
+  // Palette borrowed from the world being revealed (no fixed brand colour): mass = bg, grit = ink, spark = accent.
+  var BG=[255,255,255], SURF=[255,255,255], INK=[20,20,20], ACC=[136,136,136];
+  function hex2rgb(v,fb){ var m=/#?([0-9a-f]{6})/i.exec((v||'').trim()); return m?[parseInt(m[1].slice(0,2),16),parseInt(m[1].slice(2,4),16),parseInt(m[1].slice(4,6),16)]:fb; }
+  function refreshColors(){
+    var cs=getComputedStyle(layer);
+    BG  =hex2rgb(cs.getPropertyValue('--world-bg'),  [255,255,255]);
+    SURF=hex2rgb(cs.getPropertyValue('--world-surface'), BG);
+    INK =hex2rgb(cs.getPropertyValue('--world-ink'), [20,20,20]);
+    ACC =hex2rgb(cs.getPropertyValue('--world-accent'), INK);
+  }
+  function resize(){
+    W=window.innerWidth; H=window.innerHeight;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    cv.style.width=W+'px'; cv.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function frame(now){
+    if(!running) return;
+    var r=parseFloat(getComputedStyle(layer).getPropertyValue('--reveal-r'))||0;
+    ctx.clearRect(0,0,W,H);
+    var t=now/1000;
+    var n=Math.min(CELLS.length, D.count|0);
+    var band=Math.max(0.04,D.band)*fullR;   // width of the active leading-edge ring
+    var base=D.size, af=D.accentFrac, glow=D.glow, grain=D.grain, scatter=D.scatter;
+    var rimHalf=Math.max(6, band*0.5);        // band = D.band*fullR (px)
+    var reach=rimHalf*(0.5 + scatter*3.2);    // how far the farthest blocks blow off the leading edge (scatter)
+    var snap=D.snap||0;                        // retro pixel-lattice snap (0 = organic)
+    for(var i=0;i<n;i++){
+      var c=CELLS[i];
+      // OUTWARD leading-edge spray: blocks live from the edge OUTWARD only - the world stays solid inside and
+      // the pixels blow off the front (retro indie-game dissolve). edge: 0 = on the edge, 1 = farthest out.
+      var edge=c.u;
+      var rad=r - rimHalf*0.08 + Math.pow(edge,1.7)*reach + Math.sin(c.f)*rimHalf*0.22; // dense at edge, thinning out
+      if(rad<2) continue;
+      var alpha=1-edge; if(alpha<=0.03) continue;            // brightest on the edge, fading outward
+      var ang=c.a + (c.b-1)*0.05;               // tiny angular wobble breaks the perfect ring
+      var x=cx+Math.cos(ang)*rad, y=cy+Math.sin(ang)*rad;
+      var sz=base*c.s;
+      if(snap>0){ x=Math.round(x/snap)*snap; y=Math.round(y/snap)*snap; } // snap to a pixel grid = sprite-particle look
+      if(y - sz/2 < headClip) continue; // keep particles out of the sticky header strip (canvas is full-viewport, above the header)
+      var flick=1 - grain*0.45 + grain*0.45*Math.sin(t*9+c.f);   // alpha twinkle (grain)
+      var a=alpha*flick; if(a<0)a=0; if(a>1)a=1;
+      // colour borrowed from the incoming world: spark=accent, grit=ink, then surface, mass=bg
+      var col, spark=false;
+      if(c.g<af){ col=ACC; spark=true; }
+      else if(c.g<af+0.16){ col=INK; }
+      else if(c.g<af+0.40){ col=SURF; }
+      else { col=BG; }
+      var br=c.b*(1 - grain*0.28 + grain*0.28*Math.sin(t*7+c.f*1.7)); // tonal shimmer (sand grains catch light)
+      var rr=Math.min(255,col[0]*br)|0, gg=Math.min(255,col[1]*br)|0, bb=Math.min(255,col[2]*br)|0;
+      if(spark && glow>0){                    // soft ember glow behind accent sparks only
+        ctx.globalAlpha=a*0.4*glow;
+        ctx.fillStyle='rgb('+rr+','+gg+','+bb+')';
+        ctx.fillRect(x-sz*1.6,y-sz*1.6,sz*3.2,sz*3.2);
+      }
+      ctx.globalAlpha=spark?a:a*0.92;
+      ctx.fillStyle='rgb('+rr+','+gg+','+bb+')';
+      ctx.fillRect(x-sz/2,y-sz/2,sz,sz);
+    }
+    ctx.globalAlpha=1;
+    raf=requestAnimationFrame(frame);
+  }
+  window.__worldDissolve={
+    // No args: derive centre + radius + header clip from the clip's OWN state (the --reveal-x/y that
+    // setWorldCenter set, and the layer rect that worldFullR() uses) so the sand always matches the real
+    // circle - for fresh opens AND interrupt-reopens (where setWorldCenter is skipped but the vars persist).
+    start:function(){
+      if(reduce.matches) return;
+      var b=layer.getBoundingClientRect();               // same source of truth as the app's worldFullR()
+      var lx=parseFloat(getComputedStyle(layer).getPropertyValue('--reveal-x'));
+      var ly=parseFloat(getComputedStyle(layer).getPropertyValue('--reveal-y'));
+      if(isNaN(lx)) lx=b.width/2; if(isNaN(ly)) ly=b.height/2;
+      cx=b.left+lx; cy=b.top+ly;                          // clip centre in viewport space
+      headClip=b.top;                                     // header strip height (layer is inset var(--head-h))
+      fullR=Math.hypot(Math.max(lx,b.width-lx),Math.max(ly,b.height-ly))||1;
+      refreshColors(); resize();
+      running=true; cancelAnimationFrame(raf); raf=requestAnimationFrame(frame);
+    },
+    stop:function(){ running=false; cancelAnimationFrame(raf); if(ctx) ctx.clearRect(0,0,W,H); }
+  };
+  window.addEventListener('resize',function(){ if(running) resize(); });
+})();
+</script>
+<!-- ═══ Reusable dev tuning panel - the ONE standard for tuning effects (replaces bespoke per-effect panels).
+     window.devPanel(cfg) renders ONLY when the URL has ?dev, so nothing dev-only ever ships to users; no
+     more "strip before porting" debt. cfg = { title, target, sliders:[{k,label,min,max,step}],
+     toggles:[{options:[{label,value,on}], onPick}], onChange, pos:'left'|'bottom', copy:false }. ═══ -->
+<script>
+(function(){
+  var DEV=/[?&]dev\b/.test(location.search);
+  var styled=false;
+  function injectCSS(){ if(styled) return; styled=true;
+    var s=document.createElement('style');
+    s.textContent='.devpanel{position:fixed;top:12px;right:12px;z-index:100000;width:214px;max-height:88vh;'
+     +'overflow:auto;background:rgba(20,20,22,.94);border:1px solid rgba(255,255,255,.14);border-radius:10px;'
+     +'padding:10px 12px;box-shadow:0 8px 30px rgba(0,0,0,.45);font-family:var(--sans,sans-serif);color:#ddd;backdrop-filter:blur(6px)}'
+     +'.devpanel.left{right:auto;left:12px}.devpanel.bottom{top:auto;bottom:12px}'
+     +'.devpanel h4{margin:0 0 6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8a8f98;font-weight:700}'
+     +'.devpanel .row{display:flex;align-items:center;gap:6px;margin:5px 0}'
+     +'.devpanel label{flex:0 0 62px;font-size:11px;color:#cfd3d8}'
+     +'.devpanel input[type=range]{flex:1;height:16px;accent-color:var(--accent,#2a9d4f);min-width:0}'
+     +'.devpanel .val{flex:0 0 32px;font-size:10px;text-align:right;color:#8a8f98;font-variant-numeric:tabular-nums}'
+     +'.devpanel .tg{display:flex;gap:2px;margin:6px 0}'
+     +'.devpanel .tg button{flex:1;appearance:none;border:0;background:transparent;color:#ddd;font:600 11px/1 var(--sans);padding:5px;border-radius:6px;cursor:pointer}'
+     +'.devpanel .tg button:hover{background:rgba(255,255,255,.08)}.devpanel .tg button.on{background:var(--accent,#2a9d4f);color:#fff}'
+     +'.devpanel .copy{margin-top:8px;width:100%;appearance:none;border:1px solid rgba(255,255,255,.16);background:transparent;color:#ddd;font:600 11px/1 var(--sans);padding:6px;border-radius:6px;cursor:pointer}';
+    document.head.appendChild(s);
+  }
+  window.devPanel=function(cfg){
+    if(!DEV) return null;                 // no-op unless ?dev - never ships to users
+    injectCSS();
+    cfg=cfg||{}; var t=cfg.target||{};
+    var p=document.createElement('div'); p.className='devpanel'+(cfg.pos?' '+cfg.pos:'');
+    if(cfg.title){ var h=document.createElement('h4'); h.textContent=cfg.title; p.appendChild(h); }
+    (cfg.sliders||[]).forEach(function(c){
+      var row=document.createElement('div'); row.className='row';
+      var l=document.createElement('label'); l.textContent=c.label||c.k;
+      var inp=document.createElement('input'); inp.type='range'; inp.min=c.min; inp.max=c.max; inp.step=c.step; inp.value=(t[c.k]!=null?t[c.k]:c.min);
+      var fmt=function(n){ return c.step<1?(+n).toFixed(2):n; };
+      var v=document.createElement('span'); v.className='val'; v.textContent=fmt(inp.value);
+      inp.addEventListener('input',function(){ var n=parseFloat(inp.value); t[c.k]=n; v.textContent=fmt(n); if(cfg.onChange) cfg.onChange(t,c.k,n); });
+      row.appendChild(l); row.appendChild(inp); row.appendChild(v); p.appendChild(row);
+    });
+    (cfg.toggles||[]).forEach(function(g){
+      var tg=document.createElement('div'); tg.className='tg';
+      (g.options||[]).forEach(function(o){
+        var b=document.createElement('button'); b.textContent=o.label; if(o.on) b.classList.add('on');
+        b.addEventListener('click',function(){ tg.querySelectorAll('button').forEach(function(x){x.classList.remove('on');}); b.classList.add('on'); if(g.onPick) g.onPick(o.value); });
+        tg.appendChild(b);
+      });
+      p.appendChild(tg);
+    });
+    if(cfg.copy!==false){
+      var btn=document.createElement('button'); btn.className='copy'; btn.textContent='Copy settings';
+      btn.addEventListener('click',function(){ var out=JSON.stringify(t); try{navigator.clipboard.writeText(out);}catch(e){} console.log((cfg.title||'devPanel')+' '+out); btn.textContent='Copied ✓'; setTimeout(function(){btn.textContent='Copy settings';},1200); });
+      p.appendChild(btn);
+    }
+    document.body.appendChild(p);
+    return p;
+  };
+})();
+</script>
+<!-- ?dev tuner for the GoodRx hover PREVIEW-HINT - flip Green vs destination World palette, blend in the true
+     photo, tint the ground. No-op without ?dev; the default page keeps the confirmed green hover untouched. -->
+<script>
+(function(){
+  window.__TUNE=window.__TUNE||{}; var T=window.__TUNE;
+  if(T.hue===undefined)T.hue=1; if(T.imgMix===undefined)T.imgMix=0.5; if(T.bgTint===undefined)T.bgTint=0.76;
+  window.devPanel({
+    title:'Hover materialisation', target:T, pos:'left',
+    toggles:[{options:[
+      {label:'Green',value:0,on:T.hue<0.5},
+      {label:'World palette',value:1,on:T.hue>=0.5}
+    ],onPick:function(v){T.hue=v;}}],
+    sliders:[
+      {k:'imgMix',label:'Photo',min:0,max:1,step:0.05},
+      {k:'bgTint',label:'Field',min:0,max:1,step:0.02}
+    ]
   });
 })();
 </script>

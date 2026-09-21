@@ -14,10 +14,9 @@ WINDOW = 40  # min duplicated block size, in non-blank lines
 def tracked_sources():
     out = subprocess.run(["git", "ls-files", "*.html", "*.js"],
                          capture_output=True, text=True).stdout.split()
-    # v4.html is a deliberate, temporary staging snapshot of index.html for QA;
-    # exclude it so this gate does not false-positive on the intentional duplicate.
-    # Remove this exclusion (and v4.html) at the v4 -> live flip.
-    return [f for f in out if ".min." not in f and "node_modules/" not in f and f != "v4.html"]
+    # v4-base.html is the staging surface that index.html is flipped from; it is an
+    # intentional near-duplicate of index.html, so exclude it from this gate.
+    return [f for f in out if ".min." not in f and "node_modules/" not in f and f != "v4-base.html"]
 
 def norm_lines(path):
     lines = pathlib.Path(path).read_text(errors="replace").splitlines()

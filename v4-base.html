@@ -4,10 +4,10 @@
 <meta name="robots" content="noindex, nofollow"><title>Chris Lam · v4 staging (hidden)</title>
 <link rel="canonical" href="https://whoischrislam.github.io/" />
 <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-<meta name="description" content="Chris Lam is a senior product designer and 0→1 builder. I design the product and ship code, from research and interaction design through production engineering. 14+ years across healthcare, marketplaces, creative tools, and emerging technology." />
+<meta name="description" content="Chris Lam is a senior product designer and 0→1 builder. I design and code to ship products, from research and interaction design through production engineering. 14+ years across healthcare, marketplaces, creative tools, and emerging technology." />
         <meta property="og:type" content="profile" />
         <meta property="og:title" content="Chris Lam · Senior Product Designer &amp; 0→1 Builder" />
-        <meta property="og:description" content="I design the product and ship code. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
+        <meta property="og:description" content="I design and code to ship products. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
         <meta property="og:url" content="https://whoischrislam.github.io/" />
         <meta property="og:site_name" content="Chris Lam" />
         <meta property="og:image" content="https://whoischrislam.github.io/images/og-image.png" />
@@ -16,7 +16,7 @@
         <meta property="og:image:alt" content="Chris Lam, senior product designer &amp; 0→1 builder" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Chris Lam · Senior Product Designer &amp; 0→1 Builder" />
-        <meta name="twitter:description" content="I design the product and ship code. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
+        <meta name="twitter:description" content="I design and code to ship products. 14+ years turning ambiguous problems into shipped software across product, design, and engineering." />
         <meta name="twitter:image" content="https://whoischrislam.github.io/images/og-image.png" />
 <script type="application/ld+json">
         {
@@ -89,13 +89,13 @@
   color-scheme:light;
   /* WORKING DRAWINGS system (Chris's own, 2026-09-16): off-white ground + very-dark-gray ink,
      green as the ONE signature accent; color otherwise comes from the work (per-company bands).
-     Blueprint/editorial. NOT cream+terracotta — that was mis-sourced from an archive viewer's CSS. */
+     Blueprint/editorial. NOT cream+terracotta - that was mis-sourced from an archive viewer's CSS. */
   --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
   --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --border:rgba(0,0,0,.10);
   --accent-strong:#1e7a3c; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.06);
   --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(30,40,30,.08);
   --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;
-  --grid:rgba(0,0,0,.045); /* structural-grid hairline — content aligns to it, not wallpaper */
+  --grid:rgba(0,0,0,.045); /* structural-grid hairline - content aligns to it, not wallpaper */
   --body-font:var(--sans); --border-radius:1em; --transition:.25s ease;
   /* Newsreader = anti-slop serif display (NOT Fraunces/Instrument Serif). Figtree = Proxima Nova
      stand-in (real Proxima pending Adobe kit). IBM Plex Mono = blueprint annotation layer. */
@@ -152,7 +152,7 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 .site-head nav a[aria-label]{min-width:44px;padding:0}
 .site-head nav svg{width:19px;height:19px;display:block}
 
-/* Availability status pill (beside the name) — a small confident soft-accent chip, brand-green pulse dot.
+/* Availability status pill (beside the name) - a small confident soft-accent chip, brand-green pulse dot.
    It's a LINK to the contact close (not decoration): hover inverts to filled accent = "click to get in touch". */
 .head-left{display:flex;align-items:center;gap:12px;min-width:0}
 .status-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;
@@ -205,7 +205,7 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 /* The two verbs were underlined on load; underlining is a named AI tell
    (New Yorker slop list), so the words now carry on the serif alone. */
 .lit-word{padding-bottom:0}
-/* Working-drawing sheet header — a mono title bar above the page content. */
+/* Working-drawing sheet header - a mono title bar above the page content. */
 .sheet-head{display:flex;justify-content:space-between;align-items:center;gap:16px;
   font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);
@@ -270,7 +270,7 @@ details.more[open] summary::before{transform:rotate(90deg)}
    the in-page CTAs, and all seven of the agent's navigation targets. scroll-padding
    on the scroll container fixes all of them at once. */
 /* Reserve the scrollbar gutter so opening a world (which flips body to overflow:hidden) does NOT
-   change the viewport width mid-transition — that width change aborts the View Transition
+   change the viewport width mid-transition - that width change aborts the View Transition
    ("invalid state. Viewport size changed") and the enter clip silently doesn't run. macOS overlay
    scrollbars = 0px gutter (no visual change); classic scrollbars reserve a stable gutter. */
 /* scrollbar-gutter:stable reserves the scrollbar gutter (0 on macOS overlay scrollbars, so invisible there;
@@ -1558,7 +1558,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 <script type="text/javascript" src="voice-agent.js" defer></script>
 <style id="bl-styles">
 /* ============================================================
-   SPIKE ONLY — base-layer / substrate exploration. Not production.
+   SPIKE ONLY - base-layer / substrate exploration. Not production.
    "before" = untouched v4. "after" = body.bl-after.bl-<n>.
    Goal: a blueprint/grid base with real depth that HELPS (D lenses onto this).
    ============================================================ */
@@ -1571,21 +1571,21 @@ body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:n
 :root[data-theme="dark"] body.dv-base::after{mix-blend-mode:screen;opacity:.05}
 /* GRID DECIDED OUT (Chris 2026-09-17): no visible grid, grain only. */
 /* ---- B · Type-as-hero treatments. All on-system fonts (Newsreader/Figtree/Plex Mono),
-   no new copy — just treatment of the existing lockup + its two .lit-word verbs
+   no new copy - just treatment of the existing lockup + its two .lit-word verbs
    ("design", "ship"). tb-1 = current baseline. ---- */
 
-/* tb-2 · Big, two-line — let it wrap and go display-scale, tight leading */
+/* tb-2 · Big, two-line - let it wrap and go display-scale, tight leading */
 body.tb-2 .hero h1.hero-lockup,body.tb-5 .hero h1.hero-lockup,body.tb-6 .hero h1.hero-lockup{
   white-space:normal;width:auto;max-width:none;
   font-size:clamp(2.6rem,8.5vw,5.8rem);line-height:.98;letter-spacing:-.02em}
-/* forced break after "&" — only in the two-line treatments */
+/* forced break after "&" - only in the two-line treatments */
 .hero-lockup .lb{display:none}
 body.tb-2 .hero-lockup .lb,body.tb-5 .hero-lockup .lb,body.tb-6 .hero-lockup .lb{display:inline}
 
-/* tb-3 · Italic verbs — draw the eye to the two actions, add voice */
+/* tb-3 · Italic verbs - draw the eye to the two actions, add voice */
 body.tb-3 .lit-word,body.tb-5 .lit-word{font-style:italic}
 
-/* tb-4 · Green verbs — the signature accent on the two actions */
+/* tb-4 · Green verbs - the signature accent on the two actions */
 body.tb-4 .lit-word{color:var(--accent)}
 
 /* tb-5 = big two-line + italic verbs (combines 2 and 3) */
@@ -1626,7 +1626,7 @@ body.tb-6 .hl-amp{display:inline-block;color:var(--text);opacity:0;transform:tra
 @keyframes hl-ampin{to{opacity:1;transform:none}}
 
 /* colour story: the signature green marks the story words (toggled by col-* class) */
-/* colour: tagline is one uniform ink (--text) — no green accents (Chris 2026-09-19).
+/* colour: tagline is one uniform ink (--text) - no green accents (Chris 2026-09-19).
    --text is near-white in dark mode / near-black in light, so it reads correctly on both grounds. */
 body.tb-6 .hl-design .lit-word,
 body.tb-6 .hl-codechar,
@@ -1671,11 +1671,11 @@ body.tb-6 .hl-special.in .hl-prod{animation:hl-create .75s cubic-bezier(.3,.7,.2
    sc-4/sc-8 A/B classes are retired. ---- */
 /* (card-grid "fix" removed: auto-fill already renders equal-width tracks at every
    width; forcing repeat(3,1fr) squished cards to 135px on phones. The real "2 wider
-   blocks" is elsewhere — awaiting Chris to point at it, no guessing.) */
+   blocks" is elsewhere - awaiting Chris to point at it, no guessing.) */
 
 /* ── Band reveal styles (spike toggle #dv-anim). Baseline (no class) keeps the
    current uniform 14px .reveal. Each variant holds the band section visible and
-   animates its two pieces — .co-head (name + line) and .band-frame (image) — so the
+   animates its two pieces - .co-head (name + line) and .band-frame (image) - so the
    company "arrives" with character instead of lifting as one lump. Company bands
    only; the rest of the page keeps its quiet reveal. ── */
 /* Variants take over the parent (kill the base 14px lump-rise) and drive the pieces. */
@@ -1684,7 +1684,7 @@ body.anim-2 .co-band.reveal,
 body.anim-3 .co-band.reveal,
 body.anim-4 .co-band.reveal{opacity:1;transform:none}
 
-/* R1 Slide — head enters from the left, image from the right, they meet. Editorial. */
+/* R1 Slide - head enters from the left, image from the right, they meet. Editorial. */
 body.anim-1 .co-band.reveal .co-head{opacity:0;transform:translateX(-24px);
   transition:opacity .5s ease,transform .62s cubic-bezier(.22,1,.36,1)}
 body.anim-1 .co-band.reveal .band-frame{opacity:0;transform:translateX(24px);
@@ -1692,7 +1692,7 @@ body.anim-1 .co-band.reveal .band-frame{opacity:0;transform:translateX(24px);
 body.anim-1 .co-band.reveal.in .co-head,
 body.anim-1 .co-band.reveal.in .band-frame{opacity:1;transform:none}
 
-/* R2 Settle — image starts soft + slightly small and snaps sharp; the hero's
+/* R2 Settle - image starts soft + slightly small and snaps sharp; the hero's
    "product coming into existence" blur, carried down the page. */
 body.anim-2 .co-band.reveal .co-head{opacity:0;transform:translateY(10px);
   transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
@@ -1701,7 +1701,7 @@ body.anim-2 .co-band.reveal .band-frame{opacity:0;transform:scale(.985);filter:b
 body.anim-2 .co-band.reveal.in .co-head{opacity:1;transform:none}
 body.anim-2 .co-band.reveal.in .band-frame{opacity:1;transform:none;filter:none}
 
-/* R3 Cascade — name lands first, image follows a beat later. Clear sequence. */
+/* R3 Cascade - name lands first, image follows a beat later. Clear sequence. */
 body.anim-3 .co-band.reveal .co-head{opacity:0;transform:translateY(18px);
   transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
 body.anim-3 .co-band.reveal .band-frame{opacity:0;transform:translateY(26px);
@@ -1709,7 +1709,7 @@ body.anim-3 .co-band.reveal .band-frame{opacity:0;transform:translateY(26px);
 body.anim-3 .co-band.reveal.in .co-head,
 body.anim-3 .co-band.reveal.in .band-frame{opacity:1;transform:none}
 
-/* R4 Wash — the band's own color curtains off the image, left to right. A taste of
+/* R4 Wash - the band's own color curtains off the image, left to right. A taste of
    the per-company "lens/world" idea, contained to one entrance. */
 body.anim-4 .co-band.reveal .co-head{opacity:0;transform:translateY(10px);
   transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
@@ -1733,7 +1733,7 @@ body.anim-4 .co-band.reveal.in .band-frame::after{transform:scaleX(0)}
    keep the pill's sense of a defined marker. Pure CSS, static class swaps. ── */
 
 /* ---- L2 group labels for "More work"/"Experiments" (spike toggle #dv-l2). These live
-   UNDER Work, so they must carry NO horizontal rule — rules are reserved for breaks
+   UNDER Work, so they must carry NO horizontal rule - rules are reserved for breaks
    between L1 sections. Subordination is shown by small size, uppercase, letterspacing,
    and whitespace; an optional non-rule marker adds definition. Never an item name. ---- */
 body.l2-kick .exp-head,body.l2-tick .exp-head,body.l2-tab .exp-head{
@@ -1742,18 +1742,18 @@ body.l2-kick .exp-head,body.l2-tick .exp-head,body.l2-tab .exp-head{
 /* Tick: a short vertical accent bar (not a horizontal rule) flags the sub-group. */
 body.l2-tick .exp-head::before{content:"";display:inline-block;width:3px;height:13px;background:var(--accent);
   border-radius:2px;margin-right:11px;vertical-align:-1px}
-/* Tab: the label sits in a soft chip — a defined marker echoing the metadata chips, no rule. */
+/* Tab: the label sits in a soft chip - a defined marker echoing the metadata chips, no rule. */
 body.l2-tab .exp-head{display:inline-block;background:var(--surface-2);color:var(--muted);padding:5px 11px;border-radius:6px}
 
 /* ---- OUTCOME METADATA: de-pilled, no dot. Down to soft chip vs de-pilled text, each in
    neutral or the hero's highlight color. ---- */
-/* soft chip — filled, borderless; keeps the pill's marker feel without the hard outline */
+/* soft chip - filled, borderless; keeps the pill's marker feel without the hard outline */
 body.tag-chip .tag-outcome,body.tag-chip-accent .tag-outcome{border:0;margin-left:10px;
   padding:3px 9px;border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.03em;
   text-transform:none;vertical-align:middle}
 body.tag-chip .tag-outcome{background:var(--surface-2);color:var(--muted)}
 body.tag-chip-accent .tag-outcome{background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent-strong)}
-/* de-pilled text — no dot; case, size, and a gap (or the accent color) do the separating */
+/* de-pilled text - no dot; case, size, and a gap (or the accent color) do the separating */
 body.tag-text .tag-outcome,body.tag-text-accent .tag-outcome{border:0;padding:0;background:none;border-radius:0;
   margin-left:12px;font-size:12px;letter-spacing:.07em;text-transform:uppercase}
 body.tag-text .tag-outcome{color:var(--muted);font-weight:600}
@@ -1778,24 +1778,24 @@ body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400
   -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3));
   mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3))}
 
-/* ==== BLUEPRINT-SYSTEM exploration — the working-drawings visual language, i.e. the
+/* ==== BLUEPRINT-SYSTEM exploration - the working-drawings visual language, i.e. the
    design↔code seam as the site's identity. SPIKE ONLY, flip via #bp-bar. Graphic-only
    (marks / ticks / dimension + leader lines); NO invented words. One bp class at a time.
    Desktop-first: gutter elements are guarded so they never cause mobile h-scroll. ==== */
 body[class*="bp-"] #top{position:relative}
 
-/* bp-1 · Sheet — accent crop marks at the content-column top corners (reads: a drawing sheet) */
+/* bp-1 · Sheet - accent crop marks at the content-column top corners (reads: a drawing sheet) */
 body.bp-1 #top::before,body.bp-1 #top::after{content:"";position:absolute;top:4px;width:14px;height:14px;
   pointer-events:none;border-top:1.5px solid var(--accent);opacity:.85}
 body.bp-1 #top::before{left:24px;border-left:1.5px solid var(--accent)}
 body.bp-1 #top::after{right:24px;border-right:1.5px solid var(--accent)}
 
-/* bp-2 · Ruler — a measured tick strip across the top of the content column, pitched to the 44px grid */
+/* bp-2 · Ruler - a measured tick strip across the top of the content column, pitched to the 44px grid */
 body.bp-2 #top::before{content:"";position:absolute;left:24px;right:24px;top:2px;height:9px;pointer-events:none;
   background-image:repeating-linear-gradient(to right, var(--grid-maj) 0 1px, transparent 1px 44px);
   border-bottom:1px solid var(--border)}
 
-/* bp-3 · Dimension line — a vertical measured line with end ticks down the hero (in the gutter, desktop only) */
+/* bp-3 · Dimension line - a vertical measured line with end ticks down the hero (in the gutter, desktop only) */
 body.bp-3 .hero{position:relative}
 @media (min-width:1040px){
   body.bp-3 .hero::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:1px;background:var(--accent);opacity:.55}
@@ -1803,12 +1803,12 @@ body.bp-3 .hero{position:relative}
     box-shadow:0 0 0 0 var(--accent)}
 }
 
-/* bp-4 · Registration — a short accent rule above each section heading (a drafting register mark) */
+/* bp-4 · Registration - a short accent rule above each section heading (a drafting register mark) */
 body.bp-4 h2.sec,body.bp-4 .exp-head{position:relative}
 body.bp-4 h2.sec::before,body.bp-4 .exp-head::before{content:"";position:absolute;left:0;top:-12px;
   width:40px;height:1.5px;background:var(--accent);opacity:.75}
 
-/* bp-5 · Detail frames — corner ticks on every work thumb, like a plate on a drawing set */
+/* bp-5 · Detail frames - corner ticks on every work thumb, like a plate on a drawing set */
 body.bp-5 .wcard-thumb::after,body.bp-5 .band-frame::after{content:"";position:absolute;right:9px;bottom:9px;
   width:15px;height:15px;pointer-events:none;z-index:3;
   border-right:1.5px solid rgba(255,255,255,.72);border-bottom:1.5px solid rgba(255,255,255,.72)}
@@ -1823,7 +1823,7 @@ body.bp-5 .band-frame{position:relative}
 #bp-bar button:hover{background:rgba(255,255,255,.08)}
 #bp-bar button.on{background:var(--accent);color:#fff}
 
-/* ==== WORLDS prototype — GoodRx only. Hover-stir on the band + a circular expand
+/* ==== WORLDS prototype - GoodRx only. Hover-stir on the band + a circular expand
    reveal (View Transitions API) into a per-project "world" that takes over the viewport
    while the baseline chrome (the "ship") persists. SPIKE; CSS-only motion so it stays
    buttery on a MacBook Air (no per-world WebGL). ==== */
@@ -1837,7 +1837,7 @@ body.bp-5 .band-frame{position:relative}
 /* World reveal (see __openWorldClip / closeWorldClip). No View Transitions API.
    #world-layer wraps the panel + focus content. Normally display:contents, so the focused layout is
    unchanged. During the reveal (body.world-entering) it becomes an opaque overlay ABOVE the still-visible
-   homepage, clipped to a growing circle — so you see the real homepage everywhere outside the circle and
+   homepage, clipped to a growing circle - so you see the real homepage everywhere outside the circle and
    the world inside it. The circle CENTER is static (only --reveal-r animates) so the origin can't be
    dropped mid-interpolation the way an animated clip position was in some Chromium forks. */
 @property --reveal-r{syntax:"<length>";inherits:false;initial-value:0px}
@@ -1853,10 +1853,10 @@ body.work-focus-open[data-world].world-entering,
 body.work-focus-open[data-world].world-entering #top,
 body.work-focus-open[data-world].world-entering .work-shell{background:var(--bg)!important}
 
-/* ==== SHARED cheap dissolve edge (#2, 2026-09-20) — the INVERTED base effect. A 2D-canvas pixel-block
+/* ==== SHARED cheap dissolve edge (#2, 2026-09-20) - the INVERTED base effect. A 2D-canvas pixel-block
    dissolve rides the SHARED __openWorldClip reveal circle for EVERY world: cheap on the Air, verifiable
    headless (2D, no GPU), drawn over the real homepage backdrop that world-entering keeps behind the layer.
-   Blocks BORROW the incoming world's palette (--world-bg mass / --world-ink grit / --world-accent sparks) —
+   Blocks BORROW the incoming world's palette (--world-bg mass / --world-ink grit / --world-accent sparks) -
    no fixed brand colour; per-world identity comes for free. GoodRx's WebGL grain stays a per-world OVERRIDE.
    Reduced-motion falls back to the clean clip. Tuned values are baked in window.__DTUNE (live tuner removed). ==== */
 #world-dissolve{position:fixed;inset:0;z-index:61;pointer-events:none;display:none}
@@ -1864,13 +1864,13 @@ body.dissolve-edge.world-entering #world-dissolve{display:block}
 @media (prefers-reduced-motion:reduce){ #world-dissolve{display:none!important} }
 
 /* World back = a sticky, FULL-BLEED sub-bar pinned under the header (Chris's pick). The margin/padding-inline
-   breakout makes its background span the whole viewport while the content stays in the 1180px column — a
+   breakout makes its background span the whole viewport while the content stays in the 1180px column - a
    plain sticky only spans the padded column, which is why it looked narrow on mobile. */
 body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   margin-inline:calc(50% - 50vw);padding:12px calc(50vw - 50%);
   background:var(--world-bg);border-bottom:1px solid var(--world-line)}
 
-/* ==== REGION transition (company ↔ case study) — a case study is a reading surface, so it just fades in
+/* ==== REGION transition (company ↔ case study) - a case study is a reading surface, so it just fades in
    quietly. No set-piece (the world reveal is the one signature moment). ==== */
 .region-in{animation:rgn-fade .16s ease both}
 @keyframes rgn-fade{from{opacity:0}to{opacity:1}}
@@ -1880,7 +1880,7 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   .co-band[data-project="goodrx"] .band-frame{transition:none}
 }
 
-/* ==== CURSOR (GoodRx) — LOCKED (Chris, 2026-09-18): the regular system arrow stays (links stay
+/* ==== CURSOR (GoodRx) - LOCKED (Chris, 2026-09-18): the regular system arrow stays (links stay
    clickable); an "Enter world →" label trails to its right. #gx-cursor is a fixed label JS moves. */
 #gx-cursor{position:fixed;left:0;top:0;z-index:1260;pointer-events:none;opacity:0;
   transform:translate(15px,14px);transition:opacity .2s ease;
@@ -1888,24 +1888,24 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
   box-shadow:0 6px 18px rgba(0,0,0,.28)}
 #gx-cursor::after{content:"Enter world \2192"}
 /* the old static corner cue is now redundant with the trailing label */
-/* The "Enter world →" label is a desktop cursor affordance — on touch there's no mouseleave, so it
+/* The "Enter world →" label is a desktop cursor affordance - on touch there's no mouseleave, so it
    lingers after tapping in. Kill it on touch devices, and hide it whenever a world is open/opening. */
 @media (hover:none){ #gx-cursor{display:none!important} }
 body.work-focus-open #gx-cursor,body.world-entering #gx-cursor{opacity:0!important}
 @media (prefers-reduced-motion:reduce){ #gx-cursor{transition:none} }
 
 
-/* ==== PER-WORLD SYSTEM — ONE generic treatment, re-skinned per world via TOKENS.
-   BASE: blueprint defaults on body[data-world] — the solid fallback for any new/unskinned world
+/* ==== PER-WORLD SYSTEM - ONE generic treatment, re-skinned per world via TOKENS.
+   BASE: blueprint defaults on body[data-world] - the solid fallback for any new/unskinned world
    (neutral paper ground; unskinned worlds also fall back to the .visual-placeholder hero).
    ENTRY: each body[data-world="<slug>"] overrides only its tokens for a unique identity.
-   Override order: [data-world="slug"] beats [data-world] by SOURCE ORDER (both are specificity (0,1,1) —
-   an attribute VALUE adds no specificity — so the per-world ENTRY rows must stay BELOW the base block).
+   Override order: [data-world="slug"] beats [data-world] by SOURCE ORDER (both are specificity (0,1,1) -
+   an attribute VALUE adds no specificity - so the per-world ENTRY rows must stay BELOW the base block).
    The world block as a whole beats base component rules by specificity (body[data-world] ... vs .x).
    No @layer. Adding a skinned world = one ENTRY token row below + a hero in its data. body[data-world="<slug>"]
    is set on world open; JS injects .world-hero and hides the default heading. ==== */
 body[data-world]{
-  /* BASE blueprint palette — the fallback identity (neutral paper + slate accent).
+  /* BASE blueprint palette - the fallback identity (neutral paper + slate accent).
      --world-ink-soft is .72 (not .6) so the 11px mono labels clear WCAG AA (~5.8:1) on the paper bg. */
   --world-bg:#edeae2; --world-ink:#1b1b19; --world-ink-soft:rgba(27,27,25,.72);
   --world-line:rgba(27,27,25,.18); --world-accent:#3f6ea6; --world-surface:#f7f6f1;
@@ -1918,12 +1918,12 @@ body[data-world="goodrx"]{
   --world-card-bg:#1a1710; --world-card-ink:#ffffff;}
 
 body.work-focus-open[data-world]{background:var(--world-bg)}
-/* Header is CONSTANT chrome — never re-themed per world. It stays the persistent frame ("ship") the
+/* Header is CONSTANT chrome - never re-themed per world. It stays the persistent frame ("ship") the
    world reveals beneath, so there's no color snap and nothing to transition. */
 body.work-focus-open[data-world] #work-panel{
   --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
   --accent:var(--world-accent);--surface:var(--world-surface);background:var(--world-bg);color:var(--world-ink)}
-/* the colour OVERTAKES the whole focused page — every wrapper + the Selected-projects area */
+/* the colour OVERTAKES the whole focused page - every wrapper + the Selected-projects area */
 body.work-focus-open[data-world] #top,
 body.work-focus-open[data-world] .work-shell,
 body.work-focus-open[data-world] #work-focus-content{background:var(--world-bg)}
@@ -1939,12 +1939,12 @@ body.work-focus-open[data-world] #work-focus-content{
 .world-hero-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:72ch;color:var(--world-ink);margin:0}
 .world-hero-media{margin:46px 0 8px}
 .world-hero-media img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 24px 60px rgba(26,23,16,.18)}
-/* BLUEPRINT hero — schematic placeholder for an unskinned world (no hero image yet) */
+/* BLUEPRINT hero - schematic placeholder for an unskinned world (no hero image yet) */
 .world-hero-media-blueprint .visual-placeholder{width:100%;min-height:clamp(220px,30vw,340px);
   border:1px solid var(--world-line);border-radius:6px;background:transparent;color:var(--world-ink)}
 .world-hero-media-blueprint .visual-placeholder::before{border-color:var(--world-line)}
 .world-hero-media-blueprint .visual-placeholder-title{color:var(--world-ink)}
-/* Project-world Artifacts region — image grid opening the lightbox */
+/* Project-world Artifacts region - image grid opening the lightbox */
 .work-artifact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:18px}
 .work-artifact{appearance:none;display:block;padding:0;overflow:hidden;cursor:pointer;
   border:1px solid var(--world-line,var(--border));border-radius:8px;background:transparent;
@@ -1953,11 +1953,11 @@ body.work-focus-open[data-world] #work-focus-content{
 .work-artifact:hover,.work-artifact:focus-visible{border-color:var(--world-ink-soft,var(--border-strong))}
 .work-artifact:focus-visible{outline:2px solid var(--world-accent,var(--accent));outline-offset:2px}
 
-/* body depth (spec grid, outcome, decisions) — readable cards on the brand ground */
+/* body depth (spec grid, outcome, decisions) - readable cards on the brand ground */
 body.work-focus-open[data-world] .work-panel-summary,
 body.work-focus-open[data-world] .work-panel-result,
 body.work-focus-open[data-world] .work-panel-outcome{color:var(--world-ink)}
-/* ==== Fact/spec section — on the world bg (no white card). ==== */
+/* ==== Fact/spec section - on the world bg (no white card). ==== */
 body[data-world] #work-panel .work-panel-brief,
 body[data-world] #work-panel .work-panel-details,
 body[data-world] #work-panel .work-panel-facts,
@@ -1966,8 +1966,8 @@ body[data-world] .work-panel.is-company-view .work-panel-facts{max-width:none;ma
 body[data-world] .work-panel.is-company-view .work-panel-outcome{max-width:none;padding-top:24px!important;border-top:1px solid var(--world-line)!important;margin-top:26px}
 body[data-world] .work-panel-facts .tok{border-color:var(--world-line);color:var(--world-ink)}
 
-/* FACT GRID — the locked treatment (was "Hybrid B"): serif WHAT-I-DID lede + MEASURED-OUTCOMES
-   bookend, stacked label-over-value hairline rows. Unconditional — every world inherits it. */
+/* FACT GRID - the locked treatment (was "Hybrid B"): serif WHAT-I-DID lede + MEASURED-OUTCOMES
+   bookend, stacked label-over-value hairline rows. Unconditional - every world inherits it. */
 body[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
 body[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:1fr;border-bottom:1px solid var(--world-line);padding:14px 0}
 body[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
@@ -1978,18 +1978,18 @@ body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{p
 body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
 
 /* ===== Case study (story) view: mirror the company editorial treatment in-world ===== */
-/* #12 · fact grid — drop icons + boxy cells; hairline rows, mono label over plain value (like Hybrid B) */
+/* #12 · fact grid - drop icons + boxy cells; hairline rows, mono label over plain value (like Hybrid B) */
 body[data-world] .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr;gap:0;max-width:none;background:transparent;border:0;border-radius:0;border-top:1px solid var(--world-line)}
 body[data-world] .work-panel.is-story-view .work-panel-facts div,
 body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:1fr;padding:14px 0;border:0;border-bottom:1px solid var(--world-line)}
 body[data-world] .work-panel.is-story-view .work-panel-facts .fact-icon{display:none}
 body[data-world] .work-panel.is-story-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
 body[data-world] .work-panel.is-story-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
-/* stack the brief in one column (summary, facts, then OUTCOME as a full-width serif bookend — like the company MEASURED OUTCOMES) */
+/* stack the brief in one column (summary, facts, then OUTCOME as a full-width serif bookend - like the company MEASURED OUTCOMES) */
 body[data-world] .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;grid-template-areas:"summary" "facts" "outcome"}
 body[data-world] .work-panel.is-story-view .work-panel-outcome{max-width:none;margin-top:26px;padding-top:24px!important;border-top:1px solid var(--world-line)!important}
 
-/* #13/#17 · provenance — company is named in the back-link, so drop the whole lockup (logo + IPO pill) in-world */
+/* #13/#17 · provenance - company is named in the back-link, so drop the whole lockup (logo + IPO pill) in-world */
 body[data-world] .work-panel.is-story-view .work-panel-provenance{display:none}
 
 /* #18 · category + status read as a one-liner dek directly under the title, left-aligned (not floated top-right) */
@@ -1997,7 +1997,7 @@ body[data-world] .work-panel.is-story-view .work-panel-heading{grid-template-col
 body[data-world] .work-panel.is-story-view .work-panel-story-meta{justify-content:flex-start;margin-top:14px}
 body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;margin:0}
 
-/* #14 · JUMP TO nav — world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
+/* #14 · JUMP TO nav - world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
 body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent)}
 body[data-world] .project-story-nav button[aria-current="true"]{color:#fff}
 
@@ -2011,7 +2011,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   <div class="wrap">
     <div class="head-left">
       <a class="logo" href="#top">Chris Lam</a>
-      <a class="status-pill" href="#contact" aria-label="Open to new roles — get in touch"><span class="sp-dot" aria-hidden="true"></span>Open to new roles</a>
+      <a class="status-pill" href="#contact" aria-label="Open to new roles - get in touch"><span class="sp-dot" aria-hidden="true"></span>Open to new roles</a>
     </div>
     <nav aria-label="Primary">
       <a href="#top" class="hide-sm">About</a>
@@ -2196,7 +2196,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   .wcard-cta{margin-top:6px;font-weight:600;font-size:14px;color:var(--accent-strong)}
   /* Dark mode: mute the exposed brand-color field so it recedes into the dark
      ground instead of vibrating. Layered as background-image over the color, so
-     it sits above background-color but below child <img>/labels — the work and
+     it sits above background-color but below child <img>/labels - the work and
      the wordmarks stay bright; only the raw color mat is desaturated. One knob. */
   :root[data-theme="dark"] .band-frame,
   :root[data-theme="dark"] .wcard-thumb{
@@ -2817,10 +2817,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
           {name:"Instructor dashboard", surface:"Product & flows", desc:"Dashboard in context", delivery:"To confirm", image:"images/work/pathstream/instructor-dashboard-states.png"},
           {name:"Chunking prototype", surface:"Product & flows", desc:"Chunking prototype screen", delivery:"To confirm", image:"images/work/pathstream/chunking-prototype.png"},
           {name:"Short-term UI fixes", surface:"Product & flows", desc:"Small component fixes", delivery:"To confirm", image:"images/work/pathstream/short-term-fixes.png"},
-          {name:"Dashboard vision v5", surface:"Product & flows", desc:"Instructor dashboard vision", delivery:"To confirm", image:"images/work/pathstream/instructor-dashboard-vision.png"},
           {name:"UI Library", surface:"Design systems & components", desc:"Shared component library", delivery:"To confirm", image:"images/work/pathstream/ui-library.png"},
-          {name:"Certificate landing pages", surface:"Web & brand", desc:"Program landing page", delivery:"To confirm", image:"images/work/pathstream/certificate-landing-pages.png"},
-          {name:"Brand logo mark", surface:"Web & brand", desc:"Pathstream logo mark", delivery:"To confirm", image:"images/work/pathstream/brand-logo-mark.png"},
           {name:"Social cover lockup", surface:"Web & brand", desc:"Wordmark social cover", delivery:"To confirm", image:"images/work/pathstream/fb-cover.png"},
           {name:"Scroll interaction", surface:"Prototypes & experiments", desc:"Scroll interaction spec", delivery:"To confirm", image:"images/work/pathstream/chunking-scroll-interaction.png"},
           {name:"Lab diagrams", surface:"Prototypes & experiments", desc:"Lab flow diagrams", delivery:"To confirm", image:"images/work/pathstream/lab-diagrams.png"},
@@ -3008,13 +3005,6 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
             image: "images/craft/iodine_26.webp"
           },
           {
-            name: "Iodine brand hero",
-            surface: "Web & brand",
-            desc: "Iodine brand hero",
-            delivery: "To confirm",
-            image: "images/work/goodrx/iodine-hero.png"
-          },
-          {
             name: "Conditions exploration",
             surface: "Prototypes & experiments",
             desc: "Conditions IA exploration",
@@ -3044,13 +3034,6 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
             desc: "Anxiety-med state map",
             delivery: "To confirm",
             image: "images/work/goodrx/research-us-of-worry.png"
-          },
-          {
-            name: "Flu spread map",
-            surface: "Data-journalism / editorial",
-            desc: "Flu / Tamiflu fills by state",
-            delivery: "To confirm",
-            image: "images/work/goodrx/research-flu-map.png"
           },
           {
             name: "ED-drug fills",
@@ -3198,7 +3181,6 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
         vignettes: [
           {name:"Music desktop", surface:"Product & flows", desc:"Desktop player redesign", delivery:"To confirm", image:"images/work/amazon/amd-music-desktop.png"},
           {name:"Samsung Music", surface:"Product & flows", desc:"Samsung device screen", delivery:"To confirm", image:"images/work/amazon/samsung-music.png"},
-          {name:"Library UX spec", surface:"Design systems & components", desc:"Library spec sheet", delivery:"To confirm", image:"images/work/amazon/presidio-library-spec.png"},
           {name:"Win8 Store album", surface:"Web & brand", desc:"Windows 8 Store detail", delivery:"To confirm", image:"images/work/amazon/win8-store.png"},
           {name:"Music Curator", surface:"Prototypes & experiments", desc:"Playlists hackday concept", delivery:"Concept", image:"images/work/amazon/playlists-curator.png"}
         ],
@@ -3241,9 +3223,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
           {name:"Transaction history", surface:"Product & flows", desc:"Transaction history", delivery:"To confirm", image:"images/work/taskrabbit/transaction-history.png"},
           {name:"Browse & triage", surface:"Product & flows", desc:"Task browse and triage", delivery:"To confirm", image:"images/work/taskrabbit/browsing-triage-tasks.png"},
           {name:"Client experience map", surface:"Design systems & components", desc:"Client flow map", delivery:"To confirm", image:"images/work/taskrabbit/tr-user-experiences.png"},
-          {name:"Careers marketing site", surface:"Web & brand", desc:"Careers page redesign", delivery:"To confirm", image:"images/work/taskrabbit/careers-marketing-site.png"},
           {name:"Task template", surface:"Prototypes & experiments", desc:"Task template map view", delivery:"To confirm", image:"images/work/taskrabbit/task-template.png"},
-          {name:"Hackday: Community Center", surface:"Prototypes & experiments", desc:"Hackday concept", delivery:"Concept", image:"images/work/taskrabbit/hackday.png"},
           {name:"Design Show & Tell", surface:"Physical & ops", desc:"Bi-weekly team ritual", delivery:"To confirm", image:"images/work/taskrabbit/show-and-tell.png"}
         ],
         alsoShipped: [
@@ -5184,7 +5164,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     }
 
     // A "world" is any top-level HOMEPAGE entry (a company band or a work/experiment tile). Homepage
-    // membership IS the explicit declaration of world-ness — deriving the set from the DOM keeps it DRY:
+    // membership IS the explicit declaration of world-ness - deriving the set from the DOM keeps it DRY:
     // add a homepage tile and it becomes a world with the blueprint fallback, nothing to hand-tag.
     // (Companies and standalone projects are peers; the difference is only which data/regions each carries.)
     var __worldSlugs = null;
@@ -6082,11 +6062,11 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     }
 
     // Within a world (galaxy→planet already done), navigating planet↔region (company ↔ case study) uses a
-    // deterministic CSS "region" transition instead of the native View Transition — subtler than the world
+    // deterministic CSS "region" transition instead of the native View Transition - subtler than the world
     // boundary, and it animates in every engine (the native VT snaps in WebKit/Safari). The world boundary
     // itself uses runReveal, never this, so `data-world` set here always means an in-world region move.
     function regionTransition(change){
-      // case study is a reading surface — quiet fade, no set-piece.
+      // case study is a reading surface - quiet fade, no set-piece.
       change();
       if(reduceWorkMotion.matches) return Promise.resolve();
       [workPanel, workFocusContent].forEach(function(el){
@@ -6318,7 +6298,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       if(item.hero){
         // eager, not lazy: this hero is above the fold in the world; lazy leaves it blank during/after
         // the reveal (reads as "still loading"). Same file the homepage band already loaded, so it's cached.
-        var mi=document.createElement("img"); mi.src=item.hero; mi.alt=item.name+" — selected work"; mi.loading="eager"; mi.decoding="async"; m.appendChild(mi);
+        var mi=document.createElement("img"); mi.src=item.hero; mi.alt=item.name+" - selected work"; mi.loading="eager"; mi.decoding="async"; m.appendChild(mi);
       } else {
         // BLUEPRINT fallback: an unskinned world gets a schematic placeholder hero (the .visual-placeholder
         // primitive), so new work reads as an intentional blueprint, never broken.
@@ -6624,7 +6604,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
     // World-reveal timing: reads an optional CSS var override, else the default (seconds).
     function tuneMs(name, defSec){ var v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name)); return (v > 0 ? v : defSec) * 1000; }
     function tuneEase(name, def){ var v = getComputedStyle(document.documentElement).getPropertyValue(name).trim(); return v || def; }
-    function setWorldCenter(c){                              // static circle center — never animated
+    function setWorldCenter(c){                              // static circle center - never animated
       worldLayer.style.setProperty("--reveal-x", c.x + "px");
       worldLayer.style.setProperty("--reveal-y", c.y + "px");
     }
@@ -6860,7 +6840,7 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
       var origin = { x: innerWidth/2, y: innerHeight*0.42 };
       if(document.body.getAttribute("data-world")) closeWorldClip(origin);
       else resetWork(false, { restoreScroll: workOverviewScrollY });
-      history.replaceState({}, "", location.pathname);       // we're home now — drop ?work=/?project=
+      history.replaceState({}, "", location.pathname);       // we're home now - drop ?work=/?project=
     });
     curatedWorkTiles.forEach(bindWorkTile);
     workGrid.addEventListener("pointerleave", clearWorkPreview);
@@ -7001,13 +6981,13 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
   var bar=document.getElementById('dv-bar');
   document.body.classList.add('dv-base'); // grain locked on
   var caps={
-    "1":"1 · Current — Newsreader serif, one line.",
-    "2":"2 · Big two-line — display-scale, wraps to two lines, tight leading.",
-    "3":"3 · Italic verbs — 'design' and 'ship' in italic.",
-    "4":"4 · Green verbs — signature accent on 'design' and 'ship'.",
+    "1":"1 · Current - Newsreader serif, one line.",
+    "2":"2 · Big two-line - display-scale, wraps to two lines, tight leading.",
+    "3":"3 · Italic verbs - 'design' and 'ship' in italic.",
+    "4":"4 · Green verbs - signature accent on 'design' and 'ship'.",
     "5":"5 · Big two-line + italic verbs (static).",
-    "6":"6 · ALIVE, pencil — 'I design the product' is drawn in by a graphite pencil tip; the green '&' pops; 'ship code' types out (caret tracks it) then '.' lands. Tap ↻ to replay.",
-    "7":"7 · ALIVE, pen underline — a stroke draws under 'I design the product' and it rises in; '&' pops; 'ship code' types out then '.' lands. Tap ↻ to replay."};
+    "6":"6 · ALIVE, pencil - 'I design the product' is drawn in by a graphite pencil tip; the green '&' pops; 'ship code' types out (caret tracks it) then '.' lands. Tap ↻ to replay.",
+    "7":"7 · ALIVE, pen underline - a stroke draws under 'I design the product' and it rises in; '&' pops; 'ship code' types out then '.' lands. Tap ↻ to replay."};
   var tb='6';
 
   /* ── JS typewriter for "ship code": per-char reveal so the caret advances with the
@@ -7117,7 +7097,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   var origin = { x: window.innerWidth/2, y: window.innerHeight/2 };
 
   // Band → REAL themed world via a clip-path circle grown from the click point (see __openWorldClip
-  // in the main app script). No View Transitions API — deterministic across browsers.
+  // in the main app script). No View Transitions API - deterministic across browsers.
   function dissolveEnter(x,y){ if(window.__openWorldClip){ var band=heroEl.closest('[data-project]'); window.__openWorldClip((band&&band.dataset.project)||'goodrx', {x:x,y:y}); } }
   var gxCursor=document.getElementById('gx-cursor');
   heroEl.addEventListener('mousemove', function(e){
@@ -7135,7 +7115,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   }, true);
 })();
 </script>
-<!-- SHARED hover materialisation — the GoodRx digital data-grid is the BASELINE hover for EVERY band hero
+<!-- SHARED hover materialisation - the GoodRx digital data-grid is the BASELINE hover for EVERY band hero
      and every more-work/experiment card. ONE WebGL context, re-parented into whichever surface is hovered
      (no per-card contexts → no context-ceiling). Texture = the card's own image, or a palette swatch for
      blueprint (imageless) cards. Palette is read per world slug, so each card previews ITS world (blueprint
@@ -7149,7 +7129,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   var cur=null, texMap=Object.create(null), texOrder=[];
 
   // Palette: read a world's real --world-* tokens (no duplicated source of truth). Tokens live on
-  // `body[data-world="<slug>"]`, so we set the attribute, read computed values, and revert synchronously —
+  // `body[data-world="<slug>"]`, so we set the attribute, read computed values, and revert synchronously -
   // no rAF between set and revert, so no frame ever paints with the world flood. Cached per slug.
   var palCache=Object.create(null);
   function getPalette(slug){
@@ -7188,8 +7168,8 @@ document.body.classList.add('fx-dissolve','skin-digital');
     // (the old dissolve-as-dots failed on contrast). Tunables: DENS (dot count), disc radius, gap gain.
     // DIGITAL WAVE / DISSOLVE hover: the photo resolves into a grid of data-cells that ripples out from
     // the cursor. Two skins on the SAME mechanic (uniform `skin`): 0 = BLUEPRINT (round data-viz dots on
-    // ink, faint green hairline grid — on-brand, calm); 1 = DIGITAL/Digimon (square glowing data-cells,
-    // bright green grid — materialisation). Each cell samples the photo, so it stays his data-viz colour.
+    // ink, faint green hairline grid - on-brand, calm); 1 = DIGITAL/Digimon (square glowing data-cells,
+    // bright green grid - materialisation). Each cell samples the photo, so it stays his data-viz colour.
     var fs='precision highp float;varying vec2 uv;uniform sampler2D tx;uniform vec2 mouse;uniform float t;uniform float aspect;uniform float amp;uniform float dens;uniform float skin;'
       +'uniform vec3 uCol;uniform float uGlow;uniform float uGrain;uniform float uFlick;uniform float uReach;uniform float uInten;'  // live tuning
       +'uniform vec3 uBg;uniform float uImgMix;'  // preview-hint: cell ground colour + true-photo blend
@@ -7206,11 +7186,11 @@ document.body.classList.add('fx-dissolve','skin-digital');
       +'float dd=length(fp-0.5);'
       +'float grid=max(smoothstep(0.07,0.0,min(fp.x,1.0-fp.x)),smoothstep(0.07,0.0,min(fp.y,1.0-fp.y)));'
       +'vec3 dotted;'
-      +'if(skin<0.5){'                                       // BLUEPRINT — quiet, monochrome-technical, NO green
+      +'if(skin<0.5){'                                       // BLUEPRINT - quiet, monochrome-technical, NO green
       +'  float disc=smoothstep(0.5,0.30,dd);'
       +'  dotted=mix(dc*0.55,dc,disc);'
       +'  dotted=mix(dotted,vec3(0.11,0.10,0.09),grid*0.16);'
-      +'}else{'                                              // DIGITAL — GRAINY glowing data-grid, squares kept (all live-tunable)
+      +'}else{'                                              // DIGITAL - GRAINY glowing data-grid, squares kept (all live-tunable)
       +'  float sq=1.0-smoothstep(0.26,0.44,max(abs(fp.x-0.5),abs(fp.y-0.5)));'
       +'  float flick=(1.0-uFlick*0.5)+uFlick*hash(floor(cell)+floor(t*6.0));'  // per-cell flicker, centred ~1
       +'  vec3 cimg=dc*1.2*flick;'                            // cell sampled from the destination hero (true colour = image-sample)
@@ -7333,7 +7313,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   window.addEventListener('scroll', function(){ if(running) size(); }, {passive:true});
 })();
 </script>
-<!-- SHARED dissolve edge — 2D-canvas retro pixel-block particles that blow off the growing __openWorldClip
+<!-- SHARED dissolve edge - 2D-canvas retro pixel-block particles that blow off the growing __openWorldClip
      reveal circle, for EVERY world (world's own palette, outward leading-edge, pixel-grid snap). Cheap on the
      Air + verifiable headless; GoodRx WebGL stays a per-world hover override. window.__worldDissolve.{start,stop}
      is called by __openWorldClip. Tuned values are BAKED in window.__DTUNE below (the live tuner was removed). -->
@@ -7354,7 +7334,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   var D=window.__DTUNE={ count:2150, size:5, scatter:0.6, grain:0.5, accentFrac:0.04, glow:0.25, band:0.21, snap:10 };
 
   // Fixed particle field: each grain activates as the wavefront reaches its trigger radius, then detaches
-  // and flings outward while fading — "the incoming world materialising as a rim of sand off the edge".
+  // and flings outward while fading - "the incoming world materialising as a rim of sand off the edge".
   var CELLS=[];
   (function seed(n){ for(var i=0;i<n;i++){ CELLS.push({
       a:Math.random()*Math.PI*2,        // angle around the center
@@ -7395,7 +7375,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     var snap=D.snap||0;                        // retro pixel-lattice snap (0 = organic)
     for(var i=0;i<n;i++){
       var c=CELLS[i];
-      // OUTWARD leading-edge spray: blocks live from the edge OUTWARD only — the world stays solid inside and
+      // OUTWARD leading-edge spray: blocks live from the edge OUTWARD only - the world stays solid inside and
       // the pixels blow off the front (retro indie-game dissolve). edge: 0 = on the edge, 1 = farthest out.
       var edge=c.u;
       var rad=r - rimHalf*0.08 + Math.pow(edge,1.7)*reach + Math.sin(c.f)*rimHalf*0.22; // dense at edge, thinning out
@@ -7431,7 +7411,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   window.__worldDissolve={
     // No args: derive centre + radius + header clip from the clip's OWN state (the --reveal-x/y that
     // setWorldCenter set, and the layer rect that worldFullR() uses) so the sand always matches the real
-    // circle — for fresh opens AND interrupt-reopens (where setWorldCenter is skipped but the vars persist).
+    // circle - for fresh opens AND interrupt-reopens (where setWorldCenter is skipped but the vars persist).
     start:function(){
       if(reduce.matches) return;
       var b=layer.getBoundingClientRect();               // same source of truth as the app's worldFullR()
@@ -7449,7 +7429,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   window.addEventListener('resize',function(){ if(running) resize(); });
 })();
 </script>
-<!-- ═══ Reusable dev tuning panel — the ONE standard for tuning effects (replaces bespoke per-effect panels).
+<!-- ═══ Reusable dev tuning panel - the ONE standard for tuning effects (replaces bespoke per-effect panels).
      window.devPanel(cfg) renders ONLY when the URL has ?dev, so nothing dev-only ever ships to users; no
      more "strip before porting" debt. cfg = { title, target, sliders:[{k,label,min,max,step}],
      toggles:[{options:[{label,value,on}], onPick}], onChange, pos:'left'|'bottom', copy:false }. ═══ -->
@@ -7475,7 +7455,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     document.head.appendChild(s);
   }
   window.devPanel=function(cfg){
-    if(!DEV) return null;                 // no-op unless ?dev — never ships to users
+    if(!DEV) return null;                 // no-op unless ?dev - never ships to users
     injectCSS();
     cfg=cfg||{}; var t=cfg.target||{};
     var p=document.createElement('div'); p.className='devpanel'+(cfg.pos?' '+cfg.pos:'');
@@ -7508,7 +7488,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   };
 })();
 </script>
-<!-- ?dev tuner for the GoodRx hover PREVIEW-HINT — flip Green vs destination World palette, blend in the true
+<!-- ?dev tuner for the GoodRx hover PREVIEW-HINT - flip Green vs destination World palette, blend in the true
      photo, tint the ground. No-op without ?dev; the default page keeps the confirmed green hover untouched. -->
 <script>
 (function(){
