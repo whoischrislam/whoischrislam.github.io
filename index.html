@@ -187,8 +187,9 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 #theme-toggle:focus-visible{outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent)}
 @media (prefers-reduced-motion:reduce){ #theme-toggle .knob{transition:none} }
 @media (max-width:560px){ .site-head nav a.hide-sm{display:none} }
-@media (max-width:340px){ .site-head nav a[aria-label="Email"]{display:none} }
-@media (max-width:300px){ .site-head nav a[aria-label="LinkedIn"]{display:none} }
+/* Narrow phones: drop the social icons (they live in the footer too) so the brand + Work + theme
+   toggle never collide. Fixes the 320px "Chris LamWork" overlap (logo right 101 vs nav left 81). */
+@media (max-width:400px){ .site-head nav a[aria-label="GitHub"],.site-head nav a[aria-label="LinkedIn"],.site-head nav a[aria-label="Email"]{display:none} }
 
 /* ── Hero ─────────────────────────────────────────────────────── */
 .hero{max-width:none;padding:34px 0 38px}
