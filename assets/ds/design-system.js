@@ -33,6 +33,7 @@
   ];
   var LIVE={home:'index.html',company:SRC.company,casestudy:SRC.casestudy};
   var CUR='y30';
+  var _wq=(location.search.match(/[?&]w=([a-z0-9]+)/)||[])[1]; // ?w=<world> deep-links the picker
   var HDOCS=[document]; // every live document we can scan for the audit (homepage + harvested views)
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function readWorld(w){var b=document.body,prev=b.getAttribute('data-world');b.setAttribute('data-world',w);var cs=getComputedStyle(b),o={};ROLE.forEach(function(r){o[r[0]]=cs.getPropertyValue(r[0]).trim();});if(prev)b.setAttribute('data-world',prev);else b.removeAttribute('data-world');return o;}
@@ -73,7 +74,13 @@
     var type='<div style="display:grid;gap:12px">'+TYPE.map(function(t){return mk('token:type:'+t[0],'<div class="tyrow"><div><div class="tkn">'+t[0]+'</div><div class="tkv">'+t[1]+'</div></div><div style="font-family:'+t[2]+';font-weight:'+t[3]+';font-size:'+t[1]+';line-height:1.1;color:#1b1b19">'+esc(t[4])+'</div></div>');}).join('')+'</div>';
     return '<div id="ds-foundations" class="ds-mode">'+card('Color tokens',sem+wg)+card('Type scale',type,true)+card('Space · radius · grain · elevation · grid · motion','<p class="ds-note">Documented next — these live as inline values / magic numbers on the site today and get promoted to tokens as we wire them.</p>',true)+'</div>';
   }
-  function componentsShell(){return '<div id="ds-components" class="ds-mode" hidden><p class="ds-note" style="margin:0 0 14px">Real components harvested from the live site (homepage DOM + hidden iframes), themed by the world picker. This IS the live output.</p><div id="ds-comp-body"><p class="ds-note">Harvesting live components…</p></div></div>';}
+  function componentsShell(){return '<div id="ds-components" class="ds-mode" hidden><p class="ds-note" style="margin:0 0 12px">Real components harvested from the live site, themed by the world picker. This IS the live output.</p>'
+    +'<div class="qa-bar"><b>QA variants</b>'
+    +'<span>Blueprint</span><div class="ds-seg qa" data-qa="bp"><button data-v="" aria-pressed="true">Current</button><button data-v="dots">Dots</button><button data-v="lines">Lines</button><button data-v="hybrid">Dotted grid</button></div>'
+    +'<span>#28 diagram</span><div class="ds-seg qa" data-qa="d28"><button data-v="" aria-pressed="true">Live (bug)</button><button data-v="a">A dark</button><button data-v="b">B light</button></div>'
+    +'<span>Title width</span><div class="ds-seg qa" data-qa="tw"><button data-v="" aria-pressed="true">Full</button><button data-v="narrow">Narrow</button></div>'
+    +'</div>'
+    +'<div id="ds-comp-body"><p class="ds-note">Harvesting live components…</p></div></div>';}
   function renderComponents(h){
     var groups={};REG.forEach(function(r){(groups[r.grp]=groups[r.grp]||[]).push(r);});
     var html='';
@@ -128,6 +135,7 @@
     +'<div class="ds-panel" id="ds-panel"><h3>Notes &amp; punch list</h3><div class="ds-list" id="ds-notelist"></div><div class="foot"><button class="ds-btn pri" id="ds-copy">Copy punch list</button><button class="ds-btn" id="ds-clear">Clear</button><button class="ds-btn" id="ds-close">Close</button></div></div>'
     +'<div class="ds-editor" id="ds-editor"><div style="font:700 10px/1.3 var(--ds-mono);color:#6d4bd8;margin-bottom:6px" id="ds-edid"></div><textarea id="ds-edtext" placeholder="What to improve here..."></textarea><div class="flags" id="ds-edflags"><button data-fl="improve" aria-pressed="true">Improve</button><button data-fl="bug">Bug</button><button data-fl="idea">Idea</button></div><div style="display:flex;gap:8px"><button class="ds-btn pri" id="ds-edsave" style="flex:1">Save</button><button class="ds-btn" id="ds-eddel">Delete</button></div></div>';
   document.body.appendChild(root);
+  if(_wq&&WORLDS.indexOf(_wq)>=0){CUR=_wq;var _ws=root.querySelector('#ds-world');if(_ws)_ws.value=_wq;}
   document.body.classList.add('ds-active','work-focus-open');
   document.body.setAttribute('data-world',CUR);
   document.title='Design system · Chris Lam';
@@ -173,5 +181,29 @@
   root.querySelector('#ds-copy').addEventListener('click',function(){var md=Object.keys(notes).map(function(id){var n=notes[id];return '- ['+n.flag.toUpperCase()+'] '+id+' — '+n.text;}).join('\n');navigator.clipboard.writeText(md||'(no notes)').then(function(){var b=root.querySelector('#ds-copy');b.textContent='Copied!';setTimeout(function(){b.textContent='Copy punch list';},1200);});});
   root.querySelector('#ds-mode').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;setMode(b.getAttribute('data-m'));});
   root.querySelector('#ds-world').addEventListener('change',function(e){CUR=e.target.value;document.body.setAttribute('data-world',CUR);});
+  // ---- QA variants (preview-only; nothing baked to live until Chris picks) ----
+  var VAR={
+    bp:{
+      dots:'#ds-root .visual-placeholder::before,#ds-root .portfolio-diagram::before{background-image:radial-gradient(color-mix(in srgb,var(--world-line) 85%,transparent) 1.4px,transparent 1.7px);background-size:22px 22px;opacity:1}',
+      lines:'#ds-root .visual-placeholder::before,#ds-root .portfolio-diagram::before{background-image:linear-gradient(color-mix(in srgb,var(--world-line) 82%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--world-line) 82%,transparent) 1px,transparent 1px);background-size:22px 22px;opacity:1}',
+      hybrid:'#ds-root .visual-placeholder::before,#ds-root .portfolio-diagram::before{background-image:radial-gradient(color-mix(in srgb,var(--world-line) 90%,transparent) 1.5px,transparent 1.9px),linear-gradient(color-mix(in srgb,var(--world-line) 40%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--world-line) 40%,transparent) 1px,transparent 1px);background-size:22px 22px;opacity:1}'
+    },
+    d28:{
+      a:'#ds-root .ds-stage .portfolio-diagram{background:var(--world-card-bg);border-color:transparent;color:var(--world-card-ink)}#ds-root .ds-stage .portfolio-diagram-title,#ds-root .ds-stage .portfolio-diagram-label{color:var(--world-card-ink)}#ds-root .ds-stage .portfolio-diagram-meta,#ds-root .ds-stage .portfolio-diagram-footer{color:color-mix(in srgb,var(--world-card-ink) 66%,transparent)}#ds-root .ds-stage .portfolio-diagram-item{background:color-mix(in srgb,var(--world-card-ink) 8%,var(--world-card-bg));border-color:color-mix(in srgb,var(--world-card-ink) 22%,transparent)}#ds-root .ds-stage .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent) 22%,var(--world-card-bg));border-color:var(--world-accent)}',
+      b:'#ds-root .ds-stage .portfolio-diagram{background:var(--world-surface);border-color:var(--world-line);color:var(--world-ink)}#ds-root .ds-stage .portfolio-diagram-title,#ds-root .ds-stage .portfolio-diagram-label{color:var(--world-ink)}#ds-root .ds-stage .portfolio-diagram-meta,#ds-root .ds-stage .portfolio-diagram-footer{color:var(--world-ink-soft)}#ds-root .ds-stage .portfolio-diagram-item{background:color-mix(in srgb,var(--world-ink) 5%,var(--world-surface));border-color:var(--world-line)}#ds-root .ds-stage .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent) 12%,var(--world-surface))}'
+    },
+    tw:{ narrow:'#ds-root .portfolio-diagram-title{max-width:26ch}' }
+  };
+  root.addEventListener('click',function(e){
+    var seg=e.target.closest('.ds-seg.qa'); if(!seg||e.target.tagName!=='BUTTON')return;
+    var qa=seg.getAttribute('data-qa'), v=e.target.getAttribute('data-v');
+    [].forEach.call(seg.children,function(x){x.setAttribute('aria-pressed',x===e.target);});
+    var id='qa-'+qa, st=document.getElementById(id);
+    if(!v){ if(st)st.remove(); return; }
+    if(!st){ st=document.createElement('style'); st.id=id; document.head.appendChild(st); }
+    st.textContent=(VAR[qa]&&VAR[qa][v])||'';
+  });
+  // deep-link variants, e.g. ?ds=components&w=y30&bp=dots&d28=a
+  ['bp','d28','tw'].forEach(function(qa){var v=(location.search.match(new RegExp('[?&]'+qa+'=([a-z]+)'))||[])[1];if(v&&VAR[qa]&&VAR[qa][v]){var st=document.createElement('style');st.id='qa-'+qa;st.textContent=VAR[qa][v];document.head.appendChild(st);var seg=root.querySelector('.ds-seg.qa[data-qa="'+qa+'"]');if(seg)[].forEach.call(seg.children,function(x){x.setAttribute('aria-pressed',x.getAttribute('data-v')===(v||''));});}});
   draw();
 })();
