@@ -256,8 +256,8 @@
     "meta": {
         "canonical": "https://whoischrislam.github.io/resume.json",
         "factSheet": "https://whoischrislam.github.io/candidate.html",
-        "note": "Seeking senior product design roles, full-time. Remote US from Honolulu, working West Coast hours, with quarterly travel to the Bay Area or Seattle.",
-        "locationLine": "Remote US from Honolulu, HI \u00b7 Works West Coast hours \u00b7 Quarterly Bay Area and Seattle travel",
+        "note": "Seeking senior product design roles, full-time. Remote US from Honolulu (preferred), working West Coast hours. Can also work remotely from Seattle or the Bay Area. Open to relocation for the right role.",
+        "locationLine": "Remote US from Honolulu, HI \u00b7 Or remote from Seattle / Bay Area \u00b7 West Coast hours \u00b7 Open to relocation",
         "variants": {
             "_usage": "Role-family targeting for the PDF. Render with: python3 scripts/build-resume.py --variant <key>. Any empty field falls back to basics.label / basics.summary. Add a summary only when it is written in Chris's own voice.",
             "product-design-engineer": {

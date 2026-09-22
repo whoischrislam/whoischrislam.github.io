@@ -6,7 +6,7 @@ Chris Lam (Christopher Lam) is a senior product designer with 14 years shipping 
 
 Role family for matching: Senior Product Designer, Product Designer, Product Engineer, Product Design Engineer, Design Engineer, Lead Design Engineer, UX Engineer, Design Systems Engineer, AI Product Engineer. These describe the shape of role he is targeting and the work he does, not official titles he has held.
 
-Location: remote in the US, based in Honolulu. He works West Coast hours and travels to the Bay Area or Seattle quarterly. He is not seeking relocation.
+Location: remote in the US, based in Honolulu, which he prefers. He works West Coast hours, can also work remotely from Seattle or the Bay Area, and is open to relocation for the right role.
 
 He is AI-native in how he works: he steers product, architecture, and systems, directs AI agents through implementation, and owns the judgment, code review, and safety gates.
 
