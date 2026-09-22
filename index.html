@@ -1932,6 +1932,21 @@ body[data-world="startplaying"]{--world-bg:#428AF7;--world-ink:#ffffff;--world-i
 body[data-world="modus"]{--world-bg:#000000;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.66);--world-line:rgba(255,255,255,.20);--world-accent:#3872E7;--world-surface:color-mix(in srgb,var(--world-bg) 80%,var(--world-ink) 20%);}
 body[data-world="amazon"]{--world-bg:#131921;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.70);--world-line:rgba(255,255,255,.20);--world-accent:#FF6301;--world-surface:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);}
 body[data-world="zodiacus"]{--world-bg:#AA381E;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#E0A657;--world-surface:color-mix(in srgb,var(--world-bg) 86%,var(--world-ink) 14%);}
+/* NIGHT variants (day/night per world). Auto-derived from each day palette as a starting point:
+   darken the bg toward near-black keeping a hint of hue, light ink, lift dark accents, raise the card.
+   HELD: gated behind body.night-worlds (not set anywhere yet) so DAY stays the default in BOTH light and
+   dark mode -- the bright day palettes are the hero look. Tuned + flipped on per-world later. */
+:root[data-theme="dark"] body.night-worlds[data-world="goodrx"]{--world-bg:#4d4b2c;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#6d4bd8;--world-surface:#5a573b;--world-card-bg:#615f44;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="y30"]{--world-bg:#494b4b;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#2e7ddd;--world-surface:#565857;--world-card-bg:#5d5f5f;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="clover"]{--world-bg:#182625;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#999999;--world-surface:#283534;--world-card-bg:#313e3d;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="playsesh"]{--world-bg:#4e4f51;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#4a90e2;--world-surface:#5a5b5d;--world-card-bg:#616264;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="pathstream"]{--world-bg:#4a2225;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#2698d4;--world-surface:#573134;--world-card-bg:#5e3a3d;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="taskrabbit"]{--world-bg:#0d3222;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#0089ab;--world-surface:#1e4031;--world-card-bg:#27483a;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="sharecare"]{--world-bg:#3f4747;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#14857a;--world-surface:#4d5454;--world-card-bg:#545c5c;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="startplaying"]{--world-bg:#1d304f;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#909090;--world-surface:#2d3f5b;--world-card-bg:#364762;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="modus"]{--world-bg:#0c0d0f;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#3872e7;--world-surface:#1d1e20;--world-card-bg:#272729;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="amazon"]{--world-bg:#111317;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#ff6301;--world-surface:#212428;--world-card-bg:#2b2d31;--world-card-ink:#ffffff;}
+:root[data-theme="dark"] body.night-worlds[data-world="zodiacus"]{--world-bg:#381b17;--world-ink:#f2f0ea;--world-ink-soft:rgba(242,240,234,.70);--world-line:rgba(242,240,234,.16);--world-accent:#e0a657;--world-surface:#462b27;--world-card-bg:#4e3430;--world-card-ink:#ffffff;}
 
 body.work-focus-open[data-world]{background:var(--world-bg)}
 /* Header is CONSTANT chrome - never re-themed per world. It stays the persistent frame ("ship") the
@@ -2505,7 +2520,9 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
     document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in")})}
 
   var saved=localStorage.getItem(k);
-  if(saved) r.setAttribute("data-theme",saved);
+  var qt=(location.search.match(/[?&]theme=(light|dark)/)||[])[1]; // ?theme=light|dark deep-link (day/night)
+  if(qt) r.setAttribute("data-theme",qt);
+  else if(saved) r.setAttribute("data-theme",saved);
   else if(window.matchMedia("(prefers-color-scheme: dark)").matches) r.setAttribute("data-theme","dark");
   /* Swap the facade for the real player on click. Nothing loads until asked. */
   /* The story panel is a native popover: the platform handles open, close,
