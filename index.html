@@ -1029,7 +1029,7 @@ h2.sec#work{margin-top:16px}
 .work-panel-story-meta[hidden]{display:none}
 .work-panel-story-meta{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 .work-panel-meta{color:var(--muted);font-size:var(--t-xs);margin:0 0 10px}
-.work-panel-delivery,.work-project-card-delivery{display:inline-flex;align-items:center;
+.work-panel-delivery{display:inline-flex;align-items:center;
   min-height:24px;padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);
   font:700 10px/1.1 var(--sans);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .work-panel-brief{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,.72fr);
@@ -1157,15 +1157,26 @@ h2.sec#work{margin-top:16px}
 .work-project-card:focus-visible .work-project-card-media img:nth-child(odd){transform:translateY(-8px) rotate(-1deg)}
 .work-project-card:hover .work-project-card-media img:nth-child(even),
 .work-project-card:focus-visible .work-project-card-media img:nth-child(even){transform:translateY(-12px) rotate(1deg)}
-.work-project-card-copy{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 18px;padding:26px 30px;align-content:center}
-.work-project-card-kicker{grid-column:1;color:var(--muted);font-size:var(--t-xs);
-  letter-spacing:.12em;text-transform:uppercase}
-.work-project-card-delivery{grid-column:2;grid-row:1;justify-self:end;align-self:start}
+/* Layout C (Chris 2026-09-22): kicker · serif title · de-emphasized summary · result line · "Read the case" pill. */
+.work-project-card-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:26px 30px;min-width:0}
+.work-project-card-kicker{color:var(--muted);font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase}
 .work-project-card h4{font-family:var(--serif);font-size:clamp(26px,3vw,38px);font-weight:400;line-height:1.05;margin:0}
-.work-project-card-arrow{align-self:start;color:var(--accent);font-size:28px;line-height:1;transition:transform .2s ease}
-.work-project-card:hover .work-project-card-arrow,.work-project-card:focus-visible .work-project-card-arrow{transform:translateX(5px)}
-.work-project-card p{grid-column:1/-1;color:var(--muted);font-size:var(--t-sm);line-height:1.5;margin:0;max-width:48ch}
-.work-project-card-result{grid-column:1/-1;color:var(--accent);font:400 var(--t-base)/1.35 var(--serif)}
+.work-project-card p{color:var(--muted);font-size:var(--t-sm);line-height:1.5;margin:0;max-width:48ch}
+/* Result line: mono evidence label (resultKind, falling back to delivery) colored by delivery STATUS, then the result
+   in the contrast-safe world accent. No marker glyph: the label's color carries the status. */
+.work-project-card-result{display:block;margin:0;font:600 var(--t-sm)/1.45 var(--sans)}
+.work-project-card-result-kind{margin-right:6px;font:700 9.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.work-project-card-result-kind[data-status="ok"]{color:var(--status-ok,#5bbf8a)}
+.work-project-card-result-kind[data-status="int"]{color:var(--status-int,var(--muted))}
+.work-project-card-result-kind[data-status="warn"]{color:var(--status-warn,#e0694a)}
+.work-project-card-result-text{color:var(--world-accent-on-card,var(--accent))}
+.work-project-card-cta{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:4px;padding:8px 14px;
+  border:1px solid var(--world-accent-on-card,var(--accent));border-radius:999px;color:var(--world-accent-on-card,var(--accent));
+  font:600 12px/1 var(--sans);transition:background-color .2s ease,color .2s ease}
+.work-project-card-cta span{transition:transform .2s ease}
+.work-project-card:hover .work-project-card-cta,.work-project-card:focus-visible .work-project-card-cta{
+  background:var(--world-accent-on-card,var(--accent));color:var(--world-card-bg,var(--bg))}
+.work-project-card:hover .work-project-card-cta span,.work-project-card:focus-visible .work-project-card-cta span{transform:translateX(3px)}
 .work-project-card:only-child{grid-column:1/-1;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);
   grid-template-rows:1fr}
 .work-project-card:only-child .work-project-card-media{height:100%;min-height:230px}
@@ -1375,6 +1386,24 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .project-story-hero.portfolio-diagram{aspect-ratio:14/4.5;cursor:default}
 .work-project-card-media>.portfolio-diagram{
   width:100%;height:100%;min-height:0;border:0}
+.work-project-card-media:has(>.portfolio-diagram){padding:0}
+/* --flat: an even grid with no fade. The fade (default ::before mask) is kept as the placeholder variant. */
+.portfolio-diagram--flat::before{-webkit-mask-image:none;mask-image:none}
+.work-project-card-media>.portfolio-diagram .portfolio-diagram-item{min-height:0;padding:9px 11px}
+/* Wrap-return (long flows, 4+ items): balanced rows that each read left to right; an elbow connector drops from
+   the last item of a row, runs back left, and lands (arrowhead) on the first item of the next row. Columns are
+   equal (repeat(--per)), so the connector ends are pure CSS: centre of col 1 and centre of col --per. */
+.portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-stage.is-wrapped{display:flex;flex-direction:column;gap:0}
+.portfolio-diagram-row{display:grid;grid-template-columns:repeat(var(--per),minmax(0,1fr));column-gap:22px}
+.portfolio-diagram-return{--col:calc((100% - (var(--per) - 1) * 22px) / var(--per));position:relative;display:block;height:22px;
+  color:color-mix(in srgb,currentColor 60%,transparent)}
+.portfolio-diagram-return i{position:absolute;display:block;border:0 solid currentColor}
+.portfolio-diagram-return i:nth-child(1){top:0;height:11px;left:calc(var(--col) / 2);right:calc(var(--col) / 2);border-right-width:1.5px;border-bottom-width:1.5px}
+.portfolio-diagram-return i:nth-child(2){top:11px;height:10px;left:calc(var(--col) / 2);border-left-width:1.5px}
+.portfolio-diagram-return i:nth-child(3){bottom:-1px;left:calc(var(--col) / 2 - 4.5px);width:0;height:0;
+  border-width:6px 4.5px 0;border-color:currentColor transparent transparent}
+/* keep in-row arrows at every width when wrapped (the narrow-screen rule hides flow arrows) */
+.portfolio-diagram[data-diagram-type="flow"] .is-wrapped .portfolio-diagram-item:not(:last-child)::after{display:block}
 @media(max-width:700px){
   .portfolio-diagram{padding:18px;gap:14px}
   .portfolio-diagram-stage{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -1911,25 +1940,31 @@ body[data-world]{
      --world-ink-soft is .72 (not .6) so the 11px mono labels clear WCAG AA (~5.8:1) on the paper bg. */
   --world-bg:#edeae2; --world-ink:#1b1b19; --world-ink-soft:rgba(27,27,25,.72);
   --world-line:rgba(27,27,25,.18); --world-accent:#3f6ea6; --world-surface:#f7f6f1;
-  --world-card-bg:#1c1a17; --world-card-ink:#ffffff;}
+  --world-card-bg:#1c1a17; --world-card-ink:#ffffff;
+  /* --world-accent-on-card: the world accent lightened toward white (5% steps) until it clears 4.5:1 on the
+     dark card. Text/labels ON a card use this, never raw --world-accent. Enforced by check-design-system.py. */
+  --world-accent-on-card:#799ac1;
+  /* Delivery status on cards: 3 states from `delivery` (reached users / internal or not public / didn't finish). */
+  --status-ok:#5bbf8a; --status-warn:#e0694a; --status-int:color-mix(in srgb,var(--world-card-ink) 58%,transparent);}
 
 /* ── ENTRY overrides · per-world identity (one row per skinned world) ── */
 body[data-world="goodrx"]{
   --world-bg:#fcef72; --world-ink:#1a1710; --world-ink-soft:rgba(26,23,16,.62);
   --world-line:rgba(26,23,16,.22); --world-accent:#6d4bd8; --world-surface:#fffdf0;
-  --world-card-bg:#1a1710; --world-card-ink:#ffffff;}
+  --world-card-bg:#1a1710; --world-card-ink:#ffffff;
+  --world-accent-on-card:#9981e4;}
 /* Chris's palettes 2026-09-21. bg/ink his; ACCENT = my suggestion pending his confirm; surface derived
    from bg (his literal white/black surfaces conflicted with the single ink). Cards inherit the base. */
-body[data-world="y30"]{--world-bg:#edf0e7;--world-ink:#111111;--world-ink-soft:rgba(17,17,17,.70);--world-line:rgba(17,17,17,.16);--world-accent:#2E7DDD;--world-surface:color-mix(in srgb,var(--world-bg) 90%,var(--world-ink) 10%);}
-body[data-world="clover"]{--world-bg:#2D6154;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.72);--world-line:rgba(255,255,255,.22);--world-accent:#333333;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);}
-body[data-world="playsesh"]{--world-bg:#FEFEFE;--world-ink:#2C3E50;--world-ink-soft:rgba(44,62,80,.72);--world-line:rgba(44,62,80,.18);--world-accent:#4A90E2;--world-surface:color-mix(in srgb,var(--world-bg) 92%,var(--world-ink) 8%);}
-body[data-world="pathstream"]{--world-bg:#F05154;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#2698D4;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);}
-body[data-world="taskrabbit"]{--world-bg:#038F49;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#0089AB;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);}
-body[data-world="sharecare"]{--world-bg:#C6E2DA;--world-ink:#111111;--world-ink-soft:rgba(17,17,17,.68);--world-line:rgba(17,17,17,.16);--world-accent:#14857A;--world-surface:color-mix(in srgb,var(--world-bg) 90%,var(--world-ink) 10%);}
-body[data-world="startplaying"]{--world-bg:#428AF7;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.76);--world-line:rgba(255,255,255,.26);--world-accent:#212121;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);}
-body[data-world="modus"]{--world-bg:#000000;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.66);--world-line:rgba(255,255,255,.20);--world-accent:#3872E7;--world-surface:color-mix(in srgb,var(--world-bg) 80%,var(--world-ink) 20%);}
-body[data-world="amazon"]{--world-bg:#131921;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.70);--world-line:rgba(255,255,255,.20);--world-accent:#FF6301;--world-surface:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);}
-body[data-world="zodiacus"]{--world-bg:#AA381E;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#E0A657;--world-surface:color-mix(in srgb,var(--world-bg) 86%,var(--world-ink) 14%);}
+body[data-world="y30"]{--world-bg:#edf0e7;--world-ink:#111111;--world-ink-soft:rgba(17,17,17,.70);--world-line:rgba(17,17,17,.16);--world-accent:#2E7DDD;--world-surface:color-mix(in srgb,var(--world-bg) 90%,var(--world-ink) 10%);--world-accent-on-card:#5897e4;}
+body[data-world="clover"]{--world-bg:#2D6154;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.72);--world-line:rgba(255,255,255,.22);--world-accent:#333333;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#999999;}
+body[data-world="playsesh"]{--world-bg:#FEFEFE;--world-ink:#2C3E50;--world-ink-soft:rgba(44,62,80,.72);--world-line:rgba(44,62,80,.18);--world-accent:#4A90E2;--world-surface:color-mix(in srgb,var(--world-bg) 92%,var(--world-ink) 8%);--world-accent-on-card:#5396e3;}
+body[data-world="pathstream"]{--world-bg:#F05154;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#2698D4;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#319dd6;}
+body[data-world="taskrabbit"]{--world-bg:#038F49;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#0089AB;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#33a1bc;}
+body[data-world="sharecare"]{--world-bg:#C6E2DA;--world-ink:#111111;--world-ink-soft:rgba(17,17,17,.68);--world-line:rgba(17,17,17,.16);--world-accent:#14857A;--world-surface:color-mix(in srgb,var(--world-bg) 90%,var(--world-ink) 10%);--world-accent-on-card:#4fa49b;}
+body[data-world="startplaying"]{--world-bg:#428AF7;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.76);--world-line:rgba(255,255,255,.26);--world-accent:#212121;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#9b9b9b;}
+body[data-world="modus"]{--world-bg:#000000;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.66);--world-line:rgba(255,255,255,.20);--world-accent:#3872E7;--world-surface:color-mix(in srgb,var(--world-bg) 80%,var(--world-ink) 20%);--world-accent-on-card:#6a95ed;}
+body[data-world="amazon"]{--world-bg:#131921;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.70);--world-line:rgba(255,255,255,.20);--world-accent:#FF6301;--world-surface:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);--world-accent-on-card:#FF6301;}
+body[data-world="zodiacus"]{--world-bg:#AA381E;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#E0A657;--world-surface:color-mix(in srgb,var(--world-bg) 86%,var(--world-ink) 14%);--world-accent-on-card:#E0A657;}
 /* NIGHT variants (day/night per world). Auto-derived from each day palette as a starting point:
    darken the bg toward near-black keeping a hint of hue, light ink, lift dark accents, raise the card.
    HELD: gated behind body.night-worlds (not set anywhere yet) so DAY stays the default in BOTH light and
@@ -2046,10 +2081,28 @@ body.work-focus-open[data-world] .work-project-card *{color:inherit}
    the same treatment as the product-map cards. Self-contained per world, independent of light/dark. */
 body.work-focus-open[data-world] .portfolio-diagram{background:var(--world-card-bg);border-color:transparent;color:var(--world-card-ink)}
 body.work-focus-open[data-world] .portfolio-diagram-title,body.work-focus-open[data-world] .portfolio-diagram-label{color:var(--world-card-ink)}
-body.work-focus-open[data-world] .portfolio-diagram-eyebrow,body.work-focus-open[data-world] .portfolio-diagram-value{color:var(--world-accent)}
+/* Accent text/edges on the dark card use --world-accent-on-card (raw --world-accent fails 4.5:1 on 7 of 11 worlds).
+   Item edges at 34% ink clear the 3:1 non-text minimum (22% did not). */
+body.work-focus-open[data-world] .portfolio-diagram-eyebrow,body.work-focus-open[data-world] .portfolio-diagram-value{color:var(--world-accent-on-card)}
 body.work-focus-open[data-world] .portfolio-diagram-meta,body.work-focus-open[data-world] .portfolio-diagram-footer{color:color-mix(in srgb,var(--world-card-ink) 66%,transparent)}
-body.work-focus-open[data-world] .portfolio-diagram-item{background:color-mix(in srgb,var(--world-card-ink) 8%,var(--world-card-bg));border-color:color-mix(in srgb,var(--world-card-ink) 22%,transparent)}
-body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent) 22%,var(--world-card-bg));border-color:var(--world-accent)}
+body.work-focus-open[data-world] .portfolio-diagram-item{background:color-mix(in srgb,var(--world-card-ink) 7%,var(--world-card-bg));border-color:color-mix(in srgb,var(--world-card-ink) 34%,var(--world-card-bg))}
+body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent-on-card) 22%,var(--world-card-bg));border-color:var(--world-accent-on-card)}
+/* accent text on an accent-TINTED item drops below 4.5:1 (e.g. GoodRx ~3.5), so a value there reads in card ink */
+body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="accent"] .portfolio-diagram-value{color:var(--world-card-ink)}
+
+/* work-project-card in a world: the blanket `* {color:inherit}` above flattens children to card ink, so the
+   de-emphasis and the result line are re-applied at higher specificity. */
+body.work-focus-open[data-world] .work-project-card .work-project-card-kicker{color:color-mix(in srgb,var(--world-card-ink) 72%,transparent)}
+body.work-focus-open[data-world] .work-project-card .work-project-card-copy>p{color:color-mix(in srgb,var(--world-card-ink) 74%,transparent)}
+body.work-focus-open[data-world] .work-project-card .work-project-card-result-kind[data-status="ok"]{color:var(--status-ok)}
+body.work-focus-open[data-world] .work-project-card .work-project-card-result-kind[data-status="int"]{color:var(--status-int)}
+body.work-focus-open[data-world] .work-project-card .work-project-card-result-kind[data-status="warn"]{color:var(--status-warn)}
+body.work-focus-open[data-world] .work-project-card .work-project-card-result-text{color:var(--world-accent-on-card)}
+body.work-focus-open[data-world] .work-project-card .work-project-card-cta{color:var(--world-accent-on-card)}
+body.work-focus-open[data-world] .work-project-card .portfolio-diagram-return,
+body.work-focus-open[data-world] .work-project-card .portfolio-diagram-item::after{color:color-mix(in srgb,var(--world-card-ink) 60%,transparent)}
+body.work-focus-open[data-world] .work-project-card:hover .work-project-card-cta,
+body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-card-cta{color:var(--world-card-bg)}
 </style>
 </head><body>
 
@@ -5514,10 +5567,40 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
       return tile;
     }
 
-    function createPortfolioDiagram(item){
+    // Wrap-return layout. Balanced rows: max 3 per row (2 at <=760px), e.g. 4 -> 2+2, 5 -> 3+2, 8 -> 3+3+2.
+    // Re-runs when the viewport crosses the breakpoint, so rows never go stale after a resize.
+    var WRAP_MQ = window.matchMedia("(max-width:760px)");
+    function layoutWrappedFlow(stage){
+      var blocks = stage.__blocks, cap = WRAP_MQ.matches ? 2 : 3;
+      var per = Math.ceil(blocks.length / Math.ceil(blocks.length / cap));
+      stage.replaceChildren();
+      stage.style.setProperty("--per", per);
+      for(var r = 0; r < blocks.length; r += per){
+        if(r){
+          var ret = document.createElement("span");
+          ret.className = "portfolio-diagram-return";
+          ret.setAttribute("aria-hidden", "true");
+          ret.append(document.createElement("i"), document.createElement("i"), document.createElement("i"));
+          stage.appendChild(ret);
+        }
+        var row = document.createElement("span");
+        row.className = "portfolio-diagram-row";
+        blocks.slice(r, r + per).forEach(function(b){ row.appendChild(b); });
+        stage.appendChild(row);
+      }
+    }
+    WRAP_MQ.addEventListener("change", function(){
+      document.querySelectorAll(".portfolio-diagram-stage.is-wrapped").forEach(function(stage){
+        if(stage.__blocks) layoutWrappedFlow(stage);
+      });
+    });
+    // opts (optional): {flat:true} = even grid, no fade · {wrap:true} = long flows (4+) wrap into balanced
+    // left-to-right rows joined by a return connector. Cards pass both; story diagrams pass neither (unchanged).
+    function createPortfolioDiagram(item, opts){
+      opts = opts || {};
       var diagramData = item.diagram || {};
       var diagram = document.createElement("span");
-      diagram.className = "portfolio-diagram";
+      diagram.className = "portfolio-diagram" + (opts.flat ? " portfolio-diagram--flat" : "");
       diagram.dataset.visualStatus = "READY";
       diagram.dataset.diagramType = diagramData.type || "grid";
       if(diagramData.columns){
@@ -5539,6 +5622,7 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
       head.appendChild(title);
       var stage = document.createElement("span");
       stage.className = "portfolio-diagram-stage";
+      var blocks = [];
       (diagramData.items || []).forEach(function(diagramItem){
         var block = document.createElement("span");
         block.className = "portfolio-diagram-item";
@@ -5561,8 +5645,15 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
         }
         accessibleParts.push([diagramItem.value, diagramItem.label, diagramItem.meta]
           .filter(Boolean).join(" "));
-        stage.appendChild(block);
+        blocks.push(block);
       });
+      if(opts.wrap && diagramData.type === "flow" && blocks.length >= 4){
+        stage.classList.add("is-wrapped");
+        stage.__blocks = blocks;
+        layoutWrappedFlow(stage);
+      }else{
+        blocks.forEach(function(b){ stage.appendChild(b); });
+      }
       diagram.append(head, stage);
       if(diagramData.footer){
         var footer = document.createElement("span");
@@ -5576,8 +5667,8 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
       return diagram;
     }
 
-    function createVisualPlaceholder(item){
-      if(item.diagram) return createPortfolioDiagram(item);
+    function createVisualPlaceholder(item, opts){
+      if(item.diagram) return createPortfolioDiagram(item, opts);
       var placeholder = document.createElement("span");
       placeholder.className = "visual-placeholder";
       placeholder.dataset.visualStatus = item.status || "CURATE";
@@ -5626,7 +5717,7 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
         var media = document.createElement("span");
         media.className = "work-project-card-media";
         if(story.cardVisual){
-          media.appendChild(createVisualPlaceholder(story.cardVisual));
+          media.appendChild(createVisualPlaceholder(story.cardVisual, {flat:true, wrap:true}));
         }else{
           (story.cardMedia || []).forEach(function(src){
             var image = document.createElement("img");
@@ -5649,21 +5740,20 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
         var kicker = document.createElement("span");
         kicker.className = "work-project-card-kicker";
         kicker.textContent = story.cardKicker;
-        var delivery = document.createElement("span");
-        delivery.className = "work-project-card-delivery";
-        delivery.textContent = story.delivery || "Project";
         var heading = document.createElement("h4");
         heading.textContent = story.cardTitle || story.name;
-        var arrow = document.createElement("span");
-        arrow.className = "work-project-card-arrow";
-        arrow.setAttribute("aria-hidden", "true");
-        arrow.textContent = "→";
         var summary = document.createElement("p");
         summary.textContent = story.summary;
-        var result = document.createElement("span");
-        result.className = "work-project-card-result";
-        result.textContent = story.result;
-        copy.append(kicker, delivery, heading, arrow, summary, result);
+        var cta = document.createElement("span");
+        cta.className = "work-project-card-cta";
+        cta.setAttribute("aria-hidden", "true");
+        cta.textContent = "Read the case ";
+        var ctaArrow = document.createElement("span");
+        ctaArrow.textContent = "→";
+        cta.appendChild(ctaArrow);
+        copy.append(kicker, heading, summary);
+        if(story.result || story.resultKind || story.delivery) copy.appendChild(createCardResult(story.resultKind, story.delivery, story.result));
+        copy.appendChild(cta);
         card.append(media, copy);
         card.addEventListener("click", function(){
           if(window.posthog) posthog.capture("case_study_opened", {story:key, company:story.company});
@@ -5689,7 +5779,7 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
           pmedia.appendChild(pimg);
           pcard.dataset.fullSrc = v.image;
         }else if(v.visual){
-          pmedia.appendChild(createVisualPlaceholder(v.visual.title ? v.visual : Object.assign({title: v.name}, v.visual)));
+          pmedia.appendChild(createVisualPlaceholder(v.visual.title ? v.visual : Object.assign({title: v.name}, v.visual), {flat:true, wrap:true}));
         }
         if(pInteractive){
           pcard.dataset.mediaTitle = v.name;
@@ -5704,17 +5794,12 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
         var pkick = document.createElement("span");
         pkick.className = "work-project-card-kicker";
         pkick.textContent = v.kicker || "";
-        var pdel = document.createElement("span");
-        pdel.className = "work-project-card-delivery";
-        pdel.textContent = v.delivery || "Supporting work";
         var phead = document.createElement("h4");
         phead.textContent = v.name;
         var psum = document.createElement("p");
         psum.textContent = v.summary || "";
-        var pres = document.createElement("span");
-        pres.className = "work-project-card-result";
-        pres.textContent = v.result || "";
-        pcopy.append(pkick, pdel, phead, psum, pres);
+        pcopy.append(pkick, phead, psum);
+        pcopy.appendChild(createCardResult(v.resultKind, v.delivery || "Supporting work", v.result));
         pcard.append(pmedia, pcopy);
         if(pInteractive) pcard.addEventListener("click", function(){ openWorkMedia(pcard); });
         grid.appendChild(pcard);
@@ -5822,11 +5907,46 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
     var SURFACE_SPINE = ["Product & flows", "Design systems & components", "Web & brand",
       "Prototypes & experiments", "Physical & ops", "Data-journalism / editorial"];
     function surfaceOrder(name){ var i = SURFACE_SPINE.indexOf(name); return i < 0 ? 99 : i; }
-    function mapDotClass(delivery){
+    // ONE delivery-status rule for every surface. "ok" (reached users) is OPT-IN: only an explicit
+    // shipped/launched/published/adopted/released that is not internal. Anything unrecognized is "int"
+    // (built, internal or not public) so no wording is ever promoted to shipped by accident.
+    function deliveryState(delivery){
       var d = String(delivery || "").toLowerCase();
       if(/confirm|unknown|unresolved|tbd/.test(d)) return "todo";
       if(/concept|prototype|exploration|explored|alpha|demo|not launched|paused|incomplete|cancel/.test(d)) return "warn";
-      return "";
+      // negated forms ("not shipped", "unreleased", "unpublished"…) must never read as shipped
+      if(/\b(not|never|un)[\s-]*(yet[\s-]+)?(shipped|launched|published|adopted|released)/.test(d)) return "int";
+      if(/shipped|launched|published|adopted|released/.test(d) && !/internal/.test(d)) return "ok";
+      return "int";
+    }
+    // "Also shipped" dots keep their existing 3 classes (ok and int both render as the plain accent dot).
+    function mapDotClass(delivery){
+      var s = deliveryState(delivery);
+      return s === "todo" || s === "warn" ? s : "";
+    }
+    // Card result line: mono evidence label (resultKind; falls back to the delivery text until one is set),
+    // colored by delivery status, then the result text. Cards have 3 colors by design: "todo" (unconfirmed)
+    // renders as neutral "int", so an unknown is never shown as shipped. With no result text, the label
+    // still renders so a card never loses its status.
+    function createCardResult(resultKind, delivery, resultText){
+      var line = document.createElement("span");
+      line.className = "work-project-card-result";
+      var state = deliveryState(delivery);
+      var label = resultKind || delivery;
+      if(label){
+        var kind = document.createElement("span");
+        kind.className = "work-project-card-result-kind";
+        kind.dataset.status = state === "todo" ? "int" : state;
+        kind.textContent = label;
+        line.append(kind, " ");
+      }
+      if(resultText){
+        var text = document.createElement("span");
+        text.className = "work-project-card-result-text";
+        text.textContent = resultText;
+        line.appendChild(text);
+      }
+      return line;
     }
     // Tier-2 "Also shipped" schedule component. One list; groups by surface when any
     // item has one, else flat. Each row: index · optional thumb · name (+status under
