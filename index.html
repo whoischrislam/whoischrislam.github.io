@@ -1938,14 +1938,20 @@ body.work-focus-open[data-world]{background:var(--world-bg)}
    world reveals beneath, so there's no color snap and nothing to transition. */
 body.work-focus-open[data-world] #work-panel{
   --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
-  --accent:var(--world-accent);--surface:var(--world-surface);background:var(--world-bg);color:var(--world-ink)}
+  --accent:var(--world-accent);--surface:var(--world-surface);
+  /* plug the leak: these three used to fall through to the base light/dark theme, which is what
+     made #28 mode-dependent. Derive them from the world so a world is fully self-contained. */
+  --bg:var(--world-bg);--surface-2:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);--border-strong:color-mix(in srgb,var(--world-ink) 30%,transparent);
+  background:var(--world-bg);color:var(--world-ink)}
 /* the colour OVERTAKES the whole focused page - every wrapper + the Selected-projects area */
 body.work-focus-open[data-world] #top,
 body.work-focus-open[data-world] .work-shell,
 body.work-focus-open[data-world] #work-focus-content{background:var(--world-bg)}
 body.work-focus-open[data-world] #work-focus-content{
   --text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);
-  --accent:var(--world-accent);--surface:var(--world-surface);color:var(--world-ink)}
+  --accent:var(--world-accent);--surface:var(--world-surface);
+  --bg:var(--world-bg);--surface-2:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);--border-strong:color-mix(in srgb,var(--world-ink) 30%,transparent);
+  color:var(--world-ink)}
 
 /* hero-forward top (Image #4). JS hides the default heading and inserts .world-hero before it. */
 .work-panel-heading.world-hidden{display:none}
