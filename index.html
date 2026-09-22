@@ -1312,7 +1312,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
    world/company brand field. Themes per company for free; reads as "part of the system, art pending". */
 .visual-placeholder::before{content:"";position:absolute;inset:0;pointer-events:none;
   background-image:radial-gradient(color-mix(in srgb,currentColor 24%,transparent) 1.3px,transparent 1.6px);
-  background-size:16px 16px;
+  background-size:var(--bp-cell,22px) var(--bp-cell,22px);
   -webkit-mask-image:radial-gradient(130% 130% at 16% 94%,#000 26%,transparent 74%);
           mask-image:radial-gradient(130% 130% at 16% 94%,#000 26%,transparent 74%)}
 .visual-placeholder-status{position:absolute;top:26px;left:26px;display:inline-flex;align-items:center;
@@ -1337,7 +1337,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   color:var(--text);text-align:left}
 .portfolio-diagram::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.32;
   background-image:linear-gradient(var(--border) 1px,transparent 1px),
-    linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:28px 28px;
+    linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:var(--bp-cell,22px) var(--bp-cell,22px);
   mask-image:linear-gradient(to bottom right,black,transparent 62%)}
 .portfolio-diagram-head,.portfolio-diagram-stage,.portfolio-diagram-footer{position:relative;z-index:1}
 .portfolio-diagram-eyebrow{display:block;margin:0 0 5px;color:var(--accent);
@@ -2025,6 +2025,16 @@ body.work-focus-open[data-world] .work-also-shipped-list li{background:var(--wor
 body.work-focus-open[data-world] .work-also-shipped-list li b{color:var(--world-card-ink)}
 body.work-focus-open[data-world] .work-also-shipped-list li span{color:color-mix(in srgb,var(--world-card-ink) 72%,transparent)}
 body.work-focus-open[data-world] .work-also-shipped-list li .work-supporting-delivery{color:color-mix(in srgb,var(--world-accent) 66%,var(--world-card-ink))}
+/* #28 (Chris: A dark). The diagram card built its bg from the base --surface-2 (which leaks the
+   global light/dark theme) with --world-ink text -> dark-on-dark inside a light world. Pin it to the
+   world CARD tokens (dark card + world-card-ink) so it's legible AND pops against bright world bgs,
+   the same treatment as the product-map cards. Self-contained per world, independent of light/dark. */
+body.work-focus-open[data-world] .portfolio-diagram{background:var(--world-card-bg);border-color:transparent;color:var(--world-card-ink)}
+body.work-focus-open[data-world] .portfolio-diagram-title,body.work-focus-open[data-world] .portfolio-diagram-label{color:var(--world-card-ink)}
+body.work-focus-open[data-world] .portfolio-diagram-eyebrow,body.work-focus-open[data-world] .portfolio-diagram-value{color:var(--world-accent)}
+body.work-focus-open[data-world] .portfolio-diagram-meta,body.work-focus-open[data-world] .portfolio-diagram-footer{color:color-mix(in srgb,var(--world-card-ink) 66%,transparent)}
+body.work-focus-open[data-world] .portfolio-diagram-item{background:color-mix(in srgb,var(--world-card-ink) 8%,var(--world-card-bg));border-color:color-mix(in srgb,var(--world-card-ink) 22%,transparent)}
+body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent) 22%,var(--world-card-bg));border-color:var(--world-accent)}
 </style>
 </head><body>
 
