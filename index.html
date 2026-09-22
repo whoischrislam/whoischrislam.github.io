@@ -1029,7 +1029,7 @@ h2.sec#work{margin-top:16px}
 .work-panel-story-meta[hidden]{display:none}
 .work-panel-story-meta{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 .work-panel-meta{color:var(--muted);font-size:var(--t-xs);margin:0 0 10px}
-.work-panel-delivery,.work-project-card-delivery,.work-vignette-delivery{display:inline-flex;align-items:center;
+.work-panel-delivery,.work-project-card-delivery{display:inline-flex;align-items:center;
   min-height:24px;padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);
   font:700 10px/1.1 var(--sans);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .work-panel-brief{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,.72fr);
@@ -1189,59 +1189,61 @@ h2.sec#work{margin-top:16px}
 .work-company-support-head{display:block}
 .work-company-support-head h4{font:400 clamp(26px,3vw,38px)/1.05 var(--serif);margin:0}
 .work-company-support-head p{max-width:none;margin:8px 0 0;color:var(--muted);font-size:var(--t-sm);line-height:1.5}
-.work-vignette{appearance:none;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);
-  min-width:0;padding:0;overflow:hidden;border:1px solid var(--border);background:var(--surface);
-  color:var(--text);text-align:left;cursor:default;transition:border-color .2s ease,transform .3s cubic-bezier(.2,.75,.2,1)}
-button.work-vignette{cursor:zoom-in}
-button.work-vignette:hover,button.work-vignette:focus-visible{border-color:var(--accent);transform:translateY(-2px)}
-button.work-vignette:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.work-vignette-media{min-width:0;height:clamp(180px,22vw,260px);overflow:hidden;background:#ececea}
-.work-vignette-media img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;
-  transition:transform .42s cubic-bezier(.2,.75,.2,1)}
-button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-visible .work-vignette-media img{transform:scale(1.015)}
-.work-vignette-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:24px}
-.work-vignette-kicker{color:var(--muted);font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase}
-.work-vignette-delivery{align-self:flex-start}
-.work-vignette h5{font:400 clamp(27px,3.2vw,42px)/1.04 var(--serif);margin:0}
-.work-vignette p{margin:0;color:var(--muted);font-size:var(--t-sm);line-height:1.55}
-.work-vignette-result{color:var(--accent);font:400 var(--t-base)/1.35 var(--serif)}
-.work-also-shipped{display:grid;gap:12px;margin:8px 0 0;padding-top:20px;border-top:1px solid var(--border)}
-.work-also-shipped h5{margin:0;color:var(--muted);font:600 var(--t-xs)/1.3 var(--sans);
-  letter-spacing:.12em;text-transform:uppercase}
-.work-also-shipped-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
-  margin:0;padding:1px;list-style:none;background:var(--border)}
-.work-also-shipped-list li{min-width:0;padding:14px;background:var(--bg)}
-.work-also-shipped-list b{display:block;margin:0 0 4px;color:var(--text);font-size:var(--t-sm)}
-.work-also-shipped-list span{display:block;color:var(--muted);font-size:var(--t-xs);line-height:1.45}
-.work-also-shipped-list .work-supporting-delivery{margin:8px 0 0;color:var(--accent);
-  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
-/* Product map (breadth): surface-grouped tiles opening a lightbox or linking out */
-.work-product-map{margin:8px 0 0;padding-top:22px;border-top:1px solid var(--border)}
-.work-map-group{display:grid;grid-template-columns:minmax(150px,190px) minmax(0,1fr);column-gap:30px;
-  align-items:start;margin:0;padding:20px 0;border-top:1px solid var(--border-soft)}
-.work-map-group:first-of-type{border-top:0;padding-top:2px}
-.work-map-group:last-child{margin-bottom:0}
-.work-map-group-head{margin:0;border-bottom:0;padding-bottom:0}
-.work-map-group-head .t{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);font-weight:700}
-.work-map-group-head .d{font-size:12.5px;color:var(--muted);margin-top:3px}
-.work-map-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.work-map-tile{position:relative;appearance:none;text-align:left;border:1px solid var(--border-soft);
-  background:var(--surface);border-radius:9px;padding:0;cursor:pointer;overflow:hidden;transition:.15s;
-  color:inherit;font:inherit;display:block;text-decoration:none}
-.work-map-tile:hover,.work-map-tile:focus-visible{border-color:var(--accent);transform:translateY(-2px);outline:none}
-.work-map-tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.work-map-tile-thumb{height:96px;border-bottom:1px solid var(--border-soft);background:#ececea;overflow:hidden}
-.work-map-tile-thumb img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
-.work-map-tile-meta{padding:9px 11px 10px}
-.work-map-tile-name{font-size:12.5px;font-weight:600;line-height:1.25;color:var(--text)}
-.work-map-tile-desc{font-size:11.5px;color:var(--muted);margin-top:2px;line-height:1.3}
-.work-map-tile-state{font-size:11px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:5px}
-.work-map-tile-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;flex:none}
-.work-map-tile-dot.warn{background:#c9a227}
-.work-map-tile-dot.todo{background:var(--muted)}
-.work-map-tile-ico{position:absolute;top:7px;right:8px;font-size:12px;color:#fff;background:rgba(0,0,0,.42);
-  border-radius:5px;width:20px;height:20px;display:flex;align-items:center;justify-content:center}
-@media(max-width:600px){.work-map-group{grid-template-columns:1fr;row-gap:12px}.work-map-tiles{grid-template-columns:repeat(2,1fr)}}
+/* Tier-2 unified "Also shipped" schedule component (replaces the retired
+   work-vignette / work-also-shipped / work-product-map / work-map-* renderers) */
+.work-support{display:grid;gap:26px;margin:6px 0 0}
+.work-support-group{display:grid;gap:0}
+.work-support-group-head{padding:0 0 9px;border-bottom:1px solid var(--border)}
+.work-support-group-head .t{font:700 12px/1.2 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--text)}
+.work-support-group-head .d{font-size:12.5px;color:var(--muted);margin-top:3px}
+.work-support-list{list-style:none;margin:0;padding:0}
+.work-support-row{display:grid;align-items:start;column-gap:18px;
+  grid-template-columns:2.2em minmax(150px,.9fr) minmax(0,1.5fr);
+  padding:14px 4px;border-top:1px solid var(--border-soft,var(--border))}
+.work-support-row:first-child{border-top:0}
+.work-support-list.has-thumb .work-support-row{grid-template-columns:2.2em 72px minmax(140px,.85fr) minmax(0,1.45fr)}
+.work-support-idx{font:700 11px/1.7 var(--sans);letter-spacing:.06em;color:var(--accent)}
+.work-support-thumb{width:72px;aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:#ececea;border:1px solid var(--border-soft,var(--border))}
+.work-support-thumb.is-empty{background:transparent;border-color:transparent}
+.work-support-thumb.is-visual{display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 9%,var(--surface,#fff))}
+.work-support-thumb-glyph{font-size:22px;line-height:1;color:var(--accent);opacity:.7}
+.work-support-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.work-support-namecol{display:flex;flex-direction:column;gap:6px;min-width:0}
+.work-support-name{display:inline-block;font:600 15px/1.35 var(--sans);color:var(--text);text-align:left;background:none;border:0;padding:0;margin:0}
+button.work-support-name,a.work-support-name{cursor:pointer;text-decoration:none}
+button.work-support-name:hover,a.work-support-name:hover,button.work-support-name:focus-visible,a.work-support-name:focus-visible{color:var(--accent);text-decoration:underline;outline:none}
+.work-support-state{display:flex;align-items:center;gap:7px;font:700 10px/1 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.work-support-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.work-support-dot.warn{background:#c9a227}
+.work-support-dot.todo{background:var(--muted)}
+.work-support-desc{font:400 13px/1.5 var(--sans);color:var(--muted);padding-top:1px;min-width:0}
+.work-support-result{display:block;margin-top:6px;color:var(--accent);font:400 12.5px/1.4 var(--serif)}
+@media(max-width:600px){
+  .work-support-row,.work-support-list.has-thumb .work-support-row{grid-template-columns:2em minmax(0,1fr);row-gap:5px}
+  .work-support-thumb{display:none}
+  .work-support-namecol,.work-support-desc{grid-column:2}
+  .work-support-desc{margin-top:4px}
+}
+/* per-world theming */
+body.work-focus-open[data-world] .work-support-group-head{border-color:color-mix(in srgb,var(--world-ink) 16%,transparent)}
+body.work-focus-open[data-world] .work-support-group-head .t{color:var(--world-ink)}
+body.work-focus-open[data-world] .work-support-group-head .d{color:var(--world-ink-soft)}
+body.work-focus-open[data-world] .work-support-row{border-color:color-mix(in srgb,var(--world-ink) 12%,transparent)}
+body.work-focus-open[data-world] .work-support-idx{color:var(--world-accent)}
+body.work-focus-open[data-world] .work-support-thumb{background:color-mix(in srgb,var(--world-ink) 6%,var(--world-bg));border-color:color-mix(in srgb,var(--world-ink) 14%,transparent)}
+body.work-focus-open[data-world] .work-support-thumb.is-empty{background:transparent;border-color:transparent}
+body.work-focus-open[data-world] .work-support-thumb.is-visual{background:color-mix(in srgb,var(--world-accent) 12%,var(--world-bg))}
+body.work-focus-open[data-world] .work-support-thumb-glyph{color:var(--world-accent)}
+body.work-focus-open[data-world] .work-support-name{color:var(--world-ink)}
+/* Keep the hovered name at world-ink (readable on every world bg) and signal via underline.
+   Accent text can be near-invisible where accent ~= bg luminance, e.g. TaskRabbit teal on green. */
+body.work-focus-open[data-world] button.work-support-name:hover,body.work-focus-open[data-world] a.work-support-name:hover,body.work-focus-open[data-world] button.work-support-name:focus-visible,body.work-focus-open[data-world] a.work-support-name:focus-visible{color:var(--world-ink);text-decoration:underline;text-decoration-color:var(--world-accent);text-underline-offset:3px}
+body.work-focus-open[data-world] .work-support-state{color:color-mix(in srgb,var(--world-accent) 70%,var(--world-ink))}
+body.work-focus-open[data-world] .work-support-dot{background:var(--world-accent)}
+body.work-focus-open[data-world] .work-support-dot.warn{background:#c9a227}
+body.work-focus-open[data-world] .work-support-dot.todo{background:color-mix(in srgb,var(--world-ink) 45%,transparent)}
+body.work-focus-open[data-world] .work-support-desc{color:var(--world-ink-soft)}
+body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,var(--world-accent) 78%,var(--world-ink))}
 .project-story{display:grid;gap:clamp(46px,7vw,86px)}
 .project-story-opening{display:grid}
 .project-story-hero{appearance:none;position:relative;display:block;width:100%;padding:0;overflow:hidden;
@@ -1324,7 +1326,6 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .visual-placeholder-note{max-width:54ch;margin-top:7px;color:var(--muted);font:400 var(--t-xs)/1.45 var(--sans)}
 .work-project-card-media>.visual-placeholder{width:100%;height:100%;min-height:0;border:0}
 .work-project-card-media>.visual-placeholder .visual-placeholder-title{font-size:clamp(22px,3vw,36px)}
-.work-vignette-media>.visual-placeholder{width:100%;height:100%;min-height:0;border:0}
 .story-artifact.visual-placeholder{cursor:default}
 .story-artifact.visual-placeholder:hover{border-color:var(--border-strong)}
 .project-story-hero.visual-placeholder{cursor:default;background:var(--surface-2)}
@@ -1372,7 +1373,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   grid-column:span 12;min-height:280px;aspect-ratio:auto;cursor:default}
 .story-artifact.portfolio-diagram:hover{border-color:var(--border)}
 .project-story-hero.portfolio-diagram{aspect-ratio:14/4.5;cursor:default}
-.work-project-card-media>.portfolio-diagram,.work-vignette-media>.portfolio-diagram{
+.work-project-card-media>.portfolio-diagram{
   width:100%;height:100%;min-height:0;border:0}
 @media(max-width:700px){
   .portfolio-diagram{padding:18px;gap:14px}
@@ -1451,6 +1452,9 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 .media-lightbox-stage{min-height:0;display:grid;place-items:center;padding:14px;background:#070707;overflow:auto}
 .media-lightbox-stage img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
 .media-lightbox-stage iframe{width:100%;height:100%;border:0;background:#000}
+.media-lightbox-explainer{margin:0;padding:13px 18px;border-top:1px solid var(--border);
+  color:var(--text);font-size:var(--t-sm);line-height:1.5}
+.media-lightbox-explainer[hidden]{display:none}
 .media-lightbox-original{display:block;padding:11px 18px;border-top:1px solid var(--border);
   color:var(--muted);font-size:var(--t-xs);text-decoration:none}
 .media-lightbox-original:hover{color:var(--accent)}
@@ -1475,12 +1479,8 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .work-story-section-head p{margin-top:6px}
   .work-company-support-head{display:block}
   .work-company-support-head p{margin-top:6px}
-  .work-vignette{grid-template-columns:1fr}
-  .work-vignette-media{height:min(68vw,310px)}
   .work-project-card-media:has(>.portfolio-diagram),
-  .work-project-card:only-child .work-project-card-media:has(>.portfolio-diagram),
-  .work-vignette-media:has(>.portfolio-diagram){height:420px;min-height:420px}
-  .work-also-shipped-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .work-project-card:only-child .work-project-card-media:has(>.portfolio-diagram){height:420px;min-height:420px}
   .work-shell.is-story-focused .work-panel{margin:0 0 18px;padding:8px 0 20px}
   .work-shell.is-story-focused .work-panel-summary{font-size:var(--t-sm);line-height:1.48}
   .work-shell.is-story-focused .work-panel-result{font-size:24px;margin-top:9px}
@@ -1536,8 +1536,6 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
   .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:22px minmax(0,1fr);grid-column:1;padding:14px 16px}
   .work-project-card-media{height:250px;padding:16px 14px 0}
   .work-project-card-copy{padding:15px}
-  .work-vignette-copy{padding:18px}
-  .work-also-shipped-list{grid-template-columns:1fr}
   .story-artifact,.story-artifact[data-story-span="4"]{grid-column:span 6}
   .story-artifact[data-story-span="12"]{grid-column:span 12}
   .story-artifact img{min-height:0}
@@ -1548,7 +1546,7 @@ button.work-vignette:hover .work-vignette-media img,button.work-vignette:focus-v
 }
 @media(prefers-reduced-motion:reduce){
   .work-shell,.work-tile,.work-tile img,.hero-company-logo img,.work-project-card,
-  .work-project-card-media img,.work-vignette,.work-vignette-media img,.story-artifact img{transition:none!important}
+  .work-project-card-media img,.story-artifact img{transition:none!important}
   .work-tile:hover img,.work-tile:focus-visible img{transform:none}
   .project-chapter{opacity:1;transform:none;transition:none}
 }
@@ -2042,10 +2040,6 @@ body.work-focus-open[data-world] .work-project-card{background:var(--world-card-
 body.work-focus-open[data-world] .work-project-card *{color:inherit}
 /* Product-map ("supporting work") cards: the li used the GLOBAL --bg (dark) but text used --world-ink
    (dark on light worlds) -> dark-on-dark. Pair them with the world CARD tokens so text is always legible. */
-body.work-focus-open[data-world] .work-also-shipped-list li{background:var(--world-card-bg)}
-body.work-focus-open[data-world] .work-also-shipped-list li b{color:var(--world-card-ink)}
-body.work-focus-open[data-world] .work-also-shipped-list li span{color:color-mix(in srgb,var(--world-card-ink) 72%,transparent)}
-body.work-focus-open[data-world] .work-also-shipped-list li .work-supporting-delivery{color:color-mix(in srgb,var(--world-accent) 66%,var(--world-card-ink))}
 /* #28 (Chris: A dark). The diagram card built its bg from the base --surface-2 (which leaks the
    global light/dark theme) with --world-ink text -> dark-on-dark inside a light world. Pin it to the
    world CARD tokens (dark card + world-card-ink) so it's legible AND pops against bright world bgs,
@@ -2451,6 +2445,7 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
     <button type="button" class="media-lightbox-close" aria-label="Close full-size media">&times;</button>
   </div>
   <div class="media-lightbox-stage"></div>
+  <p class="media-lightbox-explainer" hidden></p>
   <a class="media-lightbox-original" href="#" target="_blank" rel="noopener">Open original file &nearr;</a>
 </dialog>
 
@@ -5383,6 +5378,12 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
       var media;
       mediaLightboxTitle.textContent = title;
       mediaLightbox.querySelector(".media-lightbox-kicker").textContent = tile.dataset.mediaKicker || "Project artifact";
+      var explainerEl = mediaLightbox.querySelector(".media-lightbox-explainer");
+      if(explainerEl){
+        var explainerText = tile.dataset.explainer || "";
+        explainerEl.textContent = explainerText;
+        explainerEl.hidden = !explainerText;
+      }
       mediaLightboxStage.replaceChildren();
       mediaLightboxOriginal.hidden = false;
       if(provider){
@@ -5410,11 +5411,33 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
           mediaLightboxOriginal.href = source;
           mediaLightboxOriginal.textContent = "Open original file ↗";
         }else{
-          media = tile.querySelector(".visual-placeholder").cloneNode(true);
+          var visual = tile.querySelector(".visual-placeholder, .portfolio-diagram");
+          media = visual ? visual.cloneNode(true) : document.createTextNode("");
           mediaLightboxOriginal.hidden = true;
         }
       }
       mediaLightboxStage.appendChild(media);
+      mediaLightbox.showModal();
+    }
+
+    // Open a decision's diagram/visual (portfolio-diagram or placeholder) in the lightbox,
+    // built fresh from data. Used by Tier-2 rows whose item carries `visual` (a diagram),
+    // where a 72px thumbnail cannot show the diagram itself.
+    function openWorkVisual(item){
+      mediaLightboxTitle.textContent = item.name;
+      mediaLightbox.querySelector(".media-lightbox-kicker").textContent =
+        (item.surface || "Decision") + (item.delivery ? " · " + item.delivery : "");
+      var explainerEl = mediaLightbox.querySelector(".media-lightbox-explainer");
+      if(explainerEl){
+        var parts = [item.summary, item.result].filter(Boolean);
+        if(parts.length === 2 && parts[0] === parts[1]) parts = [parts[0]];
+        explainerEl.textContent = parts.join("  ·  ");
+        explainerEl.hidden = !parts.length;
+      }
+      mediaLightboxStage.replaceChildren();
+      mediaLightboxOriginal.hidden = true;
+      mediaLightboxStage.appendChild(
+        createVisualPlaceholder(item.visual.title ? item.visual : Object.assign({title: item.name}, item.visual)));
       mediaLightbox.showModal();
     }
 
@@ -5649,6 +5672,54 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
         });
         grid.appendChild(card);
       });
+      // Caseless companies (e.g. Modus) have no case studies, so promote their richest
+      // "decisions" (vignettes) into Tier-1 cards. They open the media lightbox with an
+      // explainer rather than a full story page.
+      var __vignettes = companyData.vignettes || [];
+      var __promoted = (!companyStories.length && __vignettes.length) ? __vignettes : [];
+      __promoted.forEach(function(v){
+        var pInteractive = !!(v.image || v.visual);
+        var pcard = document.createElement(pInteractive ? "button" : "article");
+        if(pInteractive) pcard.type = "button";
+        pcard.className = "work-project-card work-project-card--promoted";
+        var pmedia = document.createElement("span");
+        pmedia.className = "work-project-card-media";
+        if(v.image){
+          var pimg = document.createElement("img");
+          pimg.src = v.image; pimg.alt = ""; pimg.loading = "lazy"; pimg.decoding = "async";
+          pmedia.appendChild(pimg);
+          pcard.dataset.fullSrc = v.image;
+        }else if(v.visual){
+          pmedia.appendChild(createVisualPlaceholder(v.visual.title ? v.visual : Object.assign({title: v.name}, v.visual)));
+        }
+        if(pInteractive){
+          pcard.dataset.mediaTitle = v.name;
+          pcard.dataset.mediaKicker = v.kicker || "Product decision";
+          var pexp2 = [v.summary, v.result].filter(Boolean);
+          if(pexp2.length === 2 && pexp2[0] === pexp2[1]) pexp2 = [pexp2[0]];
+          if(pexp2.length) pcard.dataset.explainer = pexp2.join("  ·  ");
+          pcard.setAttribute("aria-label", "Open: " + v.name);
+        }
+        var pcopy = document.createElement("span");
+        pcopy.className = "work-project-card-copy";
+        var pkick = document.createElement("span");
+        pkick.className = "work-project-card-kicker";
+        pkick.textContent = v.kicker || "";
+        var pdel = document.createElement("span");
+        pdel.className = "work-project-card-delivery";
+        pdel.textContent = v.delivery || "Supporting work";
+        var phead = document.createElement("h4");
+        phead.textContent = v.name;
+        var psum = document.createElement("p");
+        psum.textContent = v.summary || "";
+        var pres = document.createElement("span");
+        pres.className = "work-project-card-result";
+        pres.textContent = v.result || "";
+        pcopy.append(pkick, pdel, phead, psum, pres);
+        pcard.append(pmedia, pcopy);
+        if(pInteractive) pcard.addEventListener("click", function(){ openWorkMedia(pcard); });
+        grid.appendChild(pcard);
+      });
       if(grid.children.length){
         var storySection = document.createElement("section");
         storySection.className = "work-story-section";
@@ -5665,96 +5736,47 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
         storySection.append(storySectionHead, grid);
         workFocusContent.appendChild(storySection);
       }
-      var supportingItems = companyData.supportingItems || companyData.alsoShipped || [];
-      if((companyData.vignettes && companyData.vignettes.length) ||
-        supportingItems.length){
+      // Tier 2: one "Also shipped" list. Merges decisions (vignettes) + product map
+      // (supportingItems/alsoShipped) into a single schedule, de-duplicated against
+      // Tier-1 (case studies, or promoted decisions). Replaces the three legacy
+      // data-shape-branched renderers.
+      var __supporting = (companyData.supportingItems || companyData.alsoShipped || []).map(function(item){
+        return Array.isArray(item) ? {name:item[0], description:item[1]} : item;
+      });
+      // When decisions were promoted to Tier 1 (caseless companies), they don't repeat here.
+      var __t2 = (companyStories.length ? __vignettes.slice() : []).concat(__supporting);
+      // De-dupe against Tier-1 by EXACT (case-insensitive) name. A case study is keyed
+      // on both its name and cardTitle (e.g. PlaySesh's "Whiteboard by PlaySesh" appears
+      // as both). Exact match only: a short case-study name like "Iodine" must not delete
+      // a distinct row like "Iodine blog integration".
+      var __tier1Names = Object.create(null);
+      companyStories.forEach(function(k){
+        var s = workStories[k];
+        if(s.name) __tier1Names[s.name.toLowerCase()] = 1;
+        if(s.cardTitle) __tier1Names[s.cardTitle.toLowerCase()] = 1;
+      });
+      __promoted.forEach(function(v){ if(v.name) __tier1Names[v.name.toLowerCase()] = 1; });
+      var __seenT2 = Object.create(null);
+      __t2 = __t2.filter(function(it){
+        var nm = (it.name || "").toLowerCase();
+        if(!nm) return false;
+        if(__tier1Names[nm]) return false;
+        if(__seenT2[nm]) return false; __seenT2[nm] = true; return true;
+      });
+      if(__t2.length){
         var support = document.createElement("section");
         support.className = "work-company-support";
         support.setAttribute("aria-label", "More work at " + companyData.name);
         var supportHead = document.createElement("div");
         supportHead.className = "work-company-support-head";
         var supportTitle = document.createElement("h4");
-        supportTitle.textContent = companyData.supportTitle || "Systems & supporting work";
+        supportTitle.textContent = companyData.supportTitle || "Also shipped and explored";
         var supportIntro = document.createElement("p");
         supportIntro.textContent = companyData.supportIntro ||
-          "Foundational and smaller surfaces that add context without becoming full case studies.";
+          "Smaller and foundational work, kept at its real delivery state instead of inflated into case studies.";
         supportHead.append(supportTitle, supportIntro);
         support.appendChild(supportHead);
-        var __vignettes = companyData.vignettes || [];
-        if(__vignettes.some(function(v){ return v.surface; })){
-          renderProductMap(support, __vignettes, companyData);
-        }
-        else __vignettes.forEach(function(vignette){
-          var vignetteCard = document.createElement(vignette.image ? "button" : "article");
-          if(vignette.image) vignetteCard.type = "button";
-          vignetteCard.className = "work-vignette";
-          var vignetteMedia = document.createElement("span");
-          vignetteMedia.className = "work-vignette-media";
-          if(vignette.image){
-            vignetteCard.dataset.mediaTitle = vignette.name;
-            vignetteCard.dataset.fullSrc = vignette.image;
-            vignetteCard.setAttribute("aria-label", "Open full size: " + vignette.name);
-            var vignetteImage = document.createElement("img");
-            vignetteImage.src = vignette.image;
-            vignetteImage.alt = "";
-            vignetteImage.loading = "lazy";
-            vignetteImage.decoding = "async";
-            vignetteMedia.appendChild(vignetteImage);
-          }else if(vignette.visual){
-            vignetteMedia.appendChild(createVisualPlaceholder(vignette.visual));
-          }
-          var vignetteCopy = document.createElement("span");
-          vignetteCopy.className = "work-vignette-copy";
-          var vignetteKicker = document.createElement("span");
-          vignetteKicker.className = "work-vignette-kicker";
-          vignetteKicker.textContent = vignette.kicker;
-          var vignetteDelivery = document.createElement("span");
-          vignetteDelivery.className = "work-vignette-delivery";
-          vignetteDelivery.textContent = vignette.delivery || "Supporting work";
-          var vignetteTitle = document.createElement("h5");
-          vignetteTitle.textContent = vignette.name;
-          var vignetteSummary = document.createElement("p");
-          vignetteSummary.textContent = vignette.summary;
-          var vignetteResult = document.createElement("span");
-          vignetteResult.className = "work-vignette-result";
-          vignetteResult.textContent = vignette.result;
-          vignetteCopy.append(vignetteKicker, vignetteDelivery, vignetteTitle,
-            vignetteSummary, vignetteResult);
-          vignetteCard.append(vignetteMedia, vignetteCopy);
-          if(vignette.image){
-            vignetteCard.addEventListener("click", function(){ openWorkMedia(vignetteCard); });
-          }
-          support.appendChild(vignetteCard);
-        });
-        if(supportingItems.length && !__vignettes.some(function(v){ return v.surface; })){
-          var shipped = document.createElement("section");
-          shipped.className = "work-also-shipped";
-          var shippedTitle = document.createElement("h5");
-          shippedTitle.textContent = companyData.supportingTitle ||
-            (companyData.alsoShipped ? "Also shipped" : "Supporting work");
-          var shippedList = document.createElement("ul");
-          shippedList.className = "work-also-shipped-list";
-          supportingItems.forEach(function(item){
-            var normalizedItem = Array.isArray(item)
-              ? {name:item[0], description:item[1]}
-              : item;
-            var listItem = document.createElement("li");
-            var itemTitle = document.createElement("b");
-            itemTitle.textContent = normalizedItem.name;
-            var itemDescription = document.createElement("span");
-            itemDescription.textContent = normalizedItem.description;
-            listItem.append(itemTitle, itemDescription);
-            if(normalizedItem.delivery){
-              var itemDelivery = document.createElement("span");
-              itemDelivery.className = "work-supporting-delivery";
-              itemDelivery.textContent = normalizedItem.delivery;
-              listItem.appendChild(itemDelivery);
-            }
-            shippedList.appendChild(listItem);
-          });
-          shipped.append(shippedTitle, shippedList);
-          support.appendChild(shipped);
-        }
+        renderSupportingWork(support, __t2, companyData);
         workFocusContent.appendChild(support);
       }
       // Project-world artifacts: a standalone project (no case-study stories) surfaces its own artifact
@@ -5799,7 +5821,7 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
     }
 
     var SURFACE_SPINE = ["Product & flows", "Design systems & components", "Web & brand",
-      "Prototypes & experiments", "Physical & ops"];
+      "Prototypes & experiments", "Physical & ops", "Data-journalism / editorial"];
     function surfaceOrder(name){ var i = SURFACE_SPINE.indexOf(name); return i < 0 ? 99 : i; }
     function mapDotClass(delivery){
       var d = String(delivery || "").toLowerCase();
@@ -5807,79 +5829,117 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
       if(/concept|prototype|exploration|explored|alpha|demo|not launched|paused|incomplete|cancel/.test(d)) return "warn";
       return "";
     }
-    function renderProductMap(support, vignettes, companyData){
-      var map = document.createElement("div");
-      map.className = "work-product-map";
+    // Tier-2 "Also shipped" schedule component. One list; groups by surface when any
+    // item has one, else flat. Each row: index · optional thumb · name (+status under
+    // it) · description. Rows with an image open the media lightbox (with an explainer
+    // carrying summary/result); rows with an href are external links. Real image or a
+    // reserved empty column, never a placeholder texture.
+    function buildSupportRow(it, idx, showThumb){
+      var hasImg = !!it.image;
+      var hasVisual = !hasImg && !!it.visual;   // a diagram/placeholder, opened in the lightbox
+      var openable = (hasImg || hasVisual) && !it.href;
+      var explainerParts = [it.summary, it.result].filter(Boolean);
+      if(explainerParts.length === 2 && explainerParts[0] === explainerParts[1]) explainerParts = [explainerParts[0]];
+      var explainer = explainerParts.join("  ·  ");
+      var row = document.createElement("li");
+      row.className = "work-support-row";
+      var num = document.createElement("span");
+      num.className = "work-support-idx";
+      num.textContent = (idx < 10 ? "0" : "") + idx;
+      row.appendChild(num);
+      if(showThumb){
+        var thumb = document.createElement("span");
+        thumb.className = "work-support-thumb" + (hasImg || hasVisual ? "" : " is-empty") + (hasVisual ? " is-visual" : "");
+        if(hasImg){
+          var im = document.createElement("img");
+          im.src = it.image; im.alt = ""; im.loading = "lazy"; im.decoding = "async";
+          thumb.appendChild(im);
+        }else if(hasVisual){
+          var glyph = document.createElement("span");
+          glyph.className = "work-support-thumb-glyph";
+          glyph.setAttribute("aria-hidden", "true");
+          glyph.textContent = "▦";
+          thumb.appendChild(glyph);
+        }
+        row.appendChild(thumb);
+      }
+      var namecol = document.createElement("span");
+      namecol.className = "work-support-namecol";
+      var name;
+      if(it.href){ name = document.createElement("a"); name.href = it.href; name.target = "_blank"; name.rel = "noopener"; }
+      else if(openable){ name = document.createElement("button"); name.type = "button"; }
+      else { name = document.createElement("span"); }
+      name.className = "work-support-name";
+      name.textContent = it.name;
+      namecol.appendChild(name);
+      if(it.delivery){
+        var state = document.createElement("span");
+        state.className = "work-support-state";
+        var dot = document.createElement("span");
+        dot.className = "work-support-dot " + mapDotClass(it.delivery);
+        state.appendChild(dot);
+        state.appendChild(document.createTextNode(it.delivery));
+        namecol.appendChild(state);
+      }
+      row.appendChild(namecol);
+      var desc = document.createElement("span");
+      desc.className = "work-support-desc";
+      var descText = it.desc || it.description || it.summary || "";
+      desc.textContent = descText;
+      // Non-openable rows have no lightbox to carry the explainer, so surface the result
+      // inline instead of dropping it (only when it adds to the description).
+      if(!openable && it.result && it.result !== descText){
+        var res = document.createElement("span");
+        res.className = "work-support-result";
+        res.textContent = it.result;
+        desc.appendChild(res);
+      }
+      row.appendChild(desc);
+      if(openable){
+        if(hasImg) row.dataset.fullSrc = it.image;
+        row.dataset.mediaTitle = it.name;
+        row.dataset.mediaKicker = (it.surface || "Supporting work") + (it.delivery ? " · " + it.delivery : "");
+        if(explainer) row.dataset.explainer = explainer;
+        name.setAttribute("aria-label", "Open: " + it.name);
+        name.addEventListener("click", function(){ hasVisual ? openWorkVisual(it) : openWorkMedia(row); });
+        row.classList.add("is-interactive");
+      }
+      return row;
+    }
+    function renderSupportingWork(support, items, companyData){
+      var wrap = document.createElement("div");
+      wrap.className = "work-support";
+      var hasSurface = items.some(function(it){ return it.surface; });
       var groups = {};
-      vignettes.forEach(function(v){ var s = v.surface || "Other"; (groups[s] = groups[s] || []).push(v); });
-      Object.keys(groups).sort(function(a, b){ return (surfaceOrder(a) - surfaceOrder(b)) || a.localeCompare(b); })
-        .forEach(function(surface){
-          var grp = document.createElement("div");
-          grp.className = "work-map-group";
+      if(hasSurface){ items.forEach(function(it){ var s = it.surface || "Other"; (groups[s] = groups[s] || []).push(it); }); }
+      else { groups.__flat = items; }
+      var order = hasSurface
+        ? Object.keys(groups).sort(function(a, b){ return (surfaceOrder(a) - surfaceOrder(b)) || a.localeCompare(b); })
+        : ["__flat"];
+      // Reserve the thumbnail column once for the whole list so every group's columns
+      // align (a surfaceless "Other" group must not fall back to a narrower grid).
+      var listHasThumb = items.some(function(it){ return it.image || it.visual; });
+      var n = 0;
+      order.forEach(function(surface){
+        var grp = document.createElement("div");
+        grp.className = "work-support-group";
+        if(surface !== "__flat"){
           var head = document.createElement("div");
-          head.className = "work-map-group-head";
-          var t = document.createElement("div");
-          t.className = "t";
-          t.textContent = surface;
+          head.className = "work-support-group-head";
+          var t = document.createElement("div"); t.className = "t"; t.textContent = surface;
           head.appendChild(t);
           var note = (companyData.surfaceNotes || {})[surface];
           if(note){ var dn = document.createElement("div"); dn.className = "d"; dn.textContent = note; head.appendChild(dn); }
           grp.appendChild(head);
-          var tiles = document.createElement("div");
-          tiles.className = "work-map-tiles";
-          groups[surface].forEach(function(v){
-            var tile;
-            if(v.href){ tile = document.createElement("a"); tile.href = v.href; tile.target = "_blank"; tile.rel = "noopener"; }
-            else { tile = document.createElement("button"); tile.type = "button"; }
-            tile.className = "work-map-tile";
-            var ico = document.createElement("span");
-            ico.className = "work-map-tile-ico";
-            ico.setAttribute("aria-hidden", "true");
-            ico.textContent = v.href ? "↗" : "⤢";
-            tile.appendChild(ico);
-            var thumb = document.createElement("div");
-            thumb.className = "work-map-tile-thumb";
-            if(v.image){
-              var img = document.createElement("img");
-              img.src = v.image; img.alt = ""; img.loading = "lazy"; img.decoding = "async";
-              thumb.appendChild(img);
-            }
-            tile.appendChild(thumb);
-            var meta = document.createElement("div");
-            meta.className = "work-map-tile-meta";
-            var nm = document.createElement("div");
-            nm.className = "work-map-tile-name";
-            nm.textContent = v.name;
-            meta.appendChild(nm);
-            if(v.desc || v.summary){
-              var ds = document.createElement("div");
-              ds.className = "work-map-tile-desc";
-              ds.textContent = v.desc || v.summary;
-              meta.appendChild(ds);
-            }
-            if(v.delivery){
-              var st = document.createElement("div");
-              st.className = "work-map-tile-state";
-              var dot = document.createElement("span");
-              dot.className = "work-map-tile-dot " + mapDotClass(v.delivery);
-              st.appendChild(dot);
-              st.appendChild(document.createTextNode(v.delivery));
-              meta.appendChild(st);
-            }
-            tile.appendChild(meta);
-            if(v.image && !v.href){
-              tile.dataset.mediaTitle = v.name;
-              tile.dataset.mediaKicker = surface + (v.delivery ? " · " + v.delivery : "");
-              tile.dataset.fullSrc = v.image;
-              tile.setAttribute("aria-label", "Open full size: " + v.name);
-              tile.addEventListener("click", function(){ openWorkMedia(tile); });
-            }
-            tiles.appendChild(tile);
-          });
-          grp.appendChild(tiles);
-          map.appendChild(grp);
-        });
-      support.appendChild(map);
+        }
+        var ul = document.createElement("ul");
+        ul.className = "work-support-list";
+        if(listHasThumb) ul.classList.add("has-thumb");
+        groups[surface].forEach(function(it){ ul.appendChild(buildSupportRow(it, ++n, listHasThumb)); });
+        grp.appendChild(ul);
+        wrap.appendChild(grp);
+      });
+      support.appendChild(wrap);
     }
 
     function mountProjectStory(storyKey){
