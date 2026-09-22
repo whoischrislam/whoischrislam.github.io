@@ -21,12 +21,19 @@
     {id:'project-chapter',label:'Case-study chapter',sel:'.project-chapter',src:'casestudy',grp:'Templated'},
     {id:'project-story-nav',label:'Case-study jump-to nav',sel:'.project-story-nav',src:'casestudy',grp:'Templated'},
     {id:'work-vignette',label:'Media vignette / figure',sel:'.work-vignette',src:'casestudy',grp:'Templated'},
+    {id:'work-map-tile',label:'Product map tile',sel:'.work-map-tile',src:'company',grp:'Templated'},
+    {id:'visual-placeholder',label:'Visual placeholder ("coming soon")',sel:'.visual-placeholder',src:'company',grp:'Templated'},
+    {id:'hero',label:'Homepage hero',sel:'.hero',src:'home',grp:'Chrome'},
+    {id:'hero-credibility',label:'Credibility rail',sel:'.hero-credibility',src:'home',grp:'Chrome'},
+    {id:'status-pill',label:'Availability pill (header)',sel:'.status-pill',src:'home',grp:'Chrome'},
     {id:'wcard',label:'More-work card',sel:'.work-tile.wcard',src:'home',grp:'Chrome'},
-    {id:'avail',label:'Availability pill',sel:'.avail',src:'home',grp:'Chrome'},
+    {id:'refs',label:'References / testimonials',sel:'.refs',src:'home',grp:'Chrome'},
+    {id:'foot',label:'Footer',sel:'.foot',src:'home',grp:'Chrome'},
     {id:'read-progress',label:'Read-progress bar',sel:'.read-progress',src:'home',grp:'Chrome'}
   ];
   var LIVE={home:'index.html',company:SRC.company,casestudy:SRC.casestudy};
   var CUR='y30';
+  var HDOCS=[document]; // every live document we can scan for the audit (homepage + harvested views)
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function readWorld(w){var b=document.body,prev=b.getAttribute('data-world');b.setAttribute('data-world',w);var cs=getComputedStyle(b),o={};ROLE.forEach(function(r){o[r[0]]=cs.getPropertyValue(r[0]).trim();});if(prev)b.setAttribute('data-world',prev);else b.removeAttribute('data-world');return o;}
   function mk(id,inner){return '<div class="markable" data-ds-id="'+esc(id)+'">'+inner+'</div>';}
@@ -53,7 +60,7 @@
     REG.filter(function(r){return r.src==='home';}).forEach(function(r){out[r.id]=cloneFrom(document,r.sel);});
     var srcs=Object.keys(SRC);
     return Promise.all(srcs.map(function(k){return loadFrame(SRC[k]).then(function(doc){return {k:k,doc:doc};});})).then(function(frames){
-      var byKey={};frames.forEach(function(f){byKey[f.k]=f.doc;});
+      var byKey={};frames.forEach(function(f){byKey[f.k]=f.doc;if(f.doc)HDOCS.push(f.doc);});
       REG.filter(function(r){return r.src!=='home';}).forEach(function(r){var doc=byKey[r.src];out[r.id]=doc?cloneFrom(doc,r.sel):null;});
       return out;
     });
@@ -75,14 +82,15 @@
       html+='<h2 class="ds-h2">'+g+' <span class="ds-count">'+wired+'/'+groups[g].length+' live</span></h2><div class="cgrid">';
       groups[g].forEach(function(r){
         var node=h[r.id];
-        var body=node?'<div class="ds-stage" data-harvested="1"></div>':'<div class="ds-stage" style="display:flex;align-items:center;justify-content:center;min-height:90px;color:var(--world-ink-soft)"><span style="font:700 11px/1 var(--ds-mono);text-transform:uppercase;letter-spacing:.08em;opacity:.7">not found on live — to wire</span></div>';
+        var sc=(r.grp==='Chrome')?'ds-stage-c':'ds-stage';
+        var body=node?'<div class="'+sc+'" data-harvested="1"></div>':'<div class="'+sc+'" style="display:flex;align-items:center;justify-content:center;min-height:90px"><span style="font:700 11px/1 var(--ds-mono);text-transform:uppercase;letter-spacing:.08em;opacity:.55;color:inherit">not found on live — to wire</span></div>';
         html+='<div class="markable ctile" data-ds-id="comp:'+r.id+'"><div class="clabel">'+esc(r.label)+' <a class="ds-viewlive" href="'+LIVE[r.src]+'" target="_blank" rel="noopener">View live →</a></div>'+body+'</div>';
       });
       html+='</div>';
     });
     var wrap=document.getElementById('ds-comp-body');wrap.innerHTML=html;
     // inject the real cloned nodes into their stages
-    var stages=wrap.querySelectorAll('.ds-stage[data-harvested]');var i=0;
+    var stages=wrap.querySelectorAll('[data-harvested]');var i=0;
     REG.forEach(function(r){if(h[r.id]){var st=stages[i++];if(st){var node=reveal(h[r.id]);if(r.wrap){var wp=document.createElement('div');wp.className=r.wrap;if(r.wrapId)wp.id=r.wrapId;wp.appendChild(node);st.appendChild(wp);}else{st.appendChild(node);}}}});
   }
   function coverage(h){
@@ -91,13 +99,31 @@
     return '<div id="ds-coverage" class="ds-mode" hidden><p class="ds-note" style="margin:0 0 16px"><b>'+wired+' of '+REG.length+'</b> registered components are wired to a live instance. Green = harvested from live. Amber = registered but not found (either not on the sampled views yet, or dead). <b>Defined-but-never-used</b> (dead CSS) detection is the next scanner — it compares every component class in the CSS against what actually renders.</p><section class="ds-card"><h2 class="ds-h2">Coverage</h2><div style="display:grid;gap:8px">'+rows+'</div></section></div>';
   }
 
+  // ---- audit: reconcile styled (CSS) vs rendered (DOM) vs cataloged (registry), live every load ----
+  function dsSheetClasses(){var set={};for(var i=0;i<document.styleSheets.length;i++){var s=document.styleSheets[i];if(!(s.href&&/assets\/ds\//.test(s.href)))continue;try{[].forEach.call(s.cssRules,function(r){if(r.selectorText)(r.selectorText.match(/\.[A-Za-z_][\w-]*/g)||[]).forEach(function(c){set[c.slice(1)]=1;});});}catch(e){}}return set;}
+  function definedClasses(ex){var set={};function walk(rules){if(!rules)return;for(var i=0;i<rules.length;i++){var r=rules[i];if(r.selectorText)(r.selectorText.match(/\.[A-Za-z_][\w-]*/g)||[]).forEach(function(c){var n=c.slice(1);if(!ex[n])set[n]=1;});if(r.cssRules)walk(r.cssRules);}}for(var i=0;i<document.styleSheets.length;i++){var s=document.styleSheets[i];if(s.href&&/assets\/ds\//.test(s.href))continue;try{walk(s.cssRules);}catch(e){}}return set;}
+  function usedClasses(ex){var set={};HDOCS.forEach(function(d){if(!d)return;try{[].forEach.call(d.querySelectorAll('[class]'),function(el){var cn=(el.getAttribute&&el.getAttribute('class'))||'';cn.split(/\s+/).forEach(function(c){if(c&&!ex[c])set[c]=1;});});}catch(e){}});return set;}
+  function catalogedClasses(){var set={};REG.forEach(function(r){(r.sel.match(/\.[A-Za-z_][\w-]*/g)||[]).forEach(function(c){set[c.slice(1)]=1;});});return set;}
+  function renderAudit(){
+    var el=document.getElementById('ds-audit');if(!el)return;
+    var dsx=dsSheetClasses(),def=definedClasses(dsx),used=usedClasses(dsx),cat=catalogedClasses();
+    var defArr=Object.keys(def).sort(),usedArr=Object.keys(used).sort();
+    var usedNotCat=usedArr.filter(function(c){return def[c]&&!cat[c];});
+    var deadCss=defArr.filter(function(c){return !used[c];});
+    function list(a){return a.length?'<div style="display:flex;flex-wrap:wrap;gap:6px">'+a.map(function(c){return '<code class="auc">'+esc(c)+'</code>';}).join('')+'</div>':'<p class="ds-note" style="margin:0">None.</p>';}
+    el.querySelector('#ds-audit-body').innerHTML=
+      '<div class="ds-grid3" style="margin:0 0 16px"><div class="auk"><b>'+defArr.length+'</b><span>styled classes (CSS)</span></div><div class="auk"><b>'+usedArr.length+'</b><span>rendered on sampled views</span></div><div class="auk"><b>'+Object.keys(cat).length+'</b><span>cataloged selectors</span></div></div>'
+      +'<section class="ds-card"><h2 class="ds-h2">Rendered + styled, not cataloged <span class="ds-count">'+usedNotCat.length+'</span></h2><p class="ds-note" style="margin:0 0 10px">Candidates to add to the registry (some are sub-parts of components already cataloged).</p>'+list(usedNotCat)+'</section>'
+      +'<section class="ds-card"><h2 class="ds-h2">Styled but not rendered <span class="ds-count">'+deadCss.length+'</span></h2><p class="ds-note" style="margin:0 0 10px">Dead-CSS candidates — defined but never appeared on the homepage or the sampled company/case-study. Review before deleting; some only render on other worlds/states.</p>'+list(deadCss)+'</section>';
+  }
+
   // ---- build DOM ----
   var root=document.createElement('div');root.id='ds-root';
   root.innerHTML='<div class="ds-bar"><span><b>Design system</b></span>'
-    +'<div class="ds-seg" id="ds-mode"><button data-m="ds-foundations" aria-pressed="true">Foundations</button><button data-m="ds-components">Components</button><button data-m="ds-coverage">Coverage</button></div>'
+    +'<div class="ds-seg" id="ds-mode"><button data-m="ds-foundations" aria-pressed="true">Foundations</button><button data-m="ds-components">Components</button><button data-m="ds-coverage">Coverage</button><button data-m="ds-audit">Audit</button></div>'
     +'<span><b>World</b></span><select id="ds-world">'+WORLDS.map(function(w){return '<option'+(w===CUR?' selected':'')+'>'+w+'</option>';}).join('')+'</select>'
     +'<span style="font:400 12px/1.4 var(--ds-sans);opacity:.7">Live catalog (?ds). Hover a tile → MARK. Each tile has View live.</span></div>'
-    +'<div class="ds-wrap">'+foundations()+componentsShell()+coverage({})+'</div>'
+    +'<div class="ds-wrap">'+foundations()+componentsShell()+coverage({})+'<div id="ds-audit" class="ds-mode" hidden><p class="ds-note" style="margin:0 0 12px">Live reconciliation: styled (CSS) vs rendered (DOM) vs cataloged (registry). Recomputed every load — the runtime "nothing slips" net; a commit-time hook enforces the same.</p><div id="ds-audit-body"><p class="ds-note">Scanning…</p></div></div></div>'
     +'<button class="ds-fab" id="ds-fab">Notes 0</button>'
     +'<div class="ds-panel" id="ds-panel"><h3>Notes &amp; punch list</h3><div class="ds-list" id="ds-notelist"></div><div class="foot"><button class="ds-btn pri" id="ds-copy">Copy punch list</button><button class="ds-btn" id="ds-clear">Clear</button><button class="ds-btn" id="ds-close">Close</button></div></div>'
     +'<div class="ds-editor" id="ds-editor"><div style="font:700 10px/1.3 var(--ds-mono);color:#6d4bd8;margin-bottom:6px" id="ds-edid"></div><textarea id="ds-edtext" placeholder="What to improve here..."></textarea><div class="flags" id="ds-edflags"><button data-fl="improve" aria-pressed="true">Improve</button><button data-fl="bug">Bug</button><button data-fl="idea">Idea</button></div><div style="display:flex;gap:8px"><button class="ds-btn pri" id="ds-edsave" style="flex:1">Save</button><button class="ds-btn" id="ds-eddel">Delete</button></div></div>';
@@ -106,9 +132,9 @@
   document.body.setAttribute('data-world',CUR);
   document.title='Design system · Chris Lam';
   // deep-linkable tab: ?ds=components / ?ds=coverage / ?ds=foundations
-  var MODES={foundations:'ds-foundations',components:'ds-components',coverage:'ds-coverage'};
+  var MODES={foundations:'ds-foundations',components:'ds-components',coverage:'ds-coverage',audit:'ds-audit'};
   var initMode=MODES[((location.search.match(/[?&]ds=([a-z]+)/)||[])[1])]||'ds-foundations';
-  function setMode(m){root.querySelectorAll('#ds-mode button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-m')===m);});['ds-foundations','ds-components','ds-coverage'].forEach(function(id){var el=document.getElementById(id);if(el)el.hidden=(id!==m);});}
+  function setMode(m){root.querySelectorAll('#ds-mode button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-m')===m);});['ds-foundations','ds-components','ds-coverage','ds-audit'].forEach(function(id){var el=document.getElementById(id);if(el)el.hidden=(id!==m);});}
   setMode(initMode);
 
   // harvest then populate components + coverage
@@ -116,7 +142,8 @@
     renderComponents(h);
     var cov=coverage(h);var tmp=document.createElement('div');tmp.innerHTML=cov;var old=document.getElementById('ds-coverage');old.parentNode.replaceChild(tmp.firstChild,old);
     // keep coverage hidden unless active
-    document.getElementById('ds-coverage').hidden = document.querySelector('#ds-mode button[aria-pressed="true"]').getAttribute('data-m')!=='ds-coverage';
+    renderAudit();
+    setMode(document.querySelector('#ds-mode button[aria-pressed="true"]').getAttribute('data-m'));
     draw();
   });
 
