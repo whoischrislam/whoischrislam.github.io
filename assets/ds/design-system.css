@@ -33,7 +33,11 @@ body.ds-active{overflow:auto}
 #ds-root .ctile{background:#fff;border:1px solid #dedcd6;border-radius:12px;padding:12px;position:relative}
 #ds-root .clabel{font:700 11px/1 var(--ds-mono);letter-spacing:.08em;text-transform:uppercase;color:#8a8880;margin:2px 2px 10px}
 #ds-root .ds-stage{--text:var(--world-ink);--muted:var(--world-ink-soft);--border:var(--world-line);--accent:var(--world-accent);--surface:var(--world-surface);background:var(--world-bg);color:var(--world-ink);border-radius:8px;padding:18px}
-#ds-root .cgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+#ds-root .cgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+#ds-root .ds-stage>*{max-width:100%}
+/* a component wrapped in its ancestor context (e.g. .work-panel for the fact grid) must not
+   drag in the panel's own dark chrome — the stage already provides the world background */
+#ds-root .ds-stage .work-panel{background:transparent!important;border:0!important;padding:0!important;box-shadow:none!important;max-width:none!important}
 /* annotation */
 #ds-root .markable{position:relative}
 #ds-root .markable>.mchip{position:absolute;top:6px;right:6px;z-index:8;font:700 9px/1 var(--ds-sans);letter-spacing:.05em;text-transform:uppercase;color:#fff;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:4px 8px;cursor:pointer;opacity:0;transition:opacity .12s}

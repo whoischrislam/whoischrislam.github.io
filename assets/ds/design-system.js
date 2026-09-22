@@ -14,7 +14,7 @@
   var REG=[
     {id:'co-band',label:'World band (homepage)',sel:'.co-band',src:'home',grp:'Templated'},
     {id:'world-hero',label:'World hero (company/project)',sel:'.world-hero',src:'company',grp:'Templated'},
-    {id:'work-panel-facts',label:'Fact grid / spec panel',sel:'.work-panel-facts',src:'company',grp:'Templated'},
+    {id:'work-panel-facts',label:'Fact grid / spec panel',sel:'.work-panel-facts',src:'company',grp:'Templated',wrap:'work-panel is-company-view',wrapId:'work-panel'},
     {id:'work-also-shipped-list',label:'Product-map / supporting card',sel:'.work-also-shipped-list',src:'company',grp:'Templated'},
     {id:'work-project-card',label:'Work project card',sel:'.work-project-card',src:'company',grp:'Templated'},
     {id:'portfolio-diagram',label:'Diagram card',sel:'.portfolio-diagram',src:'casestudy',grp:'Templated'},
@@ -34,6 +34,19 @@
 
   // ---- harvesting ----
   function cloneFrom(doc,sel){try{var el=doc.querySelector(sel);return el?el.cloneNode(true):null;}catch(e){return null;}}
+  // cloned nodes keep the site's scroll-reveal state (start invisible) and lazy images
+  // (never loaded off-viewport) -> tiles look empty. Force the revealed/loaded state.
+  function reveal(node){
+    if(!node) return node;
+    var all=[node].concat([].slice.call(node.querySelectorAll('*')));
+    all.forEach(function(el){
+      if(el.style){el.style.opacity='1';el.style.visibility='visible';if(el.style.filter&&el.style.filter!=='none')el.style.filter='none';if(/translate|scale/.test(el.style.transform||''))el.style.transform='none';}
+      el.removeAttribute('inert');el.removeAttribute('hidden');
+      el.classList&&el.classList.remove('is-hidden','reveal','anim-2');
+      if(el.tagName==='IMG'){el.loading='eager';var ds=el.getAttribute('data-src');if(ds&&!el.getAttribute('src'))el.setAttribute('src',ds);}
+    });
+    return node;
+  }
   function loadFrame(url){return new Promise(function(res){var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;left:-10000px;top:0;width:1200px;height:2400px;border:0';f.src=url;var done=false;function go(){if(done)return;done=true;setTimeout(function(){res(f.contentDocument);},1600);}f.addEventListener('load',go);document.body.appendChild(f);setTimeout(go,6000);});}
   function harvest(){
     var out={};
@@ -70,7 +83,7 @@
     var wrap=document.getElementById('ds-comp-body');wrap.innerHTML=html;
     // inject the real cloned nodes into their stages
     var stages=wrap.querySelectorAll('.ds-stage[data-harvested]');var i=0;
-    REG.forEach(function(r){if(h[r.id]){var st=stages[i++];if(st)st.appendChild(h[r.id]);}});
+    REG.forEach(function(r){if(h[r.id]){var st=stages[i++];if(st){var node=reveal(h[r.id]);if(r.wrap){var wp=document.createElement('div');wp.className=r.wrap;if(r.wrapId)wp.id=r.wrapId;wp.appendChild(node);st.appendChild(wp);}else{st.appendChild(node);}}}});
   }
   function coverage(h){
     var rows=REG.map(function(r){var live=!!h[r.id];return '<div class="invtile"><span class="dot" style="'+(live?'background:#2a9d4f':'background:#d98a2b')+'"></span>'+esc(r.label)+' <span style="font:400 10px/1 var(--ds-mono);opacity:.6;margin-left:6px">'+esc(r.sel)+'</span><span class="stub">'+(live?'wired · live':'to wire')+'</span></div>';}).join('');
