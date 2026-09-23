@@ -1559,9 +1559,9 @@ body[data-world="y30"]{--world-bg:#edf0e7;--world-ink:#111111;--world-ink-soft:r
 body[data-world="clover"]{--world-bg:#2D6154;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.72);--world-line:rgba(255,255,255,.22);--world-accent:#333333;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#999999;}
 body[data-world="playsesh"]{--world-bg:#FEFEFE;--world-ink:#2C3E50;--world-ink-soft:rgba(44,62,80,.72);--world-line:rgba(44,62,80,.18);--world-accent:#4A90E2;--world-surface:color-mix(in srgb,var(--world-bg) 92%,var(--world-ink) 8%);--world-accent-on-card:#5396e3;}
 body[data-world="pathstream"]{--world-bg:#F05154;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#2698D4;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#319dd6;}
-body[data-world="taskrabbit"]{--world-bg:#038F49;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#0089AB;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#33a1bc;}
+body[data-world="taskrabbit"]{--world-bg:#038745;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#0089AB;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#33a1bc;}
 body[data-world="sharecare"]{--world-bg:#C6E2DA;--world-ink:#111111;--world-ink-soft:rgba(17,17,17,.68);--world-line:rgba(17,17,17,.16);--world-accent:#14857A;--world-surface:color-mix(in srgb,var(--world-bg) 90%,var(--world-ink) 10%);--world-accent-on-card:#4fa49b;}
-body[data-world="startplaying"]{--world-bg:#428AF7;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.76);--world-line:rgba(255,255,255,.26);--world-accent:#212121;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#9b9b9b;}
+body[data-world="startplaying"]{--world-bg:#136DF5;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.76);--world-line:rgba(255,255,255,.26);--world-accent:#212121;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#9b9b9b;}
 body[data-world="modus"]{--world-bg:#000000;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.66);--world-line:rgba(255,255,255,.20);--world-accent:#3872E7;--world-surface:color-mix(in srgb,var(--world-bg) 80%,var(--world-ink) 20%);--world-accent-on-card:#6a95ed;}
 body[data-world="amazon"]{--world-bg:#131921;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.70);--world-line:rgba(255,255,255,.20);--world-accent:#FF6301;--world-surface:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);--world-accent-on-card:#FF6301;}
 body[data-world="zodiacus"]{--world-bg:#AA381E;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#E0A657;--world-surface:color-mix(in srgb,var(--world-bg) 86%,var(--world-ink) 14%);--world-accent-on-card:#E0A657;}
@@ -2485,6 +2485,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       },
       zodiacus: {
         name: "Zodiacus",
+        hero: "images/co/zodiacus.webp", // homepage band image (Chris 2026-09-22)
         dates: "2023",
         role: "Game Design · Print Production",
         context: "A physical board game built on the Chinese zodiac and started during the pandemic in response to rising anti-Asian hate.",
@@ -2534,6 +2535,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       },
       pathstream: {
         name: "Pathstream",
+        hero: "images/work/pathstream-hero.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/pathstream.svg",
         dates: "2019–2020",
         role: "Senior Product Design Manager",
@@ -2551,18 +2553,18 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         supportTitle: "More of the platform",
         supportIntro: "The role crossed student, instructor, authoring, and company surfaces. Delivery labels separate what shipped from what was completed or only explored.",
         vignettes: [
-          {name:"Instructor grading", surface:"Product & flows", desc:"Instructor grading flow", delivery:"To confirm", image:"images/work/pathstream/instructor-grading.png"},
-          {name:"Dependencies", surface:"Product & flows", desc:"Lesson dependency concept", delivery:"To confirm", image:"images/work/pathstream/dependencies.png"},
-          {name:"Instructor dashboard", surface:"Product & flows", desc:"Dashboard in context", delivery:"To confirm", image:"images/work/pathstream/instructor-dashboard-states.png"},
-          {name:"Chunking prototype", surface:"Product & flows", desc:"Chunking prototype screen", delivery:"To confirm", image:"images/work/pathstream/chunking-prototype.png"},
-          {name:"Short-term UI fixes", surface:"Product & flows", desc:"Small component fixes", delivery:"To confirm", image:"images/work/pathstream/short-term-fixes.png"},
-          {name:"UI Library", surface:"Design systems & components", desc:"Shared component library", delivery:"To confirm", image:"images/work/pathstream/ui-library.png"},
-          {name:"Social cover lockup", surface:"Web & brand", desc:"Wordmark social cover", delivery:"To confirm", image:"images/work/pathstream/fb-cover.png"},
-          {name:"Scroll interaction", surface:"Prototypes & experiments", desc:"Scroll interaction spec", delivery:"To confirm", image:"images/work/pathstream/chunking-scroll-interaction.png"},
-          {name:"Lab diagrams", surface:"Prototypes & experiments", desc:"Lab flow diagrams", delivery:"To confirm", image:"images/work/pathstream/lab-diagrams.png"},
-          {name:"Office wall decal", surface:"Physical & ops", desc:"Pathstream office decal", delivery:"To confirm", image:"images/work/pathstream/office-decal-wallpaper.png"},
-          {name:"Product roadmap session", surface:"Physical & ops", desc:"Roadmap planning whiteboard", delivery:"To confirm", image:"images/work/pathstream/product-roadmap-session.png"},
-          {name:"System map", surface:"Physical & ops", desc:"Product system / IA map", delivery:"To confirm", image:"images/work/pathstream/system-map.png"}
+          {name:"Instructor grading", surface:"Product & flows", desc:"Instructor grading flow, before the redesign", delivery:"Design complete, queued for build", image:"images/work/pathstream/instructor-grading.png"},
+          {name:"Dependencies", surface:"Product & flows", desc:"Lesson dependency concept", delivery:"Exploration", image:"images/work/pathstream/dependencies.png"},
+          {name:"Instructor dashboard", surface:"Product & flows", desc:"Dashboard in context", delivery:"Design complete, queued for build", image:"images/work/pathstream/instructor-dashboard-states.png"},
+          {name:"Chunking prototype", surface:"Product & flows", desc:"Lesson screen before the redesign", delivery:"Design complete, queued for build", image:"images/work/pathstream/chunking-prototype.png"},
+          {name:"Short-term UI fixes", surface:"Product & flows", desc:"Small component fixes", delivery:"Exploration", image:"images/work/pathstream/short-term-fixes.png"},
+          {name:"UI Library", surface:"Design systems & components", desc:"Shared component library", delivery:"Shipped", image:"images/work/pathstream/ui-library.png"},
+          {name:"Social cover lockup", surface:"Web & brand", desc:"Wordmark social cover", delivery:"Internal artifact", image:"images/work/pathstream/fb-cover.png"},
+          {name:"Scroll interaction", surface:"Prototypes & experiments", desc:"Scroll interaction spec", delivery:"Design complete, queued for build", image:"images/work/pathstream/chunking-scroll-interaction.png"},
+          {name:"Lab diagrams", surface:"Prototypes & experiments", desc:"Lab flow diagrams", delivery:"Exploration", image:"images/work/pathstream/lab-diagrams.png"},
+          {name:"Office wall decal", surface:"Physical & ops", desc:"Pathstream office decal", delivery:"Internal artifact", image:"images/work/pathstream/office-decal-wallpaper.png"},
+          {name:"Product roadmap session", surface:"Physical & ops", desc:"Roadmap planning whiteboard", delivery:"Exploration", image:"images/work/pathstream/product-roadmap-session.png"},
+          {name:"System map", surface:"Physical & ops", desc:"Product system / IA map", delivery:"Exploration", image:"images/work/pathstream/system-map.png"}
         ],
         supportingTitle: "Additional completed design work",
         supportingItems: [
@@ -2586,6 +2588,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       },
       sharecare: {
         name: "doc.ai",
+        hero: "images/work/omix-study-builder.png", // homepage band image (Chris 2026-09-22)
         dates: "2021",
         role: "Lead Product Designer",
         companyOutcome: "Acquired by Sharecare",
@@ -2618,6 +2621,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       },
       modus: {
         name: "Modus Create",
+        hero: "images/work/modus-dark-mode.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/modus-create.svg",
         dates: "2023–2024",
         role: "Software Engineer (Contract)",
@@ -2716,21 +2720,21 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
             name: "Drug coupons",
             surface: "Product & flows",
             desc: "Coupon redemption flow",
-            delivery: "To confirm",
+            delivery: "Shipped",
             image: "images/work/goodrx/drug-coupons.png"
           },
           {
             name: "Ask a pharmacist",
             surface: "Product & flows",
             desc: "Ask-a-pharmacist flow",
-            delivery: "To confirm",
+            delivery: "Shipped",
             image: "images/work/goodrx/ask-a-pharmacist.png"
           },
           {
             name: "Drug fact sheet",
             surface: "Design systems & components",
             desc: "Fact-sheet layout",
-            delivery: "To confirm",
+            delivery: "Shipped",
             image: "images/work/goodrx/drug-fact-sheet.png"
           },
           {
@@ -2764,21 +2768,21 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
             name: "Coupon sticker",
             surface: "Physical & ops",
             desc: "Coupon sticker artifact",
-            delivery: "To confirm",
+            delivery: "Shipped",
             image: "images/work/goodrx/coupon-sticker.png"
           },
           {
             name: "The US of Worry",
             surface: "Data-journalism / editorial",
             desc: "Anxiety-med state map",
-            delivery: "To confirm",
+            delivery: "Shipped",
             image: "images/work/goodrx/research-us-of-worry.png"
           },
           {
             name: "ED-drug fills",
             surface: "Data-journalism / editorial",
             desc: "ED-drug fills, 2018",
-            delivery: "To confirm",
+            delivery: "Shipped",
             image: "images/work/goodrx/research-ed-drugs.png"
           }
         ],
@@ -2794,6 +2798,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       },
       clover: {
         name: "Clover Health",
+        hero: "images/work/clover-hero.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/clover-health.svg",
         dates: "2015–2016",
         role: "Designer",
@@ -2918,9 +2923,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         supportTitle: "Earlier and supporting work",
         supportIntro: "Ownership ranged from complete product design to focused contribution; the labels keep those boundaries visible.",
         vignettes: [
-          {name:"Music desktop", surface:"Product & flows", desc:"Desktop player redesign", delivery:"To confirm", image:"images/work/amazon/amd-music-desktop.png"},
-          {name:"Samsung Music", surface:"Product & flows", desc:"Samsung device screen", delivery:"To confirm", image:"images/work/amazon/samsung-music.png"},
-          {name:"Win8 Store album", surface:"Web & brand", desc:"Windows 8 Store detail", delivery:"To confirm", image:"images/work/amazon/win8-store.png"},
+          {name:"MP3 thank-you page", surface:"Product & flows", desc:"Thank-you page after buying an MP3, before the redesign", delivery:"To confirm", image:"images/work/amazon/amd-music-desktop.png"},
+          {name:"Samsung Music", surface:"Product & flows", desc:"Samsung device screen", delivery:"Shipped", image:"images/work/amazon/samsung-music.png"},
+          {name:"Win8 Store album", surface:"Web & brand", desc:"Windows 8 Store detail", delivery:"Built, not shipped", image:"images/work/amazon/win8-store.png"},
           {name:"Music Curator", surface:"Prototypes & experiments", desc:"Playlists hackday concept", delivery:"Concept", image:"images/work/amazon/playlists-curator.png"}
         ],
         supportingTitle: "Focused contributions",
@@ -2940,6 +2945,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       },
       taskrabbit: {
         name: "TaskRabbit",
+        hero: "images/craft/hero-taskrabbit.webp", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/taskrabbit.svg",
         dates: "2014–2015",
         role: "Product Designer",
@@ -2959,11 +2965,11 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
           {name:"Sign-in flow", surface:"Product & flows", desc:"V3 sign-in", delivery:"Shipped V3", image:"images/work/taskrabbit/sign-in-flow.png"},
           {name:"Other flow", surface:"Product & flows", desc:"Other task-search path", delivery:"Shipped V3", image:"images/work/taskrabbit/other-flow.png"},
           {name:"Your Taskers", surface:"Product & flows", desc:"Saved Taskers view", delivery:"Shipped V3", image:"images/work/taskrabbit/your-taskers.png"},
-          {name:"Transaction history", surface:"Product & flows", desc:"Transaction history", delivery:"To confirm", image:"images/work/taskrabbit/transaction-history.png"},
-          {name:"Browse & triage", surface:"Product & flows", desc:"Task browse and triage", delivery:"To confirm", image:"images/work/taskrabbit/browsing-triage-tasks.png"},
-          {name:"Client experience map", surface:"Design systems & components", desc:"Client flow map", delivery:"To confirm", image:"images/work/taskrabbit/tr-user-experiences.png"},
-          {name:"Task template", surface:"Prototypes & experiments", desc:"Task template map view", delivery:"To confirm", image:"images/work/taskrabbit/task-template.png"},
-          {name:"Design Show & Tell", surface:"Physical & ops", desc:"Bi-weekly team ritual", delivery:"To confirm", image:"images/work/taskrabbit/show-and-tell.png"}
+          {name:"Transaction history", surface:"Product & flows", desc:"Transaction history", delivery:"Shipped", image:"images/work/taskrabbit/transaction-history.png"},
+          {name:"Browse & triage", surface:"Product & flows", desc:"Task browse and triage", delivery:"Shipped", image:"images/work/taskrabbit/browsing-triage-tasks.png"},
+          {name:"Client experience map", surface:"Design systems & components", desc:"Client flow map", delivery:"Exploration", image:"images/work/taskrabbit/tr-user-experiences.png"},
+          {name:"Task template", surface:"Prototypes & experiments", desc:"Task template map view", delivery:"Shipped", image:"images/work/taskrabbit/task-template.png"},
+          {name:"Careers page", surface:"Web & brand", desc:"Careers page redesign", delivery:"Shipped", image:"images/work/taskrabbit/show-and-tell.png"}
         ],
         alsoShipped: [
           ["Authentication and hiring", "Account entry and the gateway into direct hire"],
@@ -3464,7 +3470,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         name: "Interface Foundation",
         cardKicker: "Design system · Accessibility",
         meta: "Design system · Accessibility",
-        delivery: "Designed + implemented with engineering",
+        delivery: "Designed; implementation started",
         summary: "I audited the live interface, designed a shared foundation on Ant Design, and worked closely with Matt as he implemented it in React, Storybook, and Chromatic.",
         result: "One documented foundation replaced visible interface drift",
         cardVisual: {
@@ -5137,7 +5143,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     function openWorkVisual(item){
       mediaLightboxTitle.textContent = item.name;
       mediaLightbox.querySelector(".media-lightbox-kicker").textContent =
-        (item.surface || "Decision") + (item.delivery ? " · " + item.delivery : "");
+        (item.surface || "Decision") + (publicDelivery(item.delivery) ? " · " + item.delivery : "");
       var explainerEl = mediaLightbox.querySelector(".media-lightbox-explainer");
       if(explainerEl){
         var parts = [item.summary, item.result].filter(Boolean);
@@ -5631,6 +5637,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       if(/shipped|launched|published|adopted|released/.test(d) && !/internal/.test(d)) return "ok";
       return "int";
     }
+    // Unconfirmed delivery states ("To confirm", unknown, TBD) are internal bookkeeping: never shown publicly
+    // (Chris 2026-09-22). The data keeps them so the open list stays greppable.
+    function publicDelivery(delivery){ return deliveryState(delivery) === "todo" ? "" : (delivery || ""); }
     // "Also shipped" dots keep their existing 3 classes (ok and int both render as the plain accent dot).
     function mapDotClass(delivery){
       var s = deliveryState(delivery);
@@ -5644,7 +5653,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       var line = document.createElement("span");
       line.className = "work-project-card-result";
       var state = deliveryState(delivery);
-      var label = resultKind || delivery;
+      var label = resultKind || publicDelivery(delivery);
       if(label){
         var kind = document.createElement("span");
         kind.className = "work-project-card-result-kind";
@@ -5703,7 +5712,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       name.className = "work-support-name";
       name.textContent = it.name;
       namecol.appendChild(name);
-      if(it.delivery){
+      if(publicDelivery(it.delivery)){
         var state = document.createElement("span");
         state.className = "work-support-state";
         var dot = document.createElement("span");
@@ -5729,7 +5738,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       if(openable){
         if(hasImg) row.dataset.fullSrc = it.image;
         row.dataset.mediaTitle = it.name;
-        row.dataset.mediaKicker = (it.surface || "Supporting work") + (it.delivery ? " · " + it.delivery : "");
+        row.dataset.mediaKicker = (it.surface || "Supporting work") + (publicDelivery(it.delivery) ? " · " + it.delivery : "");
         if(explainer) row.dataset.explainer = explainer;
         name.setAttribute("aria-label", "Open: " + it.name);
         name.addEventListener("click", function(){ hasVisual ? openWorkVisual(it) : openWorkMedia(row); });
@@ -6356,7 +6365,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       workPanelTitle.textContent = story.name;
       workPanelTitle.hidden = false;
       workPanelMeta.textContent = story.meta;
-      workPanelDelivery.textContent = story.delivery || "Project";
+      workPanelDelivery.textContent = publicDelivery(story.delivery) || "Project";
       workPanelStoryMeta.hidden = false;
       workPanelSummary.textContent = story.summary;
       renderWorkFacts(story.facts || null, true);
