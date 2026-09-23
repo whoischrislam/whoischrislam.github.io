@@ -3408,9 +3408,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         name: "Instructor Tools",
         cardKicker: "Teaching operations · Web",
         meta: "Teaching operations · Web",
-        delivery: "Shipped + launched later",
+        delivery: "Design complete, queued for build",
         summary: "I redesigned grading and resubmission around the history instructors needed, then completed a dashboard for finding live cohorts and students who needed attention.",
-        result: "Grading / resubmission shipped, dashboard launched after my departure",
+        result: "Design complete, queued for build",
         cardVisual: {
           title: "Grading history, resubmission, and instructor dashboard states",
           status: "CURATE",
@@ -3424,8 +3424,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         facts: [
           ["Ownership", "Research · Workflow definition · Product design · State specification"],
           ["Research", "4+ instructor interviews · competitive review"],
-          ["Shipped during role", "Grading and resubmission workflow"],
-          ["Completed", "Dashboard launched after I left"]
+          ["Delivery", "Grading, resubmission, and dashboard designs queued for build"]
         ],
         chapters: [
           {
@@ -3457,7 +3456,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
           {
             step: "03 · Design the overview in states",
             title: "Live cohorts, attention signals, and the all-caught-up state shared one system.",
-            copy: "The completed dashboard grouped courses in session, supported cohort filtering, and specified states from one course through no updates and all caught up. I finished the design before leaving; the company launched it afterward.",
+            copy: "The completed dashboard grouped courses in session, supported cohort filtering, and specified states from one course through no updates and all caught up. I finished the design before leaving; it was queued for build.",
             media: [
               {
                 visual: "Four instructor-dashboard states",
@@ -5637,7 +5636,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     // (built, internal or not public) so no wording is ever promoted to shipped by accident.
     function deliveryState(delivery){
       var d = String(delivery || "").toLowerCase();
-      if(/confirm|unknown|unresolved|tbd/.test(d)) return "todo";
+      if(/confirm|unknown|unresolved|tbd|not individually audited/.test(d)) return "todo";   // internal-only states: hidden publicly
       if(/concept|prototype|exploration|explored|alpha|demo|not launched|paused|incomplete|cancel/.test(d)) return "warn";
       // negated forms ("not shipped", "unreleased", "unpublished"…) must never read as shipped
       if(/\b(not|never|un)[\s-]*(yet[\s-]+)?(shipped|launched|published|adopted|released)/.test(d)) return "int";
