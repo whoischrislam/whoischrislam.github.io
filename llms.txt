@@ -14,7 +14,7 @@ He has been building with LLM APIs since January 2024, which is checkable rather
 
 At y30, he was Co-Founder & Product Design Engineer in 2026, an operating co-founder through Jul 2026 and advising since. y30 builds voice AI for older adults and their caregivers and generates longitudinal conversational signals for clinician or caregiver review. It does not diagnose, screen for, or detect cognitive decline or any other condition, and it is not a medical device.
 
-His exits, framed honestly and never as a trophy count: he was early at Clover Health and GoodRx (both later went public), a rescue hire at Sharecare during its acquisition (which then went public), and did the 2014 TaskRabbit rebrand before IKEA acquired it. The signal is repeated high ownership at early or critical stages, not an exit count.
+His exits, framed honestly and never as a trophy count: he was early at Clover Health and GoodRx (both later went public), a rescue hire at doc.ai as it prepared for its acquisition by Sharecare (which then went public), and did the 2014 TaskRabbit rebrand before IKEA acquired it. The signal is repeated high ownership at early or critical stages, not an exit count.
 
 ## Key pages
 - [Portfolio](https://whoischrislam.github.io): the full site, with selected work, the y30 and PlaySesh case studies, recommendations, and an interactive AI hiring guide.
