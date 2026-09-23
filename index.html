@@ -2118,7 +2118,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
 </section>
 </div>
 
-<div class="story-panel contact-panel" id="contact-panel" popover="auto" aria-labelledby="contact-panel-heading">
+<div class="story-panel contact-panel" id="contact-panel" popover="auto" role="dialog" aria-labelledby="contact-panel-heading">
     <button class="story-close" type="button" popovertarget="contact-panel"
             popovertargetaction="hide" aria-label="Close">&times;</button>
     <div class="inner"><h2 id="contact-panel-heading">Let&rsquo;s work together.</h2><div data-contact-slot></div></div>
@@ -5334,6 +5334,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         loopBack.style.setProperty("--per", blocks.length);
         loopBack.append(document.createElement("i"), document.createElement("i"));
         stage.insertBefore(loopBack, stage.firstChild);   // first in DOM (keeps items' :last-child arrows right), shown last via order
+        accessibleParts.push("Returns to " + diagramData.items[0].label);   // the connector is aria-hidden; say the loop in words
       }
       if(diagramData.footer){
         var footer = document.createElement("span");
@@ -6910,11 +6911,14 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         if(!document.body.classList.contains("work-focus-open")) return;   // homepage: let the #lets-work jump happen
         e.preventDefault();
         slot.appendChild(contact); contact.inert = false; panel.showPopover();   // #contact is itself a world-background item (inert)
+        panel.querySelector(".story-close").focus();   // keyboard + screen-reader users land in the panel, not behind it
       });
       panel.addEventListener("toggle", function(e){
         if(e.newState !== "closed" || !home.parentNode) return;
+        var hadFocus = panel.contains(document.activeElement) || document.activeElement === document.body;
         home.parentNode.insertBefore(contact, home.nextSibling);
         contact.inert = document.body.classList.contains("work-focus-open");  // back behind the world: inert again
+        if(hadFocus && !document.querySelector(".va-dock:not([hidden])")) pill.focus();   // return to the opener (not when the guide took over)
       });
       panel.addEventListener("click", function(e){                         // the guide opens its own dock: get out of its way
         if(e.target.closest("[data-va-open]")) panel.hidePopover();
