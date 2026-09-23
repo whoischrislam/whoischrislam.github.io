@@ -2268,11 +2268,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                             <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
                         </div>
                     </div>
-  <div class="story-panel contact-panel" id="contact-panel" popover="auto" aria-labelledby="contact-panel-heading">
-    <button class="story-close" type="button" popovertarget="contact-panel"
-            popovertargetaction="hide" aria-label="Close">&times;</button>
-    <div class="inner"><h2 id="contact-panel-heading">Let&rsquo;s work together.</h2><div data-contact-slot></div></div>
-  </div>
   <div class="story-panel" id="story-panel" popover="auto" aria-labelledby="story-heading">
     <button class="story-close" type="button" popovertarget="story-panel"
             popovertargetaction="hide" aria-label="Close">&times;</button>
@@ -2542,6 +2537,11 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
 </section>
 </div>
 
+<div class="story-panel contact-panel" id="contact-panel" popover="auto" aria-labelledby="contact-panel-heading">
+    <button class="story-close" type="button" popovertarget="contact-panel"
+            popovertargetaction="hide" aria-label="Close">&times;</button>
+    <div class="inner"><h2 id="contact-panel-heading">Let&rsquo;s work together.</h2><div data-contact-slot></div></div>
+</div>
 <dialog id="media-lightbox" class="media-lightbox" aria-labelledby="media-lightbox-title">
   <div class="media-lightbox-bar">
     <div>
@@ -2716,9 +2716,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     var companyWorkScrollTop = {};
     var companyButtons = Array.from(document.querySelectorAll("[data-work-company]"));
     var workBackgroundItems = Array.from(workShell.parentElement.children).filter(function(item){
-      // Exclude the media lightbox: it is a sibling of the shell, so inert-ing the world background
-      // would also inert the modal (it paints but eats every click - broken close + "open original").
-      return item !== workShell && item.id !== "media-lightbox";
+      // Exclude the media lightbox and contact panel: siblings of the shell, so inert-ing the world background
+      // would also inert them (they paint but eat every click - broken close + dead buttons).
+      return item !== workShell && item.id !== "media-lightbox" && item.id !== "contact-panel";
     });
     var workPreloadImages = [];
     var companyFocusPreloaded = false;
@@ -7310,10 +7310,12 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       pill.addEventListener("click", function(e){
         if(!document.body.classList.contains("work-focus-open")) return;   // homepage: let the #lets-work jump happen
         e.preventDefault();
-        slot.appendChild(contact); panel.showPopover();
+        slot.appendChild(contact); contact.inert = false; panel.showPopover();   // #contact is itself a world-background item (inert)
       });
       panel.addEventListener("toggle", function(e){
-        if(e.newState === "closed" && home.parentNode) home.parentNode.insertBefore(contact, home.nextSibling);
+        if(e.newState !== "closed" || !home.parentNode) return;
+        home.parentNode.insertBefore(contact, home.nextSibling);
+        contact.inert = document.body.classList.contains("work-focus-open");  // back behind the world: inert again
       });
       panel.addEventListener("click", function(e){                         // the guide opens its own dock: get out of its way
         if(e.target.closest("[data-va-open]")) panel.hidePopover();
