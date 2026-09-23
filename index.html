@@ -1059,11 +1059,12 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .portfolio-diagram{position:relative;display:flex;flex-direction:column;justify-content:center;gap:18px;
   min-width:0;min-height:220px;padding:24px;overflow:hidden;border:1px solid var(--border);
   background:var(--surface-2);color:var(--text);text-align:left}
-/* Blueprint: the grid spans the whole panel; items are boxes with mono labels (dashed = never reached users). */
+/* Blueprint: the grid spans the whole panel; items are boxes with mono labels (dashed = never reached users).
+   --bp-x/--bp-y are set by snapDiagramGrid() so a grid line runs through the first box's top-left corner. */
 .portfolio-diagram::before{content:"";position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(color-mix(in srgb,currentColor 9%,transparent) 1px,transparent 1px),
     linear-gradient(90deg,color-mix(in srgb,currentColor 9%,transparent) 1px,transparent 1px);
-  background-size:var(--bp-cell,22px) var(--bp-cell,22px)}
+  background-size:var(--bp-cell,22px) var(--bp-cell,22px);background-position:var(--bp-x,0) var(--bp-y,0)}
 .portfolio-diagram-head,.portfolio-diagram-stage,.portfolio-diagram-footer{position:relative;z-index:1}
 .portfolio-diagram-eyebrow{display:block;margin:0 0 5px;color:var(--accent);
   font:700 10px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase}
@@ -5267,6 +5268,51 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         if(stage.__blocks) layoutWrappedFlow(stage);
       });
     }); });
+    // Blueprint snap (Chris 2026-09-23): the grid originates at the first box's top-left corner, and each row of
+    // boxes grows (min-height) so the next row's top, and the last row's bottom, land on a grid line. Widths stay
+    // flexible, so vertical lines meet left edges, not every right edge. The height snap is dropped where it would
+    // clip a fixed-height diagram (card thumbnails, banner heroes); those keep only the anchored grid.
+    var bpPending = new Set(), bpFrame = 0;
+    var bpObserver = window.ResizeObserver ? new ResizeObserver(function(entries){
+      entries.forEach(function(e){ bpPending.add(e.target.closest(".portfolio-diagram")); });
+      // snap in the next frame, not inside the observer, so resizing observed boxes cannot start an observer loop
+      if(!bpFrame) bpFrame = requestAnimationFrame(function(){
+        bpFrame = 0;
+        var list = Array.from(bpPending); bpPending.clear();
+        list.forEach(snapDiagramGrid);
+      });
+    }) : null;
+    function observeDiagramGrid(diagram){
+      if(!bpObserver) return;
+      // the diagram plus its head/stage/footer: a web-font reflow can move the boxes without resizing the diagram
+      [diagram].concat(Array.from(diagram.children)).forEach(function(el){ bpObserver.observe(el); });
+    }
+    function snapDiagramGrid(diagram){
+      if(!diagram || !diagram.isConnected) return;
+      var items = Array.from(diagram.querySelectorAll(".portfolio-diagram-item"));
+      items.forEach(function(it){ it.style.minHeight = ""; });
+      if(!items.length || !diagram.offsetWidth) return;
+      var cell = parseFloat(getComputedStyle(diagram, "::before").backgroundSize) || 22;
+      var rows = [];
+      items.forEach(function(it){
+        var b = it.getBoundingClientRect(), row = rows.find(function(r){ return Math.abs(r.top - b.top) < 1; });
+        if(!row) rows.push(row = {top:b.top, bottom:b.bottom, items:[]});
+        row.bottom = Math.max(row.bottom, b.bottom);
+        row.items.push(it);
+      });
+      rows.sort(function(a, b){ return a.top - b.top; });
+      rows.forEach(function(r, i){
+        var gap = rows[i + 1] ? rows[i + 1].top - r.bottom : 0;
+        var h = Math.ceil((r.bottom - r.top + gap - 0.01) / cell) * cell - gap;
+        r.items.forEach(function(it){ it.style.minHeight = h + "px"; });
+      });
+      if(diagram.scrollHeight > diagram.clientHeight + 1) items.forEach(function(it){ it.style.minHeight = ""; });
+      var box = diagram.getBoundingClientRect(), x = Infinity, y = Infinity;
+      items.forEach(function(it){ var b = it.getBoundingClientRect(); x = Math.min(x, b.left); y = Math.min(y, b.top); });
+      var mod = function(v){ return ((v % cell) + cell) % cell; };
+      diagram.style.setProperty("--bp-x", mod(x - box.left - diagram.clientLeft).toFixed(2) + "px");
+      diagram.style.setProperty("--bp-y", mod(y - box.top - diagram.clientTop).toFixed(2) + "px");
+    }
     // opts (optional): {fade:true} = the grid fades to a corner (named variant; default is the full blueprint grid). Long flows (4+) ALWAYS wrap into balanced
     // left-to-right rows joined by a return connector (Chris 2026-09-22); {wrap:false} opts out.
     function createPortfolioDiagram(item, opts){
@@ -5346,6 +5392,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       }
       diagram.setAttribute("role", "img");
       diagram.setAttribute("aria-label", accessibleParts.filter(Boolean).join(". "));
+      observeDiagramGrid(diagram);
       return diagram;
     }
 
