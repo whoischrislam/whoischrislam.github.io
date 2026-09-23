@@ -5125,7 +5125,10 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
             // cloneNode drops JS properties: re-attach the wrapped flow's blocks (same DOM order) so the
             // clone relayouts across the 760/700px breakpoints, and keep its blueprint grid snapped
             var cloneStage = media.querySelector(".portfolio-diagram-stage.is-wrapped");
-            if(cloneStage) cloneStage.__blocks = Array.from(cloneStage.querySelectorAll(".portfolio-diagram-item"));
+            if(cloneStage){
+              cloneStage.__blocks = Array.from(cloneStage.querySelectorAll(".portfolio-diagram-item"));
+              if(wrapObserver) wrapObserver.observe(cloneStage);   // row count follows the lightbox width
+            }
             observeDiagramGrid(media);
           }
         }
@@ -5233,9 +5236,33 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     // Re-runs when the viewport crosses the breakpoint, so rows never go stale after a resize.
     var WRAP_MQ = window.matchMedia("(max-width:760px)");
     var VERT_MQ = window.matchMedia("(max-width:700px)");   // phones: sequences stack vertically, no wrap
+    // Boxes are a fixed width (--box, Chris 2026-09-23), so a row holds as many as fit the stage: a 4-box flow stays on
+    // one line on desktop. The old 3/2 cap stays as the minimum (and the fallback before the stage is laid out).
+    function wrapCap(stage){
+      var blocks = stage.__blocks;
+      if(VERT_MQ.matches) return blocks.length;
+      var w = stage.clientWidth, box = parseFloat(getComputedStyle(stage).getPropertyValue("--box")) || 242;
+      var floor = WRAP_MQ.matches ? 2 : 3;   // never fewer per row than before --box (boxes shrink to fit instead)
+      return w ? Math.max(floor, Math.floor((w + 22) / (box + 22))) : floor;
+    }
+    var wrapFrame = 0, wrapPending = new Set();
+    var wrapObserver = window.ResizeObserver ? new ResizeObserver(function(entries){
+      entries.forEach(function(e){ wrapPending.add(e.target); });
+      if(!wrapFrame) wrapFrame = requestAnimationFrame(function(){
+        wrapFrame = 0;
+        var list = Array.from(wrapPending); wrapPending.clear();
+        list.forEach(function(st){
+          if(!st.__blocks) return;
+          var cap = wrapCap(st), per = Math.ceil(st.__blocks.length / Math.ceil(st.__blocks.length / cap));
+          if(per !== st.__per) layoutWrappedFlow(st);   // relayout only when the row count actually changes
+        });
+      });
+    }) : null;
     function layoutWrappedFlow(stage){
-      var blocks = stage.__blocks, cap = VERT_MQ.matches ? blocks.length : WRAP_MQ.matches ? 2 : 3;
+      var blocks = stage.__blocks, cap = wrapCap(stage);
       var per = Math.ceil(blocks.length / Math.ceil(blocks.length / cap));
+      stage.__per = per;
+      if(wrapObserver && !stage.__wrapWatched){ stage.__wrapWatched = true; wrapObserver.observe(stage); }
       stage.replaceChildren();
       stage.style.setProperty("--per", per);
       for(var r = 0; r < blocks.length; r += per){
