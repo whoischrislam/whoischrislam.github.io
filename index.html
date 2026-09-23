@@ -2131,7 +2131,31 @@ body.work-focus-open[data-world] .work-project-card .portfolio-diagram-item::aft
 body.work-focus-open[data-world] .work-project-card:hover .work-project-card-cta,
 body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-card-cta{color:var(--world-card-bg)}
 </style>
-</head><body>
+<style>
+/* Must be in <head> so it applies at FIRST paint: the headline's typed line is hidden (its space reserved), and
+   band images wait for the halftone reveal. Both classes are set by the script below, only when motion is allowed. */
+html.hero-type .hl-ship-text,html.hero-type .hl-ship-text2{visibility:hidden}   /* typed chars set themselves visible */
+html.hx-pre .co-band[data-hero] .band-frame .work-tile.on img{visibility:hidden}
+html.hx-pre .work-cards .wcard-thumb img,html.hx-pre .work-cards .wcard-thumb-label,html.hx-pre .work-cards .wcard-thumb::before{visibility:hidden}
+/* No JS: the authored hero (tb-6) is on <body> from first paint, so show its final state (mirrors the reduced-motion block) */
+html:not(.js) body.tb-6 .hl-design{-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;opacity:1!important}
+html:not(.js) body.tb-6 .hl-design .hg{opacity:1!important;transform:none!important;animation:none!important}
+html:not(.js) body.tb-6 .hl-amp,html:not(.js) body.tb-6 .hl-dot,html:not(.js) body.tb-6 .hl-special{opacity:1;transform:none;animation:none}
+html:not(.js) body.tb-6 .hl-prod{opacity:1;transform:none;filter:none;animation:none}
+html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after{display:none}
+</style>
+<script>
+/* Band halftone reveal: hide the band images before first paint so they don't flash before the reveal owns
+   them. FAIL OPEN: if the reveal script never takes over (error, blocked JS), the images come back in 3s. */
+(function(){ try{ document.documentElement.classList.add('js');   // before first paint (the no-JS headline fallback keys off it)
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var r=document.documentElement; r.classList.add('hx-pre');
+  r.classList.add('hero-type');   // headline: "& code to / ship" is in the HTML (reserves its 2 lines, no layout jump); hidden until typed
+  setTimeout(function(){ if(!window.__hxAlive) r.classList.remove('hx-pre'); },3000);
+  setTimeout(function(){ r.classList.remove('hero-type'); },6000);   // fail open: typed chars keep their own hidden state, so this is safe even mid-typing
+}catch(e){} })();
+</script>
+</head><body class="dv-base tb-6 strip-mono anim-2 card-serif tag-chip-accent">
 
 <!-- 1. Sticky header -->
 <header class="site-head">
@@ -2171,7 +2195,7 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
 
 <!-- 2. Hero -->
 <header class="hero">
-  <h1 class="hero-lockup"><span class="hl-design">I <span class="lit-word">design</span></span> <span class="hl-ship"><span class="hl-ship-text"></span></span><br class="lb"><span class="hl-ship2"><span class="hl-ship-text2"></span></span> <span class="hl-special"><span class="hl-prod">products</span><span class="hl-dot">.</span></span></h1>
+  <h1 class="hero-lockup"><span class="hl-design">I <span class="lit-word">design</span></span> <span class="hl-ship"><span class="hl-ship-text">&amp; code to</span></span><br class="lb"><span class="hl-ship2"><span class="hl-ship-text2">ship</span></span> <span class="hl-special"><span class="hl-prod">products</span><span class="hl-dot">.</span></span></h1>
   <p class="sub"><b>Senior Product Designer</b>. I also build in production React, TypeScript, and Python, so design intent survives to launch.</p>
   <p class="sub-line">14+ years shipping software across healthcare, marketplaces, education, and creative tools. I learn new domains and technologies quickly without compromising product judgment, design craft, or engineering rigor.</p>
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
@@ -2315,7 +2339,7 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
   .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:2px;overflow:hidden;background:var(--surface-2);pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
   .work-cards .work-tile.wcard:hover{border-color:var(--muted);transform:translateY(-2px)}
   .wcard-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:var(--band,#222);overflow:hidden}
-  .wcard-thumb img{width:100%;height:100%;object-fit:contain}
+  .wcard-thumb img{width:100%;height:100%;object-fit:cover}   /* crop to fill (Chris 2026-09-23): no letterbox bars */
   .wcard-thumb-label{font-family:'Instrument Serif',serif;font-size:26px;line-height:1.1;color:rgba(255,255,255,.94);padding:0 18px;text-align:center}
   .wcard-body{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}
   .wcard-name{font-weight:700;font-size:19px;color:var(--text);line-height:1.15}
@@ -7436,6 +7460,8 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
     timers.push(setTimeout(function(){ caret.style.visibility='hidden'; if(done) done(); }, t+140));
   }
 
+  // The band halftone reveal waits for the headline to finish on bands visible at load (sequencing, not overlap).
+  function heroDone(){ window.__heroDone=true; try{ window.dispatchEvent(new Event('hero:done')); }catch(e){} }
   function renderHero(){
     clearT();
     document.body.classList.add('ho-c');
@@ -7446,6 +7472,7 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
     if(reduce){
       if(s1) s1.textContent='& code to'; if(s2) s2.textContent='ship';
       if(specialEl) specialEl.classList.add('in');
+      heroDone();
       return;
     }
     drawUnderline();
@@ -7455,15 +7482,13 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
     ];
     typeSegments(segs, 1000, function(){
       timers.push(setTimeout(function(){ if(specialEl) specialEl.classList.add('in'); }, 200));  // "products" fades into existence
+      timers.push(setTimeout(heroDone, 200+750));  // "products." has landed (hl-create is .75s)
     });
   }
 
-  document.body.classList.add('dv-base');       // paper grain
-  document.body.classList.add('tb-6');          // authored hero treatment
-  document.body.classList.add('strip-mono');    // monochrome-balanced credibility rail
-  document.body.classList.add('anim-2');        // Settle: bands come into existence like the hero
-  document.body.classList.add('card-serif');    // serif card titles
-  document.body.classList.add('tag-chip-accent'); // chip-accent outcome metadata
+  // Baked treatment classes now live on <body> in the markup (dv-base paper grain, tb-6 authored hero, strip-mono
+  // credibility rail, anim-2 Settle for the band names, card-serif, tag-chip-accent). Setting them here, after first
+  // paint, made the headline render on one line and then jump to two, shifting the whole page down 110px.
   renderHero();
 
 })();
@@ -7697,8 +7722,9 @@ document.body.classList.add('fx-dissolve','skin-digital');
     if(getComputedStyle(surface).position==='static') surface.style.position='relative';
     var host=surface.closest('[data-project]'), slug=host?host.getAttribute('data-project'):null;
     var target={surface:surface, img:surface.querySelector('img'), slug:slug, rec:null};
-    surface.addEventListener('mouseenter', function(e){ if(active()){ start(target); setMouse(e); } });
-    surface.addEventListener('mousemove', function(e){ if(active()){ if(!running||cur!==target) start(target); setMouse(e); } });
+    // hx-busy = the band's halftone reveal is still running: no hover on a half-built image; the next mousemove after it ends starts it
+    surface.addEventListener('mouseenter', function(e){ if(active()&&!surface.classList.contains('hx-busy')){ start(target); setMouse(e); } });
+    surface.addEventListener('mousemove', function(e){ if(active()&&!surface.classList.contains('hx-busy')){ if(!running||cur!==target) start(target); setMouse(e); } });
     surface.addEventListener('mouseleave', stop);
     surface.addEventListener('click', stop, true);   // capture: GoodRx's own capture-phase stopPropagation() must not eat this teardown
   }
@@ -7827,6 +7853,144 @@ document.body.classList.add('fx-dissolve','skin-digital');
 </script>
 <!-- Reusable ?dev tuning panel (window.devPanel). No-op without ?dev. -->
 <script src="assets/dev-panel.js"></script>
+<!-- Homepage HALFTONE REVEAL (Chris picks 2026-09-23; spikes spike-reveal R3 + spike-cards C). ONE engine for every
+     homepage image: it starts as a fine 8px grid in its own ground colour; on scroll-in every cell samples the image
+     and grows until the cells merge into the picture, then the real content takes over. It is the cell hover
+     (photo -> cells) run backwards.
+       Bands:  all at once, 800ms. Bands visible at load WAIT for the headline to land (never two things at once),
+               unless the visitor scrolls first.
+       Cards (More work, Experiments): one left-to-right sweep across each ROW, 1000ms, so a row is one moment.
+               Placeholder cards (no image) run the same halftone, sourced from the placeholder itself (ground,
+               44px lines, label), so every card in a row resolves the same way.
+     The hover waits for a reveal to end; a click never waits. Same length whether the image took 50ms or 3s (a slow
+     image holds on the grid). Reduced motion / no JS / script failure = plain content (the head flag fails open).
+     Session replay does NOT record canvases (analytics-init.js): replay serialising them froze the page 1.35s. -->
+<style>
+body.hx-bands .co-band.reveal .band-frame{opacity:1;transform:none;filter:none;transition:none}  /* the reveal owns the image; the name keeps Settle's rise */
+body.hx-bands .work-cards .work-tile.wcard.reveal{transform:none;transition:opacity .35s ease,border-color .15s ease;transition-delay:0s!important}  /* cards fade; the row sweep is the motion */
+.hx-busy:not(.hx-show) .work-tile.on img,.wcard-thumb.hx-busy:not(.hx-show) img,
+.wcard-thumb.hx-busy:not(.hx-show) .wcard-thumb-label,.wcard-thumb.hx-busy:not(.hx-show)::before{visibility:hidden}
+.band-frame>.hx-canvas,.wcard-thumb>.hx-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+</style>
+<script>
+(function(){
+  var root=document.documentElement;
+  if(!root.classList.contains('hx-pre')) return;                       // reduced motion (or flag failed): plain content
+  if(!('IntersectionObserver' in window)){ root.classList.remove('hx-pre'); return; }
+  var CELL=8, CROSS=.8, SWEEP=.45, all=[], scrolled=false;
+  function clamp(x){ return x<0?0:x>1?1:x; }
+  function smooth(x){ x=clamp(x); return x*x*(3-2*x); }
+  function nums(c){ return ((c||'').match(/[\d.]+/g)||[0,0,0,1]).map(Number); }
+  function rgba(c,a){ return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+clamp(a).toFixed(3)+')'; }
+  // the host's visible ground: background-color plus any flat tint gradient on top (the dark theme darkens card thumbs)
+  function groundOf(el){
+    var cs=getComputedStyle(el), bg=nums(cs.backgroundColor).slice(0,3), g=(cs.backgroundImage||'').match(/rgba?\([^)]*\)/);
+    if(g){ var t=nums(g[0]), a=t.length>3?t[3]:1; bg=[bg[0]+(t[0]-bg[0])*a, bg[1]+(t[1]-bg[1])*a, bg[2]+(t[2]-bg[2])*a]; }
+    return bg;
+  }
+
+  // A placeholder card has no image: draw the placeholder exactly as its CSS shows it (ground, 44px lines fading
+  // .9 -> .3 top to bottom, serif label) and use that as the halftone source.
+  function placeholderSource(B){
+    var W=B.W, H=B.H, cv=document.createElement('canvas'); cv.width=Math.max(1,Math.round(W)); cv.height=Math.max(1,Math.round(H));
+    var c=cv.getContext('2d'); c.fillStyle=rgba(B.bg,1); c.fillRect(0,0,W,H);
+    for(var y=0;y<H;y++){ c.fillStyle='rgba(255,255,255,'+(.11*(.9-.6*y/H)).toFixed(3)+')'; if(y%44===0) c.fillRect(0,y,W,1); for(var x=0;x<W;x+=44) c.fillRect(x,y,1,1); }
+    var lab=B.host.querySelector('.wcard-thumb-label');
+    if(lab){ var ls=getComputedStyle(lab); c.fillStyle=ls.color; c.font=ls.fontSize+' '+ls.fontFamily; c.textAlign='center'; c.textBaseline='middle'; c.fillText(lab.textContent,W/2,H/2); }
+    return cv;
+  }
+  // sample every cell's colour from the source, placed exactly where the page shows it (object-fit contain / cover)
+  function sample(B){
+    var off=document.createElement('canvas'); off.width=Math.max(1,Math.round(B.W)); off.height=Math.max(1,Math.round(B.H));
+    var o=off.getContext('2d'); o.fillStyle=rgba(B.bg,1); o.fillRect(0,0,off.width,off.height);
+    try{
+      if(B.img){
+        var im=B.img, hr=B.host.getBoundingClientRect(), ir=im.getBoundingClientRect(), fit=getComputedStyle(im).objectFit;
+        var s=(fit==='cover'?Math.max:Math.min)(ir.width/im.naturalWidth, ir.height/im.naturalHeight), w=im.naturalWidth*s, h=im.naturalHeight*s;
+        var bx=ir.left-hr.left-B.host.clientLeft, by=ir.top-hr.top-B.host.clientTop;
+        o.save(); o.beginPath(); o.rect(bx,by,ir.width,ir.height); o.clip(); o.drawImage(im,bx+(ir.width-w)/2,by+(ir.height-h)/2,w,h); o.restore();
+      } else o.drawImage(placeholderSource(B),0,0);
+      var d=o.getImageData(0,0,off.width,off.height).data;
+    }catch(e){ return false; }
+    for(var i=0;i<B.dots.length;i++){ var p=B.dots[i], k=((Math.min(off.height-1,p.y|0))*off.width+Math.min(off.width-1,p.x|0))*4; p.c=[d[k],d[k+1],d[k+2]]; }
+    return true;
+  }
+  function setup(host,img,kind){
+    var cv=document.createElement('canvas'); cv.className='hx-canvas'; cv.setAttribute('aria-hidden','true');
+    var ctx=cv.getContext('2d'); if(!ctx) return null;
+    host.appendChild(cv); host.classList.add('hx-busy');
+    var B={host:host, img:img, kind:kind, cv:cv, ctx:ctx, state:'rest', raf:0, dots:[]};
+    B.size=function(){
+      var dpr=Math.min(window.devicePixelRatio||1,2); B.W=host.clientWidth; B.H=host.clientHeight;
+      cv.width=Math.round(B.W*dpr); cv.height=Math.round(B.H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+      B.bg=groundOf(host); var L=(.2126*B.bg[0]+.7152*B.bg[1]+.0722*B.bg[2])/255; B.ink=L>.55?[27,27,25]:[255,255,255];
+      B.dots=[]; for(var y=CELL/2;y<B.H;y+=CELL) for(var x=CELL/2;x<B.W;x+=CELL) B.dots.push({x:x,y:y,c:null});
+      if(B.state==='rest') rest(B);
+    };
+    B.size();
+    host.addEventListener('pointerdown',function(){ finish(B); },true);   // a click (portal, band cycle) never waits on the reveal
+    all.push(B); return B;
+  }
+  function rest(B){
+    var c=B.ctx; c.fillStyle=rgba(B.bg,1); c.fillRect(0,0,B.W,B.H); c.fillStyle=rgba(B.ink,.224);
+    for(var i=0;i<B.dots.length;i++){ var p=B.dots[i]; c.fillRect(Math.round(p.x)-1.2,Math.round(p.y)-1.2,2.4,2.4); }
+  }
+  // edge(x) in [0,1] = where a cell sits in a sweep (row reveal); null = all at once (bands)
+  function run(B,dur,edge){
+    if(B.state!=='rest') return; B.state='waiting';
+    var im=B.img;
+    function go(){
+      if(B.state!=='waiting') return;
+      if((im&&!im.naturalWidth)||!sample(B)){ finish(B); return; }
+      B.state='running'; var t0=performance.now(), c=B.ctx, shown=false;
+      (function f(now){
+        if(B.state!=='running') return;
+        var t=clamp((now-t0)/dur), k0=smooth(t/CROSS);
+        c.fillStyle=rgba(B.bg,1); c.fillRect(0,0,B.W,B.H);
+        for(var i=0;i<B.dots.length;i++){ var p=B.dots[i], q=p.c, k=edge?smooth((t/CROSS-edge(p.x)*(1-SWEEP))/SWEEP):k0;
+          var sz=2.4+k*(CELL-2.4), a=.28+.72*Math.min(1,k*2), m=Math.min(1,k*3), h=sz/2;
+          c.fillStyle=rgba([B.ink[0]+(q[0]-B.ink[0])*m, B.ink[1]+(q[1]-B.ink[1])*m, B.ink[2]+(q[2]-B.ink[2])*m], a);
+          c.fillRect(p.x-h,p.y-h,sz,sz); }
+        if(t>CROSS){ if(!shown){ shown=true; B.host.classList.add('hx-show'); } B.cv.style.opacity=String(1-smooth((t-CROSS)/(1-CROSS))); }
+        if(t<1) B.raf=requestAnimationFrame(f); else finish(B);
+      })(t0);
+    }
+    if(!im||(im.complete&&im.naturalWidth)) go(); else { im.addEventListener('load',go,{once:true}); im.addEventListener('error',function(){ finish(B); },{once:true}); }
+  }
+  function finish(B){
+    if(B.state==='done') return; B.state='done'; cancelAnimationFrame(B.raf);
+    if(B.cv.parentNode) B.cv.remove(); B.host.classList.remove('hx-busy','hx-show');
+  }
+
+  // Bands: all at once. Cards: the whole row sweeps as one surface, so a cell's edge = its x across the row's width.
+  function trigger(B){
+    if(B.kind==='band'){ run(B,800,null); return; }
+    var grid=B.host.closest('.work-cards'), gr=grid.getBoundingClientRect(), top=Math.round(B.host.getBoundingClientRect().top);
+    all.forEach(function(o){
+      if(o.kind!=='card'||o.state!=='rest'||o.host.closest('.work-cards')!==grid) return;
+      var r=o.host.getBoundingClientRect(); if(Math.abs(Math.round(r.top)-top)>2) return;   // same row
+      var off=r.left-gr.left; run(o,1000,function(x){ return (off+x)/gr.width; });
+    });
+  }
+  // while the headline is still animating, anything that comes into view waits; scrolling releases it early
+  function released(){ return window.__heroDone||scrolled; }
+  function releaseAll(){ all.forEach(function(B){ if(B.state==='rest'&&B.inView) trigger(B); }); }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ var B=all.find(function(b){ return b.host===e.target; }); if(!B) return;
+      B.inView=e.isIntersecting; if(e.isIntersecting&&released()) trigger(B); if(B.state!=='rest') io.unobserve(e.target); });
+  },{threshold:.35});
+  window.addEventListener('hero:done',releaseAll);
+  window.addEventListener('scroll',function(){ if(!scrolled&&window.scrollY>4){ scrolled=true; releaseAll(); } },{passive:true});
+  setTimeout(function(){ if(!window.__heroDone){ window.__heroDone=true; releaseAll(); } },3400);   // headline never signalled: don't hold forever
+  window.addEventListener('resize',function(){ all.forEach(function(B){ if(B.state==='rest') B.size(); }); });
+
+  window.__hxAlive=true;
+  document.body.classList.add('hx-bands');
+  document.querySelectorAll('.co-band[data-hero] .band-frame').forEach(function(fr){ var im=fr.querySelector('.work-tile.on img'); if(im){ var B=setup(fr,im,'band'); if(B) io.observe(fr); } });
+  document.querySelectorAll('.work-cards .wcard-thumb').forEach(function(th){ var B=setup(th,th.querySelector('img'),'card'); if(B) io.observe(th); });
+  root.classList.remove('hx-pre');                                     // each host now hides its own content until revealed
+})();
+</script>
 <!-- visual-placeholder PIXEL SHOVE (Chris pick 2026-09-23, spike D5). On hover, the placeholder's dot grid becomes
      square pixels that part around the cursor in whole-pixel steps and grow blockier near it: the same grammar as
      the portal's pixel dissolve. Progressive enhancement: the CSS ::before dot grid stays the fallback for touch,

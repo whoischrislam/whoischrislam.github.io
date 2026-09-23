@@ -23,6 +23,10 @@
     defaults: "2026-01-30",
     autocapture: false,
     disable_session_recording: false,
+    // Never record canvases. Replay serialises each canvas as an image (100-200ms per canvas at Retina scale);
+    // with the homepage band reveal that measured a 1.35s main-thread freeze. The canvases are decorative, so
+    // replays lose nothing. This local setting overrides the project's "capture canvas" setting.
+    session_recording: { captureCanvas: { recordCanvas: false } },
     persistence: "localStorage"
   });
   // Register outbound campaign tags as super properties so EVERY event carries
