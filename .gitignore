@@ -52,3 +52,6 @@ work/y30.html
 
 # Dropbox artifact renders (staging) — private-derived, PHI-review before any go public
 images/_staging/
+
+# Claude Code agent worktrees (local only)
+.claude/worktrees/

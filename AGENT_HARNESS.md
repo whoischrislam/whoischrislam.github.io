@@ -10,8 +10,9 @@ large prompt that tries to remember everything.
    influence nearly every relevant agent session.
 2. `CLAUDE.md` imports `@AGENTS.md`. Claude Code does not read `AGENTS.md`
    directly, and Anthropic documents this import as the compatibility pattern.
-3. `.claude/skills/` holds repeatable, task-specific procedures. Their
-   descriptions are discoverable; their full instructions load only when used.
+3. `.claude/skills/` holds repeatable, task-specific procedures. Codex discovers
+   the session procedures through `.agents/skills/` symlinks to those same
+   folders. Their full instructions load only when used.
 4. Private domain knowledge lives outside the always-loaded prompt. For this
    repository, `.jobhunt/` contains the canonical career record, company evidence
    briefs, and the active portfolio handoff.
@@ -42,6 +43,49 @@ AGENTS.md                         operating rules
 public portfolio data and pages       publishable interpretation
 scripts/check-*.py                     executable invariants
 ```
+
+## Switching between Claude and Codex
+
+The repository's [session-start](.claude/skills/session-start/SKILL.md) and
+[session-end](.claude/skills/session-end/SKILL.md) procedures are shared through
+symlinks, not copied. The existing [harness checker](scripts/check-agent-harness.py)
+checks that the Codex discovery paths resolve to those canonical folders.
+The installed [Git hook](.githooks/pre-commit) runs the same
+[verification gate](scripts/verify.sh) for either client. New clones still need
+`scripts/install-hooks.sh`.
+
+The following user-level integration was installed on Chris's machine on
+2026-09-21; it is not distributed by cloning this repository:
+
+- `~/.codex/AGENTS.md` is a thin adapter pointing to `~/.claude/CLAUDE.md`,
+  applicable Claude rules, and existing named agent definitions. Repository
+  `AGENTS.md` remains the project contract. Tool-specific commands and model
+  aliases require their original runtime or an explicitly identified fallback.
+- Missing global skills in `~/.agents/skills/` link to the existing Claude
+  sources. Use this repository's `session-start` and `session-end` directly.
+  The pre-existing global `catchup` and `wrapup` shortcuts retain their original
+  y30-specific behavior; their routing was not generalized.
+- `~/.codex/hooks.json` preserves Superset notifications and registers the
+  existing learning-review, teach-back, practice-reminder, learning-capture,
+  and supported sound hooks. Claude's `Notification` event has no corresponding
+  documented Codex hook and is not registered there.
+- `~/.claude/hooks/capture-learnings.sh` accepts both Claude transcripts and the
+  observed Codex `response_item` message format. Both feed the existing Claude
+  learning store and extraction worker. `test-capture-learnings.py` beside it
+  verifies text selection and rejection of malformed transcripts without an
+  LLM call. Transcript formats can change, so parsing is not a stable API.
+
+New or changed Codex hook definitions must be reviewed and trusted in `/hooks`.
+Until then, registrations are present but those hooks are skipped. Codex's
+SessionEnd timing differs from closing or switching a conversation, so use the
+shared session-end skill for an intentional handoff before switching tools.
+Instruction discovery and deterministic checks do not prove perfect model
+compliance or completed lifecycle execution.
+
+Pre-change user-level files are backed up under
+`~/.codex/backups/claude-harness/20260921-165226/`. Repository edits remain
+reviewable in Git. The integration reuses the existing rules, session workflow,
+learning schema, and verification entrypoint rather than adding another gate.
 
 ## Reusing this in another repository
 

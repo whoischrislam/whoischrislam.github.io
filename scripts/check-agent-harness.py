@@ -102,6 +102,12 @@ def main() -> int:
 
     for name in ("session-start", "session-end"):
         skill_path = ROOT / ".claude" / "skills" / name / "SKILL.md"
+        codex_skill = ROOT / ".agents" / "skills" / name
+        if not codex_skill.is_symlink() or codex_skill.resolve() != skill_path.parent:
+            failures.append(
+                f".agents/skills/{name} must link to .claude/skills/{name}; "
+                "Codex must discover the canonical workflow, not a copy"
+            )
         skill = skill_path.read_text(encoding="utf-8")
         if f"name: {name}" not in skill:
             failures.append(f"{skill_path.relative_to(ROOT)} has the wrong skill name")
