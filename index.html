@@ -110,6 +110,12 @@
   /* Spacing. 4px base, doubling. Ported from his 2024 token set, which used the
      same shape in em: 0.2 / 0.4 / 0.8 / 1 / 1.6 / 2 / 4. */
   --sp-1:4px; --sp-2:8px; --sp-3:16px; --sp-4:24px; --sp-6:32px; --sp-8:44px; --sp-12:88px;
+  /* Homepage media grounds, one per card (co-band frames + wcard thumbs set --band from these).
+     Theme-independent: the vibrant per-company range is the point. Named by the card's data-project. */
+  --band-y30:#edf0e7; --band-goodrx:#fcef72; --band-clover:#527369; --band-playsesh:#deac7b;
+  --band-pathstream:#de5d5a; --band-modus:#141414; --band-startplaying:#3b82f6; --band-sharecare:#9cbfb0;
+  --band-taskrabbit:#4aa64a; --band-amazon:#232f3e; --band-hogware:#2f6f5b; --band-evolve-die-repeat:#6d5bc4;
+  --band-zodiacus:#b5432a;
 }
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
@@ -2012,7 +2018,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   <div id="work-grid" class="work-grid">
   <div class="co-groups">
     <div class="co-lane">
-    <section class="co-band" data-project="y30" data-n="4" data-hero style="--band:#edf0e7">
+    <section class="co-band" data-project="y30" data-n="4" data-hero style="--band:var(--band-y30)">
       <div class="co-head"><h3>y30</h3><p>Co-founder & product engineer. Voice AI for older adults and their caregivers, with a deterministic safety floor and evals around the STT/LLM/TTS stack.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="y30" data-tile-id="y30-voice" data-shape="wide" data-span="3" data-provider="loom" data-video-id="eb44015201554d11ac841cd1700653ce" data-media-title="y30 reminiscence call" data-pin>
@@ -2021,7 +2027,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="goodrx" data-n="4" data-hero style="--band:#fcef72">
+    <section class="co-band reveal" data-project="goodrx" data-n="4" data-hero style="--band:var(--band-goodrx)">
       <div class="co-head"><h3>GoodRx (Iodine)<span class="tag-outcome">IPO 2020</span></h3><p>First full-time designer. Coupon conversion 2% to 5%, a Webby-winning product, and data-viz cited in the NYT.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-product" data-shape="wide" data-span="4" data-pin>
@@ -2030,7 +2036,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="clover" data-n="3" data-hero style="--band:#527369">
+    <section class="co-band reveal" data-project="clover" data-n="3" data-hero style="--band:var(--band-clover)">
       <div class="co-head"><h3>Clover Health<span class="tag-outcome">IPO 2021</span></h3><p>Second designer. Rebuilt the nurse home-visit app: 7 to 8x ROI, and 1 to 2 hours a night back to nurses.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="clover" data-tile-id="clover-form" data-shape="wide" data-span="3" data-pin>
@@ -2039,7 +2045,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="playsesh" data-n="2" data-hero style="--band:#deac7b">
+    <section class="co-band reveal" data-project="playsesh" data-n="2" data-hero style="--band:var(--band-playsesh)">
       <div class="co-head"><h3>PlaySesh</h3><p>Co-founder & CEO. Collaborative game-dev tooling in Discord; 1,043 peak monthly active users, still live.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="playsesh" data-tile-id="playsesh-prompt" data-shape="wide" data-span="4" data-provider="youtube" data-video-id="Q0S-_WAea6Y" data-media-title="PlaySesh prompt-to-playable demo">
@@ -2048,7 +2054,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="pathstream" data-n="3" data-hero style="--band:#de5d5a">
+    <section class="co-band reveal" data-project="pathstream" data-n="3" data-hero style="--band:var(--band-pathstream)">
       <div class="co-head"><h3>Pathstream</h3><p>First design hire. Rebuilt the core lesson experience on a live platform; zero forced migration.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="pathstream" data-tile-id="pathstream-lessons" data-shape="wide" data-span="3">
@@ -2061,38 +2067,38 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     <h3 class="exp-head reveal">More work</h3>
     <div class="work-cards">
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="modus" data-tile-id="modus-dark-mode">
-        <span class="wcard-thumb" style="--band:#141414"><img src="images/work/modus-dark-mode.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-modus)"><img src="images/work/modus-dark-mode.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Modus Create</span><span class="wcard-desc">Cross-app dark mode shipped to a 500K+ user base, in production TypeScript.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money">
-        <span class="wcard-thumb" style="--band:#3b82f6" data-kicker="YC W20 · a16z"><span class="wcard-thumb-label">StartPlaying</span></span>
+        <span class="wcard-thumb" style="--band:var(--band-startplaying)" data-kicker="YC W20 · a16z"><span class="wcard-thumb-label">StartPlaying</span></span>
         <span class="wcard-body"><span class="wcard-name">StartPlaying<span class="tag-outcome">YC W20 · a16z</span></span><span class="wcard-desc">Founding designer. Shipped the payment and payout system.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder">
-        <span class="wcard-thumb" style="--band:#9cbfb0"><img src="images/work/omix-study-builder.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-sharecare)"><img src="images/work/omix-study-builder.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">doc.ai · Omix<span class="tag-outcome">Acq. Sharecare</span></span><span class="wcard-desc">Lead designer. Rescued the clinical-studies product through the acquisition.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="taskrabbit" data-tile-id="taskrabbit-calendar">
-        <span class="wcard-thumb" style="--band:#4aa64a"><img src="images/craft/hero-taskrabbit.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-taskrabbit)"><img src="images/craft/hero-taskrabbit.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">TaskRabbit<span class="tag-outcome">Acq. IKEA</span></span><span class="wcard-desc">Tasker experience, NPS -5 to mid-50s.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music">
-        <span class="wcard-thumb" style="--band:#232f3e" data-kicker="Amazon Music"><span class="wcard-thumb-label">Amazon</span></span>
+        <span class="wcard-thumb" style="--band:var(--band-amazon)" data-kicker="Amazon Music"><span class="wcard-thumb-label">Amazon</span></span>
         <span class="wcard-body"><span class="wcard-name">Amazon</span><span class="wcard-desc">Amazon Music. Built the importer and matcher that brought local and cloud music into one library.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
     </div>
     <h3 class="exp-head reveal">Experiments</h3>
     <div class="work-cards">
       <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="hogware" data-tile-id="hogware-game">
-        <span class="wcard-thumb" style="--band:#2f6f5b"><img src="images/work/hogware-game.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-hogware)"><img src="images/work/hogware-game.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">HogWare</span><span class="wcard-desc">PostHog-themed browser game, tuned from its PostHog playtest data: 80 players, 948 microgames cleared.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="evolve_die_repeat" data-tile-id="evolve-die-repeat">
-        <span class="wcard-thumb" style="--band:#6d5bc4"><img src="images/co/edr.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-evolve-die-repeat)"><img src="images/co/edr.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Evolve, Die, Repeat</span><span class="wcard-desc">2D roguelite in Lua/Love2D, test-driven and telemetry-iterated.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="zodiacus" data-tile-id="zodiacus">
-        <span class="wcard-thumb" style="--band:#b5432a"><img src="images/co/zodiacus.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-zodiacus)"><img src="images/co/zodiacus.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Zodiacus</span><span class="wcard-desc">Tabletop game: wrote the rulebook and most of the design.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
     </div>
