@@ -1255,16 +1255,34 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .project-story-nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:4px;
   min-width:0;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);
-  overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
+  overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none;isolation:isolate}
 .project-story-nav::-webkit-scrollbar{display:none}
+/* Active chapter = a 3px underline that glides between chips (same weight as .read-progress);
+   reading progress = a fill on the same line, mapped chip-to-chip so it runs under the active chip. */
+.project-story-nav-marker,.project-story-nav-progress{position:absolute;bottom:0;left:0;height:3px;pointer-events:none}
+.project-story-nav-marker{z-index:2;width:0;background:var(--accent);
+  transition:left .38s cubic-bezier(.2,.75,.2,1),width .38s cubic-bezier(.2,.75,.2,1)}
+.project-story-nav-progress{z-index:1;width:0;background:color-mix(in srgb,var(--accent) 45%,transparent)}
 .project-story-nav-label{flex:0 0 auto;margin:0 8px 0 0;color:var(--muted);font-size:var(--t-xs);
   letter-spacing:.12em;text-transform:uppercase}
-.project-story-nav button{appearance:none;flex:0 0 auto;padding:7px 10px;border:1px solid transparent;
+.project-story-nav button{appearance:none;position:relative;z-index:1;flex:0 0 auto;padding:7px 10px;border:1px solid transparent;
   border-radius:999px;background:transparent;color:var(--muted);font:600 var(--t-xs)/1.2 var(--sans);
-  cursor:pointer;transition:color .16s ease,border-color .16s ease,background .16s ease}
-.project-story-nav button:hover,.project-story-nav button:focus-visible{color:var(--accent);border-color:var(--accent)}
+  cursor:pointer;transition:color .3s ease,border-color .16s ease,background .16s ease}
+.project-story-nav button:hover,.project-story-nav button:focus-visible{color:var(--accent)}
+/* Hover matches the selected state: accent text + the same 3px underline, on the nav's bottom edge (nav padding 10px). */
+.project-story-nav button::after{content:"";position:absolute;left:0;right:0;bottom:-10px;height:3px;
+  background:var(--accent);opacity:0;transition:opacity .16s ease}
+.project-story-nav button:hover::after{opacity:1}
 .project-story-nav button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.project-story-nav button[aria-current="true"]{color:var(--bg);background:var(--accent);border-color:var(--accent)}
+.project-story-nav button[aria-current="true"]{color:var(--accent)}
+/* Land cue: after a jump, the arrived chapter's copy flashes an accent edge once. */
+@keyframes story-land{0%{box-shadow:inset 3px 0 0 var(--accent);background:color-mix(in srgb,var(--accent) 9%,transparent)}
+  100%{box-shadow:inset 3px 0 0 transparent;background:transparent}}
+.project-chapter.is-landed .project-chapter-copy{animation:story-land 1.1s ease-out;padding-left:14px;margin-left:-14px}
+@media (prefers-reduced-motion:reduce){
+  .project-story-nav-marker{transition:none}
+  .project-chapter.is-landed .project-chapter-copy{animation:none}
+}
 /* Stacked layout (Chris pick 2026-09-22): copy full-width above, media grid below. */
 .project-chapter{display:grid;grid-template-columns:1fr;gap:22px;
   align-items:start;padding-top:28px;border-top:1px solid var(--border);opacity:1;transform:translateY(20px);
@@ -2058,7 +2076,6 @@ body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;marg
 
 /* #14 · JUMP TO nav - world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
 body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent)}
-body[data-world] .project-story-nav button[aria-current="true"]{color:#fff}
 
 body.work-focus-open[data-world] .work-project-card{background:var(--world-card-bg);color:var(--world-card-ink);border-color:transparent}
 body.work-focus-open[data-world] .work-project-card *{color:inherit}
@@ -6109,14 +6126,37 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
         navButton.setAttribute("aria-label", "Jump to " + chapter.step);
         navButton.setAttribute("aria-current", index === 0 ? "true" : "false");
         navButton.addEventListener("click", function(){
+          var instant = reduceWorkMotion.matches;
+          // Snap the target's reveal first: scrollIntoView measures the transformed box, so a
+          // mid-transition translateY would land the jump 20px off.
+          section.style.transition = "none";
+          section.classList.add("is-visible");
+          void section.offsetWidth;
+          section.style.transition = "";
           section.scrollIntoView({
-            behavior: "auto",
+            behavior: instant ? "auto" : "smooth",
             block: "start"
           });
+          if(instant) return;
+          var landed = false;
+          var land = function(){
+            if(landed) return;
+            landed = true;
+            section.classList.remove("is-landed");
+            void section.offsetWidth;
+            section.classList.add("is-landed");
+          };
+          workShell.addEventListener("scrollend", land, {once:true});
+          setTimeout(land, 900);
         });
         storyNavButtons.push(navButton);
         storyNav.appendChild(navButton);
       });
+      var storyNavMarker = document.createElement("span");
+      storyNavMarker.className = "project-story-nav-marker";
+      var storyNavProgress = document.createElement("span");
+      storyNavProgress.className = "project-story-nav-progress";
+      storyNav.append(storyNavProgress, storyNavMarker);
       var company = workProjects[story.company];
       var siblingKeys = Object.keys(workStories).filter(function(key){
         return workStories[key].company === story.company && key !== storyKey;
@@ -6154,38 +6194,53 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
       var chapters = Array.from(article.querySelectorAll(".project-chapter"));
       if(reduceWorkMotion.matches){
         chapters.forEach(function(chapter){ chapter.classList.add("is-visible"); });
-      }else{
-        storyRevealHandler = function(){
-          var threshold = window.innerHeight * .9;
-          var activeIndex = 0;
-          chapters.forEach(function(chapter, index){
-            var bounds = chapter.getBoundingClientRect();
-            if(bounds.top < threshold && bounds.bottom > 0){
-              chapter.classList.add("is-visible");
-            }
-            if(bounds.top <= 130) activeIndex = index;
-          });
-          if(workShell.scrollTop + workShell.clientHeight >= workShell.scrollHeight - 2){
-            activeIndex = chapters.length - 1;
-          }
-          storyNavButtons.forEach(function(button, index){
-            button.setAttribute("aria-current", String(index === activeIndex));
-          });
-          var activeButton = storyNavButtons[activeIndex];
-          if(activeButton){
-            var buttonLeft = activeButton.offsetLeft;
-            var buttonRight = buttonLeft + activeButton.offsetWidth;
-            if(buttonLeft < storyNav.scrollLeft || buttonRight > storyNav.scrollLeft + storyNav.clientWidth){
-              storyNav.scrollTo({
-                left: Math.max(0, buttonLeft - 12),
-                behavior: "auto"
-              });
-            }
-          }
-        };
-        workShell.addEventListener("scroll", storyRevealHandler, {passive:true});
-        requestAnimationFrame(storyRevealHandler);
       }
+      // Scroll-spy runs with or without reduced motion; only the reveal is motion-gated.
+      storyRevealHandler = function(){
+        var threshold = window.innerHeight * .9;
+        var shellTop = workShell.getBoundingClientRect().top;
+        var atEnd = workShell.scrollTop + workShell.clientHeight >= workShell.scrollHeight - 2;
+        var activeIndex = 0;
+        var fill = 0;
+        var lastButton = storyNavButtons[storyNavButtons.length - 1];
+        var spanStart = storyNavButtons[0].offsetLeft;
+        var spanEnd = lastButton.offsetLeft + lastButton.offsetWidth;
+        chapters.forEach(function(chapter, index){
+          var bounds = chapter.getBoundingClientRect();
+          if(bounds.top < threshold && bounds.bottom > 0){
+            chapter.classList.add("is-visible");
+          }
+          if(bounds.top <= 130) activeIndex = index;
+          // Chapter progress maps from its chip's left edge to the next chip's left edge.
+          var read = atEnd ? 1 : Math.min(1, Math.max(0, (shellTop + 130 - bounds.top) / Math.max(1, bounds.height)));
+          var from = storyNavButtons[index].offsetLeft;
+          var to = index < storyNavButtons.length - 1 ? storyNavButtons[index + 1].offsetLeft : spanEnd;
+          if(read > 0) fill = Math.max(fill, from + read * (to - from));
+        });
+        if(atEnd) activeIndex = chapters.length - 1;
+        storyNavButtons.forEach(function(button, index){
+          button.setAttribute("aria-current", String(index === activeIndex));
+        });
+        storyNavProgress.style.left = spanStart + "px";
+        storyNavProgress.style.width = Math.max(0, fill - spanStart) + "px";
+        var activeButton = storyNavButtons[activeIndex];
+        if(activeButton){
+          storyNavMarker.style.left = activeButton.offsetLeft + "px";
+          storyNavMarker.style.width = activeButton.offsetWidth + "px";
+          var buttonLeft = activeButton.offsetLeft;
+          var buttonRight = buttonLeft + activeButton.offsetWidth;
+          if(buttonLeft < storyNav.scrollLeft || buttonRight > storyNav.scrollLeft + storyNav.clientWidth){
+            storyNav.scrollTo({
+              left: Math.max(0, buttonLeft - 12),
+              behavior: "auto"
+            });
+          }
+        }
+      };
+      workShell.addEventListener("scroll", storyRevealHandler, {passive:true});
+      requestAnimationFrame(storyRevealHandler);
+      // Chip widths change at breakpoints; re-place the marker and fill when the nav resizes.
+      new ResizeObserver(function(){ if(storyRevealHandler) storyRevealHandler(); }).observe(storyNav);
       return hero;
     }
 
