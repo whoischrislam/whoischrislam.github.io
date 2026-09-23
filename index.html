@@ -1072,6 +1072,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   overflow-wrap:anywhere}
 .portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-stage,
 .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-stage{display:flex;align-items:stretch;gap:22px}
+.portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-stage{flex-wrap:wrap}
 .portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-item,
 .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-item{flex:1}
 .portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-item:not(:last-child)::after,
@@ -1107,7 +1108,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   border-width:6px 4.5px 0;border-color:currentColor transparent transparent}
 /* Loop-back (loops): a U from the centre of the last item, under the row, up into the centre of the first item
    (arrowhead up). Same line grammar as the wrap-return; --per = item count, so the ends are pure CSS. */
-.portfolio-diagram-return--loop{margin-top:-18px;height:20px}
+.portfolio-diagram-return--loop{order:1;flex:0 0 100%;margin-top:-22px;height:20px}
 .portfolio-diagram-return--loop i:nth-child(1){top:0;bottom:auto;height:14px;left:calc(var(--col) / 2);right:calc(var(--col) / 2);
   border-width:0 1.5px 1.5px}
 .portfolio-diagram-return--loop i:nth-child(2){top:0;bottom:auto;left:calc(var(--col) / 2 - 4.5px);width:0;height:0;
@@ -1117,15 +1118,23 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 @media(max-width:700px){
   .portfolio-diagram{padding:18px;gap:14px}
   .portfolio-diagram-stage{grid-template-columns:repeat(2,minmax(0,1fr))}
+  /* sequences (flow/loop) stack vertically so the order survives on phones; arrows point down */
   .portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-stage,
-  .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-stage{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-stage,
+  .portfolio-diagram-row{display:flex;flex-direction:column;gap:22px}
   .portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-item:not(:last-child)::after,
-  .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-item:not(:last-child)::after{display:none}
+  .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-item:not(:last-child)::after{
+    content:"↓";top:auto;right:auto;bottom:-19px;left:50%;transform:translateX(-50%)}
+  /* loop-back: a bracket up the right side, from the last item into the first (arrowhead left) */
+  .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-stage{position:relative;padding-right:26px}
+  .portfolio-diagram-return--loop{position:absolute;top:30px;bottom:30px;right:0;width:26px;height:auto;margin:0}
+  .portfolio-diagram-return--loop i:nth-child(1){top:0;bottom:0;left:0;right:0;height:auto;border-width:1.5px 1.5px 1.5px 0}
+  .portfolio-diagram-return--loop i:nth-child(2){top:-3.75px;left:0;border-width:4.5px 6px 4.5px 0;
+    border-color:transparent currentColor transparent transparent}
   .story-artifact.portfolio-diagram,
   .project-chapter[data-story-layout="wide"] .story-artifact.portfolio-diagram[data-story-span="12"]{
     min-height:420px;aspect-ratio:auto}
   .project-story-hero.portfolio-diagram{min-height:420px;aspect-ratio:auto}
-  .portfolio-diagram-return--loop{display:none}
 }
 .work-grid{columns:4 170px;column-gap:12px;margin:0}
 .work-grid[data-locked="true"]{columns:3 210px}
@@ -1220,7 +1229,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   .work-company-support-head{display:block}
   .work-company-support-head p{margin-top:6px}
   .work-project-card-media:has(>.portfolio-diagram),
-  .work-project-card:only-child .work-project-card-media:has(>.portfolio-diagram){height:420px;min-height:420px}
+  .work-project-card:only-child .work-project-card-media:has(>.portfolio-diagram){height:auto;min-height:420px}
   .work-shell.is-story-focused .work-panel{margin:0 0 18px;padding:8px 0 20px}
   .work-shell.is-story-focused .work-panel-summary{font-size:var(--t-sm);line-height:1.48}
   .work-shell.is-story-focused .work-panel-result{font-size:24px;margin-top:9px}
@@ -5212,8 +5221,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     // Wrap-return layout. Balanced rows: max 3 per row (2 at <=760px), e.g. 4 -> 2+2, 5 -> 3+2, 8 -> 3+3+2.
     // Re-runs when the viewport crosses the breakpoint, so rows never go stale after a resize.
     var WRAP_MQ = window.matchMedia("(max-width:760px)");
+    var VERT_MQ = window.matchMedia("(max-width:700px)");   // phones: sequences stack vertically, no wrap
     function layoutWrappedFlow(stage){
-      var blocks = stage.__blocks, cap = WRAP_MQ.matches ? 2 : 3;
+      var blocks = stage.__blocks, cap = VERT_MQ.matches ? blocks.length : WRAP_MQ.matches ? 2 : 3;
       var per = Math.ceil(blocks.length / Math.ceil(blocks.length / cap));
       stage.replaceChildren();
       stage.style.setProperty("--per", per);
@@ -5231,11 +5241,11 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         stage.appendChild(row);
       }
     }
-    WRAP_MQ.addEventListener("change", function(){
+    [WRAP_MQ, VERT_MQ].forEach(function(mq){ mq.addEventListener("change", function(){
       document.querySelectorAll(".portfolio-diagram-stage.is-wrapped").forEach(function(stage){
         if(stage.__blocks) layoutWrappedFlow(stage);
       });
-    });
+    }); });
     // opts (optional): {fade:true} = the grid fades to a corner (named variant; default is the full blueprint grid). Long flows (4+) ALWAYS wrap into balanced
     // left-to-right rows joined by a return connector (Chris 2026-09-22); {wrap:false} opts out.
     function createPortfolioDiagram(item, opts){
@@ -5303,7 +5313,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         loopBack.setAttribute("aria-hidden", "true");
         loopBack.style.setProperty("--per", blocks.length);
         loopBack.append(document.createElement("i"), document.createElement("i"));
-        diagram.appendChild(loopBack);
+        stage.insertBefore(loopBack, stage.firstChild);   // first in DOM (keeps items' :last-child arrows right), shown last via order
       }
       if(diagramData.footer){
         var footer = document.createElement("span");
