@@ -7326,7 +7326,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         }
       }else if(inWorld){
         closeWorldClip(backButtonOrigin());                 // planet → galaxy: clip close
-      }else{
+      }else if(workGrid.dataset.locked === "true"){         // nothing focused = an in-page #hash jump; let it scroll
         resetWork(true, {
           restoreScroll:event.state && event.state.portfolioOverviewScrollY != null
             ? event.state.portfolioOverviewScrollY : workOverviewScrollY
