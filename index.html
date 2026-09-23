@@ -1852,25 +1852,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                             <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
                         </div>
                     </div>
-  <div class="story-panel" id="story-panel" popover="auto" aria-labelledby="story-heading">
-    <button class="story-close" type="button" popovertarget="story-panel"
-            popovertargetaction="hide" aria-label="Close">&times;</button>
-    <div class="inner">
-    <h2 id="story-heading">The full story</h2>
-    <p>I studied Human-Computer Interaction at UW and came out believing good design isn't
-    decoration. It's how you show people you actually thought about them. That took me through
-    Amazon, TaskRabbit, Clover Health and Iodine/GoodRx, usually as one of the first designers in
-    the building. Clinical tools, design systems, data visualizations.</p>
-    <p>Somewhere along the way I got tired of throwing designs over the wall, so I taught myself to
-    code: a year heads-down, then shipping every project I could get my hands on. I moved into a
-    software engineering role at Modus Create, then built PlaySesh end to end before co-founding
-    it. The fourteen years of design didn't get left behind. They're why my architecture has a
-    point of view.</p>
-    <p>In 2026 I co-founded y30 with Vijay Sivaji: voice AI for elder care, daily check-ins that
-    help older adults stay connected while giving caregivers and clinicians real signal between
-    appointments. I owned the product, the UX and the voice stack, and I now advise the team part-time.</p>
-    </div>
-  </div>
 </header>
 
 <!-- 3. Logo strip -->
@@ -2216,23 +2197,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   if(qt) r.setAttribute("data-theme",qt);
   else if(saved) r.setAttribute("data-theme",saved);
   else if(window.matchMedia("(prefers-color-scheme: dark)").matches) r.setAttribute("data-theme","dark");
-  /* Swap the facade for the real player on click. Nothing loads until asked. */
-  /* The story panel is a native popover: the platform handles open, close,
-     light-dismiss, Escape and focus return. No JS needed here. */
-
-  document.querySelectorAll(".embed .facade").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      var f = document.createElement("iframe");
-      f.src = btn.dataset.loom
-        ? "https://www.loom.com/embed/" + btn.dataset.loom +
-          "?hide_owner=true&hide_share=true&hideEmbedTopBar=true&autoplay=1"
-        : "https://www.youtube-nocookie.com/embed/" + btn.dataset.yt + "?autoplay=1&rel=0";
-      f.title = btn.getAttribute("aria-label").replace(/^Play video: /, "");
-      f.allow = "accelerometer; autoplay; clipped-media; encrypted-media; picture-in-picture";
-      f.referrerPolicy = "strict-origin-when-cross-origin";
-      f.allowFullscreen = true;
-      btn.replaceWith(f);
-      f.focus()})});
 
   var tt = document.getElementById("theme-toggle");
   function syncToggle(){
@@ -7100,7 +7064,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   function clearT(){timers.forEach(clearTimeout);timers=[];}
   var designHost=document.querySelector('.hl-design');
   var designHTML=designHost?designHost.innerHTML:'';
-  var ampEl=document.querySelector('.hl-amp');
   var shipHost=document.querySelector('.hl-ship-text');
   var shipHTML=shipHost?shipHost.innerHTML:'';
   var shipText=shipHost?shipHost.textContent:'';
