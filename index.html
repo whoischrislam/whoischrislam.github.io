@@ -7067,28 +7067,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
 
 })();
 </script>
-<script>
-/* company-band cycle: flip artifacts within a band; band click still opens the company */
-(function(){
-  document.querySelectorAll(".co-band").forEach(function(band){
-    var tiles=[].slice.call(band.querySelectorAll(".work-tile"));
-    var dots=[].slice.call(band.querySelectorAll(".bc-dot"));
-    var n=tiles.length; if(n<2) return;
-    var idx=0;
-    function show(i){
-      idx=(i%n+n)%n;
-      tiles.forEach(function(t,k){t.classList.toggle("on",k===idx)});
-      dots.forEach(function(d,k){d.classList.toggle("on",k===idx)});
-    }
-    band.querySelectorAll(".bc-arw").forEach(function(a){
-      a.addEventListener("click",function(e){e.stopPropagation();show(idx+parseInt(a.getAttribute("data-d"),10));});
-    });
-    dots.forEach(function(d){
-      d.addEventListener("click",function(e){e.stopPropagation();show(parseInt(d.getAttribute("data-i"),10));});
-    });
-  });
-})();
-</script>
 <script id="bl-js">
 (function(){
   var bar=document.getElementById('dv-bar');
@@ -7628,7 +7606,7 @@ body.hx-bands .work-cards .work-tile.wcard.reveal{transform:none;transition:opac
       if(B.state==='rest') rest(B);
     };
     B.size();
-    host.addEventListener('pointerdown',function(){ finish(B); },true);   // a click (portal, band cycle) never waits on the reveal
+    host.addEventListener('pointerdown',function(){ finish(B); },true);   // a click (portal) never waits on the reveal
     all.push(B); return B;
   }
   function rest(B){
