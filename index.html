@@ -957,6 +957,11 @@ h2.sec#work{margin-top:16px}
   margin:0;transform:none;padding:0 max(24px,calc((100vw - 1180px)/2)) 64px;
   overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;background:var(--bg);
   scrollbar-gutter:stable;box-shadow:0 -1px 0 var(--border)}
+/* While a world is open, body is overflow:hidden so html's reserved gutter would sit empty (a strip past the
+   shell's own scrollbar on always-show-scrollbar systems). Release it; the shell's scrollbar sits at the edge.
+   Safe: world open/close now use the clip reveal, not View Transitions (verified 2026-09-22: no VT is started on
+   band open, tile open, or back), so the width change the note on html{scrollbar-gutter} warns about can't abort one. */
+html:has(body.work-focus-open){scrollbar-gutter:auto}
 .work-shell.is-focused>.work-head{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .work-head{display:flex;align-items:center;justify-content:flex-start;gap:16px;
@@ -1127,13 +1132,14 @@ h2.sec#work{margin-top:16px}
 .work-story-section-head h4{font:400 clamp(26px,3vw,38px)/1.05 var(--serif);margin:0}
 .work-story-section-head p{max-width:none;margin:8px 0 0;color:var(--muted);font-size:var(--t-sm);line-height:1.5}
 .work-project-grid{display:flex;flex-direction:column;gap:16px}
-.work-project-card{appearance:none;position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);grid-template-rows:1fr;width:100%;
+/* Media always on the RIGHT (Chris 2026-09-22: no alternating). DOM order is media, copy; media takes order:2. */
+.work-project-card{appearance:none;position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:1fr;width:100%;
   min-width:0;padding:0;overflow:hidden;border:1px solid var(--border);background:var(--surface);
   color:var(--text);text-align:left;cursor:pointer;transition:border-color .2s ease,transform .3s cubic-bezier(.2,.75,.2,1)}
 .work-project-card:hover,.work-project-card:focus-visible{border-color:var(--accent);transform:translateY(-3px)}
 .work-project-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.work-project-card-media{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:2.5%;
-  height:100%;min-height:290px;padding:22px 22px 0;overflow:hidden;background:#009b5a}
+/* Panel = a vibrant per-card ground (the range Chris wants to show) with ONE image framed whole on it. */
+.work-project-card-media{position:relative;order:2;display:block;height:100%;min-height:320px;overflow:hidden;background:#009b5a}
 .work-project-card-scan-title{display:none}
 .work-project-card[data-work-story="tasker"] .work-project-card-media{background:#069b55}
 .work-project-card[data-work-story="client"] .work-project-card-media{background:#dfe8df}
@@ -1143,20 +1149,15 @@ h2.sec#work{margin-top:16px}
 .work-project-card[data-work-company="y30"] .work-project-card-media{background:#10263d}
 .work-project-card[data-work-company="goodrx"] .work-project-card-media{background:#f4df3d}
 .work-project-card[data-work-story="iodine_product"] .work-project-card-media{background:#6339b6}
-.work-project-card-media img{display:block;width:31%;height:94%;object-fit:contain;object-position:center bottom;
-  filter:drop-shadow(0 14px 18px rgba(0,0,0,.22));transition:transform .42s cubic-bezier(.2,.75,.2,1)}
-.work-project-card[data-work-story="client"] .work-project-card-media img{width:48%;height:88%;object-fit:cover;
-  object-position:top center;border:1px solid rgba(0,0,0,.12);filter:drop-shadow(0 12px 16px rgba(0,0,0,.14))}
-.work-project-card[data-work-company="clover"] .work-project-card-media img{width:30%;height:88%;object-fit:contain;
-  object-position:center top;border:1px solid rgba(0,0,0,.13);background:#fff;
-  filter:drop-shadow(0 12px 16px rgba(0,0,0,.18))}
-.work-project-card[data-work-company="goodrx"] .work-project-card-media img{width:31%;height:88%;object-fit:contain;
-  object-position:center;border:1px solid rgba(0,0,0,.12);background:#fff;
-  filter:drop-shadow(0 12px 16px rgba(0,0,0,.18))}
-.work-project-card:hover .work-project-card-media img:nth-child(odd),
-.work-project-card:focus-visible .work-project-card-media img:nth-child(odd){transform:translateY(-8px) rotate(-1deg)}
-.work-project-card:hover .work-project-card-media img:nth-child(even),
-.work-project-card:focus-visible .work-project-card-media img:nth-child(even){transform:translateY(-12px) rotate(1deg)}
+.work-project-card[data-work-company="pathstream"] .work-project-card-media{background:#2698D4}
+/* One image, framed: the first cardMedia shown WHOLE (never cropped), centred with a shadow. The rest stay in the
+   case study. Mixed-shape image sets were why only TaskRabbit composed well (0.25 to 3.08 aspect in one row). */
+.work-project-card-media img{position:absolute;inset:0;margin:auto;display:block;width:auto;height:auto;
+  max-width:calc(100% - 56px);max-height:calc(100% - 56px);object-fit:contain;border-radius:6px;
+  box-shadow:0 18px 40px rgba(0,0,0,.32);transition:transform .42s cubic-bezier(.2,.75,.2,1)}
+.work-project-card-media img:not(:first-of-type){display:none}
+.work-project-card:hover .work-project-card-media img,
+.work-project-card:focus-visible .work-project-card-media img{transform:translateY(-6px)}
 /* Layout C (Chris 2026-09-22): kicker · serif title · de-emphasized summary · result line · "Read the case" pill. */
 .work-project-card-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:26px 30px;min-width:0}
 .work-project-card-kicker{color:var(--muted);font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase}
@@ -1177,23 +1178,9 @@ h2.sec#work{margin-top:16px}
 .work-project-card:hover .work-project-card-cta,.work-project-card:focus-visible .work-project-card-cta{
   background:var(--world-accent-on-card,var(--accent));color:var(--world-card-bg,var(--bg))}
 .work-project-card:hover .work-project-card-cta span,.work-project-card:focus-visible .work-project-card-cta span{transform:translateX(3px)}
-.work-project-card:only-child{grid-column:1/-1;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);
-  grid-template-rows:1fr}
-.work-project-card:only-child .work-project-card-media{height:100%;min-height:230px}
-.work-project-card:only-child .work-project-card-copy{align-content:center}
-@media (min-width:761px){
-  .work-project-grid>.work-project-card:last-child:nth-child(odd){grid-column:1/-1;
-    grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);grid-template-rows:1fr}
-  .work-project-grid>.work-project-card:last-child:nth-child(odd) .work-project-card-media{
-    height:100%;min-height:230px}
-  .work-project-grid>.work-project-card:last-child:nth-child(odd) .work-project-card-copy{align-content:center}
-}
-.work-project-grid>.work-project-card:nth-child(even){grid-template-columns:minmax(320px,.8fr) minmax(0,1.2fr)}
-.work-project-grid>.work-project-card:nth-child(even)>.work-project-card-media{order:2}
 @media(max-width:760px){
-  .work-project-card,.work-project-grid>.work-project-card:nth-child(even){grid-template-columns:1fr;grid-template-rows:auto auto}
-  .work-project-card-media{min-height:200px}
-  .work-project-grid>.work-project-card:nth-child(even)>.work-project-card-media{order:0}
+  .work-project-card{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .work-project-card-media{order:0;min-height:220px}
   .work-project-card-copy{padding:20px}
 }
 .work-company-support{display:grid;gap:14px;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
@@ -1384,9 +1371,11 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   grid-column:span 12;min-height:280px;aspect-ratio:auto;cursor:default}
 .story-artifact.portfolio-diagram:hover{border-color:var(--border)}
 .project-story-hero.portfolio-diagram{aspect-ratio:14/4.5;cursor:default}
+/* a wrapped (2+ row) flow needs more height than the 14:4.5 banner gives; let it grow instead of clipping */
+.project-story-hero.portfolio-diagram:has(.is-wrapped){aspect-ratio:auto;min-height:320px}
 .work-project-card-media>.portfolio-diagram{
   width:100%;height:100%;min-height:0;border:0}
-.work-project-card-media:has(>.portfolio-diagram){padding:0}
+.work-project-card-media:has(>.portfolio-diagram),.work-project-card-media:has(>.visual-placeholder){padding:0}
 /* --flat: an even grid with no fade. The fade (default ::before mask) is kept as the placeholder variant. */
 .portfolio-diagram--flat::before{-webkit-mask-image:none;mask-image:none}
 .work-project-card-media>.portfolio-diagram .portfolio-diagram-item{min-height:0;padding:9px 11px}
@@ -5594,8 +5583,8 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
         if(stage.__blocks) layoutWrappedFlow(stage);
       });
     });
-    // opts (optional): {flat:true} = even grid, no fade · {wrap:true} = long flows (4+) wrap into balanced
-    // left-to-right rows joined by a return connector. Cards pass both; story diagrams pass neither (unchanged).
+    // opts (optional): {flat:true} = even grid, no fade (cards). Long flows (4+) ALWAYS wrap into balanced
+    // left-to-right rows joined by a return connector (Chris 2026-09-22); {wrap:false} opts out.
     function createPortfolioDiagram(item, opts){
       opts = opts || {};
       var diagramData = item.diagram || {};
@@ -5647,7 +5636,7 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
           .filter(Boolean).join(" "));
         blocks.push(block);
       });
-      if(opts.wrap && diagramData.type === "flow" && blocks.length >= 4){
+      if(opts.wrap !== false && diagramData.type === "flow" && blocks.length >= 4){
         stage.classList.add("is-wrapped");
         stage.__blocks = blocks;
         layoutWrappedFlow(stage);
