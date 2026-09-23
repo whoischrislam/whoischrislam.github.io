@@ -32,11 +32,11 @@
     "work": [
         {
             "name": "y30",
-            "position": "Co-Founder & CPTO",
+            "position": "Co-Founder & Product Design Engineer",
             "url": "https://y30.ai",
             "startDate": "2026-03",
-            "endDate": "2026-08",
-            "summary": "Operated as founding CPTO through Aug 2026; advising since. Voice AI for older adults and their care teams.",
+            "endDate": "2026-07",
+            "summary": "Co-founder through Jul 2026; advising since. Voice AI for older adults and their care teams.",
             "highlights": [
                 "Built an FSM safety engine where crisis paths are deterministic code, not prompt instructions, a hard state the model cannot override.",
                 "Architected a streaming speech-to-text to LLM to text-to-speech pipeline (multi-provider, deep fallback) fronted by a deterministic state machine.",
