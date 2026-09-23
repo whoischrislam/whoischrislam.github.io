@@ -8001,6 +8001,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
 (function(){
   window.__TUNE=window.__TUNE||{}; var T=window.__TUNE;
   if(T.hue===undefined)T.hue=1; if(T.imgMix===undefined)T.imgMix=0.5; if(T.bgTint===undefined)T.bgTint=0.76;
+  if(/[?&](work|project)=/.test(location.search)) return;   // the GoodRx band hover is homepage-only
   window.devPanel({
     title:'Hover materialisation', target:T, pos:'left',
     toggles:[{options:[
