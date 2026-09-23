@@ -5139,6 +5139,13 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
           var visual = tile.querySelector(".visual-placeholder, .portfolio-diagram");
           media = visual ? visual.cloneNode(true) : document.createTextNode("");
           mediaLightboxOriginal.hidden = true;
+          if(visual && visual.classList.contains("portfolio-diagram")){
+            // cloneNode drops JS properties: re-attach the wrapped flow's blocks (same DOM order) so the
+            // clone relayouts across the 760/700px breakpoints, and keep its blueprint grid snapped
+            var cloneStage = media.querySelector(".portfolio-diagram-stage.is-wrapped");
+            if(cloneStage) cloneStage.__blocks = Array.from(cloneStage.querySelectorAll(".portfolio-diagram-item"));
+            observeDiagramGrid(media);
+          }
         }
       }
       mediaLightboxStage.appendChild(media);
@@ -5528,7 +5535,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         var psum = document.createElement("p");
         psum.textContent = v.summary || "";
         pcopy.append(pkick, phead, psum);
-        pcopy.appendChild(createCardResult(v.resultKind, v.delivery || "Supporting work", v.result));
+        // same rule as story cards: no invented status when the vignette has no delivery (createCardResult
+        // routes delivery through publicDelivery, so an unconfirmed state never renders)
+        if(v.result || v.resultKind || v.delivery) pcopy.appendChild(createCardResult(v.resultKind, v.delivery, v.result));
         pcard.append(pmedia, pcopy);
         if(pInteractive) pcard.addEventListener("click", function(){ openWorkMedia(pcard); });
         grid.appendChild(pcard);
