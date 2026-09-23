@@ -110,6 +110,12 @@
   /* Spacing. 4px base, doubling. Ported from his 2024 token set, which used the
      same shape in em: 0.2 / 0.4 / 0.8 / 1 / 1.6 / 2 / 4. */
   --sp-1:4px; --sp-2:8px; --sp-3:16px; --sp-4:24px; --sp-6:32px; --sp-8:44px; --sp-12:88px;
+  /* Homepage media grounds, one per card (co-band frames + wcard thumbs set --band from these).
+     Theme-independent: the vibrant per-company range is the point. Named by the card's data-project. */
+  --band-y30:#edf0e7; --band-goodrx:#fcef72; --band-clover:#527369; --band-playsesh:#deac7b;
+  --band-pathstream:#de5d5a; --band-modus:#141414; --band-startplaying:#3b82f6; --band-sharecare:#9cbfb0;
+  --band-taskrabbit:#4aa64a; --band-amazon:#232f3e; --band-hogware:#2f6f5b; --band-evolve-die-repeat:#6d5bc4;
+  --band-zodiacus:#b5432a;
 }
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
@@ -1059,11 +1065,12 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .portfolio-diagram{position:relative;display:flex;flex-direction:column;justify-content:center;gap:18px;
   min-width:0;min-height:220px;padding:24px;overflow:hidden;border:1px solid var(--border);
   background:var(--surface-2);color:var(--text);text-align:left}
-/* Blueprint: the grid spans the whole panel; items are boxes with mono labels (dashed = never reached users). */
+/* Blueprint: the grid spans the whole panel; items are boxes with mono labels (dashed = never reached users).
+   --bp-x/--bp-y are set by snapDiagramGrid() so a grid line runs through the first box's top-left corner. */
 .portfolio-diagram::before{content:"";position:absolute;inset:0;pointer-events:none;
   background-image:linear-gradient(color-mix(in srgb,currentColor 9%,transparent) 1px,transparent 1px),
     linear-gradient(90deg,color-mix(in srgb,currentColor 9%,transparent) 1px,transparent 1px);
-  background-size:var(--bp-cell,22px) var(--bp-cell,22px)}
+  background-size:var(--bp-cell,22px) var(--bp-cell,22px);background-position:var(--bp-x,0) var(--bp-y,0)}
 .portfolio-diagram-head,.portfolio-diagram-stage,.portfolio-diagram-footer{position:relative;z-index:1}
 .portfolio-diagram-eyebrow{display:block;margin:0 0 5px;color:var(--accent);
   font:700 10px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase}
@@ -1851,25 +1858,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                             <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
                         </div>
                     </div>
-  <div class="story-panel" id="story-panel" popover="auto" aria-labelledby="story-heading">
-    <button class="story-close" type="button" popovertarget="story-panel"
-            popovertargetaction="hide" aria-label="Close">&times;</button>
-    <div class="inner">
-    <h2 id="story-heading">The full story</h2>
-    <p>I studied Human-Computer Interaction at UW and came out believing good design isn't
-    decoration. It's how you show people you actually thought about them. That took me through
-    Amazon, TaskRabbit, Clover Health and Iodine/GoodRx, usually as one of the first designers in
-    the building. Clinical tools, design systems, data visualizations.</p>
-    <p>Somewhere along the way I got tired of throwing designs over the wall, so I taught myself to
-    code: a year heads-down, then shipping every project I could get my hands on. I moved into a
-    software engineering role at Modus Create, then built PlaySesh end to end before co-founding
-    it. The fourteen years of design didn't get left behind. They're why my architecture has a
-    point of view.</p>
-    <p>In 2026 I co-founded y30 with Vijay Sivaji: voice AI for elder care, daily check-ins that
-    help older adults stay connected while giving caregivers and clinicians real signal between
-    appointments. I owned the product, the UX and the voice stack, and I now advise the team part-time.</p>
-    </div>
-  </div>
 </header>
 
 <!-- 3. Logo strip -->
@@ -2030,7 +2018,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   <div id="work-grid" class="work-grid">
   <div class="co-groups">
     <div class="co-lane">
-    <section class="co-band" data-project="y30" data-n="4" data-hero style="--band:#edf0e7">
+    <section class="co-band" data-project="y30" data-n="4" data-hero style="--band:var(--band-y30)">
       <div class="co-head"><h3>y30</h3><p>Co-founder & product engineer. Voice AI for older adults and their caregivers, with a deterministic safety floor and evals around the STT/LLM/TTS stack.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="y30" data-tile-id="y30-voice" data-shape="wide" data-span="3" data-provider="loom" data-video-id="eb44015201554d11ac841cd1700653ce" data-media-title="y30 reminiscence call" data-pin>
@@ -2039,7 +2027,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="goodrx" data-n="4" data-hero style="--band:#fcef72">
+    <section class="co-band reveal" data-project="goodrx" data-n="4" data-hero style="--band:var(--band-goodrx)">
       <div class="co-head"><h3>GoodRx (Iodine)<span class="tag-outcome">IPO 2020</span></h3><p>First full-time designer. Coupon conversion 2% to 5%, a Webby-winning product, and data-viz cited in the NYT.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-product" data-shape="wide" data-span="4" data-pin>
@@ -2048,7 +2036,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="clover" data-n="3" data-hero style="--band:#527369">
+    <section class="co-band reveal" data-project="clover" data-n="3" data-hero style="--band:var(--band-clover)">
       <div class="co-head"><h3>Clover Health<span class="tag-outcome">Public 2021</span></h3><p>Second designer. Rebuilt the nurse home-visit app: about 2 hours a day back to each nurse, time for more visits.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="clover" data-tile-id="clover-form" data-shape="wide" data-span="3" data-pin>
@@ -2057,7 +2045,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="playsesh" data-n="2" data-hero style="--band:#deac7b">
+    <section class="co-band reveal" data-project="playsesh" data-n="2" data-hero style="--band:var(--band-playsesh)">
       <div class="co-head"><h3>PlaySesh</h3><p>Co-founder & CEO. Collaborative game-dev tooling in Discord; 1,043 peak monthly active users, still live.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="playsesh" data-tile-id="playsesh-prompt" data-shape="wide" data-span="4" data-provider="youtube" data-video-id="Q0S-_WAea6Y" data-media-title="PlaySesh prompt-to-playable demo">
@@ -2066,7 +2054,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="pathstream" data-n="3" data-hero style="--band:#de5d5a">
+    <section class="co-band reveal" data-project="pathstream" data-n="3" data-hero style="--band:var(--band-pathstream)">
       <div class="co-head"><h3>Pathstream</h3><p>First design hire. Rebuilt the core lesson experience on a live platform; zero forced migration.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="pathstream" data-tile-id="pathstream-lessons" data-shape="wide" data-span="3">
@@ -2079,38 +2067,38 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     <h3 class="exp-head reveal">More work</h3>
     <div class="work-cards">
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="modus" data-tile-id="modus-dark-mode">
-        <span class="wcard-thumb" style="--band:#141414"><img src="images/work/modus-dark-mode.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-modus)"><img src="images/work/modus-dark-mode.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Modus Create</span><span class="wcard-desc">Cross-app dark mode shipped to a 500K+ user base, in production TypeScript.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money">
-        <span class="wcard-thumb" style="--band:#3b82f6" data-kicker="YC W20 · a16z"><span class="wcard-thumb-label">StartPlaying</span></span>
+        <span class="wcard-thumb" style="--band:var(--band-startplaying)" data-kicker="YC W20 · a16z"><span class="wcard-thumb-label">StartPlaying</span></span>
         <span class="wcard-body"><span class="wcard-name">StartPlaying<span class="tag-outcome">YC W20 · a16z</span></span><span class="wcard-desc">Founding designer. Shipped the payment and payout system.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder">
-        <span class="wcard-thumb" style="--band:#9cbfb0"><img src="images/work/omix-study-builder.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-sharecare)"><img src="images/work/omix-study-builder.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">doc.ai · Omix<span class="tag-outcome">Acq. Sharecare</span></span><span class="wcard-desc">Lead designer. Rescued the clinical-studies product through the acquisition.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="taskrabbit" data-tile-id="taskrabbit-calendar">
-        <span class="wcard-thumb" style="--band:#4aa64a"><img src="images/craft/hero-taskrabbit.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-taskrabbit)"><img src="images/craft/hero-taskrabbit.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">TaskRabbit<span class="tag-outcome">Acq. IKEA</span></span><span class="wcard-desc">Tasker experience, NPS -5 to mid-50s.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music">
-        <span class="wcard-thumb" style="--band:#232f3e" data-kicker="Amazon Music"><span class="wcard-thumb-label">Amazon</span></span>
+        <span class="wcard-thumb" style="--band:var(--band-amazon)" data-kicker="Amazon Music"><span class="wcard-thumb-label">Amazon</span></span>
         <span class="wcard-body"><span class="wcard-name">Amazon</span><span class="wcard-desc">Amazon Music. Built the importer and matcher that brought local and cloud music into one library.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
     </div>
     <h3 class="exp-head reveal">Experiments</h3>
     <div class="work-cards">
       <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="hogware" data-tile-id="hogware-game">
-        <span class="wcard-thumb" style="--band:#2f6f5b"><img src="images/work/hogware-game.png" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-hogware)"><img src="images/work/hogware-game.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">HogWare</span><span class="wcard-desc">PostHog-themed browser game, tuned from its PostHog playtest data: 80 players, 948 microgames cleared.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="evolve_die_repeat" data-tile-id="evolve-die-repeat">
-        <span class="wcard-thumb" style="--band:#6d5bc4"><img src="images/co/edr.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-evolve-die-repeat)"><img src="images/co/edr.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Evolve, Die, Repeat</span><span class="wcard-desc">2D roguelite in Lua/Love2D, test-driven and telemetry-iterated.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="zodiacus" data-tile-id="zodiacus">
-        <span class="wcard-thumb" style="--band:#b5432a"><img src="images/co/zodiacus.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="wcard-thumb" style="--band:var(--band-zodiacus)"><img src="images/co/zodiacus.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Zodiacus</span><span class="wcard-desc">Tabletop game: wrote the rulebook and most of the design.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
     </div>
@@ -2215,23 +2203,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   if(qt) r.setAttribute("data-theme",qt);
   else if(saved) r.setAttribute("data-theme",saved);
   else if(window.matchMedia("(prefers-color-scheme: dark)").matches) r.setAttribute("data-theme","dark");
-  /* Swap the facade for the real player on click. Nothing loads until asked. */
-  /* The story panel is a native popover: the platform handles open, close,
-     light-dismiss, Escape and focus return. No JS needed here. */
-
-  document.querySelectorAll(".embed .facade").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      var f = document.createElement("iframe");
-      f.src = btn.dataset.loom
-        ? "https://www.loom.com/embed/" + btn.dataset.loom +
-          "?hide_owner=true&hide_share=true&hideEmbedTopBar=true&autoplay=1"
-        : "https://www.youtube-nocookie.com/embed/" + btn.dataset.yt + "?autoplay=1&rel=0";
-      f.title = btn.getAttribute("aria-label").replace(/^Play video: /, "");
-      f.allow = "accelerometer; autoplay; clipped-media; encrypted-media; picture-in-picture";
-      f.referrerPolicy = "strict-origin-when-cross-origin";
-      f.allowFullscreen = true;
-      btn.replaceWith(f);
-      f.focus()})});
 
   var tt = document.getElementById("theme-toggle");
   function syncToggle(){
@@ -5138,6 +5109,13 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
           var visual = tile.querySelector(".visual-placeholder, .portfolio-diagram");
           media = visual ? visual.cloneNode(true) : document.createTextNode("");
           mediaLightboxOriginal.hidden = true;
+          if(visual && visual.classList.contains("portfolio-diagram")){
+            // cloneNode drops JS properties: re-attach the wrapped flow's blocks (same DOM order) so the
+            // clone relayouts across the 760/700px breakpoints, and keep its blueprint grid snapped
+            var cloneStage = media.querySelector(".portfolio-diagram-stage.is-wrapped");
+            if(cloneStage) cloneStage.__blocks = Array.from(cloneStage.querySelectorAll(".portfolio-diagram-item"));
+            observeDiagramGrid(media);
+          }
         }
       }
       mediaLightboxStage.appendChild(media);
@@ -5267,6 +5245,51 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         if(stage.__blocks) layoutWrappedFlow(stage);
       });
     }); });
+    // Blueprint snap (Chris 2026-09-23): the grid originates at the first box's top-left corner, and each row of
+    // boxes grows (min-height) so the next row's top, and the last row's bottom, land on a grid line. Widths stay
+    // flexible, so vertical lines meet left edges, not every right edge. The height snap is dropped where it would
+    // clip a fixed-height diagram (card thumbnails, banner heroes); those keep only the anchored grid.
+    var bpPending = new Set(), bpFrame = 0;
+    var bpObserver = window.ResizeObserver ? new ResizeObserver(function(entries){
+      entries.forEach(function(e){ bpPending.add(e.target.closest(".portfolio-diagram")); });
+      // snap in the next frame, not inside the observer, so resizing observed boxes cannot start an observer loop
+      if(!bpFrame) bpFrame = requestAnimationFrame(function(){
+        bpFrame = 0;
+        var list = Array.from(bpPending); bpPending.clear();
+        list.forEach(snapDiagramGrid);
+      });
+    }) : null;
+    function observeDiagramGrid(diagram){
+      if(!bpObserver) return;
+      // the diagram plus its head/stage/footer: a web-font reflow can move the boxes without resizing the diagram
+      [diagram].concat(Array.from(diagram.children)).forEach(function(el){ bpObserver.observe(el); });
+    }
+    function snapDiagramGrid(diagram){
+      if(!diagram || !diagram.isConnected) return;
+      var items = Array.from(diagram.querySelectorAll(".portfolio-diagram-item"));
+      items.forEach(function(it){ it.style.minHeight = ""; });
+      if(!items.length || !diagram.offsetWidth) return;
+      var cell = parseFloat(getComputedStyle(diagram, "::before").backgroundSize) || 22;
+      var rows = [];
+      items.forEach(function(it){
+        var b = it.getBoundingClientRect(), row = rows.find(function(r){ return Math.abs(r.top - b.top) < 1; });
+        if(!row) rows.push(row = {top:b.top, bottom:b.bottom, items:[]});
+        row.bottom = Math.max(row.bottom, b.bottom);
+        row.items.push(it);
+      });
+      rows.sort(function(a, b){ return a.top - b.top; });
+      rows.forEach(function(r, i){
+        var gap = rows[i + 1] ? rows[i + 1].top - r.bottom : 0;
+        var h = Math.ceil((r.bottom - r.top + gap - 0.01) / cell) * cell - gap;
+        r.items.forEach(function(it){ it.style.minHeight = h + "px"; });
+      });
+      if(diagram.scrollHeight > diagram.clientHeight + 1) items.forEach(function(it){ it.style.minHeight = ""; });
+      var box = diagram.getBoundingClientRect(), x = Infinity, y = Infinity;
+      items.forEach(function(it){ var b = it.getBoundingClientRect(); x = Math.min(x, b.left); y = Math.min(y, b.top); });
+      var mod = function(v){ return ((v % cell) + cell) % cell; };
+      diagram.style.setProperty("--bp-x", mod(x - box.left - diagram.clientLeft).toFixed(2) + "px");
+      diagram.style.setProperty("--bp-y", mod(y - box.top - diagram.clientTop).toFixed(2) + "px");
+    }
     // opts (optional): {fade:true} = the grid fades to a corner (named variant; default is the full blueprint grid). Long flows (4+) ALWAYS wrap into balanced
     // left-to-right rows joined by a return connector (Chris 2026-09-22); {wrap:false} opts out.
     function createPortfolioDiagram(item, opts){
@@ -5346,6 +5369,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       }
       diagram.setAttribute("role", "img");
       diagram.setAttribute("aria-label", accessibleParts.filter(Boolean).join(". "));
+      observeDiagramGrid(diagram);
       return diagram;
     }
 
@@ -5481,7 +5505,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         var psum = document.createElement("p");
         psum.textContent = v.summary || "";
         pcopy.append(pkick, phead, psum);
-        pcopy.appendChild(createCardResult(v.resultKind, v.delivery || "Supporting work", v.result));
+        // same rule as story cards: no invented status when the vignette has no delivery (createCardResult
+        // routes delivery through publicDelivery, so an unconfirmed state never renders)
+        if(v.result || v.resultKind || v.delivery) pcopy.appendChild(createCardResult(v.resultKind, v.delivery, v.result));
         pcard.append(pmedia, pcopy);
         if(pInteractive) pcard.addEventListener("click", function(){ openWorkMedia(pcard); });
         grid.appendChild(pcard);
@@ -7044,7 +7070,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   function clearT(){timers.forEach(clearTimeout);timers=[];}
   var designHost=document.querySelector('.hl-design');
   var designHTML=designHost?designHost.innerHTML:'';
-  var ampEl=document.querySelector('.hl-amp');
   var shipHost=document.querySelector('.hl-ship-text');
   var shipHTML=shipHost?shipHost.innerHTML:'';
   var shipText=shipHost?shipHost.textContent:'';
