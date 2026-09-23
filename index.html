@@ -152,21 +152,18 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 .site-head nav a[aria-label]{min-width:44px;padding:0}
 .site-head nav svg{width:19px;height:19px;display:block}
 
-/* Availability status pill (beside the name) - a small confident soft-accent chip, brand-green pulse dot.
-   It's a LINK to the contact close (not decoration): hover inverts to filled accent = "click to get in touch". */
+/* Availability status (beside the name). No badge, no pulse: a static pixel mark (the site's pixel grammar) + plain
+   text. It's a LINK: homepage = scroll to "Let's work together"; inside a world = the contact panel (see JS). */
 .head-left{display:flex;align-items:center;gap:12px;min-width:0}
-.status-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;
-  background:var(--accent-soft);color:var(--accent-strong);font:600 var(--t-xs)/1 var(--mono);
-  letter-spacing:.02em;white-space:nowrap;text-decoration:none;transition:background .2s ease,color .2s ease}
-.status-pill:hover,.status-pill:focus-visible{background:var(--accent);color:var(--on-accent,#fff)}
-.status-pill:hover .sp-dot,.status-pill:focus-visible .sp-dot{background:var(--on-accent,#fff)}
-.status-pill:hover .sp-dot::after,.status-pill:focus-visible .sp-dot::after{background:var(--on-accent,#fff)}
-.sp-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;position:relative}
-.sp-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--accent);
-  animation:sp-pulse 2.4s ease-out infinite}
-@keyframes sp-pulse{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(2.6);opacity:0}}
-@media (prefers-reduced-motion:reduce){ .sp-dot::after{animation:none} }
-@media (max-width:520px){ .status-pill{display:none} }                                     /* hide on narrow phones */
+.status-pill{display:inline-flex;align-items:center;gap:8px;color:var(--text);font:400 var(--t-sm)/1 var(--sans);
+  white-space:nowrap;text-decoration:none;transition:color .2s ease}
+.status-pill:hover,.status-pill:focus-visible{color:var(--accent-strong)}
+.sp-dot{width:6px;height:6px;background:var(--accent);flex:none}
+@media (max-width:779px){ .status-pill{display:none} }   /* below 780 the nav needs the room (measured: overlaps 521-755) */
+/* Contact panel: inside a world the pill opens the real contact rows in place (the node is MOVED in, not copied). */
+#lets-work{scroll-margin-top:calc(var(--head-h) + 12px)}
+.contact-panel{width:min(780px,calc(100vw - 32px))}
+.contact-panel .refs{border:0;padding:0;background:none}
 /* A track with a knob, so it reads as a switch rather than an icon that
    happens to change. Both states stay visible; the knob says which is live. */
 #theme-toggle{position:relative;flex:none;width:52px;height:27px;margin:0 4px;padding:0;
@@ -2162,7 +2159,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   <div class="wrap">
     <div class="head-left">
       <a class="logo" href="#top">Chris Lam</a>
-      <a class="status-pill" href="#contact" aria-label="Open to new roles - get in touch"><span class="sp-dot" aria-hidden="true"></span>Open to new roles</a>
+      <a class="status-pill" href="#lets-work" aria-label="Open to new roles - get in touch"><span class="sp-dot" aria-hidden="true"></span>Open to new roles</a>
     </div>
     <nav aria-label="Primary">
       <a href="#top" class="hide-sm">About</a>
@@ -2271,6 +2268,11 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                             <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
                         </div>
                     </div>
+  <div class="story-panel contact-panel" id="contact-panel" popover="auto" aria-labelledby="contact-panel-heading">
+    <button class="story-close" type="button" popovertarget="contact-panel"
+            popovertargetaction="hide" aria-label="Close">&times;</button>
+    <div class="inner"><h2 id="contact-panel-heading">Let&rsquo;s work together.</h2><div data-contact-slot></div></div>
+  </div>
   <div class="story-panel" id="story-panel" popover="auto" aria-labelledby="story-heading">
     <button class="story-close" type="button" popovertarget="story-panel"
             popovertargetaction="hide" aria-label="Close">&times;</button>
@@ -2568,7 +2570,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   <span class="t">Remote US from Honolulu</span><span class="t">West Coast hours</span>
   <span class="t">Or remote from Seattle / Bay Area</span><span class="t">Open to relocation for the right role</span></div>
 
-<h2 class="sec reveal">Let&rsquo;s work together.</h2>
+<h2 class="sec reveal" id="lets-work">Let&rsquo;s work together.</h2>
 <p class="avail reveal">Open to senior product design and design-engineering roles. I&rsquo;m selective about the problem, not the introduction, so reach out directly.</p>
 <div class="refs reveal" id="contact">
   <div class="refs-row"><span class="refs-k">Reach me</span>
@@ -7296,10 +7298,31 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     }else{
       setTimeout(preloadCompanyFocus, 900);
     }
+    // Status pill: homepage = scroll to "Let's work together"; inside a world/case study = open the SAME contact
+    // rows in a panel so the visitor keeps their place. The node is moved in and back, never copied, so the AI-guide
+    // button keeps its binding and #contact stays the one source.
+    (function(){
+      var pill = document.querySelector(".status-pill"), panel = document.getElementById("contact-panel"),
+          contact = document.getElementById("contact");
+      if(!pill || !panel || !contact || !panel.showPopover) return;
+      var home = document.createComment("contact-home"), slot = panel.querySelector("[data-contact-slot]");
+      contact.parentNode.insertBefore(home, contact);
+      pill.addEventListener("click", function(e){
+        if(!document.body.classList.contains("work-focus-open")) return;   // homepage: let the #lets-work jump happen
+        e.preventDefault();
+        slot.appendChild(contact); panel.showPopover();
+      });
+      panel.addEventListener("toggle", function(e){
+        if(e.newState === "closed" && home.parentNode) home.parentNode.insertBefore(contact, home.nextSibling);
+      });
+      panel.addEventListener("click", function(e){                         // the guide opens its own dock: get out of its way
+        if(e.target.closest("[data-va-open]")) panel.hidePopover();
+      });
+    })();
     workPanelBack.addEventListener("click", leaveFocusedWork);
     if(workShuffle) workShuffle.addEventListener("click", function(){ shuffleWork(true); });
     document.addEventListener("keydown", function(event){
-      if(event.key === "Escape" && !mediaLightbox.open && workGrid.dataset.locked === "true"){
+      if(event.key === "Escape" && !mediaLightbox.open && !document.querySelector(":popover-open") && workGrid.dataset.locked === "true"){
         event.preventDefault();
         leaveFocusedWork(); // history.back() → popstate picks the transition (clip at the world boundary)
       }
