@@ -435,6 +435,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .va-stop:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
 /* States */
 .voice-agent[data-state="listening"] .va-mic { animation: pulse 1.3s ease-in-out infinite; }
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+}
 .voice-agent[data-state="processing"] .va-input { opacity: 0.6; }
 /* Floating launcher (persistent recall surface) */
 .va-launcher {
@@ -490,6 +494,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .va-brief-print:hover, .va-brief-close:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
 /* Build B: proof highlight pulse (the agent guiding you to evidence) */
 .va-proof-highlight { animation: va-proof-pulse 2.8s ease; border-radius: var(--border-radius); }
+@keyframes va-proof-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 transparent; }
+    22%, 55% { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 38%, transparent), 0 0 26px color-mix(in srgb, var(--accent) 22%, transparent); }
+}
 /* Pinned dock: the agent stays put while the page scrolls and highlights */
 .va-dock {
     position: fixed; z-index: 250;
