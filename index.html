@@ -554,12 +554,15 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   padding:var(--sp-4) var(--sp-6);margin:var(--sp-6) 0 0}
 /* The two buttons sat 5px apart, which was just collapsed inline whitespace, and the
    tertiary link sat flush against them at 0px. Three tiers, three gaps. */
-.refs > p:first-of-type{margin:0 0 26px}
-.refs .btn{margin-right:6px}   /* +5px of inline whitespace = ~11px */
-.refs .links{margin:18px 0 0}
-/* A trailing 16px margin made the box bottom 42px against a 26px top. */
-.refs > *:last-child{margin-bottom:0}
-.refs p{margin:0 0 16px}
+/* Three calls to action, one per row: label, what it is, the button (Chris pick "A", 2026-09-22). */
+.refs-row{display:grid;grid-template-columns:minmax(0,11rem) minmax(0,1fr) auto;gap:18px;align-items:center;
+  padding:18px 0;border-top:1px solid var(--border)}
+.refs-row:first-child{border-top:0;padding-top:0}
+.refs-row:last-child{padding-bottom:0}
+.refs-k{font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.refs-row p{margin:0;color:var(--text)}
+.refs-sub{color:var(--muted);font-size:var(--t-sm)}
+.refs-line{display:block;margin-top:3px}
 
 .foot{border-top:1px solid var(--border);margin-top:var(--sp-12);padding:var(--sp-8) 0 var(--sp-16);
   color:var(--muted);font-size:var(--t-sm)}
@@ -584,6 +587,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   .card{padding:20px 16px}
   .card--brief{padding:18px 16px}
   .refs{padding:20px 16px}
+  .refs-row{grid-template-columns:1fr;gap:8px}
 }
 
 /* Cross-document view transitions. Firefox falls back to a plain navigation. */
@@ -1187,6 +1191,23 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 .work-company-support-head{display:block}
 .work-company-support-head h4{font:400 clamp(26px,3vw,38px)/1.05 var(--serif);margin:0}
 .work-company-support-head p{max-width:none;margin:8px 0 0;color:var(--muted);font-size:var(--t-sm);line-height:1.5}
+.work-company-quotes{display:grid;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
+.work-company-quotes-label{font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin:0 0 6px}
+.work-quote{display:grid;grid-template-columns:13rem minmax(0,1fr);gap:12px 40px;align-items:start;margin:0;padding:22px 0;border-top:1px solid var(--border)}
+.work-quote:first-of-type{border-top:0}
+.work-quote-by{display:grid;gap:3px;font-size:var(--t-sm);line-height:1.35}
+.work-quote-by b{font-weight:600;color:var(--text)}
+.work-quote-by span{color:var(--muted)}
+.work-quote-by a{justify-self:start;margin-top:6px;color:var(--muted);font-size:var(--t-xs)}
+/* Hanging opening mark in the gutter keeps the text edge straight; no closing mark trails a long quote. */
+.work-quote-text{position:relative;margin:0;max-width:68ch;font-family:var(--serif);font-size:var(--t-base);line-height:1.55}
+.work-quote-text::before{content:"\201C";position:absolute;left:-.55em;top:-.05em;font-size:2.4em;line-height:1;color:var(--accent)}
+.work-quote-text p{margin:0 0 .8em}
+.work-quote-text p:last-child{margin:0}
+@media (max-width:760px){
+  .work-quote{grid-template-columns:1fr}
+  .work-quote-text{margin-left:.7em}
+}
 /* Tier-2 unified "Also shipped" schedule component (replaces the retired
    work-vignette / work-also-shipped / work-product-map / work-map-* renderers) */
 .work-support{display:grid;gap:26px;margin:6px 0 0}
@@ -2526,11 +2547,18 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
 <h2 class="sec reveal">Let&rsquo;s work together.</h2>
 <p class="avail reveal">Open to senior product design and design-engineering roles. I&rsquo;m selective about the problem, not the introduction, so reach out directly.</p>
 <div class="refs reveal" id="contact">
-  <p><b>Talk to people who've built with me.</b> <a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> and <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> are glad to get on
-  a call and tell you what it's really like. Just ask.</p>
-  <a class="btn" href="mailto:whoischrislam@gmail.com?subject=Reference%20call" target="_blank" rel="noopener">Talk to a reference</a>
-  <a class="btn primary" href="#" data-va-open role="button">Ask my AI hiring guide</a>
-  <p class="links"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener">Or read what they already wrote &rarr;</a></p>
+  <div class="refs-row"><span class="refs-k">Reach me</span>
+    <p>whoischrislam@gmail.com</p>
+    <a class="btn primary" href="mailto:whoischrislam@gmail.com" target="_blank" rel="noopener">Email me</a></div>
+  <div class="refs-row"><span class="refs-k">Ask first</span>
+    <p>Got questions? Short on time?</p>
+    <a class="btn" href="#" data-va-open role="button">Ask my AI hiring guide</a></div>
+  <div class="refs-row"><span class="refs-k">References</span>
+    <p><a href="https://www.linkedin.com/in/vijaysivaji/" target="_blank" rel="noopener">Vijay Sivaji</a> <span class="refs-sub">(cofounder, y30)</span>
+      and <a href="https://www.linkedin.com/in/norioz/" target="_blank" rel="noopener">Brett Groshong</a> <span class="refs-sub">(cofounder and CTO, PlaySesh)</span>
+      <span class="refs-sub refs-line">Glad to get on a call and tell you what it&rsquo;s really like.
+      <a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/?detailScreenTabIndex=0" target="_blank" rel="noopener">Or read other recommendations from former colleagues &rarr;</a></span></p>
+    <a class="btn" href="mailto:whoischrislam@gmail.com?subject=Reference%20call" target="_blank" rel="noopener">Talk to a reference</a></div>
 </div>
 
 <p class="outside reveal">I also <a href="https://www.instagram.com/p/CuxQjRwvGKw/" target="_blank" rel="noopener">play board games</a>, <a href="https://www.instagram.com/reel/CuoaWzXgtSR/" target="_blank" rel="noopener">dance</a>, and <a href="https://www.instagram.com/reel/C1DISysSMxZ/" target="_blank" rel="noopener">rollerskate</a>.</p>
@@ -3348,6 +3376,30 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
       }
     };
 
+    // Verbatim LinkedIn recommendations, shown at the end of each company world. Never edit a quote;
+    // source + visibility + roles live in the private recommendations capture. relation: managers/mentors only.
+    var LINKEDIN_RECOMMENDATIONS_URL = "https://www.linkedin.com/in/whoischrislam/details/recommendations/?detailScreenTabIndex=0";
+    var workRecommendations = {
+      goodrx: [
+        {name:"Thomas Goetz", role:"GM and Head of Research, Iodine", relation:"Managed Chris", quote:"Chris is a splendid and multi-talented designer, with an innate ability to understand user needs and experiment with software design until the product matches the purpose. He ably took on assignments in a range of media - from PDF to D3 data visualizations - and was dependably curious and creative in creating effective software and design solutions. He is literate in code - engineers love working with him - and is also deeply attuned to the needs of ordinary people (we worked on healthcare information and tools, which is not an easy area whatsoever to understand user needs and concerns). I heartily recommend him as a product designer with a flair for UX/UI."},
+        {name:"Marc Mendiola", role:"Software engineer, Iodine and GoodRx", quote:"Chris is a passionate designer that can contribute to any team with design prowess and the cachet to back it up. He isn't afraid to voice and fight for what he believes is right, but, more importantly, he is willing to listen to others' opinions and concede when appropriate. He has enough technical know-how and communication skills to effectively interact with members of the team who oversee different aspects of the product--both business and technical. And, he ensures that everyone has the opportunity to provide him with feedback both about his own performance and about his designs.\n\nAs a software engineer, I worked with Chris for over a year as part of both Iodine and GoodRx. We both switched teams throughout our time together, but he always served as a product designer. He was the sole designer during his time at Iodine and so spearheaded the end-to-end design effort for all product initiatives during his tenure. That included but wasn't limited to conceiving and designing product features both functionally and visually, facilitating product brainstorm meetings, coordinating with the engineering team for product implementation, conducting user research, and moderating post-launch retrospective meetings.\n\nChris was always hard-working and effective in his capacity as a product designer. He was thoughtful, meticulous, and ethical when designing any new product or feature. He ensured that the team carried through with implementation from start to finish and did what he could to facilitate that. And even when a feature wasn’t successful from a business standpoint, he would make sure that both he and the rest of the team learned from it.\n\nBottom line: Chris would be a strong addition to most any product development team."}
+      ],
+      clover: [
+        {name:"Dan Lee", role:"Software engineer, Clover Health", quote:"I worked with Chris on several projects where he lead *all* aspects of design. We were always light on design resources, so Chris completed each phase of the designs by himself, from user research to visual composition.\n\nTogether, we built software from scratch for users ranging in roles from Nurse Practitioners to Customer Service Representatives. In each and every project, Chris impressed me by producing quality work every step of the way. His user research was thorough, his mocks and prototypes were detailed and well thought-out, and he introduced the usage of new tools that made going from design to code far easier than I've experienced in the past.\n\nChris is a very versatile designer that will certainly 'level-up' your design team in many ways, and I hope that I get the chance to work with him again."},
+        {name:"Saba Naqvi", role:"Software engineer, Clover Health", quote:"I worked with Chris on several projects where he was the lead designer and a huge asset. Chris is great to work with! He is not shy to push when he thinks something is important, but at the same time he is flexible and compromises when engineering isn't able to implement all aspects of his work. He always presented multiple design options and made sure to get input from all teams involved - engineering, product, and operations for the most practical and elegant design."},
+        {name:"Todd D. Blank", role:"Designer, Clover Health", quote:"Chris is a solid UX/UI product designer who's shipped major product releases for companies like Amazon, TaskRabbit and Clover Health. He continuously pushes himself to learn new skills and stay ahead of industry trends. He has a versatile skill set, and a true passion for digital product design. During my time working with Chris, he not only kept up with the latest design tools and trends but also kept our entire team informed with a constant stream of both industry and technological insights. I learned a lot from working alongside Chris as he generously helped me onboard and get oriented (thanks Chris!). Also, Chris was fun to work with; showing off his latest break dance moves!  He's always a collaborative, kind, thoughtful teammate."}
+      ],
+      taskrabbit: [
+        {name:"Melissa McAlpine", role:"Product manager, TaskRabbit", quote:"Chris is a talented UX designer and researcher. I worked with him on a number of projects at TaskRabbit and he always brought an intensely thoughtful and high EQ approach to every single project he worked on. With Chris, you can tell he cares deeply about every project he works on--big and small--and that he wants to meet and exceed all of our users' needs."}
+      ],
+      startplaying: [
+        {name:"Nate Tucker", role:"Cofounder and CEO, StartPlaying", relation:"Managed Chris", quote:"Chris is a passionate and inspired person! He is constantly learning and his passion extends beyond work to things like building a board game, learning new dance moves, or rollerskating. Chris collaborates exceptionally well. He loves communication and hearing others' ideas. He's always interested and curious. He is receptive to feedback and develops strong relationships with the members of his team.\n\nUltimately Chris is a pleasure to work with!"}
+      ],
+      amazon: [
+        {name:"Eric Eisher", role:"Designer, Amazon", relation:"Mentor", quote:"Chris continuously pushed our design team to stand up for great design in the face of constant pressure from date-driven Product managers and eager Directors.\n\nHe knows how to ask tough questions and never stops fighting for the end user.\n\nIt was a pleasure to work alongside with Chris on our large mobile projects and I hope we can work together again in the near future."},
+        {name:"Christopher McGarry", role:"Designer, Amazon Prime", relation:"Managed Chris", quote:"Christopher was our summer intern on the Amazon Prime team. The Amazon Prime team is incredibly demanding in regards to complexity and level of polish and thought required in its products. We literally dropped Christopher into the deep end right away and he took to everything quickly. He picked up the nuances of our difficult and unique design challenges and produced some great results in a tough environment."}
+      ]
+    };
     var workStories = {
       y30_voice: {
         company: "y30",
@@ -5903,6 +5955,50 @@ body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-
           artifacts.appendChild(artGrid);
           workFocusContent.appendChild(artifacts);
         }
+      }
+      // Recommendations close the world: attribution left (who is speaking comes first), full quote right.
+      var recs = workRecommendations[company] || [];
+      if(recs.length){
+        var quotes = document.createElement("section");
+        quotes.className = "work-company-quotes";
+        quotes.setAttribute("aria-label", "Recommendations from people who worked with Chris at " + companyData.name);
+        var quotesLabel = document.createElement("span");
+        quotesLabel.className = "work-company-quotes-label";
+        quotesLabel.textContent = "From people who worked with me";
+        quotes.appendChild(quotesLabel);
+        recs.forEach(function(rec){
+          var figure = document.createElement("figure");
+          figure.className = "work-quote";
+          var by = document.createElement("figcaption");
+          by.className = "work-quote-by";
+          var byName = document.createElement("b");
+          byName.textContent = rec.name;
+          var byRole = document.createElement("span");
+          byRole.textContent = rec.role;
+          by.append(byName, byRole);
+          if(rec.relation){
+            var byRelation = document.createElement("span");
+            byRelation.textContent = rec.relation;
+            by.appendChild(byRelation);
+          }
+          var source = document.createElement("a");
+          source.href = LINKEDIN_RECOMMENDATIONS_URL;
+          source.target = "_blank";
+          source.rel = "noopener";
+          source.textContent = "On LinkedIn \u2197";
+          source.setAttribute("aria-label", rec.name + "'s recommendation on LinkedIn (opens in a new tab)");
+          by.appendChild(source);
+          var quote = document.createElement("blockquote");
+          quote.className = "work-quote-text";
+          rec.quote.split("\n\n").forEach(function(text){
+            var para = document.createElement("p");
+            para.textContent = text;
+            quote.appendChild(para);
+          });
+          figure.append(by, quote);
+          quotes.appendChild(figure);
+        });
+        workFocusContent.appendChild(quotes);
       }
       // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
       // blank gap that reads as broken; hero + fact grid + actions still render above it.
