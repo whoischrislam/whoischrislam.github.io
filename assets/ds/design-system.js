@@ -9,7 +9,7 @@
   var SEMANTIC=['--bg','--surface','--surface-2','--text','--muted','--border','--border-strong','--accent'];
   var TYPE=[['Display / Newsreader','40px',"'Newsreader',serif",'400','Chris Lam'],['Section / serif','28px',"'Newsreader',serif",'400','Controlled comparison'],['Card title / serif','21px',"'Newsreader',serif",'400','Admin console'],['Body / Figtree','15px',"'Figtree',sans-serif",'400','I design and code to ship products.'],['Label / sans','13px',"'Figtree',sans-serif",'700','Held constant'],['Kicker / Plex Mono','11px',"'IBM Plex Mono',monospace",'700','CONTROLLED INTERNAL BENCHMARK']];
   // harvest sources: company view + a rich case study
-  var SRC={company:'index.html?work=y30',casestudy:'index.html?work=y30&project=spoken-voice-system',quotes:'index.html?work=goodrx'};
+  var SRC={company:'index.html?work=y30',casestudy:'index.html?work=y30&project=spoken-voice-system',quotes:'index.html?work=goodrx',placeholder:'index.html?work=pathstream'};
   // component registry: id, label, live selector, source ('home' = clone from homepage DOM, else SRC key), group
   var REG=[
     {id:'co-band',label:'World band (homepage)',sel:'.co-band',src:'home',grp:'Templated'},
@@ -21,7 +21,7 @@
     {id:'project-chapter',label:'Case-study chapter',sel:'.project-chapter',src:'casestudy',grp:'Templated'},
     {id:'project-story-nav',label:'Case-study jump-to nav',sel:'.project-story-nav',src:'casestudy',grp:'Templated'},
     {id:'work-company-quotes',label:'World recommendations (verbatim quotes)',sel:'.work-company-quotes',src:'quotes',grp:'Templated'},
-    {id:'visual-placeholder',label:'Visual placeholder ("coming soon")',sel:'.visual-placeholder',src:'company',grp:'Templated'},
+    {id:'visual-placeholder',label:'Visual placeholder ("coming soon")',sel:'.visual-placeholder',src:'placeholder',grp:'Templated'},
     {id:'hero',label:'Homepage hero',sel:'.hero',src:'home',grp:'Chrome'},
     {id:'hero-credibility',label:'Credibility rail',sel:'.hero-credibility',src:'home',grp:'Chrome'},
     {id:'status-pill',label:'Availability pill (header)',sel:'.status-pill',src:'home',grp:'Chrome'},
@@ -30,7 +30,7 @@
     {id:'foot',label:'Footer',sel:'.foot',src:'home',grp:'Chrome'},
     {id:'read-progress',label:'Read-progress bar',sel:'.read-progress',src:'home',grp:'Chrome'}
   ];
-  var LIVE={home:'index.html',company:SRC.company,casestudy:SRC.casestudy,quotes:SRC.quotes};
+  var LIVE={home:'index.html',company:SRC.company,casestudy:SRC.casestudy,quotes:SRC.quotes,placeholder:SRC.placeholder};
   var CUR='y30';
   var _wq=(location.search.match(/[?&]w=([a-z0-9]+)/)||[])[1]; // ?w=<world> deep-links the picker
   var HDOCS=[document]; // every live document we can scan for the audit (homepage + harvested views)
