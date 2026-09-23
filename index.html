@@ -1045,28 +1045,28 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .project-story-hero.visual-placeholder:hover{border-color:var(--border-strong)}
 .portfolio-diagram{position:relative;display:flex;flex-direction:column;justify-content:center;gap:18px;
   min-width:0;min-height:220px;padding:24px;overflow:hidden;border:1px solid var(--border);
-  background:
-    radial-gradient(circle at 92% 8%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 34%),
-    linear-gradient(145deg,color-mix(in srgb,var(--surface-2) 86%,var(--accent)),var(--surface-2));
-  color:var(--text);text-align:left}
-.portfolio-diagram::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.32;
-  background-image:linear-gradient(var(--border) 1px,transparent 1px),
-    linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:var(--bp-cell,22px) var(--bp-cell,22px);
-  mask-image:linear-gradient(to bottom right,black,transparent 62%)}
+  background:var(--surface-2);color:var(--text);text-align:left}
+/* Blueprint: the grid spans the whole panel; items are boxes with mono labels (dashed = never reached users). */
+.portfolio-diagram::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(color-mix(in srgb,currentColor 9%,transparent) 1px,transparent 1px),
+    linear-gradient(90deg,color-mix(in srgb,currentColor 9%,transparent) 1px,transparent 1px);
+  background-size:var(--bp-cell,22px) var(--bp-cell,22px)}
 .portfolio-diagram-head,.portfolio-diagram-stage,.portfolio-diagram-footer{position:relative;z-index:1}
 .portfolio-diagram-eyebrow{display:block;margin:0 0 5px;color:var(--accent);
   font:700 10px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase}
-.portfolio-diagram-title{display:block;max-width:38ch;font:400 clamp(21px,2.4vw,32px)/1.08 var(--serif)}
+.portfolio-diagram-title{display:block;text-wrap:pretty;font:400 clamp(21px,2.4vw,32px)/1.08 var(--serif)}
 .portfolio-diagram-stage{display:grid;grid-template-columns:repeat(var(--diagram-columns,3),minmax(0,1fr));gap:8px}
 .portfolio-diagram-item{position:relative;display:flex;flex-direction:column;justify-content:center;min-width:0;
-  min-height:86px;padding:13px 14px;border:1px solid var(--border-strong);
-  background:color-mix(in srgb,var(--bg) 78%,transparent)}
-.portfolio-diagram-item[data-diagram-tone="accent"]{border-color:var(--accent);
-  background:color-mix(in srgb,var(--accent) 12%,var(--bg))}
+  min-height:86px;padding:13px 14px;border:1px solid var(--border-strong);background:var(--surface-2)}
+.portfolio-diagram-item[data-diagram-tone="accent"]{border:1.5px solid var(--accent);
+  background:color-mix(in srgb,var(--accent) 10%,var(--surface-2))}
 .portfolio-diagram-item[data-diagram-tone="muted"]{opacity:.68}
+/* tone "unshipped": never reached users (planned, deferred, unfinished, canceled, never deployed; Chris 2026-09-22).
+   Dashed = unshipped; solid = happened; accent = current/goal; muted = happened but de-emphasized. */
+.portfolio-diagram-item[data-diagram-tone="unshipped"]{border-style:dashed}
 .portfolio-diagram-value{display:block;margin:0 0 3px;color:var(--accent);
-  font:400 clamp(22px,3vw,38px)/1 var(--serif)}
-.portfolio-diagram-label{display:block;color:var(--text);font:700 var(--t-xs)/1.25 var(--sans)}
+  font:500 clamp(22px,3vw,38px)/1 var(--mono);letter-spacing:-.02em}
+.portfolio-diagram-label{display:block;color:var(--text);font:600 11.5px/1.35 var(--mono);letter-spacing:.04em;text-transform:uppercase}
 .portfolio-diagram-meta{display:block;margin-top:4px;color:var(--muted);font:400 11px/1.35 var(--sans)}
 .portfolio-diagram-title,.portfolio-diagram-label,.portfolio-diagram-meta,.portfolio-diagram-footer{
   overflow-wrap:anywhere}
@@ -1078,8 +1078,6 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-item:not(:last-child)::after{
   content:"→";position:absolute;top:50%;right:-17px;color:var(--accent);font:700 16px/1 var(--sans);
   transform:translateY(-50%)}
-.portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-item:last-child::after{
-  content:"↺";position:absolute;right:9px;bottom:7px;color:var(--accent);font:700 18px/1 var(--sans)}
 .portfolio-diagram-footer{color:var(--muted);font:600 11px/1.35 var(--sans)}
 .story-artifact.portfolio-diagram,
 .project-chapter[data-story-layout="wide"] .story-artifact.portfolio-diagram[data-story-span="12"]{
@@ -1091,8 +1089,9 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .work-project-card-media>.portfolio-diagram{
   width:100%;height:100%;min-height:0;border:0}
 .work-project-card-media:has(>.portfolio-diagram),.work-project-card-media:has(>.visual-placeholder){padding:0}
-/* --flat: an even grid with no fade. The fade (default ::before mask) is kept as the placeholder variant. */
-.portfolio-diagram--flat::before{-webkit-mask-image:none;mask-image:none}
+/* --fade: the grid fading to the bottom-right corner, kept as a named variant (the pre-blueprint look). */
+.portfolio-diagram--fade::before{-webkit-mask-image:linear-gradient(to bottom right,black,transparent 62%);
+  mask-image:linear-gradient(to bottom right,black,transparent 62%)}
 .work-project-card-media>.portfolio-diagram .portfolio-diagram-item{min-height:0;padding:9px 11px}
 /* Wrap-return (long flows, 4+ items): balanced rows that each read left to right; an elbow connector drops from
    the last item of a row, runs back left, and lands (arrowhead) on the first item of the next row. Columns are
@@ -1106,6 +1105,13 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .portfolio-diagram-return i:nth-child(2){top:11px;height:10px;left:calc(var(--col) / 2);border-left-width:1.5px}
 .portfolio-diagram-return i:nth-child(3){bottom:-1px;left:calc(var(--col) / 2 - 4.5px);width:0;height:0;
   border-width:6px 4.5px 0;border-color:currentColor transparent transparent}
+/* Loop-back (loops): a U from the centre of the last item, under the row, up into the centre of the first item
+   (arrowhead up). Same line grammar as the wrap-return; --per = item count, so the ends are pure CSS. */
+.portfolio-diagram-return--loop{margin-top:-18px;height:20px}
+.portfolio-diagram-return--loop i:nth-child(1){top:0;bottom:auto;height:14px;left:calc(var(--col) / 2);right:calc(var(--col) / 2);
+  border-width:0 1.5px 1.5px}
+.portfolio-diagram-return--loop i:nth-child(2){top:0;bottom:auto;left:calc(var(--col) / 2 - 4.5px);width:0;height:0;
+  border-width:0 4.5px 6px;border-color:transparent transparent currentColor}
 /* keep in-row arrows at every width when wrapped (the narrow-screen rule hides flow arrows) */
 .portfolio-diagram[data-diagram-type="flow"] .is-wrapped .portfolio-diagram-item:not(:last-child)::after{display:block}
 @media(max-width:700px){
@@ -1119,6 +1125,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   .project-chapter[data-story-layout="wide"] .story-artifact.portfolio-diagram[data-story-span="12"]{
     min-height:420px;aspect-ratio:auto}
   .project-story-hero.portfolio-diagram{min-height:420px;aspect-ratio:auto}
+  .portfolio-diagram-return--loop{display:none}
 }
 .work-grid{columns:4 170px;column-gap:12px;margin:0}
 .work-grid[data-locked="true"]{columns:3 210px}
@@ -1660,8 +1667,8 @@ body.work-focus-open[data-world] .portfolio-diagram-title,body.work-focus-open[d
    Item edges at 34% ink clear the 3:1 non-text minimum (22% did not). */
 body.work-focus-open[data-world] .portfolio-diagram-eyebrow,body.work-focus-open[data-world] .portfolio-diagram-value{color:var(--world-accent-on-card)}
 body.work-focus-open[data-world] .portfolio-diagram-meta,body.work-focus-open[data-world] .portfolio-diagram-footer{color:color-mix(in srgb,var(--world-card-ink) 66%,transparent)}
-body.work-focus-open[data-world] .portfolio-diagram-item{background:color-mix(in srgb,var(--world-card-ink) 7%,var(--world-card-bg));border-color:color-mix(in srgb,var(--world-card-ink) 34%,var(--world-card-bg))}
-body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent-on-card) 22%,var(--world-card-bg));border-color:var(--world-accent-on-card)}
+body.work-focus-open[data-world] .portfolio-diagram-item{background:var(--world-card-bg);border-color:color-mix(in srgb,var(--world-card-ink) 50%,var(--world-card-bg))}
+body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent-on-card) 10%,var(--world-card-bg));border-color:var(--world-accent-on-card)}
 /* accent text on an accent-TINTED item drops below 4.5:1 (e.g. GoodRx ~3.5), so a value there reads in card ink */
 body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="accent"] .portfolio-diagram-value{color:var(--world-card-ink)}
 
@@ -3704,8 +3711,8 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                   items: [
                     {label:"Built", meta:"Guided study builder", tone:"accent"},
                     {label:"Validated", meta:"Researchers and academics"},
-                    {label:"Planned", meta:"Collaboration + device integrations"},
-                    {label:"Canceled", meta:"Before public launch", tone:"muted"}
+                    {label:"Planned", meta:"Collaboration + device integrations", tone:"unshipped"},
+                    {label:"Canceled", meta:"Before public launch", tone:"unshipped"}
                   ]
                 },
                 span: 12
@@ -4321,7 +4328,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                     {label:"Designed", meta:"Full listening lifecycle"},
                     {label:"Built", meta:"With 2–3 engineers"},
                     {label:"Working alpha", meta:"Core lifecycle functioned", tone:"accent"},
-                    {label:"Not launched", meta:"Product later shuttered", tone:"muted"}
+                    {label:"Not launched", meta:"Product later shuttered", tone:"unshipped"}
                   ]
                 },
                 span: 12
@@ -4403,7 +4410,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                   columns: 2,
                   items: [
                     {label:"Build now", meta:"Persistent multiplayer collaboration", tone:"accent"},
-                    {label:"Defer", meta:"AI generation · analytics · larger runtime", tone:"muted"}
+                    {label:"Defer", meta:"AI generation · analytics · larger runtime", tone:"unshipped"}
                   ],
                   footer: "Research kept returning to the shared workspace as the current need."
                 },
@@ -4520,7 +4527,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
               {label:"SceneDocument", meta:"Owned product model"},
               {label:"Durable Object sync", meta:"Authoritative operations"},
               {label:"PlaySnapshot", meta:"Limited runtime proof", tone:"accent"},
-              {label:"Full learning loop", meta:"Unfinished", tone:"muted"}
+              {label:"Full learning loop", meta:"Unfinished", tone:"unshipped"}
             ]
           }
         },
@@ -4598,8 +4605,8 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                   items: [
                     {label:"Built", meta:"Scene document · operation sync"},
                     {label:"Working proof", meta:"Counters · dice · timers", tone:"accent"},
-                    {label:"Unfinished", meta:"Rules · triggers · playtest review"},
-                    {label:"Never deployed", meta:"Did not replace the live whiteboard", tone:"muted"}
+                    {label:"Unfinished", meta:"Rules · triggers · playtest review", tone:"unshipped"},
+                    {label:"Never deployed", meta:"Did not replace the live whiteboard", tone:"unshipped"}
                   ]
                 },
                 span: 12
@@ -5229,13 +5236,13 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         if(stage.__blocks) layoutWrappedFlow(stage);
       });
     });
-    // opts (optional): {flat:true} = even grid, no fade (cards). Long flows (4+) ALWAYS wrap into balanced
+    // opts (optional): {fade:true} = the grid fades to a corner (named variant; default is the full blueprint grid). Long flows (4+) ALWAYS wrap into balanced
     // left-to-right rows joined by a return connector (Chris 2026-09-22); {wrap:false} opts out.
     function createPortfolioDiagram(item, opts){
       opts = opts || {};
       var diagramData = item.diagram || {};
       var diagram = document.createElement("span");
-      diagram.className = "portfolio-diagram" + (opts.flat ? " portfolio-diagram--flat" : "");
+      diagram.className = "portfolio-diagram" + (opts.fade ? " portfolio-diagram--fade" : "");
       diagram.dataset.visualStatus = "READY";
       diagram.dataset.diagramType = diagramData.type || "grid";
       if(diagramData.columns){
@@ -5290,6 +5297,14 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         blocks.forEach(function(b){ stage.appendChild(b); });
       }
       diagram.append(head, stage);
+      if(diagramData.type === "loop" && blocks.length > 1){
+        var loopBack = document.createElement("span");
+        loopBack.className = "portfolio-diagram-return portfolio-diagram-return--loop";
+        loopBack.setAttribute("aria-hidden", "true");
+        loopBack.style.setProperty("--per", blocks.length);
+        loopBack.append(document.createElement("i"), document.createElement("i"));
+        diagram.appendChild(loopBack);
+      }
       if(diagramData.footer){
         var footer = document.createElement("span");
         footer.className = "portfolio-diagram-footer";
@@ -5352,7 +5367,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         var media = document.createElement("span");
         media.className = "work-project-card-media";
         if(story.cardVisual){
-          media.appendChild(createVisualPlaceholder(story.cardVisual, {flat:true, wrap:true}));
+          media.appendChild(createVisualPlaceholder(story.cardVisual, {wrap:true}));
         }else{
           (story.cardMedia || []).forEach(function(src){
             var image = document.createElement("img");
@@ -5414,7 +5429,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
           pmedia.appendChild(pimg);
           pcard.dataset.fullSrc = v.image;
         }else if(v.visual){
-          pmedia.appendChild(createVisualPlaceholder(v.visual.title ? v.visual : Object.assign({title: v.name}, v.visual), {flat:true, wrap:true}));
+          pmedia.appendChild(createVisualPlaceholder(v.visual.title ? v.visual : Object.assign({title: v.name}, v.visual), {wrap:true}));
         }
         if(pInteractive){
           pcard.dataset.mediaTitle = v.name;
