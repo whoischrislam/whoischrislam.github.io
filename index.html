@@ -7281,7 +7281,14 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       button.addEventListener("focus", preloadCompanyFocus, {once:true});
       button.addEventListener("touchstart", preloadCompanyFocus, {once:true, passive:true});
       button.addEventListener("click", function(){
-        groupWork(button.dataset.workCompany, {trigger:button, source:"company"});
+        // Rail logos enter a world through the same portal as its band, grown from the logo's centre.
+        var p = button.dataset.workCompany;
+        if(isWorldEntry(p) && window.__openWorldClip){
+          var r = button.getBoundingClientRect();
+          window.__openWorldClip(p, {x:Math.round(r.left + r.width / 2), y:Math.round(r.top + r.height / 2)}, {trigger:button});
+        }else{
+          groupWork(p, {trigger:button, source:"company"});
+        }
       });
     });
     if("requestIdleCallback" in window){
