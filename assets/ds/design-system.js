@@ -78,8 +78,6 @@
   function componentsShell(){return '<div id="ds-components" class="ds-mode" hidden><p class="ds-note" style="margin:0 0 12px">Real components harvested from the live site, themed by the world picker. This IS the live output.</p>'
     +'<div class="qa-bar"><b>QA variants</b>'
     +'<span>Blueprint</span><div class="ds-seg qa" data-qa="bp"><button data-v="" aria-pressed="true">Current</button><button data-v="dots">Dots</button><button data-v="lines">Lines</button><button data-v="hybrid">Dotted grid</button></div>'
-    +'<span>#28 diagram</span><div class="ds-seg qa" data-qa="d28"><button data-v="" aria-pressed="true">Live (bug)</button><button data-v="a">A dark</button><button data-v="b">B light</button></div>'
-    +'<span>Title width</span><div class="ds-seg qa" data-qa="tw"><button data-v="" aria-pressed="true">Full</button><button data-v="narrow">Narrow</button></div>'
     +'</div>'
     +'<div id="ds-comp-body"><p class="ds-note">Harvesting live components…</p></div></div>';}
   function renderComponents(h){
@@ -188,12 +186,7 @@
       dots:'#ds-root .visual-placeholder::before,#ds-root .portfolio-diagram::before{background-image:radial-gradient(color-mix(in srgb,var(--world-line) 85%,transparent) 1.4px,transparent 1.7px);background-size:22px 22px;opacity:1}',
       lines:'#ds-root .visual-placeholder::before,#ds-root .portfolio-diagram::before{background-image:linear-gradient(color-mix(in srgb,var(--world-line) 82%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--world-line) 82%,transparent) 1px,transparent 1px);background-size:22px 22px;opacity:1}',
       hybrid:'#ds-root .visual-placeholder::before,#ds-root .portfolio-diagram::before{background-image:radial-gradient(color-mix(in srgb,var(--world-line) 90%,transparent) 1.5px,transparent 1.9px),linear-gradient(color-mix(in srgb,var(--world-line) 40%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--world-line) 40%,transparent) 1px,transparent 1px);background-size:22px 22px;opacity:1}'
-    },
-    d28:{
-      a:'#ds-root .ds-stage .portfolio-diagram{background:var(--world-card-bg);border-color:transparent;color:var(--world-card-ink)}#ds-root .ds-stage .portfolio-diagram-title,#ds-root .ds-stage .portfolio-diagram-label{color:var(--world-card-ink)}#ds-root .ds-stage .portfolio-diagram-meta,#ds-root .ds-stage .portfolio-diagram-footer{color:color-mix(in srgb,var(--world-card-ink) 66%,transparent)}#ds-root .ds-stage .portfolio-diagram-item{background:color-mix(in srgb,var(--world-card-ink) 8%,var(--world-card-bg));border-color:color-mix(in srgb,var(--world-card-ink) 22%,transparent)}#ds-root .ds-stage .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent) 22%,var(--world-card-bg));border-color:var(--world-accent)}',
-      b:'#ds-root .ds-stage .portfolio-diagram{background:var(--world-surface);border-color:var(--world-line);color:var(--world-ink)}#ds-root .ds-stage .portfolio-diagram-title,#ds-root .ds-stage .portfolio-diagram-label{color:var(--world-ink)}#ds-root .ds-stage .portfolio-diagram-meta,#ds-root .ds-stage .portfolio-diagram-footer{color:var(--world-ink-soft)}#ds-root .ds-stage .portfolio-diagram-item{background:color-mix(in srgb,var(--world-ink) 5%,var(--world-surface));border-color:var(--world-line)}#ds-root .ds-stage .portfolio-diagram-item[data-diagram-tone="accent"]{background:color-mix(in srgb,var(--world-accent) 12%,var(--world-surface))}'
-    },
-    tw:{ narrow:'#ds-root .portfolio-diagram-title{max-width:26ch}' }
+    }
   };
   root.addEventListener('click',function(e){
     var seg=e.target.closest('.ds-seg.qa'); if(!seg||e.target.tagName!=='BUTTON')return;
@@ -204,7 +197,7 @@
     if(!st){ st=document.createElement('style'); st.id=id; document.head.appendChild(st); }
     st.textContent=(VAR[qa]&&VAR[qa][v])||'';
   });
-  // deep-link variants, e.g. ?ds=components&w=y30&bp=dots&d28=a
-  ['bp','d28','tw'].forEach(function(qa){var v=(location.search.match(new RegExp('[?&]'+qa+'=([a-z]+)'))||[])[1];if(v&&VAR[qa]&&VAR[qa][v]){var st=document.createElement('style');st.id='qa-'+qa;st.textContent=VAR[qa][v];document.head.appendChild(st);var seg=root.querySelector('.ds-seg.qa[data-qa="'+qa+'"]');if(seg)[].forEach.call(seg.children,function(x){x.setAttribute('aria-pressed',x.getAttribute('data-v')===(v||''));});}});
+  // deep-link variants, e.g. ?ds=components&w=y30&bp=dots
+  ['bp'].forEach(function(qa){var v=(location.search.match(new RegExp('[?&]'+qa+'=([a-z]+)'))||[])[1];if(v&&VAR[qa]&&VAR[qa][v]){var st=document.createElement('style');st.id='qa-'+qa;st.textContent=VAR[qa][v];document.head.appendChild(st);var seg=root.querySelector('.ds-seg.qa[data-qa="'+qa+'"]');if(seg)[].forEach.call(seg.children,function(x){x.setAttribute('aria-pressed',x.getAttribute('data-v')===(v||''));});}});
   draw();
 })();
