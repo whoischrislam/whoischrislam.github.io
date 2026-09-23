@@ -8,8 +8,10 @@
   var ROLE=[['--world-bg','Background'],['--world-ink','Text / ink'],['--world-accent','Accent / primary'],['--world-surface','Surface'],['--world-card-bg','Card']];
   var SEMANTIC=['--bg','--surface','--surface-2','--text','--muted','--border','--border-strong','--accent'];
   var TYPE=[['Display / Newsreader','40px',"'Newsreader',serif",'400','Chris Lam'],['Section / serif','28px',"'Newsreader',serif",'400','Controlled comparison'],['Card title / serif','21px',"'Newsreader',serif",'400','Admin console'],['Body / Figtree','15px',"'Figtree',sans-serif",'400','I design and code to ship products.'],['Label / sans','13px',"'Figtree',sans-serif",'700','Held constant'],['Kicker / Plex Mono','11px',"'IBM Plex Mono',monospace",'700','CONTROLLED INTERNAL BENCHMARK']];
-  // harvest sources: company view + a rich case study
-  var SRC={company:'index.html?work=y30',casestudy:'index.html?work=y30&project=spoken-voice-system',quotes:'index.html?work=goodrx',placeholder:'index.html?work=pathstream'};
+  // harvest sources: company view + a rich case study. A source may be an ordered list of views:
+  // the first is loaded eagerly; the next is loaded only if the component is not found there, so a
+  // tile survives one world changing (e.g. a placeholder replaced by a real hero image).
+  var SRC={company:['index.html?work=y30','index.html?work=goodrx'],casestudy:'index.html?work=y30&project=spoken-voice-system',quotes:['index.html?work=goodrx','index.html?work=taskrabbit','index.html?work=amazon'],placeholder:['index.html?work=pathstream','index.html?work=taskrabbit','index.html?work=clover']};
   // component registry: id, label, live selector, source ('home' = clone from homepage DOM, else SRC key), group
   var REG=[
     {id:'co-band',label:'World band (homepage)',sel:'.co-band',src:'home',grp:'Templated'},
@@ -30,7 +32,7 @@
     {id:'foot',label:'Footer',sel:'.foot',src:'home',grp:'Chrome'},
     {id:'read-progress',label:'Read-progress bar',sel:'.read-progress',src:'home',grp:'Chrome'}
   ];
-  var LIVE={home:'index.html',company:SRC.company,casestudy:SRC.casestudy,quotes:SRC.quotes,placeholder:SRC.placeholder};
+  var FROM={}; // component id -> the view it was actually harvested from (for "View live")
   var CUR='y30';
   var _wq=(location.search.match(/[?&]w=([a-z0-9]+)/)||[])[1]; // ?w=<world> deep-links the picker
   var HDOCS=[document]; // every live document we can scan for the audit (homepage + harvested views)
@@ -58,12 +60,12 @@
   function harvest(){
     var out={};
     REG.filter(function(r){return r.src==='home';}).forEach(function(r){out[r.id]=cloneFrom(document,r.sel);});
-    var srcs=Object.keys(SRC);
-    return Promise.all(srcs.map(function(k){return loadFrame(SRC[k]).then(function(doc){return {k:k,doc:doc};});})).then(function(frames){
-      var byKey={};frames.forEach(function(f){byKey[f.k]=f.doc;if(f.doc)HDOCS.push(f.doc);});
-      REG.filter(function(r){return r.src!=='home';}).forEach(function(r){var doc=byKey[r.src];out[r.id]=doc?cloneFrom(doc,r.sel):null;});
-      return out;
-    });
+    var docs={}; // url -> Promise<document>, so each view loads once however many entries use it
+    function view(u){return docs[u]||(docs[u]=loadFrame(u).then(function(d){if(d)HDOCS.push(d);return d;}));}
+    function pick(urls,sel,i){if(i>=urls.length)return Promise.resolve(null);return view(urls[i]).then(function(d){var n=d&&cloneFrom(d,sel);return n?{node:n,url:urls[i]}:pick(urls,sel,i+1);});}
+    return Promise.all(REG.filter(function(r){return r.src!=='home';}).map(function(r){
+      return pick([].concat(SRC[r.src]),r.sel,0).then(function(m){out[r.id]=m?m.node:null;if(m)FROM[r.id]=m.url;});
+    })).then(function(){return out;});
   }
 
   // ---- views ----
@@ -90,7 +92,7 @@
         var node=h[r.id];
         var sc=(r.grp==='Chrome')?'ds-stage-c':'ds-stage';
         var body=node?'<div class="'+sc+'" data-harvested="1"></div>':'<div class="'+sc+'" style="display:flex;align-items:center;justify-content:center;min-height:90px"><span style="font:700 11px/1 var(--ds-mono);text-transform:uppercase;letter-spacing:.08em;opacity:.55;color:inherit">not found on live — to wire</span></div>';
-        html+='<div class="markable ctile" data-ds-id="comp:'+r.id+'"><div class="clabel">'+esc(r.label)+' <a class="ds-viewlive" href="'+LIVE[r.src]+'" target="_blank" rel="noopener">View live →</a></div>'+body+'</div>';
+        html+='<div class="markable ctile" data-ds-id="comp:'+r.id+'"><div class="clabel">'+esc(r.label)+' <a class="ds-viewlive" href="'+(FROM[r.id]||(r.src==='home'?'index.html':[].concat(SRC[r.src])[0]))+'" target="_blank" rel="noopener">View live →</a></div>'+body+'</div>';
       });
       html+='</div>';
     });
