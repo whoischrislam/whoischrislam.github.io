@@ -7884,6 +7884,117 @@ document.body.classList.add('fx-dissolve','skin-digital');
   };
 })();
 </script>
+<!-- visual-placeholder PIXEL SHOVE (Chris pick 2026-09-23, spike D5). On hover, the placeholder's dot grid becomes
+     square pixels that part around the cursor in whole-pixel steps and grow blockier near it: the same grammar as
+     the portal's pixel dissolve. Progressive enhancement: the CSS ::before dot grid stays the fallback for touch,
+     reduced motion and no-JS. A canvas mounts only when a placeholder scrolls into view (IntersectionObserver)
+     and animates only while hovered. A DOM observer attaches to placeholders wherever they are built (homepage,
+     worlds, case studies, the ?ds catalog), so no builder calls this. Tuning: ?dev panel "Placeholder shove". -->
+<style>
+.visual-placeholder>.vp-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.visual-placeholder.vp-live::before{display:none}
+</style>
+<script>
+(function(){
+  if(!window.matchMedia||!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)');
+  var T=window.__VPSHOVE={ radius:90, strength:14, grow:3.4, snap:3, lines:0 };
+  var CELL=22, SIZE=2.4, live=new Set(), seen=new WeakSet();
+  function clamp(x){ return x<0?0:x>1?1:x; }
+  function smooth(e0,e1,x){ var t=clamp((x-e0)/(e1-e0)); return t*t*(3-2*t); }
+  function inkOf(el){
+    var c=getComputedStyle(el).color, m=c.match(/[\d.]+/g)||[0,0,0];
+    if(/^color\(/.test(c)) return [m[0]*255,m[1]*255,m[2]*255];   // color(srgb r g b) from color-mix
+    return [+m[0],+m[1],+m[2]];
+  }
+  function rgba(c,a){ return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+clamp(a).toFixed(3)+')'; }
+
+  function mount(el){
+    var cv=el.querySelector(':scope>.vp-canvas'); if(cv) cv.remove();   // stale clone (e.g. ?ds harvest)
+    cv=document.createElement('canvas'); cv.className='vp-canvas'; cv.setAttribute('aria-hidden','true');
+    el.prepend(cv); el.classList.add('vp-live');
+    var ctx=cv.getContext('2d'); if(!ctx){ cv.remove(); el.classList.remove('vp-live'); return; }
+    var S={ el:el, cv:cv, ctx:ctx, W:0, H:0, dots:[], ink:[0,0,0], raf:0,
+            ptr:{x:0,y:0,in:false}, ease:{x:0,y:0,a:0,init:false} };
+    S.size=function(){
+      var dpr=Math.min(window.devicePixelRatio||1,2); S.W=el.clientWidth; S.H=el.clientHeight;
+      cv.width=Math.round(S.W*dpr); cv.height=Math.round(S.H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+      S.dots=[];
+      for(var y=CELL/2;y<S.H;y+=CELL) for(var x=CELL/2;x<S.W;x+=CELL){
+        // same mask as the CSS fallback: radial-gradient(130% 130% at 16% 94%, #000 26%, transparent 74%)
+        var dx=(x-.16*S.W)/(1.3*S.W), dy=(y-.94*S.H)/(1.3*S.H);
+        S.dots.push({x:x,y:y,ox:0,oy:0,m:1-smooth(.26,.74,Math.sqrt(dx*dx+dy*dy))});
+      }
+      S.ink=inkOf(el); draw(S);
+    };
+    function tick(){
+      S.raf=0; var e=S.ease;
+      if(!e.init){ e.x=S.ptr.x; e.y=S.ptr.y; e.init=true; }
+      e.x+=(S.ptr.x-e.x)*.16; e.y+=(S.ptr.y-e.y)*.16; e.a+=((S.ptr.in?1:0)-e.a)*.12;
+      var moving=draw(S);
+      if(S.ptr.in||e.a>.01||moving) S.raf=requestAnimationFrame(tick); else { e.a=0; draw(S); }
+    }
+    function kick(){ if(!S.raf) S.raf=requestAnimationFrame(tick); }
+    function at(ev){ var b=el.getBoundingClientRect(); S.ptr.x=ev.clientX-b.left; S.ptr.y=ev.clientY-b.top; }
+    el.addEventListener('pointerenter',function(ev){ if(ev.pointerType!=='mouse'||reduce.matches) return; at(ev); S.ease.init=false; S.ink=inkOf(el); kick(); });
+    el.addEventListener('pointermove',function(ev){ if(ev.pointerType!=='mouse'||reduce.matches) return; at(ev); S.ptr.in=true; kick(); });
+    el.addEventListener('pointerleave',function(){ S.ptr.in=false; kick(); });
+    live.add(S); ro.observe(el);
+    S.size();
+  }
+  function draw(S){
+    var ctx=S.ctx, a=S.ease.a, moving=false, q=Math.max(1,T.snap), ink=S.ink;
+    ctx.clearRect(0,0,S.W,S.H);
+    for(var i=0;i<S.dots.length;i++){
+      var p=S.dots[i], dx=p.x-S.ease.x, dy=p.y-S.ease.y, d=Math.sqrt(dx*dx+dy*dy)||.01;
+      var f=(1-smooth(0,T.radius,d))*a, tx=dx/d*f*T.strength, ty=dy/d*f*T.strength;
+      p.ox+=(tx-p.ox)*.18; p.oy+=(ty-p.oy)*.18;
+      if(Math.abs(p.ox-tx)>.05||Math.abs(p.oy-ty)>.05) moving=true;
+      var push=clamp(Math.sqrt(p.ox*p.ox+p.oy*p.oy)/14), base=.24*p.m;
+      if(T.lines&&base>.005){ ctx.fillStyle=rgba(ink,.3*base); ctx.fillRect(p.x-CELL/2,p.y-CELL/2,CELL,.5); ctx.fillRect(p.x-CELL/2,p.y-CELL/2,.5,CELL); }
+      var al=Math.max(base,.3*push+base*(1-push),.45*push); if(al<.01) continue;
+      var sz=Math.round((SIZE+push*T.grow)*2)/2, px=p.x+p.ox, py=p.y+p.oy;
+      ctx.fillStyle=rgba(ink,al);
+      ctx.fillRect(Math.round(px/q)*q-sz/2, Math.round(py/q)*q-sz/2, sz, sz);
+    }
+    return moving;
+  }
+  function prune(){ live.forEach(function(S){ if(!S.el.isConnected){ cancelAnimationFrame(S.raf); ro.unobserve(S.el); live.delete(S); } }); }
+  var ro=new ResizeObserver(function(entries){ entries.forEach(function(en){ live.forEach(function(S){ if(S.el===en.target) S.size(); }); }); });
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ io.unobserve(en.target); mount(en.target); } });
+  },{rootMargin:'200px'});
+  function attach(el){ if(seen.has(el)) return; seen.add(el); io.observe(el); }
+  function scan(root){
+    if(root.nodeType!==1) return;
+    if(root.classList.contains('visual-placeholder')) attach(root);
+    root.querySelectorAll('.visual-placeholder').forEach(attach);
+  }
+  scan(document.body);
+  new MutationObserver(function(muts){
+    var removed=false;
+    muts.forEach(function(m){ m.addedNodes.forEach(scan); if(m.removedNodes.length) removed=true; });
+    if(removed) prune();
+  }).observe(document.body,{childList:true,subtree:true});
+  // theme / world switches change the ink colour: redraw the resting grid
+  var recolor=function(){ live.forEach(function(S){ S.ink=inkOf(S.el); draw(S); }); };
+  new MutationObserver(recolor).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  new MutationObserver(recolor).observe(document.body,{attributes:true,attributeFilter:['data-world']});
+
+  if(window.devPanel) window.devPanel({
+    title:'Placeholder shove', target:T,
+    sliders:[
+      {k:'radius',label:'Radius',min:30,max:200,step:5},
+      {k:'strength',label:'Push',min:0,max:40,step:1},
+      {k:'grow',label:'Grow',min:0,max:8,step:0.2},
+      {k:'snap',label:'Pixel',min:1,max:8,step:1}
+    ],
+    toggles:[{options:[{label:'Dots',value:0,on:!T.lines},{label:'Lines + dots',value:1,on:!!T.lines}],
+      onPick:function(v){ T.lines=v; recolor(); }}],
+    onChange:recolor
+  });
+})();
+</script>
 <!-- ?dev tuner for the GoodRx hover PREVIEW-HINT - flip Green vs destination World palette, blend in the true
      photo, tint the ground. No-op without ?dev; the default page keeps the confirmed green hover untouched. -->
 <script>
