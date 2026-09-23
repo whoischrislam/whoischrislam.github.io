@@ -195,7 +195,7 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 .hero h1.hero-lockup{width:max-content;max-width:100%;white-space:nowrap}
 .hero .sub{font-size:var(--t-md);line-height:1.65;color:var(--muted);margin:0 0 26px}
 .hero .sub b{font-weight:600;color:var(--text)}
-.hero .sub .exits{color:var(--text)}
+
 .hero .sub a{color:var(--text);text-decoration-color:var(--border);
   text-underline-offset:3px;white-space:nowrap}
 .hero .sub a:hover{color:var(--accent);text-decoration-color:var(--accent)}
@@ -204,22 +204,13 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
    (New Yorker slop list), so the words now carry on the serif alone. */
 .lit-word{padding-bottom:0}
 /* Working-drawing sheet header - a mono title bar above the page content. */
-.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:16px;
-  font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--muted);
-  padding:12px 0 14px;margin-bottom:6px;border-bottom:1px solid var(--border-soft)}
-.sheet-head span:last-child{white-space:nowrap}
-@media (max-width:560px){.sheet-head{font-size:10px;letter-spacing:.04em}}
-.cta{display:flex;flex-wrap:wrap;gap:10px}
+
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;
   border-radius:8px;font-weight:600;font-size:var(--t-sm);text-decoration:none;
   border:1px solid var(--border);min-height:48px;line-height:1.4}
 .btn.primary{background:var(--accent);color:var(--on-accent);border-color:transparent}
 .btn:hover{border-color:var(--accent);color:var(--accent)}
 .btn.primary:hover{background:var(--accent-strong);color:var(--on-accent)}
-.btn.ghost{border-color:transparent;color:var(--muted);padding-left:8px}
-.btn.ghost:hover{color:var(--accent);border-color:transparent;text-decoration:underline;
-  text-underline-offset:4px}
 
 /* ── Arc. The rule is a measure, not an ornament: segment widths are
    proportional to real duration (10yr / 2yr / 2.6yr). The present stage has no
@@ -227,10 +218,7 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 /* Sits in the action row as a third, quieter option. */
 /* Opens in the top layer, so opening it moves nothing on the page. Native
    popover carries light-dismiss, Escape and focus-return without custom JS. */
-.story-trigger{cursor:pointer;font-family:var(--sans);font-size:var(--t-sm);font-weight:600;
-  color:var(--muted);min-height:48px;padding:0 10px;display:inline-flex;align-items:center;
-  gap:7px;background:none;border:0;border-radius:8px}
-.story-trigger:hover{color:var(--accent)}
+
 .story-panel{position:fixed;margin:0;border:0;padding:0;
   width:min(660px,calc(100vw - 32px));max-height:min(78vh,780px);overflow:auto;
   left:50%;top:50%;translate:-50% -50%;
@@ -254,14 +242,6 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
   width:36px;height:36px;border-radius:50%;font-size:var(--t-base);line-height:1;z-index:1}
 .story-close:hover{color:var(--accent);border-color:var(--accent)}
 @media (max-width:640px){ .story-panel .inner{padding:20px} }
-details.more{margin-top:28px}
-details.more summary{cursor:pointer;font-size:var(--t-sm);color:var(--muted);min-height:44px;
-  display:flex;align-items:center;list-style:none}
-details.more summary:hover{color:var(--accent)}
-details.more summary::-webkit-details-marker{display:none}
-details.more summary::before{content:"\203A";display:inline-block;margin-right:8px;
-  transition:transform .18s ease}
-details.more[open] summary::before{transform:rotate(90deg)}
 
 /* ── Work cards ───────────────────────────────────────────────── */
 /* The header is sticky, so every anchor target landed underneath it: the nav links,
@@ -285,262 +265,13 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   /* Rule above the heading, not below it. It terminates the previous block and
      introduces this one, which is how his Squarespace case studies were built. */
   border-top:1px solid var(--border);padding-top:var(--sp-4);margin:var(--sp-12) 0 var(--sp-hb)}
-/* Card surfaces. The inline version read as one continuous document, so nothing told
-   the eye where a project began. This is his 2014 work list: a bordered block whose
-   LEFT edge carries the project colour. */
-.card{background:var(--surface);border:1px solid var(--border);
-  border-left:3px solid var(--proj-accent,var(--accent));
-  padding:var(--sp-4) var(--sp-6);margin:0 0 var(--sp-8)}
-/* Internal hierarchy. Every gap inside a card was the same 15px, so the card read as
-   one uniform drum with no beats. Blocks that OPEN a beat get 28px; paragraphs
-   continuing a beat keep 15px. 28 stays under the 44px card gap on purpose. */
-.card > .result,.card > .taught,.card > .transfers,.card > .ruleslabel,
-.card > .shot,.card > .rec,.card > .proof,.card > .card-cta,
-.card > .limit,.card > .vids,.card > .embed,.card > .lineage{margin-top:28px}
 
 /* The limit. Separated by a rule, NOT muted. It reads as a deliberate register
    change, not a footnote, because on these cards the honesty is the argument. */
-.limit{border-top:1px solid var(--border);margin-top:20px;padding-top:16px}
-.setup{margin:0 0 12px}
+
 .avail{font-size:var(--t-base);margin:0 0 20px;color:var(--muted)}
-.fitline{font-size:var(--t-base);margin:0 0 14px}
-.aiwork{max-width:66ch;margin:0 0 16px;font-size:var(--t-base);line-height:1.62}
-/* Lede sets up the list; the gap below it is a beat, not a paragraph break. */
-.ai-lede{color:var(--muted);margin:0 0 var(--sp-6)}
-/* No markers: the bold claim is the marker, and it has to survive a skim.
-   Numbers are counters in the indent, not list bullets, so they can be muted
-   and tabular without fighting the browser's marker styling. */
-.ailist{list-style:none;padding:0;margin:0;max-width:66ch;counter-reset:ai}
-.ailist li{counter-increment:ai;position:relative;padding-left:34px;
-  margin:0 0 28px;font-size:var(--t-base);line-height:1.62}
-.ailist li:last-child{margin:0}
-.ailist li::before{content:counter(ai);position:absolute;left:0;top:1px;
-  font-size:var(--t-sm);line-height:1.62;color:var(--muted);
-  font-variant-numeric:tabular-nums}
-.ailist b{display:block;margin:0 0 5px}
-/* Two-up at desktop, same idiom as .reccluster. Seven stacked paragraphs read
-   as a wall; two columns halve the height without hiding a single word. */
-.ailist p{margin:0;font-size:var(--t-sm);line-height:1.55;color:var(--muted)}
-/* The claim IS the control. Collapsed, the section is seven lines, so the work
-   below it starts near the top of the page instead of a screen down. */
-.ai-item>summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:9px}
-.ai-item>summary::-webkit-details-marker{display:none}
-.ai-item>summary b{margin:0}
-/* Chevron drawn from borders: no glyph to go missing, rotates on open. */
-.ai-item>summary::after{content:"";flex:none;width:6px;height:6px;margin-left:1px;
-  border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);
-  transform:rotate(-45deg) translateY(-1px);transition:transform .18s ease}
-.ai-item[open]>summary::after{transform:rotate(45deg) translateY(-2px)}
-.ai-item>summary:hover b{color:var(--accent)}
-.ai-item>summary:hover::after{border-color:var(--accent)}
-.ai-item>summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:3px}
-.ai-item>p{margin:7px 0 0}
-@media (prefers-reduced-motion:reduce){ .ai-item>summary::after{transition:none} }
-@media (max-width:560px){
-  .ailist li{margin:0 0 22px;padding-left:26px}
-  .ai-lede{margin:0 0 var(--sp-4)}
-}
-.taught{margin:-2px 0 14px;padding-left:14px;border-left:2px solid var(--border)}
-
-.wslbl{display:block;font-size:var(--t-xs);
-  color:var(--muted);font-weight:600;margin-bottom:5px}
-.ruleslabel{font-size:var(--t-xs);color:var(--muted);
-  font-weight:600;margin:20px 0 10px}
-
-
-
-
-/* Hard edges. In gamedev he reset every radius to zero, deleted the drop shadows,
-   and hardened borders to "2px solid var(--primary)". Structure by line weight. */
-.shot,.proof a,.result > div{border-radius:0}
-.taught{border-left:2px solid var(--proj-accent,var(--accent));padding-left:16px}
-/* Per-project accent, revived from portfolio_v5 (2014), where the accent was the
-   client's brand colour rather than his. Falls back to the green. */
-/* Everything accent-coloured inside a card follows that card. --proj-soft is derived
-   from the card's own accent, so tinted surfaces match too instead of staying green. */
-.card{--proj-accent:var(--accent);
-  --proj-soft:color-mix(in srgb, var(--proj-accent) 14%, transparent)}
-/* Per-project accents. Each hue comes from a real source, named below; only the
-   lightness moves between themes, because his 2014 palette was built for a
-   light-only page and half of it is invisible on dark. Every pair clears 4.5:1. */
-.card[data-accent="y30"]{--proj-accent:#2E7DDD}                 /* his own token in y30-voice, commented 'y30 blue' */
-[data-theme="light"] .card[data-accent="y30"]{--proj-accent:#1A56A0}
-.card[data-accent="playsesh"]{--proj-accent:#E29452}                 /* the accent in playsesh client/src/App.css */
-[data-theme="light"] .card[data-accent="playsesh"]{--proj-accent:#AA5D1C}
-.card[data-accent="pathstream"]{--proj-accent:#FF4F51}                 /* PATHSTREAM_BRAND_GUIDELINES.pdf, labelled HEX */
-[data-theme="light"] .card[data-accent="pathstream"]{--proj-accent:#E30003}
-.card[data-accent="taskrabbit"]{--proj-accent:#2E964B}                 /* his 2014 per-project assignment */
-[data-theme="light"] .card[data-accent="taskrabbit"]{--proj-accent:#278140}
-.card[data-accent="amazon"]{--proj-accent:#DF9900}                 /* his 2014 per-project assignment */
-[data-theme="light"] .card[data-accent="amazon"]{--proj-accent:#956600}
-.taught{border-left-color:var(--proj-accent,var(--accent))}
-
-/* Recommendations, collected. Four quotes at full weight instead of four
-   quotes buried one per card. */
-.reccluster{display:grid;gap:26px}
-@media (min-width:720px){ .reccluster{grid-template-columns:1fr 1fr;gap:30px 40px} }
-
-/* Brief cards. Same card, chrome removed: no facts dl, no image, no
-   multi-paragraph body. Receipts stay, because receipts are the point. */
-.card--brief{padding:22px 26px}
-.card--brief .card-head{margin-bottom:8px}
-.card--brief .card-head h3{font-size:var(--t-lg)}
-.card--brief .card-head .role{font-size:var(--t-sm);margin-top:4px}
-.card--brief p{margin:0 0 10px;font-size:var(--t-sm);line-height:1.55}
-.card--brief .proof{margin-top:10px}
-.card--brief .facts{padding:0;margin:0 0 2px}
-.card--brief .facts > div{padding:2.5px 0}
-.card--brief .facts dd{font-size:var(--t-xs)}
-.card--brief .facts dt{font-size:var(--t-xs)}
-.card--brief .card--brief h4{font-size:var(--t-base);margin:16px 0 6px}
-.card--brief .proj{margin:0}
-
-.card-head{margin-bottom:14px}
-.ch-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
-.ch-top h3{flex:none}
-.ch-top .when{flex:none;margin:0 0 0 auto;font-size:var(--t-xs);color:var(--muted);
-  font-variant-numeric:tabular-nums;white-space:nowrap}
-@media (max-width:560px){ .ch-top .when{margin-left:0} }
-.card-head h3{font-family:var(--serif);font-weight:400;font-size:var(--t-xl);margin:0}
-.card-head .role{margin:7px 0 0;font-size:var(--t-sm);color:var(--muted);line-height:1.45}
-.card-head .role b{color:var(--text);font-weight:600}
-
-/* Dates, role and stack together at the top, same shape as the case studies. */
-/* One field per line, labels in a fixed column so every value starts at the
-   same x. The alignment is what makes it scan as label / data: the eye drops
-   straight down the values without hunting for where each one begins. */
-.facts{display:block;margin:0 0 4px;padding:0}
-.facts > div{display:grid;grid-template-columns:64px 1fr;gap:0 16px;
-  align-items:baseline;padding:3.5px 0}
-.facts dt{font-size:var(--t-xs); color:var(--muted);margin:0;padding-top:2px}
-.facts dd{margin:0;font-size:var(--t-sm);line-height:1.5;min-width:0}
-@media (max-width:460px){ .facts > div{grid-template-columns:1fr;gap:1px} }
-.facts dd.tech{color:var(--muted)}
-/* The result lands inside the story, not in the metadata. Situation, action,
-   result, meaning: the arc a hiring manager reads for. */
-.result{margin:0 0 14px}
-.rlbl{display:block;font-size:var(--t-xs);
-  color:var(--muted);margin-bottom:3px}
-.result .fig{font-family:var(--serif);font-weight:400;font-size:var(--t-lg);color:var(--proj-accent,var(--accent));
-  margin-right:7px;letter-spacing:-.01em}
-.result .qual{font-size:var(--t-sm);line-height:1.55}
-/* Names the problem shape with the industry taken out, so a reader outside
-   healthcare or games can see where it applies to them. */
-.transfers{margin:16px 0 0;padding-top:13px;border-top:1px solid var(--border);
-  font-size:var(--t-sm);line-height:1.55}
-/* Sits with the company name, because it is a fact about the company. "Later"
-   does the honest work: it signals he was already gone. */
-.outcome{align-self:baseline;font-size:var(--t-xs);letter-spacing:.03em;color:var(--muted);
-  font-variant-numeric:tabular-nums;
-  border:1px solid var(--border);border-radius:999px;padding:3px 10px;white-space:nowrap;
-  position:relative;top:-2px}
-.ch-top{row-gap:6px}
-.card p{margin:0 0 14px}
-
-/* The metric is the focal point. */
-/* Impact frame: the feedback is in the arrival and the stop, not in
-   continuous movement. A number that counts up reads as trying to impress;
-   a number that lands reads as stating a fact. Fires once. */
-@keyframes fig-land{from{transform:scale(.94)}to{transform:scale(1)}}
-.js .reveal.in 
-.hl{list-style:none;padding:0;margin:16px 0 0}
-.hl li{position:relative;padding-left:20px;margin:0 0 9px;font-size:var(--t-sm);line-height:1.55}
-.hl li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;
-  border-radius:50%;background:var(--proj-accent,var(--accent));opacity:.55}
-.hl li b{font-weight:600}
-
-/* The metric is my claim; these are somebody else's. */
-.proof{display:flex;flex-wrap:wrap;gap:7px 10px;align-items:center;margin:14px 0 0}
-.proof .lbl{font-size:var(--t-xs);color:var(--muted)}
-/* These carry borrowed credibility. They were quieter than body text, which
-   is backwards. Respond fast on enter, settle slow on leave. */
-.proof a{font-size:var(--t-xs);font-weight:600;text-decoration:none;color:var(--text);
-  border:1px solid var(--border);border-radius:20px;padding:5px 12px;line-height:1.3;
-  transition:background .22s ease,color .22s ease,border-color .22s ease}
-.proof a:hover,.proof a:focus-visible{background:var(--proj-accent,var(--accent));color:var(--on-accent);
-  border-color:transparent;transition-duration:.12s}
-.proof a::after{content:" \2197";opacity:.6;font-size:var(--t-xs)}
-.proof .lbl::after{content:"";display:inline-block;width:14px;height:1px;
-  background:var(--border);vertical-align:middle;margin-left:8px}
-/* One CTA pattern, one position, one verb shape. */
-.card-cta{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:18px;
-  padding-top:15px;border-top:1px solid var(--border)}
-.card-cta a{font-size:var(--t-sm);font-weight:600;color:var(--proj-accent,var(--accent));text-decoration:none;
-  display:inline-flex;align-items:center;gap:6px;min-height:40px}
-.card-cta a::after{content:"\2192";transition:transform .22s ease}
-.card-cta a:hover{text-decoration:underline;text-underline-offset:4px}
-.card-cta a:hover::after{transform:translateX(3px);transition-duration:.12s}
-
-/* Context before impact: a reader may not know Iodine or Pathstream. */
-.ctx{font-size:var(--t-sm);color:var(--muted);margin:0 0 16px;line-height:1.5}
-.card-head .ctx{margin:7px 0 0;max-width:62ch}
-/* What this means for the reader's team. Lead cards only. */
-/* Reads as an annotation on the metric, not a fifth container. No rule (the
-   quotes own that) and no tint (the reference offer owns that). */
-.buyer{font-size:var(--t-base);line-height:1.5;margin:-6px 0 22px;color:var(--text);
-  max-width:62ch}
-.buyer b{color:var(--accent);font-weight:600}
-.shot{border:1px solid var(--border);border-radius:8px;margin:18px 0;background:var(--surface)}
-
-/* Video facade: the iframe only exists after a click. */
-.vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:18px 0}
-.embed{position:relative;aspect-ratio:16/9;border-radius:8px;overflow:hidden;
-  border:1px solid var(--border);background:var(--surface);margin:0}
-.embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.embed .facade{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;
-  background:none;cursor:pointer;display:block}
-.embed .facade img{width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .4s ease,opacity .25s ease}
-@media (hover:hover){ .embed .facade:hover img{transform:scale(1.03);opacity:.85} }
-.embed .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:58px;height:58px;border-radius:50%;background:rgba(12,12,14,.72);
-  backdrop-filter:blur(3px);display:grid;place-items:center;pointer-events:none;
-  transition:background .2s ease}
-.embed .facade:hover .play{background:var(--proj-accent,var(--accent))}
-.embed .play::after{content:"";border-left:16px solid #fff;border-top:10px solid transparent;
-  border-bottom:10px solid transparent;margin-left:4px}
-.embed .cap{position:absolute;left:0;right:0;bottom:0;padding:22px 14px 11px;
-  font-size:var(--t-xs);line-height:1.4;color:#fff;text-align:left;pointer-events:none;
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.78))}
-.embed .facade:focus-visible{outline:none;box-shadow:inset 0 0 0 3px var(--proj-accent,var(--accent))}
-/* The Loom facade has no thumbnail service, so it draws its own poster. */
-.embed .facade.loom{background:linear-gradient(150deg,var(--surface-2),var(--surface));
-  display:grid;place-items:center}
-.embed .facade.loom .cap{background:linear-gradient(180deg,transparent,rgba(0,0,0,.55))}
-:root[data-theme="light"] .embed .facade.loom .cap{color:var(--text);
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.10))}
-
-/* A recommendation is a person vouching. Give it a shape. */
-/* This is somebody else's voice. Quotation marks are the oldest signal for
-   that, and a left rule reads even in grayscale. No motion: an animated
-   reveal on a quoted person's words implies the text is being generated. */
-.rec{position:relative;border-left:3px solid var(--proj-accent,var(--accent));padding:4px 0 4px 22px;
-  margin:22px 0 0;background:none;border-radius:0}
-.rec::before{content:"\201C";position:absolute;left:14px;top:-14px;
-  font-family:var(--serif);font-size:64px;line-height:1;color:var(--proj-accent,var(--accent));
-  opacity:.16;pointer-events:none}
-.rec p{position:relative;margin:0 0 10px;font-size:var(--t-base);line-height:1.62;font-style:italic}
-.rec .who{font-size:var(--t-xs);color:var(--muted);font-style:normal}
-.rec .who b{color:var(--text);font-weight:600;font-style:normal}
-
-/* An offer to connect you is an action, not an attribution. */
-.ref-offer{display:inline-flex;align-items:center;gap:8px;margin-top:14px;
-  font-size:var(--t-xs);font-weight:600;color:var(--proj-accent,var(--accent));text-decoration:none;
-  border:1px solid var(--proj-soft,var(--accent-soft));background:var(--proj-soft,var(--accent-soft));
-  border-radius:20px;padding:7px 14px;min-height:38px;
-  transition:background .22s ease,color .22s ease}
-.ref-offer:hover{background:var(--proj-accent,var(--accent));color:var(--on-accent);transition-duration:.12s}
-.ref-offer::before{content:"";width:7px;height:7px;border-radius:50%;
-  background:currentColor;opacity:.85}
 
 /* Acquisition lineage */
-.lineage{font-size:var(--t-xs);color:var(--muted);border:1px dashed var(--border);
-  border-radius:7px;padding:9px 13px;margin:0 0 18px;display:inline-block}
-.proj{border-left:2px solid var(--border);padding:0 0 0 18px;margin:22px 0 0}
-.proj h4{font-size:var(--t-base);margin:0 0 8px;font-weight:600}
-.proj .tag{font-weight:400;font-size:var(--t-xs);color:var(--muted)}
-.proj .impact{margin:0 0 4px}
-
 
 .want li{margin:0 0 10px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;align-items:center}
@@ -563,7 +294,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 
 .foot{border-top:1px solid var(--border);margin-top:var(--sp-12);padding:var(--sp-8) 0 var(--sp-16);
   color:var(--muted);font-size:var(--t-sm)}
-.foot .signoff{font-family:var(--serif);font-size:var(--t-lg);line-height:1.35;color:var(--text);margin:0 0 26px}
+
 .foot .avail-line{margin:0 0 20px}
 .foot .avail-line .upd{color:var(--text)}
 .foot .links{margin:0 0 22px}
@@ -581,8 +312,8 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
   :root{ --t-xxl:28px; --t-xl:23px; --t-lg:20px;
          --sp-12:44px; --sp-8:28px }
   .wrap{padding:0 16px}
-  .card{padding:20px 16px}
-  .card--brief{padding:18px 16px}
+
+  
   .refs{padding:20px 16px}
   .refs-row{grid-template-columns:1fr;gap:8px}
 }
@@ -590,26 +321,6 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 /* Cross-document view transitions. Firefox falls back to a plain navigation. */
 @view-transition{ navigation:auto }
 ::view-transition-old(root),::view-transition-new(root){ animation-duration:.28s }
-
-/* Hover dims siblings; the card surface only exists on hover. */
-@media (hover:hover) and (min-width:900px){
-  #worklist:hover .card{opacity:.55}
-  #worklist .card:hover,#worklist .card:focus-within{opacity:1}
-  /* Asymmetric: 120ms in so it feels immediate, 320ms out so attention
-     settles rather than snaps. One duration for both is the tell. */
-  .card{position:relative;transition:opacity .32s ease}
-  #worklist:hover .card{transition-duration:.12s}
-  .card::before{content:"";position:absolute;inset:-4px -24px;border-radius:12px;z-index:-1;
-    background:transparent;box-shadow:none;transition:background .32s ease,box-shadow .32s ease}
-  .card:hover::before,.card:focus-within::before{transition-duration:.12s}
-  .card:hover::before,.card:focus-within::before{
-    background:var(--surface);
-    box-shadow:inset 0 1px 0 0 rgba(255,255,255,.07), 0 8px 30px rgba(0,0,0,.22)}
-}
-
-:root[data-theme="light"] .card:hover::before,
-:root[data-theme="light"] .card:focus-within::before{
-  box-shadow:inset 0 1px 0 0 rgba(255,255,255,.9), 0 8px 26px rgba(0,0,0,.07)}
 
 /* (iii) Focus as box-shadow so it follows border-radius. The chips are 20px. */
 a:focus-visible,button:focus-visible,summary:focus-visible{
@@ -630,17 +341,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 }
 
 .va-ico{display:inline-block;vertical-align:-3px;flex:none}
-/* ── AI hiring guide, ported from styles.css ─────────────────────── */
-/* Work-sample framing under the hero CTA: tells a skimmer the agent is substantive
-   (fact-grounded, streaming, server-side safety) BEFORE they open it. */
-.hero-agent-note {
-    font-size: 0.95em;
-    color: var(--muted);
-    max-width: 560px;
-    margin: -0.4em 0 1.8em 0;
-    line-height: 1.55;
-}
-.hero-agent-note strong { color: var(--text); font-weight: 600; }
+
 /* ---------- Voice agent (AI hiring guide) ---------- */
 .voice-agent {
     width: 100%;
@@ -654,10 +355,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 }
 /* Reset the global full-width button rule inside the widget */
 .voice-agent button { width: auto; background: none; color: var(--text); padding: 0; border-radius: 2em; }
-.va-head { margin-bottom: 0.9em; }
-.va-title { display: flex; align-items: center; gap: 0.4em; font-size: 1.05em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
-.va-title-icon { font-size: 20px; color: var(--accent); }
-.va-scope { font-size: 0.82em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
+
 .va-disclosure { font-size: 0.66em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
 .va-modes { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
 .va-mode {
@@ -677,7 +375,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .va-conversation { display: flex; flex-direction: column; gap: 0.9em; }
 .va-conversation:empty { display: none; }
 .va-turn { margin: 0 !important; white-space: pre-wrap; overflow-wrap: break-word; }
-.va-turn-you { align-self: flex-end; max-width: 82%; font-size: 0.84em !important; line-height: 1.45; padding: 0.45em 0.8em; border-radius: 0.9em; background: var(--chip-bg); color: var(--muted) !important; }
+
 .va-turn-agent { align-self: stretch; max-width: 100%; font-size: 0.95em !important; line-height: 1.62; padding: 0.1em 0 0.2em 0.95em; border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); color: var(--text) !important; }
 .va-status { font-size: 0.8em !important; color: var(--muted) !important; margin: 0 !important; }
 .va-status:empty { display: none; }
@@ -686,7 +384,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .va-foot { flex-shrink: 0; display: flex; flex-direction: column; gap: 0.55em; padding: 0.7em 1.1em 0.85em; border-top: 1px solid var(--border); background: var(--surface); }
 .va-intro { display: flex; flex-direction: column; gap: 0.7em; }
 .va-intro-msg { display: flex; align-items: flex-start; gap: 0.45em; font-size: 0.9em !important; line-height: 1.55; color: var(--text) !important; margin: 0 !important; }
-.va-intro-msg .va-title-icon { position: relative; top: 2px; flex-shrink: 0; }
+
 .va-started .va-intro-msg, .va-role-chosen .va-intro-msg { display: none; }
 /* Radio behavior: once a role is picked, collapse to just that choice + Change */
 .va-change { display: none; width: auto !important; font-size: 0.78em; color: var(--muted) !important; padding: 0.42em 0.6em !important; border: none !important; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
@@ -816,8 +514,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 .va-dock .voice-agent { margin: 0 !important; border: none !important; box-shadow: none !important; max-width: none !important; border-radius: 0 !important; padding: 0 !important; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .va-dock { left: 0.6em; right: 0.6em; bottom: 0.6em; width: auto; max-height: 80vh; }
 
-    
-
 /* Print rules. These MUST stay inside the media query: the first one is
    body > *:not(#va-dock){display:none} and it blanks the page without it. */
 @media print {
@@ -850,8 +546,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
     #brief-print-root li::before { color: #000 !important; }
     #brief-print-root h4, #brief-print-root li, #brief-print-root p { break-inside: avoid; }
 }
-
-.hero-bio{color:var(--muted);max-width:none;margin:0 0 2em}
 
 .hero .sub-line{color:var(--muted);margin:0 0 4px;font-size:var(--t-sm)}
 .hero-credibility{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;
@@ -918,12 +612,6 @@ h2.sec#work{font-size:1.5em;padding-top:10px;margin:18px 0 8px}
 .hero{padding-bottom:18px}
 h2.sec#work{margin-top:8px}
 
-
-
-.hero .hero-hob{color:var(--muted);font-size:var(--t-sm);margin:2px 0 0}
-.hero .hero-hob a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
-.hero .hero-hob a:hover{color:var(--accent)}
-
 .outside{color:var(--muted);font-size:var(--t-sm);margin:28px 0 0}
 .outside a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
 .outside a:hover{color:var(--accent)}
@@ -932,18 +620,12 @@ h2.sec#work{margin-top:8px}
 .hero .sub{margin:0 0 2px;line-height:1.35}
 .hero .sub-line{margin:0;line-height:1.5;max-width:none}
 
-.impact{margin:8px 0 0;font-size:var(--t-sm);color:var(--muted);line-height:1.8;
-  display:flex;flex-wrap:wrap;gap:0 20px}
-.impact span{white-space:nowrap}
-.impact b{color:var(--text);font-weight:600}
-@media(max-width:700px){.impact{gap:0;flex-direction:column}}
-
 .hero .sub-line a{color:var(--muted);text-decoration:underline;text-underline-offset:3px;
   text-decoration-color:var(--border-strong)}
 .hero .sub-line a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 
 /* spacing fixes */
-.hero .cta{margin-top:20px}
+
 h2.sec#work{margin-top:16px}
 
 /* ---------- Visual work index ----------
@@ -1347,10 +1029,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   background-size:var(--bp-cell,22px) var(--bp-cell,22px);
   -webkit-mask-image:radial-gradient(130% 130% at 16% 94%,#000 26%,transparent 74%);
           mask-image:radial-gradient(130% 130% at 16% 94%,#000 26%,transparent 74%)}
-.visual-placeholder-status{position:absolute;top:26px;left:26px;display:inline-flex;align-items:center;
-  min-height:24px;padding:4px 8px;border:1px solid var(--border-strong);border-radius:999px;
-  background:color-mix(in srgb,var(--bg) 88%,transparent);color:var(--muted);
-  font:700 10px/1.1 var(--sans);letter-spacing:.12em;text-transform:uppercase}
+
 .visual-placeholder-title,.visual-placeholder-note{position:relative;z-index:1;display:block}
 .visual-placeholder-title{max-width:34ch;font:400 clamp(21px,2.6vw,34px)/1.08 var(--serif)}
 .visual-placeholder-note{max-width:54ch;margin-top:7px;color:var(--muted);font:400 var(--t-xs)/1.45 var(--sans)}
@@ -1469,7 +1148,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .work-tile>.visual-placeholder{width:100%;min-height:220px;border:0;padding:18px}
 .work-grid[data-layout="mosaic"] .work-tile>.visual-placeholder{height:100%;min-height:0}
 .work-tile>.visual-placeholder::before{inset:0}
-.work-tile>.visual-placeholder .visual-placeholder-status{top:18px;left:18px}
+
 .work-tile>.visual-placeholder .visual-placeholder-title{position:absolute;top:64px;left:18px;right:18px;
   max-width:22ch;font-size:clamp(18px,2.1vw,28px)}
 .work-tile-label{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;
@@ -1631,18 +1310,12 @@ body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:n
    ("design", "ship"). tb-1 = current baseline. ---- */
 
 /* tb-2 · Big, two-line - let it wrap and go display-scale, tight leading */
-body.tb-2 .hero h1.hero-lockup,body.tb-5 .hero h1.hero-lockup,body.tb-6 .hero h1.hero-lockup{
+body.tb-6 .hero h1.hero-lockup{
   white-space:normal;width:auto;max-width:none;
   font-size:clamp(2.6rem,8.5vw,5.8rem);line-height:.98;letter-spacing:-.02em}
 /* forced break after "&" - only in the two-line treatments */
 .hero-lockup .lb{display:none}
-body.tb-2 .hero-lockup .lb,body.tb-5 .hero-lockup .lb,body.tb-6 .hero-lockup .lb{display:inline}
-
-/* tb-3 · Italic verbs - draw the eye to the two actions, add voice */
-body.tb-3 .lit-word,body.tb-5 .lit-word{font-style:italic}
-
-/* tb-4 · Green verbs - the signature accent on the two actions */
-body.tb-4 .lit-word{color:var(--accent)}
+body.tb-6 .hero-lockup .lb{display:inline}
 
 /* tb-5 = big two-line + italic verbs (combines 2 and 3) */
 
@@ -1653,33 +1326,11 @@ body.tb-4 .lit-word{color:var(--accent)}
 body.tb-6 .lit-word{font-style:normal;position:relative}
 body.tb-6 .hl-design{display:inline-block;position:relative}
 
-/* B - serif graphite mask reveal (baseline) */
-body.tb-6.ho-b .hl-design{
-  -webkit-mask-image:linear-gradient(90deg,#000 60%,rgba(0,0,0,0) 90%);
-  mask-image:linear-gradient(90deg,#000 60%,rgba(0,0,0,0) 90%);
-  -webkit-mask-size:235% 100%;mask-size:235% 100%;-webkit-mask-position:100% 0;mask-position:100% 0;
-  animation:hl-draw .7s cubic-bezier(.4,0,.2,1) forwards}
-@keyframes hl-draw{to{-webkit-mask-position:0 0;mask-position:0 0}}
-
-/* A / D - handwriting (Caveat), revealed in 2 grouped beats (not letters, not a wipe) */
-body.tb-6.ho-a .hl-design,body.tb-6.ho-d .hl-design{font-family:'Caveat',cursive;font-weight:600;
-  font-style:normal;font-size:1.06em;letter-spacing:.005em}
-body.tb-6.ho-a .hl-design .lit-word,body.tb-6.ho-d .hl-design .lit-word{font-style:normal}
-.hl-design .hg{display:inline-block;opacity:0;transform:translateY(.14em) rotate(-.5deg)}
-body.tb-6.ho-a .hl-design .hg,body.tb-6.ho-d .hl-design .hg{animation:hg-in .5s cubic-bezier(.3,.8,.3,1) forwards}
-body.tb-6.ho-a .hl-design .hg:nth-child(2),body.tb-6.ho-d .hl-design .hg:nth-child(2){animation-delay:.3s}
-@keyframes hg-in{to{opacity:1;transform:none}}
-
 /* C - serif clean + a hand-drawn underline that strokes on (real SVG path draw) */
 body.tb-6.ho-c .hl-design{opacity:0;animation:hc-in .45s ease forwards}
 @keyframes hc-in{to{opacity:1}}
 .hl-underline{position:absolute;left:0;bottom:.02em;width:104%;height:.32em;overflow:visible;pointer-events:none}
 .hl-underline path{fill:none;stroke:var(--text);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
-
-/* the green "&" as a single clean accent (all options) */
-body.tb-6 .hl-amp{display:inline-block;color:var(--text);opacity:0;transform:translateY(.05em) scale(.96);
-  animation:hl-ampin .3s cubic-bezier(.3,.9,.3,1) .82s forwards}
-@keyframes hl-ampin{to{opacity:1;transform:none}}
 
 /* colour story: the signature green marks the story words (toggled by col-* class) */
 /* colour: tagline is one uniform ink (--text) - no green accents (Chris 2026-09-19).
@@ -1707,15 +1358,13 @@ body.tb-6 .hl-special.in .hl-dot::after{animation:hl-sparkle2 .6s ease-out .18s 
 .hl-prod{display:inline-block;position:relative;opacity:0}
 body.tb-6 .hl-special.in .hl-prod{animation:hl-create .75s cubic-bezier(.3,.7,.25,1) forwards}
 @keyframes hl-create{0%{opacity:0;transform:scale(.9);filter:blur(4px)}55%{opacity:1;filter:blur(.4px)}100%{opacity:1;transform:scale(1);filter:blur(0)}}
-/* sparkle keyframe (used by "products" as it materialises) */
-@keyframes hl-sparkle{0%{opacity:0;transform:scale(0) rotate(0)}45%{opacity:.9;transform:scale(1) rotate(35deg)}100%{opacity:0;transform:scale(.4) rotate(70deg)}}
 
 /* discreet review toggle (removed for the real flip) */
 
 @media (prefers-reduced-motion:reduce){
   body.tb-6 .hl-design{-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;opacity:1!important}
-  body.tb-6 .hl-design .hg{opacity:1!important;transform:none!important;animation:none!important}
-  body.tb-6 .hl-amp{opacity:1;transform:none;animation:none}
+
+  
   body.tb-6 .hl-dot{opacity:1;transform:none;animation:none}
   body.tb-6 .hl-special{opacity:1;transform:none;animation:none}
   body.tb-6 .hl-prod{opacity:1;transform:none;filter:none;animation:none}
@@ -1735,18 +1384,7 @@ body.tb-6 .hl-special.in .hl-prod{animation:hl-create .75s cubic-bezier(.3,.7,.2
    company "arrives" with character instead of lifting as one lump. Company bands
    only; the rest of the page keeps its quiet reveal. ── */
 /* Variants take over the parent (kill the base 14px lump-rise) and drive the pieces. */
-body.anim-1 .co-band.reveal,
-body.anim-2 .co-band.reveal,
-body.anim-3 .co-band.reveal,
-body.anim-4 .co-band.reveal{opacity:1;transform:none}
-
-/* R1 Slide - head enters from the left, image from the right, they meet. Editorial. */
-body.anim-1 .co-band.reveal .co-head{opacity:0;transform:translateX(-24px);
-  transition:opacity .5s ease,transform .62s cubic-bezier(.22,1,.36,1)}
-body.anim-1 .co-band.reveal .band-frame{opacity:0;transform:translateX(24px);
-  transition:opacity .55s ease .05s,transform .66s cubic-bezier(.22,1,.36,1) .05s}
-body.anim-1 .co-band.reveal.in .co-head,
-body.anim-1 .co-band.reveal.in .band-frame{opacity:1;transform:none}
+body.anim-2 .co-band.reveal{opacity:1;transform:none}
 
 /* R2 Settle - image starts soft + slightly small and snaps sharp; the hero's
    "product coming into existence" blur, carried down the page. */
@@ -1757,63 +1395,23 @@ body.anim-2 .co-band.reveal .band-frame{opacity:0;transform:scale(.985);filter:b
 body.anim-2 .co-band.reveal.in .co-head{opacity:1;transform:none}
 body.anim-2 .co-band.reveal.in .band-frame{opacity:1;transform:none;filter:none}
 
-/* R3 Cascade - name lands first, image follows a beat later. Clear sequence. */
-body.anim-3 .co-band.reveal .co-head{opacity:0;transform:translateY(18px);
-  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
-body.anim-3 .co-band.reveal .band-frame{opacity:0;transform:translateY(26px);
-  transition:opacity .55s ease .12s,transform .66s cubic-bezier(.22,1,.36,1) .12s}
-body.anim-3 .co-band.reveal.in .co-head,
-body.anim-3 .co-band.reveal.in .band-frame{opacity:1;transform:none}
-
 /* R4 Wash - the band's own color curtains off the image, left to right. A taste of
    the per-company "lens/world" idea, contained to one entrance. */
-body.anim-4 .co-band.reveal .co-head{opacity:0;transform:translateY(10px);
-  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
-body.anim-4 .co-band.reveal.in .co-head{opacity:1;transform:none}
-body.anim-4 .co-band.reveal .band-frame{position:relative;overflow:hidden;border-radius:14px}
-body.anim-4 .co-band.reveal .band-frame::after{content:"";position:absolute;inset:0;z-index:3;
-  background:var(--band);transform-origin:right;transform:scaleX(1);
-  transition:transform .72s cubic-bezier(.76,0,.24,1)}
-body.anim-4 .co-band.reveal.in .band-frame::after{transform:scaleX(0)}
 
 @media (prefers-reduced-motion:reduce){
   body[class*="anim-"] .co-band.reveal .co-head,
   body[class*="anim-"] .co-band.reveal .band-frame{opacity:1!important;transform:none!important;filter:none!important}
-  body.anim-4 .co-band.reveal .band-frame::after{display:none}
+
 }
-
-/* ── Section-heading hierarchy + outcome metadata (spike toggles #dv-hier, #dv-tag).
-   Two problems Chris flagged: (1) "Work" is styled smaller and rule-less than its peer
-   sections ("What I'm looking for", "Let's work together"), and "More work"/"Experiments"
-   don't read as a distinct sub-tier; (2) the de-pilled outcome should lose the dot but
-   keep the pill's sense of a defined marker. Pure CSS, static class swaps. ── */
-
-/* ---- L2 group labels for "More work"/"Experiments" (spike toggle #dv-l2). These live
-   UNDER Work, so they must carry NO horizontal rule - rules are reserved for breaks
-   between L1 sections. Subordination is shown by small size, uppercase, letterspacing,
-   and whitespace; an optional non-rule marker adds definition. Never an item name. ---- */
-body.l2-kick .exp-head,body.l2-tick .exp-head,body.l2-tab .exp-head{
-  font-family:var(--serif);font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:54px 0 16px}
-/* Kicker: size + case + whitespace only. */
-/* Tick: a short vertical accent bar (not a horizontal rule) flags the sub-group. */
-body.l2-tick .exp-head::before{content:"";display:inline-block;width:3px;height:13px;background:var(--accent);
-  border-radius:2px;margin-right:11px;vertical-align:-1px}
-/* Tab: the label sits in a soft chip - a defined marker echoing the metadata chips, no rule. */
-body.l2-tab .exp-head{display:inline-block;background:var(--surface-2);color:var(--muted);padding:5px 11px;border-radius:6px}
 
 /* ---- OUTCOME METADATA: de-pilled, no dot. Down to soft chip vs de-pilled text, each in
    neutral or the hero's highlight color. ---- */
 /* soft chip - filled, borderless; keeps the pill's marker feel without the hard outline */
-body.tag-chip .tag-outcome,body.tag-chip-accent .tag-outcome{border:0;margin-left:10px;
+body.tag-chip-accent .tag-outcome{border:0;margin-left:10px;
   padding:3px 9px;border-radius:6px;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.03em;
   text-transform:none;vertical-align:middle}
-body.tag-chip .tag-outcome{background:var(--surface-2);color:var(--muted)}
+
 body.tag-chip-accent .tag-outcome{background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent-strong)}
-/* de-pilled text - no dot; case, size, and a gap (or the accent color) do the separating */
-body.tag-text .tag-outcome,body.tag-text-accent .tag-outcome{border:0;padding:0;background:none;border-radius:0;
-  margin-left:12px;font-size:12px;letter-spacing:.07em;text-transform:uppercase}
-body.tag-text .tag-outcome{color:var(--muted);font-weight:600}
-body.tag-text-accent .tag-outcome{color:var(--accent-strong);font-weight:700}
 
 /* ---- CARD TITLES (More work + Experiments): base is bold sans 19px, a different voice
    from the serif company names. Serif brings them into the same name hierarchy. ---- */
@@ -1834,51 +1432,6 @@ body.card-serif .wcard-name{font-family:'Instrument Serif',serif;font-weight:400
   -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3));
   mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3))}
 
-/* ==== BLUEPRINT-SYSTEM exploration - the working-drawings visual language, i.e. the
-   design↔code seam as the site's identity. SPIKE ONLY, flip via #bp-bar. Graphic-only
-   (marks / ticks / dimension + leader lines); NO invented words. One bp class at a time.
-   Desktop-first: gutter elements are guarded so they never cause mobile h-scroll. ==== */
-body[class*="bp-"] #top{position:relative}
-
-/* bp-1 · Sheet - accent crop marks at the content-column top corners (reads: a drawing sheet) */
-body.bp-1 #top::before,body.bp-1 #top::after{content:"";position:absolute;top:4px;width:14px;height:14px;
-  pointer-events:none;border-top:1.5px solid var(--accent);opacity:.85}
-body.bp-1 #top::before{left:24px;border-left:1.5px solid var(--accent)}
-body.bp-1 #top::after{right:24px;border-right:1.5px solid var(--accent)}
-
-/* bp-2 · Ruler - a measured tick strip across the top of the content column, pitched to the 44px grid */
-body.bp-2 #top::before{content:"";position:absolute;left:24px;right:24px;top:2px;height:9px;pointer-events:none;
-  background-image:repeating-linear-gradient(to right, var(--grid-maj) 0 1px, transparent 1px 44px);
-  border-bottom:1px solid var(--border)}
-
-/* bp-3 · Dimension line - a vertical measured line with end ticks down the hero (in the gutter, desktop only) */
-body.bp-3 .hero{position:relative}
-@media (min-width:1040px){
-  body.bp-3 .hero::before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:1px;background:var(--accent);opacity:.55}
-  body.bp-3 .hero::after{content:"";position:absolute;left:-20px;top:8px;width:9px;height:1px;background:var(--accent);opacity:.7;
-    box-shadow:0 0 0 0 var(--accent)}
-}
-
-/* bp-4 · Registration - a short accent rule above each section heading (a drafting register mark) */
-body.bp-4 h2.sec,body.bp-4 .exp-head{position:relative}
-body.bp-4 h2.sec::before,body.bp-4 .exp-head::before{content:"";position:absolute;left:0;top:-12px;
-  width:40px;height:1.5px;background:var(--accent);opacity:.75}
-
-/* bp-5 · Detail frames - corner ticks on every work thumb, like a plate on a drawing set */
-body.bp-5 .wcard-thumb::after,body.bp-5 .band-frame::after{content:"";position:absolute;right:9px;bottom:9px;
-  width:15px;height:15px;pointer-events:none;z-index:3;
-  border-right:1.5px solid rgba(255,255,255,.72);border-bottom:1.5px solid rgba(255,255,255,.72)}
-body.bp-5 .band-frame{position:relative}
-
-/* spike flipper */
-#bp-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;display:flex;
-  gap:4px;padding:6px;background:rgba(20,20,22,.92);border:1px solid rgba(255,255,255,.14);
-  border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.4);font-family:var(--sans);backdrop-filter:blur(6px)}
-#bp-bar button{appearance:none;border:0;background:transparent;color:#ddd;font-size:12px;font-weight:600;
-  padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
-#bp-bar button:hover{background:rgba(255,255,255,.08)}
-#bp-bar button.on{background:var(--accent);color:#fff}
-
 /* ==== WORLDS prototype - GoodRx only. Hover-stir on the band + a circular expand
    reveal (View Transitions API) into a per-project "world" that takes over the viewport
    while the baseline chrome (the "ship") persists. SPIKE; CSS-only motion so it stays
@@ -1888,7 +1441,6 @@ body.bp-5 .band-frame{position:relative}
 .co-band[data-project="goodrx"]:hover .band-frame,
 .co-band[data-project="goodrx"]:focus-within .band-frame{
   transform:scale(1.014);box-shadow:0 22px 66px rgba(252,239,114,.30),0 0 0 1px rgba(252,239,114,.6)}
-
 
 /* World reveal (see __openWorldClip / closeWorldClip). No View Transitions API.
    #world-layer wraps the panel + focus content. Normally display:contents, so the focused layout is
@@ -1949,7 +1501,6 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
 @media (hover:none){ #gx-cursor{display:none!important} }
 body.work-focus-open #gx-cursor,body.world-entering #gx-cursor{opacity:0!important}
 @media (prefers-reduced-motion:reduce){ #gx-cursor{transition:none} }
-
 
 /* ==== PER-WORLD SYSTEM - ONE generic treatment, re-skinned per world via TOKENS.
    BASE: blueprint defaults on body[data-world] - the solid fallback for any new/unskinned world
@@ -2136,8 +1687,8 @@ html.hx-pre .co-band[data-hero] .band-frame .work-tile.on img{visibility:hidden}
 html.hx-pre .work-cards .wcard-thumb img,html.hx-pre .work-cards .wcard-thumb-label,html.hx-pre .work-cards .wcard-thumb::before{visibility:hidden}
 /* No JS: the authored hero (tb-6) is on <body> from first paint, so show its final state (mirrors the reduced-motion block) */
 html:not(.js) body.tb-6 .hl-design{-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;opacity:1!important}
-html:not(.js) body.tb-6 .hl-design .hg{opacity:1!important;transform:none!important;animation:none!important}
-html:not(.js) body.tb-6 .hl-amp,html:not(.js) body.tb-6 .hl-dot,html:not(.js) body.tb-6 .hl-special{opacity:1;transform:none;animation:none}
+
+html:not(.js) body.tb-6 .hl-dot,html:not(.js) body.tb-6 .hl-special{opacity:1;transform:none;animation:none}
 html:not(.js) body.tb-6 .hl-prod{opacity:1;transform:none;filter:none;animation:none}
 html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after{display:none}
 </style>
@@ -2312,25 +1863,25 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   .band-frame .work-tile img{width:100%!important;height:100%!important;object-fit:contain!important;min-height:0!important;max-height:100%!important;border-radius:5px;box-shadow:0 8px 26px rgba(0,0,0,.2)}
   .band-frame .work-tile-label{display:none!important}
   .band-frame .visual-placeholder{position:absolute!important;inset:0;height:100%}
-  .band-cycle{position:absolute;right:14px;bottom:14px;z-index:3;display:flex;align-items:center;gap:9px;background:rgba(20,20,18,.6);backdrop-filter:blur(6px);border-radius:99px;padding:6px 11px}
-  .bc-arw{font:inherit;font-size:18px;line-height:1;color:#fff;background:none;border:0;cursor:pointer;padding:0 3px;opacity:.85}
-  .bc-arw:hover{opacity:1}
-  .bc-dots{display:flex;gap:6px}
-  .bc-dot{width:8px;height:8px;border-radius:50%;border:0;background:rgba(255,255,255,.4);cursor:pointer;padding:0}
-  .bc-dot.on{background:#fff}
+
+  
+
+  
+
+  
   /* when a company/project is open (focus/locked), hide all company bands so only the case study shows */
   .work-grid[data-locked="true"] .co-groups{display:none!important}
   @media(max-width:600px){.band-frame{height:230px}.co-head h3{font-size:24px}}
   /* featured single-hero bands: full-bleed baked-background art (no floating-card mat) */
   .co-band[data-hero] .band-frame .work-tile{padding:0!important}
   .co-band[data-hero] .band-frame .work-tile img{object-fit:contain!important;border-radius:0!important;box-shadow:none!important;max-height:100%!important}
-  /* compact "More work" row: non-featured roles as small click-through cards */
-  .more-lane{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
-  .more-lane .work-tile.more-tile{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:16px 18px!important;display:flex!important;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid var(--border);border-radius:2px;background:var(--surface-2);opacity:1!important;pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
-  .more-lane .work-tile.more-tile:hover{border-color:var(--muted);transform:translateY(-1px)}
-  .more-co{font-weight:600;font-size:15px;color:inherit}
-  .more-desc{color:var(--muted);font-size:13px;line-height:1.35}
-  .more-go{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
+
+  
+
+  
+
+  
+
   /* unified card grid for More work + Experiments (image thumb + name + desc + CTA) */
   .work-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--sp-4);margin-top:16px}
   .work-cards .work-tile.wcard{position:static!important;inset:auto!important;left:auto!important;top:auto!important;width:auto!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column;border:1px solid var(--border);border-radius:2px;overflow:hidden;background:var(--surface-2);pointer-events:auto!important;cursor:pointer;text-align:left;box-shadow:none;transition:border-color .15s ease,transform .15s ease}
