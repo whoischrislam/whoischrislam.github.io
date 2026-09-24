@@ -776,8 +776,7 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 .work-panel-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
 .work-panel-actions[hidden]{display:none}
 .work-panel.is-story-view{padding-top:10px}
-.work-panel.is-story-view .work-panel-navline{margin-bottom:12px;padding-bottom:10px;
-  border-bottom:1px solid var(--border)}
+.work-panel.is-story-view .work-panel-navline{border-bottom:1px solid var(--border)} /* spacing inherits the company view */
 .work-panel.is-story-view .work-panel-provenance{display:flex}
 .work-panel.is-story-view .work-panel-company-head,
 .work-panel.is-story-view .work-panel-company-role,
@@ -1685,7 +1684,7 @@ body[data-world] .work-panel.is-story-view .work-panel-outcome{max-width:none;ma
 body[data-world] .work-panel.is-story-view .work-panel-provenance{display:none}
 
 /* #18 · category + status read as a one-liner dek directly under the title, left-aligned (not floated top-right) */
-body[data-world] .work-panel.is-story-view .work-panel-heading{grid-template-columns:1fr;align-items:start}
+body[data-world] .work-panel.is-story-view .work-panel-heading{grid-template-columns:1fr;align-items:start;margin-top:40px} /* title starts where the company title block does (56px below the nav line) */
 body[data-world] .work-panel.is-story-view .work-panel-story-meta{justify-content:flex-start;margin-top:14px}
 body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;margin:0}
 
