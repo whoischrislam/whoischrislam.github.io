@@ -30,6 +30,7 @@ BANNED = {
     "7 to 8x": "Clover 7-8x has no written source; removed 2026-09-23",
     "coding bootcamp": "engineering is self-taught (Scrimba + side projects), never a bootcamp",
     "about two hours a day": "Clover: the source (NP post) says 1-2 hours, reported; retired 2026-09-23",
+    "strong revenue lift": "Clover revenue impact is unmeasured (7-8x was the PM's verbal estimate); interview-only",
     "30 minutes - 1 hour": "Clover visit-length figure has no source; cut 2026-09-23",
     "voice and tone": "Clover brand/voice was the agency's; retired 2026-09-23",
 }
