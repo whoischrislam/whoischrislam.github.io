@@ -1676,7 +1676,7 @@ body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child d
 /* #12 · fact grid - drop icons + boxy cells; hairline rows, mono label over plain value (like Hybrid B) */
 body[data-world] .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr;gap:0;max-width:none;background:transparent;border:0;border-radius:0;border-top:1px solid var(--world-line)}
 body[data-world] .work-panel.is-story-view .work-panel-facts div,
-body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:1fr;padding:14px 0;border:0;border-bottom:1px solid var(--world-line)}
+body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){display:block;padding:14px 0;border:0;border-bottom:1px solid var(--world-line)} /* block like the company facts, so the spacing matches (the icon grid left a 12px gap) */
 body[data-world] .work-panel.is-story-view .work-panel-facts .fact-icon{display:none}
 body[data-world] .work-panel.is-story-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
 body[data-world] .work-panel.is-story-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
