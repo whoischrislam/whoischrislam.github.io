@@ -2794,8 +2794,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         role: "Designer",
         companyOutcome: "Public · 2021",
         context: "A Medicare Advantage insurer using data and software to coordinate member care.",
+        lede: "A Medicare Advantage insurer using data and software to coordinate member care. I rebuilt the nurse home-visit app: nurses reported 1-2 hours of chart prep gone each day, time for more visits.",
         meta: "2015–2016 · Designer",
-        summary: "As Clover’s second designer, I worked across the clinical tools used in members’ homes and the company’s first public enrollment experience, planned the product and wrote PRDs alongside the PMs, and helped build the design team.",
+        summary: "I worked across the clinical tools used in members’ homes and the company’s first public enrollment site. I planned the product and wrote PRDs alongside the PMs, and helped build the design team.",
         facts: [
           ["Stage", "Founder-funded · pre-Series A"],
           ["Team", "Second designer"],
@@ -6363,8 +6364,10 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + (isCompany ? " @" : ""); hero.appendChild(k); } // #3: role @ company
       var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
       // #3: merge the impact one-liner (band tagline) with the company context into one lede paragraph (both existing copy).
+      // A world may set its own `lede` (per-world pass, 2026-09-23): the band line leads with the role for the homepage
+      // scan, but inside the world the role already sits in the kicker and Facts table, so repeating it is redundant.
       var impact = bandP ? bandP.textContent : "";
-      var merged = [impact, item.context || ""].filter(Boolean).join("  ");
+      var merged = item.lede || [impact, item.context || ""].filter(Boolean).join("  ");
       if(merged){ var p=document.createElement("p"); p.className="world-hero-lede"; p.textContent=merged; hero.appendChild(p); }
       var m=document.createElement("div"); m.className="world-hero-media";
       if(item.hero){
