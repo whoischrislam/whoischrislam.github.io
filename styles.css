@@ -26,10 +26,10 @@
     --keyword-size: 0.8em;
     /* Buttons */
     --btn-font-size: 1.05em;
-    --btn-border-radius: 0.6em;
+    --btn-border-radius: 0;
     --btn-font-weight: 600;
     /* Shape */
-    --border-radius: 1em;
+    --border-radius: 0;
     --transition: 0.25s ease;
 
     /* Dark theme (default) */
@@ -131,7 +131,7 @@ a { color: var(--link); text-decoration: none; transition: color var(--transitio
 :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
-    border-radius: 3px;
+    border-radius: 0;
 }
 a:hover { text-decoration: underline; }
 del { color: var(--muted); text-decoration-thickness: 1.5px; }
@@ -241,7 +241,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     color: var(--accent);
     background-color: var(--accent-soft);
     border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-    border-radius: 2em;
+    border-radius: 0;
 }
 .availability strong { color: var(--accent); font-weight: 700; }
 
@@ -316,7 +316,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     box-shadow: var(--drop-shadow);
 }
 /* Reset the global full-width button rule inside the widget */
-.voice-agent button { width: auto; background: none; color: var(--text); padding: 0; border-radius: 2em; }
+.voice-agent button { width: auto; background: none; color: var(--text); padding: 0; border-radius: 0; }
 
 .va-head { margin-bottom: 0.9em; }
 .va-title { display: flex; align-items: center; gap: 0.4em; font-size: 1.05em !important; font-weight: 600; color: var(--text) !important; margin: 0 0 0.3em 0 !important; }
@@ -343,7 +343,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-conversation { display: flex; flex-direction: column; gap: 0.9em; }
 .va-conversation:empty { display: none; }
 .va-turn { margin: 0 !important; white-space: pre-wrap; overflow-wrap: break-word; }
-.va-turn-you { align-self: flex-end; max-width: 82%; font-size: 0.84em !important; line-height: 1.45; padding: 0.45em 0.8em; border-radius: 0.9em; background: var(--chip-bg); color: var(--muted) !important; }
+.va-turn-you { align-self: flex-end; max-width: 82%; font-size: 0.84em !important; line-height: 1.45; padding: 0.45em 0.8em; border-radius: 0; background: var(--chip-bg); color: var(--muted) !important; }
 .va-turn-agent { align-self: stretch; max-width: 100%; font-size: 0.95em !important; line-height: 1.62; padding: 0.1em 0 0.2em 0.95em; border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent); color: var(--text) !important; }
 
 .va-status { font-size: 0.8em !important; color: var(--muted) !important; margin: 0 !important; }
@@ -380,7 +380,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     font-family: var(--body-font); font-size: 0.95em;
     padding: 0.6em 0.9em;
     background: var(--bg); color: var(--text);
-    border: 1px solid var(--border-strong); border-radius: 2em;
+    border: 1px solid var(--border-strong); border-radius: 0;
     outline: none;
     transition: border-color var(--transition);
 }
@@ -389,7 +389,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-send, .va-mic {
     display: inline-flex !important; align-items: center; justify-content: center;
     width: 2.4em !important; height: 2.4em;
-    border-radius: 50% !important;
+    border-radius: 0 !important;
     cursor: pointer; flex-shrink: 0;
     transition: background-color var(--transition), transform var(--transition);
 }
@@ -417,7 +417,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     width: auto !important;
     padding: 0.7em 1.1em !important;
     background: var(--accent) !important; color: var(--on-accent) !important;
-    border: none !important; border-radius: 2em !important;
+    border: none !important; border-radius: 0 !important;
     font-family: var(--body-font); font-size: 0.9em; font-weight: 600;
     box-shadow: var(--drop-shadow); cursor: pointer;
     transition: background-color var(--transition), transform var(--transition);
@@ -461,7 +461,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-brief-ev a { color: var(--accent); font-size: 0.82em; white-space: nowrap; }
 .va-brief-prov { font-size: 0.7em !important; color: var(--muted) !important; margin-top: 1em !important; padding-top: 0.7em; border-top: 1px solid var(--border); }
 .va-brief-actions { display: flex; flex-wrap: wrap; gap: 0.5em; margin-top: 1em; }
-.va-brief-actions button { width: auto !important; font-size: 0.82em; padding: 0.45em 0.9em !important; border-radius: 2em !important; cursor: pointer; }
+.va-brief-actions button { width: auto !important; font-size: 0.82em; padding: 0.45em 0.9em !important; border-radius: 0 !important; cursor: pointer; }
 .va-brief-copy { background: var(--accent) !important; color: var(--on-accent) !important; }
 .va-brief-copy:hover { background: var(--accent-strong) !important; }
 .va-brief-print, .va-brief-close { border: 1px solid var(--border-strong) !important; color: var(--text) !important; }
@@ -490,7 +490,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
 .va-dock[hidden] { display: none; }
 .va-dock-head { display: flex; align-items: center; justify-content: space-between; padding: 0.55em 0.9em; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .va-dock-title { font-size: 0.85em; font-weight: 600; color: var(--text); }
-.va-dock-close { width: auto !important; background: none !important; color: var(--muted) !important; padding: 0.1em 0.5em !important; font-size: 1.3em; line-height: 1; cursor: pointer; border-radius: 0.4em !important; }
+.va-dock-close { width: auto !important; background: none !important; color: var(--muted) !important; padding: 0.1em 0.5em !important; font-size: 1.3em; line-height: 1; cursor: pointer; border-radius: 0 !important; }
 .va-dock-close:hover { color: var(--accent) !important; }
 .va-dock-body { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 /* Inside the dock, the agent drops its own card chrome (the dock provides it) and
@@ -552,7 +552,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     font-size: 0.82em;
     font-weight: 500;
     padding: 0.3em 0.85em;
-    border-radius: 2em;
+    border-radius: 0;
     background: var(--accent-soft);
     color: var(--accent);
     border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
@@ -587,7 +587,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     left: 0;
     width: 10px;
     height: 10px;
-    border-radius: 50%;
+    border-radius: 0;
     background: var(--border-strong);
 }
 .arc-step-now::before {
@@ -616,7 +616,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     gap: 0.4em;
     padding: 0.5em 1.1em;
     border: 1px solid var(--border-strong);
-    border-radius: 2em;
+    border-radius: 0;
     font-size: 0.88em;
     font-weight: 600;
     color: var(--text);
@@ -780,10 +780,10 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     color: var(--accent);
     background: var(--accent-soft);
     padding: 0.35em 0.8em;
-    border-radius: 2em;
+    border-radius: 0;
 }
 .featured-badge .dot {
-    width: 7px; height: 7px; border-radius: 50%;
+    width: 7px; height: 7px; border-radius: 0;
     background: var(--accent);
     animation: pulse 1.8s ease-in-out infinite;
 }
@@ -855,7 +855,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    border-radius: 0.6em;
+    border-radius: 0;
     overflow: hidden;
     cursor: pointer;
     background: #000;
@@ -881,7 +881,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     padding: 0;
     background: rgba(255, 112, 89, 0.9);
     border: none;
-    border-radius: 50%;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -903,7 +903,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     color: #fff;
     background: rgba(0, 0, 0, 0.62);
     padding: 0.2em 0.5em;
-    border-radius: 0.3em;
+    border-radius: 0;
 }
 .video-facade iframe {
     position: absolute;
@@ -917,7 +917,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    border-radius: 0.6em;
+    border-radius: 0;
     overflow: hidden;
     background: #000;
 }
@@ -955,7 +955,7 @@ section:nth-of-type(even) { background-color: var(--bg-alt); }
     padding: 0.25em 0.8em;
     font-size: var(--keyword-size);
     font-weight: 500;
-    border-radius: 2em;
+    border-radius: 0;
     background-color: var(--chip-bg);
     color: var(--chip-text);
     border: 1px solid var(--border);

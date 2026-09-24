@@ -22,7 +22,12 @@ inconsistency — it was the *absence* of his own decisions.
 --sp-1:4  --sp-2:8  --sp-3:16  --sp-4:24  --sp-6:32  --sp-8:44  --sp-12:88
 ```
 
-**Fonts.** Open Sans is his in 2024 *and* 2026 — do not swap it. Instrument Serif is the
+**Two typefaces, two weights (Chris 2026-09-24, after Vicky Vo's review).** Newsreader (display
+serif) + Figtree (text sans), weights 400 and 600 only. IBM Plex Mono, Instrument Serif (never
+loaded; it fell back to the browser serif) and Caveat (loaded, unused) are retired. `--mono` is gone;
+`check-design-system.py` requires only `--serif` / `--sans`.
+
+**Fonts (history).** Open Sans is his in 2024 *and* 2026 — do not swap it. Instrument Serif is the
 replaceable half. Single column: 840px. He has shipped asymmetric layouts twice (2010
 700/200, 2014 280/620), so asymmetric is *available*, just not his default.
 
@@ -76,8 +81,10 @@ on dark, Amazon `#df9900` is 2.28:1 on light. Any new brand colour needs a value
 ## Hard edges
 
 From gamedev, where he explicitly reset every radius to zero, deleted every drop shadow,
-and hardened borders to `2px solid`. Structure comes from line weight. `.btn` keeps 8px and
-is now the only radius on the page — an open decision.
+and hardened borders to `2px solid`. Structure comes from line weight.
+**Applied site-wide 2026-09-24 (Chris pick, after Vicky Vo flagged mixed radii):** every surface is
+square. Only true circles keep `50%` (theme knob, support dots, play and close buttons, the AI
+launcher). Do not add a radius to a new component.
 
 ## No uppercase micro-type
 
@@ -189,7 +196,7 @@ the hero composites now supply canvas colours for TaskRabbit, Clover, GoodRx, an
 Amazon has gold `#DF9900` (fails light theme, needs a variant). These three unknowns gate three
 of the five hero composites in `PORTFOLIO_HERO_PLAN.md`. (Blue Startups is not a work tile.)
 
-**3. `.btn` radius.** 8px, now the only radius on the page.
+**3. `.btn` radius.** RESOLVED 2026-09-24: zero, like everything else (see Hard edges).
 
 **4. \~90 raw px spacing values remain in card rules** despite the tokens existing. Cosmetic
 debt, no visible defect.

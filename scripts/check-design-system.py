@@ -14,7 +14,7 @@ Enforced (FAIL on violation):
      the full token set (bg / ink / ink-soft / line / accent / surface). Catches a
      new world shipped with a missing color, which is exactly the drift that made
      case studies render wrong.
-  3. Type      — the font tokens (--serif / --sans / --mono) must be defined.
+  3. Type      — the font tokens (--serif / --sans) must be defined. Two typefaces only.
 
 Warns (does not block): missing core semantic tokens.
 
@@ -130,7 +130,7 @@ for name, body in day_rows:
         errors.append(f'world "{name}": color value {bad} is not a #rrggbb hex (cannot contrast-check)')
 
 # 3) type / font
-for tok in ["--serif", "--sans", "--mono"]:
+for tok in ["--serif", "--sans"]:  # two typefaces only (Chris 2026-09-24); --mono retired
     if tok not in css:
         errors.append(f"font token {tok} not defined")
 
