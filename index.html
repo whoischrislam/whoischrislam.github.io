@@ -873,7 +873,7 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-project-card:focus-visible .work-project-card-media img{transform:translateY(-6px)}
 /* Layout C (Chris 2026-09-22): kicker · serif title · de-emphasized summary · result line · "Read the case" pill. */
 .work-project-card-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:26px 30px;min-width:0}
-.work-project-card h4{font-family:var(--serif);font-size:var(--t-xxl);font-weight:400;line-height:1.05;margin:0}
+.work-project-card h4{font-family:var(--serif);font-size:var(--t-xl);font-weight:400;line-height:1.05;margin:0}
 .work-project-card p{color:var(--muted);font-size:var(--t-sm);line-height:1.5;margin:0;max-width:48ch}
 /* Result line: mono evidence label (resultKind, falling back to delivery) colored by delivery STATUS, then the result
    in the contrast-safe world accent. No marker glyph: the label's color carries the status. */
@@ -2010,8 +2010,14 @@ div.foot{margin-top:var(--s-section) !important;padding-top:0 !important}
 .project-story-opening{margin-top:var(--s-item) !important;margin-bottom:var(--s-group) !important}
 .work-panel-facts{margin-top:0 !important;margin-bottom:var(--s-item) !important}
 .work-panel-summary{margin-bottom:var(--s-item) !important}
-.work-shell h4{margin-top:var(--s-section) !important;margin-bottom:var(--s-in) !important}
-.work-shell h4 + p,.project-chapter p{margin-top:0 !important;margin-bottom:var(--s-item) !important}
+.work-story-section-head h4,.work-company-support-head h4{margin-top:var(--s-section) !important;margin-bottom:var(--s-in) !important} /* section heads only: card titles are h4 too (bug 2026-09-24: 155px above every card title) */
+:is(.work-story-section-head,.work-company-support-head) h4 + p,.project-chapter p{margin-top:0 !important;margin-bottom:var(--s-item) !important}
+/* Case-study card, inside: title top-aligned at one inset, link pinned to the bottom so every card lines up */
+.work-project-card-copy{justify-content:flex-start !important;gap:0 !important;padding:var(--s-group) 40px 40px !important}
+.work-project-card h4{margin:0 0 var(--s-in) !important}
+.work-project-card-copy>p{margin:0 0 var(--s-item) !important}
+.work-project-card-result{margin:0 0 var(--s-item) !important}
+.work-project-card-cta{margin-top:auto !important}
 .work-shell .story-artifact,.work-shell figure,.portfolio-diagram{margin-top:0 !important;margin-bottom:var(--s-item) !important}
 .work-support-group{margin-top:var(--s-group) !important}
 .work-quote + .work-quote{margin-top:var(--s-item) !important}
