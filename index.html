@@ -775,7 +775,8 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
   font-size:clamp(24px,3vw,var(--t-lg));line-height:1.15;margin:6px 0 0}
 .work-panel-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
 .work-panel-actions[hidden]{display:none}
-.work-panel.is-story-view .work-panel-navline{border-bottom:1px solid var(--border)} /* spacing inherits the company view */
+.work-panel-navline:has(+ .work-panel[hidden]){display:none} /* lives beside the panel now; hidden with it */
+.work-panel-navline:has(+ .work-panel.is-story-view){border-bottom:1px solid var(--border)} /* spacing inherits the company view */
 .work-panel.is-story-view .work-panel-provenance{display:flex}
 .work-panel.is-story-view .work-panel-company-head,
 .work-panel.is-story-view .work-panel-company-role,
@@ -821,7 +822,9 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 .work-focus-content[hidden]{display:none}
 .work-shell.is-story-focused .work-explorer{display:block}
 .work-shell.is-story-focused .work-panel{margin:0 0 18px}
-.work-shell.is-story-focused .work-panel{border-bottom:0} /* the Jump-to bar's top border is the one line here (was doubled) */
+.work-shell.is-story-focused .work-panel{border-bottom:0}
+.work-shell.is-focused .work-panel{border-top:0;padding-top:0} /* the moved back-link row carries the top spacing */
+body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just under the back-link row */ /* the header's own bottom border is the one line under it (was doubled) */ /* the Jump-to bar's top border is the one line here (was doubled) */
 .project-story-nav + .project-chapter{border-top:0} /* and its bottom border is the one line below (was doubled) */
 .work-shell.is-story-focused .work-focus-content{display:block}
 .work-shell.is-story-focused .project-story{display:grid}
@@ -1260,7 +1263,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   .work-company-support-head p{margin-top:6px}
   .work-project-card-media:has(>.portfolio-diagram),
   .work-project-card:only-child .work-project-card-media:has(>.portfolio-diagram){height:auto;min-height:420px}
-  .work-shell.is-story-focused .work-panel{margin:0 0 18px;padding:8px 0 20px}
+  .work-shell.is-story-focused .work-panel{margin:0 0 18px}
   .work-shell.is-story-focused .work-panel-summary{font-size:var(--t-sm);line-height:1.48}
   .work-shell.is-story-focused .work-panel-result{font-size:24px;margin-top:9px}
   .work-panel.is-story-view .work-panel-heading{grid-template-columns:1fr;gap:5px}
@@ -1627,7 +1630,7 @@ body.work-focus-open[data-world] #work-focus-content{
 
 /* hero-forward top (Image #4). JS hides the default heading and inserts .world-hero before it. */
 .work-panel-heading.world-hidden{display:none}
-.world-hero{max-width:1040px;margin:0 auto;padding:40px 0 6px}
+.world-hero{max-width:none;margin:0;padding:40px 0 6px} /* aligned to the content column, like the story title and back link */
 .world-hero-kicker{font:600 var(--t-xs)/1 var(--mono,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--world-ink-soft);margin:0 0 16px}
 .world-hero-title{font:400 clamp(44px,7vw,92px)/1.02 var(--serif);letter-spacing:-.01em;color:var(--world-ink);margin:0 0 26px}
 .world-hero-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:72ch;color:var(--world-ink);margin:0}
@@ -2240,6 +2243,12 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     var workPanelProvenanceLogo = workPanel.querySelector(".work-panel-provenance-logo");
     var workPanelProvenanceName = workPanel.querySelector(".work-panel-provenance-name");
     var workPanelProvenanceOutcome = workPanel.querySelector(".work-panel-provenance-outcome");
+    // The back-link row docks for the WHOLE page (Chris 2026-09-23): sticky inside the panel it undocked once the panel
+    // scrolled away, so it moves out to sit beside the panel (its child refs are captured above).
+    (function(){ var nl = workPanel.querySelector(".work-panel-navline"); if(!nl) return; workPanel.parentNode.insertBefore(nl, workPanel);
+      var shell = document.querySelector(".work-shell");
+      if(window.ResizeObserver && shell) new ResizeObserver(function(){ shell.style.setProperty("--navline-h", nl.offsetHeight + "px"); }).observe(nl);
+    })();
     var workPanelKicker = workPanel.querySelector(".work-panel-kicker");
     var workPanelLogo = workPanel.querySelector(".work-panel-logo");
     var workPanelCompanyName = workPanel.querySelector(".work-panel-company-name");
