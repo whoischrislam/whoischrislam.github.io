@@ -96,7 +96,7 @@
   --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(30,40,30,.08);
   --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;
   --grid:rgba(0,0,0,.045); /* structural-grid hairline - content aligns to it, not wallpaper */
-  --body-font:var(--sans); --border-radius:0; --btn-border-radius:0; --transition:.25s ease;
+  --body-font:var(--sans); --border-radius:0; --btn-border-radius:0; --transition:.25s ease; --enter:.5s ease; /* entrance (scroll cue) */
   /* Newsreader = anti-slop serif display (NOT Fraunces/Instrument Serif). Figtree = Proxima Nova
      stand-in (real Proxima pending Adobe kit). IBM Plex Mono = blueprint annotation layer. */
   --serif:'Newsreader',Georgia,'Times New Roman',serif;
@@ -1858,7 +1858,8 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
                             <p class="va-disclosure">Voice transcribed by ElevenLabs, answered by Claude (Anthropic). Nothing is stored.</p>
                         </div>
                     </div>
-</header>
+  <button class="scroll-cue" type="button"><span>Scroll to see work</span><span class="ar" aria-hidden="true">↓</span></button>
+    </header>
 
 <!-- 3. Logo strip -->
 
@@ -1930,6 +1931,18 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   .hero .sub{margin:0 0 14px;line-height:1.4}
   .hero .sub-line{margin:0}
   .hero-credibility{margin-top:44px;padding-top:0;border-top:0}
+  /* Scroll cue (Chris 2026-09-24; his words): enters after the headline lands (hero:done), leaves on scroll. */
+  .hero{position:relative}
+  .scroll-cue{position:absolute;left:50%;bottom:22px;display:flex;flex-direction:column;align-items:center;gap:6px;
+    appearance:none;border:0;background:none;padding:6px 0;cursor:pointer;color:var(--muted);font:400 var(--t-xs)/1 var(--sans);
+    opacity:0;transform:translate(-50%,8px);pointer-events:none;transition:opacity var(--enter),transform var(--enter),color var(--transition)}
+  .scroll-cue .ar{font-size:18px;line-height:1}
+  body[data-world] .scroll-cue,body.work-focus-open .scroll-cue{display:none}
+  .scroll-cue:hover,.scroll-cue:focus-visible{color:var(--text)}
+  body.cue-in.at-top .scroll-cue,html:not(.js) .scroll-cue{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+  /* Header is clear over the first screen and gains its surface once you scroll (homepage only; worlds dock under it). */
+  body:not([data-world]):not(.work-focus-open) .site-head{transition:background-color var(--transition),border-color var(--transition)}
+  body.at-top:not([data-world]):not(.work-focus-open) .site-head{background:transparent;border-bottom-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
   .hero .tags{margin:16px 0 0}
   h2.sec#work{margin:6px 0 12px}
   .co-lane{gap:44px}
@@ -7473,6 +7486,22 @@ document.body.classList.add('fx-dissolve','skin-digital');
 })();
 </script>
 <!-- Reusable ?dev tuning panel (window.devPanel). No-op without ?dev. -->
+<script>
+/* Homepage first screen: header clear at the top; scroll cue enters once the headline has landed. */
+(function(){
+  var b=document.body, cue=document.querySelector('.scroll-cue');
+  function top(){ b.classList.toggle('at-top', window.scrollY<40); }
+  top(); window.addEventListener('scroll',top,{passive:true});
+  function cueIn(){ setTimeout(function(){ b.classList.add('cue-in'); },250); }
+  if(window.__heroDone) cueIn(); else window.addEventListener('hero:done',cueIn,{once:true});
+  setTimeout(function(){ b.classList.add('cue-in'); },3600);   // headline never signalled: show it anyway
+  if(cue) cue.addEventListener('click',function(){
+    var w=document.getElementById('work'); if(!w) return;
+    var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    w.scrollIntoView({behavior:still?'auto':'smooth'});
+  });
+})();
+</script>
 <script src="assets/dev-panel.js"></script>
 
 <!-- Homepage HALFTONE REVEAL (Chris picks 2026-09-23; spikes spike-reveal R3 + spike-cards C). ONE engine for every
