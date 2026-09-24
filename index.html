@@ -2794,7 +2794,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         role: "Designer",
         companyOutcome: "Public · 2021",
         context: "A Medicare Advantage insurer using data and software to coordinate member care.",
-        lede: "A Medicare Advantage insurer using data and software to coordinate member care. I rebuilt the nurse home-visit app, replacing the paper packets nurses filled out every night.",
         meta: "2015–2016 · Designer",
         summary: "I worked across the clinical tools used in members’ homes and the company’s first public enrollment site. I planned the product and wrote PRDs alongside the PMs, and helped build the design team.",
         facts: [
@@ -6358,15 +6357,13 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       var item = workProjects[project]; var heading = workPanel.querySelector(".work-panel-heading");
       if(!item || !heading) return;
       var isCompany = hasCompanyStories(project); // companies read "role @ Company"; standalone projects just "role"
-      var bandP = document.querySelector('.co-band[data-project="'+project+'"] .co-head p');
       var hero = document.createElement("header"); hero.className = "world-hero";
       if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + (isCompany ? " @" : ""); hero.appendChild(k); } // #3: role @ company
       var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
-      // #3: merge the impact one-liner (band tagline) with the company context into one lede paragraph (both existing copy).
-      // A world may set its own `lede` (per-world pass, 2026-09-23): the band line leads with the role for the homepage
-      // scan, but inside the world the role already sits in the kicker and Facts table, so repeating it is redundant.
-      var impact = bandP ? bandP.textContent : "";
-      var merged = item.lede || [impact, item.context || ""].filter(Boolean).join("  ");
+      // World lede = company context only (Chris 2026-09-23: "the one-liner below the company name gives context on
+      // what the company does, then I talk about what I did"). The band line (role + impact) stays on the homepage;
+      // inside the world, role lives in the kicker + Facts and the work in What I did, so repeating them was redundant.
+      var merged = item.context || "";
       if(merged){ var p=document.createElement("p"); p.className="world-hero-lede"; p.textContent=merged; hero.appendChild(p); }
       var m=document.createElement("div"); m.className="world-hero-media";
       if(item.hero){
