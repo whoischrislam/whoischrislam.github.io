@@ -25,7 +25,17 @@ BANNED = {
     "pre-production, in pilot": "y30 was tested live but never entered a senior pilot",
     "no elder has ever evaluated": "at least one senior tried y30 by phone; sustained at-home evaluation did not happen",
     "owned the dev documentation and the ci pipeline": "Modus used the team's existing CI/CD pipeline",
+    "hand-built without ai": "the site is AI-assisted on hand-coded 2023-24 foundations (git history shows it)",
+    "7-8x": "Clover 7-8x has no written source; removed 2026-09-23",
+    "7 to 8x": "Clover 7-8x has no written source; removed 2026-09-23",
+    "coding bootcamp": "engineering is self-taught (Scrimba + side projects), never a bootcamp",
 }
+
+# Private application packets reuse surface copy, and corrections do not survive copy-paste
+# (learning #8, approved 2026-09-23). Scanned for the same banned phrases; reported as WARN so an
+# old, already-sent packet never blocks an unrelated commit, but a reused one is caught before sending.
+APPLICATIONS_DIR = ".jobhunt/applications"
+APPLICATION_SUFFIXES = {".json", ".md", ".txt", ".html"}
 
 PLAYSESH_REQUIRED = [
     "authorized",
@@ -101,6 +111,19 @@ def main() -> int:
                 failures.append(
                     f'{name}: missing separately labelled PlaySesh fact "{needle}"'
                 )
+
+    warnings: list[str] = []
+    apps = ROOT / APPLICATIONS_DIR
+    if apps.is_dir():
+        for path in sorted(apps.rglob("*")):
+            if path.suffix.lower() not in APPLICATION_SUFFIXES or not path.is_file():
+                continue
+            lowered = path.read_text(encoding="utf-8", errors="replace").lower()
+            for needle, reason in BANNED.items():
+                if needle.lower() in lowered:
+                    warnings.append(f'{path.relative_to(ROOT)}: banned phrase "{needle}" — {reason}')
+    for warning in warnings:
+        print(f"WARN  {warning}")
 
     if failures:
         for failure in failures:

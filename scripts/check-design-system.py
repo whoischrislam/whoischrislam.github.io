@@ -134,6 +134,39 @@ for tok in ["--serif", "--sans", "--mono"]:
     if tok not in css:
         errors.append(f"font token {tok} not defined")
 
+# 4) drift ratchet (learnings #53/#54/#58, approved 2026-09-23). Existing debt is the ceiling; anything NEW fails.
+#    Lower a baseline when you pay debt down; never raise one without Chris's call.
+#    a) text measure caps: a max-width in `ch` caps a line of text. Chris's recurring pet peeve is text capped
+#       narrower than the rules/content around it. New caps must be a named token (var(--measure-*)) so the cap is
+#       a deliberate choice. Known raw caps are grandfathered by selector for a design review.
+#    b) hardcoded colors / durations outside tokens: count-only ratchet, so the visual grammar stays in tokens.
+MEASURE_GRANDFATHERED = {
+    ".work-panel-context", ".work-panel-summary", ".work-panel.is-story-view .work-panel-summary",
+    ".work-project-card p", ".work-quote-text", ".project-chapter-copy", ".visual-placeholder-title",
+    ".visual-placeholder-note", ".work-tile>.visual-placeholder .visual-placeholder-title", ".world-hero-lede",
+}
+HARDCODED_COLOR_BASELINE = 60
+HARDCODED_DURATION_BASELINE = 53
+_rules = re.findall(r"([^{}]+)\{([^{}]*)\}", css_nc)
+for sel, body in _rules:
+    for val in re.findall(r"max-width:\s*([^;]+)", body):
+        if re.search(r"\d\s*ch\b", val) and "var(" not in val:
+            for s in (x.strip() for x in sel.split(",")):
+                if s and s not in MEASURE_GRANDFATHERED:
+                    errors.append(f"text measure cap {val.strip()} on `{s}` must use a var(--measure-*) token "
+                                  "(accidental text caps are a known regression here)")
+_decls = re.findall(r"([\w-]+)\s*:\s*([^;{}]+)", css_nc)
+n_color = sum(1 for p, v in _decls if not p.startswith("--") and re.search(r"#[0-9a-fA-F]{3,8}\b|rgba?\(", v))
+n_dur = sum(1 for p, v in _decls if p in ("transition", "animation", "transition-duration", "animation-duration")
+            and re.search(r"\b\d*\.?\d+m?s\b", v))
+if n_color > HARDCODED_COLOR_BASELINE:
+    errors.append(f"hardcoded colors outside tokens rose to {n_color} (ceiling {HARDCODED_COLOR_BASELINE}): use a token")
+if n_dur > HARDCODED_DURATION_BASELINE:
+    errors.append(f"hardcoded durations rose to {n_dur} (ceiling {HARDCODED_DURATION_BASELINE}): use a motion token")
+if n_color < HARDCODED_COLOR_BASELINE or n_dur < HARDCODED_DURATION_BASELINE:
+    warns.append(f"drift debt went DOWN (colors {n_color}/{HARDCODED_COLOR_BASELINE}, durations "
+                 f"{n_dur}/{HARDCODED_DURATION_BASELINE}): lower the baselines to lock it in")
+
 # soft: semantic tokens
 for tok in ["--bg", "--text", "--accent", "--surface", "--border"]:
     if tok not in css:
