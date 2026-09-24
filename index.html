@@ -2000,7 +2000,7 @@ h2.sec#work{margin-top:var(--s-group) !important}
 p.lede,p.avail,p.avail-line,p.links,p.craft{margin-top:0 !important;margin-bottom:var(--s-item) !important}
 ul.want{margin-bottom:var(--s-item) !important}
 .tags + .tags{margin-top:var(--s-in) !important}
-div.refs{margin-top:var(--s-group) !important;padding-top:0 !important}
+div.refs{margin-top:var(--s-group) !important;padding-top:var(--s-item) !important} /* box padding matches its bottom (was 0: first row touched the border) */
 p.outside{margin-top:var(--s-group) !important}
 div.foot{margin-top:var(--s-section) !important;padding-top:0 !important}
 .world-hero-kicker{margin-bottom:var(--s-in) !important}
@@ -2051,6 +2051,38 @@ section.work-company-quotes,section.work-company-support,section.project-chapter
 #top p,#top li,.work-shell p:not(.work-panel-result),.work-shell li{line-height:1.65 !important}
 .co-band h3,.work-shell h3,#top .work-panel-result,.work-shell .work-panel-result,.work-shell dd,.exp-head{line-height:1.25 !important}
 h2.sec,.work-shell h4{line-height:1.12 !important}
+
+/* ==== WORLD LAYER: "tame" (Chris 2026-09-24). The foundation (paper, type, spacing) runs through every page; a world
+   is a layer on top: its palette colors the title band only, plus an accent re-picked per theme to clear 4.5:1.
+   Mechanism: body keeps the world palette as the BRAND; the content area resets --world-* to the foundation, so
+   every existing --world-* consumer gets the foundation without edits; the title band maps them back to the brand. */
+body[data-world]{--brand-bg:var(--world-bg);--brand-ink:var(--world-ink);--brand-soft:var(--world-ink-soft);--brand-line:var(--world-line)}
+body[data-world] .work-shell{--brand-accent-light:#3f6ea6;--brand-accent-dark:#edeae2}
+body[data-world="goodrx"] .work-shell{--brand-accent-light:#6d4bd8;--brand-accent-dark:#fcef72}
+body[data-world="y30"] .work-shell{--brand-accent-light:#196cca;--brand-accent-dark:#edf0e7}
+body[data-world="clover"] .work-shell{--brand-accent-light:#2D6154;--brand-accent-dark:#ffffff}
+body[data-world="playsesh"] .work-shell{--brand-accent-light:#2C3E50;--brand-accent-dark:#FEFEFE}
+body[data-world="pathstream"] .work-shell{--brand-accent-light:#c3343a;--brand-accent-dark:#ffffff}
+body[data-world="taskrabbit"] .work-shell{--brand-accent-light:#037f41;--brand-accent-dark:#ffffff}
+body[data-world="sharecare"] .work-shell{--brand-accent-light:#3c29b4;--brand-accent-dark:#C6E2DA}
+body[data-world="startplaying"] .work-shell{--brand-accent-light:#0766ee;--brand-accent-dark:#fef1dd}
+body[data-world="modus"] .work-shell{--brand-accent-light:#000000;--brand-accent-dark:#ffffff}
+body[data-world="amazon"] .work-shell{--brand-accent-light:#131921;--brand-accent-dark:#FF6301}
+body[data-world="zodiacus"] .work-shell{--brand-accent-light:#721c07;--brand-accent-dark:#E0A657}
+body.work-focus-open[data-world]{background:var(--bg)}
+body[data-world] .work-shell{--world-bg:var(--bg);--world-ink:var(--text);--world-ink-soft:var(--muted);--world-line:var(--border);
+  --world-surface:var(--surface);--world-card-bg:var(--surface);--world-card-ink:var(--text);
+  --world-accent:var(--brand-accent-light);--world-accent-on-card:var(--brand-accent-light)}
+:root[data-theme="dark"] body[data-world] .work-shell{--world-accent:var(--brand-accent-dark);--world-accent-on-card:var(--brand-accent-dark)}
+body[data-world] header.world-hero,body[data-world] .work-panel.is-story-view .work-panel-heading{
+  --world-bg:var(--brand-bg);--world-ink:var(--brand-ink);--world-ink-soft:var(--brand-soft);--world-line:var(--brand-line);
+  position:relative;background:var(--brand-bg);color:var(--brand-ink);box-shadow:0 0 0 100vmax var(--brand-bg);clip-path:inset(0 -100vmax);
+  padding-top:var(--s-group)!important;padding-bottom:var(--s-group)!important}
+body[data-world] .work-panel.is-story-view .work-panel-heading{margin-bottom:var(--s-group)!important}
+body[data-world] header.world-hero :is(.visual-placeholder-note,.visual-placeholder-title){color:var(--brand-soft)} /* inside the band: brand text, not the foundation gray */
+body.work-focus-open[data-world] .work-project-card{border:1px solid var(--border)}
+/* one image backdrop for every card (was 11 hand-picked colors) */
+.work-project-card .work-project-card-media,.work-project-card[data-work-story] .work-project-card-media,.work-project-card[data-work-company] .work-project-card-media{background:var(--surface-2)}
 </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">

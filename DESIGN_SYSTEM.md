@@ -22,6 +22,12 @@ inconsistency — it was the *absence* of his own decisions.
 - Text runs the full column (Chris's pick over the research's 70ch cap; revisit for long case-study prose).
 - Lives in `<style id="layout-system">` with !important over older component margins: fold into components as touched.
 
+**World layer: "tame" (Chris 2026-09-24).** The foundation (paper, type, spacing) runs through every page, company and
+story pages included. A world is a layer on top: its palette colors the title band only (full-bleed behind kicker,
+title, lede and hero), plus an accent re-picked per theme so it clears 4.5:1 on the paper (`--brand-accent-light/-dark`;
+Pathstream and TaskRabbit darkened a few percent to pass). Card image backdrops are one rule (`--surface-2`), not 11
+hand-picked colors. Open: PlaySesh (white) and the default palette (HogWare, EDR) barely separate from paper in light.
+
 **Type floor and scale (Chris 2026-09-24).** Nothing renders under 14px. Every size is a `--t-*` token:
 14 / 16 / 18 / 21 / 24 / 30 / 38, plus display `--t-h1` (story title), `--t-display` (world title),
 `--t-hero` (headline). Anything that would go smaller is a special case that needs compensating treatment
