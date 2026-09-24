@@ -29,6 +29,8 @@ BANNED = {
     "7-8x": "Clover 7-8x has no written source; removed 2026-09-23",
     "7 to 8x": "Clover 7-8x has no written source; removed 2026-09-23",
     "coding bootcamp": "engineering is self-taught (Scrimba + side projects), never a bootcamp",
+    "about two hours a day": "Clover: the source (NP post) says 1-2 hours, reported; retired 2026-09-23",
+    "voice and tone": "Clover brand/voice was the agency's; retired 2026-09-23",
 }
 
 # Private application packets reuse surface copy, and corrections do not survive copy-paste
