@@ -49,3 +49,6 @@ images/_staging/
 
 # Claude Code agent worktrees (local only)
 .claude/worktrees/
+
+# Superset design-feedback attachments (local tool state)
+.superset/
