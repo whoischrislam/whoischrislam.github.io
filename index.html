@@ -133,6 +133,7 @@
   --chip-bg:rgba(255,255,255,.05); --drop-shadow:0 14px 34px rgba(0,0,0,.5);
   --on-accent:#10231a; --surface-hover:var(--surface-2); --logo-filter:invert(1); --grid:rgba(255,255,255,.05);}
 *,*::before,*::after{box-sizing:border-box}
+button,input,select,textarea{font-family:inherit} /* form controls default to the system font, not the page font */
 body{margin:0;background-color:var(--bg);color:var(--text);font-family:var(--sans);
   font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased;
   }
@@ -6330,11 +6331,11 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       workPanelMeta.textContent = "";
       workPanelDelivery.textContent = "";
       workPanelSummary.textContent = item.summary;
-      // In a world, fold the summary into the grid as the lead "WHAT I DID" cell (and hide the loose paragraph).
+      // In a world, fold the summary into the grid as the lead "What I did" cell (and hide the loose paragraph).
       var inWorld = companyView && document.body.getAttribute("data-world");
       workPanelSummary.hidden = !!inWorld;
       var facts = companyView ? item.facts : null;
-      if(inWorld && item.summary) facts = [["WHAT I DID", item.summary]].concat(item.facts || []);
+      if(inWorld && item.summary) facts = [["What I did", item.summary]].concat(item.facts || []);
       renderWorkFacts(facts, Boolean(companyView));
       workPanelDetails.open = !(companyView && window.matchMedia("(max-width:520px)").matches);
       workPanelResultLabel.textContent = companyView

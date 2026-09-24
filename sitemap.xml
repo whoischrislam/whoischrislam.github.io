@@ -16,42 +16,37 @@
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://whoischrislam.github.io/work/</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://whoischrislam.github.io/work/pathstream.html</loc>
+        <loc>https://whoischrislam.github.io/?work=pathstream&amp;project=lesson-system</loc>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://whoischrislam.github.io/work/iodine.html</loc>
+        <loc>https://whoischrislam.github.io/?work=goodrx&amp;project=iodine-product</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://whoischrislam.github.io/work/goodrx.html</loc>
+        <loc>https://whoischrislam.github.io/?work=goodrx</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://whoischrislam.github.io/work/clover-care-visit.html</loc>
+        <loc>https://whoischrislam.github.io/?work=clover&amp;project=care-visit</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://whoischrislam.github.io/work/clover-health-website.html</loc>
+        <loc>https://whoischrislam.github.io/?work=clover&amp;project=website</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://whoischrislam.github.io/work/taskrabbit-tasker.html</loc>
+        <loc>https://whoischrislam.github.io/?work=taskrabbit&amp;project=tasker</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://whoischrislam.github.io/work/taskrabbit-client.html</loc>
+        <loc>https://whoischrislam.github.io/?work=taskrabbit&amp;project=client</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
