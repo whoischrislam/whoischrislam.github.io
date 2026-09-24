@@ -884,7 +884,8 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
   .work-project-card,.work-project-card.is-rise{opacity:1!important;transform:none!important;transition:border-color var(--dur-instant) linear!important}
   .work-project-card-media img{transition:none!important;object-position:top center!important}
 }
-@media(min-width:761px){ .work-project-card:only-child{grid-column:span 2} } /* a one-project company: the card gets two columns, not a lonely third */
+@media(min-width:761px){ .work-project-card:only-child{grid-column:span 2} }
+.recent-work .work-project-card{--world-accent-on-card:var(--accent-strong)} /* outside a world the site green is 3.3:1 on the card; the strong green clears 4.5:1 in both themes */ /* a one-project company: the card gets two columns, not a lonely third */
 @media(max-width:760px){ .work-project-grid{grid-template-columns:1fr} }
 /* Company page fact band (Role / When / Owned / Outcome) and the folded role details */
 .work-fact-band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s-item,24px);margin:0 0 var(--s-group,64px);
@@ -1985,7 +1986,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
 @media (min-width:641px){:root{--s-in:8px;--s-item:24px;--s-group:64px;--s-section:128px}}
 @media (max-width:640px){:root{--s-in:8px;--s-item:16px;--s-group:40px;--s-section:80px}}
 h2.sec{margin-top:var(--s-section) !important;margin-bottom:var(--s-item) !important;padding-top:0 !important}
-h2.sec#work{margin-top:var(--s-group) !important}
+h2.sec#recent-work{margin-top:var(--s-group) !important}
 .co-lane{gap:var(--s-group) !important}
 .work-head{margin-bottom:0 !important;padding-bottom:0 !important}
 .co-band h3{margin-bottom:var(--s-in) !important}
@@ -5523,6 +5524,59 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       return placeholder;
     }
 
+    // ONE project card (Chris 2026-09-24): used by company pages and the homepage "Recent work".
+    function createProjectCard(key){
+      var story = workStories[key]; var companyData = workProjects[story.company] || {};
+      if(story.hero){
+        var heroPreload = new Image();
+        heroPreload.src = story.hero;
+      }
+      var card = document.createElement("button");
+      card.type = "button";
+      card.className = "work-project-card";
+      card.dataset.workStory = key;
+      card.dataset.workCompany = story.company;
+      card.dataset.workDepth = story.depth || "project";
+      card.dataset.workContentType = story.contentType || "project";
+      card.setAttribute("aria-label", "Open " + (story.cardTitle || story.name));
+      var media = document.createElement("span");
+      media.className = "work-project-card-media";
+      if(story.cardVisual){
+        media.appendChild(createVisualPlaceholder(story.cardVisual, {wrap:true}));
+      }else{
+        (story.cardMedia || []).forEach(function(src){
+          var image = document.createElement("img");
+          image.src = src;
+          image.alt = "";
+          image.loading = "eager";
+          image.decoding = "async";
+          media.appendChild(image);
+        });
+      }
+      if(companyData.portfolioShape === "founder"){
+        var scanTitle = document.createElement("span");
+        scanTitle.className = "work-project-card-scan-title";
+        scanTitle.setAttribute("aria-hidden", "true");
+        scanTitle.textContent = story.cardTitle || story.name;
+        media.appendChild(scanTitle);
+      }
+      var copy = document.createElement("span");
+      copy.className = "work-project-card-copy";
+      if(companyData.dates){ var date=document.createElement("span"); date.className="work-project-card-date"; date.textContent=companyData.dates; copy.appendChild(date); }
+      var heading = document.createElement("h4");
+      heading.textContent = story.cardTitle || story.name;
+      var summary = document.createElement("p");
+      summary.textContent = story.summary;
+      copy.append(heading, summary);
+      if(story.result || story.resultKind || story.delivery) copy.appendChild(createCardResult(story.resultKind, story.delivery, story.result));
+      card.append(media, copy);
+      card.addEventListener("click", function(){
+        if(window.posthog) posthog.capture("case_study_opened", {story:key, company:story.company});
+        openWorkStory(key, {trigger:card});
+      });
+      return card;
+    }
+
     function mountCompanyFocus(company){
       if(storyRevealHandler){
         workShell.removeEventListener("scroll", storyRevealHandler);
@@ -5535,57 +5589,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       });
       var grid = document.createElement("div");
       grid.className = "work-project-grid";
-      companyStories.forEach(function(key){
-        var story = workStories[key];
-        if(story.hero){
-          var heroPreload = new Image();
-          heroPreload.src = story.hero;
-        }
-        var card = document.createElement("button");
-        card.type = "button";
-        card.className = "work-project-card";
-        card.dataset.workStory = key;
-        card.dataset.workCompany = story.company;
-        card.dataset.workDepth = story.depth || "project";
-        card.dataset.workContentType = story.contentType || "project";
-        card.setAttribute("aria-label", "Open " + (story.cardTitle || story.name));
-        var media = document.createElement("span");
-        media.className = "work-project-card-media";
-        if(story.cardVisual){
-          media.appendChild(createVisualPlaceholder(story.cardVisual, {wrap:true}));
-        }else{
-          (story.cardMedia || []).forEach(function(src){
-            var image = document.createElement("img");
-            image.src = src;
-            image.alt = "";
-            image.loading = "eager";
-            image.decoding = "async";
-            media.appendChild(image);
-          });
-        }
-        if(companyData.portfolioShape === "founder"){
-          var scanTitle = document.createElement("span");
-          scanTitle.className = "work-project-card-scan-title";
-          scanTitle.setAttribute("aria-hidden", "true");
-          scanTitle.textContent = story.cardTitle || story.name;
-          media.appendChild(scanTitle);
-        }
-        var copy = document.createElement("span");
-        copy.className = "work-project-card-copy";
-        if(companyData.dates){ var date=document.createElement("span"); date.className="work-project-card-date"; date.textContent=companyData.dates; copy.appendChild(date); }
-        var heading = document.createElement("h4");
-        heading.textContent = story.cardTitle || story.name;
-        var summary = document.createElement("p");
-        summary.textContent = story.summary;
-        copy.append(heading, summary);
-        if(story.result || story.resultKind || story.delivery) copy.appendChild(createCardResult(story.resultKind, story.delivery, story.result));
-        card.append(media, copy);
-        card.addEventListener("click", function(){
-          if(window.posthog) posthog.capture("case_study_opened", {story:key, company:story.company});
-          openWorkStory(key, {trigger:card});
-        });
-        grid.appendChild(card);
-      });
+      companyStories.forEach(function(key){ grid.appendChild(createProjectCard(key)); });
       // Caseless companies (e.g. Modus) have no case studies, so promote their richest
       // "decisions" (vignettes) into Tier-1 cards. They open the media lightbox with an
       // explainer rather than a full story page.
@@ -5829,6 +5833,20 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       });
     }
     window.__enhanceProjectCards = enhanceProjectCards;
+
+    // HOMEPAGE "Recent work" (Chris 2026-09-24): the front door of the site, straight to case studies (one click).
+    // Data-driven: swap a key to change a slot; any story (later an essay or an experiment) can fill one.
+    var RECENT_WORK = ["y30_voice", "playsesh_whiteboard", "iodine_product"];
+    (function mountRecentWork(){
+      var hero = document.querySelector("header.hero"); if(!hero || document.getElementById("recent-work")) return;
+      var keys = RECENT_WORK.filter(function(k){ return workStories[k]; }); if(!keys.length) return;
+      var section = document.createElement("section"); section.className = "recent-work"; section.setAttribute("aria-labelledby", "recent-work");
+      var h = document.createElement("h2"); h.className = "sec"; h.id = "recent-work"; h.textContent = "Recent work";
+      var grid = document.createElement("div"); grid.className = "work-project-grid";
+      keys.forEach(function(k){ grid.appendChild(createProjectCard(k)); });
+      section.append(h, grid); hero.insertAdjacentElement("afterend", section);
+      enhanceProjectCards(grid);
+    })();
 
     var SURFACE_SPINE = ["Product & flows", "Design systems & components", "Web & brand",
       "Prototypes & experiments", "Physical & ops", "Data-journalism / editorial"];
@@ -7658,7 +7676,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     .observe(sp,{attributes:true,attributeFilter:['class']});
   setTimeout(introIn,3000);
   if(cue) cue.addEventListener('click',function(){
-    var w=document.getElementById('work'); if(!w) return;
+    var w=document.getElementById('recent-work')||document.getElementById('work'); if(!w) return;
     var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
     w.scrollIntoView({behavior:still?'auto':'smooth'});
   });
