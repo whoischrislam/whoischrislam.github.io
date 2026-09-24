@@ -775,7 +775,6 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
   font-size:clamp(24px,3vw,var(--t-lg));line-height:1.15;margin:6px 0 0}
 .work-panel-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
 .work-panel-actions[hidden]{display:none}
-.work-panel.is-story-view{padding-top:10px}
 .work-panel.is-story-view .work-panel-navline{border-bottom:1px solid var(--border)} /* spacing inherits the company view */
 .work-panel.is-story-view .work-panel-provenance{display:flex}
 .work-panel.is-story-view .work-panel-company-head,
@@ -1677,7 +1676,7 @@ body[data-world] .work-panel.is-story-view .work-panel-facts div,
 body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){display:block;padding:14px 0;border:0;border-bottom:1px solid var(--world-line)} /* block like the company facts, so the spacing matches (the icon grid left a 12px gap) */
 body[data-world] .work-panel.is-story-view .work-panel-facts .fact-icon{display:none}
 /* stack the brief in one column (summary, facts, then OUTCOME as a full-width serif bookend - like the company MEASURED OUTCOMES) */
-body[data-world] .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;grid-template-areas:"summary" "facts" "outcome"}
+body[data-world] .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;grid-template-areas:"summary" "facts" "outcome";row-gap:0} /* outcome margin alone sets the gap, as on the company view */
 body[data-world] .work-panel.is-story-view .work-panel-outcome{max-width:none;margin-top:26px;padding-top:24px!important;border-top:1px solid var(--world-line)!important}
 
 /* #13/#17 · provenance - company is named in the back-link, so drop the whole lockup (logo + IPO pill) in-world */
