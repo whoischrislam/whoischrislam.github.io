@@ -1352,7 +1352,7 @@ body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:n
 /* tb-2 · Big, two-line - let it wrap and go display-scale, tight leading */
 body.tb-6 .hero h1.hero-lockup{
   white-space:normal;width:auto;max-width:none;
-  font-size:clamp(2.6rem,8.5vw,5.8rem);line-height:.98;letter-spacing:-.02em}
+  font-size:clamp(2.6rem,12.7cqi,150px);line-height:.98;letter-spacing:-.02em} /* 150px cap, Chris 2026-09-24; sized to the hero's own width (cqi) so the two lines never wrap to three */
 /* forced break after "&" - only in the two-line treatments */
 .hero-lockup .lb{display:none}
 body.tb-6 .hero-lockup .lb{display:inline}
@@ -1923,10 +1923,13 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   .tag-outcome{display:inline-block;margin-left:9px;padding:2px 8px;border:1px solid var(--border);border-radius:0;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--muted);vertical-align:middle;white-space:nowrap;text-transform:none}
   /* ---- homepage vertical rhythm: one consolidated source, supersedes the scattered
      hero/#work patches above. Scale in use: 6 / 12 / 18 / 24 / 44 / 60 px ---- */
-  .hero{padding:32px 0 26px}
-  .hero .sub{margin:0 0 12px;line-height:1.4}
+  /* Full-screen intro (Chris 2026-09-24, after Vicky Vo's review): the intro owns the first screen, centered;
+     no divider above the logos, 44px beat before them. */
+  .hero{container-type:inline-size;min-height:calc(100svh - var(--head-h));display:flex;flex-direction:column;justify-content:center;padding:32px 0 72px}
+  .hero h1{margin-bottom:36px}
+  .hero .sub{margin:0 0 14px;line-height:1.4}
   .hero .sub-line{margin:0}
-  .hero-credibility{margin-top:24px;padding-top:20px}
+  .hero-credibility{margin-top:44px;padding-top:0;border-top:0}
   .hero .tags{margin:16px 0 0}
   h2.sec#work{margin:6px 0 12px}
   .co-lane{gap:44px}
