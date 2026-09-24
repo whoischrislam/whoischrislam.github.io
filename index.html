@@ -867,7 +867,7 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 /* Result line: mono evidence label (resultKind, falling back to delivery) colored by delivery STATUS, then the result
    in the contrast-safe world accent. No marker glyph: the label's color carries the status. */
 .work-project-card-result{display:block;margin:0;font:600 var(--t-sm)/1.45 var(--sans)}
-.work-project-card-result-kind{margin-right:6px;font:700 9.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.work-project-card-result-kind{display:block;margin:0 0 4px;font:700 9.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap} /* stacked: label above so a wrapped result keeps a clean left edge (Chris 2026-09-23) */
 .work-project-card-result-kind[data-status="ok"]{color:var(--status-ok,#5bbf8a)}
 .work-project-card-result-kind[data-status="int"]{color:var(--status-int,var(--muted))}
 .work-project-card-result-kind[data-status="warn"]{color:var(--status-warn,#e0694a)}
