@@ -81,6 +81,11 @@ is now the only radius on the page — an open decision.
 
 ## No uppercase micro-type
 
+**Labels (Chris 2026-09-23):** fact and outcome labels are **muted small caps** (`font-variant-caps: all-small-caps`,
+14px, `.06em`, the world's soft ink), the grey letterspaced labels of his 2020 site. That is typographic small caps,
+not uppercase micro-type. One shared rule covers the company and story views. Status is never a badge; it opens the
+result sentence ("Shipped. Nurses reported...").
+
 He uses uppercase for h1/h2 display, nav links, and 16px project headings. **Never as
 micro-labels.** Seven rules at 11–12px with `.08em` letter-spacing were the single
 strongest template tell in the file.
