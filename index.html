@@ -823,6 +823,8 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 .work-shell.is-story-focused .work-panel{margin:0 0 18px}
 .work-shell.is-story-focused .work-focus-content{display:block}
 .work-shell.is-story-focused .project-story{display:grid}
+.work-panel:not(.is-story-view) .project-story-opening{display:none} /* the story hero lives in the panel only while a story is open */
+.work-panel .project-story-opening{margin:24px 0 36px} /* title->hero 46px, hero->facts 66px: the company page rhythm */
 .work-shell.is-story-focused .project-story-opening,
 .work-shell.is-story-focused .project-story-nav,
 .work-shell.is-story-focused .project-chapter{grid-column:auto}
@@ -1664,7 +1666,7 @@ body[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{displa
 /* ONE rule for fact + outcome labels on company AND story views (Chris 2026-09-23): muted small caps, the grey
    letterspaced labels of his 2020 site. No mono, no uppercase micro-labels, no per-view copies to drift. */
 body[data-world] .work-panel .work-panel-facts dt,body[data-world] .work-panel .work-panel-result-label{grid-column:1;grid-row:1;font:500 14px/1.4 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;text-transform:none;color:var(--world-ink-soft)}
-body[data-world] .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+body[data-world] .work-panel .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)} /* same specificity as the label rule, so per-view base sizes never win */
 body[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
 body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{padding:4px 0 22px}
 body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
@@ -5841,7 +5843,10 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         hero.className = "project-story-hero";
       }
       opening.appendChild(hero);
-      article.appendChild(opening);
+      // Hero sits under the title, above the facts (Chris 2026-09-23), mirroring the company page's hero placement.
+      workPanel.querySelectorAll(".project-story-opening").forEach(function(n){ n.remove(); });
+      var storyHead = workPanel.querySelector(".work-panel-heading");
+      if(storyHead) storyHead.insertAdjacentElement("afterend", opening); else article.appendChild(opening);
       var storyNav = document.createElement("nav");
       storyNav.className = "project-story-nav";
       storyNav.setAttribute("aria-label", story.name + " chapters");
@@ -6541,7 +6546,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         ? options.trigger.closest("[data-work-company]") : null;
       var sourceImage = sourceButton && sourceButton.querySelector("img");
       var returningStory = selectedWorkStory;
-      var returningHero = returningStory && workFocusContent.querySelector(".project-story-hero");
+      var returningHero = returningStory && workPanel.querySelector(".project-story-hero");
       var returningCardMedia = null;
       var restoreCompanyScroll = options.restoreCompanyScroll;
       if(restoreCompanyScroll == null && returningStory){
