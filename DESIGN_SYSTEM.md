@@ -83,8 +83,8 @@ on dark, Amazon `#df9900` is 2.28:1 on light. Any new brand colour needs a value
 From gamedev, where he explicitly reset every radius to zero, deleted every drop shadow,
 and hardened borders to `2px solid`. Structure comes from line weight.
 **Applied site-wide 2026-09-24 (Chris pick, after Vicky Vo flagged mixed radii):** every surface is
-square. Only true circles keep `50%` (theme knob, support dots, play and close buttons, the AI
-launcher). Do not add a radius to a new component.
+square, circles included (theme knob, dots, play/close buttons, AI launcher, SVG icon `rx`; Chris:
+"be comprehensive"). HogWare keeps its own tokens. Do not add a radius to a new component.
 
 ## No uppercase micro-type
 
