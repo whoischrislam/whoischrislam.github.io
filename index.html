@@ -821,6 +821,8 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 .work-focus-content[hidden]{display:none}
 .work-shell.is-story-focused .work-explorer{display:block}
 .work-shell.is-story-focused .work-panel{margin:0 0 18px}
+.work-shell.is-story-focused .work-panel{border-bottom:0} /* the Jump-to bar's top border is the one line here (was doubled) */
+.project-story-nav + .project-chapter{border-top:0} /* and its bottom border is the one line below (was doubled) */
 .work-shell.is-story-focused .work-focus-content{display:block}
 .work-shell.is-story-focused .project-story{display:grid}
 .work-panel:not(.is-story-view) .project-story-opening{display:none} /* the story hero lives in the panel only while a story is open */
