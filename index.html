@@ -862,7 +862,6 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 .work-project-card:focus-visible .work-project-card-media img{transform:translateY(-6px)}
 /* Layout C (Chris 2026-09-22): kicker · serif title · de-emphasized summary · result line · "Read the case" pill. */
 .work-project-card-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:26px 30px;min-width:0}
-.work-project-card-kicker{color:var(--muted);font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase}
 .work-project-card h4{font-family:var(--serif);font-size:clamp(26px,3vw,38px);font-weight:400;line-height:1.05;margin:0}
 .work-project-card p{color:var(--muted);font-size:var(--t-sm);line-height:1.5;margin:0;max-width:48ch}
 /* Result line: mono evidence label (resultKind, falling back to delivery) colored by delivery STATUS, then the result
@@ -1717,7 +1716,6 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
 
 /* work-project-card in a world: the blanket `* {color:inherit}` above flattens children to card ink, so the
    de-emphasis and the result line are re-applied at higher specificity. */
-body.work-focus-open[data-world] .work-project-card .work-project-card-kicker{color:color-mix(in srgb,var(--world-card-ink) 72%,transparent)}
 body.work-focus-open[data-world] .work-project-card .work-project-card-copy>p{color:color-mix(in srgb,var(--world-card-ink) 74%,transparent)}
 body.work-focus-open[data-world] .work-project-card .work-project-card-result-kind[data-status="ok"]{color:var(--status-ok)}
 body.work-focus-open[data-world] .work-project-card .work-project-card-result-kind[data-status="int"]{color:var(--status-int)}
@@ -3004,7 +3002,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         slug: "spoken-voice-system",
         name: "Why the voice sounded robotic",
         cardTitle: "Make the Voice Worth Talking To",
-        cardKicker: "Conversation design · Voice quality",
         meta: "Conversation design · Voice quality",
         delivery: "Deployed internal build",
         summary: "Testers said the voice sounded robotic. I made the stack testable, used controlled comparisons to find the real cause, and rewrote the system for someone listening instead of reading.",
@@ -3123,7 +3120,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         slug: "deterministic-voice-system",
         name: "When prompting stopped working",
         cardTitle: "Move Required Behavior Out of Prompts",
-        cardKicker: "Voice architecture · Product engineering",
         meta: "Voice architecture · Product engineering",
         delivery: "Deployed internal build",
         summary: "Prompting could not reliably run the game. I moved the required sequence into code and kept the model focused on conversation and phrasing.",
@@ -3199,7 +3195,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         slug: "safety-quality-system",
         name: "Every failure became a test",
         cardTitle: "Turn Failures Into Regression Tests",
-        cardKicker: "Safety architecture · Human and automated QA",
         meta: "Safety architecture · Human and automated QA",
         delivery: "Deployed internal build",
         summary: "I built a quality system around manual scripts, automated and adversarial tests, a human reviewer queue, and smoke tests against the deployed build. Confirmed failures became regression tests.",
@@ -3317,7 +3312,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "case",
         slug: "lesson-system",
         name: "The lesson system",
-        cardKicker: "Core learning experience · Web",
         meta: "Core learning experience · Web",
         delivery: "Shipped",
         summary: "I rebuilt Pathstream’s core lesson surface around how working adults planned, resumed, and completed coursework, without disrupting the community colleges and live learners already running courses on it.",
@@ -3389,7 +3383,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "project",
         slug: "instructor-tools",
         name: "Instructor tools",
-        cardKicker: "Teaching operations · Web",
         meta: "Teaching operations · Web",
         delivery: "Design complete, queued for build",
         summary: "I redesigned grading and resubmission around the history instructors needed, then completed a dashboard for finding live cohorts and students who needed attention.",
@@ -3456,7 +3449,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "project",
         slug: "interface-foundation",
         name: "Interface foundation",
-        cardKicker: "Design system · Accessibility",
         meta: "Design system · Accessibility",
         delivery: "Designed; implementation started",
         summary: "I audited the live interface, designed a shared foundation on Ant Design, and worked closely with Matt as he implemented it in React, Storybook, and Chromatic.",
@@ -3558,7 +3550,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "project",
         slug: "omix-study-builder",
         name: "Omix Study Builder",
-        cardKicker: "Clinical research · Product rescue",
         meta: "Clinical research · Product rescue",
         delivery: "Built + validated · canceled",
         summary: "I consolidated a fragmented clinical-studies product into a guided pre-launch workflow, then partnered with engineering as researchers evaluated the working build.",
@@ -3737,7 +3728,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "case",
         slug: "marketplace-money",
         name: "Marketplace money system",
-        cardKicker: "Marketplace finance · Web",
         meta: "Marketplace finance · Web",
         delivery: "Shipped",
         summary: "I turned manually managed payouts into an official marketplace system connecting bookings, platform fees, GM accounts, payouts, and transaction history.",
@@ -3864,7 +3854,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "case",
         slug: "iodine-product",
         name: "Iodine",
-        cardKicker: "Medication decisions · Product / service",
         meta: "Medication decisions · Product / service",
         delivery: "Shipped + measured",
         summary: "As Iodine’s embedded designer, I built a connected set of tools that helped people understand medications, compare alternatives, trust coupons, and ask pharmacists for help.",
@@ -3927,7 +3916,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "project",
         slug: "goodrx-drug-pages",
         name: "GoodRx drug pages",
-        cardKicker: "Scaled product · Responsive web",
         meta: "Scaled product · Responsive web",
         delivery: "Shipped + A/B tested",
         summary: "I redesigned a high-traffic medication page so people could move between drug information, prescription settings, local prices, and coupons without losing context.",
@@ -3989,7 +3977,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "case",
         slug: "goodrx-research",
         name: "GoodRx Research",
-        cardKicker: "Data visualization · Design to code",
         meta: "Data visualization · Design to code",
         delivery: "Published + shipped",
         summary: "I taught myself JavaScript and D3, then designed and built production interactives that made prescription-price and utilization data easier to explore.",
@@ -4066,7 +4053,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "case",
         slug: "music-importer",
         name: "Amazon Music Importer",
-        cardKicker: "Desktop software · Music",
         meta: "Desktop software · Music",
         delivery: "Shipped",
         summary: "I translated an assigned direction into a complete overhaul that joined two live desktop applications into one installation, onboarding, and music-ownership experience.",
@@ -4221,7 +4207,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "project",
         slug: "windows-phone",
         name: "Amazon Music for Windows Phone",
-        cardKicker: "Product ownership · Mobile",
         meta: "Product ownership · Mobile",
         delivery: "Working alpha",
         summary: "I inherited an incomplete mobile effort, designed the full listening lifecycle, and worked with a small engineering team to bring it to a working alpha before the product was shuttered.",
@@ -4355,7 +4340,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         slug: "whiteboard",
         name: "Whiteboard by PlaySesh",
         cardTitle: "Pivot From Matchmaking to a Shared Discord Canvas",
-        cardKicker: "Product strategy · Discord / web",
         meta: "Product strategy · Discord / web",
         delivery: "Shipped + adopted",
         summary: "A research-led pivot became a persistent multiplayer whiteboard inside Discord, built for collaborative drawing, tabletop tools, and lightweight playtesting.",
@@ -4520,7 +4504,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         slug: "canvas-runtime-rewrite",
         name: "When the whiteboard became the constraint",
         cardTitle: "Own the Canvas and Runtime Foundations",
-        cardKicker: "Product architecture · Three.js / Cloudflare",
         meta: "Product architecture · Three.js / Cloudflare",
         delivery: "Substantial rewrite · incomplete",
         summary: "The shipped whiteboard could not support the playable runtime and learning loop we wanted. I attempted to replace its canvas foundation with an owned scene model, synchronization protocol, and limited game runtime.",
@@ -4631,7 +4614,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "case",
         slug: "tasker",
         name: "Tasker experience",
-        cardKicker: "Marketplace operations · Mobile",
         meta: "Marketplace operations · Mobile",
         delivery: "Shipped + measured",
         summary: "I owned the Tasker side of the marketplace rebuild: the tools people used to manage availability, understand new work, complete tasks, and track payment.",
@@ -4731,7 +4713,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "project",
         slug: "client",
         name: "Client redesign",
-        cardKicker: "Marketplace redesign · Web",
         meta: "Marketplace redesign · Web",
         delivery: "Shipped",
         summary: "I helped rebuild the client experience around direct hiring, clear task status, task history, and repeat relationships.",
@@ -4794,10 +4775,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "case",
         slug: "care-visit",
         name: "Clover Care Visit",
-        cardKicker: "Clinical operations · Web / iPad",
         meta: "Clinical operations · Web / iPad",
         delivery: "Shipped + NP-reported",
-        summary: "I replaced a paper-heavy home-visit workflow with a field-tested digital system that gave nurse practitioners more time with members and returned data to Clover faster.",
+        summary: "I replaced a paper-heavy home-visit workflow with a field-tested iPad web app that gave nurse practitioners more time with members and returned data to Clover faster.",
         result: "Nurses reported 1-2 hours of chart prep gone each day",
         cardMedia: [
           "images/craft/clover-care-visit_07.webp",
@@ -4864,7 +4844,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         depth: "project",
         slug: "website",
         name: "Enrollment website",
-        cardKicker: "Enrollment experience · Web",
         meta: "Enrollment experience · Web",
         delivery: "Shipped",
         summary: "I helped turn an agency-started rebrand into Clover’s first member-facing website, coordinating internal and external teams before the 2016 Medicare enrollment window.",
@@ -5481,9 +5460,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         }
         var copy = document.createElement("span");
         copy.className = "work-project-card-copy";
-        var kicker = document.createElement("span");
-        kicker.className = "work-project-card-kicker";
-        kicker.textContent = story.cardKicker;
         var heading = document.createElement("h4");
         heading.textContent = story.cardTitle || story.name;
         var summary = document.createElement("p");
@@ -5495,7 +5471,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         var ctaArrow = document.createElement("span");
         ctaArrow.textContent = "→";
         cta.appendChild(ctaArrow);
-        copy.append(kicker, heading, summary);
+        copy.append(heading, summary);
         if(story.result || story.resultKind || story.delivery) copy.appendChild(createCardResult(story.resultKind, story.delivery, story.result));
         copy.appendChild(cta);
         card.append(media, copy);
@@ -5535,14 +5511,11 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
         }
         var pcopy = document.createElement("span");
         pcopy.className = "work-project-card-copy";
-        var pkick = document.createElement("span");
-        pkick.className = "work-project-card-kicker";
-        pkick.textContent = v.kicker || "";
         var phead = document.createElement("h4");
         phead.textContent = v.name;
         var psum = document.createElement("p");
         psum.textContent = v.summary || "";
-        pcopy.append(pkick, phead, psum);
+        pcopy.append(phead, psum);
         // same rule as story cards: no invented status when the vignette has no delivery (createCardResult
         // routes delivery through publicDelivery, so an unconfirmed state never renders)
         if(v.result || v.resultKind || v.delivery) pcopy.appendChild(createCardResult(v.resultKind, v.delivery, v.result));
