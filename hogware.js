@@ -2355,7 +2355,7 @@
   var spaceHeld = false, pointerHeld = false;
   function holdActive() { return spaceHeld || pointerHeld; }
 
-  // Debug hook: expose the WEIRD scene definitions so hogware-scenes.html can
+  // Debug hook: expose the WEIRD scene definitions so a debug page can
   // render/step every scene without playing the gauntlet. Read-only data.
   try {
     window.HogWareScenes = gameWeird._scenes;
