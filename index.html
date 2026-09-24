@@ -97,6 +97,9 @@
   --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;
   --grid:rgba(0,0,0,.045); /* structural-grid hairline - content aligns to it, not wallpaper */
   --body-font:var(--sans); --border-radius:0; --btn-border-radius:0; --transition:.25s ease; --enter:.5s ease; /* entrance (scroll cue) */
+  /* motion tokens (research 2026-09-24: Carbon / Material 3 / Fluent / Atlassian agree) */
+  --dur-instant:100ms; --dur-quick:200ms; --dur-base:400ms; --dur-slow:700ms;
+  --ease-out:cubic-bezier(.2,0,0,1); --ease-in:cubic-bezier(.3,0,.8,.15); --ease-expressive:cubic-bezier(.05,.7,.1,1);
   /* Newsreader = anti-slop serif display (NOT Fraunces/Instrument Serif). Figtree = Proxima Nova
      stand-in (real Proxima pending Adobe kit). IBM Plex Mono = blueprint annotation layer. */
   --serif:'Newsreader',Georgia,'Times New Roman',serif;
@@ -844,54 +847,58 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-story-section-head{display:block}
 .work-story-section-head h4{font:400 var(--t-xxl)/1.05 var(--serif);margin:0}
 .work-story-section-head p{max-width:none;margin:8px 0 0;color:var(--muted);font-size:var(--t-sm);line-height:1.5}
-.work-project-grid{display:flex;flex-direction:column;gap:16px}
-/* Media always on the RIGHT (Chris 2026-09-22: no alternating). DOM order is media, copy; media takes order:2. */
-.work-project-card{appearance:none;position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:1fr;width:100%;
-  min-width:0;padding:0;overflow:hidden;border:1px solid var(--border);background:var(--surface);
-  color:var(--text);text-align:left;cursor:pointer;transition:border-color .2s ease,transform .3s cubic-bezier(.2,.75,.2,1)}
-.work-project-card:hover,.work-project-card:focus-visible{border-color:var(--accent);transform:translateY(-3px)}
-.work-project-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-/* Panel = a vibrant per-card ground (the range Chris wants to show) with ONE image framed whole on it. */
-.work-project-card-media{position:relative;order:2;display:block;height:100%;min-height:320px;overflow:hidden;background:#009b5a}
-.work-project-card-scan-title{display:none}
-.work-project-card[data-work-story="tasker"] .work-project-card-media{background:#069b55}
-.work-project-card[data-work-story="client"] .work-project-card-media{background:#dfe8df}
-.work-project-card[data-work-company="clover"] .work-project-card-media{background:#08786b}
-.work-project-card[data-work-story="clover_site"] .work-project-card-media{background:#57c6d9}
-.work-project-card[data-work-company="playsesh"] .work-project-card-media{background:#241a32}
-.work-project-card[data-work-company="y30"] .work-project-card-media{background:#10263d}
-.work-project-card[data-work-company="goodrx"] .work-project-card-media{background:#f4df3d}
-.work-project-card[data-work-story="iodine_product"] .work-project-card-media{background:#6339b6}
-.work-project-card[data-work-company="pathstream"] .work-project-card-media{background:#2698D4}
-/* One image, framed: the first cardMedia shown WHOLE (never cropped), centred with a shadow. The rest stay in the
-   case study. Mixed-shape image sets were why only TaskRabbit composed well (0.25 to 3.08 aspect in one row). */
-.work-project-card-media img{position:absolute;inset:0;margin:auto;display:block;width:auto;height:auto;
-  max-width:calc(100% - 56px);max-height:calc(100% - 56px);object-fit:contain;border-radius:0;
-  box-shadow:0 18px 40px rgba(0,0,0,.32);transition:transform .42s cubic-bezier(.2,.75,.2,1)}
+.work-project-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s-item,24px)}
+/* PROJECT CARD (Chris 2026-09-24): ONE component for every card that opens a case study (company pages + homepage
+   "Recent work"). Stacked and date-led: image stage, date, serif title, one line, result. One hover language,
+   defined once (tilt + glow on the card, image pan inside when the screenshot is taller than its stage). */
+.work-project-card{appearance:none;position:relative;display:flex;flex-direction:column;width:100%;min-width:0;padding:0;
+  overflow:hidden;border:1px solid var(--border);background:var(--surface);color:var(--text);text-align:left;cursor:pointer;
+  transition:border-color var(--dur-quick) var(--ease-out),box-shadow var(--dur-quick) var(--ease-out),transform var(--dur-quick) var(--ease-out)}
+.work-project-card:focus-visible{outline:2px solid var(--world-accent,var(--accent));outline-offset:3px}
+.work-project-card-media{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--surface-2)}
+.work-project-card-media img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:0}
 .work-project-card-media img:not(:first-of-type){display:none}
-.work-project-card:hover .work-project-card-media img,
-.work-project-card:focus-visible .work-project-card-media img{transform:translateY(-6px)}
-/* Layout C (Chris 2026-09-22): kicker · serif title · de-emphasized summary · result line · "Read the case" pill. */
-.work-project-card-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:26px 30px;min-width:0}
-.work-project-card h4{font-family:var(--serif);font-size:var(--t-xl);font-weight:400;line-height:1.05;margin:0}
-.work-project-card p{color:var(--muted);font-size:var(--t-sm);line-height:1.5;margin:0;max-width:48ch}
-/* Result line: mono evidence label (resultKind, falling back to delivery) colored by delivery STATUS, then the result
-   in the contrast-safe world accent. No marker glyph: the label's color carries the status. */
-.work-project-card-result{display:block;margin:0;font:600 var(--t-sm)/1.45 var(--sans)}
-.work-project-card-result-kind{display:inline;margin:0;font:inherit;letter-spacing:0;text-transform:none;white-space:normal;color:inherit} /* G: status reads as the start of the result sentence */
+.work-project-card-media:has(>.portfolio-diagram),.work-project-card-media:has(>.visual-placeholder){aspect-ratio:auto}
+.work-project-card-scan-title{display:none}
+.work-project-card-copy{display:flex;flex-direction:column;flex:1;padding:var(--s-item,24px);min-width:0}
+.work-project-card-date{display:block;margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.work-project-card h4{font:400 var(--t-xl)/1.15 var(--serif);margin:0 0 var(--s-in,8px)}
+.work-project-card p{color:var(--muted);font-size:var(--t-base);line-height:1.55;margin:0 0 var(--s-item,24px)}
+.work-project-card-result{display:block;margin:auto 0 0;font:400 var(--t-xs)/1.5 var(--sans);color:var(--muted)}
+.work-project-card-result-kind{display:inline;margin:0;font:inherit;font-weight:600;letter-spacing:0;text-transform:none;white-space:normal;color:var(--text)}
 .work-project-card-result-kind::after{content:". "}
 .work-project-card-result-text{color:var(--world-accent-on-card,var(--accent))}
-.work-project-card-cta{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:4px;padding:8px 14px;
-  border:1px solid var(--world-accent-on-card,var(--accent));border-radius:0;color:var(--world-accent-on-card,var(--accent));
-  font:600 var(--t-xs)/1 var(--sans);transition:background-color .2s ease,color .2s ease}
-.work-project-card-cta span{transition:transform .2s ease}
-.work-project-card:hover .work-project-card-cta,.work-project-card:focus-visible .work-project-card-cta{
-  background:var(--world-accent-on-card,var(--accent));color:var(--world-card-bg,var(--bg))}
-.work-project-card:hover .work-project-card-cta span,.work-project-card:focus-visible .work-project-card-cta span{transform:translateX(3px)}
-@media(max-width:760px){
-  .work-project-card{grid-template-columns:1fr;grid-template-rows:auto auto}
-  .work-project-card-media{order:0;min-height:220px}
-  .work-project-card-copy{padding:20px}
+/* hover language: glow follows the cursor (all pointers + keyboard focus); tilt and pan only with a fine pointer */
+.work-project-card-glow{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity var(--dur-quick) var(--ease-out);
+  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--world-accent,var(--accent)) 22%,transparent),transparent 60%)}
+.work-project-card:hover .work-project-card-glow,.work-project-card:focus-visible .work-project-card-glow{opacity:1}
+.work-project-card:hover,.work-project-card:focus-visible{border-color:var(--border-strong);box-shadow:0 18px 40px rgba(0,0,0,.12)}
+@media (hover:hover) and (pointer:fine){
+  .work-project-card.is-tall .work-project-card-media img{transition:object-position 3.2s linear}
+  .work-project-card.is-tall:hover .work-project-card-media img{object-position:bottom center}
+}
+/* entrance: rise once as the grid scrolls in (hidden state is added by JS only, so no-JS shows everything) */
+.work-project-card.is-rise{opacity:0;transform:translateY(24px);transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out)}
+.work-project-card.is-rise.is-in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .work-project-card,.work-project-card.is-rise{opacity:1!important;transform:none!important;transition:border-color var(--dur-instant) linear!important}
+  .work-project-card-media img{transition:none!important;object-position:top center!important}
+}
+@media(min-width:761px){ .work-project-card:only-child{grid-column:span 2} } /* a one-project company: the card gets two columns, not a lonely third */
+@media(max-width:760px){ .work-project-grid{grid-template-columns:1fr} }
+/* Company page fact band (Role / When / Owned / Outcome) and the folded role details */
+.work-fact-band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s-item,24px);margin:0 0 var(--s-group,64px);
+  padding:var(--s-item,24px) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.work-fact-band dt{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.work-fact-band dd{margin:0;font:400 var(--t-xs)/1.5 var(--sans);color:var(--text)}
+@media(max-width:760px){ .work-fact-band{grid-template-columns:1fr 1fr} }
+.work-role-details{margin-top:var(--s-section,128px);border-top:1px solid var(--border);padding-top:var(--s-item,24px)}
+.work-role-details summary{cursor:pointer;font:600 var(--t-xs)/1 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.work-role-details .work-panel-facts{margin-top:var(--s-item,24px)}
+.work-panel.is-company-view .work-panel-brief{display:none}
+/* the band introduces the projects directly (as approved): no second heading + intro between them */
+.work-fact-band + .work-story-section .work-story-section-head{display:none}
+.work-fact-band + .work-story-section{margin-top:0!important;padding-top:0!important;border-top:0!important}
 }
 .work-company-support{display:grid;gap:14px;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
 .work-company-support-head{display:block}
@@ -1251,8 +1258,6 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
     overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
   .work-project-grid::-webkit-scrollbar{display:none}
   .work-project-card{scroll-snap-align:start}
-  .work-project-card:only-child{display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr}
-  .work-project-card:only-child .work-project-card-media{height:min(68vw,310px);min-height:0}
   .work-story-section-head{display:block}
   .work-story-section-head p{margin-top:6px}
   .work-company-support-head{display:block}
@@ -1268,7 +1273,6 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;
     grid-template-areas:"summary" "outcome" "facts";gap:12px}
   .work-panel.is-story-view .work-panel-outcome{padding:10px 0 0}
-  .work-project-card-media{height:min(68vw,310px)}
   .project-story{gap:48px}
   .project-story-hero{aspect-ratio:14/4.5}
   .project-chapter,.project-chapter:nth-child(even){grid-template-columns:1fr;gap:20px}
@@ -1310,8 +1314,6 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   .work-panel.is-story-view .work-panel-facts{grid-template-columns:1fr}
   .work-panel.is-story-view .work-panel-facts div,
   .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){grid-template-columns:22px minmax(0,1fr);grid-column:1;padding:14px 16px}
-  .work-project-card-media{height:250px;padding:16px 14px 0}
-  .work-project-card-copy{padding:15px}
   .story-artifact,.story-artifact[data-story-span="4"]{grid-column:span 6}
   .story-artifact[data-story-span="12"]{grid-column:span 12}
   .story-artifact img{min-height:0}
@@ -1691,8 +1693,6 @@ body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;marg
 /* #14 · JUMP TO nav - world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
 body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent)}
 
-body.work-focus-open[data-world] .work-project-card{background:var(--world-card-bg);color:var(--world-card-ink);border-color:transparent}
-body.work-focus-open[data-world] .work-project-card *{color:inherit}
 /* Product-map ("supporting work") cards: the li used the GLOBAL --bg (dark) but text used --world-ink
    (dark on light worlds) -> dark-on-dark. Pair them with the world CARD tokens so text is always legible. */
 /* #28 (Chris: A dark). The diagram card built its bg from the base --surface-2 (which leaks the
@@ -1710,15 +1710,9 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
 /* accent text on an accent-TINTED item drops below 4.5:1 (e.g. GoodRx ~3.5), so a value there reads in card ink */
 body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="accent"] .portfolio-diagram-value{color:var(--world-card-ink)}
 
-/* work-project-card in a world: the blanket `* {color:inherit}` above flattens children to card ink, so the
-   de-emphasis and the result line are re-applied at higher specificity. */
-body.work-focus-open[data-world] .work-project-card .work-project-card-copy>p{color:color-mix(in srgb,var(--world-card-ink) 74%,transparent)}
 body.work-focus-open[data-world] .work-project-card .work-project-card-result-text{color:var(--world-accent-on-card)}
-body.work-focus-open[data-world] .work-project-card .work-project-card-cta{color:var(--world-accent-on-card)}
 body.work-focus-open[data-world] .work-project-card .portfolio-diagram-return,
 body.work-focus-open[data-world] .work-project-card .portfolio-diagram-item::after{color:color-mix(in srgb,var(--world-card-ink) 60%,transparent)}
-body.work-focus-open[data-world] .work-project-card:hover .work-project-card-cta,
-body.work-focus-open[data-world] .work-project-card:focus-visible .work-project-card-cta{color:var(--world-card-bg)}
 </style>
 <style>
 /* Must be in <head> so it applies at FIRST paint: the headline's typed line is hidden (its space reserved), and
@@ -2013,11 +2007,6 @@ div.foot{margin-top:var(--s-section) !important;padding-top:0 !important}
 .work-story-section-head h4,.work-company-support-head h4{margin-top:var(--s-section) !important;margin-bottom:var(--s-in) !important} /* section heads only: card titles are h4 too (bug 2026-09-24: 155px above every card title) */
 :is(.work-story-section-head,.work-company-support-head) h4 + p,.project-chapter p{margin-top:0 !important;margin-bottom:var(--s-item) !important}
 /* Case-study card, inside: title top-aligned at one inset, link pinned to the bottom so every card lines up */
-.work-project-card-copy{justify-content:flex-start !important;gap:0 !important;padding:var(--s-group) 40px 40px !important}
-.work-project-card h4{margin:0 0 var(--s-in) !important}
-.work-project-card-copy>p{margin:0 0 var(--s-item) !important}
-.work-project-card-result{margin:0 0 var(--s-item) !important}
-.work-project-card-cta{margin-top:auto !important}
 .work-shell .story-artifact,.work-shell figure,.portfolio-diagram{margin-top:0 !important;margin-bottom:var(--s-item) !important}
 .work-support-group{margin-top:var(--s-group) !important}
 .work-quote + .work-quote{margin-top:var(--s-item) !important}
@@ -2033,7 +2022,7 @@ article.project-story{row-gap:0 !important}
 section.project-chapter{padding-top:0 !important;row-gap:0 !important}
 .project-chapter-media{row-gap:var(--s-item) !important}
 .project-chapter-media .story-artifact{margin-bottom:0 !important}
-.work-project-grid{gap:var(--s-item) !important}
+
 section.project-chapter + section.project-chapter,.work-panel-brief + section.project-chapter,aside.work-panel + * section.project-chapter:first-of-type{margin-top:var(--s-section) !important}
 .project-chapter h4{margin-top:var(--s-in) !important}
 .project-chapter-step{margin:0 !important}
@@ -2080,7 +2069,7 @@ body[data-world] header.world-hero,body[data-world] .work-panel.is-story-view .w
   padding-top:var(--s-group)!important;padding-bottom:var(--s-group)!important}
 body[data-world] .work-panel.is-story-view .work-panel-heading{margin-bottom:var(--s-group)!important}
 body[data-world] header.world-hero :is(.visual-placeholder-note,.visual-placeholder-title){color:var(--brand-soft)} /* inside the band: brand text, not the foundation gray */
-body.work-focus-open[data-world] .work-project-card{border:1px solid var(--border)}
+body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-card-ink:#ffffff;--world-accent-on-card:var(--brand-accent-dark)} /* #28 'A dark' diagrams stay dark on the foundation */
 /* one image backdrop for every card (was 11 hand-picked colors) */
 .work-project-card .work-project-card-media,.work-project-card[data-work-story] .work-project-card-media,.work-project-card[data-work-company] .work-project-card-media{background:var(--surface-2)}
 </style>
@@ -5583,20 +5572,13 @@ body.work-focus-open[data-world] .work-project-card{border:1px solid var(--borde
         }
         var copy = document.createElement("span");
         copy.className = "work-project-card-copy";
+        if(companyData.dates){ var date=document.createElement("span"); date.className="work-project-card-date"; date.textContent=companyData.dates; copy.appendChild(date); }
         var heading = document.createElement("h4");
         heading.textContent = story.cardTitle || story.name;
         var summary = document.createElement("p");
         summary.textContent = story.summary;
-        var cta = document.createElement("span");
-        cta.className = "work-project-card-cta";
-        cta.setAttribute("aria-hidden", "true");
-        cta.textContent = "Read the case ";
-        var ctaArrow = document.createElement("span");
-        ctaArrow.textContent = "→";
-        cta.appendChild(ctaArrow);
         copy.append(heading, summary);
         if(story.result || story.resultKind || story.delivery) copy.appendChild(createCardResult(story.resultKind, story.delivery, story.result));
-        copy.appendChild(cta);
         card.append(media, copy);
         card.addEventListener("click", function(){
           if(window.posthog) posthog.capture("case_study_opened", {story:key, company:story.company});
@@ -5634,6 +5616,7 @@ body.work-focus-open[data-world] .work-project-card{border:1px solid var(--borde
         }
         var pcopy = document.createElement("span");
         pcopy.className = "work-project-card-copy";
+        if(companyData.dates){ var pdate=document.createElement("span"); pdate.className="work-project-card-date"; pdate.textContent=companyData.dates; pcopy.appendChild(pdate); }
         var phead = document.createElement("h4");
         phead.textContent = v.name;
         var psum = document.createElement("p");
@@ -5646,6 +5629,8 @@ body.work-focus-open[data-world] .work-project-card{border:1px solid var(--borde
         if(pInteractive) pcard.addEventListener("click", function(){ openWorkMedia(pcard); });
         grid.appendChild(pcard);
       });
+      enhanceProjectCards(grid);
+      var band = buildFactBand(companyData); if(band) workFocusContent.appendChild(band);
       if(grid.children.length){
         var storySection = document.createElement("section");
         storySection.className = "work-story-section";
@@ -5786,9 +5771,64 @@ body.work-focus-open[data-world] .work-project-card{border:1px solid var(--borde
       }
       // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
       // blank gap that reads as broken; hero + fact grid + actions still render above it.
+      var details = buildRoleDetails(companyData); if(details) workFocusContent.appendChild(details);
       workFocusContent.hidden = !workFocusContent.children.length;
       return grid;
     }
+
+    // Company page = an index (Chris 2026-09-24): one compact band of facts under the title, then the projects.
+    // Labels and values come from the company record; nothing new is written here.
+    function buildFactBand(item){
+      var owned = (item.facts || []).find(function(f){ return /^owned$/i.test(f[0]); });
+      var cells = [["Role", item.role], ["When", item.dates], ["Owned", owned && owned[1]], ["Outcome", item.result]]
+        .filter(function(c){ return c[1]; });
+      if(!cells.length) return null;
+      var band = document.createElement("dl"); band.className = "work-fact-band";
+      cells.forEach(function(c){
+        var cell = document.createElement("div"); var dt = document.createElement("dt"); var dd = document.createElement("dd");
+        dt.textContent = c[0]; dd.textContent = c[1]; cell.append(dt, dd); band.appendChild(cell);
+      });
+      return band;
+    }
+    // The full fact rows, folded below the work: depth for the interview, not the first read.
+    function buildRoleDetails(item){
+      var rows = (item.summary ? [["What I did", item.summary]] : []).concat(item.facts || []);
+      if(!rows.length) return null;
+      var d = document.createElement("details"); d.className = "work-role-details";
+      var sm = document.createElement("summary"); sm.textContent = "Role details"; d.appendChild(sm);
+      var dl = document.createElement("dl"); dl.className = "work-panel-facts";
+      rows.forEach(function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
+        dt.textContent=r[0]; dd.textContent=r[1]; row.append(dt,dd); dl.appendChild(row); });
+      d.appendChild(dl); return d;
+    }
+    // ONE hover + entrance for every project card (company pages and the homepage "Recent work").
+    // Glow follows the cursor; tilt only with a fine pointer; tall screenshots pan (CSS, fine pointer only);
+    // cards rise once as they scroll in. Reduced motion: none of it (CSS resets any leftover state).
+    function enhanceProjectCards(root){
+      var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var fine = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
+      var cards = [].slice.call(root.querySelectorAll(".work-project-card"));
+      cards.forEach(function(card, i){
+        if(card.dataset.enhanced) return; card.dataset.enhanced = "1";
+        var glow = document.createElement("span"); glow.className = "work-project-card-glow"; glow.setAttribute("aria-hidden","true"); card.appendChild(glow);
+        var img = card.querySelector(".work-project-card-media img");
+        if(img){ var tall = function(){ if(img.naturalWidth && img.naturalHeight / img.naturalWidth > 0.8) card.classList.add("is-tall"); };
+          if(img.complete) tall(); else img.addEventListener("load", tall, {once:true}); }
+        card.addEventListener("pointermove", function(e){
+          var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+          card.style.setProperty("--mx", (x * 100) + "%"); card.style.setProperty("--my", (y * 100) + "%");
+          if(fine && !still) card.style.transform = "perspective(900px) rotateX(" + ((.5 - y) * 6) + "deg) rotateY(" + ((x - .5) * 6) + "deg) translateY(-4px)";
+        });
+        card.addEventListener("pointerleave", function(){ card.style.transform = ""; });
+        if(!still && "IntersectionObserver" in window){
+          card.classList.add("is-rise"); card.style.transitionDelay = (i % 4) * 110 + "ms";
+          var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){
+            card.classList.add("is-in"); io.disconnect(); setTimeout(function(){ card.style.transitionDelay = ""; }, 1200); } }); }, {threshold: .15});
+          io.observe(card);
+        }
+      });
+    }
+    window.__enhanceProjectCards = enhanceProjectCards;
 
     var SURFACE_SPINE = ["Product & flows", "Design systems & components", "Web & brand",
       "Prototypes & experiments", "Physical & ops", "Data-journalism / editorial"];
@@ -6443,7 +6483,8 @@ body.work-focus-open[data-world] .work-project-card{border:1px solid var(--borde
         m.classList.add("world-hero-media-blueprint");
         m.appendChild(createVisualPlaceholder({ title: item.name }));
       }
-      hero.appendChild(m);
+      // Company pages open on the projects (Chris 2026-09-24, "fact band + cards"): the project cards carry the images,
+      // so the composite hero stays out of the title band. Kept built (not appended) for a future opt-in.
       heading.classList.add("world-hidden");
       heading.parentNode.insertBefore(hero, heading);
     }

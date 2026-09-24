@@ -22,6 +22,12 @@ inconsistency — it was the *absence* of his own decisions.
 - Text runs the full column (Chris's pick over the research's 70ch cap; revisit for long case-study prose).
 - Lives in `<style id="layout-system">` with !important over older component margins: fold into components as touched.
 
+**Company page = an index; one project card (Chris 2026-09-24).** Title band, then a fact band (Role / When / Owned /
+Outcome from the company record), then the project cards; the full fact rows fold into "Role details" at the bottom.
+One card component (`.work-project-card`, date-led, stacked) and one hover language (glow; tilt + tall-image pan on
+fine pointers only), set in `enhanceProjectCards`; cards rise once on scroll. Motion tokens: `--dur-instant/quick/base/slow`
+(100/200/400/700ms), `--ease-out/in/expressive`. Reduced motion: no rise, tilt, or pan.
+
 **World layer: "tame" (Chris 2026-09-24).** The foundation (paper, type, spacing) runs through every page, company and
 story pages included. A world is a layer on top: its palette colors the title band only (full-bleed behind kicker,
 title, lede and hero), plus an accent re-picked per theme so it clears 4.5:1 on the paper (`--brand-accent-light/-dark`;
