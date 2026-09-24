@@ -12,6 +12,12 @@ inconsistency — it was the *absence* of his own decisions.
 
 ## Tokens
 
+**Type floor and scale (Chris 2026-09-24).** Nothing renders under 14px. Every size is a `--t-*` token:
+14 / 16 / 18 / 21 / 24 / 30 / 38, plus display `--t-h1` (story title), `--t-display` (world title),
+`--t-hero` (headline). Anything that would go smaller is a special case that needs compensating treatment
+(contrast, caps, weight, tracking) and Chris's sign-off. `check-design-system.py` fails raw px font sizes
+and any token under 14px. Was 26 rendered sizes (10-13px micro text included).
+
 ```css
 /* Type. Seven steps. Was 21 sizes at half-pixel granularity (13.5, 14.5, 16.5, 18.5),
    which is the granularity of a generator, not a decision. */

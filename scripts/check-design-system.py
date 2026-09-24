@@ -163,6 +163,16 @@ if n_color > HARDCODED_COLOR_BASELINE:
     errors.append(f"hardcoded colors outside tokens rose to {n_color} (ceiling {HARDCODED_COLOR_BASELINE}): use a token")
 if n_dur > HARDCODED_DURATION_BASELINE:
     errors.append(f"hardcoded durations rose to {n_dur} (ceiling {HARDCODED_DURATION_BASELINE}): use a motion token")
+# 5) type floor (Chris 2026-09-24): every font size is a --t-* token, and no token is below 14px.
+#    Raw px sizes are how 26 rendered sizes crept in; em sizes inside the AI-guide widget are checked by render.
+for p_, v in _decls:
+    if p_ == "font-size" and re.search(r"\b\d*\.?\d+px\b", v):
+        errors.append(f"raw font-size {v.strip()}: use a --t-* token (type scale, 14px floor)")
+    if p_ == "font" and re.match(r"\s*(?:(?:italic|normal|\d{3})\s+)*\d*\.?\d+px", v):
+        errors.append(f"raw size in font shorthand `{v.strip()[:40]}`: use a --t-* token")
+for tname, tval in re.findall(r"(--t-[\w-]+)\s*:\s*([\d.]+)px", css_nc):
+    if float(tval) < 14:
+        errors.append(f"type token {tname} is {tval}px: the floor is 14px")
 if n_color < HARDCODED_COLOR_BASELINE or n_dur < HARDCODED_DURATION_BASELINE:
     warns.append(f"drift debt went DOWN (colors {n_color}/{HARDCODED_COLOR_BASELINE}, durations "
                  f"{n_dur}/{HARDCODED_DURATION_BASELINE}): lower the baselines to lock it in")

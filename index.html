@@ -106,6 +106,9 @@
      which is the granularity of a generator, not a decision. */
   --t-xxl:38px; --t-xl:30px; --t-lg:24px; --t-md:21px;
   --t-base:18px; --t-sm:16px; --t-xs:14px;
+  /* display tier (fluid): story title, world title. Nothing on the site is smaller than --t-xs (Chris 2026-09-24). */
+  --t-h1:clamp(34px,4.2vw,56px); --t-display:clamp(44px,7vw,92px);
+  --t-hero:clamp(2.6rem,12.7cqi,150px); /* cqi resolves against .hero (container), so two lines never wrap to three */
   /* Spacing. 4px base, doubling. Ported from his 2024 token set, which used the
      same shape in em: 0.2 / 0.4 / 0.8 / 1 / 1.6 / 2 / 4. */
   --sp-1:4px; --sp-2:8px; --sp-3:16px; --sp-4:24px; --sp-6:32px; --sp-8:44px; --sp-12:88px;
@@ -197,7 +200,7 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 
 /* ── Hero ─────────────────────────────────────────────────────── */
 .hero{max-width:none;padding:34px 0 38px}
-.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(1px,calc(8vw - 4px),68px);
+.hero h1{font-family:var(--serif);font-weight:400;font-size:var(--t-hero);
   line-height:1.05;margin:0 0 16px;letter-spacing:.2px}
 .hero h1.hero-lockup{width:max-content;max-width:100%;white-space:nowrap}
 .hero .sub{font-size:var(--t-md);line-height:1.65;color:var(--muted);margin:0 0 26px}
@@ -316,7 +319,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
    The reason it is needed here: at a true 390px viewport the wrap padding, card padding
    and borders were eating 112px, so a card had 267px of a 390px screen to write in. */
 @media (max-width:640px){
-  :root{ --t-xxl:28px; --t-xl:23px; --t-lg:20px;
+  :root{ --t-xxl:28px; --t-xl:23px; --t-lg:20px; --t-md:20px;
          --sp-12:44px; --sp-8:28px }
   .wrap{padding:0 16px}
 
@@ -363,7 +366,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 /* Reset the global full-width button rule inside the widget */
 .voice-agent button { width: auto; background: none; color: var(--text); padding: 0; border-radius: 0; }
 
-.va-disclosure { font-size: 0.66em !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
+.va-disclosure { font-size: var(--t-xs) !important; color: var(--muted) !important; line-height: 1.5; margin: 0 !important; }
 .va-modes { display: flex; flex-wrap: wrap; gap: 0.4em; margin: 0; }
 .va-mode {
     font-size: 0.82em; font-weight: 400;
@@ -691,7 +694,7 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 .js .work-kind-filter[aria-pressed="true"]{background:transparent}
 .work-kind-filter:focus-visible,.work-shuffle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .work-shuffle{display:inline-flex;align-items:center;gap:6px;min-height:36px;margin-left:auto;padding:7px 0}
-.work-shuffle::before{content:"↻";color:var(--accent);font-size:17px;line-height:1}
+.work-shuffle::before{content:"↻";color:var(--accent);font-size:var(--t-sm);line-height:1}
 .work-panel{border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   margin:0 0 18px;padding:14px 0 22px;scroll-margin-top:74px}
 .work-panel:focus{outline:none}
@@ -709,7 +712,7 @@ body[data-world] .work-panel-back:focus-visible{outline-color:var(--world-accent
 [data-theme="light"] .work-panel-provenance-logo{filter:none}
 .work-panel-provenance-name{font:400 var(--t-base)/1 var(--serif);color:var(--text)}
 .work-panel-provenance-outcome{padding:3px 8px;border:1px solid var(--border);border-radius:0;
-  font:600 11px/1.2 var(--sans);white-space:nowrap}
+  font:600 var(--t-xs)/1.2 var(--sans);white-space:nowrap}
 .work-panel-provenance-name[hidden],.work-panel-provenance-outcome[hidden],
 .work-panel-provenance-logo[hidden]{display:none}
 .work-panel-body{display:grid;gap:22px}
@@ -742,7 +745,7 @@ body[data-world] .work-panel-back:focus-visible{outline-color:var(--world-accent
 .work-panel-meta{color:var(--muted);font-size:var(--t-xs);margin:0 0 10px}
 .work-panel-delivery{display:inline-flex;align-items:center;
   min-height:24px;padding:4px 8px;border:1px solid var(--border);border-radius:0;color:var(--muted);
-  font:600 10px/1.1 var(--sans);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+  font:600 var(--t-xs)/1.1 var(--sans);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
 .work-panel-brief{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,.72fr);
   gap:20px 42px;align-items:start}
 .work-panel-details>summary{display:none}
@@ -765,18 +768,18 @@ body[data-world] .work-panel-back:focus-visible{outline-color:var(--world-accent
   stroke:var(--accent-strong);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.85;margin-top:1px}
 .work-panel.is-company-view .work-panel-facts dt{grid-column:2;color:var(--muted)} /* type comes from the ONE shared label rule */
 .work-panel.is-company-view .work-panel-facts dd{grid-column:1/-1;margin-top:8px;line-height:1.45;
-  font-size:13.5px;color:var(--text)}
+  font-size:var(--t-xs);color:var(--text)}
 .work-panel.is-company-view .work-panel-facts dd.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .work-panel.is-company-view .work-panel-facts dd.tags .tok{display:inline-flex;
-  border:1px solid var(--border-strong);border-radius:0;padding:2px 8px;font-size:12px;color:var(--text)}
+  border:1px solid var(--border-strong);border-radius:0;padding:2px 8px;font-size:var(--t-xs);color:var(--text)}
 .work-panel.is-company-view .work-panel-outcome{display:block;max-width:840px;margin:14px 0 0;
   background:var(--surface-2);border:1px solid var(--border-soft);border-radius:0;padding:15px 18px 17px}
 .work-panel.is-company-view .work-panel-result{max-width:none;margin:6px 0 0}
 .work-panel-outcome{min-width:0;padding-left:18px;border-left:1px solid var(--border)}
-.work-panel-result-label{display:block;color:var(--muted);font-size:11px;font-weight:600;
+.work-panel-result-label{display:block;color:var(--muted);font-size:var(--t-xs);font-weight:600;
   letter-spacing:.12em;text-transform:uppercase}
 .work-panel-result{color:var(--accent);font-family:var(--serif);
-  font-size:clamp(24px,3vw,var(--t-lg));line-height:1.15;margin:6px 0 0}
+  font-size:var(--t-lg);line-height:1.15;margin:6px 0 0}
 .work-panel-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
 .work-panel-actions[hidden]{display:none}
 .work-panel-navline:has(+ .work-panel[hidden]){display:none} /* lives beside the panel now; hidden with it */
@@ -788,7 +791,7 @@ body[data-world] .work-panel-back:focus-visible{outline-color:var(--world-accent
 .work-panel.is-story-view .work-panel-kicker{display:none}
 .work-panel.is-story-view .work-panel-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;
   column-gap:24px;align-items:end}
-.work-panel.is-story-view h3{font-size:clamp(34px,4.2vw,56px);line-height:1;margin:0}
+.work-panel.is-story-view h3{font-size:var(--t-h1);line-height:1;margin:0}
 .work-panel.is-story-view .work-panel-meta{margin:0;text-align:right}
 .work-panel.is-story-view .work-panel-brief{grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);
   grid-template-areas:"summary outcome" "facts facts";gap:14px 34px}
@@ -803,9 +806,9 @@ body[data-world] .work-panel-back:focus-visible{outline-color:var(--world-accent
 .work-panel.is-story-view .work-panel-facts .fact-icon{grid-row:1;width:18px;height:18px;
   stroke:var(--accent-strong);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.85;margin-top:1px}
 .work-panel.is-story-view .work-panel-facts dt{grid-column:2;color:var(--muted)} /* type comes from the ONE shared label rule */
-.work-panel.is-story-view .work-panel-facts dd{grid-column:1/-1;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--text)}
+.work-panel.is-story-view .work-panel-facts dd{grid-column:1/-1;margin-top:8px;font-size:var(--t-xs);line-height:1.45;color:var(--text)}
 .work-panel.is-story-view .work-panel-facts dd.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.work-panel.is-story-view .work-panel-facts dd.tags .tok{display:inline-flex;border:1px solid var(--border-strong);border-radius:0;padding:2px 8px;font-size:12px;color:var(--text)}
+.work-panel.is-story-view .work-panel-facts dd.tags .tok{display:inline-flex;border:1px solid var(--border-strong);border-radius:0;padding:2px 8px;font-size:var(--t-xs);color:var(--text)}
 .work-panel.is-story-view .work-panel-outcome{grid-area:outcome}
 @media(min-width:761px){
   .work-panel.is-company-view .work-panel-brief{display:block}
@@ -820,7 +823,7 @@ body[data-world] .work-panel-back:focus-visible{outline-color:var(--world-accent
   .work-panel.is-company-view .work-panel-facts div:last-child:nth-child(odd){grid-column:1/-1}
   .work-panel.is-company-view .work-panel-outcome{margin-top:0;border-top:0;border-radius:0}
   .work-panel.is-company-view .work-panel-result{max-width:none;margin:6px 0 0;
-    font-size:clamp(23px,2.2vw,30px)}
+    font-size:var(--t-xl)}
 }
 .work-focus-content{margin:0 0 18px}
 .work-focus-content[hidden]{display:none}
@@ -839,7 +842,7 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-shell.is-story-focused .project-chapter{grid-column:auto}
 .work-story-section{display:grid;gap:14px}
 .work-story-section-head{display:block}
-.work-story-section-head h4{font:400 clamp(26px,3vw,38px)/1.05 var(--serif);margin:0}
+.work-story-section-head h4{font:400 var(--t-xxl)/1.05 var(--serif);margin:0}
 .work-story-section-head p{max-width:none;margin:8px 0 0;color:var(--muted);font-size:var(--t-sm);line-height:1.5}
 .work-project-grid{display:flex;flex-direction:column;gap:16px}
 /* Media always on the RIGHT (Chris 2026-09-22: no alternating). DOM order is media, copy; media takes order:2. */
@@ -870,7 +873,7 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-project-card:focus-visible .work-project-card-media img{transform:translateY(-6px)}
 /* Layout C (Chris 2026-09-22): kicker · serif title · de-emphasized summary · result line · "Read the case" pill. */
 .work-project-card-copy{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:26px 30px;min-width:0}
-.work-project-card h4{font-family:var(--serif);font-size:clamp(26px,3vw,38px);font-weight:400;line-height:1.05;margin:0}
+.work-project-card h4{font-family:var(--serif);font-size:var(--t-xxl);font-weight:400;line-height:1.05;margin:0}
 .work-project-card p{color:var(--muted);font-size:var(--t-sm);line-height:1.5;margin:0;max-width:48ch}
 /* Result line: mono evidence label (resultKind, falling back to delivery) colored by delivery STATUS, then the result
    in the contrast-safe world accent. No marker glyph: the label's color carries the status. */
@@ -880,7 +883,7 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-project-card-result-text{color:var(--world-accent-on-card,var(--accent))}
 .work-project-card-cta{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:4px;padding:8px 14px;
   border:1px solid var(--world-accent-on-card,var(--accent));border-radius:0;color:var(--world-accent-on-card,var(--accent));
-  font:600 12px/1 var(--sans);transition:background-color .2s ease,color .2s ease}
+  font:600 var(--t-xs)/1 var(--sans);transition:background-color .2s ease,color .2s ease}
 .work-project-card-cta span{transition:transform .2s ease}
 .work-project-card:hover .work-project-card-cta,.work-project-card:focus-visible .work-project-card-cta{
   background:var(--world-accent-on-card,var(--accent));color:var(--world-card-bg,var(--bg))}
@@ -892,7 +895,7 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 }
 .work-company-support{display:grid;gap:14px;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
 .work-company-support-head{display:block}
-.work-company-support-head h4{font:400 clamp(26px,3vw,38px)/1.05 var(--serif);margin:0}
+.work-company-support-head h4{font:400 var(--t-xxl)/1.05 var(--serif);margin:0}
 .work-company-support-head p{max-width:none;margin:8px 0 0;color:var(--muted);font-size:var(--t-sm);line-height:1.5}
 .work-company-quotes{display:grid;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
 .work-company-quotes-label{font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--text);margin:0 0 6px}
@@ -916,30 +919,30 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-support{display:grid;gap:26px;margin:6px 0 0}
 .work-support-group{display:grid;gap:0}
 .work-support-group-head{padding:0 0 9px;border-bottom:1px solid var(--border)}
-.work-support-group-head .t{font:600 12px/1.2 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--text)}
-.work-support-group-head .d{font-size:12.5px;color:var(--muted);margin-top:3px}
+.work-support-group-head .t{font:600 var(--t-xs)/1.2 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--text)}
+.work-support-group-head .d{font-size:var(--t-xs);color:var(--muted);margin-top:3px}
 .work-support-list{list-style:none;margin:0;padding:0}
 .work-support-row{display:grid;align-items:start;column-gap:18px;
   grid-template-columns:2.2em minmax(150px,.9fr) minmax(0,1.5fr);
   padding:14px 4px;border-top:1px solid var(--border-soft,var(--border))}
 .work-support-row:first-child{border-top:0}
 .work-support-list.has-thumb .work-support-row{grid-template-columns:2.2em 72px minmax(140px,.85fr) minmax(0,1.45fr)}
-.work-support-idx{font:600 11px/1.7 var(--sans);letter-spacing:.06em;color:var(--accent)}
+.work-support-idx{font:600 var(--t-xs)/1.7 var(--sans);letter-spacing:.06em;color:var(--accent)}
 .work-support-thumb{width:72px;aspect-ratio:4/3;border-radius:0;overflow:hidden;background:#ececea;border:1px solid var(--border-soft,var(--border))}
 .work-support-thumb.is-empty{background:transparent;border-color:transparent}
 .work-support-thumb.is-visual{display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 9%,var(--surface,#fff))}
-.work-support-thumb-glyph{font-size:22px;line-height:1;color:var(--accent);opacity:.7}
+.work-support-thumb-glyph{font-size:var(--t-md);line-height:1;color:var(--accent);opacity:.7}
 .work-support-thumb img{width:100%;height:100%;object-fit:cover;display:block}
 .work-support-namecol{display:flex;flex-direction:column;gap:6px;min-width:0}
-.work-support-name{display:inline-block;font:600 15px/1.35 var(--sans);color:var(--text);text-align:left;background:none;border:0;padding:0;margin:0}
+.work-support-name{display:inline-block;font:600 var(--t-sm)/1.35 var(--sans);color:var(--text);text-align:left;background:none;border:0;padding:0;margin:0}
 button.work-support-name,a.work-support-name{cursor:pointer;text-decoration:none}
 button.work-support-name:hover,a.work-support-name:hover,button.work-support-name:focus-visible,a.work-support-name:focus-visible{color:var(--accent);text-decoration:underline;outline:none}
-.work-support-state{display:flex;align-items:center;gap:7px;font:600 10px/1 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.work-support-state{display:flex;align-items:center;gap:7px;font:600 var(--t-xs)/1 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .work-support-dot{width:7px;height:7px;border-radius:0;background:var(--accent);flex:0 0 auto}
 .work-support-dot.warn{background:#c9a227}
 .work-support-dot.todo{background:var(--muted)}
-.work-support-desc{font:400 13px/1.5 var(--sans);color:var(--muted);padding-top:1px;min-width:0}
-.work-support-result{display:block;margin-top:6px;color:var(--accent);font:400 12.5px/1.4 var(--serif)}
+.work-support-desc{font:400 var(--t-xs)/1.5 var(--sans);color:var(--muted);padding-top:1px;min-width:0}
+.work-support-result{display:block;margin-top:6px;color:var(--accent);font:400 var(--t-xs)/1.4 var(--serif)}
 @media(max-width:600px){
   .work-support-row,.work-support-list.has-thumb .work-support-row{grid-template-columns:2em minmax(0,1fr);row-gap:5px}
   .work-support-thumb{display:none}
@@ -1015,7 +1018,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .project-chapter-copy{max-width:72ch}
 .project-chapter-step{display:block;color:var(--accent);font-size:var(--t-xs);letter-spacing:.12em;
   text-transform:uppercase;margin:0 0 7px}
-.project-chapter h4{font-family:var(--serif);font-size:clamp(28px,4vw,46px);font-weight:400;line-height:1.04;margin:0 0 12px}
+.project-chapter h4{font-family:var(--serif);font-size:var(--t-xxl);font-weight:400;line-height:1.04;margin:0 0 12px}
 .project-chapter-copy p{color:var(--muted);font-size:var(--t-sm);line-height:1.6;margin:0}
 .project-chapter-media{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px;min-width:0}
 .story-artifact{appearance:none;position:relative;grid-column:span 6;width:100%;min-width:0;padding:0;overflow:hidden;
@@ -1044,10 +1047,10 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
           mask-image:radial-gradient(130% 130% at 16% 94%,#000 26%,transparent 74%)}
 
 .visual-placeholder-title,.visual-placeholder-note{position:relative;z-index:1;display:block}
-.visual-placeholder-title{max-width:34ch;font:400 clamp(21px,2.6vw,34px)/1.08 var(--serif)}
+.visual-placeholder-title{max-width:34ch;font:400 var(--t-xxl)/1.08 var(--serif)}
 .visual-placeholder-note{max-width:54ch;margin-top:7px;color:var(--muted);font:400 var(--t-xs)/1.45 var(--sans)}
 .work-project-card-media>.visual-placeholder{width:100%;height:100%;min-height:0;border:0}
-.work-project-card-media>.visual-placeholder .visual-placeholder-title{font-size:clamp(22px,3vw,36px)}
+.work-project-card-media>.visual-placeholder .visual-placeholder-title{font-size:var(--t-xxl)}
 /* Full-width in stacked chapters, the placeholder must not dissolve into the world bg:
    give it a visible boundary + a subtle ink-tinted surface (still brand-themed). */
 .story-artifact.visual-placeholder{cursor:default;
@@ -1067,8 +1070,8 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   background-size:var(--bp-cell,22px) var(--bp-cell,22px);background-position:var(--bp-x,0) var(--bp-y,0)}
 .portfolio-diagram-head,.portfolio-diagram-stage,.portfolio-diagram-footer{position:relative;z-index:1}
 .portfolio-diagram-eyebrow{display:block;margin:0 0 5px;color:var(--accent);
-  font:600 10px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase}
-.portfolio-diagram-title{display:block;text-wrap:pretty;font:400 clamp(21px,2.4vw,32px)/1.08 var(--serif)}
+  font:600 var(--t-xs)/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase}
+.portfolio-diagram-title{display:block;text-wrap:pretty;font:400 var(--t-xxl)/1.08 var(--serif)}
 .portfolio-diagram-stage{display:grid;grid-template-columns:repeat(var(--diagram-columns,3),minmax(0,1fr));gap:8px}
 .portfolio-diagram-item{position:relative;display:flex;flex-direction:column;justify-content:center;min-width:0;
   min-height:86px;padding:13px 14px;border:1px solid var(--border-strong);background:var(--surface-2)}
@@ -1079,9 +1082,9 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
    Dashed = unshipped; solid = happened; accent = current/goal; muted = happened but de-emphasized. */
 .portfolio-diagram-item[data-diagram-tone="unshipped"]{border-style:dashed}
 .portfolio-diagram-value{display:block;margin:0 0 3px;color:var(--accent);
-  font:400 clamp(22px,3vw,38px)/1 var(--sans);letter-spacing:-.02em}
-.portfolio-diagram-label{display:block;color:var(--text);font:600 11.5px/1.35 var(--sans);letter-spacing:.04em;text-transform:uppercase}
-.portfolio-diagram-meta{display:block;margin-top:4px;color:var(--muted);font:400 11px/1.35 var(--sans)}
+  font:400 var(--t-xxl)/1 var(--sans);letter-spacing:-.02em}
+.portfolio-diagram-label{display:block;color:var(--text);font:600 var(--t-xs)/1.35 var(--sans);letter-spacing:.04em;text-transform:uppercase}
+.portfolio-diagram-meta{display:block;margin-top:4px;color:var(--muted);font:400 var(--t-xs)/1.35 var(--sans)}
 .portfolio-diagram-title,.portfolio-diagram-label,.portfolio-diagram-meta,.portfolio-diagram-footer{
   overflow-wrap:anywhere}
 .portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-stage,
@@ -1091,9 +1094,9 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-item{flex:1}
 .portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-item:not(:last-child)::after,
 .portfolio-diagram[data-diagram-type="loop"] .portfolio-diagram-item:not(:last-child)::after{
-  content:"→";position:absolute;top:50%;right:-17px;color:var(--accent);font:600 16px/1 var(--sans);
+  content:"→";position:absolute;top:50%;right:-17px;color:var(--accent);font:600 var(--t-sm)/1 var(--sans);
   transform:translateY(-50%)}
-.portfolio-diagram-footer{color:var(--muted);font:600 11px/1.35 var(--sans)}
+.portfolio-diagram-footer{color:var(--muted);font:600 var(--t-xs)/1.35 var(--sans)}
 .story-artifact.portfolio-diagram,
 .project-chapter[data-story-layout="wide"] .story-artifact.portfolio-diagram[data-story-span="12"]{
   grid-column:span 12;min-height:280px;aspect-ratio:auto;cursor:default}
@@ -1192,7 +1195,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .work-tile>.visual-placeholder::before{inset:0}
 
 .work-tile>.visual-placeholder .visual-placeholder-title{position:absolute;top:64px;left:18px;right:18px;
-  max-width:22ch;font-size:clamp(18px,2.1vw,28px)}
+  max-width:22ch;font-size:var(--t-xl)}
 .work-tile-label{position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;
   gap:1px;padding:34px 11px 10px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.84));
   text-shadow:0 1px 2px rgba(0,0,0,.7);pointer-events:none}
@@ -1222,7 +1225,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   letter-spacing:.12em;text-transform:uppercase}
 .media-lightbox h2{font-family:var(--serif);font-size:var(--t-lg);font-weight:400;margin:2px 0 0}
 .media-lightbox-close{appearance:none;border:1px solid var(--border);border-radius:0;width:40px;height:40px;
-  background:transparent;color:var(--text);font:400 28px/1 var(--sans);cursor:pointer}
+  background:transparent;color:var(--text);font:400 var(--t-xl)/1 var(--sans);cursor:pointer}
 .media-lightbox-close:hover,.media-lightbox-close:focus-visible{border-color:var(--accent);color:var(--accent)}
 .media-lightbox-stage{min-height:0;display:grid;place-items:center;padding:14px;background:#070707;overflow:auto}
 .media-lightbox-stage img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
@@ -1258,7 +1261,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   .work-project-card:only-child .work-project-card-media:has(>.portfolio-diagram){height:auto;min-height:420px}
   .work-shell.is-story-focused .work-panel{margin:0 0 18px}
   .work-shell.is-story-focused .work-panel-summary{font-size:var(--t-sm);line-height:1.48}
-  .work-shell.is-story-focused .work-panel-result{font-size:24px;margin-top:9px}
+  .work-shell.is-story-focused .work-panel-result{font-size:var(--t-lg);margin-top:9px}
   .work-panel.is-story-view .work-panel-heading{grid-template-columns:1fr;gap:5px}
   .work-panel-story-meta{justify-content:flex-start}
   .work-panel.is-story-view .work-panel-meta{text-align:left;margin:0}
@@ -1278,7 +1281,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   .work-controls{gap:5px}
   .work-filter-group{gap:2px;padding:2px}
   .work-filter-indicator{top:2px;height:34px}
-  .work-kind-filter{min-height:34px;padding:6px 7px;font-size:12px}
+  .work-kind-filter{min-height:34px;padding:6px 7px;font-size:var(--t-xs)}
   .work-shuffle{width:32px;min-height:34px}
 }
 @media(prefers-reduced-motion:reduce){
@@ -1288,7 +1291,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   .work-panel-navline{align-items:flex-start}
   .work-panel-provenance{justify-content:flex-end;flex-wrap:wrap;gap:6px 8px}
   .work-panel-provenance-logo{height:15px;max-width:110px}
-  .work-panel-provenance-outcome{font-size:10px}
+  .work-panel-provenance-outcome{font-size:var(--t-xs)}
   .work-panel-company-head{gap:12px}
   .work-panel-identity{gap:9px}
   .work-panel-company-outcome{order:3}
@@ -1298,7 +1301,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
     justify-content:space-between;gap:12px;padding:11px 0;list-style:none;color:var(--muted);
     font:600 var(--t-xs)/1.3 var(--sans);cursor:pointer}
   .work-panel.is-company-view .work-panel-details>summary::-webkit-details-marker{display:none}
-  .work-panel.is-company-view .work-panel-details>summary::after{content:"+";color:var(--accent);font-size:18px}
+  .work-panel.is-company-view .work-panel-details>summary::after{content:"+";color:var(--accent);font-size:var(--t-base)}
   .work-panel.is-company-view .work-panel-details[open]>summary::after{content:"−"}
   .work-panel.is-company-view .work-panel-details[open]>.work-panel-summary{margin-top:4px}
   .work-panel.is-company-view .work-panel-details[open]>.work-panel-facts{margin-bottom:12px}
@@ -1352,7 +1355,7 @@ body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:n
 /* tb-2 · Big, two-line - let it wrap and go display-scale, tight leading */
 body.tb-6 .hero h1.hero-lockup{
   white-space:normal;width:auto;max-width:none;
-  font-size:clamp(2.6rem,12.7cqi,150px);line-height:.98;letter-spacing:-.02em} /* 150px cap, Chris 2026-09-24; sized to the hero's own width (cqi) so the two lines never wrap to three */
+  font-size:var(--t-hero);line-height:.98;letter-spacing:-.02em} /* 150px cap, Chris 2026-09-24; sized to the hero's own width (cqi) so the two lines never wrap to three */
 /* forced break after "&" - only in the two-line treatments */
 .hero-lockup .lb{display:none}
 body.tb-6 .hero-lockup .lb{display:inline}
@@ -1448,14 +1451,14 @@ body.anim-2 .co-band.reveal.in .band-frame{opacity:1;transform:none;filter:none}
    neutral or the hero's highlight color. ---- */
 /* soft chip - filled, borderless; keeps the pill's marker feel without the hard outline */
 body.tag-chip-accent .tag-outcome{border:0;margin-left:10px;
-  padding:3px 9px;border-radius:0;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.03em;
+  padding:3px 9px;border-radius:0;font-family:var(--sans);font-size:var(--t-xs);font-weight:600;letter-spacing:.03em;
   text-transform:none;vertical-align:middle}
 
 body.tag-chip-accent .tag-outcome{background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent-strong)}
 
 /* ---- CARD TITLES (More work + Experiments): base is bold sans 19px, a different voice
    from the serif company names. Serif brings them into the same name hierarchy. ---- */
-body.card-serif .wcard-name{font-family:var(--serif);font-weight:400;font-size:23px;
+body.card-serif .wcard-name{font-family:var(--serif);font-weight:400;font-size:var(--t-lg);
   line-height:1.1;letter-spacing:.005em}
 
 /* ---- BLUEPRINT PLACEHOLDER (Chris chose 2026-09-17). A .wcard-thumb that still has a
@@ -1532,7 +1535,7 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
    clickable); an "Enter world →" label trails to its right. #gx-cursor is a fixed label JS moves. */
 #gx-cursor{position:fixed;left:0;top:0;z-index:1260;pointer-events:none;opacity:0;
   transform:translate(15px,14px);transition:opacity .2s ease;
-  padding:7px 12px;border-radius:0;background:#141210;color:#fff;font:600 12px/1 var(--sans);white-space:nowrap;
+  padding:7px 12px;border-radius:0;background:#141210;color:#fff;font:600 var(--t-xs)/1 var(--sans);white-space:nowrap;
   box-shadow:0 6px 18px rgba(0,0,0,.28)}
 #gx-cursor::after{content:"Enter world \2192"}
 /* the old static corner cue is now redundant with the trailing label */
@@ -1623,7 +1626,7 @@ body.work-focus-open[data-world] #work-focus-content{
 .work-panel-heading.world-hidden{display:none}
 .world-hero{max-width:none;margin:0;padding:40px 0 6px} /* aligned to the content column, like the story title and back link */
 .world-hero-kicker{font:600 var(--t-xs)/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--world-ink-soft);margin:0 0 16px}
-.world-hero-title{font:400 clamp(44px,7vw,92px)/1.02 var(--serif);letter-spacing:-.01em;color:var(--world-ink);margin:0 0 26px}
+.world-hero-title{font:400 var(--t-display)/1.02 var(--serif);letter-spacing:-.01em;color:var(--world-ink);margin:0 0 26px}
 .world-hero-lede{font:400 var(--t-lg)/1.5 var(--sans);max-width:72ch;color:var(--world-ink);margin:0}
 .world-hero-media{margin:46px 0 8px}
 .world-hero-media img{display:block;width:100%;height:auto;border-radius:0;box-shadow:0 24px 60px rgba(26,23,16,.18)}
@@ -1661,7 +1664,7 @@ body[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template
 body[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
 /* ONE rule for fact + outcome labels on company AND story views (Chris 2026-09-23): muted small caps, the grey
    letterspaced labels of his 2020 site. No mono, no uppercase micro-labels, no per-view copies to drift. */
-body[data-world] .work-panel .work-panel-facts dt,body[data-world] .work-panel .work-panel-result-label{grid-column:1;grid-row:1;font:400 14px/1.4 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;text-transform:none;color:var(--world-ink-soft)}
+body[data-world] .work-panel .work-panel-facts dt,body[data-world] .work-panel .work-panel-result-label{grid-column:1;grid-row:1;font:400 var(--t-xs)/1.4 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;text-transform:none;color:var(--world-ink-soft)}
 body[data-world] .work-panel .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)} /* same specificity as the label rule, so per-view base sizes never win */
 body[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
 body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{padding:4px 0 22px}
@@ -1874,10 +1877,10 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   #work-grid.work-grid{columns:auto!important;column-gap:0!important;display:block!important;height:auto!important;position:static!important}
   .co-groups{display:block}
   .co-lane{display:flex;flex-direction:column;gap:42px}
-  .exp-head{font-family:var(--serif);font-weight:400;font-size:26px;margin:56px 0 4px}
+  .exp-head{font-family:var(--serif);font-weight:400;font-size:var(--t-lg);margin:56px 0 4px}
   .co-band{position:relative}
-  .co-head h3{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.05;margin:0 0 4px}
-  .co-head p{color:var(--muted);max-width:none;margin:0 0 16px;font-size:15px}
+  .co-head h3{font-family:var(--serif);font-weight:400;font-size:var(--t-xl);line-height:1.05;margin:0 0 4px}
+  .co-head p{color:var(--muted);max-width:none;margin:0 0 16px;font-size:var(--t-sm)}
   .band-frame{position:relative;height:340px;border-radius:0;overflow:hidden;background:var(--band);cursor:pointer;border:1px solid var(--border)}
   .band-frame .work-tile{position:absolute!important;inset:0!important;left:0!important;top:0!important;width:100%!important;height:100%!important;margin:0!important;padding:24px;border:0;border-radius:0;background:transparent;opacity:0;pointer-events:none;transition:opacity .35s ease;display:flex;align-items:center;justify-content:center}
   .band-frame .work-tile.on{opacity:1;pointer-events:auto;z-index:1}
@@ -1892,7 +1895,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   
   /* when a company/project is open (focus/locked), hide all company bands so only the case study shows */
   .work-grid[data-locked="true"] .co-groups{display:none!important}
-  @media(max-width:600px){.band-frame{height:230px}.co-head h3{font-size:24px}}
+  @media(max-width:600px){.band-frame{height:230px}.co-head h3{font-size:var(--t-lg)}}
   /* featured single-hero bands: full-bleed baked-background art (no floating-card mat) */
   .co-band[data-hero] .band-frame .work-tile{padding:0!important}
   .co-band[data-hero] .band-frame .work-tile img{object-fit:contain!important;border-radius:0!important;box-shadow:none!important;max-height:100%!important}
@@ -1909,11 +1912,11 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   .work-cards .work-tile.wcard:hover{border-color:var(--muted);transform:translateY(-2px)}
   .wcard-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:var(--band,#222);overflow:hidden}
   .wcard-thumb img{width:100%;height:100%;object-fit:cover}   /* crop to fill (Chris 2026-09-23): no letterbox bars */
-  .wcard-thumb-label{font-family:var(--serif);font-size:26px;line-height:1.1;color:rgba(255,255,255,.94);padding:0 18px;text-align:center}
+  .wcard-thumb-label{font-family:var(--serif);font-size:var(--t-lg);line-height:1.1;color:rgba(255,255,255,.94);padding:0 18px;text-align:center}
   .wcard-body{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}
-  .wcard-name{font-weight:600;font-size:19px;color:var(--text);line-height:1.15}
-  .wcard-desc{color:var(--muted);font-size:15px;line-height:1.35}
-  .wcard-cta{margin-top:6px;font-weight:600;font-size:14px;color:var(--accent-strong)}
+  .wcard-name{font-weight:600;font-size:var(--t-base);color:var(--text);line-height:1.15}
+  .wcard-desc{color:var(--muted);font-size:var(--t-sm);line-height:1.35}
+  .wcard-cta{margin-top:6px;font-weight:600;font-size:var(--t-xs);color:var(--accent-strong)}
   /* Dark mode: mute the exposed brand-color field so it recedes into the dark
      ground instead of vibrating. Layered as background-image over the color, so
      it sits above background-color but below child <img>/labels - the work and
@@ -1921,7 +1924,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   :root[data-theme="dark"] .band-frame,
   :root[data-theme="dark"] .wcard-thumb{
     background-image:linear-gradient(rgba(20,20,22,.32),rgba(20,20,22,.32))}
-  .tag-outcome{display:inline-block;margin-left:9px;padding:2px 8px;border:1px solid var(--border);border-radius:0;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--muted);vertical-align:middle;white-space:nowrap;text-transform:none}
+  .tag-outcome{display:inline-block;margin-left:9px;padding:2px 8px;border:1px solid var(--border);border-radius:0;font-family:var(--sans);font-size:var(--t-xs);font-weight:600;letter-spacing:.02em;color:var(--muted);vertical-align:middle;white-space:nowrap;text-transform:none}
   /* ---- homepage vertical rhythm: one consolidated source, supersedes the scattered
      hero/#work patches above. Scale in use: 6 / 12 / 18 / 24 / 44 / 60 px ---- */
   /* Full-screen intro (Chris 2026-09-24, after Vicky Vo's review): the intro owns the first screen, centered;
@@ -1936,7 +1939,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   .scroll-cue{position:absolute;left:50%;bottom:22px;display:flex;flex-direction:column;align-items:center;gap:6px;
     appearance:none;border:0;background:none;padding:6px 0;cursor:pointer;color:var(--muted);font:400 var(--t-xs)/1 var(--sans);
     opacity:0;transform:translate(-50%,8px);pointer-events:none;transition:opacity var(--enter),transform var(--enter),color var(--transition)}
-  .scroll-cue .ar{font-size:18px;line-height:1}
+  .scroll-cue .ar{font-size:var(--t-base);line-height:1}
   body[data-world] .scroll-cue,body.work-focus-open .scroll-cue{display:none}
   .scroll-cue:hover,.scroll-cue:focus-visible{color:var(--text)}
   body.cue-in.at-top .scroll-cue,html:not(.js) .scroll-cue{opacity:1;transform:translate(-50%,0);pointer-events:auto}
