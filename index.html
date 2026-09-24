@@ -1934,6 +1934,10 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   .hero .sub{margin:0 0 14px;line-height:1.4}
   .hero .sub-line{margin:0}
   .hero-credibility{margin-top:44px;padding-top:0;border-top:0}
+  /* Intro sequence "overlap" (Chris 2026-09-24): subline, paragraph, logos rise in as "products." forms. */
+  .js .hero .sub,.js .hero .sub-line,.js .hero-credibility{opacity:0;transform:translateY(10px);transition:opacity var(--enter),transform var(--enter)}
+  .js .hero .intro-in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){ .js .hero .sub,.js .hero .sub-line,.js .hero-credibility{opacity:1;transform:none} }
   /* Scroll cue (Chris 2026-09-24; his words): enters after the headline lands (hero:done), leaves on scroll. */
   .hero{position:relative}
   .scroll-cue{position:absolute;left:50%;bottom:22px;display:flex;flex-direction:column;align-items:center;gap:6px;
@@ -7498,6 +7502,16 @@ document.body.classList.add('fx-dissolve','skin-digital');
   function cueIn(){ setTimeout(function(){ b.classList.add('cue-in'); },250); }
   if(window.__heroDone) cueIn(); else window.addEventListener('hero:done',cueIn,{once:true});
   setTimeout(function(){ b.classList.add('cue-in'); },3600);   // headline never signalled: show it anyway
+  // Intro: start as "products." begins to form (.hl-special gets .in), 140ms apart; never hold past 3s.
+  var items=[].slice.call(document.querySelectorAll('.hero .sub,.hero .sub-line,.hero-credibility')), started=false;
+  function introIn(){ if(started) return; started=true;
+    items.forEach(function(el,i){ setTimeout(function(){ el.classList.add('intro-in'); },i*140); }); }
+  var sp=document.querySelector('.hl-special');
+  var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(still||!sp||sp.classList.contains('in')) introIn();
+  else new MutationObserver(function(_,mo){ if(sp.classList.contains('in')){ mo.disconnect(); setTimeout(introIn,250); } })
+    .observe(sp,{attributes:true,attributeFilter:['class']});
+  setTimeout(introIn,3000);
   if(cue) cue.addEventListener('click',function(){
     var w=document.getElementById('work'); if(!w) return;
     var still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
