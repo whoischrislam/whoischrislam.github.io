@@ -759,8 +759,7 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
   min-width:0;padding:14px 16px;border-bottom:1px solid var(--border-soft)}
 .work-panel.is-company-view .work-panel-facts .fact-icon{grid-row:1;width:18px;height:18px;
   stroke:var(--accent-strong);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.85;margin-top:1px}
-.work-panel.is-company-view .work-panel-facts dt{grid-column:2;color:var(--muted);font-size:11px;
-  letter-spacing:.12em;text-transform:uppercase}
+.work-panel.is-company-view .work-panel-facts dt{grid-column:2;color:var(--muted)} /* type comes from the ONE shared label rule */
 .work-panel.is-company-view .work-panel-facts dd{grid-column:1/-1;margin-top:8px;line-height:1.45;
   font-size:13.5px;color:var(--text)}
 .work-panel.is-company-view .work-panel-facts dd.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
@@ -800,7 +799,7 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
   min-width:0;padding:14px 16px;border-right:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft)}
 .work-panel.is-story-view .work-panel-facts .fact-icon{grid-row:1;width:18px;height:18px;
   stroke:var(--accent-strong);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.85;margin-top:1px}
-.work-panel.is-story-view .work-panel-facts dt{grid-column:2;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.work-panel.is-story-view .work-panel-facts dt{grid-column:2;color:var(--muted)} /* type comes from the ONE shared label rule */
 .work-panel.is-story-view .work-panel-facts dd{grid-column:1/-1;margin-top:8px;font-size:13.5px;line-height:1.45;color:var(--text)}
 .work-panel.is-story-view .work-panel-facts dd.tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .work-panel.is-story-view .work-panel-facts dd.tags .tok{display:inline-flex;border:1px solid var(--border-strong);border-radius:6px;padding:2px 8px;font-size:12px;color:var(--text)}
@@ -867,10 +866,8 @@ html:has(body.work-focus-open){scrollbar-gutter:auto}
 /* Result line: mono evidence label (resultKind, falling back to delivery) colored by delivery STATUS, then the result
    in the contrast-safe world accent. No marker glyph: the label's color carries the status. */
 .work-project-card-result{display:block;margin:0;font:600 var(--t-sm)/1.45 var(--sans)}
-.work-project-card-result-kind{display:block;margin:0 0 4px;font:700 9.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap} /* stacked: label above so a wrapped result keeps a clean left edge (Chris 2026-09-23) */
-.work-project-card-result-kind[data-status="ok"]{color:var(--status-ok,#5bbf8a)}
-.work-project-card-result-kind[data-status="int"]{color:var(--status-int,var(--muted))}
-.work-project-card-result-kind[data-status="warn"]{color:var(--status-warn,#e0694a)}
+.work-project-card-result-kind{display:inline;margin:0;font:inherit;letter-spacing:0;text-transform:none;white-space:normal;color:inherit} /* G: status reads as the start of the result sentence */
+.work-project-card-result-kind::after{content:". "}
 .work-project-card-result-text{color:var(--world-accent-on-card,var(--accent))}
 .work-project-card-cta{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:4px;padding:8px 14px;
   border:1px solid var(--world-accent-on-card,var(--accent));border-radius:999px;color:var(--world-accent-on-card,var(--accent));
@@ -1666,8 +1663,10 @@ body[data-world] .work-panel-facts .tok{border-color:var(--world-line);color:var
 body[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
 body[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:1fr;border-bottom:1px solid var(--world-line);padding:14px 0}
 body[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
-body[data-world] .work-panel.is-company-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
-body[data-world] .work-panel.is-company-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
+/* ONE rule for fact + outcome labels on company AND story views (Chris 2026-09-23, option G): his 2020 grammar,
+   a bold sentence-case label at body size. No mono, no uppercase micro-labels, no per-view copies to drift. */
+body[data-world] .work-panel .work-panel-facts dt,body[data-world] .work-panel .work-panel-result-label{grid-column:1;grid-row:1;font:600 var(--t-base)/1.4 var(--sans);letter-spacing:0;text-transform:none;color:var(--world-ink)}
+body[data-world] .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
 body[data-world] .work-panel.is-company-view .work-panel-facts dd.tags{gap:8px}
 body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child{padding:4px 0 22px}
 body[data-world] .work-panel.is-company-view .work-panel-facts div:first-child dd{font:400 var(--t-lg)/1.5 var(--serif);margin-top:8px}
@@ -1678,8 +1677,6 @@ body[data-world] .work-panel.is-story-view .work-panel-facts{grid-template-colum
 body[data-world] .work-panel.is-story-view .work-panel-facts div,
 body[data-world] .work-panel.is-story-view .work-panel-facts div:nth-child(n+3){display:block;padding:14px 0;border:0;border-bottom:1px solid var(--world-line)} /* block like the company facts, so the spacing matches (the icon grid left a 12px gap) */
 body[data-world] .work-panel.is-story-view .work-panel-facts .fact-icon{display:none}
-body[data-world] .work-panel.is-story-view .work-panel-facts dt{grid-column:1;grid-row:1;font:600 11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--world-ink-soft)}
-body[data-world] .work-panel.is-story-view .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)}
 /* stack the brief in one column (summary, facts, then OUTCOME as a full-width serif bookend - like the company MEASURED OUTCOMES) */
 body[data-world] .work-panel.is-story-view .work-panel-brief{grid-template-columns:1fr;grid-template-areas:"summary" "facts" "outcome"}
 body[data-world] .work-panel.is-story-view .work-panel-outcome{max-width:none;margin-top:26px;padding-top:24px!important;border-top:1px solid var(--world-line)!important}
@@ -1717,9 +1714,6 @@ body.work-focus-open[data-world] .portfolio-diagram-item[data-diagram-tone="acce
 /* work-project-card in a world: the blanket `* {color:inherit}` above flattens children to card ink, so the
    de-emphasis and the result line are re-applied at higher specificity. */
 body.work-focus-open[data-world] .work-project-card .work-project-card-copy>p{color:color-mix(in srgb,var(--world-card-ink) 74%,transparent)}
-body.work-focus-open[data-world] .work-project-card .work-project-card-result-kind[data-status="ok"]{color:var(--status-ok)}
-body.work-focus-open[data-world] .work-project-card .work-project-card-result-kind[data-status="int"]{color:var(--status-int)}
-body.work-focus-open[data-world] .work-project-card .work-project-card-result-kind[data-status="warn"]{color:var(--status-warn)}
 body.work-focus-open[data-world] .work-project-card .work-project-card-result-text{color:var(--world-accent-on-card)}
 body.work-focus-open[data-world] .work-project-card .work-project-card-cta{color:var(--world-accent-on-card)}
 body.work-focus-open[data-world] .work-project-card .portfolio-diagram-return,
@@ -6410,13 +6404,14 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
       workPanelTitle.textContent = story.name;
       workPanelTitle.hidden = false;
       workPanelMeta.textContent = ""; workPanelMeta.hidden = true; // no platform line under the title: the Platforms fact row carries it (Chris 2026-09-23)
-      workPanelDelivery.textContent = publicDelivery(story.delivery) || "Project";
-      workPanelStoryMeta.hidden = false;
+      workPanelDelivery.textContent = "";
+      workPanelStoryMeta.hidden = true; // G: no status capsule; the status opens the outcome sentence
       workPanelSummary.textContent = story.summary;
       renderWorkFacts(story.facts || null, true);
       workPanelDetails.open = true;
       workPanelResultLabel.textContent = "Outcome";
-      workPanelResult.textContent = story.result;
+      var storyStatus = publicDelivery(story.delivery);
+      workPanelResult.textContent = (storyStatus ? storyStatus + ". " : "") + story.result;
       workPanelActions.replaceChildren();
       (story.actions || []).forEach(function(action, index){
         var link = document.createElement("a");

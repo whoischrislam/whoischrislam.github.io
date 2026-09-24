@@ -145,7 +145,7 @@ MEASURE_GRANDFATHERED = {
     ".work-project-card p", ".work-quote-text", ".project-chapter-copy", ".visual-placeholder-title",
     ".visual-placeholder-note", ".work-tile>.visual-placeholder .visual-placeholder-title", ".world-hero-lede",
 }
-HARDCODED_COLOR_BASELINE = 60
+HARDCODED_COLOR_BASELINE = 58
 HARDCODED_DURATION_BASELINE = 53
 _rules = re.findall(r"([^{}]+)\{([^{}]*)\}", css_nc)
 for sel, body in _rules:
