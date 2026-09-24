@@ -12,6 +12,16 @@ inconsistency — it was the *absence* of his own decisions.
 
 ## Tokens
 
+**Layout system (Chris 2026-09-24, after Vicky Vo's review; research digest in .jobhunt).** One set, site-wide:
+- Spacing, four relationships: `--s-in` 8 (heading to its own text), `--s-item` 24 / phone 16 (between items, text
+  to its media), `--s-group` 64 / 40 (block to block, company to company), `--s-section` 128 / 80 (section to section).
+  Separators: section and group rules get 24 below; row rules (facts, lists) get 16 above and below. Was ~30 values.
+- Type by role: sans text 16 (labels, meta, nav) and 18 (body, ledes); serif headings 30 (company, card, outcome)
+  and 38 (sections, chapters); display 56 / 92 / 150. `--t-xs` is 16, so nothing renders at 14.
+- Leading: sans text 1.65; serif headings and outcome lines 1.12-1.25.
+- Text runs the full column (Chris's pick over the research's 70ch cap; revisit for long case-study prose).
+- Lives in `<style id="layout-system">` with !important over older component margins: fold into components as touched.
+
 **Type floor and scale (Chris 2026-09-24).** Nothing renders under 14px. Every size is a `--t-*` token:
 14 / 16 / 18 / 21 / 24 / 30 / 38, plus display `--t-h1` (story title), `--t-display` (world title),
 `--t-hero` (headline). Anything that would go smaller is a special case that needs compensating treatment
