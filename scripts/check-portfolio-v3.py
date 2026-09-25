@@ -142,8 +142,8 @@ def main() -> int:
             "homepage hero object (products) changed",
         "text:'& code to'":
             "homepage hero typed copy (& code to ship) changed",
-        "<b>Senior Product Designer</b>":
-            "homepage primary label must lead with Senior Product Designer",
+        "<b>Product designer</b>":
+            "homepage primary label must lead with Product designer",
         "I also build in production <b>React, TypeScript, and Python</b>":
             "homepage market-facing builder line changed",
         "<b>14+ years</b> shipping software across healthcare, marketplaces, education, and creative tools. Now building <b>AI products</b>.":
