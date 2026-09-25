@@ -146,8 +146,8 @@ def main() -> int:
             "homepage primary label must lead with Senior Product Designer",
         "I also build in production React, TypeScript, and Python":
             "homepage market-facing builder line changed",
-        "14+ years shipping software across healthcare, marketplaces, education, and creative tools. I learn new domains and technologies quickly without compromising product judgment, design craft, or engineering rigor.":
-            "homepage adaptability line changed",
+        "14+ years shipping software across healthcare, marketplaces, education, and creative tools.":
+            "homepage domain-range line changed (the adaptability claim was cut 2026-09-24, Chris)",
         "14+ years": "homepage must use the confirmed 14+ years notation",
         'class="hero-logo-more"': "credibility rail needs its and-more close",
         'mask-image:var(--logo-mask)':
