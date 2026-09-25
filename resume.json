@@ -41,8 +41,8 @@
                 "Built an FSM safety engine where crisis paths are deterministic code, not prompt instructions, a hard state the model cannot override.",
                 "Architected a streaming speech-to-text to LLM to text-to-speech pipeline (multi-provider, deep fallback) fronted by a deterministic state machine.",
                 "Scoped the language model to phrasing and warmth while conversation flow runs as a deterministic state machine; about half of routing decisions resolve with no model call.",
-                "Built an eval-driven safety loop: every production failure becomes a permanent regression scenario, so the same failure cannot recur.",
-                "Designed elder-first voice UX: no app, no screen, no login, just a phone call.",
+                "Built a layered quality loop: manual QA scripts, automated and adversarial checks, and live safety smoke tests. Confirmed failures became regression tests after human review.",
+                "Designed elder-first voice UX across browser voice, a tested phone path, and visual games, all around one agent.",
                 "Tested with 11 people outside the founding team, including four elder-care professionals: a facility owner-operator, two geriatric physicians, and a senior-rehabilitation specialist."
             ],
             "location": "Remote"
