@@ -1,6 +1,12 @@
 [
  {
   "date": "2026-09-24",
+  "area": "Company pages",
+  "change": "Removed the numbers from the \"Also shipped\" lists. They read like steps in a process, and the items aren't sequential.",
+  "commit": ""
+ },
+ {
+  "date": "2026-09-24",
   "area": "This site",
   "change": "Added this page, a living record of how the site is designed, and made the design system behind it public.",
   "commit": "3ca97d3"

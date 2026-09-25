@@ -942,11 +942,10 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-support-group-head .d{font-size:var(--t-xs);color:var(--muted);margin-top:3px}
 .work-support-list{list-style:none;margin:0;padding:0}
 .work-support-row{display:grid;align-items:start;column-gap:18px;
-  grid-template-columns:2.2em minmax(150px,.9fr) minmax(0,1.5fr);
+  grid-template-columns:minmax(150px,.9fr) minmax(0,1.5fr);
   padding:14px 4px;border-top:1px solid var(--border-soft,var(--border))}
 .work-support-row:first-child{border-top:0}
-.work-support-list.has-thumb .work-support-row{grid-template-columns:2.2em 72px minmax(140px,.85fr) minmax(0,1.45fr)}
-.work-support-idx{font:600 var(--t-xs)/1.7 var(--sans);letter-spacing:.06em;color:var(--accent)}
+.work-support-list.has-thumb .work-support-row{grid-template-columns:72px minmax(140px,.85fr) minmax(0,1.45fr)}
 .work-support-thumb{width:72px;aspect-ratio:4/3;border-radius:0;overflow:hidden;background:#ececea;border:1px solid var(--border-soft,var(--border))}
 .work-support-thumb.is-empty{background:transparent;border-color:transparent}
 .work-support-thumb.is-visual{display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 9%,var(--surface,#fff))}
@@ -963,9 +962,9 @@ button.work-support-name:hover,a.work-support-name:hover,button.work-support-nam
 .work-support-desc{font:400 var(--t-xs)/1.5 var(--sans);color:var(--muted);padding-top:1px;min-width:0}
 .work-support-result{display:block;margin-top:6px;color:var(--accent);font:400 var(--t-xs)/1.4 var(--serif)}
 @media(max-width:600px){
-  .work-support-row,.work-support-list.has-thumb .work-support-row{grid-template-columns:2em minmax(0,1fr);row-gap:5px}
+  .work-support-row,.work-support-list.has-thumb .work-support-row{grid-template-columns:minmax(0,1fr);row-gap:5px}
   .work-support-thumb{display:none}
-  .work-support-namecol,.work-support-desc{grid-column:2}
+  .work-support-namecol,.work-support-desc{grid-column:1}
   .work-support-desc{margin-top:4px}
 }
 /* per-world theming */
@@ -973,7 +972,6 @@ body.work-focus-open[data-world] .work-support-group-head{border-color:color-mix
 body.work-focus-open[data-world] .work-support-group-head .t{color:var(--world-ink)}
 body.work-focus-open[data-world] .work-support-group-head .d{color:var(--world-ink-soft)}
 body.work-focus-open[data-world] .work-support-row{border-color:color-mix(in srgb,var(--world-ink) 12%,transparent)}
-body.work-focus-open[data-world] .work-support-idx{color:var(--world-accent)}
 body.work-focus-open[data-world] .work-support-thumb{background:color-mix(in srgb,var(--world-ink) 6%,var(--world-bg));border-color:color-mix(in srgb,var(--world-ink) 14%,transparent)}
 body.work-focus-open[data-world] .work-support-thumb.is-empty{background:transparent;border-color:transparent}
 body.work-focus-open[data-world] .work-support-thumb.is-visual{background:color-mix(in srgb,var(--world-accent) 12%,var(--world-bg))}
@@ -5948,10 +5946,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       var explainer = explainerParts.join("  ·  ");
       var row = document.createElement("li");
       row.className = "work-support-row";
-      var num = document.createElement("span");
-      num.className = "work-support-idx";
-      num.textContent = (idx < 10 ? "0" : "") + idx;
-      row.appendChild(num);
+      // no row numbers: in "Also shipped" they read as sequential steps (Vicky Vo, 2026-09-24)
       if(showThumb){
         var thumb = document.createElement("span");
         thumb.className = "work-support-thumb" + (hasImg || hasVisual ? "" : " is-empty") + (hasVisual ? " is-visual" : "");
