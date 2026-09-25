@@ -1,6 +1,12 @@
 [
  {
   "date": "2026-09-24",
+  "area": "Case studies",
+  "change": "Case studies open with everything up front, inside the colored band: the title, a one-line summary, the main image in a fixed wide frame, the facts, and the outcome. Then the chapters.",
+  "commit": ""
+ },
+ {
+  "date": "2026-09-24",
   "area": "Links",
   "change": "Links to live work (play it, see it live, the source, press) moved from buttons under the colored band into one quiet line inside it. An arrow pointing up and out means the link leaves the site.",
   "commit": ""

@@ -45,6 +45,10 @@ role; case-study credits = that project. Pages without cards (HogWare, Zodiacus,
 "What I did", one facts row, the outcome as a serif statement, then the work and credits. Role details is retired.
 A "Boundary" fact is a credit only when it says who built what; delivery boundaries stay in the facts. The meta line
 shows the company milestone only when there is no stage line (a stage already says where the product ended up).
+**Case study top (Chris 2026-09-24, G1 + P1).** The title band holds, in order: title, one-liner, links, the hero,
+the facts row, the outcome. Then the "Jump to" row and chapter 1. **Hero spec: a 16:9 frame**, image fitted whole
+(contain), 1px band-line border. New heroes are made for this frame (Figma), and motion or interactive pieces take the
+same slot later. No hero or a placeholder: the band simply skips it. The card's image morphs into the hero.
 **Links to live work (L2).** One quiet underlined line in the title band, never buttons below it. ↗ marks a link that
 leaves the site (new tab, announced to screen readers); → stays on the site.
 **Page rhythm (Chris 2026-09-24, C3 + S1).** The title band sits flush under the back bar. Then 64 between blocks and 24

@@ -934,8 +934,14 @@ body[data-world] .work-panel.is-story-view .work-panel-heading{margin-top:0!impo
 .work-links a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
 .work-panel-heading .work-links{grid-column:1/-1}
 .work-links-sep{margin:0 12px;color:var(--world-ink-soft,var(--muted))}
-.work-panel.is-story-view .work-panel-heading{margin-bottom:var(--s-group,64px)!important}
-.work-panel.is-story-view .project-story-opening{margin-top:0!important;margin-bottom:0!important}
+.work-panel.is-story-view .work-panel-brief{display:none!important} /* facts and outcome live in the title band (G1) */
+.work-story-facts{grid-column:1/-1;margin-top:var(--s-group,64px)}
+.work-story-facts dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0 var(--s-item,24px);margin:0}
+.work-story-facts dt,.work-story-facts-label{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--world-ink-soft,var(--muted))}
+.work-story-facts dd{margin:0 0 var(--s-item,24px);font:400 var(--t-base)/1.5 var(--sans);color:inherit}
+.work-story-facts-outcome{margin:0;font:400 var(--t-xl)/1.25 var(--serif);color:inherit}
+.work-panel-heading .work-story-hero{grid-column:1/-1;margin:var(--s-group,64px) 0 0!important;aspect-ratio:16/9;border:1px solid var(--world-line,var(--border));overflow:hidden}
+.work-story-hero img{display:block;width:100%;height:100%;object-fit:contain}
 .project-story-nav{margin-top:var(--s-group,64px)}
 .work-credits{margin-top:var(--s-section,128px);padding-top:var(--s-item,24px);border-top:1px solid var(--border)}
 .work-credits-title{margin:0 0 var(--s-item,24px)!important;font:600 var(--t-xs)/1.3 var(--sans)!important;font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
@@ -1826,7 +1832,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
 <!-- 2. Hero -->
 <header class="hero">
   <h1 class="hero-lockup"><span class="hl-design">I <span class="lit-word">design</span></span> <span class="hl-ship"><span class="hl-ship-text">&amp; code to</span></span><br class="lb"><span class="hl-ship2"><span class="hl-ship-text2">ship</span></span> <span class="hl-special"><span class="hl-prod">products</span><span class="hl-dot">.</span></span></h1>
-  <p class="sub"><b>Senior Product Designer</b>. I also build in production React, TypeScript, and Python, so design intent survives to launch. 14+ years shipping software across healthcare, marketplaces, education, and creative tools.</p>
+  <p class="sub"><b>Senior Product Designer</b>. I also build in production <b>React, TypeScript, and Python</b>, so design intent survives to launch. <b>14+ years</b> shipping software across healthcare, marketplaces, education, and creative tools. Now building <b>AI products</b>.</p>
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
     <p class="lbl">Built products at</p>
     <ul class="hero-logo-row">
@@ -2115,7 +2121,7 @@ body[data-world] header.world-hero,body[data-world] .work-panel.is-story-view .w
   --world-bg:var(--brand-bg);--world-ink:var(--brand-ink);--world-ink-soft:var(--brand-soft);--world-line:var(--brand-line);
   position:relative;background:var(--brand-bg);color:var(--brand-ink);box-shadow:0 0 0 100vmax var(--brand-bg);clip-path:inset(0 -100vmax);
   padding-top:var(--s-group)!important;padding-bottom:var(--s-group)!important}
-body[data-world] .work-panel.is-story-view .work-panel-heading{margin-bottom:var(--s-group)!important}
+body[data-world] .work-panel.is-story-view .work-panel-heading{margin-bottom:0!important} /* the band is the panel's last block; the jump nav owns the 64 below it */
 body[data-world] header.world-hero :is(.visual-placeholder-note,.visual-placeholder-title){color:var(--brand-soft)} /* inside the band: brand text, not the foundation gray */
 body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-card-ink:#ffffff;--world-accent-on-card:var(--brand-accent-dark)} /* #28 'A dark' diagrams stay dark on the foundation */
 /* one image backdrop for every card (was 11 hand-picked colors) */
@@ -5892,6 +5898,36 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     function isCreditFact(f){
       return CREDIT_FACT.test(f[0]) || (/^Boundary$/i.test(f[0]) && /code|engineer|design|helped/i.test(f[1] || ""));
     }
+    // Case-study hero (P1, Chris 2026-09-24): one 16:9 frame in the title band, under the one-liner. The frame is the
+    // spec for new heroes (recreated in Figma; motion or interactive pieces can take the same slot later). Placeholders
+    // stay out of the band: no hero is better than a "coming soon" box.
+    function buildStoryHero(story){
+      if(!story.hero) return null;
+      var fig = document.createElement("figure"); fig.className = "work-story-hero";
+      var img = document.createElement("img"); img.src = story.hero; img.alt = story.name + " overview";
+      img.loading = "eager"; img.decoding = "async";
+      fig.appendChild(img); return fig;
+    }
+    // Case-study facts in the title band (G1): the facts row and the outcome, where the reader starts.
+    function buildStoryFacts(story){
+      var rows = (story.facts || []).filter(function(f){ return !isCreditFact(f); });
+      var status = publicDelivery(story.delivery);
+      var result = (status ? status + ". " : "") + (story.result || "");
+      if(!rows.length && !story.result) return null;
+      var box = document.createElement("div"); box.className = "work-story-facts";
+      if(rows.length){
+        var dl = document.createElement("dl");
+        rows.forEach(function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
+          dt.textContent=r[0]; dd.textContent=String(r[1]).split(" · ").join(", "); row.append(dt,dd); dl.appendChild(row); }); // plain English, like the old facts row
+        box.appendChild(dl);
+      }
+      if(story.result){
+        var l = document.createElement("p"); l.className = "work-story-facts-label"; l.textContent = "Outcome";
+        var v = document.createElement("p"); v.className = "work-story-facts-outcome"; v.textContent = result;
+        box.append(l, v);
+      }
+      return box;
+    }
     // Links to live work (L2): one quiet line in the title band. ↗ marks a link that leaves the site.
     function buildLinkLine(actions){
       if(!actions || !actions.length) return null;
@@ -6125,22 +6161,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       article.dataset.storyCompany = story.company;
       article.dataset.storyKey = storyKey;
       article.setAttribute("aria-label", story.name + " project story");
-      var opening = document.createElement("div");
-      opening.className = "project-story-opening";
-      var hero;
-      if(story.heroVisual){
-        hero = createVisualPlaceholder(story.heroVisual);
-        hero.classList.add("project-story-hero");
-      }else{
-        hero = createStoryArtifact({src:story.hero, title:story.name + " overview", span:12,
-          eager:true, fit:story.heroFit});
-        hero.className = "project-story-hero";
-      }
-      opening.appendChild(hero);
-      // Hero sits under the title, above the facts (Chris 2026-09-23), mirroring the company page's hero placement.
+      // The hero lives in the title band now (P1, buildStoryHero in renderStoryPanel); clear any old opening block.
       workPanel.querySelectorAll(".project-story-opening").forEach(function(n){ n.remove(); });
-      var storyHead = workPanel.querySelector(".work-panel-heading");
-      if(storyHead) storyHead.insertAdjacentElement("afterend", opening); else article.appendChild(opening);
       var storyNav = document.createElement("nav");
       storyNav.className = "project-story-nav";
       storyNav.setAttribute("aria-label", story.name + " chapters");
@@ -6261,7 +6283,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       requestAnimationFrame(storyRevealHandler);
       // Chip widths change at breakpoints; re-place the marker and fill when the nav resizes.
       new ResizeObserver(function(){ if(storyRevealHandler) storyRevealHandler(); }).observe(storyNav);
-      return hero;
+      // The card's image morphs into the hero in the title band; no hero, no morph.
+      return workPanel.querySelector(".work-panel-heading .work-story-hero");
     }
 
     function clearProjectGallery(){
@@ -6691,7 +6714,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       workPanelResult.textContent = (storyStatus ? storyStatus + ". " : "") + story.result;
       workPanelActions.replaceChildren(); workPanelActions.hidden = true;
       var oldLinks = workPanel.querySelector(".work-panel-heading .work-links"); if(oldLinks) oldLinks.remove();
+      workPanel.querySelectorAll(".work-panel-heading .work-story-facts, .work-panel-heading .work-story-hero").forEach(function(n){ n.remove(); });
       var storyLinks = buildLinkLine(story.actions); if(storyLinks) workPanelLede.after(storyLinks);
+      var storyHeroFig = buildStoryHero(story); if(storyHeroFig) (storyLinks || workPanelLede).after(storyHeroFig);
+      var storyFacts = buildStoryFacts(story); if(storyFacts) (storyHeroFig || storyLinks || workPanelLede).after(storyFacts);
       workPanel.hidden = false;
     }
 
@@ -7019,7 +7045,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         document.body.setAttribute("data-world", story.company); // a story lives inside its company's world: inherit the world theme (see CSS)
         renderStoryPanel(storyKey);
         storyHero = mountProjectStory(storyKey);
-        storyHero.style.viewTransitionName = "selected-project-visual";
+        if(storyHero) storyHero.style.viewTransitionName = "selected-project-visual";
         selectedWorkProject = story.company;
         selectedWorkStory = storyKey;
         companyButtons.forEach(function(button){
