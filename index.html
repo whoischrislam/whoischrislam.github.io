@@ -2440,7 +2440,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           ["Users", "Older adults · family caregivers · care professionals"],
           ["Owned", "Product · design · full-stack engineering"],
           ["Collaborators", "Two founders · clinical advisors · QA intern"],
-          ["Stage", "Deployed internal build · tested outside the founding team · not production"]
+          ["Stage", "Prod and dev deployments · closed alpha with testers outside the founding team"]
         ],
         resultLabel: "What changed",
         result: "The voice got warmer without a model swap, the game stopped depending on the prompt, and confirmed failures became regression tests",
@@ -2461,7 +2461,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             name: "Write for dignity",
             kicker: "Conversation design · Older-adult UX",
             summary: "I made small language choices into product rules. Never imply someone should remember. Never supply a word they are searching for. Answer the twentieth repeated question as warmly as the first.",
-            delivery: "Deployed internal build",
+            delivery: "Closed alpha",
             result: "Conversation rules backed by regression checks",
             image: "images/work/y30-voice.png"
           },
@@ -2469,19 +2469,19 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             name: "Give caregivers context, not a diagnosis",
             kicker: "Caregiver context · Product boundary",
             summary: "The older adult was the primary user. Family caregivers and care professionals needed longitudinal conversational signals that could support care without turning the product into a diagnostic system.",
-            delivery: "Deployed internal build",
+            delivery: "Closed alpha",
             result: "Longitudinal signals to support care, No automated diagnosis",
             image: "images/work/y30-signals.png"
           }
         ],
         supportingTitle: "Product map",
         supportingItems: [
-          {name:"Older-adult voice experience", description:"Conversation, cross-session memory, follow-up threads, and session summaries", delivery:"Internal build"},
-          {name:"Games and activities", description:"A decade-pricing game, deterministic turns, interruption recovery, telemetry, and post-game recap", delivery:"Internal build"},
+          {name:"Older-adult voice experience", description:"Conversation, cross-session memory, follow-up threads, and session summaries", delivery:"Closed alpha"},
+          {name:"Games and activities", description:"A decade-pricing game, deterministic turns, interruption recovery, telemetry, and post-game recap", delivery:"Closed alpha"},
           {name:"Caregiver experience", description:"Multi-person views, longitudinal summaries, activity evidence, and team notes", delivery:"Synthetic demo + live-data paths"},
-          {name:"Quality and review", description:"Manual scripts, automated scenarios, adversarial testing, a reviewer queue, and deployed smoke tests", delivery:"Internal build"},
-          {name:"Web, phone, and text access", description:"Browser voice, phone testing, text testing, and visual activities around one agent", delivery:"Internal build + phone tested"},
-          {name:"Access and data boundaries", description:"Authentication, consent, role routing, environment isolation, audit logging, and retention controls", delivery:"Internal build"},
+          {name:"Quality and review", description:"Manual scripts, automated scenarios, adversarial testing, a reviewer queue, and deployed smoke tests", delivery:"Deployed"},
+          {name:"Web, phone, and text access", description:"Browser voice, phone testing, text testing, and visual activities around one agent", delivery:"Closed alpha + phone tested"},
+          {name:"Access and data boundaries", description:"Authentication, consent, role routing, environment isolation, audit logging, and retention controls", delivery:"Deployed"},
           {name:"Older-adult and caregiver design systems", description:"Shared components, responsive states, and recovery patterns for both user groups", delivery:"Specified + partial build"}
         ],
         actions: [] // "Try y30" removed 2026-09-24 (Chris): y30.ai is now Vijay's pivot; a demo slot returns when his demo ships
@@ -3154,7 +3154,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         name: "Why the voice sounded robotic",
         cardTitle: "Make the voice worth talking to",
         meta: "Conversation design · Voice quality",
-        delivery: "Deployed internal build",
+        delivery: "Closed alpha",
         summary: "Testers said the voice sounded robotic. I made the stack testable, used controlled comparisons to find the real cause, and rewrote the system for someone listening instead of reading.",
         result: "Internal warmth rubric 3.28 → 4.17, blocking safety suite held 7/7",
         cardMedia: [
@@ -3168,7 +3168,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           ["Quality bar", "Would grandma keep talking? · Would she feel heard?"],
           ["Method", "Configurable STT · LLM · TTS · latency and cost comparisons"],
           ["Owned", "Product · conversation design · full-stack implementation · evaluation"],
-          ["Boundary", "Deployed internal build · not a senior cohort pilot"]
+          ["Boundary", "Closed alpha · not a senior cohort pilot"]
         ],
         chapters: [
           {
@@ -3299,7 +3299,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         name: "When prompting stopped working",
         cardTitle: "Move required behavior out of prompts",
         meta: "Voice architecture · Product engineering",
-        delivery: "Deployed internal build",
+        delivery: "Closed alpha",
         summary: "Prompting could not reliably run the game. I moved the required sequence into code and kept the model focused on conversation and phrasing.",
         result: "Required sequence became deterministic, conversation remained model-led",
         cardMedia: [
@@ -3313,7 +3313,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           ["Owned", "Product · conversation design · safety architecture · full-stack engineering"],
           ["Finding", "Prompt-driven required action stayed near 70% after repeated revisions"],
           ["Decision", "Game sequence in deterministic code · open conversation model-led"],
-          ["Boundary", "Deployed internal build · not production"]
+          ["Boundary", "Closed alpha · prod and dev deployments"]
         ],
         chapters: [
           {
@@ -3389,7 +3389,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         name: "Every failure became a test",
         cardTitle: "Turn failures into regression tests",
         meta: "Safety architecture · Human and automated QA",
-        delivery: "Deployed internal build",
+        delivery: "Closed alpha",
         summary: "The voice AI hallucinated and wasn't consistent. We let a geriatric physician, a care-facility owner, and a senior get their hands on it. I realized we needed a quality loop to fix the growing whack-a-mole of edge cases.",
         result: "A missed heart-attack test became an always-on medical route; silent live failures led to deployed smoke tests",
         cardMedia: [
@@ -3403,7 +3403,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           ["Testing", "Manual QA · unit and scenario tests · adversarial review · live smoke"],
           ["Human QA", "QA intern ran sessions and rated individual AI responses"],
           ["Learning loop", "Review queue · approval gate · failure harvest · regression coverage"],
-          ["Boundary", "Internal testing · not production"]
+          ["Boundary", "Closed alpha · smoke tests for dev and prod"]
         ],
         chapters: [
           {
