@@ -26,6 +26,7 @@ checks=(
   check-receipts.py
   check-dupes.py
   check-design-system.py
+  check-analytics-selectors.py
 )
 
 for check in "${checks[@]}"; do

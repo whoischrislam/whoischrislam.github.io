@@ -70,6 +70,8 @@ Before writing or changing any PlaySesh adoption claim in the resume, portfolio,
 
 **Six surfaces carry facts, not five.** `index.html`, `resume.json`, `llms.txt`, `candidate.html`, the résumé PDF, and `portfolio-voice-backend/src/facts.js` — the last one is the agent's catalog and it is the one that drifts unseen, because nothing on the site renders it. On 2026-08-13 it was found live with a fabricated "3.2s patience window", a test-file count removed everywhere else, and four PlaySesh figures that `.jobhunt/PLAYSESH_METRICS.md` marks "Not supported." Change a number on one surface, change it on all six, and run `node test-facts.mjs` in the backend repo.
 
+Any new duplicated surface (a selector, a generated data file, a content slot) gets a named canonical source and a parity check or a shared component at creation time, per `.claude/rules/duplicated-surfaces-drift-without-automated-parity.md`. Read it before shipping a second copy of anything.
+
 ## Public career-copy style
 
 Do not use em dashes in public portfolio, resume, application, or career copy.

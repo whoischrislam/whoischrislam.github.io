@@ -30,26 +30,13 @@
       });
     });
 
-    // Email — both <a href="mailto:"> and the onclick=mailto demo-request buttons.
+    // Email links (the mailto buttons are plain links now).
     document.querySelectorAll('a[href^="mailto:"]').forEach(function (el) {
       el.addEventListener("click", function () {
         capture("clicked_email", { href: el.getAttribute("href"), label: (el.textContent || "").trim().slice(0, 40) });
       });
     });
-    document.querySelectorAll('[onclick*="mailto:"]').forEach(function (el) {
-      el.addEventListener("click", function () {
-        capture("clicked_email", { source: "button", label: (el.textContent || "").trim().slice(0, 40) });
-      });
-    });
 
-    // Booking — the strongest conversion on the page. Someone picking a time
-    // has decided to talk, which email clicks only imply. Tracked separately so
-    // it never gets averaged into the weaker signals.
-    document.querySelectorAll('a[href*="cal.com/"]').forEach(function (el) {
-      el.addEventListener("click", function () {
-        capture("clicked_booking", { location: el.closest("#contact") ? "contact" : "hero" });
-      });
-    });
 
     /* ---- profile / external links ---- */
     document.querySelectorAll('a[href*="github.com/whoischrislam"], [onclick*="github.com/whoischrislam"]').forEach(function (el) {
@@ -58,32 +45,20 @@
     document.querySelectorAll('a[href*="linkedin.com/in/whoischrislam"]').forEach(function (el) {
       el.addEventListener("click", function () { capture("clicked_linkedin"); });
     });
-    document.querySelectorAll('a[href*="y30.ai"], [onclick*="y30.ai"]').forEach(function (el) {
-      el.addEventListener("click", function () { capture("clicked_y30_site"); });
+
+    // Links rendered later by script (world actions like "Try y30"): one delegated listener, so they count
+    // whenever they exist instead of only if they were in the page at load.
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href*="y30.ai"]');
+      if (a) capture("clicked_y30_site");
     });
 
     /* ---- proof engagement ---- */
-    // PlaySesh demo videos (the click also swaps in the iframe, handled in script.js).
-    document.querySelectorAll(".video-facade").forEach(function (el) {
-      el.addEventListener("click", function () {
-        capture("played_video", { project: "playsesh", video_id: el.dataset.videoId || "" });
-      });
+    // Demo videos (Loom / YouTube) open from media tiles on the homepage; one event, provider-labelled.
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest && e.target.closest(".work-tile[data-provider]");
+      if (t) capture("played_video", { provider: t.dataset.provider, project: t.dataset.project || "", video_id: t.dataset.videoId || "" });
     });
-    // "Read the full story" arc expansion.
-    var arc = document.querySelector(".arc-more");
-    if (arc) arc.addEventListener("toggle", function () { if (arc.open) capture("expanded_arc_story"); });
-
-    // y30 Loom demo — count it when it actually scrolls into view (it's embedded, not clicked).
-    var loom = document.querySelector('iframe[src*="loom.com"]');
-    if (loom && "IntersectionObserver" in window) {
-      var loomFired = false;
-      var loomIo = new IntersectionObserver(function (entries, obs) {
-        entries.forEach(function (en) {
-          if (!loomFired && en.isIntersecting) { loomFired = true; capture("viewed_y30_demo"); obs.disconnect(); }
-        });
-      }, { threshold: 0.5 });
-      loomIo.observe(loom);
-    }
 
     /* ---- engaged_view: the mid-funnel signal ----
        Fires once when a visitor both lingers (20s) AND reads (50% scroll). This is
