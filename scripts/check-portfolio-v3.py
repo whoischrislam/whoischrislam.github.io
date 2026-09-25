@@ -208,6 +208,13 @@ def main() -> int:
             failures.append(f"work tile {index} has an unknown or missing data-kind")
 
     for key, project in projects.items():
+        # kind "living" (2026-09-24, "This site"): an ongoing page, not a job with an outcome; it needs context, dates,
+        # and a status instead of summary/result, and its fact rows are optional.
+        if project.get("kind") == "living":
+            for field in ("name", "context", "dates", "status", "actions"):
+                if field not in project:
+                    failures.append(f"living world {key} is missing {field}")
+            continue
         for field in ("name", "summary", "result", "actions"):
             if field not in project:
                 failures.append(f"company {key} is missing {field}")

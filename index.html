@@ -898,6 +898,12 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-fact-band dt{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
 .work-fact-band dd{margin:0;font:400 var(--t-xs)/1.5 var(--sans);color:var(--text)}
 @media(max-width:760px){ .work-fact-band{grid-template-columns:1fr 1fr} }
+.work-changelog{margin-top:var(--s-section,128px)}
+.work-changelog h4{font:400 var(--t-xxl)/1.12 var(--serif);margin:0 0 var(--s-item,24px)}
+.work-changelog .work-panel-facts{display:block!important;border-top:1px solid var(--border)}
+.work-changelog .work-panel-facts>div{display:block!important;padding:16px 0!important;border-bottom:1px solid var(--border)}
+.work-changelog dt{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.work-changelog dd{margin:0;font:400 var(--t-base)/1.55 var(--sans);color:var(--text);max-width:none}
 .work-role-details{margin-top:var(--s-section,128px);border-top:1px solid var(--border);padding-top:var(--s-item,24px)}
 .work-role-details summary{cursor:pointer;font:600 var(--t-xs)/1 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
 .work-role-details .work-panel-facts{margin-top:var(--s-item,24px)}
@@ -1594,6 +1600,7 @@ body[data-world="startplaying"]{--world-bg:#0766ee;--world-ink:#ffffff;--world-i
 body[data-world="modus"]{--world-bg:#000000;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.66);--world-line:rgba(255,255,255,.20);--world-accent:#3872E7;--world-surface:color-mix(in srgb,var(--world-bg) 80%,var(--world-ink) 20%);--world-accent-on-card:#88aaf1;--world-card-bg:#292f34;--status-warn:#e3785c;}
 body[data-world="amazon"]{--world-bg:#131921;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.70);--world-line:rgba(255,255,255,.20);--world-accent:#FF6301;--world-surface:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);--world-accent-on-card:#ffa167;--world-card-bg:#373b41;--status-warn:#e88e77;}
 body[data-world="zodiacus"]{--world-bg:#721c07;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.74);--world-line:rgba(255,255,255,.24);--world-accent:#E0A657;--world-surface:color-mix(in srgb,var(--world-bg) 86%,var(--world-ink) 14%);--world-accent-on-card:#E0A657;}
+body[data-world="this_site"]{--world-bg:#1e7a3c;--world-ink:#ffffff;--world-ink-soft:rgba(255,255,255,.84);--world-line:rgba(255,255,255,.24);--world-accent:#1e7a3c;--world-surface:color-mix(in srgb,var(--world-bg) 88%,var(--world-ink) 12%);--world-accent-on-card:#ffffff;} /* "This site": the foundation's own green (Chris 2026-09-24) */
 /* NIGHT variants (day/night per world). Auto-derived from each day palette as a starting point:
    darken the bg toward near-black keeping a hint of hue, light ink, lift dark accents, raise the card.
    HELD: gated behind body.night-worlds (not set anywhere yet) so DAY stays the default in BOTH light and
@@ -2063,6 +2070,7 @@ body[data-world="startplaying"] .work-shell{--brand-accent-light:#0766ee;--brand
 body[data-world="modus"] .work-shell{--brand-accent-light:#000000;--brand-accent-dark:#ffffff}
 body[data-world="amazon"] .work-shell{--brand-accent-light:#131921;--brand-accent-dark:#FF6301}
 body[data-world="zodiacus"] .work-shell{--brand-accent-light:#721c07;--brand-accent-dark:#E0A657}
+body[data-world="this_site"] .work-shell{--brand-accent-light:#1e7a3c;--brand-accent-dark:#6ad189}
 body.work-focus-open[data-world]{background:var(--bg)}
 body[data-world] .work-shell{--world-bg:var(--bg);--world-ink:var(--text);--world-ink-soft:var(--muted);--world-line:var(--border);
   --world-surface:var(--surface);--world-card-bg:var(--surface);--world-card-ink:var(--text);
@@ -2286,7 +2294,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
      · <a href="https://github.com/whoischrislam" target="_blank" rel="noopener">GitHub</a>
      · <a href="https://www.linkedin.com/in/whoischrislam/" target="_blank" rel="noopener">LinkedIn</a></p>
   <p class="craft">Built from <a href="https://github.com/whoischrislam/portfolio" target="_blank" rel="noopener">hand-coded foundations</a>, AI-assisted since.
-     <a href="https://github.com/whoischrislam/whoischrislam.github.io" target="_blank" rel="noopener">Read the source</a></p>
+     <a href="https://github.com/whoischrislam/whoischrislam.github.io" target="_blank" rel="noopener">Read the source</a>
+     · <a href="?work=this_site#work">How this site is built</a></p>
 </div>
 
 </div>
@@ -2539,6 +2548,16 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {name:"Tabletop canvas", description:"PixiJS editor experiment with game-native objects and local persistence", delivery:"Technical prototype · incomplete runtime"}
         ],
         actions: [["https://discord.com/discovery/applications/1225184380419440810", "See it on Discord", true]]
+      },
+      this_site: {
+        kind: "living",             // an ongoing page, not a job with an outcome (see check-portfolio-v3)
+        world: true,                // a world without a homepage band (reached from the footer)
+        name: "This site",
+        dates: "2026–now",   // repo first commit 2026-06-01 (git log); public copy: "extended with AI since June 2026"
+        status: "Living: updated as the site changes",
+        context: "Besides being a portfolio for me to get a job, it’s meant to be my forever home for my work, writing and interactive essays, experiments, and demos.",   // Chris 2026-09-24
+        showChangelog: true,        // "Recent changes" renders assets/ds/changelog.json, the same file the ?ds page reads
+        actions: [["?ds", "See the system"]]
       },
       hogware: {
         name: "HogWare",
@@ -5023,6 +5042,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     var __worldSlugs = null;
     function isWorldEntry(project){
       if(!workProjects[project]) return false;
+      // A world is normally anything with a homepage band or tile (2026-09-19). A record may also declare world:true to
+      // exist without one ("This site" is reached from the footer, Chris 2026-09-24).
+      if(workProjects[project].world === true) return true;
       if(!__worldSlugs){
         __worldSlugs = new Set();
         document.querySelectorAll('.co-band[data-project], .work-tile[data-project]').forEach(function(el){
@@ -5779,6 +5801,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       }
       // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
       // blank gap that reads as broken; hero + fact grid + actions still render above it.
+      if(companyData.showChangelog) workFocusContent.appendChild(buildChangelog());
       var details = buildRoleDetails(companyData); if(details) workFocusContent.appendChild(details);
       workFocusContent.hidden = !workFocusContent.children.length;
       return grid;
@@ -5788,7 +5811,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     // Labels and values come from the company record; nothing new is written here.
     function buildFactBand(item){
       var owned = (item.facts || []).find(function(f){ return /^owned$/i.test(f[0]); });
-      var cells = [["Role", item.role], ["When", item.dates], ["Owned", owned && owned[1]], ["Outcome", item.result]]
+      var cells = [["Role", item.role], ["When", item.dates], ["Status", item.status], ["Owned", owned && owned[1]], ["Outcome", item.result]]
         .filter(function(c){ return c[1]; });
       if(!cells.length) return null;
       var band = document.createElement("dl"); band.className = "work-fact-band";
@@ -5797,6 +5820,18 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         dt.textContent = c[0]; dd.textContent = c[1]; cell.append(dt, dd); band.appendChild(cell);
       });
       return band;
+    }
+    // "Recent changes": the living log of system decisions. One source (assets/ds/changelog.json) for this world and
+    // the ?ds dashboard, so the two can't disagree.
+    function buildChangelog(){
+      var sec = document.createElement("section"); sec.className = "work-changelog";
+      var h = document.createElement("h4"); h.textContent = "Recent changes"; sec.appendChild(h);
+      var dl = document.createElement("dl"); dl.className = "work-panel-facts"; sec.appendChild(dl);
+      fetch("assets/ds/changelog.json", {cache: "no-store"}).then(function(r){ return r.json(); }).then(function(list){
+        list.forEach(function(c){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
+          dt.textContent = c.date + " · " + c.area; dd.textContent = c.change; row.append(dt, dd); dl.appendChild(row); });
+      }).catch(function(){ sec.remove(); });
+      return sec;
     }
     // The full fact rows, folded below the work: depth for the interview, not the first read.
     function buildRoleDetails(item){

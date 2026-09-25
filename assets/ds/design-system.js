@@ -4,18 +4,19 @@
    mark/note layer, per-tile "View live", and a Coverage view (wired vs to-wire). */
 (function(){
   if(!/[?&]ds\b/.test(location.search)) return;
-  var WORLDS=['goodrx','y30','clover','playsesh','pathstream','taskrabbit','sharecare','startplaying','modus','amazon','zodiacus'];
+  var WORLDS=['this_site','goodrx','y30','clover','playsesh','pathstream','taskrabbit','sharecare','startplaying','modus','amazon','zodiacus'];
   var ROLE=[['--world-bg','Background'],['--world-ink','Text / ink'],['--world-accent','Accent / primary'],['--world-surface','Surface'],['--world-card-bg','Card']];
   // harvest sources: company view + a rich case study. A source may be an ordered list of views:
   // the first is loaded eagerly; the next is loaded only if the component is not found there, so a
   // tile survives one world changing (e.g. a placeholder replaced by a real hero image).
-  var SRC={company:['index.html?work=y30','index.html?work=goodrx'],casestudy:'index.html?work=y30&project=spoken-voice-system',quotes:['index.html?work=goodrx','index.html?work=taskrabbit','index.html?work=amazon'],placeholder:['index.html?work=pathstream','index.html?work=taskrabbit','index.html?work=clover']};
+  var SRC={thissite:'index.html?work=this_site',company:['index.html?work=y30','index.html?work=goodrx'],casestudy:'index.html?work=y30&project=spoken-voice-system',quotes:['index.html?work=goodrx','index.html?work=taskrabbit','index.html?work=amazon'],placeholder:['index.html?work=pathstream','index.html?work=taskrabbit','index.html?work=clover']};
   // component registry: id, label, live selector, source ('home' = clone from homepage DOM, else SRC key), group
   var REG=[
     {id:'co-band',label:'World band (homepage)',sel:'.co-band',src:'home',grp:'Templated'},
     {id:'world-hero',label:'Title band (world layer, tame)',sel:'.world-hero',src:'company',grp:'Templated'},
     {id:'work-fact-band',label:'Fact band (Role / When / Owned / Outcome)',sel:'.work-fact-band',src:'company',grp:'Templated'},
     {id:'work-role-details',label:'Role details (folded facts)',sel:'.work-role-details',src:'company',grp:'Templated'},
+    {id:'work-changelog',label:'Recent changes (living log, from changelog.json)',sel:'.work-changelog',src:'thissite',grp:'Templated'},
     {id:'work-panel-facts',label:'Fact grid / spec panel',sel:'.work-panel-facts',src:'company',grp:'Templated',wrap:'work-panel is-company-view',wrapId:'work-panel'},
     {id:'work-support',label:'Also shipped (unified schedule)',sel:'.work-support-row',src:'company',grp:'Templated'},
     {id:'work-project-card',label:'Project card (one component: company pages + Recent work)',sel:'.work-project-card',src:'company',grp:'Templated'},
@@ -37,6 +38,7 @@
     {id:'foot',label:'Footer',sel:'.foot',src:'home',grp:'Chrome'},
     {id:'read-progress',label:'Read-progress bar',sel:'.read-progress',src:'home',grp:'Chrome'}
   ];
+  var DEV=/[?&]dev\b/.test(location.search); // public by default (Chris 2026-09-24); ?ds&dev = the working tools
   var FROM={}; // component id -> the view it was actually harvested from (for "View live")
   var CUR='y30';
   var _wq=(location.search.match(/[?&]w=([a-z0-9]+)/)||[])[1]; // ?w=<world> deep-links the picker
@@ -181,19 +183,24 @@
   root.innerHTML='<div class="ds-bar"><span><b>Design system</b></span>'
     +'<div class="ds-seg" id="ds-mode"><button data-m="ds-foundations" aria-pressed="true">Foundations</button><button data-m="ds-components">Components</button><button data-m="ds-coverage">Coverage</button><button data-m="ds-audit">Audit</button></div>'
     +'<span><b>World</b></span><select id="ds-world">'+WORLDS.map(function(w){return '<option'+(w===CUR?' selected':'')+'>'+w+'</option>';}).join('')+'</select>'
-    +'<span style="font:400 12px/1.4 var(--ds-sans);opacity:.7">Live catalog (?ds). Hover a tile → MARK. Each tile has View live.</span></div>'
+    +'<span style="font:400 12px/1.4 var(--ds-sans);opacity:.7">'+(DEV?'Live catalog (?ds&dev). Hover a tile → MARK. Each tile has View live.':'The system behind this site, read live from its own CSS and components.')+'</span></div>'
     +'<div class="ds-wrap">'+foundations()+componentsShell()+coverage({})+'<div id="ds-audit" class="ds-mode" hidden><p class="ds-note" style="margin:0 0 12px">Live reconciliation: styled (CSS) vs rendered (DOM) vs cataloged (registry). Recomputed every load — the runtime "nothing slips" net; a commit-time hook enforces the same.</p><div id="ds-audit-body"><p class="ds-note">Scanning…</p></div></div></div>'
     +'<button class="ds-fab" id="ds-fab">Notes 0</button>'
     +'<div class="ds-panel" id="ds-panel"><h3>Notes &amp; punch list</h3><div class="ds-list" id="ds-notelist"></div><div class="foot"><button class="ds-btn pri" id="ds-copy">Copy punch list</button><button class="ds-btn" id="ds-clear">Clear</button><button class="ds-btn" id="ds-close">Close</button></div></div>'
     +'<div class="ds-editor" id="ds-editor"><div style="font:700 10px/1.3 var(--ds-mono);color:#6d4bd8;margin-bottom:6px" id="ds-edid"></div><textarea id="ds-edtext" placeholder="What to improve here..."></textarea><div class="flags" id="ds-edflags"><button data-fl="improve" aria-pressed="true">Improve</button><button data-fl="bug">Bug</button><button data-fl="idea">Idea</button></div><div style="display:flex;gap:8px"><button class="ds-btn pri" id="ds-edsave" style="flex:1">Save</button><button class="ds-btn" id="ds-eddel">Delete</button></div></div>';
   document.body.appendChild(root);
+  if(!DEV){ root.classList.add('ds-public');
+    var pub=document.createElement('style'); pub.textContent='#ds-root.ds-public #ds-fab,#ds-root.ds-public #ds-panel,#ds-root.ds-public #ds-editor,#ds-root.ds-public .qa-bar,#ds-root.ds-public .mchip,#ds-root.ds-public [data-m="ds-coverage"],#ds-root.ds-public [data-m="ds-audit"]{display:none!important}';
+    document.head.appendChild(pub); }
   if(_wq&&WORLDS.indexOf(_wq)>=0){CUR=_wq;var _ws=root.querySelector('#ds-world');if(_ws)_ws.value=_wq;}
   document.body.classList.add('ds-active','work-focus-open');
   document.body.setAttribute('data-world',CUR);
   document.title='Design system · Chris Lam';
+  var back=document.createElement('a'); back.href='?work=this_site#work'; back.textContent='← This site'; back.style.cssText='font:600 12px/1 var(--ds-sans);color:inherit;text-decoration:none;margin-right:8px'; var bar=root.querySelector('.ds-bar'); if(bar) bar.insertBefore(back,bar.firstChild);
   // deep-linkable tab: ?ds=components / ?ds=coverage / ?ds=foundations
   var MODES={foundations:'ds-foundations',components:'ds-components',coverage:'ds-coverage',audit:'ds-audit'};
   var initMode=MODES[((location.search.match(/[?&]ds=([a-z]+)/)||[])[1])]||'ds-foundations';
+  if(!DEV&&(initMode==='ds-coverage'||initMode==='ds-audit')) initMode='ds-foundations';
   function setMode(m){root.querySelectorAll('#ds-mode button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-m')===m);});['ds-foundations','ds-components','ds-coverage','ds-audit'].forEach(function(id){var el=document.getElementById(id);if(el)el.hidden=(id!==m);});}
   setMode(initMode);
   loadChanges();

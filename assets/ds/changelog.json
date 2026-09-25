@@ -1,6 +1,12 @@
 [
  {
   "date": "2026-09-24",
+  "area": "This site",
+  "change": "A living world for the site itself (Recent changes read from this log) and a public design-system page; the footer links to it",
+  "commit": "(this commit)"
+ },
+ {
+  "date": "2026-09-24",
   "area": "Components",
   "change": "One project card for company pages and homepage Recent work; one hover (glow; tilt + tall-image pan on fine pointers); rise on scroll; 1-2 cards fill the row",
   "commit": "e5a90a1"
