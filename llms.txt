@@ -39,7 +39,7 @@ Full write-ups with artifacts, outcomes, and what went wrong. Index: https://who
 - [LinkedIn](https://www.linkedin.com/in/whoischrislam/)
 - [GitHub](https://github.com/whoischrislam)
 - [Dribbble](https://dribbble.com/whoischrislam)
-- [y30](https://y30.ai)
+- [y30](https://whoischrislam.github.io/?work=y30#work)
 
 ## Education
 - University of Washington, BS Informatics (Human-Computer Interaction), 2010.

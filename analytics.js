@@ -46,13 +46,6 @@
       el.addEventListener("click", function () { capture("clicked_linkedin"); });
     });
 
-    // Links rendered later by script (world actions like "Try y30"): one delegated listener, so they count
-    // whenever they exist instead of only if they were in the page at load.
-    document.addEventListener("click", function (e) {
-      var a = e.target.closest && e.target.closest('a[href*="y30.ai"]');
-      if (a) capture("clicked_y30_site");
-    });
-
     /* ---- proof engagement ---- */
     // Demo videos (Loom / YouTube) open from media tiles on the homepage; one event, provider-labelled.
     document.addEventListener("click", function (e) {
