@@ -884,7 +884,13 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
   .work-project-card,.work-project-card.is-rise{opacity:1!important;transform:none!important;transition:border-color var(--dur-instant) linear!important}
   .work-project-card-media img{transition:none!important;object-position:top center!important}
 }
-@media(min-width:761px){ .work-project-card:only-child{grid-column:span 2} }
+/* 1 or 2 cards fill the row (Chris 2026-09-24): two cards split it in half; one card takes the full width
+   with a wider 16:9 stage so the image doesn't grow to page height. */
+@media(min-width:761px){
+  .work-project-grid:has(>.work-project-card:nth-child(2):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}
+  .work-project-grid:has(>.work-project-card:only-child){grid-template-columns:1fr}
+  .work-project-card:only-child .work-project-card-media:not(:has(>.portfolio-diagram,>.visual-placeholder)){aspect-ratio:16/9}
+}
 .recent-work .work-project-card{--world-accent-on-card:var(--accent-strong)} /* outside a world the site green is 3.3:1 on the card; the strong green clears 4.5:1 in both themes */ /* a one-project company: the card gets two columns, not a lonely third */
 @media(max-width:760px){ .work-project-grid{grid-template-columns:1fr} }
 /* Company page fact band (Role / When / Owned / Outcome) and the folded role details */
@@ -3114,7 +3120,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         contentType: "product-decision",
         slug: "spoken-voice-system",
         name: "Why the voice sounded robotic",
-        cardTitle: "Make the Voice Worth Talking To",
+        cardTitle: "Make the voice worth talking to",
         meta: "Conversation design · Voice quality",
         delivery: "Deployed internal build",
         summary: "Testers said the voice sounded robotic. I made the stack testable, used controlled comparisons to find the real cause, and rewrote the system for someone listening instead of reading.",
@@ -3232,7 +3238,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         contentType: "product-decision",
         slug: "deterministic-voice-system",
         name: "When prompting stopped working",
-        cardTitle: "Move Required Behavior Out of Prompts",
+        cardTitle: "Move required behavior out of prompts",
         meta: "Voice architecture · Product engineering",
         delivery: "Deployed internal build",
         summary: "Prompting could not reliably run the game. I moved the required sequence into code and kept the model focused on conversation and phrasing.",
@@ -3307,7 +3313,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         contentType: "product-decision",
         slug: "safety-quality-system",
         name: "Every failure became a test",
-        cardTitle: "Turn Failures Into Regression Tests",
+        cardTitle: "Turn failures into regression tests",
         meta: "Safety architecture · Human and automated QA",
         delivery: "Deployed internal build",
         summary: "I built a quality system around manual scripts, automated and adversarial tests, a human reviewer queue, and smoke tests against the deployed build. Confirmed failures became regression tests.",
@@ -4452,7 +4458,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         contentType: "product-decision",
         slug: "whiteboard",
         name: "Whiteboard by PlaySesh",
-        cardTitle: "Pivot From Matchmaking to a Shared Discord Canvas",
+        cardTitle: "Pivot from matchmaking to a shared Discord canvas",
         meta: "Product strategy · Discord / web",
         delivery: "Shipped + adopted",
         summary: "A research-led pivot became a persistent multiplayer whiteboard inside Discord, built for collaborative drawing, tabletop tools, and lightweight playtesting.",
@@ -4616,7 +4622,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         contentType: "product-decision",
         slug: "canvas-runtime-rewrite",
         name: "When the whiteboard became the constraint",
-        cardTitle: "Own the Canvas and Runtime Foundations",
+        cardTitle: "Own the canvas and runtime foundations",
         meta: "Product architecture · Three.js / Cloudflare",
         delivery: "Substantial rewrite · incomplete",
         summary: "The shipped whiteboard could not support the playable runtime and learning loop we wanted. I attempted to replace its canvas foundation with an owned scene model, synchronization protocol, and limited game runtime.",
