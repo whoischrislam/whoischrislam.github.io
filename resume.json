@@ -2,10 +2,10 @@
     "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
     "basics": {
         "name": "Chris Lam",
-        "label": "Senior Product Designer for AI-native products",
+        "label": "Product Designer for AI-native products",
         "email": "whoischrislam@gmail.com",
         "url": "https://whoischrislam.github.io",
-        "summary": "Senior product designer, 14 years shipping healthcare, marketplace, education, and consumer software. I own the work from research through interaction design to design systems, and I ship production code (React, TypeScript, Python), so design intent survives to what users actually touch. Results: GoodRx coupon conversion from 2% to 5%, TaskRabbit NPS from about -5 to the mid-50s, and a Clover Health redesign that nurses said gave them back 1-2 hours of chart prep a day. Seeking senior product design roles on AI-native teams.",
+        "summary": "Product designer, 14 years shipping healthcare, marketplace, education, and consumer software. I own the work from research through interaction design to design systems, and I ship production code (React, TypeScript, Python), so design intent survives to what users actually touch. Results: GoodRx coupon conversion from 2% to 5%, TaskRabbit NPS from about -5 to the mid-50s, and a Clover Health redesign that nurses said gave them back 1-2 hours of chart prep a day. Seeking senior product design roles on AI-native teams.",
         "location": {
             "city": "Honolulu",
             "region": "HI",
