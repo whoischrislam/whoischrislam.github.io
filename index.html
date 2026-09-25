@@ -342,16 +342,10 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 a:focus-visible,button:focus-visible,summary:focus-visible{
   outline:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent);border-radius:0}
 
-/* (iv) Reveal. 14px, 520ms, fires once. Only armed when JS is present, so the
-   page is never blank without it. */
-.js .reveal{opacity:0;transform:translateY(14px);
-  transition:opacity .52s ease,transform .52s ease}
-.js .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *{animation:none!important;transition:none!important}
-  .js .reveal{opacity:1!important;transform:none!important}
-  .js .reveal.in   .story-panel,.story-panel::backdrop{transition:none!important}
+  .story-panel,.story-panel::backdrop{transition:none!important}
   .story-panel:popover-open{opacity:1!important;transform:none!important}
   ::view-transition-group(*){animation:none!important}
 }
@@ -881,11 +875,8 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
   body:not(.has-webgl-hover) .work-project-card.is-tall .work-project-card-media img{transition:object-position 3.2s linear}
   body:not(.has-webgl-hover) .work-project-card.is-tall:hover .work-project-card-media img{object-position:bottom center}
 }
-/* entrance: rise once as the grid scrolls in (hidden state is added by JS only, so no-JS shows everything) */
-.work-project-card.is-rise{opacity:0;transform:translateY(24px);transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out)}
-.work-project-card.is-rise.is-in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
-  .work-project-card,.work-project-card.is-rise{opacity:1!important;transform:none!important;transition:border-color var(--dur-instant) linear!important}
+  .work-project-card{transition:border-color var(--dur-instant) linear!important}
   .work-project-card-media img{transition:none!important;object-position:top center!important}
 }
 /* 1 or 2 cards fill the row (Chris 2026-09-24): two cards split it in half; one card takes the full width
@@ -1508,31 +1499,7 @@ body.tb-6 .hl-special.in .hl-prod{animation:hl-create .75s cubic-bezier(.3,.7,.2
    width; forcing repeat(3,1fr) squished cards to 135px on phones. The real "2 wider
    blocks" is elsewhere - awaiting Chris to point at it, no guessing.) */
 
-/* ── Band reveal styles (spike toggle #dv-anim). Baseline (no class) keeps the
-   current uniform 14px .reveal. Each variant holds the band section visible and
-   animates its two pieces - .co-head (name + line) and .band-frame (image) - so the
-   company "arrives" with character instead of lifting as one lump. Company bands
-   only; the rest of the page keeps its quiet reveal. ── */
-/* Variants take over the parent (kill the base 14px lump-rise) and drive the pieces. */
-body.anim-2 .co-band.reveal{opacity:1;transform:none}
 
-/* R2 Settle - image starts soft + slightly small and snaps sharp; the hero's
-   "product coming into existence" blur, carried down the page. */
-body.anim-2 .co-band.reveal .co-head{opacity:0;transform:translateY(10px);
-  transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
-body.anim-2 .co-band.reveal .band-frame{opacity:0;transform:scale(.985);filter:blur(6px);
-  transition:opacity .55s ease,transform .7s cubic-bezier(.22,1,.36,1),filter .6s ease}
-body.anim-2 .co-band.reveal.in .co-head{opacity:1;transform:none}
-body.anim-2 .co-band.reveal.in .band-frame{opacity:1;transform:none;filter:none}
-
-/* R4 Wash - the band's own color curtains off the image, left to right. A taste of
-   the per-company "lens/world" idea, contained to one entrance. */
-
-@media (prefers-reduced-motion:reduce){
-  body[class*="anim-"] .co-band.reveal .co-head,
-  body[class*="anim-"] .co-band.reveal .band-frame{opacity:1!important;transform:none!important;filter:none!important}
-
-}
 
 /* ---- OUTCOME METADATA: de-pilled, no dot. Down to soft chip vs de-pilled text, each in
    neutral or the hero's highlight color. ---- */
@@ -1561,16 +1528,6 @@ body.card-serif .wcard-name{font-family:var(--serif);font-weight:400;font-size:v
     repeating-linear-gradient(to bottom, rgba(255,255,255,.11) 0 1px, transparent 1px 44px);
   -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3));
   mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.3))}
-
-/* ==== WORLDS prototype - GoodRx only. Hover-stir on the band + a circular expand
-   reveal (View Transitions API) into a per-project "world" that takes over the viewport
-   while the baseline chrome (the "ship") persists. SPIKE; CSS-only motion so it stays
-   buttery on a MacBook Air (no per-world WebGL). ==== */
-/* hover-stir: the band strains to break out of the page */
-.co-band[data-project="goodrx"] .band-frame{transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s ease}
-.co-band[data-project="goodrx"]:hover .band-frame,
-.co-band[data-project="goodrx"]:focus-within .band-frame{
-  transform:scale(1.014);box-shadow:0 22px 66px rgba(252,239,114,.30),0 0 0 1px rgba(252,239,114,.6)}
 
 /* World reveal (see __openWorldClip / closeWorldClip). No View Transitions API.
    #world-layer wraps the panel + focus content. Normally display:contents, so the focused layout is
@@ -1615,9 +1572,6 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
 @keyframes rgn-fade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){ .region-in{animation:none} }
 
-@media (prefers-reduced-motion: reduce){
-  .co-band[data-project="goodrx"] .band-frame{transition:none}
-}
 
 /* ==== CURSOR (GoodRx) - LOCKED (Chris, 2026-09-18): the regular system arrow stays (links stay
    clickable); an "Enter world →" label trails to its right. #gx-cursor is a fixed label JS moves. */
@@ -1807,6 +1761,7 @@ body.work-focus-open[data-world] .work-project-card .portfolio-diagram-item::aft
 html.hero-type .hl-ship-text,html.hero-type .hl-ship-text2{visibility:hidden}   /* typed chars set themselves visible */
 html.hx-pre .co-band[data-hero] .band-frame .work-tile.on img{visibility:hidden}
 html.hx-pre .work-cards .wcard-thumb img,html.hx-pre .work-cards .wcard-thumb-label,html.hx-pre .work-cards .wcard-thumb::before{visibility:hidden}
+html.hx-pre .recent-work .work-project-card-media img{visibility:hidden}
 /* No JS: the authored hero (tb-6) is on <body> from first paint, so show its final state (mirrors the reduced-motion block) */
 html:not(.js) body.tb-6 .hl-design{-webkit-mask-image:none!important;mask-image:none!important;animation:none!important;opacity:1!important}
 
@@ -1825,7 +1780,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   setTimeout(function(){ r.classList.remove('hero-type'); },6000);   // fail open: typed chars keep their own hidden state, so this is safe even mid-typing
 }catch(e){} })();
 </script>
-</head><body class="dv-base tb-6 strip-mono anim-2 card-serif tag-chip-accent">
+</head><body class="dv-base tb-6 strip-mono card-serif tag-chip-accent">
 
 <!-- 1. Sticky header -->
 <header class="site-head">
@@ -2049,16 +2004,6 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
     .co-band[data-hero] .band-frame:hover img,
     .work-tile.wcard:hover .wcard-thumb img{transform:none}
   }
-  /* ---- signature motion #2: cards reveal on scroll (own opacity/transition beats the
-     card base rule) with a light left-to-right stagger across each grid row ---- */
-  .js .work-cards .work-tile.wcard.reveal{opacity:0;transform:translateY(16px);
-    transition:opacity .55s ease,transform .55s cubic-bezier(.22,1,.36,1),border-color .15s ease}
-  .js .work-cards .work-tile.wcard.reveal.in{opacity:1;transform:none}
-  .js .work-cards .work-tile.wcard.reveal:nth-child(3n-1){transition-delay:.07s}
-  .js .work-cards .work-tile.wcard.reveal:nth-child(3n){transition-delay:.14s}
-  @media (prefers-reduced-motion:reduce){
-    .js .work-cards .work-tile.wcard.reveal{opacity:1;transform:none;transition:none}
-  }
   </style>
 <style id="layout-system">
 /* ==== LAYOUT SYSTEM (Chris 2026-09-24, after Vicky Vo's review + research; see DESIGN_SYSTEM.md "Spacing").
@@ -2232,7 +2177,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="goodrx" data-n="4" data-hero style="--band:var(--band-goodrx)">
+    <section class="co-band" data-project="goodrx" data-n="4" data-hero style="--band:var(--band-goodrx)">
       <div class="co-head"><h3>GoodRx (Iodine)<span class="tag-outcome">IPO 2020</span></h3><p>First full-time designer. Coupon conversion 2% to 5%, a Webby-winning product, and data-viz cited in the NYT.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="goodrx" data-tile-id="goodrx-product" data-shape="wide" data-span="4" data-pin>
@@ -2241,7 +2186,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="clover" data-n="3" data-hero style="--band:var(--band-clover)">
+    <section class="co-band" data-project="clover" data-n="3" data-hero style="--band:var(--band-clover)">
       <div class="co-head"><h3>Clover Health<span class="tag-outcome">Public 2021</span></h3><p>Second designer. Rebuilt the nurse home-visit app: nurses reported 1-2 hours of chart prep gone each day, time for more visits.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="clover" data-tile-id="clover-form" data-shape="wide" data-span="3" data-pin>
@@ -2250,7 +2195,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="playsesh" data-n="2" data-hero style="--band:var(--band-playsesh)">
+    <section class="co-band" data-project="playsesh" data-n="2" data-hero style="--band:var(--band-playsesh)">
       <div class="co-head"><h3>PlaySesh</h3><p>Co-founder & CEO. Collaborative game-dev tooling in Discord; 1,043 peak monthly active users, still live.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="playsesh" data-tile-id="playsesh-prompt" data-shape="wide" data-span="4" data-provider="youtube" data-video-id="Q0S-_WAea6Y" data-media-title="PlaySesh prompt-to-playable demo">
@@ -2259,7 +2204,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     </button>
       </div>
     </section>
-    <section class="co-band reveal" data-project="pathstream" data-n="3" data-hero style="--band:var(--band-pathstream)">
+    <section class="co-band" data-project="pathstream" data-n="3" data-hero style="--band:var(--band-pathstream)">
       <div class="co-head"><h3>Pathstream</h3><p>First design hire. Rebuilt the core lesson experience on a live platform; zero forced migration.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="pathstream" data-tile-id="pathstream-lessons" data-shape="wide" data-span="3">
@@ -2269,40 +2214,40 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       </div>
     </section>
     </div>
-    <h3 class="exp-head reveal">More work</h3>
+    <h3 class="exp-head">More work</h3>
     <div class="work-cards">
-      <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="modus" data-tile-id="modus-dark-mode">
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="modus" data-tile-id="modus-dark-mode">
         <span class="wcard-thumb" style="--band:var(--band-modus)"><img src="images/work/modus-dark-mode.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Modus Create</span><span class="wcard-desc">Cross-app dark mode shipped to a 500K+ user base, in production TypeScript.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
-      <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money">
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money">
         <span class="wcard-thumb" style="--band:var(--band-startplaying)" data-kicker="YC W20 · a16z"><span class="wcard-thumb-label">StartPlaying</span></span>
         <span class="wcard-body"><span class="wcard-name">StartPlaying<span class="tag-outcome">YC W20 · a16z</span></span><span class="wcard-desc">Founding designer. Shipped the payment and payout system.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
-      <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder">
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder">
         <span class="wcard-thumb" style="--band:var(--band-sharecare)"><img src="images/work/omix-study-builder.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">doc.ai · Omix<span class="tag-outcome">Acq. Sharecare</span></span><span class="wcard-desc">Lead designer. Rescued the clinical-studies product through the acquisition.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
-      <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="taskrabbit" data-tile-id="taskrabbit-calendar">
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="taskrabbit" data-tile-id="taskrabbit-calendar">
         <span class="wcard-thumb" style="--band:var(--band-taskrabbit)"><img src="images/craft/hero-taskrabbit.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">TaskRabbit<span class="tag-outcome">Acq. IKEA</span></span><span class="wcard-desc">Tasker experience, NPS -5 to mid-50s.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
-      <button class="work-tile wcard reveal" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music">
+      <button class="work-tile wcard" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music">
         <span class="wcard-thumb" style="--band:var(--band-amazon)" data-kicker="Amazon Music"><span class="wcard-thumb-label">Amazon</span></span>
         <span class="wcard-body"><span class="wcard-name">Amazon</span><span class="wcard-desc">Amazon Music. Built the importer and matcher that brought local and cloud music into one library.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
     </div>
-    <h3 class="exp-head reveal">Experiments</h3>
+    <h3 class="exp-head">Experiments</h3>
     <div class="work-cards">
-      <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="hogware" data-tile-id="hogware-game">
+      <button class="work-tile wcard" type="button" data-kind="experiment" data-project="hogware" data-tile-id="hogware-game">
         <span class="wcard-thumb" style="--band:var(--band-hogware)"><img src="images/work/hogware-game.png" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">HogWare</span><span class="wcard-desc">PostHog-themed browser game, tuned from its PostHog playtest data: 80 players, 948 microgames cleared.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
-      <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="evolve_die_repeat" data-tile-id="evolve-die-repeat">
+      <button class="work-tile wcard" type="button" data-kind="experiment" data-project="evolve_die_repeat" data-tile-id="evolve-die-repeat">
         <span class="wcard-thumb" style="--band:var(--band-evolve-die-repeat)"><img src="images/co/edr.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Evolve, Die, Repeat</span><span class="wcard-desc">2D roguelite in Lua/Love2D, test-driven and telemetry-iterated.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
-      <button class="work-tile wcard reveal" type="button" data-kind="experiment" data-project="zodiacus" data-tile-id="zodiacus">
+      <button class="work-tile wcard" type="button" data-kind="experiment" data-project="zodiacus" data-tile-id="zodiacus">
         <span class="wcard-thumb" style="--band:var(--band-zodiacus)"><img src="images/co/zodiacus.webp" alt="" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Zodiacus</span><span class="wcard-desc">Tabletop game: wrote the rulebook and most of the design.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
@@ -2331,9 +2276,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
   <a class="media-lightbox-original" href="#" target="_blank" rel="noopener">Open original file &nearr;</a>
 </dialog>
 
-<h2 class="sec reveal" id="looking-for">What I'm looking for</h2>
-<p class="lede reveal">I design and engineer the same product, research to ship. Design intent survives all the way to production. I use AI as an engineer, not a shortcut. I&rsquo;m at my best on hard, ambiguous problems where judgment decides the outcome, not headcount.</p>
-<ul class="want reveal">
+<h2 class="sec" id="looking-for">What I'm looking for</h2>
+<p class="lede">I design and engineer the same product, research to ship. Design intent survives all the way to production. I use AI as an engineer, not a shortcut. I&rsquo;m at my best on hard, ambiguous problems where judgment decides the outcome, not headcount.</p>
+<ul class="want">
   <li>A small, high-output team, or a senior IC pocket inside a larger one, where I can go deep and stay. The work is the scoreboard.</li>
   <li>Products that put AI in front of real users, where trust, oversight and safety are the hard part. Healthcare, AI-native systems, developer tools, complex SaaS.</li>
   <li>Direct collaboration across product, design and engineering, with people who sweat the details.</li>
@@ -2345,9 +2290,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
   <span class="t">Remote US from Honolulu</span><span class="t">West Coast hours</span>
   <span class="t">Or remote from Seattle / Bay Area</span><span class="t">Open to relocation for the right role</span></div>
 
-<h2 class="sec reveal" id="lets-work">Let&rsquo;s work together.</h2>
-<p class="avail reveal">Open to senior product design and design-engineering roles. I&rsquo;m selective about the problem, not the introduction, so reach out directly.</p>
-<div class="refs reveal" id="contact">
+<h2 class="sec" id="lets-work">Let&rsquo;s work together.</h2>
+<p class="avail">Open to senior product design and design-engineering roles. I&rsquo;m selective about the problem, not the introduction, so reach out directly.</p>
+<div class="refs" id="contact">
   <div class="refs-row"><span class="refs-k">Reach me</span>
     <p>whoischrislam@gmail.com</p>
     <a class="btn primary" href="mailto:whoischrislam@gmail.com" target="_blank" rel="noopener">Email me</a></div>
@@ -2362,8 +2307,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     <a class="btn" href="mailto:whoischrislam@gmail.com?subject=Reference%20call" target="_blank" rel="noopener">Talk to a reference</a></div>
 </div>
 
-<p class="outside reveal">I also <a href="https://www.instagram.com/p/CuxQjRwvGKw/" target="_blank" rel="noopener">play board games</a>, <a href="https://www.instagram.com/reel/CuoaWzXgtSR/" target="_blank" rel="noopener">dance</a>, and <a href="https://www.instagram.com/reel/C1DISysSMxZ/" target="_blank" rel="noopener">rollerskate</a>.</p>
-<div class="foot reveal">
+<p class="outside">I also <a href="https://www.instagram.com/p/CuxQjRwvGKw/" target="_blank" rel="noopener">play board games</a>, <a href="https://www.instagram.com/reel/CuoaWzXgtSR/" target="_blank" rel="noopener">dance</a>, and <a href="https://www.instagram.com/reel/C1DISysSMxZ/" target="_blank" rel="noopener">rollerskate</a>.</p>
+<div class="foot">
   <p class="avail-line"><span class="upd">Updated September 2026.</span></p>
   <p class="links"><a href="mailto:whoischrislam@gmail.com?subject=Hello%20Chris" target="_blank" rel="noopener">whoischrislam@gmail.com</a>
      · <a href="/chris-lam-resume.pdf" target="_blank" rel="noopener">R&eacute;sum&eacute;</a>
@@ -2394,14 +2339,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
   r.classList.add("js");
   requestAnimationFrame(function(){
     requestAnimationFrame(function(){ document.querySelector(".hero").classList.add("lit")})});
-
-  /* Reveal. Fires once, unobserves, never re-triggers on scroll-up. Skipped
-     entirely when the user has asked for less motion. */
-  if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches && "IntersectionObserver" in window){
-    var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target)} })},{rootMargin:"0px 0px -8% 0px",threshold:.05});
-    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el)})}else{
-    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in")})}
 
   var saved=localStorage.getItem(k);
   var qt=(location.search.match(/[?&]theme=(light|dark)/)||[])[1]; // ?theme=light|dark deep-link (day/night)
@@ -5677,6 +5614,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       }else{
         (story.cardMedia || []).forEach(function(src){
           var image = document.createElement("img");
+          if(/^https?:/.test(src)) image.crossOrigin = "anonymous";   // the halftone samples its pixels; the host must allow it
           image.src = src;
           image.alt = "";
           image.loading = "eager";
@@ -6029,23 +5967,18 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     }
     // ONE hover + entrance for every project card (company pages and the homepage "Recent work").
     // Hover = the shared data-grid hover (bound via window.__bindHoverFx; tall screenshots pan only as the
-    // no-WebGL fallback, CSS). Cards rise once as they scroll in. Reduced motion: none of it.
+    // no-WebGL fallback, CSS). Entrance = the site's one image entrance: the card image resolves (halftone engine);
+    // the card and its text never move. Reduced motion: none of it.
     function enhanceProjectCards(root){
-      var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
       var cards = [].slice.call(root.querySelectorAll(".work-project-card"));
-      cards.forEach(function(card, i){
+      cards.forEach(function(card){
         if(card.dataset.enhanced) return; card.dataset.enhanced = "1";
         var img = card.querySelector(".work-project-card-media img");
         if(img){ var tall = function(){ if(img.naturalWidth && img.naturalHeight / img.naturalWidth > 0.8) card.classList.add("is-tall"); };
           if(img.complete) tall(); else img.addEventListener("load", tall, {once:true}); }
-        if(!still && "IntersectionObserver" in window){
-          card.classList.add("is-rise"); card.style.transitionDelay = (i % 4) * 110 + "ms";
-          var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){
-            card.classList.add("is-in"); io.disconnect(); setTimeout(function(){ card.style.transitionDelay = ""; }, 1200); } }); }, {threshold: .15});
-          io.observe(card);
-        }
       });
       if(window.__bindHoverFx) window.__bindHoverFx(root);   // cards built after load (company pages); the hover script binds load-time cards itself
+      if(window.__hxScan) window.__hxScan(root);              // ...and their images join the one image entrance (the halftone)
     }
     window.__enhanceProjectCards = enhanceProjectCards;
 
@@ -7128,6 +7061,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         renderStoryPanel(storyKey, options.fromHome);
         storyHero = mountProjectStory(storyKey);
         if(storyHero) storyHero.style.viewTransitionName = "selected-project-visual";
+        if(window.__hxScan) window.__hxScan(workShell);          // the case study's hero + chapter images join the image entrance
         selectedWorkProject = story.company;
         selectedWorkStory = storyKey;
         companyButtons.forEach(function(button){
@@ -7512,7 +7446,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
   }
 
   // Baked treatment classes now live on <body> in the markup (dv-base paper grain, tb-6 authored hero, strip-mono
-  // credibility rail, anim-2 Settle for the band names, card-serif, tag-chip-accent). Setting them here, after first
+  // credibility rail, card-serif, tag-chip-accent). Setting them here, after first
   // paint, made the headline render on one line and then jump to two, shifting the whole page down 110px.
   renderHero();
 
@@ -7925,27 +7859,28 @@ document.body.classList.add('fx-dissolve','skin-digital');
      homepage image: it starts as a fine 8px grid in its own ground colour; on scroll-in every cell samples the image
      and grows until the cells merge into the picture, then the real content takes over. It is the cell hover
      (photo -> cells) run backwards.
-       Bands:  all at once, 800ms. Bands visible at load WAIT for the headline to land (never two things at once),
-               unless the visitor scrolls first.
-       Cards (More work, Experiments): one left-to-right sweep across each ROW, 1000ms, so a row is one moment.
+       THE site's one scroll entrance (Chris 2026-09-25, option A): every image resolves, each on its own, 450ms,
+       once; text never animates. Covers bands, More work/Experiments, Recent work, company-page cards, case-study
+       heroes and chapter images (pages built later join via window.__hxScan). Images visible at load WAIT for the
+       headline to land (never two things at once) unless the visitor scrolls first; images inside a world don't wait.
                Placeholder cards (no image) run the same halftone, sourced from the placeholder itself (ground,
                44px lines, label), so every card in a row resolves the same way.
      The hover waits for a reveal to end; a click never waits. Same length whether the image took 50ms or 3s (a slow
      image holds on the grid). Reduced motion / no JS / script failure = plain content (the head flag fails open).
      Session replay does NOT record canvases (analytics-init.js): replay serialising them froze the page 1.35s. -->
 <style>
-body.hx-bands .co-band.reveal .band-frame{opacity:1;transform:none;filter:none;transition:none}  /* the reveal owns the image; the name keeps Settle's rise */
-body.hx-bands .work-cards .work-tile.wcard.reveal{transform:none;transition:opacity .35s ease,border-color .15s ease;transition-delay:0s!important}  /* cards fade; the row sweep is the motion */
 .hx-busy:not(.hx-show) .work-tile.on img,.wcard-thumb.hx-busy:not(.hx-show) img,
-.wcard-thumb.hx-busy:not(.hx-show) .wcard-thumb-label,.wcard-thumb.hx-busy:not(.hx-show)::before{visibility:hidden}
-.band-frame>.hx-canvas,.wcard-thumb>.hx-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.wcard-thumb.hx-busy:not(.hx-show) .wcard-thumb-label,.wcard-thumb.hx-busy:not(.hx-show)::before,
+.work-project-card-media.hx-busy:not(.hx-show) img,.work-story-hero.hx-busy:not(.hx-show) img,.story-artifact.hx-busy:not(.hx-show) img{visibility:hidden}
+.work-story-hero{position:relative}
+.band-frame>.hx-canvas,.wcard-thumb>.hx-canvas,.work-project-card-media>.hx-canvas,.work-story-hero>.hx-canvas,.story-artifact>.hx-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 </style>
 <script>
 (function(){
   var root=document.documentElement;
   if(!root.classList.contains('hx-pre')) return;                       // reduced motion (or flag failed): plain content
   if(!('IntersectionObserver' in window)){ root.classList.remove('hx-pre'); return; }
-  var CELL=8, CROSS=.8, SWEEP=.45, all=[], scrolled=false;
+  var CELL=8, CROSS=.8, all=[], scrolled=false;
   function clamp(x){ return x<0?0:x>1?1:x; }
   function smooth(x){ x=clamp(x); return x*x*(3-2*x); }
   function nums(c){ return ((c||'').match(/[\d.]+/g)||[0,0,0,1]).map(Number); }
@@ -8003,8 +7938,7 @@ body.hx-bands .work-cards .work-tile.wcard.reveal{transform:none;transition:opac
     var c=B.ctx; c.fillStyle=rgba(B.bg,1); c.fillRect(0,0,B.W,B.H); c.fillStyle=rgba(B.ink,.224);
     for(var i=0;i<B.dots.length;i++){ var p=B.dots[i]; c.fillRect(Math.round(p.x)-1.2,Math.round(p.y)-1.2,2.4,2.4); }
   }
-  // edge(x) in [0,1] = where a cell sits in a sweep (row reveal); null = all at once (bands)
-  function run(B,dur,edge){
+  function run(B,dur){
     if(B.state!=='rest') return; B.state='waiting';
     var im=B.img;
     function go(){
@@ -8015,7 +7949,7 @@ body.hx-bands .work-cards .work-tile.wcard.reveal{transform:none;transition:opac
         if(B.state!=='running') return;
         var t=clamp((now-t0)/dur), k0=smooth(t/CROSS);
         c.fillStyle=rgba(B.bg,1); c.fillRect(0,0,B.W,B.H);
-        for(var i=0;i<B.dots.length;i++){ var p=B.dots[i], q=p.c, k=edge?smooth((t/CROSS-edge(p.x)*(1-SWEEP))/SWEEP):k0;
+        for(var i=0;i<B.dots.length;i++){ var p=B.dots[i], q=p.c, k=k0;
           var sz=2.4+k*(CELL-2.4), a=.28+.72*Math.min(1,k*2), m=Math.min(1,k*3), h=sz/2;
           c.fillStyle=rgba([B.ink[0]+(q[0]-B.ink[0])*m, B.ink[1]+(q[1]-B.ink[1])*m, B.ink[2]+(q[2]-B.ink[2])*m], a);
           c.fillRect(p.x-h,p.y-h,sz,sz); }
@@ -8030,22 +7964,16 @@ body.hx-bands .work-cards .work-tile.wcard.reveal{transform:none;transition:opac
     if(B.cv.parentNode) B.cv.remove(); B.host.classList.remove('hx-busy','hx-show');
   }
 
-  // Bands: all at once. Cards: the whole row sweeps as one surface, so a cell's edge = its x across the row's width.
-  function trigger(B){
-    if(B.kind==='band'){ run(B,800,null); return; }
-    var grid=B.host.closest('.work-cards'), gr=grid.getBoundingClientRect(), top=Math.round(B.host.getBoundingClientRect().top);
-    all.forEach(function(o){
-      if(o.kind!=='card'||o.state!=='rest'||o.host.closest('.work-cards')!==grid) return;
-      var r=o.host.getBoundingClientRect(); if(Math.abs(Math.round(r.top)-top)>2) return;   // same row
-      var off=r.left-gr.left; run(o,1000,function(x){ return (off+x)/gr.width; });
-    });
-  }
+  // ONE image entrance for the whole site (Chris 2026-09-25, option A: images resolve, text is simply there).
+  // Every image resolves on its own, all at once, 450ms: NN/g found fades over ~400-500ms read as a slow site.
+  var RESOLVE=450;
+  function trigger(B){ run(B,RESOLVE); }
   // while the headline is still animating, anything that comes into view waits; scrolling releases it early
   function released(){ return window.__heroDone||scrolled; }
   function releaseAll(){ all.forEach(function(B){ if(B.state==='rest'&&B.inView) trigger(B); }); }
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){ var B=all.find(function(b){ return b.host===e.target; }); if(!B) return;
-      B.inView=e.isIntersecting; if(e.isIntersecting&&released()) trigger(B); if(B.state!=='rest') io.unobserve(e.target); });
+      B.inView=e.isIntersecting; if(e.isIntersecting&&(released()||B.host.closest('.work-shell'))) trigger(B); if(B.state!=='rest') io.unobserve(e.target); });
   },{threshold:.35});
   window.addEventListener('hero:done',releaseAll);
   window.addEventListener('scroll',function(){ if(!scrolled&&window.scrollY>4){ scrolled=true; releaseAll(); } },{passive:true});
@@ -8053,9 +7981,17 @@ body.hx-bands .work-cards .work-tile.wcard.reveal{transform:none;transition:opac
   window.addEventListener('resize',function(){ all.forEach(function(B){ if(B.state==='rest') B.size(); }); });
 
   window.__hxAlive=true;
-  document.body.classList.add('hx-bands');
   document.querySelectorAll('.co-band[data-hero] .band-frame').forEach(function(fr){ var im=fr.querySelector('.work-tile.on img'); if(im){ var B=setup(fr,im,'band'); if(B) io.observe(fr); } });
   document.querySelectorAll('.work-cards .wcard-thumb').forEach(function(th){ var B=setup(th,th.querySelector('img'),'card'); if(B) io.observe(th); });
+  // Images on pages built after load (Recent work, company pages, case studies). Only real images; each host once.
+  var LATE='.work-project-card-media,.work-story-hero,.story-artifact';
+  window.__hxScan=function(scope){
+    all=all.filter(function(B){ return B.host.isConnected; });           // pages that were replaced
+    (scope||document).querySelectorAll(LATE).forEach(function(h){
+      var im=h.querySelector(':scope > img'); if(!im||h.classList.contains('hx-busy')||all.some(function(B){ return B.host===h; })) return;
+      var B=setup(h,im,'late'); if(B) io.observe(h); });
+  };
+  window.__hxScan(document);
   root.classList.remove('hx-pre');                                     // each host now hides its own content until revealed
 })();
 </script>
