@@ -144,10 +144,10 @@ def main() -> int:
             "homepage hero typed copy (& code to ship) changed",
         "<b>Senior Product Designer</b>":
             "homepage primary label must lead with Senior Product Designer",
-        "I also build in production React, TypeScript, and Python":
+        "I also build in production <b>React, TypeScript, and Python</b>":
             "homepage market-facing builder line changed",
-        "14+ years shipping software across healthcare, marketplaces, education, and creative tools.":
-            "homepage domain-range line changed (the adaptability claim was cut 2026-09-24, Chris)",
+        "<b>14+ years</b> shipping software across healthcare, marketplaces, education, and creative tools. Now building <b>AI products</b>.":
+            "homepage domain-range + direction line changed (adaptability claim cut, direction and bold added 2026-09-24, Chris)",
         "14+ years": "homepage must use the confirmed 14+ years notation",
         'class="hero-logo-more"': "credibility rail needs its and-more close",
         'mask-image:var(--logo-mask)':
