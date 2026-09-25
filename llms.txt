@@ -1,6 +1,6 @@
 # Chris Lam
 
-> Product Designer for AI-native products, 14 years. "I design & code to ship products." y30 · Co-Founder & Product Design Engineer · 2026. Co-founder through Jul 2026; advising since. Open to senior product design and design-engineering roles, full-time, on small, fast, AI-native teams.
+> Product Designer for AI-native products, 14 years. "I design & code to ship products." y30 · Co-Founder & Product Design Engineer · 2026. Co-founder through Jul 2026; advising since. Open to product design and design-engineering roles, full-time, on small, fast, AI-native teams.
 
 Chris Lam (Christopher Lam) is a product designer with 14 years shipping healthcare, creative, developer, and consumer software. He built his career in product design, including early roles at Clover Health, GoodRx, Pathstream, and StartPlaying, then deliberately deepened into production engineering. Today he owns products end to end: research, interaction design, design systems, React/TypeScript/Python implementation, agent architecture, evals, and production verification. He is seeking senior product design and design-engineering roles on AI-native teams.
 

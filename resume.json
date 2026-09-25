@@ -5,7 +5,7 @@
         "label": "Product Designer for AI-native products",
         "email": "whoischrislam@gmail.com",
         "url": "https://whoischrislam.github.io",
-        "summary": "Product designer, 14 years shipping healthcare, marketplace, education, and consumer software. I own the work from research through interaction design to design systems, and I ship production code (React, TypeScript, Python), so design intent survives to what users actually touch. Results: GoodRx coupon conversion from 2% to 5%, TaskRabbit NPS from about -5 to the mid-50s, and a Clover Health redesign that nurses said gave them back 1-2 hours of chart prep a day. Seeking senior product design roles on AI-native teams.",
+        "summary": "Product designer, 14 years shipping healthcare, marketplace, education, and consumer software. I own the work from research through interaction design to design systems, and I ship production code (React, TypeScript, Python), so design intent survives to what users actually touch. Results: GoodRx coupon conversion from 2% to 5%, TaskRabbit NPS from about -5 to the mid-50s, and a Clover Health redesign that nurses said gave them back 1-2 hours of chart prep a day. Seeking product design roles on AI-native teams.",
         "location": {
             "city": "Honolulu",
             "region": "HI",
@@ -256,7 +256,7 @@
     "meta": {
         "canonical": "https://whoischrislam.github.io/resume.json",
         "factSheet": "https://whoischrislam.github.io/candidate.html",
-        "note": "Seeking senior product design roles, full-time. Remote US from Honolulu (preferred), working West Coast hours. Can also work remotely from Seattle or the Bay Area. Open to relocation for the right role.",
+        "note": "Seeking product design roles, full-time. Remote US from Honolulu (preferred), working West Coast hours. Can also work remotely from Seattle or the Bay Area. Open to relocation for the right role.",
         "locationLine": "Remote US from Honolulu, HI \u00b7 Or remote from Seattle / Bay Area \u00b7 West Coast hours \u00b7 Open to relocation",
         "variants": {
             "_usage": "Role-family targeting for the PDF. Render with: python3 scripts/build-resume.py --variant <key>. Any empty field falls back to basics.label / basics.summary. Add a summary only when it is written in Chris's own voice.",
