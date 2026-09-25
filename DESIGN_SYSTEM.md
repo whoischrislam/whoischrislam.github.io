@@ -36,8 +36,13 @@ tokens only. Hover: one language per component type; tilt and pan only under `(h
 keyboard focus gets the glow and a 2px outline. Reduced motion keeps fades and glows, drops rise, tilt, pan.
 Intro settles under 5s (WCAG 2.2.2). The older site motion (22 durations, 13 easings) is not yet migrated.
 
-**Company page = an index; one project card (Chris 2026-09-24).** Title band, then a fact band (Role / When / Owned /
-Outcome from the company record), then the project cards; the full fact rows fold into "Role details" at the bottom.
+**Company page = an index; one project card (Chris 2026-09-24).** One header on every page: role line, title, one-liner,
+meta line. A page with cards: "Role · dates" above the title, the company context as the one-liner, one meta line (role
+shape, stage, "Company" milestone), then "What I did" as a serif intro to the cards, and **Credits** (people and code
+boundaries, verbatim) at the end. No fact band, no Role details: the cards carry the outcomes. A case study: its summary
+is the title band's one-liner, its facts read as one row, and its own Credits close the page. Company credits = the whole
+role; case-study credits = that project. Pages without cards (HogWare, Zodiacus, This site) keep the fact band and
+Role details for now. A "Boundary" fact is a credit only when it says who built what; delivery boundaries stay in the facts.
 One card component (`.work-project-card`, date-led, stacked) and one hover language (glow; tilt + tall-image pan on
 fine pointers only), set in `enhanceProjectCards`; cards rise once on scroll. Motion tokens: `--dur-instant/quick/base/slow`
 (100/200/400/700ms), `--ease-out/in/expressive`. Reduced motion: no rise, tilt, or pan.

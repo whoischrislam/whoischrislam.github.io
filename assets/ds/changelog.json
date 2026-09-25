@@ -2,6 +2,12 @@
  {
   "date": "2026-09-24",
   "area": "Company pages",
+  "change": "Took the fact band and \"Role details\" apart. The role and dates sit above the company name, the \"What I did\" summary introduces the projects, and credits (who worked on it, and who wrote the code) close the page. Case studies open with their summary and close with their own credits.",
+  "commit": ""
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Company pages",
   "change": "Removed the numbers from the \"Also shipped\" lists. They read like steps in a process, and the items aren't sequential.",
   "commit": ""
  },

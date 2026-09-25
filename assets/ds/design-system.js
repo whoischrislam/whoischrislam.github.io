@@ -9,13 +9,14 @@
   // harvest sources: company view + a rich case study. A source may be an ordered list of views:
   // the first is loaded eagerly; the next is loaded only if the component is not found there, so a
   // tile survives one world changing (e.g. a placeholder replaced by a real hero image).
-  var SRC={thissite:'index.html?work=this_site',company:['index.html?work=y30','index.html?work=goodrx'],casestudy:'index.html?work=y30&project=spoken-voice-system',quotes:['index.html?work=goodrx','index.html?work=taskrabbit','index.html?work=amazon'],placeholder:['index.html?work=pathstream','index.html?work=taskrabbit','index.html?work=clover']};
+  var SRC={thissite:'index.html?work=this_site',company:['index.html?work=y30','index.html?work=goodrx'],casestudy:'index.html?work=y30&project=spoken-voice-system',nocards:'index.html?work=hogware',quotes:['index.html?work=goodrx','index.html?work=taskrabbit','index.html?work=amazon'],placeholder:['index.html?work=pathstream','index.html?work=taskrabbit','index.html?work=clover']};
   // component registry: id, label, live selector, source ('home' = clone from homepage DOM, else SRC key), group
   var REG=[
     {id:'co-band',label:'World band (homepage)',sel:'.co-band',src:'home',grp:'Templated'},
     {id:'world-hero',label:'Title band (world layer, tame)',sel:'.world-hero',src:'company',grp:'Templated'},
-    {id:'work-fact-band',label:'Fact band (Role / When / Owned / Outcome)',sel:'.work-fact-band',src:'company',grp:'Templated'},
-    {id:'work-role-details',label:'Role details (folded facts)',sel:'.work-role-details',src:'company',grp:'Templated'},
+    {id:'work-fact-band',label:'Fact band (pages without cards only)',sel:'.work-fact-band',src:'nocards',grp:'Templated'},
+    {id:'work-role-details',label:'Role details (pages without cards only)',sel:'.work-role-details',src:'nocards',grp:'Templated'},
+    {id:'work-credits',label:'Credits (people and code boundaries, end of page)',sel:'.work-credits',src:'company',grp:'Templated'},
     {id:'work-changelog',label:'Recent changes (living log, from changelog.json)',sel:'.work-changelog',src:'thissite',grp:'Templated'},
     {id:'work-panel-facts',label:'Fact grid / spec panel',sel:'.work-panel-facts',src:'company',grp:'Templated',wrap:'work-panel is-company-view',wrapId:'work-panel'},
     {id:'work-support',label:'Also shipped (unified schedule)',sel:'.work-support-row',src:'company',grp:'Templated'},

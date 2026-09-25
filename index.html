@@ -911,6 +911,25 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 /* the band introduces the projects directly (as approved): no second heading + intro between them */
 .work-fact-band + .work-story-section .work-story-section-head{display:none}
 .work-fact-band + .work-story-section{margin-top:0!important;padding-top:0!important;border-top:0!important}
+/* Company page with cards (Chris 2026-09-24, B2 + D2 + credits): role and dates in the kicker, role shape / stage /
+   milestone in one meta line, "What I did" introduces the cards, people and code boundaries close the page. */
+.world-hero-meta{margin:var(--s-item,24px) 0 0;font:600 var(--t-xs)/1.4 var(--sans);letter-spacing:.02em;color:var(--world-ink)}
+.world-hero-meta-label{color:var(--world-ink-soft);margin-right:6px}
+.world-hero-meta-sep{margin:0 10px;color:var(--world-ink-soft)}
+.work-panel.is-company-view{border-bottom:0!important} /* its divider sat flush on the old fact band; alone it is a stray line */
+.work-story-intro{margin:var(--s-group,64px) 0 0;font:400 var(--t-md)/1.5 var(--serif);color:var(--text)}
+.work-story-intro + .work-story-section .work-story-section-head{display:none}
+.work-story-intro + .work-story-section{margin-top:var(--s-group,64px)!important;padding-top:0!important;border-top:0!important}
+.work-credits{margin-top:var(--s-section,128px);padding-top:var(--s-item,24px);border-top:1px solid var(--border)}
+.work-credits-title{margin:0 0 var(--s-item,24px)!important;font:600 var(--t-xs)/1.3 var(--sans)!important;font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.work-credits dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s-item,24px) var(--s-group,64px);margin:0}
+.work-credits dt{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.work-credits dd{margin:0;font:400 var(--t-sm)/1.5 var(--sans);color:var(--text)}
+/* Case study (S2L): the summary is the one-liner in the title band; the facts read as one row */
+.work-panel-lede{margin:var(--s-item,24px) 0 0;font:400 var(--t-base)/1.55 var(--sans)}
+.work-panel.is-story-view .work-panel-facts{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important;gap:var(--s-item,24px);
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:var(--s-item,24px) 0!important;margin-top:var(--s-group,64px)!important}
+.work-panel.is-story-view .work-panel-facts>div{border:0!important;padding:0!important}
 }
 .work-company-support{display:grid;gap:14px;margin:28px 0 0;padding-top:28px;border-top:1px solid var(--border)}
 .work-company-support-head{display:block}
@@ -2121,6 +2140,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         <p class="work-panel-context" hidden></p>
         <span class="work-panel-kicker">Selected project</span>
         <h3></h3>
+        <p class="work-panel-lede" hidden></p>
         <div class="work-panel-story-meta" hidden>
           <p class="work-panel-meta"></p>
           <span class="work-panel-delivery"></span>
@@ -2381,6 +2401,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     var workPanelDelivery = workPanel.querySelector(".work-panel-delivery");
     var workPanelDetails = workPanel.querySelector(".work-panel-details");
     var workPanelSummary = workPanel.querySelector(".work-panel-summary");
+    var workPanelLede = workPanel.querySelector(".work-panel-lede");
     var workPanelFacts = workPanel.querySelector(".work-panel-facts");
     var workPanelResultLabel = workPanel.querySelector(".work-panel-result-label");
     var workPanelResult = workPanel.querySelector(".work-panel-result");
@@ -5658,7 +5679,12 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         grid.appendChild(pcard);
       });
       enhanceProjectCards(grid);
-      var band = buildFactBand(companyData); if(band) workFocusContent.appendChild(band);
+      if(grid.children.length){
+        // "What I did" introduces the cards; the fact band's rows now live in the title band, the cards, and the credits.
+        if(companyData.summary){ var intro = document.createElement("p"); intro.className = "work-story-intro"; intro.textContent = companyData.summary; workFocusContent.appendChild(intro); }
+      } else {
+        var band = buildFactBand(companyData); if(band) workFocusContent.appendChild(band);
+      }
       if(grid.children.length){
         var storySection = document.createElement("section");
         storySection.className = "work-story-section";
@@ -5800,7 +5826,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
       // blank gap that reads as broken; hero + fact grid + actions still render above it.
       if(companyData.showChangelog) workFocusContent.appendChild(buildChangelog());
-      var details = buildRoleDetails(companyData); if(details) workFocusContent.appendChild(details);
+      if(grid.children.length){ var credits = buildCredits(companyData.facts); if(credits) workFocusContent.appendChild(credits); }
+      else { var details = buildRoleDetails(companyData); if(details) workFocusContent.appendChild(details); }
       workFocusContent.hidden = !workFocusContent.children.length;
       return grid;
     }
@@ -5831,7 +5858,30 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       }).catch(function(){ sec.remove(); });
       return sec;
     }
-    // The full fact rows, folded below the work: depth for the interview, not the first read.
+    // Credits: the people and code-boundary rows, verbatim from the record, at the end of the page (film-credits style).
+    // Company page = credits for the whole role; case study = credits for that project (Chris 2026-09-24, option 1).
+    // "Boundary" is a credit only when it says who built what; delivery boundaries ("Deployed internal build · not
+    // production") stay in the facts row with the delivery state.
+    var CREDIT_FACT = /^(Team|Partners|Collaborat\w*|Code( boundary)?|Engineering)$/i;
+    function isCreditFact(f){
+      return CREDIT_FACT.test(f[0]) || (/^Boundary$/i.test(f[0]) && /code|engineer|design|helped/i.test(f[1] || ""));
+    }
+    function buildCredits(facts){
+      var rows = (facts || []).filter(isCreditFact);
+      if(!rows.length) return null;
+      var sec = document.createElement("section"); sec.className = "work-credits";
+      var h = document.createElement("h4"); h.className = "work-credits-title"; h.textContent = "Credits"; sec.appendChild(h);
+      var dl = document.createElement("dl");
+      rows.forEach(function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
+        dt.textContent=r[0]; dd.textContent=r[1]; row.append(dt,dd); dl.appendChild(row); });
+      sec.appendChild(dl); return sec;
+    }
+    // A company page is an index when it has cards (case studies, or promoted vignettes for caseless companies).
+    function companyHasCards(key){
+      var d = workProjects[key] || {};
+      return hasCompanyStories(key) || (d.vignettes || []).length > 0;
+    }
+    // The full fact rows, folded below the work: kept only for pages without cards (HogWare, Zodiacus, This site).
     function buildRoleDetails(item){
       var rows = (item.summary ? [["What I did", item.summary]] : []).concat(item.facts || []);
       if(!rows.length) return null;
@@ -6135,6 +6185,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       var storyNavProgress = document.createElement("span");
       storyNavProgress.className = "project-story-nav-progress";
       storyNav.append(storyNavProgress, storyNavMarker);
+      var storyCredits = buildCredits(story.facts); if(storyCredits) article.appendChild(storyCredits);
       workFocusContent.appendChild(article);
       workFocusContent.hidden = false;
       var chapters = Array.from(article.querySelectorAll(".project-chapter"));
@@ -6517,13 +6568,31 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       if(!item || !heading) return;
       var isCompany = hasCompanyStories(project); // companies read "role @ Company"; standalone projects just "role"
       var hero = document.createElement("header"); hero.className = "world-hero";
-      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + (isCompany ? " @" : ""); hero.appendChild(k); } // #3: role @ company
+      var indexPage = companyHasCards(project);
+      // Pages with cards (B2): "Role · dates" above the title. Pages without cards keep "role @" and their fact band.
+      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + (indexPage ? (item.dates ? " · " + item.dates : "") : (isCompany ? " @" : "")); hero.appendChild(k); }
       var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
       // World lede = company context only (Chris 2026-09-23: "the one-liner below the company name gives context on
       // what the company does, then I talk about what I did"). The band line (role + impact) stays on the homepage;
       // inside the world, role lives in the kicker + Facts and the work in What I did, so repeating them was redundant.
       var merged = item.context || "";
       if(merged){ var p=document.createElement("p"); p.className="world-hero-lede"; p.textContent=merged; hero.appendChild(p); }
+      if(indexPage){
+        // One meta line: role shape, stage, and the company milestone, verbatim from the record.
+        var mf = item.facts || [];
+        var shape = mf.find(function(f){ return /^(Role shape|When I joined|Mandate|Chapters)$/i.test(f[0]); });
+        var stage = mf.find(function(f){ return /^Stage$/i.test(f[0]); });
+        var parts = [shape && [null, shape[1]], stage && [null, stage[1]], item.companyOutcome && ["Company", item.companyOutcome]].filter(Boolean);
+        if(parts.length){
+          var meta = document.createElement("p"); meta.className = "world-hero-meta";
+          parts.forEach(function(pt, i){
+            if(i){ var sep=document.createElement("span"); sep.className="world-hero-meta-sep"; sep.setAttribute("aria-hidden","true"); sep.textContent="·"; meta.appendChild(sep); }
+            if(pt[0]){ var lb=document.createElement("span"); lb.className="world-hero-meta-label"; lb.textContent=pt[0]; meta.appendChild(lb); }
+            meta.appendChild(document.createTextNode(pt[1]));
+          });
+          hero.appendChild(meta);
+        }
+      }
       var m=document.createElement("div"); m.className="world-hero-media";
       if(item.hero){
         // eager, not lazy: this hero is above the fold in the world; lazy leaves it blank during/after
@@ -6554,6 +6623,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       workPanelMeta.textContent = "";
       workPanelDelivery.textContent = "";
       workPanelSummary.textContent = item.summary;
+      workPanelLede.textContent = ""; workPanelLede.hidden = true;
       // In a world, fold the summary into the grid as the lead "What I did" cell (and hide the loose paragraph).
       var inWorld = companyView && document.body.getAttribute("data-world");
       workPanelSummary.hidden = !!inWorld;
@@ -6600,7 +6670,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       workPanelDelivery.textContent = "";
       workPanelStoryMeta.hidden = true; // G: no status capsule; the status opens the outcome sentence
       workPanelSummary.textContent = story.summary;
-      renderWorkFacts(story.facts || null, true);
+      workPanelSummary.hidden = true; // S2L: the summary is the title band's one-liner
+      workPanelLede.textContent = story.summary || ""; workPanelLede.hidden = !story.summary;
+      renderWorkFacts((story.facts || []).filter(function(f){ return !isCreditFact(f); }), true); // people rows move to the credits
       workPanelDetails.open = true;
       workPanelResultLabel.textContent = "Outcome";
       var storyStatus = publicDelivery(story.delivery);
