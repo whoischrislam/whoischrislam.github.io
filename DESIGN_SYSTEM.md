@@ -22,6 +22,20 @@ inconsistency — it was the *absence* of his own decisions.
 - Text runs the full column (Chris's pick over the research's 70ch cap; revisit for long case-study prose).
 - Lives in `<style id="layout-system">` with !important over older component margins: fold into components as touched.
 
+**Homepage structure (Chris 2026-09-24).** Full-screen intro (150px headline sized to the column, logos 44px below,
+no divider), clear header until 40px of scroll, scroll cue after the headline lands, then "Recent work": 3 project
+cards from `RECENT_WORK` (data-driven; a slot can later hold a story, an essay, or an experiment), then the company
+worlds. The site is a publishing home (portfolio, experiments, writing), not only a job portfolio.
+
+**Card counts.** Three cards sit in thirds; two split the row; one spans it with a 16:9 stage. Card titles are
+sentence case (product names excepted).
+
+**Motion.** Tokens `--dur-instant/quick/base/slow` = 100/200/400/700ms and `--ease-out` (0.2,0,0,1), `--ease-in`,
+`--ease-expressive`, from the 2026-09-24 research (Carbon, Material 3, Fluent, Atlassian agree). New motion uses
+tokens only. Hover: one language per component type; tilt and pan only under `(hover:hover) and (pointer:fine)`;
+keyboard focus gets the glow and a 2px outline. Reduced motion keeps fades and glows, drops rise, tilt, pan.
+Intro settles under 5s (WCAG 2.2.2). The older site motion (22 durations, 13 easings) is not yet migrated.
+
 **Company page = an index; one project card (Chris 2026-09-24).** Title band, then a fact band (Role / When / Owned /
 Outcome from the company record), then the project cards; the full fact rows fold into "Role details" at the bottom.
 One card component (`.work-project-card`, date-led, stacked) and one hover language (glow; tilt + tall-image pan on

@@ -66,3 +66,5 @@ body.ds-active{overflow:auto}
 #ds-root .ds-editor .flags{display:flex;gap:6px;margin:8px 0}#ds-root .ds-editor .flags button{flex:1;border:1px solid #ddd;background:#faf9f6;border-radius:6px;padding:6px;font:700 10px/1 var(--ds-sans);text-transform:uppercase;cursor:pointer}
 #ds-root .ds-editor .flags button[data-fl="improve"][aria-pressed="true"]{background:#6d4bd8;color:#fff;border-color:#6d4bd8}#ds-root .ds-editor .flags button[data-fl="bug"][aria-pressed="true"]{background:#c0392b;color:#fff;border-color:#c0392b}#ds-root .ds-editor .flags button[data-fl="idea"][aria-pressed="true"]{background:#0089AB;color:#fff;border-color:#0089AB}
 #ds-root .fl-improve{background:#efeaff;color:#6d4bd8}#ds-root .fl-bug{background:#fdecea;color:#c0392b}#ds-root .fl-idea{background:#e6f4f8;color:#0089AB}
+
+#ds-root .ds-motion:hover span{transform:translateX(calc(100% * 12))}

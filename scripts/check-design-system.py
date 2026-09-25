@@ -45,6 +45,31 @@ if missing:
     errors.append("registry selectors not defined in index.html CSS (renamed or deleted): "
                   + ", ".join("." + m for m in missing))
 
+# 1b) the reverse (Chris 2026-09-24: the ?ds page is the bird's-eye dashboard and must never fall behind): every
+#     component a builder function creates must be cataloged. Builders = create*/build*/mount* functions in index.html;
+#     a builder's root class passes if it is cataloged or is a sub-part of a cataloged class (e.g. work-project-card-result).
+_js = "\n".join(re.findall(r"<script(?![^>]*src)[^>]*>(.*?)</script>", index, re.S))
+_uncataloged = []
+for _m in re.finditer(r"function ((?:create|build|mount)[A-Z]\w*)\s*\(", _js):
+    _body = _js[_m.end():_m.end() + 2500]
+    _cm = re.search(r'className\s*=\s*"([A-Za-z_][\w-]*)', _body)
+    if not _cm:
+        continue
+    _cls = _cm.group(1)
+    if _cls in cataloged or any(_cls.startswith(c + "-") for c in cataloged):
+        continue
+    _uncataloged.append(f"{_m.group(1)} -> .{_cls}")
+if _uncataloged:
+    errors.append("components built but not cataloged on the ?ds page (add them to REG in assets/ds/design-system.js): "
+                  + "; ".join(_uncataloged))
+_cl = ROOT / "assets/ds/changelog.json"
+try:
+    import json as _json
+    _entries = _json.loads(_cl.read_text(encoding="utf-8"))
+    assert isinstance(_entries, list) and _entries and all("date" in e and "change" in e for e in _entries)
+except Exception:
+    errors.append("assets/ds/changelog.json missing or malformed (the ?ds 'Recent system changes' panel reads it)")
+
 # 2) colors — world palettes
 world_blocks = re.findall(r'\[data-world="([a-z0-9]+)"\]\{([^}]*)\}', index)
 required = ["--world-bg", "--world-ink", "--world-ink-soft", "--world-line",

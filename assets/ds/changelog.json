@@ -1,0 +1,56 @@
+[
+ {
+  "date": "2026-09-24",
+  "area": "Components",
+  "change": "One project card for company pages and homepage Recent work; one hover (glow; tilt + tall-image pan on fine pointers); rise on scroll; 1-2 cards fill the row",
+  "commit": "e5a90a1"
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Homepage",
+  "change": "Recent work: 3 date-led case-study cards up front, one click to the story (RECENT_WORK keys)",
+  "commit": "d4f90e5"
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Company page",
+  "change": "Index layout: title band -> fact band (Role / When / Owned / Outcome) -> project cards; full facts folded into Role details",
+  "commit": "d3a3353"
+ },
+ {
+  "date": "2026-09-24",
+  "area": "World layer",
+  "change": "Tame: foundation on every page; brand band on the title block; accent re-picked per theme to clear 4.5:1",
+  "commit": "de4fc43"
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Motion",
+  "change": "Tokens --dur-instant/quick/base/slow (100/200/400/700ms), --ease-out/in/expressive",
+  "commit": "d3a3353"
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Spacing",
+  "change": "Four relationships: 8 / 24 / 64 / 128 (phone 8 / 16 / 40 / 80); separators get room; sans leading 1.65",
+  "commit": "4ba388b"
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Type",
+  "change": "One scale: sans 16 / 18, serif 30 / 38, display 56 / 92 / 150; 14px floor enforced by check-design-system",
+  "commit": "02e9d36"
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Typefaces + radius",
+  "change": "Newsreader + Figtree only, weights 400 / 600; every radius 0 including circles",
+  "commit": "2dccbe8"
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Homepage",
+  "change": "Full-screen intro, 150px headline sized to the column, clear header, scroll cue after the headline lands",
+  "commit": "a4df842"
+ }
+]

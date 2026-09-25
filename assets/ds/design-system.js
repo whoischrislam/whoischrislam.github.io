@@ -6,8 +6,6 @@
   if(!/[?&]ds\b/.test(location.search)) return;
   var WORLDS=['goodrx','y30','clover','playsesh','pathstream','taskrabbit','sharecare','startplaying','modus','amazon','zodiacus'];
   var ROLE=[['--world-bg','Background'],['--world-ink','Text / ink'],['--world-accent','Accent / primary'],['--world-surface','Surface'],['--world-card-bg','Card']];
-  var SEMANTIC=['--bg','--surface','--surface-2','--text','--muted','--border','--border-strong','--accent'];
-  var TYPE=[['Display / Newsreader','40px',"'Newsreader',serif",'400','Chris Lam'],['Section / serif','28px',"'Newsreader',serif",'400','Controlled comparison'],['Card title / serif','21px',"'Newsreader',serif",'400','Admin console'],['Body / Figtree','15px',"'Figtree',sans-serif",'400','I design and code to ship products.'],['Label / sans','13px',"'Figtree',sans-serif",'700','Held constant'],['Kicker / Plex Mono','11px',"'IBM Plex Mono',monospace",'700','CONTROLLED INTERNAL BENCHMARK']];
   // harvest sources: company view + a rich case study. A source may be an ordered list of views:
   // the first is loaded eagerly; the next is loaded only if the component is not found there, so a
   // tile survives one world changing (e.g. a placeholder replaced by a real hero image).
@@ -15,16 +13,23 @@
   // component registry: id, label, live selector, source ('home' = clone from homepage DOM, else SRC key), group
   var REG=[
     {id:'co-band',label:'World band (homepage)',sel:'.co-band',src:'home',grp:'Templated'},
-    {id:'world-hero',label:'World hero (company/project)',sel:'.world-hero',src:'company',grp:'Templated'},
+    {id:'world-hero',label:'Title band (world layer, tame)',sel:'.world-hero',src:'company',grp:'Templated'},
+    {id:'work-fact-band',label:'Fact band (Role / When / Owned / Outcome)',sel:'.work-fact-band',src:'company',grp:'Templated'},
+    {id:'work-role-details',label:'Role details (folded facts)',sel:'.work-role-details',src:'company',grp:'Templated'},
     {id:'work-panel-facts',label:'Fact grid / spec panel',sel:'.work-panel-facts',src:'company',grp:'Templated',wrap:'work-panel is-company-view',wrapId:'work-panel'},
     {id:'work-support',label:'Also shipped (unified schedule)',sel:'.work-support-row',src:'company',grp:'Templated'},
-    {id:'work-project-card',label:'Work project card',sel:'.work-project-card',src:'company',grp:'Templated'},
+    {id:'work-project-card',label:'Project card (one component: company pages + Recent work)',sel:'.work-project-card',src:'company',grp:'Templated'},
     {id:'portfolio-diagram',label:'Diagram card',sel:'.portfolio-diagram',src:'casestudy',grp:'Templated'},
     {id:'project-chapter',label:'Case-study chapter',sel:'.project-chapter',src:'casestudy',grp:'Templated'},
+    {id:'story-artifact',label:'Case-study image (artifact)',sel:'.story-artifact',src:'casestudy',grp:'Templated'},
+    {id:'project-story',label:'Case-study page (whole story)',sel:'.project-story',src:'casestudy',grp:'Templated'},
+    {id:'work-project-grid',label:'Project card grid (3 / 2 / 1 per row)',sel:'.work-project-grid',src:'company',grp:'Templated'},
     {id:'project-story-nav',label:'Case-study jump-to nav',sel:'.project-story-nav',src:'casestudy',grp:'Templated'},
     {id:'work-company-quotes',label:'World recommendations (verbatim quotes)',sel:'.work-company-quotes',src:'quotes',grp:'Templated'},
     {id:'visual-placeholder',label:'Visual placeholder ("coming soon")',sel:'.visual-placeholder',src:'placeholder',grp:'Templated'},
     {id:'hero',label:'Homepage hero',sel:'.hero',src:'home',grp:'Chrome'},
+    {id:'recent-work',label:'Recent work (homepage front door)',sel:'.recent-work',src:'home',grp:'Chrome'},
+    {id:'scroll-cue',label:'Scroll cue',sel:'.scroll-cue',src:'home',grp:'Chrome'},
     {id:'hero-credibility',label:'Credibility rail',sel:'.hero-credibility',src:'home',grp:'Chrome'},
     {id:'status-pill',label:'Availability pill (header)',sel:'.status-pill',src:'home',grp:'Chrome'},
     {id:'wcard',label:'More-work card',sel:'.work-tile.wcard',src:'home',grp:'Chrome'},
@@ -69,11 +74,59 @@
   }
 
   // ---- views ----
+  // Every custom property declared on :root (any theme), read from the live stylesheets: a new token shows up
+  // here on the next load with nothing to maintain. Grouped by family prefix; anything unmatched is listed, not hidden.
+  function liveTokens(){
+    var names={};
+    function walk(rules){ if(!rules) return; for(var i=0;i<rules.length;i++){ var r=rules[i];
+      if(r.cssRules&&!r.selectorText) walk(r.cssRules);
+      if(r.selectorText&&/^:root\b/.test(r.selectorText.trim())&&!/data-world/.test(r.selectorText)){ for(var j=0;j<r.style.length;j++){ var n=r.style[j]; if(n.indexOf('--')===0) names[n]=1; } } } }
+    for(var i=0;i<document.styleSheets.length;i++){ var sh=document.styleSheets[i]; if(sh.href&&/assets\/ds\//.test(sh.href)) continue; try{ walk(sh.cssRules); }catch(e){} }
+    var cs=getComputedStyle(document.documentElement), out={};
+    Object.keys(names).sort().forEach(function(n){ out[n]=cs.getPropertyValue(n).trim(); });
+    return out;
+  }
+  var FAM=[['Type','^--t-'],['Space','^--(s|sp)-'],['Motion','^--(dur|ease)-|^--(transition|enter)$'],['Brand bands (homepage)','^--band-'],
+    ['Color','^--(bg|surface|surface-2|surface-hover|text|muted|border|border-strong|border-soft|accent|accent-soft|accent-strong|on-accent|chip-bg|grid|grid-maj)$']];
+  function famOf(n){ for(var i=0;i<FAM.length;i++){ if(new RegExp(FAM[i][1]).test(n)) return FAM[i][0]; } return 'Ungrouped'; }
+  var SANS_T={'--t-xs':1,'--t-sm':1,'--t-base':1,'--t-md':1,'--t-lg':1};
+  function changesCard(){ return card('Recent system changes','<div id="ds-changes"><p class="ds-note">Loading…</p></div>'); }
+  function loadChanges(){ fetch('assets/ds/changelog.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(list){
+      var el=document.getElementById('ds-changes'); if(!el) return;
+      el.innerHTML='<div style="display:grid;gap:10px">'+list.slice(0,12).map(function(c){ return '<div class="tyrow"><div><div class="tkn">'+esc(c.date)+'</div><div class="tkv">'+esc(c.area)+'</div></div><div><div style="font:400 15px/1.45 var(--ds-sans)">'+esc(c.change)+'</div>'+(c.commit?'<code class="auc">'+esc(c.commit)+'</code>':'')+'</div></div>'; }).join('')+'</div>';
+    }).catch(function(){ var el=document.getElementById('ds-changes'); if(el) el.innerHTML='<p class="ds-note">changelog.json missing or unreadable.</p>'; }); }
   function foundations(){
-    var sem='<div class="ds-grid4">'+SEMANTIC.map(function(t){var v=getComputedStyle(document.documentElement).getPropertyValue(t).trim();return mk('token:color:'+t,'<div class="tk"><div class="tksw" style="background:'+esc(v)+'"></div><div class="tkm"><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(v||'—')+'</div></div></div>');}).join('')+'</div>';
-    var wg='<h3 class="ds-h3">World palettes (11) — each color by its ROLE, read from live tokens</h3><div class="ds-grid4">'+WORLDS.map(function(w){var o=readWorld(w);var rows=ROLE.map(function(r){return '<div class="pal-row"><i class="pal-chip" style="background:'+esc(o[r[0]]||'#888')+'"></i><span class="pal-role" style="color:'+esc(o['--world-ink'])+'">'+r[1]+'</span><span class="pal-tok" style="color:'+esc(o['--world-ink'])+'">'+r[0].replace('--world-','')+'</span></div>';}).join('');return mk('token:world:'+w,'<div class="pal" style="background:'+esc(o['--world-bg'])+'"><div class="pal-h"><span class="pal-name" style="color:'+esc(o['--world-ink'])+'">'+w+'</span></div>'+rows+'</div>');}).join('')+'</div>';
-    var type='<div style="display:grid;gap:12px">'+TYPE.map(function(t){return mk('token:type:'+t[0],'<div class="tyrow"><div><div class="tkn">'+t[0]+'</div><div class="tkv">'+t[1]+'</div></div><div style="font-family:'+t[2]+';font-weight:'+t[3]+';font-size:'+t[1]+';line-height:1.1;color:#1b1b19">'+esc(t[4])+'</div></div>');}).join('')+'</div>';
-    return '<div id="ds-foundations" class="ds-mode">'+card('Color tokens',sem+wg)+card('Type scale',type,true)+card('Space · radius · grain · elevation · grid · motion','<p class="ds-note">Documented next — these live as inline values / magic numbers on the site today and get promoted to tokens as we wire them.</p>',true)+'</div>';
+    var T=liveTokens(), fams={}; Object.keys(T).forEach(function(n){ (fams[famOf(n)]=fams[famOf(n)]||[]).push(n); });
+    // order scales by size, not alphabet (clamp() sorts by its largest px value)
+    function px(v){ var m=String(v).match(/([\d.]+)(px|ms|rem|s)\b/g); if(!m) return 1e9; var last=m[m.length-1]; var n=parseFloat(last); return /rem/.test(last)?n*16:(/ms/.test(last)?n:(/s$/.test(last)?n*1000:n)); }
+    ['Type','Space','Motion'].forEach(function(f){ if(fams[f]) fams[f].sort(function(a,b){ return px(T[a])-px(T[b]); }); });
+    var html='';
+    // color: semantic tokens as swatches
+    html+=card('Color tokens · '+((fams.Color||[]).length)+' live','<div class="ds-grid4">'+(fams.Color||[]).map(function(t){ return mk('token:color:'+t,'<div class="tk"><div class="tksw" style="background:var('+t+')"></div><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(T[t])+'</div></div>'); }).join('')+'</div>');
+    // world layer (tame): brand band + per-theme accent, read live per world
+    var probe=document.createElement('div'); probe.className='work-shell'; probe.style.display='none'; document.body.appendChild(probe);
+    var wl='<div class="ds-grid4">'+WORLDS.map(function(w){ var prev=document.body.getAttribute('data-world'); document.body.setAttribute('data-world',w);
+        var b=getComputedStyle(document.body), p=getComputedStyle(probe);
+        var bg=b.getPropertyValue('--brand-bg').trim(), ink=b.getPropertyValue('--brand-ink').trim(), al=p.getPropertyValue('--brand-accent-light').trim(), ad=p.getPropertyValue('--brand-accent-dark').trim();
+        if(prev) document.body.setAttribute('data-world',prev); else document.body.removeAttribute('data-world');
+        return mk('token:world:'+w,'<div class="tk"><div style="background:'+bg+';color:'+ink+';padding:14px 12px;font:400 20px/1 var(--ds-serif)">'+esc(w)+'</div><div class="tkv" style="margin-top:6px">band '+esc(bg)+'</div><div class="tkv">accent <span style="display:inline-block;width:10px;height:10px;background:'+al+';vertical-align:middle"></span> light '+esc(al)+' · <span style="display:inline-block;width:10px;height:10px;background:'+ad+';vertical-align:middle"></span> dark '+esc(ad)+'</div></div>'); }).join('')+'</div>';
+    probe.remove();
+    html+=card('World layer (tame): brand band + per-theme accent',wl);
+    // type: every --t-* token, sampled in the family its role uses
+    html+=card('Type scale · '+((fams.Type||[]).length)+' tokens (floor 14px; check-design-system fails raw px)','<div style="display:grid;gap:12px;container-type:inline-size">'+(fams.Type||[]).map(function(t){ var fam=SANS_T[t]?'var(--sans)':'var(--serif)';
+      return mk('token:type:'+t,'<div class="tyrow"><div><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(T[t])+'</div></div><div style="font:400 var('+t+')/1.1 '+fam+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(SANS_T[t]?'Figtree · I design and code to ship products':'Newsreader · Controlled comparison')+'</div></div>'); }).join('')+'</div>');
+    // space: bars
+    html+=card('Space · '+((fams.Space||[]).length)+' tokens','<div style="display:grid;gap:8px">'+(fams.Space||[]).map(function(t){ return mk('token:space:'+t,'<div class="tyrow"><div><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(T[t])+'</div></div><div><div style="height:12px;width:var('+t+');background:var(--accent)"></div></div></div>'); }).join('')+'</div>');
+    // motion: tokens with a play demo (hover a row)
+    html+=card('Motion · '+((fams.Motion||[]).length)+' tokens (hover a row to play)','<div style="display:grid;gap:8px">'+(fams.Motion||[]).map(function(t){ var isEase=/ease/.test(t);
+      var tr=isEase?'transform 700ms var('+t+')':(/dur/.test(t)?'transform var('+t+') var(--ease-out,ease)':'transform 700ms ease');
+      if(t==='--transition'||t==='--enter') tr='transform var('+t+')';
+      return mk('token:motion:'+t,'<div class="tyrow ds-motion"><div><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(T[t])+'</div></div><div style="position:relative;height:16px;background:var(--surface-2)"><span style="position:absolute;left:0;top:0;width:16px;height:16px;background:var(--accent);transition:'+tr+'"></span></div></div>'); }).join('')+'</div>');
+    // rules that are not tokens
+    html+=card('Rules','<div class="ds-note" style="display:grid;gap:6px"><div><b>Radius:</b> 0 everywhere, circles included (hard edges).</div><div><b>Typefaces:</b> Newsreader (display) + Figtree (text), weights 400 / 600.</div><div><b>Hover:</b> one language per component type; tilt and pan only with a fine pointer; focus gets the glow + a 2px outline.</div><div><b>Reduced motion:</b> keeps fades and glows; drops rise, tilt, pan.</div></div>');
+    if(fams['Brand bands (homepage)']) html+=card('Brand bands (homepage) · '+fams['Brand bands (homepage)'].length,'<div class="ds-grid4">'+fams['Brand bands (homepage)'].map(function(t){ return mk('token:band:'+t,'<div class="tk"><div class="tksw" style="background:var('+t+')"></div><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(T[t])+'</div></div>'); }).join('')+'</div>');
+    if(fams.Ungrouped) html+=card('Ungrouped tokens · '+fams.Ungrouped.length+' (no family prefix yet)','<div style="display:flex;flex-wrap:wrap;gap:6px">'+fams.Ungrouped.map(function(t){ return '<code class="auc" title="'+esc(T[t])+'">'+esc(t)+'</code>'; }).join('')+'</div>');
+    return '<div id="ds-foundations" class="ds-mode">'+changesCard()+html+'</div>';
   }
   function componentsShell(){return '<div id="ds-components" class="ds-mode" hidden><p class="ds-note" style="margin:0 0 12px">Real components harvested from the live site, themed by the world picker. This IS the live output.</p>'
     +'<div class="qa-bar"><b>QA variants</b>'
@@ -143,6 +196,7 @@
   var initMode=MODES[((location.search.match(/[?&]ds=([a-z]+)/)||[])[1])]||'ds-foundations';
   function setMode(m){root.querySelectorAll('#ds-mode button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-m')===m);});['ds-foundations','ds-components','ds-coverage','ds-audit'].forEach(function(id){var el=document.getElementById(id);if(el)el.hidden=(id!==m);});}
   setMode(initMode);
+  loadChanges();
 
   // harvest then populate components + coverage
   harvest().then(function(h){
