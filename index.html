@@ -142,12 +142,22 @@ b,strong{font-weight:600} /* two weights only (400/600), Chris 2026-09-24 */
 body{margin:0;background-color:var(--bg);color:var(--text);font-family:var(--sans);
   font-size:var(--t-base);line-height:1.65;-webkit-font-smoothing:antialiased;
   }
-body.work-focus-open{overflow:hidden}
+/* Scroll lock only once a world fully covers the page. Hiding the scrollbar widens the homepage 15px, and during
+   the reveal the homepage shows around the circle, so the lock waits for it (Chris 2026-09-25). */
+body.work-focus-open:not(.world-entering){overflow:hidden}
 img{display:block;max-width:100%;height:auto}
 a{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border)}
 ::selection{background:var(--accent);color:var(--on-accent)}
 a:hover{color:var(--accent);text-decoration-color:var(--accent)}
-.wrap{max-width:1228px;margin:0 auto;padding:0 24px}
+/* The column is centred on the full window (100vw), the same basis worlds use, so a scrollbar appearing or
+   disappearing never moves it and the homepage and every world line up (Chris 2026-09-25). The right padding
+   gives the scrollbar's width back (100vw - 100%) so the column stays 1180px wide. */
+.wrap{--wrap-min:24px;--wrap-l:max(var(--wrap-min),calc((100vw - 1180px)/2));
+  padding:0 max(var(--wrap-min),calc(100% - 1180px - var(--wrap-l))) 0 var(--wrap-l)}
+/* The header sits beside the page scrollbar on the homepage but spans the full window in a world (the world's
+   scrollbar starts below it), so its right side would jump a scrollbar width on every open and close. Give the
+   scrollbar's width back on the right so the nav lands at the same x in both (Chris 2026-09-25). */
+.site-head .wrap{padding-right:max(0px,calc(var(--wrap-l) - (100vw - 100%)))}
 
 /* ── 1. Sticky header ─────────────────────────────────────────── */
 .site-head{position:sticky;top:0;z-index:50;height:var(--head-h);
@@ -259,13 +269,7 @@ a:hover{color:var(--accent);text-decoration-color:var(--accent)}
 /* The header is sticky, so every anchor target landed underneath it: the nav links,
    the in-page CTAs, and all seven of the agent's navigation targets. scroll-padding
    on the scroll container fixes all of them at once. */
-/* Reserve the scrollbar gutter so opening a world (which flips body to overflow:hidden) does NOT
-   change the viewport width mid-transition - that width change aborts the View Transition
-   ("invalid state. Viewport size changed") and the enter clip silently doesn't run. macOS overlay
-   scrollbars = 0px gutter (no visual change); classic scrollbars reserve a stable gutter. */
-/* scrollbar-gutter:stable reserves the scrollbar gutter (0 on macOS overlay scrollbars, so invisible there;
-   prevents the width shift on classic-scrollbar systems). */
-html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth;scrollbar-gutter:stable}
+html{scroll-padding-top:calc(var(--head-h) + 20px);scroll-behavior:smooth}
 /* Read-progress, lifted from his own styles.css. Scroll-driven animation, no JS at all.
    Browsers without animation-timeline never scale it up, so it stays invisible. */
 .read-progress{position:absolute;left:0;bottom:0;z-index:1;width:100%;height:3px;
@@ -323,7 +327,7 @@ h2.sec{font-family:var(--serif);font-weight:400;font-size:var(--t-xxl);
 @media (max-width:640px){
   :root{ --t-xxl:28px; --t-xl:23px; --t-lg:20px; --t-md:20px;
          --sp-12:44px; --sp-8:28px }
-  .wrap{padding:0 16px}
+  .wrap{--wrap-min:16px}
 
   
   .refs{padding:20px 16px}
@@ -665,11 +669,6 @@ h2.sec#work{margin-top:16px}
   margin:0;transform:none;padding:0 max(24px,calc((100vw - 1180px)/2)) 64px;
   overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;background:var(--bg);
   scrollbar-gutter:stable;box-shadow:0 -1px 0 var(--border)}
-/* While a world is open, body is overflow:hidden so html's reserved gutter would sit empty (a strip past the
-   shell's own scrollbar on always-show-scrollbar systems). Release it; the shell's scrollbar sits at the edge.
-   Safe: world open/close now use the clip reveal, not View Transitions (verified 2026-09-22: no VT is started on
-   band open, tile open, or back), so the width change the note on html{scrollbar-gutter} warns about can't abort one. */
-html:has(body.work-focus-open){scrollbar-gutter:auto}
 .work-shell.is-focused>.work-head{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
   overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .work-head{display:flex;align-items:center;justify-content:flex-start;gap:16px;
@@ -832,7 +831,7 @@ body[data-world] .work-panel-back:focus-visible{outline-color:var(--world-accent
 .work-shell.is-story-focused .work-explorer{display:block}
 .work-shell.is-story-focused .work-panel{margin:0 0 18px}
 .work-shell.is-story-focused .work-panel{border-bottom:0}
-.work-shell.is-focused .work-panel{border-top:0;padding-top:0} /* the moved back-link row carries the top spacing */
+.work-shell.is-focused .work-panel,body.world-entering .work-panel{border-top:0;padding-top:0} /* the moved back-link row carries the top spacing; also during the reveal, or the world lands 15px lower and snaps up */
 body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just under the back-link row */ /* the header's own bottom border is the one line under it (was doubled) */ /* the Jump-to bar's top border is the one line here (was doubled) */
 .project-story-nav + .project-chapter{border-top:0} /* and its bottom border is the one line below (was doubled) */
 .work-shell.is-story-focused .work-focus-content{display:block}
@@ -1576,8 +1575,9 @@ body.card-serif .wcard-name{font-family:var(--serif);font-weight:400;font-size:v
 #world-layer{display:contents}
 /* Overlay covers the full viewport (opaque bg + clip reach the corners) but pads its content to the SAME
    centered 1180px column the focused shell uses, so the layout doesn't jump wide mid-transition. */
-body.world-entering #world-layer{display:block;position:fixed;inset:var(--head-h) 0 0;z-index:60;
+body.world-entering #world-layer{display:block;position:fixed;inset:var(--head-h) auto 0 0;width:100vw;scrollbar-gutter:stable;z-index:60; /* full window width (under the page scrollbar) with the shell's gutter: lays out exactly like the landed world */
   overflow-y:auto;background:var(--world-bg,#fff);padding:0 max(24px,calc((100vw - 1180px)/2)) 64px}
+@media(max-width:760px){body.world-entering #world-layer{padding-right:16px;padding-left:16px}} /* same gutter as the focused shell on phones, or the world slides 8px left when it lands */
 #world-layer.world-revealing{clip-path:circle(var(--reveal-r,0px) at var(--reveal-x,50%) var(--reveal-y,50%))}
 /* keep the homepage visible BEHIND the layer during the reveal (bands + neutral backdrop, not the yellow flood) */
 body.world-entering .work-grid[data-locked="true"] .co-groups{display:block!important}
@@ -3511,6 +3511,29 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
                 span: 12
               }
             ]
+          },
+          {
+            step: "06 · Run the same loop on my own work",
+            title: "I hold my own process to the rule I gave the product.",
+            copy: "I build with AI agents, and they make confident mistakes. So do I. Corrections get captured as they happen. I decide which ones become a written rule, and the costly ones become an automated check. The clearest one: the AI agent that answers questions about me on this site spent weeks citing a “3.2-second patience window.” I was tuning its configuration, saw the number, and asked where it came from. It exists nowhere in my work. I corrected the catalog and added a test that fails if that claim, or any other retired claim, comes back. It runs before every deploy. To keep the rules from piling up, adding a rule means retiring one.",
+            media: [
+              {
+                visual: "Personal correction loop: correction, written rule, automated check, retire one",
+                status: "RECREATE",
+                note: "Portfolio-native loop diagram; no private rule text or transcripts.",
+                diagram: {
+                  type: "loop",
+                  eyebrow: "The same loop, applied to how I work",
+                  items: [
+                    {label:"Correction", meta:"Mine or an agent's"},
+                    {label:"Written rule", meta:"I decide what earns one"},
+                    {label:"Automated check", meta:"For the costly ones", tone:"accent"},
+                    {label:"Retire one", meta:"One rule in, one out"}
+                  ]
+                },
+                span: 12
+              }
+            ]
           }
         ]
       },
@@ -3547,7 +3570,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "02 · Turn research into rules",
             title: "Show enough of the road ahead to plan without turning an estimate into pressure.",
-            copy: "Students wanted to understand upcoming effort but did not trust exact duration estimates, especially once work was already underway. The design showed time on upcoming lessons, removed it from the active lesson, made completion explicit instead of equating it with scroll depth, and added a Go to current control for students who looked ahead before returning to their work.",
+            copy: "The students we talked to kept saying the same thing: they did not trust the time estimates, and an estimate on the lesson they were working on could make them anxious. So the design showed time on upcoming lessons, removed it from the active lesson, made completion explicit instead of equating it with scroll depth, and added a Go to current control for students who looked ahead before returning to their work.",
             media: [
               {src:"images/craft/pathstream-contrast.webp", title:"Lesson parts, progress, and explicit completion states", span:6, fit:"contain"},
               {src:"images/craft/pathstream-subtle.webp", title:"Alternative state treatment tested against the same model", span:6, fit:"contain"}
@@ -4109,7 +4132,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "04 · Ask a Pharmacist",
             title: "A human answer built trust, but only if the service could keep its promise.",
-            copy: "Drug pages and FAQs still required people to search and interpret serious information on their own. We launched a quick experiment that let them ask a contract pharmacist and promised a response within 48 hours. Demand exceeded expectations, but the small team could not reliably fulfill the promise, so we retired the service instead of hiding the operational failure.",
+            copy: "Drug pages and FAQs still left people to interpret serious information on their own. I designed a quick experiment that let them ask a contract pharmacist, with an answer promised within 48 hours. Demand beat our expectations. As excited as we were, we met as a team and asked whether we could honestly keep that promise. We could not, so we retired the service instead of hiding the operational failure.",
             media: [
               {src:"images/craft/iodine_15.webp", title:"Ask a Pharmacist entry point", span:4, fit:"contain"},
               {src:"images/craft/iodine_17.webp", title:"Medication question flow", span:4, fit:"contain"},
@@ -5010,7 +5033,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "02 · Workflow model",
             title: "Design for the order nurses actually worked in.",
-            copy: "The forms assumed a fixed sequence; the nurses did not. I reorganized the experience around sections they could enter in any order, made completion visible, and pre-populated information Clover already knew instead of asking for it again.",
+            copy: "I inherited printed paper forms that ran in a fixed order, and my first digital version kept that order. Shadowing the nurses and walking them through the design showed me they did not work in sequence. I reorganized the experience around sections they could enter in any order, made completion visible, and pre-populated information Clover already knew instead of asking for it again.",
             media: [
               {src:"images/craft/clover-care-visit_02.webp", title:"Section-navigation sketches", span:12},
               {src:"images/craft/clover-care-visit_07.webp", title:"Responsive workflow exploration", span:6, fit:"contain"},
@@ -5679,6 +5702,13 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           return;
         }
         if(window.posthog) posthog.capture("case_study_opened", {story:key, company:story.company});
+        // From the homepage a case study crosses the world boundary, so it gets the same world reveal as a
+        // band or world card (Chris 2026-09-25). Inside a world it stays the plain planet-to-region change.
+        if(card.closest(".recent-work") && !document.body.getAttribute("data-world") && window.__openWorldClip && isWorldEntry(story.company)){
+          var sr = card.getBoundingClientRect();
+          window.__openWorldClip(story.company, {x:(e && e.clientX) || Math.round(sr.left + sr.width/2), y:(e && e.clientY) || Math.round(sr.top + sr.height/2)}, {trigger:card, story:key});
+          return;
+        }
         openWorkStory(key, {trigger:card});
       });
       return card;
@@ -6721,11 +6751,11 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       workPanel.hidden = false;
     }
 
-    function renderStoryPanel(storyKey){
+    function renderStoryPanel(storyKey, fromHome){
       clearWorldHero();
       var story = workStories[storyKey];
       var company = workProjects[story.company];
-      workPanelBack.textContent = "← " + company.name + " work";
+      workPanelBack.textContent = fromHome ? "← All work" : "← " + company.name + " work"; // back goes where it says
       workPanel.classList.remove("is-company-view");
       workPanel.classList.add("is-story-view");
       renderWorkCompanyIdentity(company);
@@ -6780,8 +6810,17 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       }, "", url);
     }
 
-    function writeFocusedStoryHistory(storyKey){
+    function writeFocusedStoryHistory(storyKey, fromHome){
       var story = workStories[storyKey];
+      if(fromHome){                                           // homepage -> case study: keep the homepage entry, so
+        var homeUrl = new URL(location.href);                 // back returns home through the world close (Chris B, 2026-09-25)
+        homeUrl.searchParams.set("work", story.company);
+        homeUrl.searchParams.set("project", story.slug);
+        homeUrl.hash = "work";
+        history.pushState({ portfolioWork: story.company, portfolioProject: storyKey, portfolioFromHome: true,
+          portfolioWorkSource: "company", portfolioOverviewScrollY: workOverviewScrollY }, "", homeUrl);
+        return;
+      }
       var companyState = Object.assign({}, history.state || {}, {
         portfolioWork: story.company,
         portfolioWorkSource: "company",
@@ -7004,8 +7043,12 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-exit
       if(!interrupting){
         workOverviewScrollY = window.scrollY;               // remember homepage scroll
-        if(opts.history !== false) writeFocusedWorkHistory(project, "company"); // push ?work= so browser back closes the world
-        groupWork(project, { source:"company", scroll:false, history:false, animate:false, trigger:opts.trigger }); // build the focus state
+        if(opts.story){                                      // straight into a case study (homepage Recent work)
+          openWorkStory(opts.story, { history:opts.history, animate:false, scroll:false, trigger:opts.trigger, fromHome:true });
+        }else{
+          if(opts.history !== false) writeFocusedWorkHistory(project, "company"); // push ?work= so browser back closes the world
+          groupWork(project, { source:"company", scroll:false, history:false, animate:false, trigger:opts.trigger }); // build the focus state
+        }
         document.body.classList.add("world-entering");       // homepage stays visible; layer becomes an overlay
         workShell.classList.remove("is-focused");            // keep the shell in normal flow so the homepage-behind
                                                              // stays exactly where it was (no downward jump). #world-layer
@@ -7064,7 +7107,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       var storyHero = null;
       if(!selectedWorkStory) companyWorkScrollTop[story.company] = workShell.scrollTop;
       selectedWorkSource = "company";
-      if(options.history !== false) writeFocusedStoryHistory(storyKey);
+      if(options.history !== false) writeFocusedStoryHistory(storyKey, options.fromHome);
       if(sourceMedia) sourceMedia.style.viewTransitionName = "selected-project-visual";
       var change = function(){
         clearProjectGallery();
@@ -7075,7 +7118,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         workShell.classList.add("is-story-focused");
         setWorkFocusEnvironment(true);
         document.body.setAttribute("data-world", story.company); // a story lives inside its company's world: inherit the world theme (see CSS)
-        renderStoryPanel(storyKey);
+        renderStoryPanel(storyKey, options.fromHome);
         storyHero = mountProjectStory(storyKey);
         if(storyHero) storyHero.style.viewTransitionName = "selected-project-visual";
         selectedWorkProject = story.company;
@@ -7297,7 +7340,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       var story = storyFromWorkURL();
       var project = projectFromWorkURL();
       var inWorld = document.body.getAttribute("data-world");
-      if(story){
+      if(story && event.state && event.state.portfolioFromHome && !inWorld && isWorldEntry(workStories[story].company)){
+        window.__openWorldClip(workStories[story].company, {x:innerWidth/2, y:innerHeight*0.42}, {history:false, story:story});
+      }else if(story){
         openWorkStory(story, {history:false, animate:true});
       }else if(project){
         // In the world already (backing out of a case study) → planet↔region, plain transition.

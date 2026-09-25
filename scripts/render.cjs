@@ -86,7 +86,9 @@ function nameFor(p, w) {
   }
 
   const { chromium } = loadPlaywright();
-  const browser = await chromium.launch({ channel: "chrome" });
+  // Keep real scrollbars (Playwright hides them by default): Chris runs always-visible scrollbars, and a
+  // scrollbar-width layout shift is invisible to a capture without them (2026-09-25).
+  const browser = await chromium.launch({ channel: "chrome", ignoreDefaultArgs: ["--hide-scrollbars"] });
   fs.mkdirSync(out, { recursive: true });
   let overflow = 0;
   for (const p of paths) {
@@ -128,9 +130,18 @@ function nameFor(p, w) {
       if (m.inner) await page.setViewportSize({ width: w, height: Math.min(m.height + 200, 30000) });
       await page.waitForTimeout(m.inner ? 600 : 0);
       const file = path.join(out, nameFor(p, w));
-      await page.screenshot({ path: file, fullPage: !m.inner });
+      // Chrome repeats tiles past ~16k device pixels, which fakes a duplicated page. Split tall captures.
+      const CHUNK = 7000;   // CSS px; x dpr 2 stays under the limit
+      if (!m.inner && m.height > CHUNK) {
+        for (let y = 0, n = 1; y < m.height; y += CHUNK, n++) {
+          await page.screenshot({ path: file.replace(/\.png$/, `-part${n}.png`), fullPage: true,
+            clip: { x: 0, y, width: w, height: Math.min(CHUNK, m.height - y) } });
+        }
+      } else {
+        await page.screenshot({ path: file, fullPage: !m.inner });
+      }
       if (m.overflowX) overflow++;
-      console.log(`${m.overflowX ? "OVERFLOW" : "ok      "}  ${w}px  h=${m.height}  ${p}  ->  ${file}`);
+      console.log(`${m.overflowX ? "OVERFLOW" : "ok      "}  ${w}px  h=${m.height}  ${p}  ->  ${!m.inner && m.height > CHUNK ? file.replace(/\.png$/, "-part*.png") : file}`);
       await page.close();
     }
   }
