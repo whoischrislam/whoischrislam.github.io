@@ -867,14 +867,13 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-project-card-result-kind{display:inline;margin:0;font:inherit;font-weight:600;letter-spacing:0;text-transform:none;white-space:normal;color:var(--text)}
 .work-project-card-result-kind::after{content:". "}
 .work-project-card-result-text{color:var(--world-accent-on-card,var(--accent))}
-/* hover language: glow follows the cursor (all pointers + keyboard focus); tilt and pan only with a fine pointer */
-.work-project-card-glow{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity var(--dur-quick) var(--ease-out);
-  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--world-accent,var(--accent)) 22%,transparent),transparent 60%)}
-.work-project-card:hover .work-project-card-glow,.work-project-card:focus-visible .work-project-card-glow{opacity:1}
-.work-project-card:hover,.work-project-card:focus-visible{border-color:var(--border-strong);box-shadow:0 18px 40px rgba(0,0,0,.12)}
+/* hover language (Chris 2026-09-25): a hover previews what the click does. The card image gets the SAME shared
+   data-grid hover as the world tiles (bound by the WebGL hover script); tilt + glow retired. Without WebGL the
+   tall-screenshot pan is the fallback. */
+.work-project-card:hover,.work-project-card:focus-visible{border-color:var(--border-strong)}
 @media (hover:hover) and (pointer:fine){
-  .work-project-card.is-tall .work-project-card-media img{transition:object-position 3.2s linear}
-  .work-project-card.is-tall:hover .work-project-card-media img{object-position:bottom center}
+  body:not(.has-webgl-hover) .work-project-card.is-tall .work-project-card-media img{transition:object-position 3.2s linear}
+  body:not(.has-webgl-hover) .work-project-card.is-tall:hover .work-project-card-media img{object-position:bottom center}
 }
 /* entrance: rise once as the grid scrolls in (hidden state is added by JS only, so no-JS shows everything) */
 .work-project-card.is-rise{opacity:0;transform:translateY(24px);transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out)}
@@ -1262,7 +1261,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .work-tile-label span{font-size:var(--t-xs);line-height:1.25;color:rgba(255,255,255,.82)}
 .work-tile:hover,.work-tile:focus-visible,.work-tile.is-related{border-color:var(--accent)}
 .work-tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.work-tile:hover img,.work-tile:focus-visible img{transform:scale(1.025)}
+.work-tile:hover img,.work-tile:focus-visible img{transform:scale(1.018)} /* one image zoom site-wide, same as .story-artifact (Chris 2026-09-25) */
 .work-grid.is-previewing .work-tile.is-muted{opacity:.18;filter:grayscale(1)}
 .work-grid.is-previewing .work-tile.is-related{transform:translateY(-2px)}
 .work-grid[data-locked="true"] .work-tile{cursor:zoom-in}
@@ -5952,24 +5951,16 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       sec.appendChild(dl); return sec;
     }
     // ONE hover + entrance for every project card (company pages and the homepage "Recent work").
-    // Glow follows the cursor; tilt only with a fine pointer; tall screenshots pan (CSS, fine pointer only);
-    // cards rise once as they scroll in. Reduced motion: none of it (CSS resets any leftover state).
+    // Hover = the shared data-grid hover (bound via window.__bindHoverFx; tall screenshots pan only as the
+    // no-WebGL fallback, CSS). Cards rise once as they scroll in. Reduced motion: none of it.
     function enhanceProjectCards(root){
       var still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var fine = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
       var cards = [].slice.call(root.querySelectorAll(".work-project-card"));
       cards.forEach(function(card, i){
         if(card.dataset.enhanced) return; card.dataset.enhanced = "1";
-        var glow = document.createElement("span"); glow.className = "work-project-card-glow"; glow.setAttribute("aria-hidden","true"); card.appendChild(glow);
         var img = card.querySelector(".work-project-card-media img");
         if(img){ var tall = function(){ if(img.naturalWidth && img.naturalHeight / img.naturalWidth > 0.8) card.classList.add("is-tall"); };
           if(img.complete) tall(); else img.addEventListener("load", tall, {once:true}); }
-        card.addEventListener("pointermove", function(e){
-          var r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-          card.style.setProperty("--mx", (x * 100) + "%"); card.style.setProperty("--my", (y * 100) + "%");
-          if(fine && !still) card.style.transform = "perspective(900px) rotateX(" + ((.5 - y) * 6) + "deg) rotateY(" + ((x - .5) * 6) + "deg) translateY(-4px)";
-        });
-        card.addEventListener("pointerleave", function(){ card.style.transform = ""; });
         if(!still && "IntersectionObserver" in window){
           card.classList.add("is-rise"); card.style.transitionDelay = (i % 4) * 110 + "ms";
           var io = new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){
@@ -5977,6 +5968,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           io.observe(card);
         }
       });
+      if(window.__bindHoverFx) window.__bindHoverFx(root);   // cards built after load (company pages); the hover script binds load-time cards itself
     }
     window.__enhanceProjectCards = enhanceProjectCards;
 
@@ -7501,8 +7493,9 @@ document.body.classList.add('fx-dissolve','skin-digital');
     var a=hx(acc), g=hx(bg); palCache[slug]=(a&&g)?{acc:a,bg:g}:null; return palCache[slug];
   }
 
-  function active(){ return document.body.classList.contains('fx-dissolve') && !reduce.matches
-    && !document.body.classList.contains('work-focus-open'); }
+  // Off while a company page is open (the world tiles sit under it) - except case-study cards, which live ON that page.
+  function active(t){ var c=t||cur; return document.body.classList.contains('fx-dissolve') && !reduce.matches
+    && (!document.body.classList.contains('work-focus-open') || !!(c&&c.crop)); }
   function compile(t,src){ var s=gl.createShader(t); gl.shaderSource(s,src); gl.compileShader(s); return s; }
 
   function init(){
@@ -7577,7 +7570,15 @@ document.body.classList.add('fx-dissolve','skin-digital');
   }
   // Texture per hovered target, cached: image cards upload their <img>; blueprint cards get a palette swatch
   // so the same data-grid can materialise over them. Keyed by image src (or blueprint slug).
-  function texKey(t){ return t.img ? (t.img.currentSrc||t.img.src) : ('bp:'+(t.slug||'')); }
+  function texKey(t){ return t.img ? (t.img.currentSrc||t.img.src)+(t.crop?'|crop':'') : ('bp:'+(t.slug||'')); }
+  // Project cards show their <img> object-fit:cover (top-aligned) in a 4:3 box, so the texture is pre-cropped to
+  // that box; otherwise the hover would stretch the whole screenshot. Other surfaces already match their image.
+  function src(t){ var im=t.img; if(!t.crop) return im;
+    var r=im.getBoundingClientRect(), W=1024, H=Math.max(1,Math.round(W*r.height/Math.max(1,r.width)));
+    var c=document.createElement('canvas'); c.width=W; c.height=H; var x=c.getContext('2d');
+    var pos=(getComputedStyle(im).objectPosition||'50% 50%').split(' '), py=parseFloat(pos[1]); py=isNaN(py)?0.5:py/100;
+    var sc=Math.max(W/im.naturalWidth,H/im.naturalHeight), w=im.naturalWidth*sc, h=im.naturalHeight*sc;
+    x.drawImage(im,(W-w)/2,(H-h)*py,w,h); return c; }
   function makeSwatch(pal){
     var c=document.createElement('canvas'); c.width=c.height=64; var x=c.getContext('2d');
     var bg=pal?pal.bg:[0.9,0.9,0.88], ac=pal?pal.acc:[0.4,0.44,0.5], I=function(v){return Math.round(v*255);};
@@ -7600,9 +7601,9 @@ document.body.classList.add('fx-dissolve','skin-digital');
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
     var im=t.img;
-    if(im && im.complete && im.naturalWidth>0){ upload(rec,im); }
+    if(im && im.complete && im.naturalWidth>0){ upload(rec,src(t)); }
     else { upload(rec,makeSwatch(getPalette(t.slug)));           // swatch placeholder until the image decodes
-      if(im){ im.addEventListener('load',function(){ if(!texMap[k]||!gl) return; upload(rec,im); if(running&&cur&&cur.rec===rec) gl.bindTexture(gl.TEXTURE_2D,rec.tex); },{once:true});
+      if(im){ im.addEventListener('load',function(){ if(!texMap[k]||!gl) return; upload(rec,src(t)); if(running&&cur&&cur.rec===rec) gl.bindTexture(gl.TEXTURE_2D,rec.tex); },{once:true});
         im.addEventListener('error',function(){ /* image 404/failed: keep the palette swatch as the graceful fallback */ },{once:true}); } }
     return rec;
   }
@@ -7644,7 +7645,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   function restoreImg(im){ if(!im) return; im.style.transition='none'; im.style.transform='none'; im.style.visibility='';
     requestAnimationFrame(function(){ im.style.transition=''; im.style.transform=''; }); }
   function start(t){
-    if(!active() || !init()) return;
+    if(!active(t) || !init()) return;
     if(cur && cur!==t && cur.img) restoreImg(cur.img);   // restore the card we're leaving (fast A->B sweeps coalesce mouseleave)
     cur=t; cur.rec=ensureTex(t);
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,cur.rec.tex);
@@ -7661,17 +7662,22 @@ document.body.classList.add('fx-dissolve','skin-digital');
   function bind(surface){
     if(!surface || surface.__hoverBound) return; surface.__hoverBound=true;
     if(getComputedStyle(surface).position==='static') surface.style.position='relative';
-    var host=surface.closest('[data-project]'), slug=host?host.getAttribute('data-project'):null;
-    var target={surface:surface, img:surface.querySelector('img'), slug:slug, rec:null};
+    var host=surface.closest('[data-project]'), card=surface.closest('.work-project-card');
+    var slug=host?host.getAttribute('data-project'):(card?card.dataset.workCompany:null);
+    var target={surface:surface, img:surface.querySelector('img'), slug:slug, rec:null, crop:!!card};
     // hx-busy = the band's halftone reveal is still running: no hover on a half-built image; the next mousemove after it ends starts it
-    surface.addEventListener('mouseenter', function(e){ if(active()&&!surface.classList.contains('hx-busy')){ start(target); setMouse(e); } });
-    surface.addEventListener('mousemove', function(e){ if(active()&&!surface.classList.contains('hx-busy')){ if(!running||cur!==target) start(target); setMouse(e); } });
+    surface.addEventListener('mouseenter', function(e){ if(active(target)&&!surface.classList.contains('hx-busy')){ start(target); setMouse(e); } });
+    surface.addEventListener('mousemove', function(e){ if(active(target)&&!surface.classList.contains('hx-busy')){ if(!running||cur!==target) start(target); setMouse(e); } });
     surface.addEventListener('mouseleave', stop);
     surface.addEventListener('click', stop, true);   // capture: GoodRx's own capture-phase stopPropagation() must not eat this teardown
   }
   // The GoodRx data-grid is now the BASELINE hover for every band hero + every more-work/experiment card.
   document.querySelectorAll('.co-band[data-hero] .band-frame').forEach(bind);
   document.querySelectorAll('.work-tile.wcard .wcard-thumb').forEach(bind);
+  // Case-study cards get the SAME hover (Chris 2026-09-25: a hover previews what the click does). Image cards only:
+  // cards whose media is a visual placeholder keep the placeholder's own pixel shove.
+  function bindCards(root){ (root||document).querySelectorAll('.work-project-card .work-project-card-media').forEach(function(m){ if(m.querySelector(':scope > img')) bind(m); }); }
+  bindCards(document); window.__bindHoverFx=bindCards;
   window.addEventListener('resize', function(){ if(running) size(); });
   window.addEventListener('scroll', function(){ if(running) size(); }, {passive:true});
 })();
