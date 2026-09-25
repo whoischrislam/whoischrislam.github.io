@@ -1,6 +1,12 @@
 [
  {
   "date": "2026-09-24",
+  "area": "Project pages",
+  "change": "HogWare, Zodiacus, and This site now use the same header as company pages and read like a case study: the \"What I did\" summary, one row of facts, the outcome, then credits. \"Role details\" is gone everywhere.",
+  "commit": ""
+ },
+ {
+  "date": "2026-09-24",
   "area": "Company pages",
   "change": "Took the fact band and \"Role details\" apart. The role and dates sit above the company name, the \"What I did\" summary introduces the projects, and credits (who worked on it, and who wrote the code) close the page. Case studies open with their summary and close with their own credits.",
   "commit": ""

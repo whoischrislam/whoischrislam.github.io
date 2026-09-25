@@ -893,20 +893,19 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .recent-work .work-project-card{--world-accent-on-card:var(--accent-strong)} /* outside a world the site green is 3.3:1 on the card; the strong green clears 4.5:1 in both themes */ /* a one-project company: the card gets two columns, not a lonely third */
 @media(max-width:760px){ .work-project-grid{grid-template-columns:1fr} }
 /* Company page fact band (Role / When / Owned / Outcome) and the folded role details */
-.work-fact-band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s-item,24px);margin:0 0 var(--s-group,64px);
+.work-fact-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s-item,24px);margin:var(--s-group,64px) 0 0;
   padding:var(--s-item,24px) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .work-fact-band dt{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
-.work-fact-band dd{margin:0;font:400 var(--t-xs)/1.5 var(--sans);color:var(--text)}
-@media(max-width:760px){ .work-fact-band{grid-template-columns:1fr 1fr} }
+.work-fact-band dd{margin:0;font:400 var(--t-base)/1.5 var(--sans);color:var(--text)}
+.work-outcome-statement{margin:var(--s-group,64px) 0 0}
+.work-outcome-statement-label{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
+.work-outcome-statement-value{margin:0;font:400 var(--t-xl)/1.25 var(--serif);color:var(--text)}
 .work-changelog{margin-top:var(--s-section,128px)}
 .work-changelog h4{font:400 var(--t-xxl)/1.12 var(--serif);margin:0 0 var(--s-item,24px)}
 .work-changelog .work-panel-facts{display:block!important;border-top:1px solid var(--border)}
 .work-changelog .work-panel-facts>div{display:block!important;padding:16px 0!important;border-bottom:1px solid var(--border)}
 .work-changelog dt{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
 .work-changelog dd{margin:0;font:400 var(--t-base)/1.55 var(--sans);color:var(--text);max-width:none}
-.work-role-details{margin-top:var(--s-section,128px);border-top:1px solid var(--border);padding-top:var(--s-item,24px)}
-.work-role-details summary{cursor:pointer;font:600 var(--t-xs)/1 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
-.work-role-details .work-panel-facts{margin-top:var(--s-item,24px)}
 .work-panel.is-company-view .work-panel-brief{display:none}
 /* the band introduces the projects directly (as approved): no second heading + intro between them */
 .work-fact-band + .work-story-section .work-story-section-head{display:none}
@@ -2968,7 +2967,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         summary: "As the first designer after the seed round, I focused on financial trust: replacing manual payouts, handling marketplace edge cases, and keeping weekly contact with Game Masters.",
         facts: [
           ["When I joined", "Post-seed · first designer"],
-          ["Cadence", "2–3 GM / DM interviews most weeks"],
           ["Owned", "Research · product definition · workflows · product design"],
           ["Boundary", "Design lead; engineering implemented production code"]
         ],
@@ -3621,8 +3619,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         facts: [
           ["Owned", "Audit · system design · visual and interaction rules"],
           ["Inventory", "16 colors · 12 type sizes · 11 component families"],
-          ["Engineering", "Matt implemented React · Storybook · Chromatic"],
-          ["Code boundary", "I wrote no production code at Pathstream"]
+          ["Engineering", "Matt implemented React · Storybook · Chromatic"]
         ],
         chapters: [
           {
@@ -3919,6 +3916,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         },
         facts: [
           ["Owned", "Research · product definition · end-to-end product design"],
+          ["Cadence", "2–3 GM / DM interviews most weeks"],
           ["Collaboration", "Founders · engineering · Game Masters"],
           ["Boundary", "I owned product design; engineering wrote production code"],
           ["Delivery", "Shipped marketplace system"]
@@ -5683,7 +5681,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         // "What I did" introduces the cards; the fact band's rows now live in the title band, the cards, and the credits.
         if(companyData.summary){ var intro = document.createElement("p"); intro.className = "work-story-intro"; intro.textContent = companyData.summary; workFocusContent.appendChild(intro); }
       } else {
+        // Pages without cards read like a case study: What I did, one facts row, the outcome, then the work.
+        if(companyData.summary){ var nintro = document.createElement("p"); nintro.className = "work-story-intro"; nintro.textContent = companyData.summary; workFocusContent.appendChild(nintro); }
         var band = buildFactBand(companyData); if(band) workFocusContent.appendChild(band);
+        var outcome = buildOutcomeStatement(companyData); if(outcome) workFocusContent.appendChild(outcome);
       }
       if(grid.children.length){
         var storySection = document.createElement("section");
@@ -5826,18 +5827,16 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
       // blank gap that reads as broken; hero + fact grid + actions still render above it.
       if(companyData.showChangelog) workFocusContent.appendChild(buildChangelog());
-      if(grid.children.length){ var credits = buildCredits(companyData.facts); if(credits) workFocusContent.appendChild(credits); }
-      else { var details = buildRoleDetails(companyData); if(details) workFocusContent.appendChild(details); }
+      var credits = buildCredits(companyData.facts); if(credits) workFocusContent.appendChild(credits);
       workFocusContent.hidden = !workFocusContent.children.length;
       return grid;
     }
 
-    // Company page = an index (Chris 2026-09-24): one compact band of facts under the title, then the projects.
-    // Labels and values come from the company record; nothing new is written here.
+    // Facts row for pages without cards (HogWare, Zodiacus): the record's facts minus what the header and credits
+    // already show. Labels and values come from the record; nothing new is written here.
+    var HEADER_FACT = /^(Role shape|When I joined|Mandate|Chapters|Stage)$/i;
     function buildFactBand(item){
-      var owned = (item.facts || []).find(function(f){ return /^owned$/i.test(f[0]); });
-      var cells = [["Role", item.role], ["When", item.dates], ["Status", item.status], ["Owned", owned && owned[1]], ["Outcome", item.result]]
-        .filter(function(c){ return c[1]; });
+      var cells = (item.facts || []).filter(function(f){ return !isCreditFact(f) && !HEADER_FACT.test(f[0]); });
       if(!cells.length) return null;
       var band = document.createElement("dl"); band.className = "work-fact-band";
       cells.forEach(function(c){
@@ -5845,6 +5844,14 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         dt.textContent = c[0]; dd.textContent = c[1]; cell.append(dt, dd); band.appendChild(cell);
       });
       return band;
+    }
+    // The outcome as a statement, the same voice as a case study's outcome.
+    function buildOutcomeStatement(item){
+      if(!item.result) return null;
+      var sec = document.createElement("div"); sec.className = "work-outcome-statement";
+      var l = document.createElement("p"); l.className = "work-outcome-statement-label"; l.textContent = item.resultLabel || "Outcome";
+      var v = document.createElement("p"); v.className = "work-outcome-statement-value"; v.textContent = item.result;
+      sec.append(l, v); return sec;
     }
     // "Recent changes": the living log of system decisions. One source (assets/ds/changelog.json) for this world and
     // the ?ds dashboard, so the two can't disagree.
@@ -5875,22 +5882,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       rows.forEach(function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
         dt.textContent=r[0]; dd.textContent=r[1]; row.append(dt,dd); dl.appendChild(row); });
       sec.appendChild(dl); return sec;
-    }
-    // A company page is an index when it has cards (case studies, or promoted vignettes for caseless companies).
-    function companyHasCards(key){
-      var d = workProjects[key] || {};
-      return hasCompanyStories(key) || (d.vignettes || []).length > 0;
-    }
-    // The full fact rows, folded below the work: kept only for pages without cards (HogWare, Zodiacus, This site).
-    function buildRoleDetails(item){
-      var rows = (item.summary ? [["What I did", item.summary]] : []).concat(item.facts || []);
-      if(!rows.length) return null;
-      var d = document.createElement("details"); d.className = "work-role-details";
-      var sm = document.createElement("summary"); sm.textContent = "Role details"; d.appendChild(sm);
-      var dl = document.createElement("dl"); dl.className = "work-panel-facts";
-      rows.forEach(function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
-        dt.textContent=r[0]; dd.textContent=r[1]; row.append(dt,dd); dl.appendChild(row); });
-      d.appendChild(dl); return d;
     }
     // ONE hover + entrance for every project card (company pages and the homepage "Recent work").
     // Glow follows the cursor; tilt only with a fine pointer; tall screenshots pan (CSS, fine pointer only);
@@ -6566,23 +6557,24 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       clearWorldHero();
       var item = workProjects[project]; var heading = workPanel.querySelector(".work-panel-heading");
       if(!item || !heading) return;
-      var isCompany = hasCompanyStories(project); // companies read "role @ Company"; standalone projects just "role"
       var hero = document.createElement("header"); hero.className = "world-hero";
-      var indexPage = companyHasCards(project);
-      // Pages with cards (B2): "Role · dates" above the title. Pages without cards keep "role @" and their fact band.
-      if(item.role){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=item.role + (indexPage ? (item.dates ? " · " + item.dates : "") : (isCompany ? " @" : "")); hero.appendChild(k); }
+      // One header everywhere (B2): "Role · dates" above the title.
+      var kickerText = [item.role, item.dates].filter(Boolean).join(" · ");
+      if(kickerText){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=kickerText; hero.appendChild(k); }
       var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
       // World lede = company context only (Chris 2026-09-23: "the one-liner below the company name gives context on
       // what the company does, then I talk about what I did"). The band line (role + impact) stays on the homepage;
       // inside the world, role lives in the kicker + Facts and the work in What I did, so repeating them was redundant.
       var merged = item.context || "";
       if(merged){ var p=document.createElement("p"); p.className="world-hero-lede"; p.textContent=merged; hero.appendChild(p); }
-      if(indexPage){
-        // One meta line: role shape, stage, and the company milestone, verbatim from the record.
+      {
+        // One meta line: role shape, stage or status, and the company milestone, verbatim from the record. A stage line
+        // already says where the product ended up, so the milestone only shows without one (PlaySesh said "remains live" twice).
         var mf = item.facts || [];
         var shape = mf.find(function(f){ return /^(Role shape|When I joined|Mandate|Chapters)$/i.test(f[0]); });
         var stage = mf.find(function(f){ return /^Stage$/i.test(f[0]); });
-        var parts = [shape && [null, shape[1]], stage && [null, stage[1]], item.companyOutcome && ["Company", item.companyOutcome]].filter(Boolean);
+        var parts = [shape && [null, shape[1]], stage && [null, stage[1]], !stage && item.status && [null, item.status],
+          !stage && item.companyOutcome && ["Company", item.companyOutcome]].filter(Boolean);
         if(parts.length){
           var meta = document.createElement("p"); meta.className = "world-hero-meta";
           parts.forEach(function(pt, i){
