@@ -2169,7 +2169,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
   <div class="co-groups">
     <div class="co-lane">
     <section class="co-band" data-project="y30" data-n="4" data-hero style="--band:var(--band-y30)">
-      <div class="co-head"><h3>y30</h3><p>Co-founder & product engineer. Voice AI for older adults. A warmer voice from a rewrite, not a model swap, and confirmed failures turned into tests.</p></div>
+      <div class="co-head"><h3>y30</h3><p>Co-founder & product design engineer. Voice AI for older adults. A warmer voice from a rewrite, not a model swap, and confirmed failures turned into tests.</p></div>
       <div class="band-frame">
         <button class="work-tile on" type="button" data-kind="work" data-project="y30" data-tile-id="y30-voice" data-shape="wide" data-span="3" data-provider="loom" data-video-id="eb44015201554d11ac841cd1700653ce" data-media-title="y30 reminiscence call" data-pin>
       <img src="images/work/y30-hero.png" width="2360" height="680" alt="y30 voice-AI system: transport adapters around one safety-gated agent" loading="eager" decoding="async">
@@ -2433,7 +2433,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         hero: "images/work/y30-hero.png",
         dates: "2026",
         role: "Co-Founder & Product Design Engineer",
-        context: "Co-founder through Jul 2026; advising since. y30 uses conversation and games to help older adults feel less alone. It gives family caregivers and care professionals longitudinal conversational signals to support care. It does not diagnose or detect medical conditions.",
+        context: "y30 uses conversation and games to help older adults feel less alone. It gives family caregivers and care professionals longitudinal conversational signals to support care. It does not diagnose or detect medical conditions.",
         meta: "2026 · Co-Founder & Product Design Engineer",
         summary: "I owned the product, design, and engineering. I built the voice experience, games, caregiver tools, and the testing system we used to improve them.",
         facts: [
@@ -3176,7 +3176,24 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             title: "Would grandma keep talking? At first, probably not.",
             copy: "The system talked too fast, cut people off, sometimes missed the emotional point, and could forget what someone had just shared. Testers called the voice robotic. My first assumption was that the model or voice provider was not good enough. Those failures did not all have one cause, so I needed a way to stop guessing.",
             media: [
-              {src:"images/work/y30-voice.png", title:"The deployed voice experience used for live conversation testing", span:12, fit:"contain"}
+              {
+                visual: "Four failures, no single cause",
+                status: "RECREATE",
+                note: "Diagram from the chapter copy; replaces the generic UI capture (2026-09-25).",
+                diagram: {
+                  type: "split",
+                  eyebrow: "What testers heard",
+                  columns: 2,
+                  items: [
+                    {label:"Talked too fast", tone:"muted"},
+                    {label:"Cut people off", tone:"muted"},
+                    {label:"Missed the emotional point", tone:"muted"},
+                    {label:"Forgot what was just shared", tone:"muted"}
+                  ],
+                  footer: "Testers called the voice robotic. The failures did not share one cause."
+                },
+                span: 12
+              }
             ]
           },
           {
@@ -3186,8 +3203,18 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             media: [
               {
                 visual: "Provider switchboard: independent STT, LLM, and TTS controls with availability, estimated latency, and estimated cost",
-                status: "CAPTURE",
-                note: "Capture the Settings controls and Admin Console pipeline table. Remove provider secrets, account details, and private session data.",
+                status: "RECREATE",
+                note: "Diagram from the chapter copy (2026-09-25). A real capture was dropped: the shipped UI is not design evidence.",
+                diagram: {
+                  type: "flow",
+                  eyebrow: "Provider switchboard",
+                  items: [
+                    {label:"Speech recognition", meta:"Swap on its own"},
+                    {label:"Language model", meta:"Swap on its own"},
+                    {label:"Speech generation", meta:"Swap on its own"}
+                  ],
+                  footer: "Hold two layers steady, change the third. Health, latency, and cost per minute in the admin tools."
+                },
                 span: 12
               }
             ]
@@ -3310,7 +3337,22 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             title: "Deterministic did not mean removing the model from everything.",
             copy: "The game needed an enforceable sequence. Open conversation did not. I kept conversation model-led while deterministic routing handled required actions and safety-critical exits. Routine states could resolve without another model judgment, leaving generation for warmth, phrasing, and genuinely ambiguous moments.",
             media: [
-              {src:"images/work/y30-voice.png", title:"A live reminiscence conversation through the voice agent", span:12, fit:"contain"}
+              {
+                visual: "Routine states resolve in code",
+                status: "RECREATE",
+                note: "Diagram from the chapter copy; replaces the generic UI capture (2026-09-25).",
+                diagram: {
+                  type: "flow",
+                  eyebrow: "Where generation is spent",
+                  items: [
+                    {label:"Player speaks"},
+                    {label:"Deterministic routing", meta:"Routine states and required actions"},
+                    {label:"Model", meta:"Warmth, phrasing, genuinely ambiguous moments", tone:"accent"}
+                  ],
+                  footer: "The game needed an enforceable sequence. Open conversation did not."
+                },
+                span: 12
+              }
             ]
           },
           {
@@ -3348,7 +3390,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         cardTitle: "Turn failures into regression tests",
         meta: "Safety architecture · Human and automated QA",
         delivery: "Deployed internal build",
-        summary: "I built a quality system around manual scripts, automated and adversarial tests, a human reviewer queue, and smoke tests against the deployed build. Confirmed failures became regression tests.",
+        summary: "The voice AI hallucinated and wasn't consistent. We let a geriatric physician, a care-facility owner, and a senior get their hands on it. I realized we needed a quality loop to fix the growing whack-a-mole of edge cases.",
         result: "A missed heart-attack test became an always-on medical route; silent live failures led to deployed smoke tests",
         cardMedia: [
           "images/work/y30-system.png",
@@ -3394,8 +3436,18 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             media: [
               {
                 visual: "Reviewer queue with per-response ratings, structured notes, and approval state",
-                status: "CAPTURE",
-                note: "Capture the reviewer workspace from the y30 repository with every person, transcript, and identifier anonymized.",
+                status: "RECREATE",
+                note: "Diagram from the chapter copy (2026-09-25). A real capture was dropped: the shipped UI is not design evidence.",
+                diagram: {
+                  type: "split",
+                  eyebrow: "Where manual findings lived",
+                  columns: 2,
+                  items: [
+                    {label:"Before", meta:"Screenshots and Slack", tone:"muted"},
+                    {label:"Reviewer queue", meta:"Per-response ratings · structured notes · my approval", tone:"accent"}
+                  ],
+                  footer: "Raw annotations never promote themselves. Confirmed failures do."
+                },
                 span: 12
               }
             ]
@@ -3428,7 +3480,21 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             title: "The post-session evaluator caught what the real-time product missed.",
             copy: "A later test described a heart attack while choosing a game decade. The real-time classifier called it benign; the post-session evaluator flagged it urgent. The classifier had no medical category. I moved acute medical language into an always-on deterministic route with its own 911 or staff response, separate from the mental-health crisis path and independent of a feature flag.",
             media: [
-              {src:"images/work/y30-signals.png", title:"Conversation signals prepared for human review", span:12, fit:"contain"}
+              {
+                visual: "A missed heart attack got its own route",
+                status: "RECREATE",
+                note: "Diagram from the chapter copy; replaces the generic UI capture (2026-09-25).",
+                diagram: {
+                  type: "flow",
+                  eyebrow: "One missed test, one new floor",
+                  items: [
+                    {label:"Real-time classifier", meta:"Called it benign · no medical category", tone:"muted"},
+                    {label:"Post-session evaluator", meta:"Flagged it urgent"},
+                    {label:"Always-on medical route", meta:"Deterministic · 911 or staff response · no feature flag", tone:"accent"}
+                  ]
+                },
+                span: 12
+              }
             ]
           },
           {
