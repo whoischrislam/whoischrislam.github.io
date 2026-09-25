@@ -25,6 +25,9 @@
     api_host: "https://us.i.posthog.com",
     defaults: "2026-01-30",
     autocapture: false,
+    // Explicit: $pageleave carries scroll depth ($prev_pageview_max_scroll_percentage). None arrived 2026-06-29 to
+    // 2026-09-25, so "how far do visitors read" had to be proxied from engaged_view (2026-09-25).
+    capture_pageleave: true,
     disable_session_recording: false,
     // Never record canvases. Replay serialises each canvas as an image (100-200ms per canvas at Retina scale);
     // with the homepage band reveal that measured a 1.35s main-thread freeze. The canvases are decorative, so
