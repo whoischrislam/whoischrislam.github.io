@@ -915,10 +915,28 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .world-hero-meta{margin:var(--s-item,24px) 0 0;font:600 var(--t-xs)/1.4 var(--sans);letter-spacing:.02em;color:var(--world-ink)}
 .world-hero-meta-label{color:var(--world-ink-soft);margin-right:6px}
 .world-hero-meta-sep{margin:0 10px;color:var(--world-ink-soft)}
+/* The title band sits flush under the back bar on every page (Chris 2026-09-24: the dark strip read as a gap) */
+body[data-world] .work-panel-navline{margin-bottom:0}
+body[data-world] .work-panel.is-story-view .work-panel-heading{margin-top:0!important}
 .work-panel.is-company-view{border-bottom:0!important} /* its divider sat flush on the old fact band; alone it is a stray line */
 .work-story-intro{margin:var(--s-group,64px) 0 0;font:400 var(--t-md)/1.5 var(--serif);color:var(--text)}
-.work-story-intro + .work-story-section .work-story-section-head{display:none}
-.work-story-intro + .work-story-section{margin-top:var(--s-group,64px)!important;padding-top:0!important;border-top:0!important}
+/* Rhythm (Chris 2026-09-24, C3 + S1): 64 between blocks, 24 inside a group, no stacked margins. */
+#work-panel.is-company-view,#work-panel.is-story-view{padding-bottom:0!important}
+#work-focus-content > .work-story-section:first-child{margin-top:0!important;padding-top:0!important;border-top:0!important}
+#work-focus-content > .work-story-section:first-child .work-story-section-head h4{margin-top:var(--s-group,64px)!important}
+.work-story-section-head .work-story-intro{margin:var(--s-item,24px) 0 0!important;font:400 var(--t-md)/1.5 var(--serif);color:var(--text)}
+#work-focus-content > .work-story-section:first-child{row-gap:var(--s-item,24px)!important}
+#work-focus-content > .work-changelog:first-child{margin-top:var(--s-group,64px)}
+.work-links{margin:var(--s-item,24px) 0 0;font:600 var(--t-sm)/1.4 var(--sans);color:var(--world-ink,var(--text))}
+.work-links a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;
+  transition:text-decoration-thickness var(--dur-quick) var(--ease-out)}
+.work-links a:hover,.work-links a:focus-visible{text-decoration-thickness:2px}
+.work-links a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.work-panel-heading .work-links{grid-column:1/-1}
+.work-links-sep{margin:0 12px;color:var(--world-ink-soft,var(--muted))}
+.work-panel.is-story-view .work-panel-heading{margin-bottom:var(--s-group,64px)!important}
+.work-panel.is-story-view .project-story-opening{margin-top:0!important;margin-bottom:0!important}
+.project-story-nav{margin-top:var(--s-group,64px)}
 .work-credits{margin-top:var(--s-section,128px);padding-top:var(--s-item,24px);border-top:1px solid var(--border)}
 .work-credits-title{margin:0 0 var(--s-item,24px)!important;font:600 var(--t-xs)/1.3 var(--sans)!important;font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
 .work-credits dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s-item,24px) var(--s-group,64px);margin:0}
@@ -2051,7 +2069,8 @@ section.project-chapter{padding-top:0 !important;row-gap:0 !important}
 .project-chapter-media{row-gap:var(--s-item) !important}
 .project-chapter-media .story-artifact{margin-bottom:0 !important}
 
-section.project-chapter + section.project-chapter,.work-panel-brief + section.project-chapter,aside.work-panel + * section.project-chapter:first-of-type{margin-top:var(--s-section) !important}
+section.project-chapter + section.project-chapter,.work-panel-brief + section.project-chapter{margin-top:var(--s-section) !important}
+aside.work-panel + * section.project-chapter:first-of-type{margin-top:var(--s-group) !important;padding-top:0 !important} /* S1: 64 below the jump nav */
 .project-chapter h4{margin-top:var(--s-in) !important}
 .project-chapter-step{margin:0 !important}
 section.work-company-support{row-gap:0 !important}
@@ -2591,7 +2610,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           ["Verification", "Adversarial review · playtesting · headless game suite"]
         ],
         result: "Five microgames; one boss; instrumented in PostHog: 80 players, 948 microgames cleared",
-        actions: [["hogware.html", "Play it"], ["https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md", "Read the build log"]]
+        actions: [["hogware.html", "Play it"], ["https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md", "Read the build log", true]]
       },
       voice_noir: {
         name: "Voice Noir",
@@ -5677,10 +5696,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         grid.appendChild(pcard);
       });
       enhanceProjectCards(grid);
-      if(grid.children.length){
-        // "What I did" introduces the cards; the fact band's rows now live in the title band, the cards, and the credits.
-        if(companyData.summary){ var intro = document.createElement("p"); intro.className = "work-story-intro"; intro.textContent = companyData.summary; workFocusContent.appendChild(intro); }
-      } else {
+      if(!grid.children.length){
         // Pages without cards read like a case study: What I did, one facts row, the outcome, then the work.
         if(companyData.summary){ var nintro = document.createElement("p"); nintro.className = "work-story-intro"; nintro.textContent = companyData.summary; workFocusContent.appendChild(nintro); }
         var band = buildFactBand(companyData); if(band) workFocusContent.appendChild(band);
@@ -5695,8 +5711,11 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         storySectionHead.className = "work-story-section-head";
         var storySectionTitle = document.createElement("h4");
         storySectionTitle.textContent = companyData.storySectionTitle || "Selected projects";
+        // C3 (Chris 2026-09-24): the cards get a serif section heading like every other section on the page, and
+        // "What I did" is its intro. The fact band's rows live in the title band, the cards, and the credits.
         var storySectionIntro = document.createElement("p");
-        storySectionIntro.textContent = companyData.storySectionIntro ||
+        storySectionIntro.className = "work-story-intro";
+        storySectionIntro.textContent = companyData.summary || companyData.storySectionIntro ||
           "The strongest examples of the problems I owned, the decisions I made, and what reached users.";
         storySectionHead.append(storySectionTitle, storySectionIntro);
         storySection.append(storySectionHead, grid);
@@ -5872,6 +5891,19 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     var CREDIT_FACT = /^(Team|Partners|Collaborat\w*|Code( boundary)?|Engineering)$/i;
     function isCreditFact(f){
       return CREDIT_FACT.test(f[0]) || (/^Boundary$/i.test(f[0]) && /code|engineer|design|helped/i.test(f[1] || ""));
+    }
+    // Links to live work (L2): one quiet line in the title band. ↗ marks a link that leaves the site.
+    function buildLinkLine(actions){
+      if(!actions || !actions.length) return null;
+      var p = document.createElement("p"); p.className = "work-links";
+      actions.forEach(function(action, i){
+        if(i){ var sep = document.createElement("span"); sep.className = "work-links-sep"; sep.setAttribute("aria-hidden", "true"); sep.textContent = "·"; p.appendChild(sep); }
+        var a = document.createElement("a"); a.href = action[0];
+        a.textContent = action[1] + (action[2] ? " ↗" : " →");
+        if(action[2]){ a.target = "_blank"; a.rel = "noopener"; a.setAttribute("aria-label", action[1] + " (opens in a new tab)"); }
+        p.appendChild(a);
+      });
+      return p;
     }
     function buildCredits(facts){
       var rows = (facts || []).filter(isCreditFact);
@@ -6585,6 +6617,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           hero.appendChild(meta);
         }
       }
+      var heroLinks = buildLinkLine(item.actions); if(heroLinks) hero.appendChild(heroLinks);
       var m=document.createElement("div"); m.className="world-hero-media";
       if(item.hero){
         // eager, not lazy: this hero is above the fold in the world; lazy leaves it blank during/after
@@ -6627,21 +6660,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ? (item.resultLabel || (hasCompanyStories(project) ? "Company impact" : "Outcome"))
         : "Outcome";
       workPanelResult.textContent = item.result;
-      workPanelActions.replaceChildren();
-      // Actions render in both views: a project-world (e.g. HogWare) surfaces its Play it / build-log
-      // buttons; companies that carry no actions simply render none.
-      (item.actions || []).forEach(function(action, index){
-        var link = document.createElement("a");
-        link.href = action[0];
-        link.textContent = action[1] + " →";
-        link.className = index === 0 ? "btn primary" : "btn";
-        if(action[2]){
-          link.target = "_blank";
-          link.rel = "noopener";
-        }
-        workPanelActions.appendChild(link);
-      });
-      workPanelActions.hidden = !workPanelActions.children.length;
+      // Links to live work render in the title band (L2, Chris 2026-09-24), built by applyWorldHero.
+      workPanelActions.replaceChildren(); workPanelActions.hidden = true;
       if(companyView) applyWorldHero(project); else clearWorldHero();
       workPanel.hidden = false;
     }
@@ -6669,16 +6689,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       workPanelResultLabel.textContent = "Outcome";
       var storyStatus = publicDelivery(story.delivery);
       workPanelResult.textContent = (storyStatus ? storyStatus + ". " : "") + story.result;
-      workPanelActions.replaceChildren();
-      (story.actions || []).forEach(function(action, index){
-        var link = document.createElement("a");
-        link.href = action[0];
-        link.textContent = action[1] + " →";
-        link.className = index === 0 ? "btn primary" : "btn";
-        if(action[2]){ link.target = "_blank"; link.rel = "noopener"; }
-        workPanelActions.appendChild(link);
-      });
-      workPanelActions.hidden = !workPanelActions.children.length;
+      workPanelActions.replaceChildren(); workPanelActions.hidden = true;
+      var oldLinks = workPanel.querySelector(".work-panel-heading .work-links"); if(oldLinks) oldLinks.remove();
+      var storyLinks = buildLinkLine(story.actions); if(storyLinks) workPanelLede.after(storyLinks);
       workPanel.hidden = false;
     }
 

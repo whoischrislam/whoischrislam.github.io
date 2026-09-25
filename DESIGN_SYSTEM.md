@@ -38,13 +38,18 @@ Intro settles under 5s (WCAG 2.2.2). The older site motion (22 durations, 13 eas
 
 **Company page = an index; one project card (Chris 2026-09-24).** One header on every page: role line, title, one-liner,
 meta line. A page with cards: "Role · dates" above the title, the company context as the one-liner, one meta line (role
-shape, stage, "Company" milestone), then "What I did" as a serif intro to the cards, and **Credits** (people and code
-boundaries, verbatim) at the end. No fact band, no Role details: the cards carry the outcomes. A case study: its summary
+shape, stage, "Company" milestone), then the cards' serif section heading ("Selected projects" or the record's own title)
+with "What I did" as its intro, and **Credits** (people and code boundaries, verbatim) at the end. No fact band, no Role details: the cards carry the outcomes. A case study: its summary
 is the title band's one-liner, its facts read as one row, and its own Credits close the page. Company credits = the whole
 role; case-study credits = that project. Pages without cards (HogWare, Zodiacus, This site) read like a case study:
 "What I did", one facts row, the outcome as a serif statement, then the work and credits. Role details is retired.
 A "Boundary" fact is a credit only when it says who built what; delivery boundaries stay in the facts. The meta line
 shows the company milestone only when there is no stage line (a stage already says where the product ended up).
+**Links to live work (L2).** One quiet underlined line in the title band, never buttons below it. ↗ marks a link that
+leaves the site (new tab, announced to screen readers); → stays on the site.
+**Page rhythm (Chris 2026-09-24, C3 + S1).** The title band sits flush under the back bar. Then 64 between blocks and 24
+inside a group, never stacked margins: band, 64, section heading, 24, intro, 24, cards. Header buttons sit 24 below the
+band. Case study: band, 64, hero, 64, facts row, 24, outcome, 64, jump nav, 64, first chapter; 128 between chapters.
 One card component (`.work-project-card`, date-led, stacked) and one hover language (glow; tilt + tall-image pan on
 fine pointers only), set in `enhanceProjectCards`; cards rise once on scroll. Motion tokens: `--dur-instant/quick/base/slow`
 (100/200/400/700ms), `--ease-out/in/expressive`. Reduced motion: no rise, tilt, or pan.

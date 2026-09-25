@@ -1,6 +1,18 @@
 [
  {
   "date": "2026-09-24",
+  "area": "Links",
+  "change": "Links to live work (play it, see it live, the source, press) moved from buttons under the colored band into one quiet line inside it. An arrow pointing up and out means the link leaves the site.",
+  "commit": ""
+ },
+ {
+  "date": "2026-09-24",
+  "area": "Spacing",
+  "change": "The colored title band now sits right under the back bar. Company and case study pages use one rhythm: a larger gap between blocks, a smaller one inside a group, no doubled-up gaps. The project cards got their section heading back.",
+  "commit": ""
+ },
+ {
+  "date": "2026-09-24",
   "area": "Project pages",
   "change": "HogWare, Zodiacus, and This site now use the same header as company pages and read like a case study: the \"What I did\" summary, one row of facts, the outcome, then credits. \"Role details\" is gone everywhere.",
   "commit": ""

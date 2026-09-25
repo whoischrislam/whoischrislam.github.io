@@ -16,6 +16,7 @@
     {id:'world-hero',label:'Title band (world layer, tame)',sel:'.world-hero',src:'company',grp:'Templated'},
     {id:'work-fact-band',label:'Facts row (pages without cards)',sel:'.work-fact-band',src:'nocards',grp:'Templated'},
     {id:'work-outcome-statement',label:'Outcome statement (pages without cards)',sel:'.work-outcome-statement',src:'nocards',grp:'Templated'},
+    {id:'work-links',label:'Links to live work (title band; ↗ leaves the site)',sel:'.work-links',src:'company',grp:'Templated'},
     {id:'work-credits',label:'Credits (people and code boundaries, end of page)',sel:'.work-credits',src:'company',grp:'Templated'},
     {id:'work-changelog',label:'Recent changes (living log, from changelog.json)',sel:'.work-changelog',src:'thissite',grp:'Templated'},
     {id:'work-panel-facts',label:'Fact grid / spec panel',sel:'.work-panel-facts',src:'company',grp:'Templated',wrap:'work-panel is-company-view',wrapId:'work-panel'},
