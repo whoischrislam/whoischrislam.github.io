@@ -87,7 +87,7 @@ question-led headings over slogans, metaphors, or abstract systems language.
 
 **Measure before proposing a layout, length, or density fix.** Every intuition about this page was wrong on 2026-08-13: widening the column looked like it would shorten the page (it saves 2% and pushes the lede to 124 characters per line), the AI section looked like the density problem (it is 2% of the page; 17 work cards are 78%). Render the page in headless Chrome, measure section heights, characters per line, and page total, then decide.
 
-**Verify by rendering the real page, not a harness.** An isolated test page showed mobile overflow that did not exist in `index.html`; the harness was broken, not the site. When a test disagrees with expectation, suspect the test first. Print CSS in particular cannot be trusted by reading — this page prints only `#va-dock` by design, which silently made two print rules dead code.
+**Verify by rendering the real page, not a harness.** An isolated test page showed mobile overflow that did not exist in `index.html`; the harness was broken, not the site. When a test disagrees with expectation, suspect the test first. The command is `node scripts/render.cjs` (`--sweep` for home, every world, and every story at 1440 and 390); read the pngs it writes. Print CSS in particular cannot be trusted by reading — this page prints only `#va-dock` by design, which silently made two print rules dead code.
 
 ## Architecture restraint and decision rights
 
