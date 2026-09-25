@@ -909,6 +909,16 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 @media(max-width:760px){
   .recent-work .work-project-grid{grid-template-columns:1fr;grid-auto-flow:row;overflow:visible;margin-right:0;padding:0;gap:var(--s-group,40px)}
 }
+/* COMPANY PAGES on tablet (Chris 2026-09-25, "sideways scroll"): three case-study cards squeezed to 21-28 characters
+   per line at 761-1100px, so the phone's sideways scroll extends up to 1100px for three-card grids. Pages with one or
+   two cards already fit. */
+@media(min-width:761px) and (max-width:1100px){
+  #work-focus-content .work-project-grid:has(>.work-project-card:nth-child(3)){grid-template-columns:none;grid-auto-flow:column;
+    grid-auto-columns:calc(78% - 12px);gap:16px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+    scrollbar-width:none;margin-right:-24px;padding-right:24px}
+  #work-focus-content .work-project-grid:has(>.work-project-card:nth-child(3))::-webkit-scrollbar{display:none}
+  #work-focus-content .work-project-grid:has(>.work-project-card:nth-child(3))>.work-project-card{scroll-snap-align:start}
+}
 /* Company page fact band (Role / When / Owned / Outcome) and the folded role details */
 .work-fact-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s-item,24px);margin:var(--s-group,64px) 0 0;
   padding:var(--s-item,24px) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
