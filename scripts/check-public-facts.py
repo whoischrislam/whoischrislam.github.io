@@ -51,6 +51,15 @@ PLAYSESH_REQUIRED = [
 ]
 
 
+def normalize_dashes(text: str) -> str:
+    # "7–8x" (en dash) slipped past a "7-8x" needle on 2026-09-24. Fold every dash
+    # form, character and HTML entity, to a hyphen before matching banned phrases.
+    for form in ("\u2010", "\u2011", "\u2012", "\u2013", "\u2014", "\u2212",
+                 "&ndash;", "&mdash;", "&#8211;", "&#8212;", "&minus;"):
+        text = text.replace(form, "-")
+    return text
+
+
 def pdf_text(path: pathlib.Path) -> str:
     executable = shutil.which("pdftotext")
     if not executable:
@@ -95,7 +104,7 @@ def main() -> int:
             failures.append(str(error))
 
     for name, content in surfaces.items():
-        lowered = content.lower()
+        lowered = normalize_dashes(content.lower())
         for needle, reason in BANNED.items():
             if needle.lower() in lowered:
                 failures.append(f'{name}: banned phrase "{needle}" — {reason}')
@@ -122,7 +131,7 @@ def main() -> int:
         for path in sorted(apps.rglob("*")):
             if path.suffix.lower() not in APPLICATION_SUFFIXES or not path.is_file():
                 continue
-            lowered = path.read_text(encoding="utf-8", errors="replace").lower()
+            lowered = normalize_dashes(path.read_text(encoding="utf-8", errors="replace").lower())
             for needle, reason in BANNED.items():
                 if needle.lower() in lowered:
                     warnings.append(f'{path.relative_to(ROOT)}: banned phrase "{needle}" — {reason}')

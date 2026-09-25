@@ -52,3 +52,6 @@ images/_staging/
 
 # Superset design-feedback attachments (local tool state)
 .superset/
+
+# Python bytecode cache (scripts/ checkers)
+__pycache__/
