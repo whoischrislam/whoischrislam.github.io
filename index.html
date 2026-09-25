@@ -2615,6 +2615,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           ["Verification", "Adversarial review · playtesting · headless game suite"]
         ],
         result: "Five microgames; one boss; instrumented in PostHog: 80 players, 948 microgames cleared",
+        delivery: "Finished + playable",                // status label on its card (Chris 2026-09-25)
+        cardMedia: ["images/work/hogware-game.png"],   // its "Recent work" card (a world card: opens the HogWare world)
         actions: [["hogware.html", "Play it"], ["https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md", "Read the build log", true]]
       },
       voice_noir: {
@@ -5593,7 +5595,11 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
 
     // ONE project card (Chris 2026-09-24): used by company pages and the homepage "Recent work".
     function createProjectCard(key){
-      var story = workStories[key]; var companyData = workProjects[story.company] || {};
+      // A key is a case study, or a company with no case study (a "world card": same card, opens the world).
+      var worldCard = !workStories[key] && !!workProjects[key];
+      var story = worldCard ? {company:key, name:workProjects[key].name, summary:workProjects[key].context,
+        result:workProjects[key].result, delivery:workProjects[key].delivery, cardMedia:workProjects[key].cardMedia} : workStories[key];
+      var companyData = workProjects[story.company] || {};
       if(story.hero){
         var heroPreload = new Image();
         heroPreload.src = story.hero;
@@ -5637,7 +5643,13 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       copy.append(heading, summary);
       if(story.result || story.resultKind || story.delivery) copy.appendChild(createCardResult(story.resultKind, story.delivery, story.result));
       card.append(media, copy);
-      card.addEventListener("click", function(){
+      card.addEventListener("click", function(e){
+        if(worldCard){
+          if(window.posthog) posthog.capture("work_company_opened", {company:key, kind:"recent"});
+          var r = card.getBoundingClientRect(), o = {x:(e && e.clientX) || Math.round(r.left + r.width/2), y:(e && e.clientY) || Math.round(r.top + r.height/2)};
+          if(window.__openWorldClip) window.__openWorldClip(key, o, {trigger:card}); else groupWork(key, {trigger:card, source:"company"});
+          return;
+        }
         if(window.posthog) posthog.capture("case_study_opened", {story:key, company:story.company});
         openWorkStory(key, {trigger:card});
       });
@@ -5974,10 +5986,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
 
     // HOMEPAGE "Recent work" (Chris 2026-09-24): the front door of the site, straight to case studies (one click).
     // Data-driven: swap a key to change a slot; any story (later an essay or an experiment) can fill one.
-    var RECENT_WORK = ["y30_voice", "playsesh_whiteboard", "iodine_product"];
+    var RECENT_WORK = ["y30_safety", "playsesh_whiteboard", "hogware"];   // Chris 2026-09-25: recency + best; a key is a story or a caseless world
     (function mountRecentWork(){
       var hero = document.querySelector("header.hero"); if(!hero || document.getElementById("recent-work")) return;
-      var keys = RECENT_WORK.filter(function(k){ return workStories[k]; }); if(!keys.length) return;
+      var keys = RECENT_WORK.filter(function(k){ var ok = workStories[k] || workProjects[k]; if(!ok) console.warn("RECENT_WORK: unknown key", k); return ok; }); if(!keys.length) return;
       var section = document.createElement("section"); section.className = "recent-work"; section.setAttribute("aria-labelledby", "recent-work");
       var h = document.createElement("h2"); h.className = "sec"; h.id = "recent-work"; h.textContent = "Recent work";
       var grid = document.createElement("div"); grid.className = "work-project-grid";
