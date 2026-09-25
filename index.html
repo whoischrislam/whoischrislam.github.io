@@ -581,23 +581,30 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
   gap:14px;margin:20px 0 0;padding-top:16px;border-top:1px solid var(--border)}
 .hero-credibility .lbl{display:flex;align-items:center;flex:none;color:var(--text);
   font-size:var(--t-xs);font-weight:600;margin:0;white-space:nowrap}
-.hero-logo-row{display:flex;align-items:center;gap:14px 28px;list-style:none;margin:0;padding:0;
+/* Logo row: every wordmark's LETTERS span the same top line and baseline, 14px apart (Vicky Vo's guides, Chris picked
+   14px, 2026-09-25). Each logo carries where its letters sit inside its own SVG (--top, --base: fractions of the
+   image height, measured from the files); the image is sized so that band is exactly --letters tall and pulled up
+   by its top. Icons, the Amazon smile and GoodRx's plus hang outside the band. The 12px padding (cancelled by the
+   margin) gives that overhang room, because the row scrolls sideways and so clips vertically. Replacing a logo
+   means re-measuring its two fractions. */
+.hero-logo-row{--letters:14px;display:flex;align-items:flex-start;gap:14px 28px;list-style:none;margin:-12px 0;padding:12px 0;
   min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none}
 .hero-logo-row::-webkit-scrollbar{display:none}
-.hero-logo-row li{display:flex;flex:0 0 auto;align-items:center;height:var(--slot-h,var(--h))}
-.hero-logo-row .hero-logo-more{height:auto;color:var(--muted);font-size:var(--t-xs);white-space:nowrap}
-.hero-logo-row img{display:block;width:auto;height:100%;padding-top:var(--logo-pad-top,0);
+.hero-logo-row li{--top:0;--base:1;display:flex;flex:0 0 auto;align-items:flex-start;height:var(--letters)}
+.hero-logo-row .hero-logo-more{align-items:center;color:var(--muted);font-size:var(--t-xs);white-space:nowrap}
+.hero-logo-row img{display:block;width:auto;height:calc(var(--letters) / (var(--base) - var(--top)));
+  margin-top:calc(var(--letters) / (var(--base) - var(--top)) * var(--top) * -1);
   opacity:.78;filter:var(--logo-filter)}
 [data-theme="light"] .hero-logo-row img{filter:none}
 /* monochrome, muted, optically-balanced credibility rail (toggle: body.strip-mono) */
 body.strip-mono .hero-logo-row img{filter:brightness(0)!important;opacity:.48}
 :root[data-theme="dark"] body.strip-mono .hero-logo-row img{filter:brightness(0) invert(1)!important;opacity:.58}
 body.strip-mono .hero-company-logo:hover img,body.strip-mono .hero-company-logo:focus-visible img{opacity:.85}
-body.strip-mono .hero-logo-row li:has([data-work-company="amazon"]){--h:20px}
-body.strip-mono .hero-logo-row li:has([data-work-company="taskrabbit"]){--h:14px}
-body.strip-mono .hero-logo-row li:has([data-work-company="clover"]){--h:12px}
-body.strip-mono .hero-logo-row li:has([data-work-company="goodrx"]){--h:16px}
-body.strip-mono .hero-logo-row li:has([data-work-company="sharecare"]){--h:15px}
+.hero-logo-row li:has([data-work-company="amazon"]){--base:.517}
+.hero-logo-row li:has([data-work-company="taskrabbit"]){--base:.983}
+.hero-logo-row li:has([data-work-company="clover"]){--base:.988}
+.hero-logo-row li:has([data-work-company="goodrx"]){--top:.155;--base:.838}
+.hero-logo-row li:has([data-work-company="sharecare"]){--base:.988}
 .hero-company-logo{appearance:none;position:relative;display:block;width:auto;height:100%;padding:0;
   border:0;background:transparent;color:inherit;cursor:pointer}
 .hero-company-logo[data-work-company="amazon"]{--logo-mask:url("images/logos/amazon.svg")}
@@ -626,7 +633,7 @@ body.strip-mono .hero-logo-row li:has([data-work-company="sharecare"]){--h:15px}
   .hero-credibility{grid-template-columns:minmax(0,1fr);gap:10px}
   /* wrap the logos on small screens instead of the scroll-strip, which was blowing
      out the page width (horizontal scroll). All logos stay visible, no page scroll. */
-  .hero-logo-row{width:100%;min-width:0;flex-wrap:wrap;overflow-x:visible;gap:14px 22px}
+  .hero-logo-row{width:100%;min-width:0;flex-wrap:wrap;overflow-x:visible;gap:24px 22px} /* rows clear the Amazon smile (hangs ~13px below its baseline) */
   .hero-company-logo::after{display:none}
 }
 .hero .tags{margin:10px 0 0}
@@ -1863,35 +1870,35 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
     <p class="lbl">Built products at</p>
     <ul class="hero-logo-row">
-      <li style="--h:23px;--slot-h:31px;--logo-pad-top:8px">
+      <li>
         <button class="hero-company-logo" type="button" data-work-company="amazon"
           data-tip="User Experience Designer · View Amazon work →"
           aria-label="View Amazon work" aria-pressed="false">
           <img src="images/logos/amazon.svg" alt="">
         </button>
       </li>
-      <li style="--h:12px">
+      <li>
         <button class="hero-company-logo" type="button" data-work-company="taskrabbit"
           data-tip="Product Designer · View TaskRabbit work →"
           aria-label="View TaskRabbit work" aria-pressed="false">
           <img src="images/logos/taskrabbit.svg" alt="">
         </button>
       </li>
-      <li style="--h:14px">
+      <li>
         <button class="hero-company-logo" type="button" data-work-company="clover"
           data-tip="Designer · View Clover Health work →"
           aria-label="View Clover Health work" aria-pressed="false">
           <img src="images/logos/clover-health.svg" alt="">
         </button>
       </li>
-      <li style="--h:18px">
+      <li>
         <button class="hero-company-logo" type="button" data-work-company="goodrx"
           data-tip="Lead Product Designer · View GoodRx work →"
           aria-label="View GoodRx work" aria-pressed="false">
           <img src="images/logos/goodrx.svg" alt="">
         </button>
       </li>
-      <li style="--h:14px">
+      <li>
         <button class="hero-company-logo" type="button" data-work-company="sharecare"
           data-tip="doc.ai Lead Product Designer · View Omix work →"
           aria-label="View doc.ai and Omix work" aria-pressed="false">
