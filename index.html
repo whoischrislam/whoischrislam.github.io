@@ -3418,26 +3418,42 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ],
         chapters: [
           {
-            step: "01 · Find the unreliable boundary",
-            title: "The model could talk naturally; it could not be trusted to run the game.",
-            copy: "The first version asked the model to start each round, accept the guess, reveal the answer, and move forward. After more than eight prompt revisions, phase guards, and a watchdog, the required start action still happened only about seventy percent of the time. The failure was architectural, not another wording problem.",
+            step: "01 · The problem",
+            title: "The model could talk naturally. It couldn’t run the game.",
+            copy: "Our price guessing game had a required order: start the round, take the guess, reveal the answer, move on. The first version asked the model to run all of it. **The required steps weren’t reliable.**",
             media: [
               {src:"images/work/y30-game.png", title:"The game interface whose sequence moved out of the prompt", span:12, fit:"contain"}
             ]
           },
           {
-            step: "02 · Move obligation into code",
-            title: "Anything that had to happen became a state transition.",
-            copy: "I replaced prompt-owned sequencing with a deterministic state machine. Code owned required order, interruption recovery, and safety boundaries; the model generated phrasing and handled ambiguous conversational input. The product became more reliable by giving the model a smaller, clearer job.",
+            step: "02 · What I tried first",
+            title: "I tried to fix it with words.",
+            copy: "More than eight prompt revisions, then phase guards, then a watchdog. The model still started a round only **about 70% of the time.** The watchdog didn’t raise that number. It added a new way to fail. The problem was architecture, not wording.",
             media: [
-              {src:"images/work/y30-system.png", title:"One agent behind the product's voice and interface transports", span:12, fit:"contain"}
+              {
+                visual: "Three fixes, the same 70%",
+                status: "RECREATE",
+                note: "Diagram from y30 LEARNINGS.md:954 and D104 (2026-09-25).",
+                diagram: {
+                  type: "flow",
+                  eyebrow: "Fixing it with words",
+                  items: [
+                    {label:"8+ prompt revisions"},
+                    {label:"Phase guards"},
+                    {label:"A watchdog", meta:"Added a new failure mode"},
+                    {label:"About 70%", meta:"Rounds that started on cue", tone:"muted"}
+                  ]
+                },
+                span: 12
+              }
             ]
           },
           {
-            step: "03 · Preserve the useful ambiguity",
-            title: "Deterministic did not mean removing the model from everything.",
-            copy: "The game needed an enforceable sequence. Open conversation did not. I kept conversation model-led while deterministic routing handled required actions and safety-critical exits. Routine states could resolve without another model judgment, leaving generation for warmth, phrasing, and genuinely ambiguous moments.",
+            step: "03 · The decision",
+            title: "Anything that had to happen became code.",
+            copy: "I replaced prompt-owned sequencing with a state machine. Code owned the required order, interruption recovery, and safety exits. The model kept what it’s good at: **warmth, phrasing, and genuinely ambiguous moments.** Routine states resolve without another model call.",
             media: [
+              {src:"images/work/y30-system.png", title:"One agent behind the product's voice and interface transports", span:12, fit:"contain"},
               {
                 visual: "Routine states resolve in code",
                 status: "RECREATE",
@@ -3457,10 +3473,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           },
           {
-            step: "04 · Keep the boundary reviewable",
-            title: "The rule was not ‘never use AI.’ It was ‘make ownership explicit.’",
-            copy: "I moved authority back toward the model twice and pulled it back both times. The lasting design principle was practical: if a behavior is required, testable, or safety-critical, code owns it. If it depends on tone or open-ended interpretation, the model can help inside a constrained boundary.",
-            layout: "wide",
+            step: "04 · What changed",
+            title: "The rule: make ownership explicit.",
+            copy: "The game ran in order, and the conversation stayed unscripted. I moved authority back toward the model twice and pulled it back both times. The rule that stuck: **if a behavior is required, testable, or safety critical, code owns it.** If it depends on tone, the model helps inside a boundary.",
             media: [
               {
                 visual: "Interactive boundary map: model judgment versus deterministic ownership",
@@ -3508,22 +3523,21 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ],
         chapters: [
           {
-            step: "01 · Treat safety as an operating system",
-            title: "A prompt rule was only one layer of the safety program.",
-            copy: "I maintained a living manual QA script with more than sixty scenarios, automated deterministic and research-grounded behavior checks, ran adversarial reviews, and added a separate safety gate against the deployed build. The test program covered both dangerous misses and false alarms that could destroy trust with an older adult.",
+            step: "01 · The problem",
+            title: "Voice AI hallucinates, and it kept surprising us.",
+            copy: "The voice AI wasn’t consistent. Every bug we fixed let new regressions creep in. For an older adult, **a missed crisis and a false alarm both break trust.**",
             media: [
               {
-                visual: "Layered QA system: manual scenarios, automated checks, adversarial review, and deployed smoke",
+                visual: "Two ways to lose an older adult’s trust",
                 status: "RECREATE",
-                note: "Build a concise system diagram from the verified testing workflow; do not expose private transcripts.",
+                note: "Diagram from the safety story chapter 01 copy (2026-09-25).",
                 diagram: {
-                  type: "flow",
-                  eyebrow: "One testing system · different failure classes",
+                  type: "split",
+                  eyebrow: "What the tests had to catch",
+                  columns: 2,
                   items: [
-                    {label:"Manual scripts", meta:"60+ scenarios"},
-                    {label:"Automated checks", meta:"Unit and scenario"},
-                    {label:"Adversarial review", meta:"Dangerous misses + false alarms"},
-                    {label:"Deployed smoke", meta:"Real environment", tone:"accent"}
+                    {label:"Dangerous misses", meta:"A crisis answered like small talk", tone:"muted"},
+                    {label:"False alarms", meta:"Small talk answered like a crisis", tone:"muted"}
                   ]
                 },
                 span: 12
@@ -3531,32 +3545,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           },
           {
-            step: "02 · Put human judgment in the workflow",
-            title: "Manual findings needed somewhere better than screenshots and Slack.",
-            copy: "I designed and built a reviewer workspace and queue. A QA intern ran voice and text sessions, rated individual AI responses, and added structured notes. I retained the approval boundary and set up the harvest pipeline so confirmed failures could become reusable regression scenarios without automatically promoting raw human annotations.",
-            media: [
-              {
-                visual: "Reviewer queue with per-response ratings, structured notes, and approval state",
-                status: "RECREATE",
-                note: "Diagram from the chapter copy (2026-09-25). A real capture was dropped: the shipped UI is not design evidence.",
-                diagram: {
-                  type: "split",
-                  eyebrow: "Where manual findings lived",
-                  columns: 2,
-                  items: [
-                    {label:"Before", meta:"Screenshots and Slack", tone:"muted"},
-                    {label:"Reviewer queue", meta:"Per-response ratings · structured notes · my approval", tone:"accent"}
-                  ],
-                  footer: "Raw annotations never promote themselves. Confirmed failures do."
-                },
-                span: 12
-              }
-            ]
-          },
-          {
-            step: "03 · Test the deployed seam",
-            title: "The mocks proved the classifier logic. They did not prove the deployed system could reach it.",
-            copy: "The automated safety checks and adversarial review passed, but a live test phrase received only ‘Yeah. I hear you.’ Every real classifier call was failing silently while the mocks remained healthy. I added a new rule: a safety-critical path was not verified until a smoke script exercised the real deployed environment.",
+            step: "02 · What I tried first",
+            title: "The tests passed. The product didn’t.",
+            copy: "Automated safety checks and adversarial review passed, but a live test phrase got only “Yeah. I hear you.” Every real classifier call was failing silently while **the mocks stayed green.** Later, a test described a heart attack while picking a game decade. The real time classifier called it benign.",
             media: [
               {
                 visual: "Mocked safety pass versus deployed classifier failure, followed by live smoke coverage",
@@ -3573,14 +3564,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
                   footer: "A safety-critical path is not verified until the deployed environment reaches it."
                 },
                 span: 12
-              }
-            ]
-          },
-          {
-            step: "04 · Give medical emergencies their own floor",
-            title: "The post-session evaluator caught what the real-time product missed.",
-            copy: "A later test described a heart attack while choosing a game decade. The real-time classifier called it benign; the post-session evaluator flagged it urgent. The classifier had no medical category. I moved acute medical language into an always-on deterministic route with its own 911 or staff response, separate from the mental-health crisis path and independent of a feature flag.",
-            media: [
+              },
               {
                 visual: "A missed heart attack got its own route",
                 status: "RECREATE",
@@ -3599,11 +3583,42 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           },
           {
-            step: "05 · Make failures accumulate into capability",
-            title: "Frustration became a system for getting harder to break.",
-            copy: "I did not want safety to be a launch checklist. A miss needed to become evidence, then a test, then a stronger boundary. That is why the QA intern, reviewer queue, post-session analysis, live smoke scripts, and deterministic safety routes belong in one story: each layer found a different class of problem and made the next version more defensible.",
-            layout: "wide",
+            step: "03 · The decision",
+            title: "A loop, not a checklist.",
+            copy: "I built a quality loop: a manual QA script with more than sixty scenarios, automated and adversarial checks, and a reviewer queue where a QA intern rated individual AI responses. **I kept the approval boundary**, so confirmed failures became regression tests and raw notes never promoted themselves. Acute medical language got its own always on route with a 911 or staff response, and smoke tests now hit the deployed build.",
             media: [
+              {
+                visual: "Layered QA system: manual scenarios, automated checks, adversarial review, and deployed smoke",
+                status: "RECREATE",
+                note: "Build a concise system diagram from the verified testing workflow; do not expose private transcripts.",
+                diagram: {
+                  type: "flow",
+                  eyebrow: "One testing system · different failure classes",
+                  items: [
+                    {label:"Manual scripts", meta:"60+ scenarios"},
+                    {label:"Automated checks", meta:"Unit and scenario"},
+                    {label:"Adversarial review", meta:"Dangerous misses + false alarms"},
+                    {label:"Deployed smoke", meta:"Real environment", tone:"accent"}
+                  ]
+                },
+                span: 12
+              },
+              {
+                visual: "Reviewer queue with per-response ratings, structured notes, and approval state",
+                status: "RECREATE",
+                note: "Diagram from the chapter copy (2026-09-25). A real capture was dropped: the shipped UI is not design evidence.",
+                diagram: {
+                  type: "split",
+                  eyebrow: "Where manual findings lived",
+                  columns: 2,
+                  items: [
+                    {label:"Before", meta:"Screenshots and Slack", tone:"muted"},
+                    {label:"Reviewer queue", meta:"Per-response ratings · structured notes · my approval", tone:"accent"}
+                  ],
+                  footer: "Raw annotations never promote themselves. Confirmed failures do."
+                },
+                span: 12
+              },
               {
                 visual: "Compounding safety loop: session → review → approval → regression → deployed smoke",
                 status: "RECREATE",
@@ -3624,9 +3639,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           },
           {
-            step: "06 · Run the same loop on my own work",
-            title: "I hold my own process to the rule I gave the product.",
-            copy: "I build with AI agents, and they make confident mistakes. So do I. Corrections get captured as they happen. I decide which ones become a written rule, and the costly ones become an automated check. The clearest one: the AI agent that answers questions about me on this site spent weeks citing a “3.2-second patience window.” I was tuning its configuration, saw the number, and asked where it came from. It exists nowhere in my work. I corrected the catalog and added a test that fails if that claim, or any other retired claim, comes back. It runs before every deploy. To keep the rules from piling up, adding a rule means retiring one.",
+            step: "04 · What changed",
+            title: "Frustration became a system for getting harder to break.",
+            copy: "Silent failures now get caught against the deployed build, and emergencies hit a safety floor that doesn’t depend on a model or a feature flag. This is closed alpha testing, not production proof. I run the same loop on my own AI assisted work: this site’s recruiter agent cited a “3.2-second patience window” for weeks that exists nowhere in my work. I caught it while tuning its configuration, corrected it, and **added a test that blocks retired claims before every deploy.**",
             media: [
               {
                 visual: "Personal correction loop: correction, written rule, automated check, retire one",
