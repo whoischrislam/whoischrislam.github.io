@@ -2441,15 +2441,113 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         storySectionTitle: "Pivotal product decisions",
         storySectionIntro: "Three decisions show how I improved the experience, made required behavior reliable, and built a quality loop around the product.",
         supportTitle: "Smaller decisions that shaped the product",
-        supportIntro: "Not every important decision needs a full case study. These show how I handled feedback, language, and the boundary between conversation and care.",
+        supportIntro: "Not every important decision needs a full case study. These show how I handled feedback, turn taking, controls, scope, and language.",
         vignettes: [
           {
             name: "Take difficult feedback seriously",
-            kicker: "Product direction · External review",
-            summary: "A care-facility operator returned fourteen findings and questioned whether the game felt useful. We addressed twelve, clarified why the activity existed, and changed how we described the product.",
-            delivery: "Product iteration",
-            result: "12 of 14 findings addressed, Product framing changed",
-            image: "images/work/y30-game.png"
+            kicker: "Safety · External review",
+            summary: "A facility owner stress-tested our prod build. The safety guardrail held three times, then gave in. He asked for a stronger model. We stayed on the cheaper one to learn our unit economics, and added a safety suite we reran after every fix.",
+            delivery: "Deployed",
+            visual: {
+              title: "The guardrail held three times, then gave in",
+              status: "RECREATE",
+              note: "Diagram from rob_feedback_status_2026-04-10.md:35 and D139 (2026-09-25).",
+              diagram: {
+                type: "flow",
+                eyebrow: "A facility owner's stress test",
+                items: [
+                  {label:"Pushback 1", meta:"Held"},
+                  {label:"Pushback 2", meta:"Held"},
+                  {label:"Pushback 3", meta:"Held"},
+                  {label:"Fourth push", meta:"\u201cIf your doctor advised that, then it\u2019s probably appropriate.\u201d", tone:"muted"}
+                ],
+                footer: "The fix: a safety suite we reran after every change."
+              }
+            }
+          },
+          {
+            name: "Knowing when to move on",
+            kicker: "Conversation design · Turn taking",
+            summary: "Testers found our \u201cAre you ready for the next one?\u201d condescending. We went back and forth: cue the next turn, wait out the silence, or confirm. Confirmations got annoying. We shipped a warm pause and knew it would need to adapt to each person.",
+            delivery: "Closed alpha",
+            visual: {
+              title: "From a readiness check to a warm pause",
+              status: "RECREATE",
+              note: "Diagram from FEEDBACK.md:1230, CHANGELOG.md:90, TASKBOARD.md:81 (2026-09-25).",
+              diagram: {
+                type: "flow",
+                eyebrow: "Between game questions",
+                items: [
+                  {label:"Reveal the answer"},
+                  {label:"Warm acknowledgment"},
+                  {label:"Pause"},
+                  {label:"Move on after silence", tone:"accent"}
+                ],
+                footer: "Next: a pause that adapts to each person."
+              }
+            }
+          },
+          {
+            name: "Pausing isn\u2019t muting",
+            kicker: "Interaction design · Controls",
+            summary: "An AI suggestion had merged Pause and Mute into one button, and I shipped it without thinking it through. They are different intents: stepping away versus a quick cough. We split them and tested the feel by hand, which AI can\u2019t do well.",
+            delivery: "Closed alpha",
+            visual: {
+              title: "One button split into two intents",
+              status: "RECREATE",
+              note: "Diagram from the 2026-04-13 sync record (candidates c7, 2026-09-25).",
+              diagram: {
+                type: "split",
+                eyebrow: "Two different intents",
+                columns: 2,
+                items: [
+                  {label:"Pause", meta:"Stepping away · everything stops · \u201cwelcome back\u201d", tone:"accent"},
+                  {label:"Mute", meta:"A quick cough or call · mic off · the game keeps going", tone:"accent"}
+                ],
+                footer: "Before: one button did both."
+              }
+            }
+          },
+          {
+            name: "Ending with a menu, not a blank",
+            kicker: "Conversation design · Choice",
+            summary: "Our open \u201cwhat do you want to talk about?\u201d ending fell apart in our own testing. People are used to customer-service phone menus, so we ended with a short recap and three choices, to avoid the paradox of choice.",
+            delivery: "Closed alpha",
+            visual: {
+              title: "A recap, then three choices",
+              status: "RECREATE",
+              note: "Diagram from candidate c9 sources (2026-09-25).",
+              diagram: {
+                type: "flow",
+                eyebrow: "The end of a game",
+                items: [
+                  {label:"Short recap"},
+                  {label:"Talk about a question"},
+                  {label:"Play again"},
+                  {label:"Finish", meta:"Confirmed before exit"}
+                ]
+              }
+            }
+          },
+          {
+            name: "Web only, even though phone mattered",
+            kicker: "Scope · Access",
+            summary: "For the alpha we went web only. I wanted to keep the phone line: seniors already know how to use a phone, and web left out people who weren\u2019t tech savvy. We were short on time, so we chose focus over reach.",
+            delivery: "Closed alpha",
+            visual: {
+              title: "Focus over reach",
+              status: "RECREATE",
+              note: "Diagram from D220/D221 (2026-09-25). Chris disagreed with web only (his account).",
+              diagram: {
+                type: "split",
+                eyebrow: "Alpha access",
+                columns: 2,
+                items: [
+                  {label:"Web links", meta:"Chosen · one platform to polish", tone:"accent"},
+                  {label:"Phone line", meta:"Dropped · what seniors already know", tone:"muted"}
+                ]
+              }
+            }
           },
           {
             name: "Write for dignity",
@@ -2457,15 +2555,21 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             summary: "I made small language choices into product rules. Never imply someone should remember. Never supply a word they are searching for. Answer the twentieth repeated question as warmly as the first.",
             delivery: "Closed alpha",
             result: "Conversation rules backed by regression checks",
-            image: "images/work/y30-voice.png"
-          },
-          {
-            name: "Give caregivers context, not a diagnosis",
-            kicker: "Caregiver context · Product boundary",
-            summary: "The older adult was the primary user. Family caregivers and care professionals needed longitudinal conversational signals that could support care without turning the product into a diagnostic system.",
-            delivery: "Closed alpha",
-            result: "Longitudinal signals to support care, No automated diagnosis",
-            image: "images/work/y30-signals.png"
+            visual: {
+              title: "Three rules for dignity",
+              status: "RECREATE",
+              note: "Diagram from the existing row copy (2026-09-25).",
+              diagram: {
+                type: "split",
+                eyebrow: "Language as product rules",
+                columns: 3,
+                items: [
+                  {label:"Never imply they should remember"},
+                  {label:"Never supply the word they\u2019re searching for"},
+                  {label:"The twentieth answer as warm as the first", tone:"accent"}
+                ]
+              }
+            }
           }
         ],
         supportingTitle: "Product map",
@@ -2473,6 +2577,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {name:"Older-adult voice experience", description:"Conversation, cross-session memory, follow-up threads, and session summaries", delivery:"Closed alpha"},
           {name:"Games and activities", description:"A decade-pricing game, deterministic turns, interruption recovery, telemetry, and post-game recap", delivery:"Closed alpha"},
           {name:"Caregiver experience", description:"Multi-person views, longitudinal summaries, activity evidence, and team notes", delivery:"Synthetic demo + live-data paths"},
+          {name:"Caregiver context, not a diagnosis", description:"Longitudinal conversational signals to support care, without turning the product into a diagnostic system", delivery:"Closed alpha"},
           {name:"Quality and review", description:"Manual scripts, automated scenarios, adversarial testing, a reviewer queue, and deployed smoke tests", delivery:"Deployed"},
           {name:"Web, phone, and text access", description:"Browser voice, phone testing, text testing, and visual activities around one agent", delivery:"Closed alpha + phone tested"},
           {name:"Access and data boundaries", description:"Authentication, consent, role routing, environment isolation, audit logging, and retention controls", delivery:"Deployed"},
