@@ -3260,7 +3260,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         depth: "case",
         contentType: "product-decision",
         slug: "spoken-voice-system",
-        name: "Why the voice sounded robotic",
+        name: "Making the voice actually worth talking to",
         cardTitle: "Making the voice actually worth talking to",
         meta: "Conversation design · Voice quality",
         delivery: "Closed alpha",
@@ -3274,16 +3274,16 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         hero: "images/work/y30-voice.png",
         heroFit: "contain",
         facts: [
-          ["Quality bar", "Would grandma keep talking? · Would she feel heard?"],
-          ["Method", "Configurable STT · LLM · TTS · latency and cost comparisons"],
-          ["Owned", "Product · conversation design · full-stack implementation · evaluation"],
-          ["Boundary", "Closed alpha · not a senior cohort pilot"]
+          ["Quality bar", "Would grandma keep talking? Would she feel heard?"],
+          ["Method", "Configurable STT, LLM, and TTS. Latency and cost comparisons"],
+          ["Owned", "Product, conversation design, full-stack implementation, evaluation"],
+          ["Boundary", "Closed alpha, not a senior cohort pilot"]
         ],
         chapters: [
           {
             step: "01 · The problem",
-            title: "Would grandma keep talking? At first, probably not.",
-            copy: "Testers called the voice robotic. It talked too fast, cut people off, missed the emotional point, and forgot what someone had just shared. If an older adult wouldn’t keep talking to it, **nothing else we built mattered.**",
+            title: "Would grandma keep talking?",
+            copy: "The system talked too fast, cut people off, sometimes missed the emotional point, was tone deaf, and could forget what someone just shared. Testers called the voice robotic. I first assumed that the model or voice provider was not good enough. Those failures did not all have a singular cause, so I needed to figure out a way to stop guessing.",
             media: [
               {
                 visual: "Four failures, no single cause",
@@ -3308,7 +3308,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "02 · What I tried first",
             title: "My first guess was the model. It wasn’t.",
-            copy: "I assumed the model or the voice provider wasn’t good enough. My cofounder and I built a switchboard to swap speech recognition, the language model, and speech generation one at a time. I tested three language models on the same pipeline. **Speed and cost differences were below human perception.** Another model swap wasn’t going to fix it.",
+            copy: "My cofounder and I built a switchboard to swap speech recognition, the language model, and speech generation one at a time. I tested three language models on the same pipeline. **Speed and cost differences were below human perception.** Another model swap wasn’t going to fix it.",
             media: [
               {
                 visual: "Provider switchboard: independent STT, LLM, and TTS controls with availability, estimated latency, and estimated cost",
