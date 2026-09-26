@@ -2431,22 +2431,22 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         meta: "2026 · Co-Founder & Product Design Engineer",
         summary: "I owned the product, design, and engineering. I built the voice experience, games, caregiver tools, and the testing system we used to improve them.",
         facts: [
-          ["Users", "Older adults · family caregivers · care professionals"],
-          ["Owned", "Product · design · full-stack engineering"],
-          ["Collaborators", "Two founders · clinical advisors · QA intern"],
-          ["Stage", "Prod and dev deployments · closed alpha with testers outside the founding team"]
+          ["Users", "Older adults, family caregivers, care professionals"],
+          ["Owned", "Product, design, full stack engineering"],
+          ["Collaborators", "Two founders, clinical advisors, QA intern"],
+          ["Stage", "Production and development deployments, closed alpha with testers outside the founding team"]
         ],
         resultLabel: "What changed",
         result: "The voice got warmer without a model swap, the game stopped depending on the prompt, and confirmed failures became regression tests",
         storySectionTitle: "Pivotal product decisions",
         storySectionIntro: "Three decisions show how I improved the experience, made required behavior reliable, and built a quality loop around the product.",
         supportTitle: "Smaller decisions that shaped the product",
-        supportIntro: "Not every important decision needs a full case study. These show how I handled feedback, turn taking, controls, scope, and language.",
+        supportIntro: "Not every important decision needed a full case study. These show how I handled feedback, turn taking, controls, scope, and language.",
         vignettes: [
           {
             name: "Take difficult feedback seriously",
             kicker: "Safety · External review",
-            summary: "A facility owner stress tested our prod build. Our safety guardrail pushed back three times, then gave in. He told us to use a stronger model. We stayed on the cheaper one so we could benchmark real costs for pricing, and built a safety suite we reran after every fix.",
+            summary: "A facility owner stress tested our production build. Our safety guardrail pushed back 3 times, then gave in. He told us to use a stronger model than GPT-4o mini, but we stayed the course so we could benchmark real costs for pricing, and built a safety suite we reran after every fix.",
             delivery: "Deployed",
             visual: {
               title: "The guardrail held three times, then gave in",
@@ -2468,7 +2468,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             name: "Knowing when to move on",
             kicker: "Conversation design · Turn taking",
-            summary: "Our game kept asking \u201cAre you ready for the next one?\u201d Testers found it condescending. We went back and forth: cue the next turn, or wait for silence and move on. Confirmations got annoying fast. We shipped a warm pause, knowing it would need to adapt to each person.",
+            summary: "Our game kept asking \u201cAre you ready for the next one?\u201d Testers found it annoying and condescending. We tried many things: cue the next turn, or wait for silence and move on. Confirmations got annoying fast. We shipped a warm pause, knowing it would need to adapt to each person.",
             delivery: "Closed alpha",
             visual: {
               title: "From a readiness check to a warm pause",
@@ -2490,7 +2490,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             name: "Pausing isn\u2019t muting",
             kicker: "Interaction design · Controls",
-            summary: "I took an AI suggestion to merge Pause and Mute into one button, and shipped it without thinking it through. Stepping away and coughing are different intents. We split them and tested the feel ourselves. AI can\u2019t judge feel.",
+            summary: "I took an AI suggestion to merge pause and mute into one button. Shipped it without thinking it through. We split them and tested the feel ourselves. AI is not great at judging feel.",
             delivery: "Closed alpha",
             visual: {
               title: "One button split into two intents",
@@ -2511,7 +2511,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             name: "Ending with a menu, not a blank",
             kicker: "Conversation design · Choice",
-            summary: "Ending a game with \u201cWhat do you want to talk about?\u201d fell apart, even in our own testing. Too many options. People already know phone menus from calling customer service, so we ended with a short recap and three choices.",
+            summary: "Ending a game with \u201cWhat do you want to talk about?\u201d fell apart, even in our own testing. Keeping it open-ended is similar to offering too many options. People already know phone menus from calling customer service, so we ended with a short recap and three choices.",
             delivery: "Closed alpha",
             visual: {
               title: "A recap, then three choices",
@@ -2532,7 +2532,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             name: "Web only, even though phone mattered",
             kicker: "Scope · Access",
-            summary: "For the alpha, we went web only. I disagreed. Seniors already know how to use a phone, and web left out anyone who wasn\u2019t tech savvy. We were short on time, so focus won over reach.",
+            summary: "For the alpha, we went web only, which I disagreed with. Seniors already know how to use a phone. I knew the web left out anyone who wasn\u2019t tech savvy. Since we were short on time, we had to focus.",
             delivery: "Closed alpha",
             visual: {
               title: "Focus over reach",
@@ -2552,7 +2552,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             name: "Write for dignity",
             kicker: "Conversation design · Older-adult UX",
-            summary: "Small language choices became product rules. Never imply someone should remember. Never finish a word they\u2019re searching for. Answer the twentieth repeated question as warmly as the first.",
+            summary: "We realized small language choices should become product rules. It was important to make sure to respect and humanize the user.",
             delivery: "Closed alpha",
             result: "Conversation rules backed by regression checks",
             visual: {
