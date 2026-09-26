@@ -1011,8 +1011,8 @@ body[data-world] .work-panel.is-story-view .work-panel-heading{margin-top:0!impo
   grid-template-columns:minmax(150px,.9fr) minmax(0,1.5fr);
   padding:14px 4px;border-top:1px solid var(--border-soft,var(--border))}
 .work-support-row:first-child{border-top:0}
-.work-support-list.has-thumb .work-support-row{grid-template-columns:72px minmax(140px,.85fr) minmax(0,1.45fr)}
-.work-support-thumb{width:72px;aspect-ratio:4/3;border-radius:0;overflow:hidden;background:#ececea;border:1px solid var(--border-soft,var(--border))}
+.work-support-list.has-thumb .work-support-row{grid-template-columns:160px minmax(140px,.85fr) minmax(0,1.45fr)}
+.work-support-thumb{width:160px;aspect-ratio:4/3;border-radius:0;overflow:hidden;background:#ececea;border:1px solid var(--border-soft,var(--border))}
 .work-support-thumb.is-empty{background:transparent;border-color:transparent}
 .work-support-thumb.is-visual{display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 9%,var(--surface,#fff))}
 .work-support-thumb-glyph{font-size:var(--t-md);line-height:1;color:var(--accent);opacity:.7}
@@ -1021,10 +1021,7 @@ body[data-world] .work-panel.is-story-view .work-panel-heading{margin-top:0!impo
 .work-support-name{display:inline-block;font:600 var(--t-sm)/1.35 var(--sans);color:var(--text);text-align:left;background:none;border:0;padding:0;margin:0}
 button.work-support-name,a.work-support-name{cursor:pointer;text-decoration:none}
 button.work-support-name:hover,a.work-support-name:hover,button.work-support-name:focus-visible,a.work-support-name:focus-visible{color:var(--accent);text-decoration:underline;outline:none}
-.work-support-state{display:flex;align-items:center;gap:7px;font:600 var(--t-xs)/1 var(--sans);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.work-support-dot{width:7px;height:7px;border-radius:0;background:var(--accent);flex:0 0 auto}
-.work-support-dot.warn{background:#c9a227}
-.work-support-dot.todo{background:var(--muted)}
+.work-support-state{order:-1;font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
 .work-support-desc{font:400 var(--t-xs)/1.5 var(--sans);color:var(--muted);padding-top:1px;min-width:0}
 .work-support-result{display:block;margin-top:6px;color:var(--accent);font:400 var(--t-xs)/1.4 var(--serif)}
 @media(max-width:600px){
@@ -1046,10 +1043,7 @@ body.work-focus-open[data-world] .work-support-name{color:var(--world-ink)}
 /* Keep the hovered name at world-ink (readable on every world bg) and signal via underline.
    Accent text can be near-invisible where accent ~= bg luminance, e.g. TaskRabbit teal on green. */
 body.work-focus-open[data-world] button.work-support-name:hover,body.work-focus-open[data-world] a.work-support-name:hover,body.work-focus-open[data-world] button.work-support-name:focus-visible,body.work-focus-open[data-world] a.work-support-name:focus-visible{color:var(--world-ink);text-decoration:underline;text-decoration-color:var(--world-accent);text-underline-offset:3px}
-body.work-focus-open[data-world] .work-support-state{color:color-mix(in srgb,var(--world-accent) 70%,var(--world-ink))}
-body.work-focus-open[data-world] .work-support-dot{background:var(--world-accent)}
-body.work-focus-open[data-world] .work-support-dot.warn{background:#c9a227}
-body.work-focus-open[data-world] .work-support-dot.todo{background:color-mix(in srgb,var(--world-ink) 45%,transparent)}
+body.work-focus-open[data-world] .work-support-state{color:var(--world-ink-soft,var(--muted))}
 body.work-focus-open[data-world] .work-support-desc{color:var(--world-ink-soft)}
 body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,var(--world-accent) 78%,var(--world-ink))}
 .project-story{display:grid;gap:clamp(46px,7vw,86px)}
@@ -5847,8 +5841,29 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           "Smaller and foundational work, kept at its real delivery state instead of inflated into case studies.";
         supportHead.append(supportTitle, supportIntro);
         support.appendChild(supportHead);
-        renderSupportingWork(support, __t2, companyData);
+        // A flat list that mixes rows with and without a visual splits in two: the visual rows
+        // stay here with thumbnails, the text rows move to their own "What I built" list.
+        // Adding an image or visual to a row promotes it into this group.
+        var __hasVis = function(it){ return !!(it.image || it.visual); };
+        var __flat = !__t2.some(function(it){ return it.surface; });
+        var __vis = __t2.filter(__hasVis), __txt = __t2.filter(function(it){ return !__hasVis(it); });
+        var __split = __flat && __vis.length && __txt.length;
+        renderSupportingWork(support, __split ? __vis : __t2, companyData);
         workFocusContent.appendChild(support);
+        if(__split){
+          var built = document.createElement("section");
+          built.className = "work-company-support work-company-built";
+          built.setAttribute("aria-label", (companyData.builtTitle || "What I built") + " at " + companyData.name);
+          var builtHead = document.createElement("div");
+          builtHead.className = "work-company-support-head";
+          var builtTitle = document.createElement("h4");
+          builtTitle.textContent = companyData.builtTitle || "What I built";
+          builtHead.appendChild(builtTitle);
+          if(companyData.builtIntro){ var bi = document.createElement("p"); bi.textContent = companyData.builtIntro; builtHead.appendChild(bi); }
+          built.appendChild(builtHead);
+          renderSupportingWork(built, __txt, companyData);
+          workFocusContent.appendChild(built);
+        }
       }
       // Project-world artifacts: a standalone project (no case-study stories) surfaces its own artifact
       // media as an "Artifacts" region below the fact grid (reuses the lightbox via openWorkMedia).
@@ -6081,10 +6096,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     // (Chris 2026-09-22). The data keeps them so the open list stays greppable.
     function publicDelivery(delivery){ return deliveryState(delivery) === "todo" ? "" : (delivery || ""); }
     // "Also shipped" dots keep their existing 3 classes (ok and int both render as the plain accent dot).
-    function mapDotClass(delivery){
-      var s = deliveryState(delivery);
-      return s === "todo" || s === "warn" ? s : "";
-    }
     // Card result line: mono evidence label (resultKind; falls back to the delivery text until one is set),
     // colored by delivery status, then the result text. Cards have 3 colors by design: "todo" (unconfirmed)
     // renders as neutral "int", so an unknown is never shown as shipped. With no result text, the label
@@ -6152,9 +6163,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       if(publicDelivery(it.delivery)){
         var state = document.createElement("span");
         state.className = "work-support-state";
-        var dot = document.createElement("span");
-        dot.className = "work-support-dot " + mapDotClass(it.delivery);
-        state.appendChild(dot);
         state.appendChild(document.createTextNode(it.delivery));
         namecol.appendChild(state);
       }
