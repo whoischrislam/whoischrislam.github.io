@@ -28,6 +28,7 @@
     {id:'project-chapter',label:'Case-study chapter',sel:'.project-chapter',src:'casestudy',grp:'Templated'},
     {id:'story-artifact',label:'Case-study image (artifact)',sel:'.story-artifact',src:'casestudy',grp:'Templated'},
     {id:'project-story',label:'Case-study page (whole story)',sel:'.project-story',src:'casestudy',grp:'Templated'},
+    {id:'story-end',label:'Case-study end row (next case study + contact)',sel:'.story-end',src:'casestudy',grp:'Templated'},
     {id:'work-project-grid',label:'Project card grid (3 / 2 / 1 per row)',sel:'.work-project-grid',src:'company',grp:'Templated'},
     {id:'project-story-nav',label:'Case-study jump-to nav',sel:'.project-story-nav',src:'casestudy',grp:'Templated'},
     {id:'work-company-quotes',label:'World recommendations (verbatim quotes)',sel:'.work-company-quotes',src:'quotes',grp:'Templated'},

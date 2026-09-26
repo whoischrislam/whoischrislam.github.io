@@ -1097,6 +1097,16 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
   text-transform:uppercase;margin:0 0 7px}
 .project-chapter h4{font-family:var(--serif);font-size:var(--t-xxl);font-weight:400;line-height:1.04;margin:0 0 12px}
 .project-chapter-copy p{color:var(--muted);font-size:var(--t-sm);line-height:1.6;margin:0}
+.story-end{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s-item,24px);margin-top:var(--s-group,64px);padding-top:var(--s-item,24px);border-top:1px solid var(--border)}
+.story-end-next{display:flex;flex-direction:column;gap:var(--s-in,8px);text-align:left;background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit}
+.story-end-label{font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--world-ink-soft,var(--muted))}
+.story-end-title{font:400 var(--t-md,18px)/1.3 var(--serif);color:var(--world-ink,var(--text))}
+.story-end-meta{font-size:var(--t-xs);color:var(--world-ink-soft,var(--muted))}
+.story-end-next:hover .story-end-title,.story-end-next:focus-visible .story-end-title{text-decoration:underline}
+.story-end-talk{display:flex;flex-direction:column;gap:var(--s-in,8px);align-items:flex-end;text-align:right}
+.story-end-links a{color:var(--world-ink,var(--text))}
+@media (max-width:640px){.story-end{grid-template-columns:minmax(0,1fr)}.story-end-talk{align-items:flex-start;text-align:left}}
+.project-chapter-copy p strong{font-weight:600;color:var(--world-ink,var(--text))}
 .project-chapter-media{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:10px;min-width:0}
 .story-artifact{appearance:none;position:relative;grid-column:span 6;width:100%;min-width:0;padding:0;overflow:hidden;
   aspect-ratio:4/3;border:1px solid var(--border);background:var(--surface-2);cursor:zoom-in}
@@ -3271,9 +3281,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ],
         chapters: [
           {
-            step: "01 · Listen to the complaint",
+            step: "01 · The problem",
             title: "Would grandma keep talking? At first, probably not.",
-            copy: "The system talked too fast, cut people off, sometimes missed the emotional point, and could forget what someone had just shared. Testers called the voice robotic. My first assumption was that the model or voice provider was not good enough. Those failures did not all have one cause, so I needed a way to stop guessing.",
+            copy: "Testers called the voice robotic. It talked too fast, cut people off, missed the emotional point, and forgot what someone had just shared. If an older adult wouldn’t keep talking to it, **nothing else we built mattered.**",
             media: [
               {
                 visual: "Four failures, no single cause",
@@ -3296,9 +3306,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           },
           {
-            step: "02 · Make the stack testable",
-            title: "My co-founder and I made every layer configurable.",
-            copy: "We built a switchboard that let us change speech recognition, the language model, and speech generation independently. The admin tools exposed provider health, estimated latency, and estimated cost per minute. We could hold two layers steady, change the third, and compare the experience instead of swapping the whole stack and arguing from instinct.",
+            step: "02 · What I tried first",
+            title: "My first guess was the model. It wasn’t.",
+            copy: "I assumed the model or the voice provider wasn’t good enough. My cofounder and I built a switchboard to swap speech recognition, the language model, and speech generation one at a time. I tested three language models on the same pipeline. **Speed and cost differences were below human perception.** Another model swap wasn’t going to fix it.",
             media: [
               {
                 visual: "Provider switchboard: independent STT, LLM, and TTS controls with availability, estimated latency, and estimated cost",
@@ -3315,14 +3325,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
                   footer: "Hold two layers steady, change the third. Health, latency, and cost per minute in the admin tools."
                 },
                 span: 12
-              }
-            ]
-          },
-          {
-            step: "03 · Follow the evidence",
-            title: "The model was not the bottleneck.",
-            copy: "I tested three language models on the same speech pipeline. Their speed and safety results clustered closely. The switchboard gave us clarity: another model swap would not fix the experience. The system was writing formal chat responses and then reading them aloud.",
-            media: [
+              },
               {
                 visual: "Controlled comparison: three LLMs on the same STT and TTS pipeline, compared across latency, cost, and safety",
                 status: "RECREATE",
@@ -3342,9 +3345,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           },
           {
-            step: "04 · Rewrite for someone listening",
-            title: "The goal was not to sound human. It was to make someone feel heard.",
-            copy: "Once the diagnosis was clear, I went straight to work. I rewrote the system around shorter clauses, one job per turn, contractions, brief acknowledgments, and pauses that worked when spoken aloud. Concrete examples worked better than another page of abstract rules. The safety language stayed fixed while the delivery changed around it.",
+            step: "03 · The decision",
+            title: "Write for someone listening, not reading.",
+            copy: "The system was writing chat replies and reading them aloud. We could keep swapping providers, or change how it talked. I rewrote it for the ear: shorter clauses, one job per turn, contractions, brief acknowledgments, and pauses that work when spoken. **The goal wasn’t to sound human. It was to make someone feel heard.** Safety language stayed word for word through every rewrite.",
             media: [
               {
                 visual: "Before and after: formal chat-shaped prose compared with shorter speech-shaped turns",
@@ -3365,10 +3368,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           },
           {
-            step: "05 · Measure the change",
-            title: "The result improved, and the remaining problems became clearer.",
-            copy: "Across four iterations and three models, an internal warmth rubric moved from 3.28 to 4.17 while the blocking safety suite held at seven of seven. A tester called the new build the complete opposite of robotic. These were internal regression signals, not a validated cohort outcome. The rewrite did not solve every problem. Pacing, interruptions, tone-deaf routing, and memory each became their own product and engineering work.",
-            layout: "wide",
+            step: "04 · What changed",
+            title: "The same tester came back.",
+            copy: "Across four iterations and three models, our internal warmth rubric moved from 3.28 to 4.17 while the blocking safety suite held at 7 of 7. The tester who called it robotic said, **“This is the complete opposite of robotic.”** These were internal signals, not a validated study. Pacing, interruptions, and memory each became their own work.",
             media: [
               {
                 visual: "Four-iteration warmth score with the safety gate held constant",
@@ -6332,6 +6334,49 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       support.appendChild(wrap);
     }
 
+    // End of every case study: the next case study on one side, contact on the other (Chris, 2026-09-25 interview Q8).
+    // Next = the next story in the same world, then the first story of the next lead world.
+    var STORY_WORLD_ORDER = ["y30", "playsesh", "goodrx", "taskrabbit", "pathstream", "startplaying", "sharecare"];
+    function nextStoryKey(storyKey){
+      var keys = Object.keys(workStories);
+      var worlds = STORY_WORLD_ORDER.concat(Object.keys(workProjects).filter(function(w){ return STORY_WORLD_ORDER.indexOf(w) < 0; }));
+      var ordered = [];
+      worlds.forEach(function(w){ keys.forEach(function(k){ if(workStories[k].company === w) ordered.push(k); }); });
+      var i = ordered.indexOf(storyKey);
+      return ordered.length > 1 ? ordered[(i + 1) % ordered.length] : null;
+    }
+    function buildStoryEnd(storyKey){
+      var nextKey = nextStoryKey(storyKey);
+      var end = document.createElement("nav");
+      end.className = "story-end";
+      end.setAttribute("aria-label", "After this case study");
+      if(nextKey){
+        var next = workStories[nextKey];
+        var nb = document.createElement("button");
+        nb.type = "button";
+        nb.className = "story-end-next";
+        var nl = document.createElement("span"); nl.className = "story-end-label"; nl.textContent = "Next case study";
+        var nt = document.createElement("span"); nt.className = "story-end-title"; nt.textContent = (next.cardTitle || next.name) + " \u2192";
+        var nc = document.createElement("span"); nc.className = "story-end-meta"; nc.textContent = (workProjects[next.company] || {}).name || "";
+        nb.append(nl, nt, nc);
+        nb.addEventListener("click", function(){ openWorkStory(nextKey, {trigger: nb}); });
+        end.appendChild(nb);
+      }
+      var talk = document.createElement("div");
+      talk.className = "story-end-talk";
+      var tl = document.createElement("span"); tl.className = "story-end-label"; tl.textContent = "Want to talk about this?";
+      var links = document.createElement("span"); links.className = "story-end-links";
+      var mail = document.createElement("a"); mail.href = "mailto:whoischrislam@gmail.com"; mail.textContent = "Email me";
+      var guide = document.createElement("a"); guide.href = "#"; guide.textContent = "Ask my AI hiring guide";
+      guide.addEventListener("click", function(e){
+        e.preventDefault();
+        var cta = document.querySelector("#contact [data-va-open]"); if(cta) cta.click();
+      });
+      links.append(mail, document.createTextNode(" \u00b7 "), guide);
+      talk.append(tl, links);
+      end.appendChild(talk);
+      return end;
+    }
     function mountProjectStory(storyKey){
       var story = workStories[storyKey];
       workFocusContent.replaceChildren();
@@ -6367,7 +6412,12 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         var title = document.createElement("h4");
         title.textContent = chapter.title;
         var description = document.createElement("p");
-        description.textContent = chapter.copy;
+        // **phrase** marks the one key phrase a skimmer should catch (rendered as <strong>, never as HTML).
+        String(chapter.copy || "").split("**").forEach(function(part, i){
+          if(!part) return;
+          if(i % 2){ var em = document.createElement("strong"); em.textContent = part; description.appendChild(em); }
+          else description.appendChild(document.createTextNode(part));
+        });
         copy.append(step, title, description);
         var media = document.createElement("div");
         media.className = "project-chapter-media";
@@ -6412,6 +6462,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       storyNavProgress.className = "project-story-nav-progress";
       storyNav.append(storyNavProgress, storyNavMarker);
       var storyCredits = buildCredits(story.facts); if(storyCredits) article.appendChild(storyCredits);
+      var storyEnd = buildStoryEnd(storyKey); if(storyEnd) article.appendChild(storyEnd);
       workFocusContent.appendChild(article);
       workFocusContent.hidden = false;
       var chapters = Array.from(article.querySelectorAll(".project-chapter"));
