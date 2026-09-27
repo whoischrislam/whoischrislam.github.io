@@ -1,0 +1,142 @@
+{
+ "source": "Epoch AI, Polling on AI usage, July 2026 (Ipsos KnowledgePanel, fielded July 10-19, 2026; 1,103 employed or self-employed US adults, weighted). CC BY. https://epoch.ai/data/polling",
+ "question": "In the past 7 days, did you use any of the following AI services? (used = 100 minus 'None (no AI use)')",
+ "interval": "90% Wilson score, flipped from the 'None' row",
+ "rows": [
+  {
+   "lens": "full_sample",
+   "group": "All",
+   "used": 55.39,
+   "lo": 52.9,
+   "hi": 57.86,
+   "se": 1.51,
+   "n": 1103
+  },
+  {
+   "lens": "age_group",
+   "group": "18–29",
+   "used": 58.38,
+   "lo": 52.96,
+   "hi": 63.61,
+   "se": 3.26,
+   "n": 232
+  },
+  {
+   "lens": "age_group",
+   "group": "30–44",
+   "used": 60.64,
+   "lo": 56.45,
+   "hi": 64.68,
+   "se": 2.51,
+   "n": 382
+  },
+  {
+   "lens": "age_group",
+   "group": "45–59",
+   "used": 52.28,
+   "lo": 47.62,
+   "hi": 56.91,
+   "se": 2.84,
+   "n": 312
+  },
+  {
+   "lens": "age_group",
+   "group": "60+",
+   "used": 43.42,
+   "lo": 37.42,
+   "hi": 49.62,
+   "se": 3.75,
+   "n": 177
+  },
+  {
+   "lens": "gender",
+   "group": "Male",
+   "used": 53.91,
+   "lo": 50.51,
+   "hi": 57.27,
+   "se": 2.06,
+   "n": 593
+  },
+  {
+   "lens": "gender",
+   "group": "Female",
+   "used": 57.02,
+   "lo": 53.36,
+   "hi": 60.61,
+   "se": 2.21,
+   "n": 510
+  },
+  {
+   "lens": "region",
+   "group": "Northeast",
+   "used": 60.87,
+   "lo": 54.91,
+   "hi": 66.52,
+   "se": 3.55,
+   "n": 191
+  },
+  {
+   "lens": "region",
+   "group": "Midwest",
+   "used": 49.2,
+   "lo": 43.96,
+   "hi": 54.46,
+   "se": 3.21,
+   "n": 246
+  },
+  {
+   "lens": "region",
+   "group": "South",
+   "used": 54.48,
+   "lo": 50.37,
+   "hi": 58.53,
+   "se": 2.49,
+   "n": 406
+  },
+  {
+   "lens": "region",
+   "group": "West",
+   "used": 58.43,
+   "lo": 53.31,
+   "hi": 63.39,
+   "se": 3.08,
+   "n": 260
+  },
+  {
+   "lens": "education",
+   "group": "Less than HS",
+   "used": 51.51,
+   "lo": 41.63,
+   "hi": 61.27,
+   "se": 6.13,
+   "n": 68
+  },
+  {
+   "lens": "education",
+   "group": "High school",
+   "used": 47.19,
+   "lo": 42.33,
+   "hi": 52.1,
+   "se": 3.0,
+   "n": 284
+  },
+  {
+   "lens": "education",
+   "group": "Some college",
+   "used": 53.37,
+   "lo": 48.44,
+   "hi": 58.25,
+   "se": 3.0,
+   "n": 281
+  },
+  {
+   "lens": "education",
+   "group": "Bachelor+",
+   "used": 62.53,
+   "lo": 58.78,
+   "hi": 66.14,
+   "se": 2.24,
+   "n": 470
+  }
+ ]
+}

@@ -12,7 +12,7 @@ import sys
 
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-TEXT_SURFACES = ["index.html", "resume.json", "llms.txt", "candidate.html"]
+TEXT_SURFACES = ["index.html", "resume.json", "llms.txt", "candidate.html", "epoch-ai-design-application.html"]
 OPTIONAL_DRAFTS = ["work/y30.html"]
 
 BANNED = {

@@ -1,0 +1,51 @@
+drug1,drug2,drug3,drug4,drug5,drug6,drug7,drug8,drug9,drug10,stateid,stateinitial,statename
+hydrocodone/acetaminophen,levothyroxine,lisinopril,amlodipine,atorvastatin,oxycodone/acetaminophen,zolpidem,escitalopram,ondansetron,amoxicillin,2,AK,Alaska
+oseltamivir,azithromycin,hydrocodone/acetaminophen,levothyroxine,omeprazole,atorvastatin,amoxicillin,pantoprazole,amlodipine,montelukast,1,AL,Alabama
+levothyroxine,oseltamivir,omeprazole,amlodipine,atorvastatin,lisinopril,hydrocodone/acetaminophen,azithromycin,amoxicillin,simvastatin,5,AR,Arkansas
+levothyroxine,lisinopril,atorvastatin,amlodipine,omeprazole,proair,amoxicillin,azithromycin,prednisone,gabapentin,4,AZ,Arizona
+atorvastatin,ventolin,hydrocodone/acetaminophen,ibuprofen,lisinopril,levothyroxine,amlodipine,fluticasone propionate,amoxicillin,azithromycin,6,CA,California
+levothyroxine,lisinopril,atorvastatin,ventolin,omeprazole,hydrocodone/acetaminophen,sertraline,prednisone,simvastatin,amlodipine,8,CO,Colorado
+levothyroxine,atorvastatin,lisinopril,azithromycin,amlodipine,amoxicillin,escitalopram,prednisone,alprazolam,sertraline,9,CT,Connecticut
+amphetamine salt combo,levothyroxine,atorvastatin,phentermine,amlodipine,azithromycin,prednisone,metoprolol er,amoxicillin,oxycodone,10,DE,Delaware
+azithromycin,amphetamine salt combo,levothyroxine,alprazolam,phentermine,prednisone,hydrocodone/acetaminophen,oseltamivir,atorvastatin,amlodipine,12,FL,Florida
+prednisone,hydrocodone/acetaminophen,oseltamivir,atorvastatin,ventolin,amlodipine,ibuprofen,levothyroxine,lisinopril,ondansetron,13,GA,Georgia
+atorvastatin,ventolin,hydrocodone/acetaminophen,ibuprofen,oseltamivir,lisinopril,prednisone,azithromycin,cheratussin ac,losartan,15,HI,Hawaii
+levothyroxine,atorvastatin,prednisone,amoxicillin,oseltamivir,hydrocodone/acetaminophen,lisinopril,azithromycin,escitalopram,omeprazole,19,IA,Iowa
+hydrocodone/acetaminophen,levothyroxine,atorvastatin,lisinopril,omeprazole,amoxicillin,azithromycin,amlodipine,amphetamine salt combo,gabapentin,16,ID,Idaho
+amphetamine salt combo,hydrocodone/acetaminophen,levothyroxine,atorvastatin,amlodipine,lisinopril,alprazolam,azithromycin,metoprolol er,amoxicillin,17,IL,Illinois
+amoxicillin,hydrocodone/acetaminophen,ventolin,oseltamivir,levothyroxine,lisinopril,ibuprofen,omeprazole,gabapentin,azithromycin,18,IN,Indiana
+hydrocodone/acetaminophen,levothyroxine,prednisone,amphetamine salt combo,lisinopril,amlodipine,atorvastatin,azithromycin,oseltamivir,amoxicillin,20,KS,Kansas
+levothyroxine,oseltamivir,lisinopril,hydrocodone/acetaminophen,atorvastatin,amoxicillin,amlodipine,prednisone,azithromycin,omeprazole,21,KY,Kentucky
+levothyroxine,amlodipine,atorvastatin,oseltamivir,hydrocodone/acetaminophen,pantoprazole,metoprolol er,lisinopril,azithromycin,hydrochlorothiazide,22,LA,Louisiana
+lisinopril,atorvastatin,levothyroxine,sertraline,proair,omeprazole,amoxicillin,amlodipine,lorazepam,azithromycin,25,MA,Massachusetts
+atorvastatin,amlodipine,ibuprofen,lisinopril,ventolin,prednisone,losartan,hydrochlorothiazide,levothyroxine,pantoprazole,24,MD,Maryland
+levothyroxine,lisinopril,atorvastatin,sertraline,omeprazole,prednisone,hydrochlorothiazide,bupropion xl,fluoxetine,azithromycin,23,ME,Maine
+levothyroxine,hydrocodone/acetaminophen,lisinopril,amphetamine salt combo,atorvastatin,amoxicillin,azithromycin,amlodipine,sertraline,prednisone,26,MI,Michigan
+atorvastatin,levothyroxine,lisinopril,amoxicillin,omeprazole,ventolin,sertraline,amlodipine,oseltamivir,simvastatin,27,MN,Minnesota
+atorvastatin,levothyroxine,amlodipine,hydrocodone/acetaminophen,omeprazole,lisinopril,prednisone,alprazolam,metoprolol er,losartan,29,MO,Missouri
+amlodipine,hydrocodone/acetaminophen,azithromycin,amphetamine salt combo,oseltamivir,levothyroxine,gabapentin,lisinopril,amoxicillin,prednisone,28,MS,Mississippi
+levothyroxine,hydrocodone/acetaminophen,atorvastatin,lisinopril,fluoxetine,omeprazole,bupropion xl,prednisone,sertraline,losartan,30,MT,Montana
+levothyroxine,amphetamine salt combo,hydrocodone/acetaminophen,prednisone,amlodipine,atorvastatin,phentermine,azithromycin,alprazolam,omeprazole,37,NC,North Carolina
+levothyroxine,lisinopril,sertraline,escitalopram,atorvastatin,amoxicillin/potassium clavulanate,amoxicillin,oseltamivir,prednisone,hydrocodone/acetaminophen,38,ND,North Dakota
+hydrocodone/acetaminophen,levothyroxine,phentermine,amoxicillin,prednisone,amphetamine salt combo,azithromycin,amlodipine,alprazolam,lisinopril,31,NE,Nebraska
+levothyroxine,lisinopril,atorvastatin,sertraline,lorazepam,prednisone,omeprazole,amoxicillin,amphetamine salt combo,proair,33,NH,New Hampshire
+phentermine,azithromycin,amoxicillin,amphetamine salt combo,amlodipine,atorvastatin,levothyroxine,alprazolam,prednisone,oseltamivir,34,NJ,New Jersey
+levothyroxine,lisinopril,metformin,phentermine,amlodipine,atorvastatin,sildenafil,lantus,prednisone,hydrochlorothiazide,35,NM,New Mexico
+levothyroxine,atorvastatin,amlodipine,lisinopril,hydrocodone/acetaminophen,azithromycin,amoxicillin,losartan,alprazolam,omeprazole,32,NV,Nevada
+amlodipine,atorvastatin,omeprazole,lisinopril,levothyroxine,metoprolol er,gabapentin,ventolin,simvastatin,losartan,36,NY,New York
+lisinopril,levothyroxine,atorvastatin,amlodipine,prednisone,amoxicillin,omeprazole,hydrocodone/acetaminophen,sertraline,azithromycin,39,OH,Ohio
+hydrocodone/acetaminophen,oseltamivir,levothyroxine,azithromycin,prednisone,amoxicillin,alprazolam,phentermine,amphetamine salt combo,ondansetron,40,OK,Oklahoma
+levothyroxine,atorvastatin,lisinopril,hydrocodone/acetaminophen,ventolin,amlodipine,losartan,omeprazole,simvastatin,prednisone,41,OR,Oregon
+levothyroxine,atorvastatin,omeprazole,lisinopril,amlodipine,ventolin,amoxicillin,metoprolol er,prednisone,gabapentin,42,PA,Pennsylvania
+levothyroxine,lisinopril,atorvastatin,amphetamine salt combo,sertraline,omeprazole,fluoxetine,amlodipine,azithromycin,amoxicillin,44,RI,Rhode Island
+amphetamine salt combo,hydrocodone/acetaminophen,phentermine,azithromycin,prednisone,alprazolam,oseltamivir,amoxicillin,levothyroxine,amlodipine,45,SC,South Carolina
+levothyroxine,hydrocodone/acetaminophen,amoxicillin,amphetamine salt combo,atorvastatin,tramadol,omeprazole,lisinopril,prednisone,amoxicillin/potassium clavulanate,46,SD,South Dakota
+buprenorphine/naloxone,hydrocodone/acetaminophen,amphetamine salt combo,alprazolam,levothyroxine,prednisone,azithromycin,lisinopril,oseltamivir,amlodipine,47,TN,Tennessee
+azithromycin,phentermine,oseltamivir,amoxicillin,levothyroxine,prednisone,amphetamine salt combo,acetaminophen/codeine,lisinopril,amlodipine,48,TX,Texas
+levothyroxine,amphetamine salt combo,hydrocodone/acetaminophen,atorvastatin,omeprazole,zolpidem,amoxicillin,lisinopril,phentermine,gabapentin,49,UT,Utah
+atorvastatin,lisinopril,levothyroxine,amlodipine,ventolin,losartan,prednisone,hydrochlorothiazide,azithromycin,pantoprazole,51,VA,Virginia
+lisinopril,sildenafil,levothyroxine,sertraline,atorvastatin,prednisone,omeprazole,hydrochlorothiazide,fluoxetine,amlodipine,50,VT,Vermont
+levothyroxine,atorvastatin,lisinopril,hydrocodone/acetaminophen,amlodipine,losartan,sertraline,prednisone,hydrochlorothiazide,ventolin,53,WA,Washington
+levothyroxine,atorvastatin,omeprazole,lisinopril,amlodipine,sertraline,amoxicillin,hydrocodone/acetaminophen,prednisone,metoprolol er,55,WI,Wisconsin
+levothyroxine,lisinopril,omeprazole,oseltamivir,prednisone,hydrocodone/acetaminophen,atorvastatin,azithromycin,amlodipine,amoxicillin,54,WV,West Virginia
+levothyroxine,amoxicillin,hydrocodone/acetaminophen,oseltamivir,atorvastatin,lisinopril,amoxicillin/potassium clavulanate,prednisone,azithromycin,montelukast,56,WY,Wyoming

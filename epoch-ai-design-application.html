@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For Epoch AI · Chris Lam</title>
+<meta name="description" content="A two-minute guessing game with Epoch AI's July 2026 survey of working Americans, plus GoodRx data visualizations rebuilt from 2018." />
+<meta name="author" content="Chris Lam" />
+<meta name="robots" content="noindex" /><!-- unlisted on purpose: an application page addressed to one employer, shared by link only -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Figtree:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>
+  // Same pre-paint theme init + storage key as the rest of the site.
+  (function () {
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    document.documentElement.setAttribute('data-theme', 'light'); // light only (Chris 2026-09-26)
+  })();
+</script>
+<style>
+/* Tokens mirror index.html :root (canonical). v0 copy: parity check owed before this ships. */
+/* site band color for the GoodRx chapter (mirrors index.html --band-goodrx) */
+:root{--band-goodrx:#fcef72}
+:root, :root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --accent-strong:#1e7a3c;
+  --border:rgba(0,0,0,.10); --border-strong:rgba(0,0,0,.16); --grid:rgba(0,0,0,.045);
+  --guess:#c2410c; --range:rgba(42,157,79,.35); --none:#e4e2dc;
+  --serif:'Newsreader',Georgia,serif; --sans:'Figtree',system-ui,sans-serif;
+  --t-h1:clamp(34px,4.2vw,56px); --t-xl:30px; --t-lg:24px; --t-md:21px; --t-base:18px; --t-sm:16px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#17181a; --surface:#202225; --surface-2:#2a2c30; --text:#ece9e3; --muted:#9a978f;
+  --accent:#4fc276; --accent-soft:rgba(79,194,118,.14); --accent-strong:#6ad189;
+  --border:rgba(255,255,255,.12); --border-strong:rgba(255,255,255,.18); --grid:rgba(255,255,255,.05);
+  --guess:#fb923c; --range:rgba(79,194,118,.35); --none:#34363a;
+}
+*,*::before,*::after{box-sizing:border-box}
+button,input{font-family:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--t-base)/1.55 var(--sans)}
+main{max-width:760px;margin:0 auto;padding:40px 16px 96px}
+.draft{font-size:var(--t-sm);color:var(--guess);border:1px dashed var(--guess);padding:6px 10px;display:inline-block;margin-bottom:28px}
+.back{color:var(--muted);text-decoration:none;font-size:var(--t-sm)}
+.back:hover{color:var(--text)}
+.kicker{font-size:var(--t-sm);color:var(--muted);letter-spacing:.02em;margin:48px 0 8px}
+h1,h2{font-family:var(--serif);font-weight:400;line-height:1.1;margin:0 0 12px}
+h1{font-size:var(--t-h1)}
+h2{font-size:var(--t-xl);margin-top:0}
+p{margin:0 0 16px}
+.lede{font-size:var(--t-md);color:var(--muted)}
+.step{border-top:1px solid var(--border);padding-top:28px;margin-top:32px}
+.step-label{font-size:var(--t-sm);color:var(--muted);margin-bottom:8px}
+.tabs,.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.tabs button,.chips button,.btn{font-size:var(--t-sm);padding:10px 14px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);cursor:pointer;border-radius:0}
+.tabs button[aria-pressed="true"]{border-color:var(--text);font-weight:600}
+.chips button[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn-primary:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,.tabs button:focus-visible,.chips button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.guess-row{display:flex;align-items:center;gap:20px;margin:8px 0 20px}
+.guess-num{font-family:var(--serif);font-size:64px;line-height:1;min-width:3.2ch;font-variant-numeric:tabular-nums;color:var(--guess)}
+input[type=range]{flex:1;accent-color:var(--guess);height:32px}
+.hidden{display:none}
+.reveal-num{font-family:var(--serif);font-size:clamp(64px,12vw,112px);line-height:1;color:var(--accent-strong);font-variant-numeric:tabular-nums}
+.reveal-range{color:var(--muted);margin:6px 0 16px}
+.verdict{font-size:var(--t-md);margin:0 0 24px}
+svg{display:block;width:100%;overflow:visible}
+.row-label{fill:var(--text);font-size:16px}
+.row-label.me{font-weight:600}
+.row-val{fill:var(--muted);font-size:16px;font-variant-numeric:tabular-nums}
+.axis text{fill:var(--muted);font-size:14px}
+.axis line{stroke:var(--grid);stroke-width:1}
+.note{border-left:3px solid var(--border-strong);padding:4px 0 4px 14px;color:var(--text);margin:20px 0}
+.note.close{border-color:var(--guess)}
+.share{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:24px}
+.share-status{font-size:var(--t-sm);color:var(--muted)}
+details{margin-top:40px;border-top:1px solid var(--border);padding-top:16px}
+summary{cursor:pointer;font-size:var(--t-sm);color:var(--muted)}
+details p,details li{font-size:var(--t-sm);color:var(--muted)}
+.chapter{margin-top:96px;border-top:1px solid var(--border-strong);padding-top:8px}
+#map path.state{stroke:var(--bg);stroke-width:1;cursor:pointer}
+#map path.state:hover,#map path.state.on{stroke:var(--text);stroke-width:1.5}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:var(--t-sm);color:var(--muted);margin:12px 0}
+.legend i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+.state-card{min-height:12em;background:var(--surface);border:1px solid var(--border);padding:16px 20px;margin-top:16px}
+.state-card ol{margin:8px 0 0;padding-left:24px}
+.state-card li{font-size:var(--t-sm)}
+.placeholder{border:1px dashed var(--border-strong);padding:24px;color:var(--muted);font-size:var(--t-sm);margin-top:24px}
+footer{margin-top:64px;font-size:var(--t-sm);color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){ .reveal-num{transition:opacity .4s ease} }
+.blank{background:var(--accent-soft);border:1px dashed var(--accent);padding:2px 6px;color:var(--accent-strong);font-style:italic}
+.opening{font-family:var(--serif);font-size:var(--t-lg);line-height:1.35;margin:0 0 20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
+.card{background:var(--surface);border:1px solid var(--border);padding:18px 20px}
+.card h3{font-family:var(--sans);font-size:var(--t-sm);font-weight:600;margin:0 0 8px}
+.card p,.card li{font-size:var(--t-sm);color:var(--muted);margin:0 0 8px}
+.card ul{padding-left:18px;margin:0}
+blockquote{margin:24px 0;padding:0 0 0 18px;border-left:3px solid var(--accent);font-family:var(--serif);font-size:var(--t-md);line-height:1.45}
+blockquote cite{display:block;font-family:var(--sans);font-style:normal;font-size:var(--t-sm);color:var(--muted);margin-top:10px}
+.links a{color:var(--accent-strong)}
+#guess-widget{margin:4px 0 24px;touch-action:none}
+#guess-widget svg{cursor:pointer;user-select:none}
+#guess-widget .handle:focus-visible{outline:none;stroke:var(--text);stroke-width:3}
+.w-caption{font-size:var(--t-sm);color:var(--muted);margin-top:6px}
+.skip{font-size:var(--t-sm);margin:32px 0 0}.skip a{color:var(--muted)}
+.view-tabs{margin-top:24px}
+.view-tabs button[aria-selected="true"]{border-color:var(--text);font-weight:600;background:var(--surface)}
+.q{font-size:var(--t-md);margin:0 0 8px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn-link{border:none;background:none;text-decoration:underline;color:var(--muted)}
+.btn-link:disabled{opacity:.45}
+.reveal-head{font-family:var(--serif);font-size:var(--t-xl);font-weight:400;margin:0 0 6px}
+.reveal-head b{color:var(--accent-strong);font-weight:500}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:16px 0}
+.pair figure{margin:0}.pair figcaption{font-size:var(--t-sm);font-weight:600;margin-bottom:8px}
+.viewer{margin-top:24px}
+.table-wrap{overflow-x:auto}
+.viewer table{border-collapse:collapse;font-size:var(--t-sm);margin:8px 0 12px;min-width:100%}
+.viewer td,.viewer th{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;font-variant-numeric:tabular-nums;color:var(--text)}
+.scrolly{margin-top:72px}
+.scrolly-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;margin-top:24px}
+.scrolly-sticky{position:sticky;top:24px;align-self:start}
+.scrolly-num{font-family:var(--serif);font-size:var(--t-lg);line-height:1.25;min-height:3.8em;margin-bottom:12px}
+.scrolly-num b{color:var(--accent-strong);font-weight:500}
+.scrolly-steps .sc-step{min-height:70vh;display:flex;align-items:center}
+.scrolly-steps .sc-step>div{background:var(--surface);border:1px solid var(--border);padding:18px 20px;opacity:.35;transition:opacity .3s ease}
+.scrolly-steps .sc-step.on>div{opacity:1;border-color:var(--border-strong)}
+.scrolly-steps .sc-step:last-child{min-height:50vh}
+.scrolly-key{font-size:var(--t-sm);color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 16px;align-items:center}.scrolly-key span{white-space:nowrap}
+.k{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+.k.solid{background:var(--accent)}.k.soft{background:var(--accent);opacity:.35}.k.none{background:var(--surface-2);border:1px solid var(--border)}
+@media (max-width:760px){
+  .scrolly-grid{grid-template-columns:1fr;gap:0}
+  .scrolly-sticky{top:0;background:var(--bg);padding:12px 0;z-index:2}
+  .scrolly-num{font-size:var(--t-md);min-height:3.2em}
+  .scrolly-steps .sc-step{min-height:60vh}
+}
+.tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--border-strong);box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 12px;font-size:var(--t-sm);max-width:260px;z-index:10;display:none}
+.tip b{display:block;margin-bottom:4px}
+.tip ol{margin:4px 0 0;padding-left:20px}
+.sub{font-family:var(--sans);font-size:var(--t-base);font-weight:600;margin:40px 0 12px}
+.press{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.press figure{margin:0}.press img{width:100%;height:auto;display:block;border:1px solid var(--border)}
+.press figcaption{font-size:var(--t-sm);color:var(--muted);margin-top:8px}
+.bills{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.bill{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);padding:14px 16px}
+.bill-id{font-family:var(--serif);font-size:var(--t-lg)}
+.bill-name{font-size:var(--t-sm);margin:4px 0}
+.bill-law{font-size:var(--t-sm);color:var(--accent-strong);font-weight:600}
+.bill-date{grid-column:1/-1;font-size:var(--t-sm);color:var(--muted)}
+@media (max-width:560px){.bills{grid-template-columns:1fr}}
+.embed{width:100%;height:640px;border:1px solid var(--border-strong);background:var(--surface);margin-top:8px}
+/* tightened type: serif for display only, one sans for everything else, tabular numbers for data */
+h1,h2,.opening,.reveal-head,.scrolly-num,.bill-id,.guess-num{font-family:var(--serif)}
+.kicker{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--text);letter-spacing:.01em}
+.ico{display:inline-flex;width:20px;height:20px;color:var(--accent-strong)}
+.ico svg{width:20px;height:20px}
+.sub .ico{vertical-align:-4px;margin-right:6px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.meta span{font-size:14px;line-height:1;padding:6px 8px;border:1px solid var(--border);color:var(--muted);background:var(--surface)}
+.meta span:first-child{border-color:var(--accent);color:var(--accent-strong);font-weight:600}
+/* linked highlighting: words in the text share a color with the marks they describe */
+.hl{font-weight:600;border-bottom:3px solid;padding:0 1px;cursor:help}
+.hl-used{border-color:var(--accent);color:var(--accent-strong)}
+.hl-range{border-color:var(--range)}
+.hl-guess{border-color:var(--guess);color:var(--guess)}
+.hl-none{border-color:var(--none)}
+[data-s]{transition:opacity .2s ease}
+body.hl-used [data-s]:not([data-s="used"]),body.hl-range [data-s]:not([data-s="range"]),body.hl-guess [data-s]:not([data-s="guess"]),body.hl-none [data-s]:not([data-s="none"]){opacity:.15}
+/* sticky table of contents (wide screens) */
+.toc{display:none}
+@media (min-width:1300px){
+  .toc{display:block;position:fixed;top:96px;left:max(16px,calc(50% - 380px - 250px));width:210px;font-size:var(--t-sm)}
+  .toc-title{color:var(--muted);margin:0 0 10px}
+  .toc ol{list-style:none;margin:0 0 20px;padding:0;border-left:2px solid var(--border)}
+  .toc li a{display:block;padding:5px 0 5px 12px;margin-left:-2px;border-left:2px solid transparent;color:var(--muted);text-decoration:none}
+  .toc li a:hover{color:var(--text)}
+  .toc li a.on{color:var(--text);border-left-color:var(--accent);font-weight:600}
+  .cta-float{display:none!important}
+}
+.cta-float{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:5;background:var(--accent);color:#fff;font-weight:600;padding:12px 20px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.contact .actions a,.toc-cta{text-decoration:none;display:inline-block}
+/* sticker */
+.sticker{position:absolute;top:24px;right:24px;width:110px;height:110px;padding:0;border:none;background:none;cursor:grab;z-index:6;touch-action:none;transform:rotate(-8deg);transition:transform .25s var(--ease,ease)}
+.sticker:hover{transform:rotate(4deg) scale(1.05)}
+.sticker:active{cursor:grabbing}
+.sticker svg{width:100%;height:100%;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15))}
+.st-bg{fill:var(--surface);stroke:var(--accent);stroke-width:3}
+.st-text{font:600 11px var(--sans);fill:var(--accent-strong);letter-spacing:.08em;text-transform:uppercase}
+.sticker-fact{position:absolute;z-index:6;max-width:240px;background:var(--text);color:var(--bg);font-size:var(--t-sm);padding:10px 12px;display:none}
+@media (max-width:760px){.sticker{width:80px;height:80px;top:12px;right:12px}}
+@media (prefers-reduced-motion:reduce){.sticker,.sticker:hover{transition:none}}
+.draft-note{font-size:14px;color:var(--guess);margin:0 0 8px}
+.brief{margin:16px 0 0}
+.brief-page{max-width:360px;aspect-ratio:8.5/11;background:var(--surface);border:1px solid var(--border-strong);padding:18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.bp-head{font-family:var(--serif);font-size:var(--t-md);border-bottom:2px solid var(--accent);padding-bottom:6px}
+.bp-head span{display:block;font-family:var(--sans);font-size:14px;color:var(--muted)}
+.bp-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1}
+.bp-box{border:1px dashed var(--border-strong);padding:8px;display:flex;flex-direction:column;gap:6px}
+.bp-box b{font-size:14px}
+.bp-box i{display:block;height:6px;background:var(--none)}
+.bp-wide{flex:.6}
+.bp-foot{font-size:14px;color:var(--muted);text-align:right}
+.brief figcaption{font-size:var(--t-sm);color:var(--muted);margin-top:8px;max-width:420px}
+.crowd{margin-top:20px;padding:14px 16px;border:1px dashed var(--border-strong);font-size:var(--t-sm);color:var(--muted)}
+.crowd b{color:var(--text)}
+.bill a{color:inherit;text-decoration:none}.bill a:hover .bill-id{text-decoration:underline}
+.bill-what{font-size:14px;color:var(--muted);margin-top:6px}
+.brief-page{max-width:240px}
+/* ===== Pass 2: typography, rhythm, section heads, palettes ===== */
+body{font-size:18px;line-height:1.6}
+main{max-width:760px;padding:64px 16px 128px}
+p,li{max-width:66ch}
+h1{font-size:clamp(40px,5vw,60px);line-height:1.04;letter-spacing:-.015em;margin:0}
+h2{font-size:clamp(28px,3.2vw,36px);line-height:1.12;letter-spacing:-.01em;margin:0}
+h3{font-family:var(--sans);font-size:19px;line-height:1.3;font-weight:600;margin:0}
+.opening{font-size:clamp(26px,3vw,32px);line-height:1.2;margin:0 0 24px}
+.lede{font-size:20px;line-height:1.55;color:var(--text);margin:0 0 20px}
+.lede + .lede{margin-top:-4px}
+.chapter{margin-top:128px;padding-top:32px;border-top:1px solid var(--border)}
+.scrolly{margin-top:128px}
+#game{scroll-margin-top:24px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px 24px;flex-wrap:wrap;margin:0 0 24px}
+.sec-head h2,.sec-head h1,.sec-head h3{display:flex;align-items:center;gap:10px}
+.sec-head .ico{width:22px;height:22px}
+.sub-head{margin-top:56px}
+.meta{margin:0;gap:0;display:flex;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.meta span{border:none;background:none;padding:0;font-size:14px;line-height:1.4;color:var(--muted)}
+.meta span:first-child{border:none;color:var(--muted);font-weight:600}
+.meta span+span::before{content:"·";margin:0 8px;color:var(--border-strong)}
+.step{margin-top:40px;padding-top:32px}
+.skip{margin:40px 0 0}
+.view-tabs{margin-top:32px}
+.aside{font-size:var(--t-sm);color:var(--muted);margin-top:20px}
+.aside a,figcaption a,.lede a,p a{color:var(--accent-strong)}
+/* proof figures */
+.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media (max-width:640px){.proof-grid{grid-template-columns:1fr}}
+.proof{margin:0 0 8px}
+.proof img,.press img{width:100%;height:auto;display:block;border:1px solid var(--border);background:var(--surface)}
+.proof figcaption,.press figcaption{font-size:var(--t-sm);color:var(--muted);margin-top:12px;line-height:1.5}
+.proof figcaption b{display:block;color:var(--text);font-size:var(--t-base);margin-bottom:4px}
+.zoom{display:block;width:100%;padding:0;border:none;background:none;cursor:zoom-in}
+.zoom:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.press{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.lightbox{border:none;padding:0;background:transparent;max-width:min(1200px,94vw);max-height:92vh}
+.lightbox::backdrop{background:rgba(10,10,10,.82)}
+.lightbox img{display:block;max-width:100%;max-height:82vh;margin:0 auto;background:#fff}
+.lightbox p{color:#eee;font-size:var(--t-sm);text-align:center;margin:12px auto 0}
+.lb-close{position:fixed;top:16px;right:20px;font-size:32px;line-height:1;background:none;border:none;color:#fff;cursor:pointer}
+blockquote p{margin:0 0 14px;max-width:none}
+blockquote{margin:32px 0}
+/* live design-system strip */
+.ds-live{border:1px solid var(--border);background:var(--surface);padding:20px;display:grid;gap:20px;margin-top:12px}
+.ds-row h4{font-size:14px;font-weight:600;color:var(--muted);margin:0 0 10px}
+.swatches{display:flex;flex-wrap:wrap;gap:10px}
+.sw{width:64px;font-size:12px;color:var(--muted);line-height:1.3}
+.sw i{display:block;height:40px;border:1px solid var(--border);margin-bottom:4px}
+.typescale div{display:flex;align-items:baseline;gap:14px;border-bottom:1px dashed var(--border);padding:4px 0}
+.typescale code{font-size:12px;color:var(--muted);min-width:64px}
+.spacing{display:flex;align-items:flex-end;gap:12px}
+.spacing div{background:var(--accent);opacity:.7}
+.spacing span{display:block;font-size:12px;color:var(--muted);text-align:center;margin-top:4px}
+/* timeline */
+.timeline{margin:20px 0 28px}
+.timeline svg{display:block;width:100%;overflow:visible}
+.tl-label{font-size:13px;fill:var(--muted)}
+.tl-key{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:14px;color:var(--muted);margin-top:8px}
+.tl-key i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+/* contact */
+.contact h2{margin-bottom:16px}
+.btn-lg{font-size:var(--t-base);padding:14px 22px;text-decoration:none;display:inline-block}
+footer{border-top:1px solid var(--border);padding-top:20px;margin-top:96px}
+/* palette switcher (review tool for Chris; remove before sending) */
+.pal{position:fixed;left:16px;bottom:16px;z-index:7;display:flex;gap:4px;font-size:13px;background:var(--surface);border:1px dashed var(--guess);padding:6px}
+.pal button{font:inherit;border:1px solid var(--border);background:none;color:var(--text);padding:4px 8px;cursor:pointer}
+.pal button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+@media (max-width:1299px){.pal{bottom:72px}}
+:root[data-palette="b"]{--bg:#fbfbfa;--surface:#ffffff;--surface-2:#eff0f2;--text:#16181d;--muted:#5b616e;--accent:#2456c7;--accent-strong:#1b3f94;--accent-soft:rgba(36,86,199,.10);--range:rgba(36,86,199,.30);--guess:#d9480f;--none:#e3e5e9}
+:root[data-palette="b"][data-theme="dark"]{--bg:#121418;--surface:#1b1e24;--surface-2:#252930;--text:#e8eaee;--muted:#9aa1ad;--accent:#6d9bff;--accent-strong:#9dbcff;--accent-soft:rgba(109,155,255,.14);--range:rgba(109,155,255,.30);--guess:#ff8a4c;--none:#2e323a}
+:root[data-palette="c"]{--bg:#f7f3ec;--surface:#fffdf8;--surface-2:#efe9de;--text:#231f1a;--muted:#6f665a;--accent:#0f766e;--accent-strong:#0b5a54;--accent-soft:rgba(15,118,110,.10);--range:rgba(15,118,110,.30);--guess:#c2410c;--none:#e6dfd2}
+:root[data-palette="c"][data-theme="dark"]{--bg:#1a1714;--surface:#24201b;--surface-2:#2e2922;--text:#efe8dc;--muted:#a89e8f;--accent:#3fb8ac;--accent-strong:#6fd3c8;--accent-soft:rgba(63,184,172,.14);--range:rgba(63,184,172,.30);--guess:#fb923c;--none:#38322a}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px 32px}
+.sec-head .meta{flex-direction:column;align-items:flex-end;text-align:right;max-width:240px}
+.sec-head .meta span+span::before{content:none}
+@media (max-width:640px){.sec-head{grid-template-columns:1fr}.sec-head .meta{flex-direction:row;align-items:flex-start;text-align:left;max-width:none}.sec-head .meta span+span::before{content:"·";margin:0 8px}}
+/* ===== Pass 3 ===== */
+:root{--mono:'IBM Plex Mono',ui-monospace,monospace}
+.skip{margin:40px 0 40px}
+.sec-head{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin:0 0 24px}
+.sec-head .meta{order:-1;flex-direction:row;align-items:center;text-align:left;max-width:none}
+.meta,.meta span,.meta span:first-child{font-family:var(--mono);font-size:14px;font-weight:400;letter-spacing:0;color:var(--muted)}
+.sec-head .meta span+span::before{content:"/";margin:0 10px;color:var(--border-strong)}
+@media (max-width:640px){.sec-head .meta{flex-wrap:wrap}}
+.method{margin-top:48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.method details{margin:0;border:none;padding:16px 0}
+.method details+details{border-top:1px solid var(--border)}
+.method details[open]{padding-bottom:20px}
+.scrolly-steps .sc-step:last-child{min-height:30vh}
+body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.06;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+:root[data-theme="dark"] body::after{mix-blend-mode:screen;opacity:.05}
+.flip{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 12px;font-size:13px}
+.flip button,.pal button{font:13px var(--sans);border:1px dashed var(--guess);background:none;color:var(--guess);padding:4px 8px;cursor:pointer}
+.flip button[aria-pressed="true"],.pal button[aria-pressed="true"]{background:var(--guess);color:#fff;border-style:solid}
+[data-variants]>[data-v]{display:none}
+[data-variants]>[data-v].on{display:block}
+[data-variants]>.proof-grid.on,[data-variants]>.kit.on,[data-variants]>.comp-md.on{display:grid}
+.role-counts{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0 24px}
+.role-counts div{border-top:3px solid var(--accent);padding:10px 0 0;min-width:180px}
+.role-counts b{font-family:var(--serif);font-size:40px;font-weight:400;line-height:1;display:block}
+.role-counts span{font-size:var(--t-sm);color:var(--muted)}
+/* style option B: hairlines instead of boxes, GoodRx chapter on its band color */
+:root[data-style="b"] .card,:root[data-style="b"] .state-card,:root[data-style="b"] .ds-live,:root[data-style="b"] .bill{border:none;border-top:1px solid var(--border-strong);background:none;padding-left:0;padding-right:0}
+:root[data-style="b"] .bill{border-top:3px solid var(--text)}
+:root[data-style="b"] #work{background:var(--band-goodrx,#fcef72);box-shadow:0 0 0 100vmax var(--band-goodrx,#fcef72);clip-path:inset(0 -100vmax);border-top:none;padding-top:64px;padding-bottom:64px;--muted:#4a4630;--border:rgba(0,0,0,.15)}
+:root[data-style="b"] #work .tabs button,:root[data-style="b"] #work .state-card{background:rgba(255,255,255,.55)}
+/* bands stay inside the reading column so the left nav never sits on color */
+:root[data-style="b"] #work{box-shadow:none;clip-path:none}
+.band{margin:0 -32px;padding:48px 32px 56px}
+:root[data-style="b"] #work{margin-left:-32px;margin-right:-32px;padding-left:32px;padding-right:32px}
+.band-epoch{margin-top:48px}
+:root[data-band="a"] .band-epoch{background:#e3eaf2}
+:root[data-band="b"] .band-epoch{background:#e8e3f3}
+:root[data-band="c"] .band-epoch{background:#ebe7df}
+.band-epoch .method{border-color:rgba(0,0,0,.12)}
+.band-epoch .tabs button,.band-epoch .chips button{background:rgba(255,255,255,.65)}
+@media (max-width:760px){.band,:root[data-style="b"] #work{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}}
+.embed{width:100%;height:560px;border:1px solid var(--border-strong);background:var(--surface);margin-top:8px}
+.kit{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;margin-top:8px}
+@media (max-width:640px){.kit{grid-template-columns:1fr}}
+.kc{border-top:1px solid var(--border-strong);padding-top:14px}
+.kc h4{font-family:var(--mono);font-size:14px;font-weight:400;color:var(--muted);margin:0 0 12px}
+.kc .big{font-family:var(--serif);font-size:44px;line-height:1}
+.kc .sub{font-size:var(--t-sm);font-weight:400;color:var(--muted);margin-top:6px}
+.kc select,.kc .seg button{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text)}
+.kc .seg{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.kc .seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.kc .verdict{margin-top:10px;font-size:var(--t-sm)}
+.kdesc{font-size:var(--t-sm);color:var(--muted);margin:-4px 0 12px}
+.site-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 28px}
+.site-grid img,.pg-stage img,.md-stage img{width:100%;height:auto;display:block;border:1px solid var(--border)}
+@media (max-width:640px){.site-grid{grid-template-columns:1fr}}
+.comp-md{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px}
+@media (max-width:640px){.comp-md{grid-template-columns:1fr}}
+.md-list{list-style:none;margin:0;padding:0;border-left:1px solid var(--border)}
+.md-list .md-grp{font-family:var(--mono);font-size:13px;color:var(--muted);padding:12px 0 6px 12px}
+.md-list button{display:block;width:100%;text-align:left;font:inherit;font-size:var(--t-sm);background:none;border:none;border-left:2px solid transparent;margin-left:-1px;padding:6px 12px;color:var(--muted);cursor:pointer}
+.md-list button[aria-selected="true"]{color:var(--text);border-left-color:var(--accent);font-weight:600}
+.pair-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:start;padding:24px 0;border-top:1px solid var(--border)}
+@media (max-width:640px){.pair-row{grid-template-columns:1fr}}
+.lb-code{display:none;max-width:min(900px,92vw);max-height:78vh;overflow:auto;background:#1f1d1b;color:#e9e6df;padding:18px 20px;font:13px/1.55 var(--mono);margin:0 auto}
+/* code rows: one header line, then code and output at the same height */
+.code-pairs{margin-top:32px;display:grid;gap:48px}
+.pair-row{display:block;padding:0;border:none}
+.pr-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-top:1px solid var(--border-strong);padding-top:14px}
+.pr-year{font-family:var(--serif);font-size:28px;line-height:1}
+.pr-file{font-family:var(--mono);font-size:14px}
+.pr-lang{font-family:var(--mono);font-size:14px;color:var(--muted);margin-left:auto}
+.pr-what{font-size:var(--t-sm);color:var(--muted);margin:8px 0 16px}
+.pr-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;height:300px}
+.pr-code{min-width:0;height:100%}
+.pr-code pre{margin:0;height:100%;overflow:auto;background:#1f1d1b;color:#e9e6df;padding:16px 18px;font:12.5px/1.6 var(--mono)}
+.pr-out{position:relative;height:100%;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pr-shot{flex:1;min-height:0;display:block;border:1px solid var(--border);background:var(--surface);overflow:hidden}
+.pr-shot img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.pr-label{position:absolute;left:8px;bottom:8px;font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.9);padding:2px 6px;color:var(--text)}
+@media (max-width:640px){.pr-body{grid-template-columns:1fr;height:auto}.pr-code pre{height:220px}.pr-out{height:220px}}
+/* list + detail: self-contained, the stage never grows the page */
+.comp-md{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start}
+.md-stage{min-height:420px}
+.md-stage .kc{border-top:none;padding-top:0}
+.md-stage .zoom img{max-height:460px;object-fit:contain;object-position:top left;background:var(--surface)}
+@media (max-width:640px){.comp-md{grid-template-columns:1fr}.md-list{display:flex;overflow-x:auto;border-left:none;border-bottom:1px solid var(--border);gap:4px}.md-list .md-grp{display:none}.md-list button{white-space:nowrap;border-left:none;border-bottom:2px solid transparent;margin:0}.md-list button[aria-selected="true"]{border-bottom-color:var(--accent)}.md-stage{min-height:0}}
+</style>
+</head>
+<body>
+<nav class="toc" id="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol id="toc-list"></ol>
+  <a class="btn btn-primary toc-cta" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI%3A%20Design%20Lead">Email Chris</a>
+</nav>
+<a class="cta-float" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI%3A%20Design%20Lead">Email Chris</a>
+<button class="sticker" id="sticker" aria-label="Sticker: made for Epoch AI. Click for a fact from the data, drag to move it."><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="sticker-arc" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><circle cx="60" cy="60" r="58" class="st-bg"/><text class="st-text"><textPath href="#sticker-arc">made for epoch ai · made for epoch ai ·</textPath></text><g id="st-dots"></g></svg></button>
+<div class="sticker-fact" id="sticker-fact" role="status"></div>
+<main>
+  <div id="hello" data-toc="Hello"></div>
+  <p class="opening">Hey Epoch AI and María de la Lama!</p>
+  <p class="lede">I'm Chris Lam, a designer with 14+ years at companies like Amazon, TaskRabbit, Clover Health and GoodRx. I'm applying for your Design Lead / Head of Design role, and if it makes sense, I'd love to be considered for the Product Manager, Website role too.</p>
+  <p class="lede">My mission is to help people make better, informed decisions about things that matter to them. At GoodRx Research that was health. Epoch does the same for AI, and with AI ethics and safety more important than ever, it's the non-profit work I want to do. I really love what you're doing to <a href="https://epoch.ai/data/ai-data-centers">keep track of AI data centers ↗</a>: I care a lot about how much power and water we're using, and this is the kind of work I want to contribute to.</p>
+  <p class="lede">Scroll down and play.</p>
+
+  <p class="skip"><a href="#work">Skip the game and see the work ↓</a></p>
+  <div class="band band-epoch">
+  <div id="game" data-toc="The game"></div>
+  <div class="sec-head"><h1>Guess how many people like you use AI</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span>Data: Epoch AI</span></p></div>
+  <p class="lede">Pick a group you belong to, guess, then see the real answer. Or skip the guess and go straight to the data.</p>
+
+  <div class="tabs view-tabs" role="tablist" aria-label="Which data">
+    <button role="tab" id="tab-like" aria-selected="true" aria-controls="view-like">People like you · working adults, July</button>
+    <button role="tab" id="tab-change" aria-selected="false" aria-controls="view-change">How fast it's changing · all adults, March vs August</button>
+  </div>
+
+  <div id="view-like" role="tabpanel" aria-labelledby="tab-like">
+    <section class="step" id="step-group">
+      <div class="step-label">Pick a group that fits you</div>
+      <div class="tabs" id="lenses" role="group" aria-label="Group type"></div>
+      <div class="chips" id="groups" role="group" aria-label="Your group"></div>
+    </section>
+
+    <section class="step" id="step-guess">
+      <p class="q" id="guess-q">Out of 100 working people like you, how many used an AI tool (like ChatGPT) in the past week?</p>
+      <div class="guess-row"><div class="guess-num" id="guess-num" aria-live="polite">50 of 100</div></div>
+      <div id="guess-widget"></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="reveal-btn" disabled>Pick a group first</button>
+        <button class="btn btn-link" id="skip-btn" disabled>Just show me the answer</button>
+      </div>
+    </section>
+
+    <section class="step hidden" id="step-reveal" aria-live="polite">
+      <h2 class="reveal-head" id="reveal-head"></h2>
+      <div class="reveal-range" id="reveal-range"></div>
+      <p class="verdict" id="verdict"></p>
+      <svg id="chart" role="img" aria-label="Share of each group that used AI in the past week, with likely ranges"></svg>
+      <div class="note" id="compare"></div>
+      <div class="share">
+        <button class="btn" id="copy-btn">Copy my result</button>
+        <button class="btn" id="again-btn">Try another group</button>
+        <span class="share-status" id="share-status"></span>
+      </div>
+      <div class="crowd" id="crowd"></div>
+      <p class="share-status">Guesses are stored anonymously: just the group and the number.</p>
+    </section>
+
+    <details class="viewer" id="viewer-like">
+      <summary>Check the data</summary>
+      <p><b>Source:</b> <a href="https://epoch.ai/data/polling">Epoch AI, polling on AI usage</a> (CC BY). Ipsos KnowledgePanel, July 10 to 19, 2026. 1,103 US adults with jobs, weighted to match the Census.</p>
+      <p><b>Question, word for word:</b> "In the past 7 days, did you use any of the following AI services? Select all that apply." "Used AI" here means any answer except "None (no AI use)."</p>
+      <div class="table-wrap"><table id="table-like"></table></div>
+      <p><a href="https://epoch.ai/data/polling/polling_on_ai_usage_jul_2026.csv">Download Epoch's full CSV</a> · <a href="data/ai-at-work-jul-2026.json">The slice this page uses</a></p>
+    </details>
+  </div>
+
+  <div id="view-change" role="tabpanel" aria-labelledby="tab-change" hidden>
+    <section class="step">
+      <p class="q">In March 2026, 8 out of 100 US adults used AI nearly every day (6 or 7 days a week). Out of 100 in August, how many?</p>
+      <div class="guess-row"><div class="guess-num" id="guess-num2" aria-live="polite">8 of 100</div></div>
+      <div id="guess-widget2"></div>
+      <div class="actions">
+        <button class="btn btn-primary" id="reveal-btn2">Show me the real answer</button>
+        <button class="btn btn-link" id="skip-btn2">Just show me the answer</button>
+      </div>
+    </section>
+    <section class="step hidden" id="step-reveal2" aria-live="polite">
+      <h2 class="reveal-head" id="reveal-head2"></h2>
+      <p class="verdict" id="verdict2"></p>
+      <div class="pair">
+        <figure><figcaption>March 2026</figcaption><div id="grid-mar"></div><p class="reveal-range">8 of 100 (range 7 to 9)</p></figure>
+        <figure><figcaption>August 2026</figcaption><div id="grid-aug"></div><p class="reveal-range">19 of 100 (range 17 to 21)</p></figure>
+      </div>
+      <p class="note">Any AI use in the past week went from 50 to 56 out of 100 over the same months. Epoch says comparisons across these two surveys are approximate, because the question about days changed.</p>
+    </section>
+    <details class="viewer">
+      <summary>Check the data</summary>
+      <p><b>Source:</b> <a href="https://epoch.ai/data-insights/near-daily-ai-use-doubled">Epoch AI, "Near-daily AI use doubled"</a> (CC BY). All US adults: March 3 to 5, 2026 (2,017 people) and August 28 to 30, 2026 (1,016 people).</p>
+      <p>This is a different group from the July game (everyone, not only people with jobs), so the two tabs are not one trend.</p>
+      <div class="table-wrap"><table id="table-change"></table></div>
+      <p><a href="data/epoch-ai-use-frequency-mar-aug-2026.csv">Download the CSV</a></p>
+    </details>
+  </div>
+
+  <section class="scrolly" id="findings" data-toc="What the data says" aria-label="What the data says">
+    <div class="sec-head"><h2><span class="ico" data-icon="findings"></span>Six things the survey shows</h2><p class="meta"><span>Analysis</span><span>Computed live from Epoch's numbers</span></p></div>
+    <div class="scrolly-grid">
+      <div class="scrolly-sticky">
+        <div class="scrolly-num" id="sc-num"></div>
+        <div id="sc-grid"></div>
+        <p class="scrolly-key"><span class="hl hl-used" data-hl="used">used AI</span><span class="hl hl-range" data-hl="range">the survey's range</span><span class="hl hl-none" data-hl="none">didn't</span></p>
+      </div>
+      <div class="scrolly-steps" id="sc-steps"></div>
+    </div>
+  </section>
+
+  <div class="method">
+  <details>
+    <summary>What these numbers can't tell you</summary>
+    <ul>
+      <li>The July game only asked people with jobs. If you're retired or a student, "people like you" isn't in it.</li>
+      <li>It's what people said they did, not measured use.</li>
+      <li>Each number is an estimate. The shaded range is where the real number most likely falls (Epoch's 90% range).</li>
+      <li>"Too close to call" is a real test, not whether two bars overlap: a gap counts only when it's bigger than 1.645 times the combined standard error of the two groups.</li>
+      <li>Small groups have wide ranges. "Less than high school" is 68 people.</li>
+    </ul>
+  </details>
+
+  <details>
+    <summary>Why a guessing game?</summary>
+    <ul>
+      <li>Guessing first, then seeing the gap, helped people remember and understand the data better, even people who knew little about the topic. Kim, Reinecke and Hullman, <a href="https://idl.cs.washington.edu/files/2017-ExplainingTheGap-CHI.pdf">"Explaining the Gap"</a>, CHI 2017.</li>
+      <li>Grids of 100 people help readers with low numeracy understand risk. Galesic, Garcia-Retamero and Gigerenzer, <a href="https://doi.org/10.1037/a0014474">"Using icon arrays to communicate medical risks"</a>, Health Psychology, 2009.</li>
+      <li>Counting dots beats reading a range for everyday decisions. Kay et al., <a href="https://doi.org/10.1145/2858036.2858558">"When (ish) is my bus?"</a>, CHI 2016.</li>
+    </ul>
+  </details>
+  </div>
+  </div><!-- /band-epoch -->
+
+  <section class="chapter" id="work" data-toc="GoodRx Research">
+    <div class="sec-head"><h2><span class="ico" data-icon="map"></span>The United States of Drugs</h2><p class="meta"><span>Shipped 2018</span><span>Rebuilt 2026 from the original data</span><span>GoodRx Research</span></p></div>
+    <p class="lede">The ten most-filled prescriptions in each state. I designed the original and built it in code (Vega) with engineer Marc Mendiola's help. Rebuilt here from the 2018 data.</p>
+    <div class="tabs" id="map-modes" role="group" aria-label="Color the map by"></div>
+    <div class="legend" id="legend"></div>
+    <svg id="map" role="img" aria-label="Map of US states colored by prescription rank"></svg>
+    <div class="state-card" id="state-card"><strong>Hover or tap a state</strong><p class="share-status">to see its top ten.</p></div>
+
+    <div class="sec-head sub-head"><h3><span class="ico" data-icon="press"></span>Published graphics</h3><p class="meta"><span>GoodRx Research, 2017 to 2018</span></p></div>
+    <div class="press">
+      <figure><button class="zoom" aria-label="Enlarge: Some drugs cost more with insurance"><img src="images/work/goodrx/research-insurance-prices.jpg" alt="GoodRx Research chart: some drugs cost more with insurance, with average overpayment and how often GoodRx beat insurance prices for ten common drugs" loading="lazy" /></button><figcaption>Some drugs cost more with insurance. Data from a Massachusetts Health Policy Commission analysis.</figcaption></figure>
+      <figure><button class="zoom" aria-label="Enlarge: most and least expensive cities"><img src="images/work/goodrx-cities-prices.webp" alt="GoodRx Research chart of the most and least expensive US cities for prescriptions" loading="lazy" /></button><figcaption>Most and least expensive cities for prescriptions. Cited by <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html">The New York Times ↗</a>. <a href="https://www.goodrx.com/healthcare-access/research/most-least-expensive-cities-prescription-medications">GoodRx Research ↗</a></figcaption></figure>
+      <figure><button class="zoom" aria-label="Enlarge: flu prescriptions map"><img src="images/work/goodrx-flu-prescriptions.webp" alt="GoodRx Research map of flu prescriptions across the US" loading="lazy" /></button><figcaption>Flu prescriptions across the US. Used by <a href="https://abcnews.com/video/53014507/">Good Morning America and ABC News ↗</a>. <a href="https://www.goodrx.com/oseltamivir/tamiflu-prescriptions-reveal-shocking-flu-trend">GoodRx Research ↗</a></figcaption></figure>
+    </div>
+
+    <div class="sec-head sub-head"><h3><span class="ico" data-icon="policy"></span>Briefs for policymakers</h3><p class="meta"><span>Shipped 2018</span><span>Originals lost</span></p></div>
+    <p>With GoodRx's executive team, I designed state-specific briefs for meetings with policymakers: one reusable structure, filled in for all 50 states with each state's top health conditions, top prescriptions and health facts. They were used in advocacy around two drug-price transparency bills.</p>
+    <div class="bills">
+      <div class="bill"><a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553"><div class="bill-id">S.2553 ↗</div><div class="bill-name">Know the Lowest Price Act of 2018</div><div class="bill-law">Public Law 115-262</div><div class="bill-what">Medicare drug plans can't stop pharmacists from telling patients when paying cash is cheaper.</div></a></div>
+      <div class="bill"><a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554"><div class="bill-id">S.2554 ↗</div><div class="bill-name">Patient Right to Know Drug Prices Act</div><div class="bill-law">Public Law 115-263</div><div class="bill-what">The same for private insurance: no more pharmacy "gag clauses."</div></a></div>
+      <div class="bill-date">Both signed into law October 10, 2018</div>
+    </div>
+  </section>
+
+  <section class="chapter" id="research" data-toc="Research">
+    <div class="sec-head"><h2><span class="ico" data-icon="research"></span>How I find out what people need</h2><p class="meta"><span>Clover Health, 2015 to 2016</span><span>Pathstream, 2019 to 2020</span></p></div>
+    <div class="proof-grid">
+      <figure class="proof"><button class="zoom" aria-label="Enlarge: Clover Health nurse home visit"><img src="images/work/clover-hero.png" alt="A Clover Health nurse practitioner with a patient at home, next to the redesigned visit app" loading="lazy" /></button>
+        <figcaption><b>Clover Health</b>Shadowed nurse practitioners on home visits before redesigning their app. Nurses reported 1 to 2 hours of chart prep gone each day. <a href="index.html?work=clover&amp;project=care-visit#work">Case study ↗</a></figcaption></figure>
+      <figure class="proof"><button class="zoom" aria-label="Enlarge: Pathstream product system map"><img src="images/work/pathstream/system-map.png" alt="Pathstream product system map: every screen of the platform laid out" loading="lazy" /></button>
+        <figcaption><b>Pathstream</b>A 26-screen product audit in week three, three rounds of usability testing, and five co-design sessions with course authors. Shown: the product system map. <a href="index.html?work=pathstream&amp;project=lesson-system#work">Case study ↗</a></figcaption></figure>
+    </div>
+    <p class="aside">And this page: every guess is recorded anonymously, so the game doubles as research on what people believe about AI at work.</p>
+  </section>
+
+  <section class="chapter" id="system" data-toc="Design system">
+    <div class="sec-head"><h2><span class="ico" data-icon="system"></span>Setting the quality bar</h2><p class="meta"><span>TaskRabbit, 2014 to 2015</span><span>Pathstream, 2019 to 2020</span><span>This site: live</span></p></div>
+    <div class="proof-grid">
+      <figure class="proof"><button class="zoom" aria-label="Enlarge: TaskRabbit mobile design system"><img src="images/taskrabbit-design-system.png" alt="TaskRabbit mobile design system: typography, color scales, icons, navigation, forms, buttons, cards and dialogs" loading="lazy" /></button>
+        <figcaption><b>TaskRabbit</b>Led and consolidated years of legacy interface work into one mobile system with the engineers and design team: typography, icon sizes, color scales, navigation, forms, buttons, status, cards, dialogs and empty states. <a href="https://dribbble.com/shots/1940029-TaskRabbit-Tasker-Mobile-UI-Kit">Tasker UI kit on Dribbble ↗</a></figcaption></figure>
+      <figure class="proof"><button class="zoom" aria-label="Enlarge: Pathstream shared UI library"><img src="images/work/pathstream/ui-library.png" alt="Pathstream shared UI library: type scale and color tokens with their roles" loading="lazy" /></button>
+        <figcaption><b>Pathstream</b>Audited the interface library and found the drift: sixteen colors where four grays were all labeled Text, two values both called Primary Button, body copy at four sizes, a 10.3px type size shipping to adult learners. Designed the shared system with engineer Matthew Smith, who built it in React with Storybook. <a href="index.html?work=pathstream&amp;project=lesson-system#work">Case study ↗</a></figcaption></figure>
+    </div>
+    <h3 class="sub">This site's system, read live from its code</h3>
+    <div class="ds-live" id="ds-live" aria-live="polite"></div>
+    <p class="aside"><a href="index.html?ds">Open the full catalog ↗</a></p>
+  </section>
+
+  <section class="chapter" id="components" data-toc="Components">
+    <div class="sec-head"><h2><span class="ico" data-icon="system"></span>Components for data</h2><p class="meta"><span>Prototype</span><span>Built for this page</span></p></div>
+    <div class="comp-md" id="comp-md"></div>
+    <p class="aside">Site components are captured from the live catalog, September 26, 2026. <a href="index.html?ds=components">See them live ↗</a></p>
+    <script type="application/json" id="site-comp-data">[{"slug": "world-band", "name": "World band", "desc": "One per company on the homepage; the band color comes from the work.", "img": "images/work/components/world-band.jpg"}, {"slug": "title-band", "name": "Title band", "desc": "Opens every company page: role, name, one-line summary, stage.", "img": "images/work/components/title-band.jpg"}, {"slug": "facts-row", "name": "Facts row", "desc": "Role, dates and team for pages without project cards.", "img": "images/work/components/facts-row.jpg"}, {"slug": "fact-grid", "name": "Fact grid", "desc": "A spec panel for dense facts.", "img": "images/work/components/fact-grid.jpg"}, {"slug": "project-card", "name": "Project card", "desc": "One card used on company pages and in Recent work.", "img": "images/work/components/project-card.jpg"}, {"slug": "diagram-card", "name": "Diagram card", "desc": "Diagrams as first-class cards, not screenshots.", "img": "images/work/components/diagram-card.jpg"}, {"slug": "inside-the-voice", "name": "Inside the voice", "desc": "A y30 call replayed turn by turn beside the pipeline that handled it.", "img": "images/work/components/inside-the-voice.jpg"}, {"slug": "end-row", "name": "Case-study end row", "desc": "Next case study and contact, closing every story.", "img": "images/work/components/end-row.jpg"}]</script>
+  </section>
+
+  <section class="chapter" id="leading" data-toc="Leading">
+    <div class="sec-head"><h2><span class="ico" data-icon="leading"></span>How I've led</h2></div>
+    <p>Here are ways I've led:</p>
+    
+    <div class="cards">
+      <div class="card"><h3>As a founder</h3><p>Co-founder and CEO of PlaySesh: started it 0 to 1 solo, then led product and design with a co-founder and a founding engineer. Co-founder of y30, owning product, design and engineering.</p></div>
+      <div class="card"><h3>As the first designer</h3><p>First full-time designer at Iodine, first design hire at Pathstream, founding designer at StartPlaying, second designer at Clover Health. Each time I set how design, engineering and product worked together.</p></div>
+    </div>
+    <p>I haven't managed a design team yet. I've been pretty active with mentoring over the years.</p>
+  </section>
+
+  <section class="chapter" id="code" data-toc="Code">
+    <div class="sec-head"><h2><span class="ico" data-icon="code"></span>I build what I design</h2><p class="meta"><span>Hand-coded, 2016 to 2024</span><span>This page: AI-assisted, 2026</span></p></div>
+    <p>Hand-coded, no AI: <a href="https://github.com/whoischrislam/portfolio">portfolio (2023 to 2024) ↗</a> and <a href="https://github.com/whoischrislam/gamedev-portfolio">gamedev-portfolio ↗</a>. This site is AI-assisted for speed, since I want to demonstrate this and apply before the applications close.</p>
+    <div class="code-pairs" id="code-pairs"></div>
+    <script type="application/json" id="code-data">[{"year": "2016", "file": "app.coffee", "what": "Framer prototype for Clover Health's call logging", "lang": "CoffeeScript", "code": "# Import file \"Framer_Prototype\"\nsketch1 = Framer.Importer.load(\"imported/Framer_Prototype@1x\")\n\neditCall = sketch1.edit_call\ncallLog = sketch1.call_log\n\neditCall.x = 398\neditCall.opacity = 1\n\n\nlayerA = new Layer\n    width: 398\n    height: 904\n    backgroundColor: \"NaN\"\n\neditCall.parent = layerA\ncallLog.parent = layerA\n\nlayerA.clip = true\n\n#added layers\nlogLink = new Layer\nlogLink.html = \"Call Log Summary\"\nlogLink.width = 124\nlogLink.height = 25\nlogLink.x = 398+17\nlogLink.y = 42\nlogLink.backgroundColor = \"none\"\nlogLink.style = \n\t\"font-family\":\"Helvetica\",\n\t\"font-size\":\"15px\"\n\n\ndoneButton = new Layer\n\twidth:320\n\theight:45\n\tx:46+398\n\ty:382\n\tbackgroundColor: \"#3189D2\"\n\tborderRadius: 4\n\tz:0\n\tparent: layerA\n\t\n", "img": "images/work/clover-hero.png", "imgAlt": "Clover Health's nurse visit app on a tablet", "label": "Clover Health, where I built it"}, {"year": "2018", "file": "top_us_drugs.json", "what": "The original Vega spec for the United States of Drugs: data joined to the map, projection, hover", "lang": "Vega", "code": "    \"data\": [\n        {\n            \"name\": \"drugs\",\n            \"url\": \"top_drugs_by_us_state_adjusted_xformed.csv\",\n            \"format\": {\"type\": \"csv\", \"parse\": \"auto\"}\n        },\n        {\n            \"name\": \"states\",\n            \"url\": \"us-10m.json\",\n            \"format\": {\"type\": \"topojson\", \"feature\": \"states\"},\n            \"transform\": [\n                {\n                    \"type\": \"geopath\",\n                    \"projection\": \"projection\"\n                },\n                {\n                    \"type\": \"lookup\",\n                    \"from\": \"drugs\", \"key\": \"stateid\",\n                    \"fields\": [\"id\"], \"as\": [\"state\"]\n                }\n            ]\n        }\n    ],\n    \n    \"scales\": [\n        {\n          \"name\": \"color\",\n          \"type\": \"ordinal\",\n          \"range\": {\"signal\": \"colors\"},\n          \"domain\": {\"signal\": \"topdrug\"}\n        }\n    ],\n    \n    \"projections\": [\n        {\n            \"name\": \"projection\",\n            \"type\": \"albersUsa\",\n            \"scale\": 1200,\n            \"translate\": [{\"signal\": \"width / 2\"}, {\"signal\": \"height / 2\"}]\n        }\n    ],\n    \n    \"marks\": [\n        \n        {\n            \"type\": \"path\",\n            \"interactive\": true,\n            \"from\": {\"data\": \"states\"},\n            \"encode\": {\n                \"enter\": {\n                    \"fill\": {\"value\": \"#dedede\"},\n                    \"stroke\": {\"value\": \"#ffffff\"}\n                },\n                \"update\": {\n                    \"path\": {\"field\": \"path\"},\n                    \"fill\": {\"scale\": \"color\", \"field\": \"state.drug1\"}\n                },\n                \"hover\": {\n                    \"fill\": {\"value\":\"#f9e547\"}\n                }\n            }", "img": "images/work/goodrx-us-of-drugs.webp", "imgAlt": "The United States of Drugs map as published by GoodRx Research", "label": "What it made"}, {"year": "2023 to 2024", "file": "styles.css", "what": "Hand-written design tokens for my portfolio, reused and re-themed for my game-dev portfolio", "lang": "CSS", "code": ":root {\n/* Sizing */\n--page-width: 80vw;\n--page-height: 100%;\n/* Spacing */\n--gap: 0.4em 0.4em;\n--header-footer-padding: 1.6em 0;\n--section-padding: 4em 0;\n--container-padding: 1em;\n--project-margins: 0 0 0 0;\n/* Typography */\n--header-font: 'Merriweather', serif;\n--body-font: 'Sarabun', sans-serif;\n--h1-size: 4em;\n--h2-size: 2em;\n--p-size: 1.4em;\n--highlight-size: 1em;\n--header-spacing: 0 0 0.4em 0;\n--inline-spacing: 0 0 1em 0;\n/* Colors */\n--background: #2D2D2D;\n--secondary-background:#EBF2FF;\n--primary: #259AC9;\n--secondary: #196A8A;\n--nav-link: #ffffff;\n--link:#259AC9;\n--white: #ffffff;\n--black:#2D2D2D;\n--gray: #f2f2f2;\n/* Drop Shadow */", "img": "images/work/handcoded-portfolio.jpg", "imgAlt": "Chris's hand-coded portfolio", "img2": "images/work/handcoded-gamedev-portfolio.jpg", "label": "What it made"}]</script>
+  </section>
+
+  <section class="chapter" id="colleagues" data-toc="Colleagues">
+    <div class="sec-head"><h2><span class="ico" data-icon="quote"></span>What colleagues say</h2><p class="meta"><span>LinkedIn recommendations</span><span>Quoted word for word</span></p></div>
+    <blockquote><p>Chris is a splendid and multi-talented designer, with an innate ability to understand user needs and experiment with software design until the product matches the purpose. He ably took on assignments in a range of media - from PDF to D3 data visualizations - and was dependably curious and creative in creating effective software and design solutions. He is literate in code - engineers love working with him - and is also deeply attuned to the needs of ordinary people (we worked on healthcare information and tools, which is not an easy area whatsoever to understand user needs and concerns). I heartily recommend him as a product designer with a flair for UX/UI.</p><cite>Thomas Goetz, GM and Head of Research at Iodine, managed Chris directly</cite></blockquote>
+    <blockquote><p>Chris is a passionate designer that can contribute to any team with design prowess and the cachet to back it up. He isn't afraid to voice and fight for what he believes is right, but, more importantly, he is willing to listen to others' opinions and concede when appropriate. He has enough technical know-how and communication skills to effectively interact with members of the team who oversee different aspects of the product--both business and technical. And, he ensures that everyone has the opportunity to provide him with feedback both about his own performance and about his designs.</p>
+      <p>As a software engineer, I worked with Chris for over a year as part of both Iodine and GoodRx. We both switched teams throughout our time together, but he always served as a product designer. He was the sole designer during his time at Iodine and so spearheaded the end-to-end design effort for all product initiatives during his tenure. That included but wasn't limited to conceiving and designing product features both functionally and visually, facilitating product brainstorm meetings, coordinating with the engineering team for product implementation, conducting user research, and moderating post-launch retrospective meetings.</p>
+      <p>Chris was always hard-working and effective in his capacity as a product designer. He was thoughtful, meticulous, and ethical when designing any new product or feature. He ensured that the team carried through with implementation from start to finish and did what he could to facilitate that. And even when a feature wasn’t successful from a business standpoint, he would make sure that both he and the rest of the team learned from it.</p>
+      <p>Bottom line: Chris would be a strong addition to most any product development team.</p><cite>Marc Mendiola, software engineer, Iodine and GoodRx</cite></blockquote>
+    <p class="aside"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/">All recommendations on LinkedIn ↗</a></p>
+  </section>
+
+  <section class="chapter contact" id="contact" data-toc="Get in touch">
+    <h2>Let's talk.</h2>
+    <p class="lede">I'd love to figure out how we can work together! I'm excited about the mission of Epoch AI and this role combines a bit of everything I'm working towards.</p>
+    <a class="btn btn-primary btn-lg" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI%3A%20Design%20Lead">Email Chris</a>
+    <p class="aside">Or see my <a href="chris-lam-resume.pdf">résumé</a> and <a href="index.html">full portfolio</a>.</p>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Enlarged image"><button class="lb-close" aria-label="Close">×</button><img id="lb-img" alt="" /><pre id="lb-code" class="lb-code"></pre><p id="lb-cap"></p></dialog>
+  <div class="tip" id="tip" role="tooltip"></div>
+  <footer>Data: Epoch AI (CC BY) and GoodRx Research (2018). Design and build: Chris Lam.</footer>
+</main>
+
+<script src="analytics-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+(function () {
+  const LENSES = { age_group: 'Age', education: 'School', region: 'Where you live', gender: 'Gender' };
+  const LENS_NOUN = { age_group: 'aged', education: 'with', region: 'in the', gender: '' };
+  const Z = 1.645; // Epoch's intervals are 90%
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  let rows = [], all = null, lens = 'age_group', group = null, guess = 50;
+
+  // ---- 100-people grid: the one component for every count on this page ----
+  function Grid(el, { interactive = false, onChange } = {}) {
+    const host = d3.select(el);
+    let cells, size, gap = 6, value = 0;
+    function render() {
+      host.selectAll('*').remove();
+      const Wd = el.clientWidth || 600;
+      size = Math.min(34, (Wd - gap * 9) / 10);
+      const side = size * 10 + gap * 9;
+      const svg = host.append('svg').attr('viewBox', `0 0 ${side} ${side}`).attr('height', side).style('max-width', side + 'px');
+      cells = svg.selectAll('circle').data(d3.range(100)).join('circle')
+        .attr('cx', i => (i % 10) * (size + gap) + size / 2).attr('cy', i => Math.floor(i / 10) * (size + gap) + size / 2)
+        .attr('r', size / 2 - 2);
+      paint();
+      if (!interactive) return;
+      const pick = (ev) => {
+        const [px, py] = d3.pointer(ev, svg.node());
+        const col = Math.max(0, Math.min(9, Math.floor(px / (size + gap)))), row = Math.max(0, Math.min(9, Math.floor(py / (size + gap))));
+        set(row * 10 + col + 1);
+      };
+      svg.style('cursor', 'pointer').style('touch-action', 'none')
+        .on('pointerdown', ev => { pick(ev); svg.on('pointermove', pick); })
+        .on('pointerup pointerleave', () => svg.on('pointermove', null))
+        .attr('tabindex', 0).attr('role', 'slider').attr('aria-label', 'Your guess, out of 100 people')
+        .attr('aria-valuemin', 0).attr('aria-valuemax', 100).attr('aria-valuenow', value)
+        .on('keydown', e => {
+          const step = e.shiftKey ? 10 : 1;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { set(value + step); e.preventDefault(); }
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { set(value - step); e.preventDefault(); }
+        });
+      this.svg = svg;
+    }
+    function paint() { cells.attr('fill-opacity', 1).attr('fill', i => i < value ? 'var(--guess)' : 'var(--none)').attr('data-s', i => i < value ? 'guess' : 'none').attr('stroke', 'none'); }
+    function set(v) {
+      value = Math.max(0, Math.min(100, Math.round(v)));
+      if (cells) { paint(); host.select('svg').attr('aria-valuenow', value); }
+      onChange && onChange(value);
+    }
+    // Real answer fills in green, one person at a time. Orange rings mark the gap between guess and truth.
+    function reveal(real, g) {
+      const r = Math.round(real);
+      cells.transition().duration(RM ? 0 : 20).delay(i => RM ? 0 : i * 9).attr('fill-opacity', 1)
+        .attr('fill', i => i < r ? 'var(--accent)' : 'var(--none)').attr('data-s', i => i < r ? 'used' : 'none')
+        .attr('stroke', i => g != null && (i < g) !== (i < r) ? 'var(--guess)' : 'none').attr('stroke-width', 3);
+    }
+    // Honest uncertainty: solid up to the low end of the range, pale across the range.
+    function range(lo, hi) {
+      const a = Math.round(lo), b = Math.round(hi);
+      cells.transition().duration(RM ? 0 : 300).delay(i => RM ? 0 : i * 3)
+        .attr('fill', i => i < b ? 'var(--accent)' : 'var(--none)').attr('fill-opacity', i => i < a ? 1 : .35).attr('stroke', 'none');
+      cells.attr('data-s', i => i < a ? 'used' : i < b ? 'range' : 'none');
+    }
+    return { render: render, set, reveal, range, get value() { return value; } };
+  }
+
+  // ---- Tab 1: people like you (July 2026, working adults) ----
+  const g1 = Grid($('guess-widget'), { interactive: true, onChange: v => { guess = v; $('guess-num').textContent = v + ' of 100'; } });
+
+  fetch('data/ai-at-work-jul-2026.json').then(r => r.json()).then(doc => {
+    rows = doc.rows;
+    all = rows.find(r => r.lens === 'full_sample');
+    if (LENSES[params.get('lens')]) lens = params.get('lens');
+    drawLenses(); drawGroups(); g1.render(); g1.set(50); drawTable(); initScrolly(); buildComponents();
+    const g = params.get('group');
+    if (g && rows.some(r => r.lens === lens && r.group === g)) pickGroup(g);
+  });
+
+  const groupsFor = (l) => rows.filter(r => r.lens === l);
+
+  function drawLenses() {
+    const el = $('lenses'); el.innerHTML = '';
+    Object.entries(LENSES).forEach(([k, label]) => {
+      const b = document.createElement('button');
+      b.textContent = label; b.setAttribute('aria-pressed', k === lens);
+      b.onclick = () => { lens = k; group = null; drawLenses(); drawGroups(); resetReveal(); setButtons(); };
+      el.append(b);
+    });
+  }
+  function drawGroups() {
+    const el = $('groups'); el.innerHTML = '';
+    groupsFor(lens).forEach(r => {
+      const b = document.createElement('button');
+      b.textContent = r.group; b.setAttribute('aria-pressed', r.group === group);
+      b.onclick = () => pickGroup(r.group);
+      el.append(b);
+    });
+  }
+  function setButtons() {
+    $('reveal-btn').disabled = !group; $('skip-btn').disabled = !group;
+    $('reveal-btn').textContent = group ? 'Show me the real answer' : 'Pick a group first';
+  }
+  function pickGroup(g) { group = g; drawGroups(); setButtons(); resetReveal(); }
+  function resetReveal() { $('step-reveal').classList.add('hidden'); $('share-status').textContent = ''; if (rows.length) { g1.render(); } }
+
+  function drawTable() {
+    const t = $('table-like');
+    t.innerHTML = '<tr><th>Group</th><th>Used AI</th><th>90% range</th><th>People asked</th></tr>' +
+      rows.map(r => `<tr><td>${r.group === 'All' ? 'All working adults' : r.group}</td><td>${r.used.toFixed(1)}%</td><td>${r.lo.toFixed(1)} to ${r.hi.toFixed(1)}%</td><td>${r.n}</td></tr>`).join('');
+  }
+
+  const isClose = (a, b) => Math.abs(a.used - b.used) / Math.sqrt(a.se * a.se + b.se * b.se) < Z;
+  function who(me) {
+    if (lens === 'age_group') return `working people aged ${me.group}`;
+    if (lens === 'education') return `working people with ${me.group === 'Bachelor+' ? 'a bachelor’s degree or more' : me.group.toLowerCase()} education`;
+    if (lens === 'region') return `working people in the ${me.group}`;
+    return `working ${me.group === 'Male' ? 'men' : 'women'}`;
+  }
+
+  $('reveal-btn').onclick = () => reveal(true);
+  $('skip-btn').onclick = () => reveal(false);
+  $('again-btn').onclick = () => { resetReveal(); $('step-group').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); };
+
+  function reveal(guessed) {
+    const me = rows.find(r => r.lens === lens && r.group === group);
+    const real = Math.round(me.used), diff = guess - real, g = guessed ? guess : null;
+    $('reveal-head').innerHTML = `<span class="hl hl-used" data-hl="used">${real} of every 100</span> ${who(me)} used AI in the past week.`;
+    $('reveal-range').innerHTML = `<span class="hl hl-range" data-hl="range">Most likely somewhere between ${Math.round(me.lo)} and ${Math.round(me.hi)}</span>. Based on ${me.n} people asked.`;
+    $('verdict').innerHTML = !guessed ? '' : Math.abs(diff) <= 3 ? `<span class="hl hl-guess" data-hl="guess">You guessed ${guess}</span>. Nearly spot on.`
+      : `<span class="hl hl-guess" data-hl="guess">You guessed ${guess}</span>. That's ${Math.abs(diff)} ${diff > 0 ? 'too high' : 'too low'}.`;
+    g1.reveal(me.used, g);
+    if (guessed && window.posthog && window.posthog.capture) window.posthog.capture('epoch_guess', { view: 'like', lens, group, guess, real });
+    drawCrowd(me);
+    drawChart(me, g); drawCompare(me);
+    $('copy-btn').hidden = !guessed;
+    $('step-reveal').classList.remove('hidden');
+    setTimeout(() => $('step-reveal').scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }), RM ? 0 : 1100);
+  }
+
+  function drawChart(me, g) {
+    const svg = d3.select('#chart'); svg.selectAll('*').remove();
+    const data = [all, ...groupsFor(lens)];
+    const W = $('chart').clientWidth || 700, L = Math.min(170, W * 0.36), RH = 42, H = data.length * RH + 28;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleLinear().domain([0, 100]).range([L, W - 44]);
+    const ax = svg.append('g').attr('class', 'axis');
+    [0, 25, 50, 75, 100].forEach(t => {
+      ax.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', 0).attr('y2', data.length * RH);
+      ax.append('text').attr('x', x(t)).attr('y', data.length * RH + 20).attr('text-anchor', 'middle').text(t);
+    });
+    data.forEach((r, i) => {
+      const y = i * RH + RH / 2, isMe = r === me, grp = svg.append('g');
+      const label = r.lens === 'full_sample' ? 'All working adults' : r.group + (isMe ? ' (you)' : '') + (r.n < 100 ? ' · small group' : '');
+      grp.append('text').attr('class', 'row-label' + (isMe ? ' me' : '')).attr('x', 0).attr('y', y + 5).text(label);
+      grp.append('rect').attr('x', x(r.lo)).attr('width', x(r.hi) - x(r.lo)).attr('y', y - 8).attr('height', 16)
+        .attr('fill', isMe ? 'var(--accent-soft)' : 'var(--grid)').attr('stroke', isMe ? 'var(--accent)' : 'var(--border)').attr('data-s', 'range');
+      grp.append('circle').attr('cx', x(r.used)).attr('cy', y).attr('r', isMe ? 7 : 5).attr('fill', isMe ? 'var(--accent-strong)' : 'var(--muted)').attr('data-s', 'used');
+      grp.append('text').attr('class', 'row-val').attr('x', W - 36).attr('y', y + 5).text(Math.round(r.used));
+      grp.append('rect').attr('x', 0).attr('y', y - RH / 2).attr('width', W).attr('height', RH).attr('fill', 'transparent')
+        .on('pointermove', ev => showTip(`<b>${r.lens === 'full_sample' ? 'All working adults' : r.group}</b>${r.used.toFixed(1)} of 100 used AI<br>Range: ${r.lo.toFixed(1)} to ${r.hi.toFixed(1)}<br>${r.n} people asked`, ev))
+        .on('pointerleave', hideTip);
+    });
+    if (g == null) return;
+    const gy = data.indexOf(me) * RH + RH / 2;
+    svg.append('line').attr('x1', x(g)).attr('x2', x(g)).attr('y1', gy - 16).attr('y2', gy + 16).attr('stroke', 'var(--guess)').attr('stroke-width', 3).attr('data-s', 'guess');
+    svg.append('text').attr('data-s', 'guess').attr('x', x(g)).attr('y', gy - 20).attr('text-anchor', 'middle').attr('fill', 'var(--guess)').style('font-size', '14px').text('your guess');
+  }
+
+  function drawCompare(me) {
+    const others = groupsFor(lens).filter(r => r !== me);
+    const far = others.reduce((a, b) => Math.abs(b.used - me.used) > Math.abs(a.used - me.used) ? b : a);
+    const near = others.reduce((a, b) => Math.abs(b.used - me.used) < Math.abs(a.used - me.used) ? b : a);
+    const line = (o) => isClose(me, o)
+      ? `<b>${me.group} vs ${o.group}: too close to call.</b> The numbers look different, but the survey can't tell them apart.`
+      : `<b>${me.group} used AI ${me.used > o.used ? 'more' : 'less'} than ${o.group}.</b> This gap is bigger than the survey's margin, so it's likely real.`;
+    $('compare').innerHTML = line(far) + (near !== far ? '<br><br>' + line(near) : '');
+    $('compare').classList.toggle('close', isClose(me, near));
+  }
+
+  $('copy-btn').onclick = () => {
+    const me = rows.find(r => r.lens === lens && r.group === group);
+    const url = `${location.origin}${location.pathname}?lens=${lens}&group=${encodeURIComponent(group)}`;
+    const text = `I guessed ${guess} of 100 ${who(me)} used AI last week. The real answer: ${Math.round(me.used)}. Guess yours: ${url}`;
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+      .then(() => { $('share-status').textContent = 'Copied.'; }).catch(() => { $('share-status').textContent = text; });
+  };
+
+  // ---- How other visitors guessed: a dated snapshot, not live ----
+  let crowd = null;
+  fetch('data/epoch-guesses-snapshot.json').then(r => r.json()).then(d => { crowd = d; }).catch(() => {});
+  function drawCrowd(me) {
+    const el = $('crowd');
+    if (!crowd || crowd.n < 30) { el.innerHTML = '<b>How other visitors guessed</b> shows up here once 30 people have played. You just became one of the first.'; return; }
+    const c = crowd.like[lens + '|' + me.group];
+    const date = new Date(crowd.as_of).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    el.innerHTML = c && c.n >= 10
+      ? `<b>Visitors guessed ${Math.round(c.avg)} on average</b> for ${me.group}, against a real answer of ${Math.round(me.used)}. (${c.n} guesses, as of ${date}.)`
+      : `<b>Across all groups, visitors guessed ${Math.round(crowd.avg)} on average.</b> Not enough guesses for ${me.group} yet. (${crowd.n} guesses, as of ${date}.)`;
+  }
+
+  // ---- Tab 2: how fast it's changing (all US adults, March vs August 2026) ----
+  const MAR = { near: 8.2, lo: 7.2, hi: 9.3 }, AUG = { near: 18.7, lo: 16.7, hi: 20.8 };
+  let guess2 = 8;
+  const g2 = Grid($('guess-widget2'), { interactive: true, onChange: v => { guess2 = v; $('guess-num2').textContent = v + ' of 100'; } });
+  const gMar = Grid($('grid-mar')), gAug = Grid($('grid-aug'));
+  function reveal2(guessed) {
+    $('reveal-head2').innerHTML = `Near-daily AI use more than doubled: <b>8 to 19 of every 100</b> US adults.`;
+    const d = guess2 - 19;
+    $('verdict2').textContent = !guessed ? '' : Math.abs(d) <= 2 ? `You guessed ${guess2}. Nearly spot on.` : `You guessed ${guess2}. That's ${Math.abs(d)} ${d > 0 ? 'too high' : 'too low'}.`;
+    $('step-reveal2').classList.remove('hidden');
+    gMar.render(); gAug.render(); gMar.reveal(MAR.near, null); gAug.reveal(AUG.near, guessed ? guess2 : null);
+  }
+  $('reveal-btn2').onclick = () => { reveal2(true); if (window.posthog && window.posthog.capture) window.posthog.capture('epoch_guess', { view: 'change', guess: guess2, real: 19 }); };
+  $('skip-btn2').onclick = () => reveal2(false);
+  d3.csv('data/epoch-ai-use-frequency-mar-aug-2026.csv').then(rs => {
+    $('table-change').innerHTML = '<tr><th>Survey</th><th>Days of AI use, past week</th><th>Share</th><th>90% range</th><th>People asked</th></tr>' +
+      rs.map(r => `<tr><td>${r['Survey wave']}</td><td>${r['Days of AI use in past week']}</td><td>${r['Share of US adults (%)']}%</td><td>${r['90% CI lower bound (%)']} to ${r['90% CI upper bound (%)']}%</td><td>${r['Respondents (unweighted)']}</td></tr>`).join('');
+  });
+
+  // ---- Tabs ----
+  function showView(v) {
+    const like = v === 'like';
+    $('tab-like').setAttribute('aria-selected', like); $('tab-change').setAttribute('aria-selected', !like);
+    $('view-like').hidden = !like; $('view-change').hidden = like;
+    if (!like) { g2.render(); g2.set(guess2); }
+  }
+  $('tab-like').onclick = () => showView('like');
+  $('tab-change').onclick = () => showView('change');
+
+  // ---- Tooltip, shared by the chart and the map ----
+  function showTip(html, ev) {
+    const t = $('tip'); t.innerHTML = html; t.style.display = 'block';
+    const x = Math.min(ev.clientX + 14, innerWidth - t.offsetWidth - 8), y = Math.min(ev.clientY + 14, innerHeight - t.offsetHeight - 8);
+    t.style.left = x + 'px'; t.style.top = y + 'px';
+  }
+  function hideTip() { $('tip').style.display = 'none'; }
+
+  // ---- Scrollytelling: one sticky grid, five findings ----
+  function initScrolly() {
+    const g = (l, v) => rows.find(r => r.lens === l && r.group === v);
+    const A = all, y = g('age_group', '30–44'), o = g('age_group', '60+'), b = g('education', 'Bachelor+'), h = g('education', 'High school'),
+      m = g('gender', 'Male'), w = g('gender', 'Female');
+    const R = (r) => Math.round(r.used);
+    const verdict = (p, q) => isClose(p, q) ? 'Too close to call: the survey can’t tell them apart.' : 'That gap is bigger than the survey’s margin, so it’s likely real.';
+    const steps = [
+      { r: A, head: `<span class="hl hl-used" data-hl="used">${R(A)} of every 100</span> working adults used AI in the past week.`, text: `A little over half of everyone with a job. The pale dots are the survey's range: the real number most likely lands somewhere in there.` },
+      { r: y, head: `<span class="hl hl-used" data-hl="used">${R(y)} of every 100</span> aged 30 to 44.`, text: `The highest of any age group.` },
+      { r: o, head: `<span class="hl hl-used" data-hl="used">${R(o)} of every 100</span> aged 60 and up.`, text: `${R(y) - R(o)} fewer than people aged 30 to 44. ${verdict(y, o)}` },
+      { r: b, head: `<span class="hl hl-used" data-hl="used">${R(b)} of every 100</span> with a bachelor's degree or more.`, text: `Compared with ${R(h)} of every 100 with a high school education. ${verdict(b, h)}` },
+      { r: w, head: `<span class="hl hl-used" data-hl="used">${R(w)} of every 100</span> working women. ${R(m)} for men.`, text: `Different numbers, but ${isClose(m, w) ? 'too close to call. A plain bar chart would make this look like a real difference. It isn’t one.' : 'the gap is likely real.'}` },
+      { r: { used: 18.7, lo: 16.7, hi: 20.8 }, head: `<span class="hl hl-used" data-hl="used">19 of every 100</span> US adults used AI nearly every day in August 2026.`, text: `Up from 8 in March: more than double in six months. This one is all adults, not only people with jobs, and Epoch says the comparison is approximate.` }
+    ];
+    const grid = Grid($('sc-grid')); grid.render();
+    $('sc-steps').innerHTML = steps.map((s, i) => `<div class="sc-step" data-i="${i}"><div><p>${s.text}</p></div></div>`).join('');
+    const show = (i) => {
+      const s = steps[i]; $('sc-num').innerHTML = s.head; grid.range(s.r.lo, s.r.hi);
+      document.querySelectorAll('.sc-step').forEach(el => el.classList.toggle('on', +el.dataset.i === i));
+    };
+    show(0);
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) show(+e.target.dataset.i); }), { rootMargin: '-45% 0px -45% 0px' });
+    document.querySelectorAll('.sc-step').forEach(el => io.observe(el));
+  }
+
+
+  // ---- Icons (inline, 24px line style) ----
+  const ICONS = {
+    hello: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+    game: '<circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><circle cx="7" cy="17" r="2.5"/><circle cx="17" cy="17" r="2.5"/>',
+    findings: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+    map: '<path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+    press: '<rect x="3" y="4" width="18" height="16"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+    policy: '<path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10h20L12 3z"/>',
+    research: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/>',
+    system: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+    leading: '<path d="M5 21V4h11l-2 4 2 4H5"/>',
+    code: '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/>',
+    quote: '<path d="M4 18c0-6 2-9 6-10M14 18c0-6 2-9 6-10"/>',
+    mail: '<rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/>'
+  };
+  document.querySelectorAll('.ico[data-icon]').forEach(el => {
+    el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[el.dataset.icon] || ''}</svg>`;
+  });
+
+  // ---- Sticky table of contents with the current section marked ----
+  const tocItems = [...document.querySelectorAll('[data-toc]')];
+  $('toc-list').innerHTML = tocItems.map(el => `<li><a href="#${el.id}">${el.dataset.toc}</a></li>`).join('');
+  const tocLinks = [...document.querySelectorAll('#toc-list a')];
+  const tocIO = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    tocLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-30% 0px -60% 0px' });
+  tocItems.forEach(el => tocIO.observe(el));
+
+  // ---- Linked highlighting: hover a colored word, its marks light up ----
+  document.addEventListener('pointerover', e => { const h = e.target.closest('[data-hl]'); if (h) document.body.classList.add('hl-' + h.dataset.hl); });
+  document.addEventListener('pointerout', e => { const h = e.target.closest('[data-hl]'); if (h) document.body.classList.remove('hl-' + h.dataset.hl); });
+
+  // ---- Sticker: drag it anywhere, click it for a fact from the data ----
+  (function sticker() {
+    const st = $('sticker'), fact = $('sticker-fact');
+    const dots = d3.select('#st-dots');
+    d3.range(25).forEach(i => dots.append('circle').attr('cx', 38 + (i % 5) * 11).attr('cy', 38 + Math.floor(i / 5) * 11).attr('r', 4)
+      .attr('fill', i < 14 ? 'var(--accent)' : 'var(--none)'));
+    const facts = () => {
+      const f = [`The first time I built a US map like this was 2018. It was Vega then.`];
+      if (all) f.push(`${Math.round(all.used)} of every 100 working adults used AI in the past week (July 2026).`);
+      f.push(`Near-daily AI use: 8 of 100 US adults in March 2026, 19 of 100 in August.`, `Levothyroxine was the most-filled prescription in 24 states in 2018.`, `Every number on this page links back to its source. Try "Check the data".`);
+      return f;
+    };
+    let k = 0, moved = false, start = null;
+    st.addEventListener('pointerdown', e => { start = { x: e.clientX, y: e.clientY, l: st.offsetLeft, t: st.offsetTop }; moved = false; st.setPointerCapture(e.pointerId); });
+    st.addEventListener('pointermove', e => {
+      if (!start) return;
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+      if (moved) { st.style.left = (start.l + dx) + 'px'; st.style.top = (start.t + dy) + 'px'; st.style.right = 'auto'; fact.style.display = 'none'; }
+    });
+    st.addEventListener('pointerup', () => { start = null; });
+    st.addEventListener('click', () => {
+      if (moved) { moved = false; return; }
+      const f = facts(); fact.textContent = f[k++ % f.length];
+      fact.style.display = 'block';
+      fact.style.top = (st.offsetTop + st.offsetHeight + 8) + 'px';
+      fact.style.left = Math.max(8, Math.min(st.offsetLeft + st.offsetWidth - 240, innerWidth - 256)) + 'px';
+      dots.selectAll('circle').transition().duration(RM ? 0 : 300).delay((d, i) => RM ? 0 : i * 15)
+        .attr('fill', () => Math.random() < 0.55 ? 'var(--accent)' : 'var(--none)');
+    });
+  })();
+
+
+
+  buildCode();
+  document.documentElement.setAttribute('data-style', 'b'); // Chris picked style B
+  document.documentElement.setAttribute('data-band', 'c'); // warm gray (Chris 2026-09-26)
+
+
+  // ---- Data-viz kit: each component is {name, desc, html, init}; the views below only arrange them ----
+  function kitItems() {
+    const g = (l, v) => rows.find(r => r.lens === l && r.group === v), A = all;
+    const f6 = 18.7 / 8.2, perYear = f6 * f6, dbl = 6 * Math.log(2) / Math.log(f6), oom = Math.log10(perYear);
+    const U = { x: `×${perYear.toFixed(1)} per year`, d: `doubles every ${dbl.toFixed(1)} months`, o: `${oom.toFixed(2)} orders of magnitude per year` };
+    const opts = rows.filter(r => r.lens !== 'full_sample').map(r => `<option value="${r.lens}|${r.group}">${r.group}</option>`).join('');
+    return [
+      { name: 'Estimate with range', desc: 'A number is never alone: its range and sample size travel with it.',
+        html: `<div class="big">${A.used.toFixed(1)}%</div><svg viewBox="0 0 300 30" style="width:100%;height:auto;display:block;margin-top:10px"><line x1="0" x2="300" y1="15" y2="15" stroke="var(--border-strong)"/><rect x="${A.lo * 3}" width="${(A.hi - A.lo) * 3}" y="7" height="16" fill="var(--range)"/><circle cx="${A.used * 3}" cy="15" r="6" fill="var(--accent-strong)"/></svg><div class="sub">90% range ${A.lo.toFixed(1)} to ${A.hi.toFixed(1)} · ${A.n.toLocaleString()} people asked · working adults who used AI last week</div>`, init() {} },
+      { name: 'Unit toggle', desc: 'The same growth, three ways: the control Epoch uses on its trends page.',
+        html: `<div class="seg" role="group" aria-label="Show growth as">${[['x','×/year'],['d','Doubling time'],['o','OOM/year']].map(([k,t],i)=>`<button data-u="${k}" aria-pressed="${i===0}">${t}</button>`).join('')}</div><div class="big k-u" style="font-size:32px">${U.x}</div><div class="sub">Near-daily AI use, 8.2% (March) to 18.7% (August 2026), annualized. Two surveys only, so treat it as a rough rate.</div>`,
+        init(el) { el.querySelectorAll('.seg button').forEach(b => b.onclick = () => { el.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b)); el.querySelector('.k-u').textContent = U[b.dataset.u]; }); } },
+      { name: 'Real or noise?', desc: 'Compare any two groups; the verdict uses the survey’s own margins.',
+        html: `<select class="k-a" aria-label="First group">${opts}</select> vs <select class="k-b" aria-label="Second group">${opts}</select><div class="verdict k-v"></div>`,
+        init(el) { const sa = el.querySelector('.k-a'), sb = el.querySelector('.k-b'); sa.value = 'age_group|30–44'; sb.value = 'age_group|18–29';
+          const judge = () => { const [la, ga] = sa.value.split('|'), [lb, gb] = sb.value.split('|'); const a = g(la, ga), b = g(lb, gb);
+            el.querySelector('.k-v').innerHTML = a === b ? 'Pick two different groups.' : isClose(a, b) ? `<b>Too close to call.</b> ${Math.round(a.used)} vs ${Math.round(b.used)} could be the same number.` : `<b>Likely real.</b> ${Math.round(a.used)} vs ${Math.round(b.used)}: a bigger gap than the survey's margin.`; };
+          sa.onchange = sb.onchange = judge; judge(); } },
+      { name: 'Chart with a note', desc: 'The note sits on the one gap the survey can vouch for.',
+        html: `<svg class="k-ann" viewBox="0 0 300 130" style="width:100%;height:auto;display:block"></svg><div class="sub">Used AI last week, by age.</div>`,
+        init(el) { const ages = rows.filter(r => r.lens === 'age_group'), svg = d3.select(el.querySelector('.k-ann')); const x = d3.scaleLinear().domain([30, 70]).range([70, 290]);
+          ages.forEach((r, i) => { const y = 24 + i * 30; svg.append('text').attr('x', 0).attr('y', y + 5).style('font-size', '13px').attr('fill', 'var(--text)').text(r.group);
+            svg.append('rect').attr('x', x(r.lo)).attr('width', x(r.hi) - x(r.lo)).attr('y', y - 6).attr('height', 12).attr('fill', 'var(--range)');
+            svg.append('circle').attr('cx', x(r.used)).attr('cy', y).attr('r', 5).attr('fill', 'var(--accent-strong)'); });
+          svg.append('text').attr('x', 70).attr('y', 24 + 3 * 30 + 24).style('font-size', '13px').attr('fill', 'var(--guess)').text('↑ 60+: the lowest, and a real gap'); } }
+    ];
+  }
+  const siteItems = () => JSON.parse($('site-comp-data').textContent).map(c => ({ name: c.name, desc: c.desc, site: true,
+    html: `<button class="zoom" aria-label="Enlarge: ${c.name}"><img src="${c.img}" alt="${c.name}, from Chris's site" loading="lazy" /></button>`, init(el) { bindZoom(el); } }));
+  function mount(host, item) { host.innerHTML = `<div class="kc"><h4>${item.name}</h4>${item.desc ? `<p class="kdesc">${item.desc}</p>` : ''}${item.html}</div>`; item.init(host.querySelector('.kc')); }
+  function buildComponents() {
+    const kit = kitItems(), sitec = siteItems();
+    const all2 = [...kit.map(k => ({ ...k, grp: 'Data-viz kit' })), ...sitec.map(k => ({ ...k, grp: 'This site' }))];
+    // C · list + detail
+    const M = $('comp-md'); let mi = 0;
+    M.innerHTML = `<ul class="md-list" role="listbox" aria-label="Components"></ul><div class="md-stage"></div>`;
+    const list = M.querySelector('.md-list');
+    list.innerHTML = `<li class="md-grp">Data-viz kit</li>` + kit.map((k, i) => `<li><button data-i="${i}">${k.name}</button></li>`).join('') + `<li class="md-grp">This site</li>` + sitec.map((k, i) => `<li><button data-i="${kit.length + i}">${k.name}</button></li>`).join('');
+    const showM = () => { mount(M.querySelector('.md-stage'), all2[mi]); list.querySelectorAll('button').forEach(b => b.setAttribute('aria-selected', +b.dataset.i === mi)); };
+    list.querySelectorAll('button').forEach(b => b.onclick = () => { mi = +b.dataset.i; showM(); });
+    showM();
+    outward();
+  }
+
+  // ---- Code: excerpt beside what it made ----
+  function buildCode() {
+    const C = JSON.parse($('code-data').textContent), esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    $('code-pairs').innerHTML = C.map(c => `<article class="pair-row">
+      <header class="pr-head"><span class="pr-year">${c.year}</span><span class="pr-file">${c.file}</span><span class="pr-lang">${c.lang}</span></header>
+      <p class="pr-what">${c.what}</p>
+      <div class="pr-body">
+        <div class="pr-code"><pre><code>${esc(c.code)}</code></pre></div>
+        <div class="pr-out">${[c.img, c.img2].filter(Boolean).map(src => `<button class="zoom pr-shot" aria-label="Enlarge: ${c.imgAlt}"><img src="${src}" alt="${c.imgAlt}" loading="lazy" /></button>`).join('')}<span class="pr-label">${c.label}</span></div>
+      </div></article>`).join('');
+    bindZoom($('code-pairs'));
+  }
+
+  // ---- Lightbox for every enlargeable image (and code) ----
+  const lb = $('lightbox');
+  function bindZoom(root) { root.querySelectorAll('.zoom').forEach(z => { if (z.dataset.bound) return; z.dataset.bound = 1; z.addEventListener('click', () => {
+    const img = z.querySelector('img'), cap = z.closest('figure, .kc')?.querySelector('figcaption, h4');
+    $('lb-code').style.display = 'none'; $('lb-img').style.display = 'block';
+    $('lb-img').src = img.src; $('lb-img').alt = img.alt; $('lb-cap').textContent = cap ? cap.textContent.replace('Case study ↗', '').trim() : '';
+    lb.showModal(); }); }); }
+  bindZoom(document);
+  lb.querySelector('.lb-close').onclick = () => lb.close();
+  lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+
+  // ---- Live design-system strip: tokens read from index.html's own :root, so it can't drift ----
+  fetch('index.html').then(r => r.text()).then(html => {
+    const m = html.match(/:root\{([\s\S]*?)\n\}/); if (!m) return;
+    const vars = {}; m[1].replace(/--([\w-]+)\s*:\s*([^;]+);/g, (_, k, v) => { vars[k] = v.trim(); });
+    const colors = ['bg', 'surface', 'surface-2', 'text', 'muted', 'accent', 'accent-strong'].filter(k => vars[k]);
+    const bands = Object.keys(vars).filter(k => k.startsWith('band-'));
+    const types = ['t-xxl', 't-xl', 't-lg', 't-md', 't-base', 't-sm'].filter(k => vars[k]);
+    const sps = Object.keys(vars).filter(k => /^sp-\d+$/.test(k));
+    const sw = k => `<div class="sw"><i style="background:${vars[k]}"></i>${k.replace('band-', '')}</div>`;
+    $('ds-live').innerHTML =
+      `<div class="ds-row"><h4>Core colors</h4><div class="swatches">${colors.map(sw).join('')}</div></div>` +
+      `<div class="ds-row"><h4>One band color per company</h4><div class="swatches">${bands.map(sw).join('')}</div></div>` +
+      `<div class="ds-row"><h4>Type scale</h4><div class="typescale">${types.map(k => `<div><code>${vars[k]}</code><span style="font-size:${vars[k]}">The quick brown fox</span></div>`).join('')}</div></div>` +
+      `<div class="ds-row"><h4>Spacing, 4px base</h4><div class="spacing">${sps.map(k => `<div style="width:${vars[k]};height:${vars[k]}"></div>`).map((d, i) => `<div style="background:none;opacity:1">${d}<span>${vars[sps[i]]}</span></div>`).join('')}</div></div>`;
+  }).catch(() => {});
+
+  // ---- Every link that leaves this page opens in a new tab ----
+  const outward = () => document.querySelectorAll('a[href]').forEach(a => {
+    const h = a.getAttribute('href'); if (h.startsWith('#') || h.startsWith('mailto:')) return;
+    a.target = '_blank'; a.rel = 'noopener';
+  });
+  outward(); setTimeout(outward, 1500);
+
+  // ---- Chapter 2: United States of Drugs (GoodRx Research, 2018), rebuilt from the original CSV ----
+  Promise.all([
+    d3.csv('data/goodrx-top-drugs-by-state-2018.csv'),
+    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json')
+  ]).then(([drugs, us]) => {
+    const byName = new Map(drugs.map(d => [d.statename, d]));
+    const top10 = d => [1,2,3,4,5,6,7,8,9,10].map(i => d['drug' + i]);
+    const tops = d3.rollups(drugs, v => v.length, d => d.drug1).sort((a, b) => b[1] - a[1]);
+    const palette = ['#2a9d4f', '#c2410c', '#3b6fb6', '#b58a1b', '#7a4fb3', '#8a8a82'];
+    const colorOf = new Map(tops.map(([k], i) => [k, palette[Math.min(i, palette.length - 1)]]));
+    // Drugs that appear in the most states' top tens: the toggle buttons, GoodRx-map style.
+    const common = d3.rollups(drugs.flatMap(top10), v => v.length, d => d).sort((a, b) => b[1] - a[1]).slice(0, 5).map(d => d[0]);
+    const rankColor = d3.scaleSequential(t => d3.interpolateGreens(1 - t * 0.8)).domain([1, 10]);
+    let mode = 'top';
+    const svg = d3.select('#map').attr('viewBox', '0 0 975 610');
+    const states = svg.selectAll('path').data(topojson.feature(us, us.objects.states).features).join('path')
+      .attr('class', 'state').attr('d', d3.geoPath());
+    function fill(f) {
+      const d = byName.get(f.properties.name); if (!d) return 'var(--none)';
+      if (mode === 'top') return colorOf.get(d.drug1);
+      const r = top10(d).indexOf(mode) + 1; return r ? rankColor(r) : 'var(--none)';
+    }
+    function legend() {
+      $('legend').innerHTML = mode === 'top'
+        ? tops.slice(0, 5).map(([k, n]) => `<span><i style="background:${colorOf.get(k)}"></i>${k} (${n} states)</span>`).join('') + `<span><i style="background:${palette[5]}"></i>other</span>`
+        : `<span><i style="background:${rankColor(1)}"></i>#1</span><span><i style="background:${rankColor(5)}"></i>#5</span><span><i style="background:${rankColor(10)}"></i>#10</span><span><i style="background:var(--surface-2)"></i>not in the top 10</span>`;
+    }
+    function modes() {
+      const el = $('map-modes'); el.innerHTML = '';
+      [['top', 'Most-filled drug'], ...common.map(c => [c, c])].forEach(([k, label]) => {
+        const b = document.createElement('button'); b.textContent = label; b.setAttribute('aria-pressed', k === mode);
+        b.onclick = () => { mode = k; modes(); legend(); states.transition().duration(RM ? 0 : 400).attr('fill', fill); };
+        el.append(b);
+      });
+    }
+    function card(f) {
+      const d = byName.get(f.properties.name);
+      if (!d) return `<b>${f.properties.name}</b>No data in the 2018 file.`;
+      return `<b>${d.statename}</b><ol>${top10(d).map(x => `<li${x === mode ? ' style="font-weight:600"' : ''}>${x}</li>`).join('')}</ol>`;
+    }
+    states.attr('fill', fill)
+      .on('pointermove', (ev, f) => { if (ev.pointerType === 'mouse') showTip(card(f), ev); })
+      .on('pointerleave', hideTip)
+      .on('click', function (ev, f) {
+        states.classed('on', false); d3.select(this).classed('on', true);
+        $('state-card').innerHTML = card(f).replace('<b>', '<strong>').replace('</b>', '</strong>');
+      });
+    modes(); legend();
+  });
+})();
+</script>
+</body>
+</html>
