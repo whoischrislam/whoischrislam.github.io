@@ -2,7 +2,7 @@
    affects the live homepage. Components render with the site's OWN classes, so what you
    see here is the real CSS (drift-proof). v1: Foundations + a first pair of live components. */
 body.ds-active > *:not(#ds-root){display:none!important}
-body.ds-active{overflow:auto}
+body.ds-active,body.ds-active.work-focus-open{overflow:auto} /* the catalog opens with work-focus-open set; its overflow:hidden (0,2,1) out-ranked this and locked scrolling */
 #ds-root{--ds-serif:var(--serif,'Newsreader',Georgia,serif);--ds-sans:var(--sans,'Figtree',system-ui,sans-serif);--ds-mono:var(--mono,'IBM Plex Mono',monospace);
   position:relative;z-index:1;min-height:100vh;background:#eae9e5;color:#1b1b19;font-family:var(--ds-sans)}
 #ds-root *{box-sizing:border-box}
