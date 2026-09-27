@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>For Epoch AI · Chris Lam</title>
+<title>For Epoch AI · Design Lead · Chris Lam</title>
 <meta name="description" content="A two-minute guessing game with Epoch AI's July 2026 survey of working Americans, plus GoodRx data visualizations rebuilt from 2018." />
 <meta name="author" content="Chris Lam" />
 <meta name="robots" content="noindex" /><!-- unlisted on purpose: an application page addressed to one employer, shared by link only -->
@@ -16,6 +16,8 @@
     var stored = null;
     try { stored = localStorage.getItem('theme'); } catch (e) {}
     document.documentElement.setAttribute('data-theme', 'light'); // light only (Chris 2026-09-26)
+    document.documentElement.className = 'js';
+
   })();
 </script>
 <style>
@@ -27,7 +29,7 @@
   --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
   --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --accent-strong:#1e7a3c;
   --border:rgba(0,0,0,.10); --border-strong:rgba(0,0,0,.16); --grid:rgba(0,0,0,.045);
-  --guess:#c2410c; --range:rgba(42,157,79,.35); --none:#e4e2dc;
+  --guess:#c2410c; --range:rgba(42,157,79,.35); --none:#cfc9bd;
   --serif:'Newsreader',Georgia,serif; --sans:'Figtree',system-ui,sans-serif;
   --t-h1:clamp(34px,4.2vw,56px); --t-xl:30px; --t-lg:24px; --t-md:21px; --t-base:18px; --t-sm:16px;
 }
@@ -361,141 +363,331 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .pr-file{font-family:var(--mono);font-size:14px}
 .pr-lang{font-family:var(--mono);font-size:14px;color:var(--muted);margin-left:auto}
 .pr-what{font-size:var(--t-sm);color:var(--muted);margin:8px 0 16px}
-.pr-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;height:300px}
-.pr-code{min-width:0;height:100%}
+.pr-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:300px;gap:16px}
+/* fixed row height: a percentage height inside an auto-sized grid row resolves to the content, which let long code spill over the next rows (2026-09-26) */
+.pr-code{min-width:0;height:300px}
 .pr-code pre{margin:0;height:100%;overflow:auto;background:#1f1d1b;color:#e9e6df;padding:16px 18px;font:12.5px/1.6 var(--mono)}
-.pr-out{position:relative;height:100%;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pr-out{position:relative;height:300px;display:flex;flex-direction:column;gap:8px;min-width:0}
 .pr-shot{flex:1;min-height:0;display:block;border:1px solid var(--border);background:var(--surface);overflow:hidden}
 .pr-shot img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
 .pr-label{position:absolute;left:8px;bottom:8px;font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.9);padding:2px 6px;color:var(--text)}
-@media (max-width:640px){.pr-body{grid-template-columns:1fr;height:auto}.pr-code pre{height:220px}.pr-out{height:220px}}
+@media (max-width:640px){.pr-body{grid-template-columns:1fr;grid-template-rows:220px 220px}.pr-code,.pr-out,.pr-code pre{height:220px}}
 /* list + detail: self-contained, the stage never grows the page */
 .comp-md{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start}
 .md-stage{min-height:420px}
 .md-stage .kc{border-top:none;padding-top:0}
 .md-stage .zoom img{max-height:460px;object-fit:contain;object-position:top left;background:var(--surface)}
 @media (max-width:640px){.comp-md{grid-template-columns:1fr}.md-list{display:flex;overflow-x:auto;border-left:none;border-bottom:1px solid var(--border);gap:4px}.md-list .md-grp{display:none}.md-list button{white-space:nowrap;border-left:none;border-bottom:2px solid transparent;margin:0}.md-list button[aria-selected="true"]{border-bottom-color:var(--accent)}.md-stage{min-height:0}}
+body [data-role="pm"]{display:none}
+:root[data-role="pm"] body [data-role="pm"]{display:revert}
+:root[data-role="pm"] body [data-role="design"]{display:none}
+.proofline{font-size:var(--t-sm);color:var(--muted);border-left:3px solid var(--accent);padding:6px 0 6px 14px;margin:28px 0 0}
+.proofline a{color:var(--text)}
+.logline{font-size:var(--t-sm);color:var(--muted);margin:-8px 0 0}
+.thesis{margin-top:72px}
+.thesis dl{display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px 24px;margin:20px 0 28px}
+.thesis dt{font-family:var(--mono);font-size:14px;color:var(--muted);padding-top:3px}
+.thesis dd{margin:0}
+@media (max-width:640px){.thesis dl{grid-template-columns:1fr;gap:4px}.thesis dd{margin-bottom:12px}}
+.draft-mark{font-family:var(--mono);font-size:13px;color:var(--guess);border:1px dashed var(--guess);padding:2px 6px;display:inline-block;margin-bottom:8px}
+.comp-static{margin:0}
+.js .comp-static{display:none}
+.comp-static dt{font-weight:600;margin-top:12px}
+.comp-static dd{margin:0;color:var(--muted);font-size:var(--t-sm)}
+.js .sc-head-text{display:none}
+.sc-head-text{font-family:var(--serif);font-size:var(--t-md)}
+.proofbox{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:32px 0 0;background:var(--text);color:var(--bg)}
+.proofbox a{display:block;padding:20px 22px;color:inherit;text-decoration:none;border-left:1px solid rgba(255,255,255,.14)}
+.proofbox a:first-child{border-left:none}
+.proofbox a:hover{background:rgba(255,255,255,.06)}
+.proofbox b{display:block;font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.05;margin-bottom:8px}
+.proofbox span{display:block;font-size:14px;line-height:1.45;opacity:.78}
+@media (max-width:640px){.proofbox{grid-template-columns:1fr}.proofbox a{border-left:none;border-top:1px solid rgba(255,255,255,.14)}.proofbox a:first-child{border-top:none}}
+.flip{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 12px;font-size:13px}
+.flip button{font:13px var(--sans);border:1px dashed var(--guess);background:none;color:var(--guess);padding:4px 8px;cursor:pointer}
+.flip button[aria-pressed="true"]{background:var(--guess);color:#fff;border-style:solid}
+[data-variants]>[data-v]{display:none}
+[data-variants]>[data-v].on{display:block}
+.no-js [data-variants]>[data-v="o"]{display:block}
+.thesis-p{font-size:var(--t-md);line-height:1.55;margin:16px 0 28px}
+.verdict > span[class^=fb-]{display:block}
+#guess-widget svg:focus:not(:focus-visible){outline:none}
+#guess-widget svg:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.fb-dir{font-family:var(--serif);font-size:var(--t-lg);line-height:1.2;margin-bottom:4px}
+.fb-vs{margin-bottom:8px}
+.fb-pattern{font-size:var(--t-sm);color:var(--muted)}
+/* layout option B: the question is the form */
+.madlib{font-family:var(--serif);font-size:clamp(24px,3vw,30px);line-height:1.5;margin:32px 0 8px}
+.madlib select{font:inherit;font-size:.8em;border:none;border-bottom:2px solid var(--accent);background:transparent;color:var(--accent-strong);padding:0 2px;cursor:pointer}
+.flip{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 6px;font-size:13px}
+.flip button{font:13px var(--sans);border:1px dashed var(--guess);background:none;color:var(--guess);padding:4px 8px;cursor:pointer}
+.flip button[aria-pressed="true"]{background:var(--guess);color:#fff;border-style:solid}
+/* ===== Game pass 2 ===== */
+.bridge{font-size:var(--t-md);line-height:1.5;margin:0 0 28px;max-width:60ch}
+.dock{position:fixed;top:0;left:0;right:0;z-index:8;display:flex;gap:16px;align-items:baseline;justify-content:center;padding:10px 16px;background:#ebe7df;border-bottom:1px solid rgba(0,0,0,.1);transform:translateY(-100%);transition:transform .25s ease}
+.dock.on{transform:none}
+.dock-title{font-family:var(--serif);font-size:18px}
+.dock-state{font-family:var(--mono);font-size:13px;color:var(--muted)}
+@media (max-width:640px){.dock{padding:10px 16px!important;flex-direction:column;gap:2px}.dock-title{font-size:15px}}
+.round{margin-top:40px;padding-top:24px;border-top:1px solid rgba(0,0,0,.12)}
+.round-label{font-family:var(--mono);font-size:14px;margin:0 0 18px}
+.round-label span{color:var(--muted)}
+.game-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:36px;align-items:start}
+.gg-text .madlib{display:block;margin:0 0 16px;font-size:clamp(22px,2.4vw,27px);line-height:1.45}
+.gg-text .guess-num{font-size:56px;margin:4px 0 8px}
+.hint{font-size:var(--t-sm);color:var(--muted);margin:0 0 12px}
+.pick{font:inherit;color:var(--accent-strong);background:none;border:none;border-bottom:2px dashed var(--accent);padding:0 2px;cursor:pointer}
+.pick.set{border-bottom-style:solid}
+.pick:hover{background:var(--accent-soft)}
+.picker{position:absolute;z-index:9;background:var(--surface);border:1px solid var(--border-strong);box-shadow:0 12px 30px rgba(0,0,0,.14);padding:14px 16px;max-width:420px;margin-top:-6px}
+.gg-text{position:relative}
+.pk-row{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:baseline;padding:6px 0}
+.pk-row+.pk-row{border-top:1px solid var(--border)}
+.pk-lab{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.pk-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pk-chips button{font:14px var(--sans);padding:6px 10px;border:1px solid var(--border-strong);background:var(--bg);color:var(--text);cursor:pointer}
+.pk-chips button:hover{border-color:var(--text)}
+.pk-chips button[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-link{font:inherit;font-size:var(--t-sm);background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:10px 4px}
+.btn-link:hover{color:var(--text)}
+#round1 .actions,#round2 .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+[hidden]{display:none!important}
+#step-reveal .reveal-head,#step-reveal2 .reveal-head{font-size:clamp(24px,2.6vw,30px);margin-top:4px}
+#reveal-more,#reveal-more2{margin-top:32px}
+.muted-note{font-size:14px;color:var(--muted)}
+/* scroll section: words left, picture right */
+.scrolly-steps{order:1}.scrolly-sticky{order:2}
+body.in-game .cta-float{display:none}
+/* ===== Game pass 3: rhythm on an 8px grid; text left, graphic right ===== */
+.game-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)!important;gap:40px!important}
+.gg-graphic{position:sticky;top:64px}
+@media (max-width:760px){.game-grid{display:block!important}.gg-graphic{position:static;margin-top:24px}}
+.round{margin-top:48px;padding-top:32px}
+.round-label{font-family:var(--mono);font-size:13px;letter-spacing:.02em;margin:0 0 4px}
+.cite{font-size:13px;color:var(--muted);margin:0 0 24px}
+.cite a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.cite a:hover{color:var(--text)}
+.stepper{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 24px;padding:0;font-size:13px;color:var(--muted)}
+.stepper li{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.stepper li+li::before{content:"";width:12px;height:1px;background:var(--border-strong);margin-right:4px}
+.stepper span{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--border-strong);font-size:12px}
+.stepper li.on{color:var(--text);font-weight:600}
+.stepper li.on span{background:var(--text);color:var(--bg);border-color:var(--text)}
+.stepper li.done span{background:var(--accent);color:#fff;border-color:var(--accent)}
+.gg-text .madlib{font-size:24px!important;line-height:1.4!important;margin:0 0 8px!important}
+.gg-text .hint{font-size:15px;color:var(--muted);margin:0 0 16px}
+.gg-text .guess-num{font-size:48px!important;margin:16px 0 8px!important;line-height:1}
+.gg-text .actions{margin-top:16px}
+#round1[data-step="1"] .s2,#round1:not([data-step="1"]) .s1{display:none}
+#round1[data-step="3"] .s2 .guess-num,#round1[data-step="3"] .s2 .hint,#round1[data-step="3"] .s2 .actions{display:none}
+.seg{display:inline-flex;border:1px solid var(--border-strong);margin:8px 0 16px;background:rgba(255,255,255,.5)}
+.seg button{font:14px var(--sans);border:none;background:none;padding:8px 14px;cursor:pointer;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--border-strong)}
+.seg button:hover{color:var(--text);background:rgba(0,0,0,.04)}
+.seg button[aria-selected="true"]{background:var(--text);color:var(--bg)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts button{display:flex;align-items:center;gap:10px;text-align:left;font:16px var(--sans);padding:12px 14px;border:1px solid var(--border-strong);background:rgba(255,255,255,.55);color:var(--text);cursor:pointer;transition:border-color .15s,background .15s}
+.opts button i{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border-strong);flex:none}
+.opts button:hover{border-color:var(--text);background:#fff}
+.opts button[aria-checked="true"]{border-color:var(--accent);background:#fff}
+.opts button[aria-checked="true"] i{border:5px solid var(--accent)}
+.pick{transition:background .15s}
+.pick::after{content:" ✎";font-size:.6em;color:var(--muted)}
+.cu{font-variant-numeric:tabular-nums}
+/* legend keys are buttons */
+.scrolly-key{display:flex;flex-wrap:wrap;gap:8px}
+.key{display:inline-flex;align-items:center;gap:8px;font:14px var(--sans);padding:6px 12px;border:1px solid var(--border-strong);background:rgba(255,255,255,.5);color:var(--text);cursor:pointer;border-radius:999px;transition:background .15s,border-color .15s}
+.key:hover{background:#fff;border-color:var(--text)}
+.key[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.sw{width:10px;height:14px;border-radius:2px;display:inline-block}
+.sw-used{background:var(--accent)}.sw-range{background:var(--accent);opacity:.4}.sw-none{background:var(--none)}
+/* crowd note: small and quiet */
+.crowd{margin-top:16px;padding:8px 12px;border:none;background:rgba(0,0,0,.04);font-size:14px;display:inline-block}
+/* method: cards that open */
+.method{border:none!important;display:grid;gap:8px;margin-top:40px}
+.method details{border:1px solid rgba(0,0,0,.12)!important;background:rgba(255,255,255,.45);padding:0!important;transition:background .15s}
+.method details:hover{background:rgba(255,255,255,.8)}
+.method summary{list-style:none;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;font-size:15px;color:var(--text);font-weight:600}
+.method summary::-webkit-details-marker{display:none}
+.method summary::after{content:"+";font:400 20px var(--sans);color:var(--muted);transition:transform .2s}
+.method details[open] summary::after{transform:rotate(45deg)}
+.method details>*:not(summary){margin-left:18px;margin-right:18px}
+.method details[open]{padding-bottom:12px!important;background:#fff}
+/* dock matches the reading column */
+.dock{left:50%!important;right:auto!important;width:min(792px,100vw);transform:translate(-50%,-110%)!important;justify-content:flex-start!important;padding:12px 32px!important;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.dock.on{transform:translate(-50%,0)!important}
+/* ===== Pass 4: page rhythm (8px scale) ===== */
+:root{--s-2:16px;--s-3:24px;--s-4:32px;--s-6:48px;--s-8:64px;--s-12:96px}
+.thesis{margin-top:var(--s-12)!important}
+.chapter,.scrolly{margin-top:var(--s-12)!important;padding-top:var(--s-4)!important}
+.sub-head{margin-top:var(--s-6)!important}
+.method{margin-top:var(--s-6)!important}
+footer{margin-top:var(--s-12)!important}
+.bridge-wrap{margin:var(--s-12) 0 var(--s-6)}
+.bridge{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.35;margin:0;max-width:34ch}
+.band-epoch{margin-top:0!important;padding-top:var(--s-6)!important}
+.round{margin-top:var(--s-6)!important;padding-top:var(--s-4)!important}
+.round-label{margin-bottom:var(--s-2)!important}
+.cite{margin-bottom:var(--s-4)!important}
+/* stepper: connectors fill as you progress, done steps pop to a check */
+.stepper li+li::before{width:24px!important;height:2px!important;background:linear-gradient(var(--accent),var(--accent)) left/0% 100% no-repeat,var(--border-strong)!important;transition:background-size .5s ease}
+.stepper li.on::before,.stepper li.done::before{background-size:100% 100%!important}
+.stepper span{transition:background .3s,color .3s,transform .3s}
+.stepper li.done span{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+/* interaction cues */
+.cue-hint{display:flex;align-items:center;gap:8px;color:var(--accent-strong)!important;font-weight:600}
+.cue-arrow::before{content:"→";display:inline-block;animation:nudge-x 1.2s ease-in-out infinite}
+.cue-down .cue-arrow::before{content:"↓";animation-name:nudge-y}
+@keyframes nudge-x{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@keyframes nudge-y{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media (max-width:760px){.cue-arrow::before{content:"↓";animation-name:nudge-y}}
+#round1[data-step="1"] .opts button i{animation:ring 1.8s ease-in-out infinite}
+#round1[data-step="1"] .opts button:nth-child(2) i{animation-delay:.2s}
+#round1[data-step="1"] .opts button:nth-child(3) i{animation-delay:.4s}
+#round1[data-step="1"] .opts button:nth-child(4) i{animation-delay:.6s}
+#round1[data-step="1"] .opts:hover button i{animation:none}
+@keyframes ring{0%,100%{box-shadow:0 0 0 0 rgba(42,157,79,0)}50%{box-shadow:0 0 0 5px rgba(42,157,79,.18)}}
+#guess-widget.invite svg > *:nth-child(-n+10){animation:invite 1.6s ease-in-out infinite}
+#guess-widget.invite svg > *:nth-child(2){animation-delay:.08s}#guess-widget.invite svg > *:nth-child(3){animation-delay:.16s}#guess-widget.invite svg > *:nth-child(4){animation-delay:.24s}#guess-widget.invite svg > *:nth-child(5){animation-delay:.32s}#guess-widget.invite svg > *:nth-child(6){animation-delay:.4s}#guess-widget.invite svg > *:nth-child(7){animation-delay:.48s}#guess-widget.invite svg > *:nth-child(8){animation-delay:.56s}#guess-widget.invite svg > *:nth-child(9){animation-delay:.64s}#guess-widget.invite svg > *:nth-child(10){animation-delay:.72s}
+@keyframes invite{0%,100%{fill:var(--none)}50%{fill:#e9a07f}}
+@media (prefers-reduced-motion:reduce){.cue-arrow::before,#round1 .opts button i,#guess-widget.invite svg > *,.stepper li.done span{animation:none!important}}
+/* step 2 hierarchy */
+.gl{font-family:var(--mono);font-size:13px;color:var(--muted);margin:var(--s-3) 0 0}
+.gg-text .guess-num{margin:4px 0 var(--s-2)!important}
+.btn-ghost{font:600 15px var(--sans);padding:10px 16px;border:1px solid var(--border-strong);background:transparent;color:var(--text);cursor:pointer;transition:background .15s,border-color .15s}
+.btn-ghost:hover{background:#fff;border-color:var(--text)}
+.btn-ghost span{display:inline-block;transition:transform .15s}.btn-ghost:hover span{transform:translateX(3px)}
+/* step 3: one stat, one line, one verdict */
+#round1[data-step="3"] .s2 .madlib{font-size:17px!important;color:var(--muted)}
+#round1[data-step="3"] .s2 .gl{display:none}
+.stepper{flex-wrap:nowrap!important;gap:6px!important;font-size:12.5px!important}
+.stepper li+li::before{width:14px!important;margin-right:2px!important}
+.stat{display:block;font-family:var(--serif);font-size:72px;line-height:1;color:var(--accent-strong);font-weight:400}
+.stat-lab{display:block;font-family:var(--sans);font-size:18px;line-height:1.4;margin-top:8px;color:var(--text)}
+#step-reveal .reveal-head{margin:var(--s-2) 0 var(--s-1,8px)}
+#step-reveal .reveal-range{font-size:15px;color:var(--muted);margin:8px 0 var(--s-2)}
+#step-reveal .verdict{font-size:18px;margin:0 0 var(--s-3)}
+.chart-cap{font-size:15px;color:var(--muted);margin:0 0 var(--s-2);max-width:66ch}
+.chart-cap b{color:var(--text)}
+.cmp{list-style:none;padding:0;margin:var(--s-3) 0 0;display:grid;gap:8px}
+.cmp li{display:flex;gap:10px;align-items:baseline;font-size:15px}
+.cmp i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:12px;flex:none}
+.cmp-real i{background:var(--accent);color:#fff}
+.cmp-close i{background:var(--none);color:var(--text)}
 </style>
 </head>
 <body>
 <nav class="toc" id="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol id="toc-list"></ol>
-  <a class="btn btn-primary toc-cta" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI%3A%20Design%20Lead">Email Chris</a>
+  <a class="btn btn-primary toc-cta" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI">Email Chris</a>
 </nav>
-<a class="cta-float" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI%3A%20Design%20Lead">Email Chris</a>
+<a class="cta-float" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI">Email Chris</a>
 <button class="sticker" id="sticker" aria-label="Sticker: made for Epoch AI. Click for a fact from the data, drag to move it."><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="sticker-arc" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><circle cx="60" cy="60" r="58" class="st-bg"/><text class="st-text"><textPath href="#sticker-arc">made for epoch ai · made for epoch ai ·</textPath></text><g id="st-dots"></g></svg></button>
 <div class="sticker-fact" id="sticker-fact" role="status"></div>
 <main>
   <div id="hello" data-toc="Hello"></div>
-  <p class="opening">Hey Epoch AI and María de la Lama!</p>
-  <p class="lede">I'm Chris Lam, a designer with 14+ years at companies like Amazon, TaskRabbit, Clover Health and GoodRx. I'm applying for your Design Lead / Head of Design role, and if it makes sense, I'd love to be considered for the Product Manager, Website role too.</p>
-  <p class="lede">My mission is to help people make better, informed decisions about things that matter to them. At GoodRx Research that was health. Epoch does the same for AI, and with AI ethics and safety more important than ever, it's the non-profit work I want to do. I really love what you're doing to <a href="https://epoch.ai/data/ai-data-centers">keep track of AI data centers ↗</a>: I care a lot about how much power and water we're using, and this is the kind of work I want to contribute to.</p>
-  <p class="lede">Scroll down and play.</p>
-
-  <p class="skip"><a href="#work">Skip the game and see the work ↓</a></p>
-  <div class="band band-epoch">
-  <div id="game" data-toc="The game"></div>
-  <div class="sec-head"><h1>Guess how many people like you use AI</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span>Data: Epoch AI</span></p></div>
-  <p class="lede">Pick a group you belong to, guess, then see the real answer. Or skip the guess and go straight to the data.</p>
-
-  <div class="tabs view-tabs" role="tablist" aria-label="Which data">
-    <button role="tab" id="tab-like" aria-selected="true" aria-controls="view-like">People like you · working adults, July</button>
-    <button role="tab" id="tab-change" aria-selected="false" aria-controls="view-change">How fast it's changing · all adults, March vs August</button>
+  <p class="opening">Hi María and the Epoch team.</p>
+  <p class="lede">I'm Chris Lam, a product designer (14+ years at Amazon, TaskRabbit, Clover Health and GoodRx) applying for your Design Lead role.</p>
+  <p class="lede">I turn research into visuals people actually use. This page is my application: a working demo built on your data, then the work behind it. I care a lot about how much power and water AI uses, so your <a href="https://epoch.ai/data/ai-data-centers">AI data centers tracking ↗</a> is the kind of work I want to help with.</p>
+  <div class="proofbox" aria-label="Proof">
+    <a href="#work"><b>NYT + GMA</b><span>GoodRx Research charts cited by The New York Times and used by Good Morning America</span></a>
+    <a href="#briefs"><b>2 laws</b><span>State briefs used in advocacy around two drug-price transparency bills, both now law</span></a>
+    <a href="#game"><b>Your data</b><span>The demo below runs on Epoch's July 2026 poll</span></a>
   </div>
 
-  <div id="view-like" role="tabpanel" aria-labelledby="tab-like">
-    <section class="step" id="step-group">
-      <div class="step-label">Pick a group that fits you</div>
-      <div class="tabs" id="lenses" role="group" aria-label="Group type"></div>
-      <div class="chips" id="groups" role="group" aria-label="Your group"></div>
-    </section>
-
-    <section class="step" id="step-guess">
-      <p class="q" id="guess-q">Out of 100 working people like you, how many used an AI tool (like ChatGPT) in the past week?</p>
-      <div class="guess-row"><div class="guess-num" id="guess-num" aria-live="polite">50 of 100</div></div>
-      <div id="guess-widget"></div>
-      <div class="actions">
-        <button class="btn btn-primary" id="reveal-btn" disabled>Pick a group first</button>
-        <button class="btn btn-link" id="skip-btn" disabled>Just show me the answer</button>
-      </div>
-    </section>
-
-    <section class="step hidden" id="step-reveal" aria-live="polite">
-      <h2 class="reveal-head" id="reveal-head"></h2>
-      <div class="reveal-range" id="reveal-range"></div>
-      <p class="verdict" id="verdict"></p>
-      <svg id="chart" role="img" aria-label="Share of each group that used AI in the past week, with likely ranges"></svg>
-      <div class="note" id="compare"></div>
-      <div class="share">
-        <button class="btn" id="copy-btn">Copy my result</button>
-        <button class="btn" id="again-btn">Try another group</button>
-        <span class="share-status" id="share-status"></span>
-      </div>
-      <div class="crowd" id="crowd"></div>
-      <p class="share-status">Guesses are stored anonymously: just the group and the number.</p>
-    </section>
-
-    <details class="viewer" id="viewer-like">
-      <summary>Check the data</summary>
-      <p><b>Source:</b> <a href="https://epoch.ai/data/polling">Epoch AI, polling on AI usage</a> (CC BY). Ipsos KnowledgePanel, July 10 to 19, 2026. 1,103 US adults with jobs, weighted to match the Census.</p>
-      <p><b>Question, word for word:</b> "In the past 7 days, did you use any of the following AI services? Select all that apply." "Used AI" here means any answer except "None (no AI use)."</p>
-      <div class="table-wrap"><table id="table-like"></table></div>
-      <p><a href="https://epoch.ai/data/polling/polling_on_ai_usage_jul_2026.csv">Download Epoch's full CSV</a> · <a href="data/ai-at-work-jul-2026.json">The slice this page uses</a></p>
-    </details>
-  </div>
-
-  <div id="view-change" role="tabpanel" aria-labelledby="tab-change" hidden>
-    <section class="step">
-      <p class="q">In March 2026, 8 out of 100 US adults used AI nearly every day (6 or 7 days a week). Out of 100 in August, how many?</p>
-      <div class="guess-row"><div class="guess-num" id="guess-num2" aria-live="polite">8 of 100</div></div>
-      <div id="guess-widget2"></div>
-      <div class="actions">
-        <button class="btn btn-primary" id="reveal-btn2">Show me the real answer</button>
-        <button class="btn btn-link" id="skip-btn2">Just show me the answer</button>
-      </div>
-    </section>
-    <section class="step hidden" id="step-reveal2" aria-live="polite">
-      <h2 class="reveal-head" id="reveal-head2"></h2>
-      <p class="verdict" id="verdict2"></p>
-      <div class="pair">
-        <figure><figcaption>March 2026</figcaption><div id="grid-mar"></div><p class="reveal-range">8 of 100 (range 7 to 9)</p></figure>
-        <figure><figcaption>August 2026</figcaption><div id="grid-aug"></div><p class="reveal-range">19 of 100 (range 17 to 21)</p></figure>
-      </div>
-      <p class="note">Any AI use in the past week went from 50 to 56 out of 100 over the same months. Epoch says comparisons across these two surveys are approximate, because the question about days changed.</p>
-    </section>
-    <details class="viewer">
-      <summary>Check the data</summary>
-      <p><b>Source:</b> <a href="https://epoch.ai/data-insights/near-daily-ai-use-doubled">Epoch AI, "Near-daily AI use doubled"</a> (CC BY). All US adults: March 3 to 5, 2026 (2,017 people) and August 28 to 30, 2026 (1,016 people).</p>
-      <p>This is a different group from the July game (everyone, not only people with jobs), so the two tabs are not one trend.</p>
-      <div class="table-wrap"><table id="table-change"></table></div>
-      <p><a href="data/epoch-ai-use-frequency-mar-aug-2026.csv">Download the CSV</a></p>
-    </details>
-  </div>
-
-  <section class="scrolly" id="findings" data-toc="What the data says" aria-label="What the data says">
-    <div class="sec-head"><h2><span class="ico" data-icon="findings"></span>Six things the survey shows</h2><p class="meta"><span>Analysis</span><span>Computed live from Epoch's numbers</span></p></div>
-    <div class="scrolly-grid">
-      <div class="scrolly-sticky">
-        <div class="scrolly-num" id="sc-num"></div>
-        <div id="sc-grid"></div>
-        <p class="scrolly-key"><span class="hl hl-used" data-hl="used">used AI</span><span class="hl hl-range" data-hl="range">the survey's range</span><span class="hl hl-none" data-hl="none">didn't</span></p>
-      </div>
-      <div class="scrolly-steps" id="sc-steps"></div>
+  <section class="thesis" id="how" data-toc="How I'd work">
+    <div>
+      <div class="sec-head"><h2><span class="ico" data-icon="leading"></span>How I'd run design at Epoch</h2></div>
+      <dl>
+          <dt>How I design</dt><dd>Plain language, empathy first, honest numbers, and interaction only when it's obvious.</dd>
+          <dt>How I work</dt><dd>Hands on, no job beneath me, shared standards, and always improving from my mistakes.</dd>
+          <dt>How I'd manage</dt><dd>I haven't managed a design team yet. I've mentored for years, I'd bring in a career coach and an executive coach, and I'm there for my people.</dd>
+        </dl>
+    </div>
+    <p>Here are ways I've led:</p>
+    <div class="cards">
+      <div class="card"><h3>As a founder</h3><p>Co-founder and CEO of PlaySesh: started it 0 to 1 solo, then led product and design with a co-founder and a founding engineer. Co-founder of y30, owning product, design and engineering.</p></div>
+      <div class="card"><h3>As the first designer</h3><p>First full-time designer at Iodine, first design hire at Pathstream, founding designer at StartPlaying, second designer at Clover Health. Each time I set how design, engineering and product worked together.</p></div>
     </div>
   </section>
+
+  <div class="bridge-wrap"><p class="bridge">Here's a small demo of the work I'd love to do at Epoch, built on your July 2026 poll.</p></div>
+  <div class="band band-epoch">
+  <div id="game" data-toc="The game"></div>
+  <div class="sec-head"><h1 id="game-title">Guess how many people like you use AI</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span>Data: Epoch AI</span></p></div>
+  <div class="dock" id="dock" aria-hidden="true"><span class="dock-title">Guess how many people like you use AI</span><span class="dock-state" id="dock-state"></span></div>
+
+  <section class="round" id="round1" data-step="1">
+    <p class="cite">Data: <a href="https://epoch.ai/data/polling">Epoch AI polling on AI usage ↗</a> · Ipsos, July 10–19, 2026 · 1,103 US adults with jobs · CC BY</p>
+    <div class="game-grid">
+      <div class="gg-text">
+        <ol class="stepper" aria-label="Steps">
+          <li data-s="1"><span>1</span>Who you are</li>
+          <li data-s="2"><span>2</span>Your guess</li>
+          <li data-s="3"><span>3</span>The answer</li>
+        </ol>
+        <div class="s1" id="s1">
+          <p class="madlib">Which group are you in?</p>
+          <p class="hint">Pick one. You belong to several groups; the survey reports each one separately.</p>
+          <p class="hint cue-hint cue-down"><span class="cue-arrow" aria-hidden="true"></span>Choose a type, then your group</p>
+          <div class="seg" id="seg" role="tablist" aria-label="Group type"></div>
+          <div class="opts" id="opts" role="radiogroup" aria-label="Your group"></div>
+        </div>
+        <div class="s2" id="s2">
+          <p class="madlib">I'm <button class="pick" id="pick-btn" aria-label="Change your group">pick a group</button>. Out of 100 working people like me, how many used AI last week?</p>
+          <p class="gl">Your guess</p>
+          <div class="guess-num" id="guess-num" aria-live="polite">? of 100</div>
+          <p class="hint cue-hint" id="hint"><span class="cue-arrow" aria-hidden="true"></span>Tap the figures: each one is a person like you.</p>
+          <div class="actions">
+            <button class="btn btn-primary" id="reveal-btn" hidden>Show me the real answer</button>
+            <button class="btn-ghost" id="skip-btn">Just show me <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+        <div class="hidden" id="step-reveal" aria-live="polite">
+          <h2 class="reveal-head" id="reveal-head"></h2>
+          <p class="reveal-range" id="reveal-range"></p>
+          <p class="verdict" id="verdict"></p>
+          <div class="share">
+            <button class="btn" id="again-btn">Try another group</button>
+            <button class="btn-link" id="copy-btn">Copy my result</button>
+            <span class="share-status" id="share-status"></span>
+          </div>
+        </div>
+      </div>
+      <div class="gg-graphic"><div id="guess-widget"></div></div>
+    </div>
+    <div class="hidden" id="reveal-more">
+      <p class="chart-cap" id="chart-cap"></p>
+      <svg id="chart" role="img" aria-label="Share of each group that used AI in the past week, with likely ranges"></svg>
+      <div id="compare"></div>
+      <div class="crowd" id="crowd"></div>
+    </div>
+  </section>
+
+
 
   <div class="method">
   <details>
     <summary>What these numbers can't tell you</summary>
     <ul>
-      <li>The July game only asked people with jobs. If you're retired or a student, "people like you" isn't in it.</li>
+      <li>The poll only asked people with jobs. If you're retired or a student, "people like you" isn't in it.</li>
       <li>It's what people said they did, not measured use.</li>
       <li>Each number is an estimate. The shaded range is where the real number most likely falls (Epoch's 90% range).</li>
       <li>"Too close to call" is a real test, not whether two bars overlap: a gap counts only when it's bigger than 1.645 times the combined standard error of the two groups.</li>
       <li>Small groups have wide ranges. "Less than high school" is 68 people.</li>
     </ul>
   </details>
+
+  <details class="viewer" id="viewer-like">
+      <summary>Check the data</summary>
+      <p><b>Source:</b> <a href="https://epoch.ai/data/polling">Epoch AI, polling on AI usage</a> (CC BY). Ipsos KnowledgePanel, July 10 to 19, 2026. 1,103 US adults with jobs, weighted to match the Census.</p>
+      <p><b>Question, word for word:</b> "In the past 7 days, did you use any of the following AI services? Select all that apply." "Used AI" here means any answer except "None (no AI use)."</p>
+      <div class="table-wrap"><table id="table-like"></table></div>
+      <p><a href="https://epoch.ai/data/polling/polling_on_ai_usage_jul_2026.csv">Download Epoch's full CSV</a> · <a href="data/ai-at-work-jul-2026.json">The slice this page uses</a></p>
+    <p class="muted-note">If you guess, the page logs it anonymously: the group you picked and your number, nothing else. "Just show me the answer" logs nothing.</p>
+</details>
 
   <details>
     <summary>Why a guessing game?</summary>
@@ -508,9 +700,12 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
   </div>
   </div><!-- /band-epoch -->
 
-  <section class="chapter" id="work" data-toc="GoodRx Research">
-    <div class="sec-head"><h2><span class="ico" data-icon="map"></span>The United States of Drugs</h2><p class="meta"><span>Shipped 2018</span><span>Rebuilt 2026 from the original data</span><span>GoodRx Research</span></p></div>
+  <section class="chapter" id="work" data-toc="Done before">
+    <div class="sec-head"><h2><span class="ico" data-icon="map"></span>I've done this before</h2><p class="meta"><span>GoodRx Research, 2017 to 2018</span></p></div>
+    <p class="lede">Epoch turns research into something the public and policymakers can use. At GoodRx Research, I did that for drug prices: charts the press picked up, and briefs used with lawmakers.</p>
+    <div class="sec-head sub-head"><h3>The United States of Drugs</h3><p class="meta"><span>Shipped 2018</span><span>Rebuilt 2026 from the original data</span><span>GoodRx Research</span></p></div>
     <p class="lede">The ten most-filled prescriptions in each state. I designed the original and built it in code (Vega) with engineer Marc Mendiola's help. Rebuilt here from the 2018 data.</p>
+    <p class="aside">In the 2018 data, levothyroxine was the most-filled prescription in 24 of 50 states, followed by atorvastatin (6) and hydrocodone/acetaminophen (5).</p>
     <div class="tabs" id="map-modes" role="group" aria-label="Color the map by"></div>
     <div class="legend" id="legend"></div>
     <svg id="map" role="img" aria-label="Map of US states colored by prescription rank"></svg>
@@ -523,7 +718,7 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
       <figure><button class="zoom" aria-label="Enlarge: flu prescriptions map"><img src="images/work/goodrx-flu-prescriptions.webp" alt="GoodRx Research map of flu prescriptions across the US" loading="lazy" /></button><figcaption>Flu prescriptions across the US. Used by <a href="https://abcnews.com/video/53014507/">Good Morning America and ABC News ↗</a>. <a href="https://www.goodrx.com/oseltamivir/tamiflu-prescriptions-reveal-shocking-flu-trend">GoodRx Research ↗</a></figcaption></figure>
     </div>
 
-    <div class="sec-head sub-head"><h3><span class="ico" data-icon="policy"></span>Briefs for policymakers</h3><p class="meta"><span>Shipped 2018</span><span>Originals lost</span></p></div>
+    <div class="sec-head sub-head" id="briefs"><h3><span class="ico" data-icon="policy"></span>Briefs for policymakers</h3><p class="meta"><span>Shipped 2018</span><span>Originals lost</span></p></div>
     <p>With GoodRx's executive team, I designed state-specific briefs for meetings with policymakers: one reusable structure, filled in for all 50 states with each state's top health conditions, top prescriptions and health facts. They were used in advocacy around two drug-price transparency bills.</p>
     <div class="bills">
       <div class="bill"><a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553"><div class="bill-id">S.2553 ↗</div><div class="bill-name">Know the Lowest Price Act of 2018</div><div class="bill-law">Public Law 115-262</div><div class="bill-what">Medicare drug plans can't stop pharmacists from telling patients when paying cash is cheaper.</div></a></div>
@@ -532,16 +727,6 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
     </div>
   </section>
 
-  <section class="chapter" id="research" data-toc="Research">
-    <div class="sec-head"><h2><span class="ico" data-icon="research"></span>How I find out what people need</h2><p class="meta"><span>Clover Health, 2015 to 2016</span><span>Pathstream, 2019 to 2020</span></p></div>
-    <div class="proof-grid">
-      <figure class="proof"><button class="zoom" aria-label="Enlarge: Clover Health nurse home visit"><img src="images/work/clover-hero.png" alt="A Clover Health nurse practitioner with a patient at home, next to the redesigned visit app" loading="lazy" /></button>
-        <figcaption><b>Clover Health</b>Shadowed nurse practitioners on home visits before redesigning their app. Nurses reported 1 to 2 hours of chart prep gone each day. <a href="index.html?work=clover&amp;project=care-visit#work">Case study ↗</a></figcaption></figure>
-      <figure class="proof"><button class="zoom" aria-label="Enlarge: Pathstream product system map"><img src="images/work/pathstream/system-map.png" alt="Pathstream product system map: every screen of the platform laid out" loading="lazy" /></button>
-        <figcaption><b>Pathstream</b>A 26-screen product audit in week three, three rounds of usability testing, and five co-design sessions with course authors. Shown: the product system map. <a href="index.html?work=pathstream&amp;project=lesson-system#work">Case study ↗</a></figcaption></figure>
-    </div>
-    <p class="aside">And this page: every guess is recorded anonymously, so the game doubles as research on what people believe about AI at work.</p>
-  </section>
 
   <section class="chapter" id="system" data-toc="Design system">
     <div class="sec-head"><h2><span class="ico" data-icon="system"></span>Setting the quality bar</h2><p class="meta"><span>TaskRabbit, 2014 to 2015</span><span>Pathstream, 2019 to 2020</span><span>This site: live</span></p></div>
@@ -554,46 +739,26 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
     <h3 class="sub">This site's system, read live from its code</h3>
     <div class="ds-live" id="ds-live" aria-live="polite"></div>
     <p class="aside"><a href="index.html?ds">Open the full catalog ↗</a></p>
-  </section>
-
-  <section class="chapter" id="components" data-toc="Components">
-    <div class="sec-head"><h2><span class="ico" data-icon="system"></span>Components for data</h2><p class="meta"><span>Prototype</span><span>Built for this page</span></p></div>
+    <div class="sec-head sub-head"><h3>Components, from a data-viz kit to my own site</h3></div>
     <div class="comp-md" id="comp-md"></div>
+    <dl class="comp-static"><dt>Data-viz kit (interactive with JavaScript)</dt><dd><b>Estimate with range.</b> A number is never alone: its range and sample size travel with it.</dd><dd><b>Unit toggle.</b> The same growth, three ways: the control Epoch uses on its trends page.</dd><dd><b>Real or noise?.</b> Compare any two groups; the verdict uses the survey’s own margins.</dd><dd><b>Chart with a note.</b> The note sits on the one gap the survey can vouch for.</dd><dt>This site's components</dt><dd><b>World band.</b> One per company on the homepage; the band color comes from the work.</dd><dd><b>Title band.</b> Opens every company page: role, name, one-line summary, stage.</dd><dd><b>Facts row.</b> Role, dates and team for pages without project cards.</dd><dd><b>Fact grid.</b> A spec panel for dense facts.</dd><dd><b>Project card.</b> One card used on company pages and in Recent work.</dd><dd><b>Diagram card.</b> Diagrams as first-class cards, not screenshots.</dd><dd><b>Inside the voice.</b> A y30 call replayed turn by turn beside the pipeline that handled it.</dd><dd><b>Case-study end row.</b> Next case study and contact, closing every story.</dd></dl>
     <p class="aside">Site components are captured from the live catalog, September 26, 2026. <a href="index.html?ds=components">See them live ↗</a></p>
     <script type="application/json" id="site-comp-data">[{"slug": "world-band", "name": "World band", "desc": "One per company on the homepage; the band color comes from the work.", "img": "images/work/components/world-band.jpg"}, {"slug": "title-band", "name": "Title band", "desc": "Opens every company page: role, name, one-line summary, stage.", "img": "images/work/components/title-band.jpg"}, {"slug": "facts-row", "name": "Facts row", "desc": "Role, dates and team for pages without project cards.", "img": "images/work/components/facts-row.jpg"}, {"slug": "fact-grid", "name": "Fact grid", "desc": "A spec panel for dense facts.", "img": "images/work/components/fact-grid.jpg"}, {"slug": "project-card", "name": "Project card", "desc": "One card used on company pages and in Recent work.", "img": "images/work/components/project-card.jpg"}, {"slug": "diagram-card", "name": "Diagram card", "desc": "Diagrams as first-class cards, not screenshots.", "img": "images/work/components/diagram-card.jpg"}, {"slug": "inside-the-voice", "name": "Inside the voice", "desc": "A y30 call replayed turn by turn beside the pipeline that handled it.", "img": "images/work/components/inside-the-voice.jpg"}, {"slug": "end-row", "name": "Case-study end row", "desc": "Next case study and contact, closing every story.", "img": "images/work/components/end-row.jpg"}]</script>
   </section>
 
-  <section class="chapter" id="leading" data-toc="Leading">
-    <div class="sec-head"><h2><span class="ico" data-icon="leading"></span>How I've led</h2></div>
-    <p>Here are ways I've led:</p>
-    
-    <div class="cards">
-      <div class="card"><h3>As a founder</h3><p>Co-founder and CEO of PlaySesh: started it 0 to 1 solo, then led product and design with a co-founder and a founding engineer. Co-founder of y30, owning product, design and engineering.</p></div>
-      <div class="card"><h3>As the first designer</h3><p>First full-time designer at Iodine, first design hire at Pathstream, founding designer at StartPlaying, second designer at Clover Health. Each time I set how design, engineering and product worked together.</p></div>
-    </div>
-    <p>I haven't managed a design team yet. I've been pretty active with mentoring over the years.</p>
-  </section>
 
-  <section class="chapter" id="code" data-toc="Code">
-    <div class="sec-head"><h2><span class="ico" data-icon="code"></span>I build what I design</h2><p class="meta"><span>Hand-coded, 2016 to 2024</span><span>This page: AI-assisted, 2026</span></p></div>
-    <p>Hand-coded, no AI: <a href="https://github.com/whoischrislam/portfolio">portfolio (2023 to 2024) ↗</a> and <a href="https://github.com/whoischrislam/gamedev-portfolio">gamedev-portfolio ↗</a>. This site is AI-assisted for speed, since I want to demonstrate this and apply before the applications close.</p>
-    <div class="code-pairs" id="code-pairs"></div>
-    <script type="application/json" id="code-data">[{"year": "2016", "file": "app.coffee", "what": "Framer prototype for Clover Health's call logging", "lang": "CoffeeScript", "code": "# Import file \"Framer_Prototype\"\nsketch1 = Framer.Importer.load(\"imported/Framer_Prototype@1x\")\n\neditCall = sketch1.edit_call\ncallLog = sketch1.call_log\n\neditCall.x = 398\neditCall.opacity = 1\n\n\nlayerA = new Layer\n    width: 398\n    height: 904\n    backgroundColor: \"NaN\"\n\neditCall.parent = layerA\ncallLog.parent = layerA\n\nlayerA.clip = true\n\n#added layers\nlogLink = new Layer\nlogLink.html = \"Call Log Summary\"\nlogLink.width = 124\nlogLink.height = 25\nlogLink.x = 398+17\nlogLink.y = 42\nlogLink.backgroundColor = \"none\"\nlogLink.style = \n\t\"font-family\":\"Helvetica\",\n\t\"font-size\":\"15px\"\n\n\ndoneButton = new Layer\n\twidth:320\n\theight:45\n\tx:46+398\n\ty:382\n\tbackgroundColor: \"#3189D2\"\n\tborderRadius: 4\n\tz:0\n\tparent: layerA\n\t\n", "img": "images/work/clover-hero.png", "imgAlt": "Clover Health's nurse visit app on a tablet", "label": "Clover Health, where I built it"}, {"year": "2018", "file": "top_us_drugs.json", "what": "The original Vega spec for the United States of Drugs: data joined to the map, projection, hover", "lang": "Vega", "code": "    \"data\": [\n        {\n            \"name\": \"drugs\",\n            \"url\": \"top_drugs_by_us_state_adjusted_xformed.csv\",\n            \"format\": {\"type\": \"csv\", \"parse\": \"auto\"}\n        },\n        {\n            \"name\": \"states\",\n            \"url\": \"us-10m.json\",\n            \"format\": {\"type\": \"topojson\", \"feature\": \"states\"},\n            \"transform\": [\n                {\n                    \"type\": \"geopath\",\n                    \"projection\": \"projection\"\n                },\n                {\n                    \"type\": \"lookup\",\n                    \"from\": \"drugs\", \"key\": \"stateid\",\n                    \"fields\": [\"id\"], \"as\": [\"state\"]\n                }\n            ]\n        }\n    ],\n    \n    \"scales\": [\n        {\n          \"name\": \"color\",\n          \"type\": \"ordinal\",\n          \"range\": {\"signal\": \"colors\"},\n          \"domain\": {\"signal\": \"topdrug\"}\n        }\n    ],\n    \n    \"projections\": [\n        {\n            \"name\": \"projection\",\n            \"type\": \"albersUsa\",\n            \"scale\": 1200,\n            \"translate\": [{\"signal\": \"width / 2\"}, {\"signal\": \"height / 2\"}]\n        }\n    ],\n    \n    \"marks\": [\n        \n        {\n            \"type\": \"path\",\n            \"interactive\": true,\n            \"from\": {\"data\": \"states\"},\n            \"encode\": {\n                \"enter\": {\n                    \"fill\": {\"value\": \"#dedede\"},\n                    \"stroke\": {\"value\": \"#ffffff\"}\n                },\n                \"update\": {\n                    \"path\": {\"field\": \"path\"},\n                    \"fill\": {\"scale\": \"color\", \"field\": \"state.drug1\"}\n                },\n                \"hover\": {\n                    \"fill\": {\"value\":\"#f9e547\"}\n                }\n            }", "img": "images/work/goodrx-us-of-drugs.webp", "imgAlt": "The United States of Drugs map as published by GoodRx Research", "label": "What it made"}, {"year": "2023 to 2024", "file": "styles.css", "what": "Hand-written design tokens for my portfolio, reused and re-themed for my game-dev portfolio", "lang": "CSS", "code": ":root {\n/* Sizing */\n--page-width: 80vw;\n--page-height: 100%;\n/* Spacing */\n--gap: 0.4em 0.4em;\n--header-footer-padding: 1.6em 0;\n--section-padding: 4em 0;\n--container-padding: 1em;\n--project-margins: 0 0 0 0;\n/* Typography */\n--header-font: 'Merriweather', serif;\n--body-font: 'Sarabun', sans-serif;\n--h1-size: 4em;\n--h2-size: 2em;\n--p-size: 1.4em;\n--highlight-size: 1em;\n--header-spacing: 0 0 0.4em 0;\n--inline-spacing: 0 0 1em 0;\n/* Colors */\n--background: #2D2D2D;\n--secondary-background:#EBF2FF;\n--primary: #259AC9;\n--secondary: #196A8A;\n--nav-link: #ffffff;\n--link:#259AC9;\n--white: #ffffff;\n--black:#2D2D2D;\n--gray: #f2f2f2;\n/* Drop Shadow */", "img": "images/work/handcoded-portfolio.jpg", "imgAlt": "Chris's hand-coded portfolio", "img2": "images/work/handcoded-gamedev-portfolio.jpg", "label": "What it made"}]</script>
-  </section>
 
-  <section class="chapter" id="colleagues" data-toc="Colleagues">
-    <div class="sec-head"><h2><span class="ico" data-icon="quote"></span>What colleagues say</h2><p class="meta"><span>LinkedIn recommendations</span><span>Quoted word for word</span></p></div>
+
+  <section class="chapter" id="colleagues" data-toc="Recommendation">
+    <div class="sec-head"><h2><span class="ico" data-icon="quote"></span>From a former manager</h2><p class="meta"><span>LinkedIn recommendation</span><span>Quoted word for word</span></p></div>
     <blockquote><p>Chris is a splendid and multi-talented designer, with an innate ability to understand user needs and experiment with software design until the product matches the purpose. He ably took on assignments in a range of media - from PDF to D3 data visualizations - and was dependably curious and creative in creating effective software and design solutions. He is literate in code - engineers love working with him - and is also deeply attuned to the needs of ordinary people (we worked on healthcare information and tools, which is not an easy area whatsoever to understand user needs and concerns). I heartily recommend him as a product designer with a flair for UX/UI.</p><cite>Thomas Goetz, GM and Head of Research at Iodine, managed Chris directly</cite></blockquote>
-    <blockquote><p>Chris is a passionate designer that can contribute to any team with design prowess and the cachet to back it up. He isn't afraid to voice and fight for what he believes is right, but, more importantly, he is willing to listen to others' opinions and concede when appropriate. He has enough technical know-how and communication skills to effectively interact with members of the team who oversee different aspects of the product--both business and technical. And, he ensures that everyone has the opportunity to provide him with feedback both about his own performance and about his designs.</p>
-      <p>As a software engineer, I worked with Chris for over a year as part of both Iodine and GoodRx. We both switched teams throughout our time together, but he always served as a product designer. He was the sole designer during his time at Iodine and so spearheaded the end-to-end design effort for all product initiatives during his tenure. That included but wasn't limited to conceiving and designing product features both functionally and visually, facilitating product brainstorm meetings, coordinating with the engineering team for product implementation, conducting user research, and moderating post-launch retrospective meetings.</p>
-      <p>Chris was always hard-working and effective in his capacity as a product designer. He was thoughtful, meticulous, and ethical when designing any new product or feature. He ensured that the team carried through with implementation from start to finish and did what he could to facilitate that. And even when a feature wasn’t successful from a business standpoint, he would make sure that both he and the rest of the team learned from it.</p>
-      <p>Bottom line: Chris would be a strong addition to most any product development team.</p><cite>Marc Mendiola, software engineer, Iodine and GoodRx</cite></blockquote>
     <p class="aside"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/">All recommendations on LinkedIn ↗</a></p>
   </section>
 
   <section class="chapter contact" id="contact" data-toc="Get in touch">
     <h2>Let's talk.</h2>
-    <p class="lede">I'd love to figure out how we can work together! I'm excited about the mission of Epoch AI and this role combines a bit of everything I'm working towards.</p>
+    <p class="lede">I'd love to figure out how we can work together! I'm excited about the mission of Epoch AI.</p>
+    <p>Based in Honolulu, working West Coast hours. Happy to travel for retreats.</p>
     <a class="btn btn-primary btn-lg" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI%3A%20Design%20Lead">Email Chris</a>
     <p class="aside">Or see my <a href="chris-lam-resume.pdf">résumé</a> and <a href="index.html">full portfolio</a>.</p>
   </section>
@@ -617,26 +782,44 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
   let rows = [], all = null, lens = 'age_group', group = null, guess = 50;
 
   // ---- 100-people grid: the one component for every count on this page ----
+  let SHAPE = 'figure'; // Chris picked the full standing figure
+  // Two person figures in a 1x1 box: a bust (head + rounded shoulders) and a full standing figure.
+  const FIGURES = {
+    bust: 'M0.5,0.12a0.18,0.18 0 1,0 0.0001,0Z M0.13,0.96C0.13,0.72 0.29,0.57 0.5,0.57C0.71,0.57 0.87,0.72 0.87,0.96Z',
+    figure: 'M0.5,0.02a0.1,0.1 0 1,0 0.0001,0Z M0.33,0.25H0.67Q0.75,0.25 0.75,0.33V0.6H0.65V0.98H0.54V0.66H0.46V0.98H0.35V0.6H0.25V0.33Q0.25,0.25 0.33,0.25Z'
+  };
   function Grid(el, { interactive = false, onChange } = {}) {
     const host = d3.select(el);
     let cells, size, gap = 6, value = 0;
     function render() {
+      delete el.dataset.revealed;
       host.selectAll('*').remove();
       const Wd = el.clientWidth || 600;
       size = Math.min(34, (Wd - gap * 9) / 10);
       const side = size * 10 + gap * 9;
       const svg = host.append('svg').attr('viewBox', `0 0 ${side} ${side}`).attr('height', side).style('max-width', side + 'px');
-      cells = svg.selectAll('circle').data(d3.range(100)).join('circle')
-        .attr('cx', i => (i % 10) * (size + gap) + size / 2).attr('cy', i => Math.floor(i / 10) * (size + gap) + size / 2)
-        .attr('r', size / 2 - 2);
+      const x0 = i => (i % 10) * (size + gap), y0 = i => Math.floor(i / 10) * (size + gap);
+      if (SHAPE === 'square') cells = svg.selectAll('rect').data(d3.range(100)).join('rect').attr('x', x0).attr('y', y0).attr('width', size).attr('height', size).attr('rx', 2);
+      else if (FIGURES[SHAPE]) cells = svg.selectAll('path').data(d3.range(100)).join('path').attr('d', FIGURES[SHAPE]).attr('vector-effect', 'non-scaling-stroke').attr('transform', i => `translate(${x0(i)},${y0(i)}) scale(${size})`);
+      else cells = svg.selectAll('circle').data(d3.range(100)).join('circle')
+        .attr('cx', i => x0(i) + size / 2).attr('cy', i => y0(i) + size / 2).attr('r', size / 2 - 2);
       paint();
+      svg.on('pointermove.tip', ev => { if (ev.buttons) return hideTip(); const [px, py] = d3.pointer(ev, svg.node());
+          const c = Math.floor(px / (size + gap)), r = Math.floor(py / (size + gap)); if (c < 0 || c > 9 || r < 0 || r > 9) return hideTip();
+          if (interactive && !el.dataset.revealed) return hideTip(); showTip(tipFor(r * 10 + c), ev); })
+        .on('pointerleave.tip', hideTip);
       if (!interactive) return;
       const pick = (ev) => {
         const [px, py] = d3.pointer(ev, svg.node());
         const col = Math.max(0, Math.min(9, Math.floor(px / (size + gap)))), row = Math.max(0, Math.min(9, Math.floor(py / (size + gap))));
         set(row * 10 + col + 1);
       };
+      const hoverAt = (ev) => { const [px, py] = d3.pointer(ev, svg.node());
+        const col = Math.floor(px / (size + gap)), row = Math.floor(py / (size + gap)); return (col < 0 || col > 9 || row < 0 || row > 9) ? null : row * 10 + col + 1; };
       svg.style('cursor', 'pointer').style('touch-action', 'none')
+        .on('pointermove.preview', ev => { if (ev.buttons || el.dataset.revealed) return; const h = hoverAt(ev); preview(h);
+          if (h != null && ev.pointerType === 'mouse') showTip(`<b>${h} of 100</b>Tap to guess ${h}`, ev); })
+        .on('pointerleave.preview', () => { preview(null); hideTip(); })
         .on('pointerdown', ev => { pick(ev); svg.on('pointermove', pick); })
         .on('pointerup pointerleave', () => svg.on('pointermove', null))
         .attr('tabindex', 0).attr('role', 'slider').attr('aria-label', 'Your guess, out of 100 people')
@@ -648,7 +831,12 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
         });
       this.svg = svg;
     }
+    function tipFor(i) { const st = cells.filter((d) => d === i).attr('data-s');
+      return `<b>Person ${i + 1} of 100</b>${{ used: 'Used AI', range: 'Within the survey\u2019s range', guess: 'In your guess', gap: 'Between your guess and the answer', none: 'Didn\u2019t use AI' }[st] || ''}`; }
     function paint() { cells.attr('fill-opacity', 1).attr('fill', i => i < value ? 'var(--guess)' : 'var(--none)').attr('data-s', i => i < value ? 'guess' : 'none').attr('stroke', 'none'); }
+    function preview(h) { if (!cells || el.dataset.revealed) return;
+      cells.attr('fill', i => i < value ? 'var(--guess)' : (h != null && i < h) ? 'var(--guess)' : 'var(--none)')
+        .attr('fill-opacity', i => i < value ? 1 : (h != null && i < h) ? .35 : 1); }
     function set(v) {
       value = Math.max(0, Math.min(100, Math.round(v)));
       if (cells) { paint(); host.select('svg').attr('aria-valuenow', value); }
@@ -656,10 +844,12 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
     }
     // Real answer fills in green, one person at a time. Orange rings mark the gap between guess and truth.
     function reveal(real, g) {
+      el.dataset.revealed = 1;
       const r = Math.round(real);
       cells.transition().duration(RM ? 0 : 20).delay(i => RM ? 0 : i * 9).attr('fill-opacity', 1)
-        .attr('fill', i => i < r ? 'var(--accent)' : 'var(--none)').attr('data-s', i => i < r ? 'used' : 'none')
-        .attr('stroke', i => g != null && (i < g) !== (i < r) ? 'var(--guess)' : 'none').attr('stroke-width', 3);
+        .attr('fill', i => i < r ? 'var(--accent)' : (g != null && i < g) ? 'var(--guess)' : 'var(--none)')
+        .attr('fill-opacity', i => g != null && (i < g) !== (i < r) ? .45 : 1).attr('stroke', 'none')
+        .attr('data-s', i => g != null && (i < g) !== (i < r) ? 'gap' : i < r ? 'used' : 'none');
     }
     // Honest uncertainty: solid up to the low end of the range, pale across the range.
     function range(lo, hi) {
@@ -672,43 +862,67 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
   }
 
   // ---- Tab 1: people like you (July 2026, working adults) ----
-  const g1 = Grid($('guess-widget'), { interactive: true, onChange: v => { guess = v; $('guess-num').textContent = v + ' of 100'; } });
+  let touched = false;
+  const g1 = Grid($('guess-widget'), { interactive: true, onChange: v => { guess = v; touched = true; $('guess-num').textContent = v + ' of 100'; setButtons(); } });
 
   fetch('data/ai-at-work-jul-2026.json').then(r => r.json()).then(doc => {
     rows = doc.rows;
     all = rows.find(r => r.lens === 'full_sample');
     if (LENSES[params.get('lens')]) lens = params.get('lens');
-    drawLenses(); drawGroups(); g1.render(); g1.set(50); drawTable(); initScrolly(); buildComponents();
+    buildPicker(); setStep(1); g1.render(); g1.set(0); touched = false; $('guess-num').textContent = '? of 100'; setButtons(); drawTable(); buildComponents();
     const g = params.get('group');
     if (g && rows.some(r => r.lens === lens && r.group === g)) pickGroup(g);
   });
 
   const groupsFor = (l) => rows.filter(r => r.lens === l);
 
-  function drawLenses() {
-    const el = $('lenses'); el.innerHTML = '';
-    Object.entries(LENSES).forEach(([k, label]) => {
-      const b = document.createElement('button');
-      b.textContent = label; b.setAttribute('aria-pressed', k === lens);
-      b.onclick = () => { lens = k; group = null; drawLenses(); drawGroups(); resetReveal(); setButtons(); };
-      el.append(b);
-    });
+  // ---- The group picker lives inside the sentence ----
+  const PHRASE = {
+    age_group: g => `aged ${g}`,
+    education: g => ({ 'Less than HS': 'without a high school diploma', 'High school': 'a high school graduate', 'Some college': 'someone with some college', 'Bachelor+': 'a college graduate' }[g] || g),
+    region: g => `in the ${g}`,
+    gender: g => (g === 'Male' ? 'a man' : 'a woman')
+  };
+  // ---- Round 1 steps: 1 who you are, 2 your guess, 3 the answer ----
+  const LENS_TAB = { age_group: 'Age', education: 'Schooling', region: 'Region', gender: 'Gender' };
+  function setStep(n) {
+    $('round1').dataset.step = n;
+    document.querySelectorAll('#round1 .stepper li').forEach(li => { const k = +li.dataset.s; li.classList.toggle('on', k === n); li.classList.toggle('done', k < n); li.querySelector('span').textContent = k < n ? '✓' : k; });
+    updateDock();
   }
-  function drawGroups() {
-    const el = $('groups'); el.innerHTML = '';
-    groupsFor(lens).forEach(r => {
-      const b = document.createElement('button');
-      b.textContent = r.group; b.setAttribute('aria-pressed', r.group === group);
-      b.onclick = () => pickGroup(r.group);
-      el.append(b);
-    });
+  function buildPicker() {
+    $('seg').innerHTML = Object.entries(LENS_TAB).map(([k, t]) => `<button role="tab" data-l="${k}" aria-selected="${k === lens}">${t}</button>`).join('');
+    $('seg').querySelectorAll('button').forEach(b => b.onclick = () => { lens = b.dataset.l; buildPicker(); });
+    $('opts').innerHTML = groupsFor(lens).map(r => `<button role="radio" aria-checked="${r.group === group && r.lens === lens}" data-g="${r.group}"><i></i>${PHRASE[lens](r.group).replace(/^(a|an) /, '').replace(/^\w/, c => c.toUpperCase())}</button>`).join('');
+    $('opts').querySelectorAll('button').forEach(b => b.onclick = () => pickGroup(b.dataset.g));
   }
+  function openPicker() { setStep(1); buildPicker(); const f = $('opts').querySelector('[aria-checked="true"]') || $('opts').querySelector('button'); f && f.focus(); }
+  $('pick-btn').onclick = openPicker;
   function setButtons() {
-    $('reveal-btn').disabled = !group; $('skip-btn').disabled = !group;
-    $('reveal-btn').textContent = group ? 'Show me the real answer' : 'Pick a group first';
+    $('guess-widget').classList.toggle('invite', !!group && !touched);
+    $('reveal-btn').hidden = !(group && touched);
+    $('hint').hidden = !!touched;
+    updateDock();
   }
-  function pickGroup(g) { group = g; drawGroups(); setButtons(); resetReveal(); }
-  function resetReveal() { $('step-reveal').classList.add('hidden'); $('share-status').textContent = ''; if (rows.length) { g1.render(); } }
+  function pickGroup(g) {
+    group = g; $('pick-btn').textContent = PHRASE[lens](g); $('pick-btn').classList.add('set');
+    buildPicker(); resetReveal(); setStep(2); setButtons();
+  }
+  function resetReveal() {
+    $('step-reveal').classList.add('hidden'); $('reveal-more').classList.add('hidden'); $('share-status').textContent = '';
+    if (rows.length) { g1.render(); if (touched) g1.set(guess); }
+  }
+  function updateDock() { $('dock-state').textContent = group ? `${PHRASE[lens](group)} · your guess: ${touched ? guess + ' of 100' : '?'}` : ''; }
+
+  // ---- Numbers count up to their value (instant with reduced motion) ----
+  function countUps(root) {
+    root.querySelectorAll('.cu').forEach(el => {
+      const to = +el.dataset.to; if (RM) { el.textContent = to; return; }
+      const from = +(el.dataset.from || 0), t0 = performance.now(), dur = 700;
+      const tick = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(from + (to - from) * e); if (k < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    });
+  }
 
   function drawTable() {
     const t = $('table-like');
@@ -716,32 +930,42 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
       rows.map(r => `<tr><td>${r.group === 'All' ? 'All working adults' : r.group}</td><td>${r.used.toFixed(1)}%</td><td>${r.lo.toFixed(1)} to ${r.hi.toFixed(1)}%</td><td>${r.n}</td></tr>`).join('');
   }
 
+  const NICE = g => ({ 'Bachelor+': 'college graduates', 'High school': 'high school graduates', 'Some college': 'some college', 'Less than HS': 'no high school diploma', Male: 'men', Female: 'women' }[g] || g);
+  const LENS_WORD = { age_group: 'age groups', education: 'education levels', region: 'regions', gender: 'men and women' };
   const isClose = (a, b) => Math.abs(a.used - b.used) / Math.sqrt(a.se * a.se + b.se * b.se) < Z;
   function who(me) {
     if (lens === 'age_group') return `working people aged ${me.group}`;
-    if (lens === 'education') return `working people with ${me.group === 'Bachelor+' ? 'a bachelor’s degree or more' : me.group.toLowerCase()} education`;
+    if (lens === 'education') return { 'Less than HS': 'working people without a high school diploma', 'High school': 'working high school graduates', 'Some college': 'working people with some college', 'Bachelor+': 'working college graduates' }[me.group];
     if (lens === 'region') return `working people in the ${me.group}`;
     return `working ${me.group === 'Male' ? 'men' : 'women'}`;
   }
 
   $('reveal-btn').onclick = () => reveal(true);
   $('skip-btn').onclick = () => reveal(false);
-  $('again-btn').onclick = () => { resetReveal(); $('step-group').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); };
+  $('again-btn').onclick = () => { resetReveal(); touched = false; g1.set(0); touched = false; $('guess-num').textContent = '? of 100'; setButtons(); $('round1').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); openPicker(); };
 
   function reveal(guessed) {
     const me = rows.find(r => r.lens === lens && r.group === group);
     const real = Math.round(me.used), diff = guess - real, g = guessed ? guess : null;
-    $('reveal-head').innerHTML = `<span class="hl hl-used" data-hl="used">${real} of every 100</span> ${who(me)} used AI in the past week.`;
-    $('reveal-range').innerHTML = `<span class="hl hl-range" data-hl="range">Most likely somewhere between ${Math.round(me.lo)} and ${Math.round(me.hi)}</span>. Based on ${me.n} people asked.`;
-    $('verdict').innerHTML = !guessed ? '' : Math.abs(diff) <= 3 ? `<span class="hl hl-guess" data-hl="guess">You guessed ${guess}</span>. Nearly spot on.`
-      : `<span class="hl hl-guess" data-hl="guess">You guessed ${guess}</span>. That's ${Math.abs(diff)} ${diff > 0 ? 'too high' : 'too low'}.`;
+    $('reveal-head').innerHTML = `<span class="stat hl-used" data-hl="used"><span class="cu" data-to="${real}" data-from="${guessed ? guess : 0}">${real}</span></span><span class="stat-lab">of every 100 ${who(me)} used AI last week</span>`;
+    const margin = Math.round((me.hi - me.lo) / 2);
+    $('reveal-range').innerHTML = `<span class="hl hl-range" data-hl="range">Most likely ${Math.round(me.lo)} to ${Math.round(me.hi)}</span> · ${me.n} people asked`;
+    // Feedback in three parts (Kim, Reinecke and Hullman, CHI 2017): direction, guess against truth, then the pattern.
+    const grp = groupsFor(lens), hi = grp.reduce((a, b) => b.used > a.used ? b : a), lo = grp.reduce((a, b) => b.used < a.used ? b : a);
+    const pattern = isClose(hi, lo)
+      ? `Across ${LENS_WORD[lens]}, every group is too close to call. Working adults overall: ${Math.round(all.used)}.`
+      : `Across ${LENS_WORD[lens]}, use is highest for ${NICE(hi.group)} (${Math.round(hi.used)}) and lowest for ${NICE(lo.group)} (${Math.round(lo.used)}), and that gap is real. Working adults overall: ${Math.round(all.used)}.`;
+    $('verdict').innerHTML = !guessed ? '' : Math.abs(diff) <= 3
+      ? `<span class="hl hl-guess" data-hl="guess">You guessed ${guess}</span>. Nearly spot on.`
+      : `<span class="hl hl-guess" data-hl="guess">You guessed ${guess}</span>: ${Math.abs(diff)} too ${diff > 0 ? 'high' : 'low'}.`;
+    $('chart-cap').innerHTML = `<b>How ${LENS_WORD[lens]} compare.</b> ${pattern}`;
     g1.reveal(me.used, g);
     if (guessed && window.posthog && window.posthog.capture) window.posthog.capture('epoch_guess', { view: 'like', lens, group, guess, real });
     drawCrowd(me);
     drawChart(me, g); drawCompare(me);
     $('copy-btn').hidden = !guessed;
-    $('step-reveal').classList.remove('hidden');
-    setTimeout(() => $('step-reveal').scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }), RM ? 0 : 1100);
+    $('step-reveal').classList.remove('hidden'); $('reveal-more').classList.remove('hidden');
+    setStep(3); countUps($('step-reveal'));
   }
 
   function drawChart(me, g) {
@@ -778,9 +1002,9 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
     const far = others.reduce((a, b) => Math.abs(b.used - me.used) > Math.abs(a.used - me.used) ? b : a);
     const near = others.reduce((a, b) => Math.abs(b.used - me.used) < Math.abs(a.used - me.used) ? b : a);
     const line = (o) => isClose(me, o)
-      ? `<b>${me.group} vs ${o.group}: too close to call.</b> The numbers look different, but the survey can't tell them apart.`
-      : `<b>${me.group} used AI ${me.used > o.used ? 'more' : 'less'} than ${o.group}.</b> This gap is bigger than the survey's margin, so it's likely real.`;
-    $('compare').innerHTML = line(far) + (near !== far ? '<br><br>' + line(near) : '');
+      ? `<li class="cmp-close"><i>≈</i><span><b>${NICE(me.group)} vs ${NICE(o.group)}:</b> too close to call</span></li>`
+      : `<li class="cmp-real"><i>✓</i><span><b>${NICE(me.group)} vs ${NICE(o.group)}:</b> a real gap (${Math.round(me.used)} vs ${Math.round(o.used)})</span></li>`;
+    $('compare').innerHTML = '<ul class="cmp">' + line(far) + (near !== far ? line(near) : '') + '</ul>';
     $('compare').classList.toggle('close', isClose(me, near));
   }
 
@@ -805,34 +1029,17 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
       : `<b>Across all groups, visitors guessed ${Math.round(crowd.avg)} on average.</b> Not enough guesses for ${me.group} yet. (${crowd.n} guesses, as of ${date}.)`;
   }
 
-  // ---- Tab 2: how fast it's changing (all US adults, March vs August 2026) ----
-  const MAR = { near: 8.2, lo: 7.2, hi: 9.3 }, AUG = { near: 18.7, lo: 16.7, hi: 20.8 };
-  let guess2 = 8;
-  const g2 = Grid($('guess-widget2'), { interactive: true, onChange: v => { guess2 = v; $('guess-num2').textContent = v + ' of 100'; } });
-  const gMar = Grid($('grid-mar')), gAug = Grid($('grid-aug'));
-  function reveal2(guessed) {
-    $('reveal-head2').innerHTML = `Near-daily AI use more than doubled: <b>8 to 19 of every 100</b> US adults.`;
-    const d = guess2 - 19;
-    $('verdict2').textContent = !guessed ? '' : Math.abs(d) <= 2 ? `You guessed ${guess2}. Nearly spot on.` : `You guessed ${guess2}. That's ${Math.abs(d)} ${d > 0 ? 'too high' : 'too low'}.`;
-    $('step-reveal2').classList.remove('hidden');
-    gMar.render(); gAug.render(); gMar.reveal(MAR.near, null); gAug.reveal(AUG.near, guessed ? guess2 : null);
-  }
-  $('reveal-btn2').onclick = () => { reveal2(true); if (window.posthog && window.posthog.capture) window.posthog.capture('epoch_guess', { view: 'change', guess: guess2, real: 19 }); };
-  $('skip-btn2').onclick = () => reveal2(false);
-  d3.csv('data/epoch-ai-use-frequency-mar-aug-2026.csv').then(rs => {
-    $('table-change').innerHTML = '<tr><th>Survey</th><th>Days of AI use, past week</th><th>Share</th><th>90% range</th><th>People asked</th></tr>' +
-      rs.map(r => `<tr><td>${r['Survey wave']}</td><td>${r['Days of AI use in past week']}</td><td>${r['Share of US adults (%)']}%</td><td>${r['90% CI lower bound (%)']} to ${r['90% CI upper bound (%)']}%</td><td>${r['Respondents (unweighted)']}</td></tr>`).join('');
-  });
 
-  // ---- Tabs ----
-  function showView(v) {
-    const like = v === 'like';
-    $('tab-like').setAttribute('aria-selected', like); $('tab-change').setAttribute('aria-selected', !like);
-    $('view-like').hidden = !like; $('view-change').hidden = like;
-    if (!like) { g2.render(); g2.set(guess2); }
-  }
-  $('tab-like').onclick = () => showView('like');
-  $('tab-change').onclick = () => showView('change');
+  // ---- Dock: once the title scrolls away, keep the question and your guess pinned while you play ----
+  (function dock() {
+    const sync = () => {
+      const titleGone = $('game-title').getBoundingClientRect().bottom < 0;
+      const inGame = [...document.querySelectorAll('.round')].some(r => { const b = r.getBoundingClientRect(); return b.top < innerHeight * .6 && b.bottom > 80; });
+      $('dock').classList.toggle('on', titleGone && inGame);
+      document.body.classList.toggle('in-game', inGame);
+    };
+    addEventListener('scroll', sync, { passive: true }); sync();
+  })();
 
   // ---- Tooltip, shared by the chart and the map ----
   function showTip(html, ev) {
@@ -843,30 +1050,6 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
   function hideTip() { $('tip').style.display = 'none'; }
 
   // ---- Scrollytelling: one sticky grid, five findings ----
-  function initScrolly() {
-    const g = (l, v) => rows.find(r => r.lens === l && r.group === v);
-    const A = all, y = g('age_group', '30–44'), o = g('age_group', '60+'), b = g('education', 'Bachelor+'), h = g('education', 'High school'),
-      m = g('gender', 'Male'), w = g('gender', 'Female');
-    const R = (r) => Math.round(r.used);
-    const verdict = (p, q) => isClose(p, q) ? 'Too close to call: the survey can’t tell them apart.' : 'That gap is bigger than the survey’s margin, so it’s likely real.';
-    const steps = [
-      { r: A, head: `<span class="hl hl-used" data-hl="used">${R(A)} of every 100</span> working adults used AI in the past week.`, text: `A little over half of everyone with a job. The pale dots are the survey's range: the real number most likely lands somewhere in there.` },
-      { r: y, head: `<span class="hl hl-used" data-hl="used">${R(y)} of every 100</span> aged 30 to 44.`, text: `The highest of any age group.` },
-      { r: o, head: `<span class="hl hl-used" data-hl="used">${R(o)} of every 100</span> aged 60 and up.`, text: `${R(y) - R(o)} fewer than people aged 30 to 44. ${verdict(y, o)}` },
-      { r: b, head: `<span class="hl hl-used" data-hl="used">${R(b)} of every 100</span> with a bachelor's degree or more.`, text: `Compared with ${R(h)} of every 100 with a high school education. ${verdict(b, h)}` },
-      { r: w, head: `<span class="hl hl-used" data-hl="used">${R(w)} of every 100</span> working women. ${R(m)} for men.`, text: `Different numbers, but ${isClose(m, w) ? 'too close to call. A plain bar chart would make this look like a real difference. It isn’t one.' : 'the gap is likely real.'}` },
-      { r: { used: 18.7, lo: 16.7, hi: 20.8 }, head: `<span class="hl hl-used" data-hl="used">19 of every 100</span> US adults used AI nearly every day in August 2026.`, text: `Up from 8 in March: more than double in six months. This one is all adults, not only people with jobs, and Epoch says the comparison is approximate.` }
-    ];
-    const grid = Grid($('sc-grid')); grid.render();
-    $('sc-steps').innerHTML = steps.map((s, i) => `<div class="sc-step" data-i="${i}"><div><p>${s.text}</p></div></div>`).join('');
-    const show = (i) => {
-      const s = steps[i]; $('sc-num').innerHTML = s.head; grid.range(s.r.lo, s.r.hi);
-      document.querySelectorAll('.sc-step').forEach(el => el.classList.toggle('on', +el.dataset.i === i));
-    };
-    show(0);
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) show(+e.target.dataset.i); }), { rootMargin: '-45% 0px -45% 0px' });
-    document.querySelectorAll('.sc-step').forEach(el => io.observe(el));
-  }
 
 
   // ---- Icons (inline, 24px line style) ----
@@ -897,10 +1080,6 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
     tocLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
   }), { rootMargin: '-30% 0px -60% 0px' });
   tocItems.forEach(el => tocIO.observe(el));
-
-  // ---- Linked highlighting: hover a colored word, its marks light up ----
-  document.addEventListener('pointerover', e => { const h = e.target.closest('[data-hl]'); if (h) document.body.classList.add('hl-' + h.dataset.hl); });
-  document.addEventListener('pointerout', e => { const h = e.target.closest('[data-hl]'); if (h) document.body.classList.remove('hl-' + h.dataset.hl); });
 
   // ---- Sticker: drag it anywhere, click it for a fact from the data ----
   (function sticker() {
@@ -936,6 +1115,12 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
 
 
 
+  // ---- Review options for the game (for Chris; remove before sending) ----
+  function flipBar(id, opts, cur, apply) {
+    const bar = document.querySelector(`.flip[data-for="${id}"]`);
+    const draw = () => { bar.innerHTML = ''; Object.entries(opts).forEach(([k, t]) => { const b = document.createElement('button'); b.textContent = t; b.setAttribute('aria-pressed', k === cur); b.onclick = () => { cur = k; apply(k); draw(); }; bar.append(b); }); };
+    apply(cur); draw();
+  }
   buildCode();
   document.documentElement.setAttribute('data-style', 'b'); // Chris picked style B
   document.documentElement.setAttribute('data-band', 'c'); // warm gray (Chris 2026-09-26)
@@ -985,18 +1170,8 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
     outward();
   }
 
-  // ---- Code: excerpt beside what it made ----
-  function buildCode() {
-    const C = JSON.parse($('code-data').textContent), esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-    $('code-pairs').innerHTML = C.map(c => `<article class="pair-row">
-      <header class="pr-head"><span class="pr-year">${c.year}</span><span class="pr-file">${c.file}</span><span class="pr-lang">${c.lang}</span></header>
-      <p class="pr-what">${c.what}</p>
-      <div class="pr-body">
-        <div class="pr-code"><pre><code>${esc(c.code)}</code></pre></div>
-        <div class="pr-out">${[c.img, c.img2].filter(Boolean).map(src => `<button class="zoom pr-shot" aria-label="Enlarge: ${c.imgAlt}"><img src="${src}" alt="${c.imgAlt}" loading="lazy" /></button>`).join('')}<span class="pr-label">${c.label}</span></div>
-      </div></article>`).join('');
-    bindZoom($('code-pairs'));
-  }
+  // Code rows are written into the HTML; only the zoom needs wiring.
+  function buildCode() {}
 
   // ---- Lightbox for every enlargeable image (and code) ----
   const lb = $('lightbox');
