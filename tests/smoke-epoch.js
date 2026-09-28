@@ -24,8 +24,8 @@ const log = (name, ok, detail) => { if (!ok) failed++; console.log((ok ? 'PASS' 
     log(`no page errors (${tag})`, errors.length === 0, errors.join('; '));
     log(`no horizontal overflow (${tag})`, !(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)));
     // Regression 2026-09-26: code excerpts spilled over the next rows when the row height was not fixed.
-    const lede = await page.evaluate(() => [...document.querySelectorAll('p.lede')].filter(e => e.offsetParent).map(e => e.textContent).join(' '));
-    log(`opening names only the Design Lead role (${tag})`, lede.includes('Design Lead role') && !/Product Manager/.test(lede));
+    const lede = await page.evaluate(() => [...document.querySelectorAll('p.lede, p.opening')].filter(e => e.offsetParent).map(e => e.textContent).join(' '));
+    log(`opening names only the Design Lead role (${tag})`, /Design Lead( \/ Head of Design)? role/.test(lede) && !/Product Manager/.test(lede));
     await page.click('#seg button[data-l="age_group"]'); await page.click('#opts button[data-g="30–44"]');
     log(`reveal waits for a guess (${tag})`, await page.isHidden('#reveal-btn'));
     const grid = page.locator('#guess-widget svg'); await grid.scrollIntoViewIfNeeded();
@@ -41,7 +41,7 @@ const log = (name, ok, detail) => { if (!ok) failed++; console.log((ok ? 'PASS' 
   const page = await browser.newPage({ javaScriptEnabled: false });
   await page.goto(URL);
   const text = await page.evaluate(() => document.body.innerText);
-  for (const k of ["How I'd run design at Epoch", 'Estimate with range', "I've done this before", 'most-filled prescription', 'Project card']) {
+  for (const k of ['How I match the role', 'Leading design', 'Up close: GoodRx Research', 'most-filled prescription', 'Which group are you in?']) {
     log(`readable without JavaScript: "${k}"`, text.includes(k));
   }
   await browser.close();

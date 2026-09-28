@@ -575,6 +575,19 @@ footer{margin-top:var(--s-12)!important}
 .cmp i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:12px;flex:none}
 .cmp-real i{background:var(--accent);color:#fff}
 .cmp-close i{background:var(--none);color:var(--text)}
+.why{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));margin-bottom:var(--s-12);gap:1px;background:var(--border-strong);border:1px solid var(--border-strong);margin-top:var(--s-3)}
+.wcard{background:var(--bg);padding:24px;display:flex;flex-direction:column}
+.wcard img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border:1px solid var(--border);margin-bottom:16px;background:var(--surface)}
+.wcard h3{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.15;margin:0 0 12px}
+.wcard ul a{color:var(--accent-strong)}
+.wcard ul{margin:0 0 16px;padding-left:18px;font-size:15px;line-height:1.5;color:var(--muted)}
+.wcard li+li{margin-top:6px}
+.wcard > a{margin-top:auto;font-size:15px;color:var(--accent-strong)}
+.trans{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.35;max-width:34ch;margin:var(--s-12) 0 var(--s-6)}
+.trans + .chapter,.trans + .band{margin-top:0!important}
+.trans + .chapter{border-top:none}
+.contact .btn-lg{margin:0 8px 8px 0;vertical-align:middle}
+.contact .btn-ghost.btn-lg{padding:14px 22px;font-size:var(--t-base)}
 </style>
 </head>
 <body>
@@ -588,32 +601,47 @@ footer{margin-top:var(--s-12)!important}
 <div class="sticker-fact" id="sticker-fact" role="status"></div>
 <main>
   <div id="hello" data-toc="Hello"></div>
-  <p class="opening">Hi María and the Epoch team.</p>
-  <p class="lede">I'm Chris Lam, a product designer (14+ years at Amazon, TaskRabbit, Clover Health and GoodRx) applying for your Design Lead role.</p>
-  <p class="lede">I turn research into visuals people actually use. This page is my application: a working demo built on your data, then the work behind it. I care a lot about how much power and water AI uses, so your <a href="https://epoch.ai/data/ai-data-centers">AI data centers tracking ↗</a> is the kind of work I want to help with.</p>
-  <div class="proofbox" aria-label="Proof">
-    <a href="#work"><b>NYT + GMA</b><span>GoodRx Research charts cited by The New York Times and used by Good Morning America</span></a>
-    <a href="#briefs"><b>2 laws</b><span>State briefs used in advocacy around two drug-price transparency bills, both now law</span></a>
-    <a href="#game"><b>Your data</b><span>The demo below runs on Epoch's July 2026 poll</span></a>
-  </div>
+  <p class="opening">Hi María and the Epoch team. I'm Chris Lam, and I'm applying for your Design Lead / Head of Design role.</p>
+  <p class="lede">I've spent 14 years designing for companies like Amazon, TaskRabbit, Clover Health and GoodRx, and one thread runs through all of it: helping people make better decisions about things that matter to them.</p>
+  <p class="lede">At GoodRx Research, that meant health. At Epoch, it means AI, and right now I can't think of more important work. Your <a href="https://epoch.ai/data/ai-data-centers">AI data centers tracker ↗</a> stopped me in my tracks. I care deeply about how much power and water AI uses, and I want to help build work like that.</p>
+  <p class="lede">Below: how I match the role, then something I built to show it rather than tell it: a short game on your July 2026 poll. Guess how many people like you use AI, then see how close you were. It shows how I turn research into something people want to explore.</p>
+  <p class="lede">Want the full picture? <a href="index.html">See my full portfolio ↗</a></p>
 
-  <section class="thesis" id="how" data-toc="How I'd work">
-    <div>
-      <div class="sec-head"><h2><span class="ico" data-icon="leading"></span>How I'd run design at Epoch</h2></div>
-      <dl>
-          <dt>How I design</dt><dd>Plain language, empathy first, honest numbers, and interaction only when it's obvious.</dd>
-          <dt>How I work</dt><dd>Hands on, no job beneath me, shared standards, and always improving from my mistakes.</dd>
-          <dt>How I'd manage</dt><dd>I haven't managed a design team yet. I've mentored for years, I'd bring in a career coach and an executive coach, and I'm there for my people.</dd>
-        </dl>
-    </div>
-    <p>Here are ways I've led:</p>
-    <div class="cards">
-      <div class="card"><h3>As a founder</h3><p>Co-founder and CEO of PlaySesh: started it 0 to 1 solo, then led product and design with a co-founder and a founding engineer. Co-founder of y30, owning product, design and engineering.</p></div>
-      <div class="card"><h3>As the first designer</h3><p>First full-time designer at Iodine, first design hire at Pathstream, founding designer at StartPlaying, second designer at Clover Health. Each time I set how design, engineering and product worked together.</p></div>
+  <section class="chapter" id="why" data-toc="How I match the role">
+    <div class="sec-head"><h2>How I match the role</h2></div>
+    <p class="lede">Your posting, in its own order, with my closest proof for each.</p>
+    <div class="why">
+      <article class="wcard"><h3>Leading design</h3><ul>
+        <li>Co-founder and CEO of PlaySesh, leading a co-founder and a founding engineer; co-founder of y30</li>
+        <li>The first designer at Iodine, Pathstream and StartPlaying, setting how design works with engineering and product</li>
+        <li>Always a player-coach: at Iodine I ran product brainstorms and post-launch retrospectives, and hired and managed a contract icon and illustration designer. Outside work, I've started and led breakdancing crews.</li>
+        <li>I haven't managed a full design team yet. I'm always learning and looking to improve, and I'll get a career coach and an executive coach because I want to be the best I can be for my team and myself.</li></ul></article>
+      <article class="wcard"><img src="images/work/goodrx/iodine-hero.png" alt="Iodine.com on phone and desktop, with its Webby Award" loading="lazy" /><h3>Websites and data products</h3><ul>
+        <li>Iodine.com: public drug information and prices, made usable. Won the <a href="https://winners.webbyawards.com/2018/websites-and-mobile-sites/general-desktop-mobile-sites/health-wellness/47451/iodine">Webby for Best Health Website (2018) ↗</a>; coupon conversion from 2% to 5%</li>
+        <li>GoodRx: conversion projects across the drug pages, a 10% lift on mobile and 25% on desktop</li></ul>
+        <a href="index.html?work=goodrx&amp;project=iodine-product#work">Iodine and GoodRx case study ↗</a></article>
+      <article class="wcard"><img src="images/work/goodrx-cities-prices.webp" alt="GoodRx Research chart of the most and least expensive US cities for prescriptions" loading="lazy" /><h3>Data visualization for non-experts</h3><ul>
+        <li>Designed and coded GoodRx Research's interactive charts (D3 and Vega)</li>
+        <li>Cited by <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html">The New York Times ↗</a>, used by <a href="https://abcnews.com/video/53014507/">Good Morning America ↗</a></li>
+        <li>State briefs used in advocacy around two drug-price bills, both now law: <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553">S.2553 ↗</a> and <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554">S.2554 ↗</a></li></ul>
+        <a href="#work">See it up close ↓</a></article>
+      <article class="wcard"><img src="images/taskrabbit-design-system.png" alt="TaskRabbit mobile design system" loading="lazy" /><h3>Design systems and quality standards</h3><ul>
+        <li>TaskRabbit: consolidated years of legacy interface work into one mobile design system (<a href="https://dribbble.com/shots/1940029-TaskRabbit-Tasker-Mobile-UI-Kit/attachments/335099?mode=media">Tasker UI kit ↗</a>)</li>
+        <li>Pathstream: found the drift (16 colors, body text at 4 sizes) and designed the shared system, built in React and Storybook</li>
+        <li>My own site: tokens and components in a live catalog</li></ul>
+        <a href="index.html?ds">See the catalog ↗</a></article>
+      <article class="wcard"><img src="images/work/clover-hero.png" alt="A Clover Health nurse practitioner with a patient at home" loading="lazy" /><h3>User research</h3><ul>
+        <li>Clover Health: shadowed nurse practitioners on home visits; nurses reported saving 1 to 2 hours of chart prep a day</li>
+        <li>Pathstream: a 26-screen audit, three rounds of usability testing, five co-design sessions</li></ul>
+        <a href="index.html?work=clover&amp;project=care-visit#work">Clover case study ↗</a></article>
+      <article class="wcard"><img src="images/work/handcoded-portfolio.jpg" alt="Chris's hand-coded portfolio" loading="lazy" /><h3>Front end</h3><ul>
+        <li>I designed and built this page and the game below, with AI assistance for speed</li>
+        <li>Hand-coded portfolios, 2023 to 2024: <a href="https://github.com/whoischrislam/portfolio">portfolio ↗</a> and <a href="https://github.com/whoischrislam/gamedev-portfolio">gamedev-portfolio ↗</a></li>
+        <li>I use code for design whenever I can: custom CSS for TaskRabbit's customer support portal (Zendesk), CoffeeScript prototypes for its mobile interactions and motion, and custom CSS for Pathstream's website during the rebrand</li></ul></article>
     </div>
   </section>
 
-  <div class="bridge-wrap"><p class="bridge">Here's a small demo of the work I'd love to do at Epoch, built on your July 2026 poll.</p></div>
+  <p class="trans">That's the list. Here's the proof, built on your data.</p>
   <div class="band band-epoch">
   <div id="game" data-toc="The game"></div>
   <div class="sec-head"><h1 id="game-title">Guess how many people like you use AI</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span>Data: Epoch AI</span></p></div>
@@ -630,7 +658,7 @@ footer{margin-top:var(--s-12)!important}
         </ol>
         <div class="s1" id="s1">
           <p class="madlib">Which group are you in?</p>
-          <p class="hint">Pick one. You belong to several groups; the survey reports each one separately.</p>
+          <p class="hint">Pick one. You belong to several groups; the survey reports each one separately. Guesses are logged anonymously: just the group and the number.</p>
           <p class="hint cue-hint cue-down"><span class="cue-arrow" aria-hidden="true"></span>Choose a type, then your group</p>
           <div class="seg" id="seg" role="tablist" aria-label="Group type"></div>
           <div class="opts" id="opts" role="radiogroup" aria-label="Your group"></div>
@@ -674,7 +702,7 @@ footer{margin-top:var(--s-12)!important}
     <ul>
       <li>The poll only asked people with jobs. If you're retired or a student, "people like you" isn't in it.</li>
       <li>It's what people said they did, not measured use.</li>
-      <li>Each number is an estimate. The shaded range is where the real number most likely falls (Epoch's 90% range).</li>
+      <li>Each number is an estimate with a margin of error: the real number most likely falls inside it (Epoch publishes 90% margins).</li>
       <li>"Too close to call" is a real test, not whether two bars overlap: a gap counts only when it's bigger than 1.645 times the combined standard error of the two groups.</li>
       <li>Small groups have wide ranges. "Less than high school" is 68 people.</li>
     </ul>
@@ -686,7 +714,7 @@ footer{margin-top:var(--s-12)!important}
       <p><b>Question, word for word:</b> "In the past 7 days, did you use any of the following AI services? Select all that apply." "Used AI" here means any answer except "None (no AI use)."</p>
       <div class="table-wrap"><table id="table-like"></table></div>
       <p><a href="https://epoch.ai/data/polling/polling_on_ai_usage_jul_2026.csv">Download Epoch's full CSV</a> · <a href="data/ai-at-work-jul-2026.json">The slice this page uses</a></p>
-    <p class="muted-note">If you guess, the page logs it anonymously: the group you picked and your number, nothing else. "Just show me the answer" logs nothing.</p>
+    
 </details>
 
   <details>
@@ -700,9 +728,11 @@ footer{margin-top:var(--s-12)!important}
   </div>
   </div><!-- /band-epoch -->
 
-  <section class="chapter" id="work" data-toc="Done before">
-    <div class="sec-head"><h2><span class="ico" data-icon="map"></span>I've done this before</h2><p class="meta"><span>GoodRx Research, 2017 to 2018</span></p></div>
-    <p class="lede">Epoch turns research into something the public and policymakers can use. At GoodRx Research, I did that for drug prices: charts the press picked up, and briefs used with lawmakers.</p>
+
+  <p class="trans">I've done this before. Here's one example up close: the research team at GoodRx, turning drug-price data into charts the public and lawmakers could use.</p>
+  <section class="chapter" id="work" data-toc="GoodRx Research">
+    <div class="sec-head"><h2>Up close: GoodRx Research</h2><p class="meta"><span>2017 to 2018</span></p></div>
+    
     <div class="sec-head sub-head"><h3>The United States of Drugs</h3><p class="meta"><span>Shipped 2018</span><span>Rebuilt 2026 from the original data</span><span>GoodRx Research</span></p></div>
     <p class="lede">The ten most-filled prescriptions in each state. I designed the original and built it in code (Vega) with engineer Marc Mendiola's help. Rebuilt here from the 2018 data.</p>
     <p class="aside">In the 2018 data, levothyroxine was the most-filled prescription in 24 of 50 states, followed by atorvastatin (6) and hydrocodone/acetaminophen (5).</p>
@@ -728,39 +758,20 @@ footer{margin-top:var(--s-12)!important}
   </section>
 
 
-  <section class="chapter" id="system" data-toc="Design system">
-    <div class="sec-head"><h2><span class="ico" data-icon="system"></span>Setting the quality bar</h2><p class="meta"><span>TaskRabbit, 2014 to 2015</span><span>Pathstream, 2019 to 2020</span><span>This site: live</span></p></div>
-    <div class="proof-grid">
-      <figure class="proof"><button class="zoom" aria-label="Enlarge: TaskRabbit mobile design system"><img src="images/taskrabbit-design-system.png" alt="TaskRabbit mobile design system: typography, color scales, icons, navigation, forms, buttons, cards and dialogs" loading="lazy" /></button>
-        <figcaption><b>TaskRabbit</b>Led and consolidated years of legacy interface work into one mobile system with the engineers and design team: typography, icon sizes, color scales, navigation, forms, buttons, status, cards, dialogs and empty states. <a href="https://dribbble.com/shots/1940029-TaskRabbit-Tasker-Mobile-UI-Kit">Tasker UI kit on Dribbble ↗</a></figcaption></figure>
-      <figure class="proof"><button class="zoom" aria-label="Enlarge: Pathstream shared UI library"><img src="images/work/pathstream/ui-library.png" alt="Pathstream shared UI library: type scale and color tokens with their roles" loading="lazy" /></button>
-        <figcaption><b>Pathstream</b>Audited the interface library and found the drift: sixteen colors where four grays were all labeled Text, two values both called Primary Button, body copy at four sizes, a 10.3px type size shipping to adult learners. Designed the shared system with engineer Matthew Smith, who built it in React with Storybook. <a href="index.html?work=pathstream&amp;project=lesson-system#work">Case study ↗</a></figcaption></figure>
-    </div>
-    <h3 class="sub">This site's system, read live from its code</h3>
-    <div class="ds-live" id="ds-live" aria-live="polite"></div>
-    <p class="aside"><a href="index.html?ds">Open the full catalog ↗</a></p>
-    <div class="sec-head sub-head"><h3>Components, from a data-viz kit to my own site</h3></div>
-    <div class="comp-md" id="comp-md"></div>
-    <dl class="comp-static"><dt>Data-viz kit (interactive with JavaScript)</dt><dd><b>Estimate with range.</b> A number is never alone: its range and sample size travel with it.</dd><dd><b>Unit toggle.</b> The same growth, three ways: the control Epoch uses on its trends page.</dd><dd><b>Real or noise?.</b> Compare any two groups; the verdict uses the survey’s own margins.</dd><dd><b>Chart with a note.</b> The note sits on the one gap the survey can vouch for.</dd><dt>This site's components</dt><dd><b>World band.</b> One per company on the homepage; the band color comes from the work.</dd><dd><b>Title band.</b> Opens every company page: role, name, one-line summary, stage.</dd><dd><b>Facts row.</b> Role, dates and team for pages without project cards.</dd><dd><b>Fact grid.</b> A spec panel for dense facts.</dd><dd><b>Project card.</b> One card used on company pages and in Recent work.</dd><dd><b>Diagram card.</b> Diagrams as first-class cards, not screenshots.</dd><dd><b>Inside the voice.</b> A y30 call replayed turn by turn beside the pipeline that handled it.</dd><dd><b>Case-study end row.</b> Next case study and contact, closing every story.</dd></dl>
-    <p class="aside">Site components are captured from the live catalog, September 26, 2026. <a href="index.html?ds=components">See them live ↗</a></p>
-    <script type="application/json" id="site-comp-data">[{"slug": "world-band", "name": "World band", "desc": "One per company on the homepage; the band color comes from the work.", "img": "images/work/components/world-band.jpg"}, {"slug": "title-band", "name": "Title band", "desc": "Opens every company page: role, name, one-line summary, stage.", "img": "images/work/components/title-band.jpg"}, {"slug": "facts-row", "name": "Facts row", "desc": "Role, dates and team for pages without project cards.", "img": "images/work/components/facts-row.jpg"}, {"slug": "fact-grid", "name": "Fact grid", "desc": "A spec panel for dense facts.", "img": "images/work/components/fact-grid.jpg"}, {"slug": "project-card", "name": "Project card", "desc": "One card used on company pages and in Recent work.", "img": "images/work/components/project-card.jpg"}, {"slug": "diagram-card", "name": "Diagram card", "desc": "Diagrams as first-class cards, not screenshots.", "img": "images/work/components/diagram-card.jpg"}, {"slug": "inside-the-voice", "name": "Inside the voice", "desc": "A y30 call replayed turn by turn beside the pipeline that handled it.", "img": "images/work/components/inside-the-voice.jpg"}, {"slug": "end-row", "name": "Case-study end row", "desc": "Next case study and contact, closing every story.", "img": "images/work/components/end-row.jpg"}]</script>
-  </section>
-
-
-
-
+  <p class="trans">Here's what the person who managed me there said.</p>
   <section class="chapter" id="colleagues" data-toc="Recommendation">
-    <div class="sec-head"><h2><span class="ico" data-icon="quote"></span>From a former manager</h2><p class="meta"><span>LinkedIn recommendation</span><span>Quoted word for word</span></p></div>
+    <div class="sec-head"><h2><span class="ico" data-icon="quote"></span>From my manager at Iodine</h2><p class="meta"><span>LinkedIn recommendation</span><span>Quoted word for word</span></p></div>
     <blockquote><p>Chris is a splendid and multi-talented designer, with an innate ability to understand user needs and experiment with software design until the product matches the purpose. He ably took on assignments in a range of media - from PDF to D3 data visualizations - and was dependably curious and creative in creating effective software and design solutions. He is literate in code - engineers love working with him - and is also deeply attuned to the needs of ordinary people (we worked on healthcare information and tools, which is not an easy area whatsoever to understand user needs and concerns). I heartily recommend him as a product designer with a flair for UX/UI.</p><cite>Thomas Goetz, GM and Head of Research at Iodine, managed Chris directly</cite></blockquote>
     <p class="aside"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/">All recommendations on LinkedIn ↗</a></p>
   </section>
 
   <section class="chapter contact" id="contact" data-toc="Get in touch">
     <h2>Let's talk.</h2>
-    <p class="lede">I'd love to figure out how we can work together! I'm excited about the mission of Epoch AI.</p>
+    <p class="lede">I'd love to figure out how we can work together.</p>
     <p>Based in Honolulu, working West Coast hours. Happy to travel for retreats.</p>
     <a class="btn btn-primary btn-lg" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI%3A%20Design%20Lead">Email Chris</a>
-    <p class="aside">Or see my <a href="chris-lam-resume.pdf">résumé</a> and <a href="index.html">full portfolio</a>.</p>
+    <a class="btn btn-lg btn-ghost" href="index.html">See my full portfolio ↗</a>
+    <p class="aside">Or download my <a href="chris-lam-resume.pdf">résumé</a>.</p>
   </section>
 
   <dialog class="lightbox" id="lightbox" aria-label="Enlarged image"><button class="lb-close" aria-label="Close">×</button><img id="lb-img" alt="" /><pre id="lb-code" class="lb-code"></pre><p id="lb-cap"></p></dialog>
@@ -832,7 +843,7 @@ footer{margin-top:var(--s-12)!important}
       this.svg = svg;
     }
     function tipFor(i) { const st = cells.filter((d) => d === i).attr('data-s');
-      return `<b>Person ${i + 1} of 100</b>${{ used: 'Used AI', range: 'Within the survey\u2019s range', guess: 'In your guess', gap: 'Between your guess and the answer', none: 'Didn\u2019t use AI' }[st] || ''}`; }
+      return `<b>Person ${i + 1} of 100</b>${{ used: 'Used AI', range: 'Within the margin of error', guess: 'In your guess', gap: 'Between your guess and the answer', none: 'Didn\u2019t use AI' }[st] || ''}`; }
     function paint() { cells.attr('fill-opacity', 1).attr('fill', i => i < value ? 'var(--guess)' : 'var(--none)').attr('data-s', i => i < value ? 'guess' : 'none').attr('stroke', 'none'); }
     function preview(h) { if (!cells || el.dataset.revealed) return;
       cells.attr('fill', i => i < value ? 'var(--guess)' : (h != null && i < h) ? 'var(--guess)' : 'var(--none)')
@@ -869,7 +880,7 @@ footer{margin-top:var(--s-12)!important}
     rows = doc.rows;
     all = rows.find(r => r.lens === 'full_sample');
     if (LENSES[params.get('lens')]) lens = params.get('lens');
-    buildPicker(); setStep(1); g1.render(); g1.set(0); touched = false; $('guess-num').textContent = '? of 100'; setButtons(); drawTable(); buildComponents();
+    buildPicker(); setStep(1); g1.render(); g1.set(0); touched = false; $('guess-num').textContent = '? of 100'; setButtons(); drawTable();
     const g = params.get('group');
     if (g && rows.some(r => r.lens === lens && r.group === g)) pickGroup(g);
   });
@@ -949,7 +960,7 @@ footer{margin-top:var(--s-12)!important}
     const real = Math.round(me.used), diff = guess - real, g = guessed ? guess : null;
     $('reveal-head').innerHTML = `<span class="stat hl-used" data-hl="used"><span class="cu" data-to="${real}" data-from="${guessed ? guess : 0}">${real}</span></span><span class="stat-lab">of every 100 ${who(me)} used AI last week</span>`;
     const margin = Math.round((me.hi - me.lo) / 2);
-    $('reveal-range').innerHTML = `<span class="hl hl-range" data-hl="range">Most likely ${Math.round(me.lo)} to ${Math.round(me.hi)}</span> · ${me.n} people asked`;
+    $('reveal-range').innerHTML = `Margin of error: ${Math.round(me.lo)} to ${Math.round(me.hi)} · ${me.n} people asked`;
     // Feedback in three parts (Kim, Reinecke and Hullman, CHI 2017): direction, guess against truth, then the pattern.
     const grp = groupsFor(lens), hi = grp.reduce((a, b) => b.used > a.used ? b : a), lo = grp.reduce((a, b) => b.used < a.used ? b : a);
     const pattern = isClose(hi, lo)
@@ -1185,7 +1196,7 @@ footer{margin-top:var(--s-12)!important}
   lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
 
   // ---- Live design-system strip: tokens read from index.html's own :root, so it can't drift ----
-  fetch('index.html').then(r => r.text()).then(html => {
+  if ($('ds-live')) fetch('index.html').then(r => r.text()).then(html => {
     const m = html.match(/:root\{([\s\S]*?)\n\}/); if (!m) return;
     const vars = {}; m[1].replace(/--([\w-]+)\s*:\s*([^;]+);/g, (_, k, v) => { vars[k] = v.trim(); });
     const colors = ['bg', 'surface', 'surface-2', 'text', 'muted', 'accent', 'accent-strong'].filter(k => vars[k]);
