@@ -1,0 +1,54 @@
+/* The United States of Drugs: shared by epoch-ai-application.html and the GoodRx Research case study (index.html).
+   Uses the host page's tokens (--text, --muted, --surface, --surface-2, --border, --accent-soft, --accent-strong, --sans).
+   Smallest text is 14px (portfolio type floor). */
+.usod{--usod-none:var(--none,#cfc9bd)}
+.usod-controls{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.usod-seg{display:inline-flex;align-self:flex-start;background:rgba(0,0,0,.07);border-radius:999px;padding:4px}
+.usod-seg button{font:600 14px var(--sans);border:none;background:none;border-radius:999px;padding:8px 16px;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+.usod-seg button[aria-selected="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.usod-pills{display:flex;flex-wrap:wrap;gap:8px}
+.usod-pills[hidden]{display:none}
+.usod-pills button{font:14px var(--sans);padding:8px 14px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(255,255,255,.55);color:var(--text);cursor:pointer}
+.usod-pills button:hover{background:#fff}
+.usod-pills button[aria-pressed="true"]{background:var(--text);color:#fff;border-color:var(--text)}
+.usod-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;align-items:center}
+.usod-legend{display:flex;flex-direction:column;gap:4px;margin:0}
+.usod-legend button{display:flex;align-items:flex-start;gap:10px;text-align:left;background:none;border:none;border-radius:8px;padding:8px;cursor:default;font:inherit;color:var(--text);transition:opacity .15s,background .15s}
+.usod-legend button:hover,.usod-legend button:focus{background:rgba(255,255,255,.55);outline:none}
+.usod-legend button:focus-visible{outline:2px solid var(--text);outline-offset:1px}
+.usod-legend button.dim{opacity:.45}
+.usod-legend i{width:14px;height:14px;border-radius:50%;flex:none;margin-top:3px}
+.usod-legend b{display:block;font-size:15px;font-weight:600}
+.usod-legend small{display:block;font-size:14px;color:var(--muted);line-height:1.35}
+.usod-lg-h{font-size:15px;margin:0 8px}.usod-lg-h b{display:inline}
+.usod-lg-use{font-size:14px;color:var(--muted);margin:0 8px 6px}
+.usod-map{width:100%;height:auto;display:block}
+.usod-map path.state{stroke:var(--bg);stroke-width:1;cursor:pointer;transition:opacity .15s}
+.usod-map.hovering path.state:not(.hov){filter:saturate(.6) brightness(1.08)}
+.usod-map path.state.hov{stroke:#111;stroke-width:2.5px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
+.usod-card{grid-column:1/-1;order:3;background:rgba(255,255,255,.6);border-radius:8px;padding:16px}
+.usod-card[hidden]{display:none}
+@media (max-width:760px){
+  .usod-wrap{grid-template-columns:1fr}
+  .usod-map{order:0}.usod-card{order:1}.usod-legend{order:2}
+}
+
+/* Tooltip (desktop hover) and state card (tap) share one layout. */
+.usod-tip{position:fixed;pointer-events:none;background:var(--surface);color:var(--text);border:1px solid var(--border-strong);box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 12px;font:15px/1.4 var(--sans);max-width:340px;z-index:1000;display:none}
+.usod-tip>b{display:block;margin-bottom:4px}
+.usod-tip .tt-title,.usod-card .tt-title{display:block;font-size:17px;margin-bottom:6px}
+.usod-tip .tt-key,.usod-card .tt-key{display:flex;align-items:center;gap:8px;font-size:15px;padding:6px 8px;margin:0 -4px 8px;background:var(--surface-2);border-radius:6px}
+.usod-tip .tt-key i,.usod-card .tt-key i{width:10px;height:10px;border-radius:50%;flex:none}
+.usod-tip .tt-sub,.usod-card .tt-sub{display:block;font-size:14px;color:var(--muted);margin:-2px 0 6px}
+.usod-tip .tt-list,.usod-card .tt-list{margin:0;padding:0;list-style:none;counter-reset:rk}
+.usod-tip .tt-list li,.usod-card .tt-list li{counter-increment:rk;display:flex;align-items:baseline;gap:10px;font-size:14px;line-height:1.3;margin:2px 0}
+.usod-card .tt-list li{font-size:15px}
+.usod-tip .tt-list li::before,.usod-card .tt-list li::before{content:counter(rk);flex:none;width:18px;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.usod-tip .tt-list li span,.usod-card .tt-list li span{flex:none;margin-right:auto}
+.usod-tip .tt-list li small,.usod-card .tt-list li small{text-align:right;color:var(--muted);font-size:14px;line-height:1.3}
+.usod-tip .tt-list li.hit,.usod-card .tt-list li.hit{background:var(--accent-soft);margin:1px -6px;padding:2px 6px;border-radius:4px}
+.usod-tip .tt-list li.hit span,.usod-card .tt-list li.hit span{font-weight:700;color:var(--accent-strong)}
+.usod-tip .tt-odd,.usod-card .tt-odd{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:14px}
+.usod-tip .tt-use,.usod-card .tt-use{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.usod-tip .tt-states{display:block;margin-top:6px;font-size:14px;color:var(--muted);line-height:1.45}
+@media (prefers-reduced-motion:reduce){.usod-map path.state,.usod-legend button,.usod-seg button{transition:none}}

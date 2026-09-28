@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>For Epoch AI · Design Lead · Chris Lam</title>
+<link rel="stylesheet" href="assets/demos/us-of-drugs.css">
 <meta name="description" content="A two-minute guessing game with Epoch AI's July 2026 survey of working Americans, plus GoodRx data visualizations rebuilt from 2018." />
 <meta name="author" content="Chris Lam" />
 <meta name="robots" content="noindex" /><!-- unlisted on purpose: an application page addressed to one employer, shared by link only -->
@@ -83,13 +84,6 @@ details{margin-top:40px;border-top:1px solid var(--border);padding-top:16px}
 summary{cursor:pointer;font-size:var(--t-sm);color:var(--muted)}
 details p,details li{font-size:var(--t-sm);color:var(--muted)}
 .chapter{margin-top:96px;border-top:1px solid var(--border-strong);padding-top:8px}
-#map path.state{stroke:var(--bg);stroke-width:1;cursor:pointer}
-#map path.state:hover,#map path.state.on{stroke:var(--text);stroke-width:1.5}
-.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:var(--t-sm);color:var(--muted);margin:12px 0}
-.legend i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
-.state-card{min-height:12em;background:var(--surface);border:1px solid var(--border);padding:16px 20px;margin-top:16px}
-.state-card ol{margin:8px 0 0;padding-left:24px}
-.state-card li{font-size:var(--t-sm)}
 .placeholder{border:1px dashed var(--border-strong);padding:24px;color:var(--muted);font-size:var(--t-sm);margin-top:24px}
 footer{margin-top:64px;font-size:var(--t-sm);color:var(--muted)}
 @media (prefers-reduced-motion:no-preference){ .reveal-num{transition:opacity .4s ease} }
@@ -803,41 +797,7 @@ blockquote.q cite{font-size:15px}
 .sub-title{font-family:var(--serif)!important;font-weight:400!important;font-size:30px!important;line-height:1.15;margin:0 0 10px}
 #work .lede{font-size:18px;margin:0 0 6px}
 .map-find{font-size:17px;margin:0 0 20px;color:var(--muted)}.map-find b{color:var(--text)}
-.map-controls{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
-.seg2{display:inline-flex;align-self:flex-start;background:rgba(0,0,0,.07);border-radius:999px;padding:4px}
-.seg2 button{font:600 14px var(--sans);border:none;background:none;border-radius:999px;padding:8px 16px;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
-.seg2 button[aria-selected="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
-.drug-pills{display:flex;flex-wrap:wrap;gap:8px}
-.drug-pills button{font:14px var(--sans);padding:8px 14px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(255,255,255,.55);color:var(--text);cursor:pointer}
-.drug-pills button:hover{background:#fff}
-.drug-pills button[aria-pressed="true"]{background:var(--text);color:#fff;border-color:var(--text)}
-.map-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;align-items:center}
-@media (max-width:760px){.map-wrap{grid-template-columns:1fr}.legend{order:2}}
-#work .legend{display:flex;flex-direction:column;gap:4px;margin:0}
-#work .legend button{display:flex;align-items:flex-start;gap:10px;text-align:left;background:none;border:none;border-radius:8px;padding:8px;cursor:default;font:inherit;color:var(--text);transition:opacity .15s,background .15s}
-#work .legend button:hover,#work .legend button:focus{background:rgba(255,255,255,.55);outline:none}
-#work .legend button.dim{opacity:.45}
-#work .legend i{width:14px;height:14px;border-radius:50%;flex:none;margin-top:3px}
-#work .legend b{display:block;font-size:15px;font-weight:600}
-#work .legend small{display:block;font-size:13px;color:var(--muted);line-height:1.35}
-.lg-h{font-size:15px;margin:0 8px}.lg-use{font-size:13px;color:var(--muted);margin:0 8px 6px}
-#map path.state{transition:opacity .15s}
-#map path.state:hover{stroke:var(--text);stroke-width:1.5}
-.tip .tt-sub,#work #state-card .tt-sub{display:block;font-size:12px;color:var(--muted);margin:-2px 0 6px}
-.tip .tt-list,#work #state-card .tt-list{margin:0;padding-left:20px;max-width:none}
-.tip .tt-list li,#work #state-card .tt-list li{font-size:13px;line-height:1.3;margin:2px 0}
-.tip .tt-list li small,#work #state-card .tt-list li small{display:block;color:var(--muted);font-size:12px}
-.tip .tt-list,#work #state-card .tt-list{counter-reset:rk;list-style:none;padding-left:0!important}
-.tip .tt-list li,#work #state-card .tt-list li{counter-increment:rk}
-.tip .tt-list li::before,#work #state-card .tt-list li::before{content:counter(rk);flex:none;width:18px;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
-.tip .tt-list li span,#work #state-card .tt-list li span{margin-right:auto}
-.tip .tt-list li.hit,#work #state-card .tt-list li.hit{background:var(--accent-soft);margin:1px -6px;padding:2px 6px;border-radius:4px}
-.tip .tt-list li.hit span,#work #state-card .tt-list li.hit span{font-weight:700;color:var(--accent-strong)}
-.tip .tt-odd,#work #state-card .tt-odd{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px}
-.tip{max-width:300px!important}
-#work .state-card{background:rgba(255,255,255,.6);border:none;border-radius:8px;padding:16px;margin-top:12px;min-height:0}
 
-#work .state-card > b:first-child{display:block;font-size:17px}
 /* bills */
 #work .bills{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 10px}
 @media (max-width:560px){#work .bills{grid-template-columns:1fr}}
@@ -849,27 +809,12 @@ blockquote.q cite{font-size:15px}
 .bill-go{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600;color:var(--accent-strong)}
 #work .bill-date{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);grid-column:auto}
 #work .bill-date .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
-.tip .tt-odd b,.lg-h b{display:inline!important}
 #work .sub-head{margin-top:56px!important;margin-bottom:12px!important;flex-direction:column;align-items:flex-start;gap:6px}
 #work .sub-head .sub-title{margin:0}
 .sub-block .meta span+span::before{content:"·";margin:0 8px;color:var(--border-strong)}
 /* map hover: the state lifts, the rest recede */
-#map.hovering path.state:not(.hov){filter:saturate(.6) brightness(1.08)}
-#map path.state.hov{stroke:#111!important;stroke-width:2.5px!important;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
-.tip .tt-title,#work #state-card .tt-title{font-size:16px;margin-bottom:6px}
-.tip .tt-key,#work #state-card .tt-key{display:flex;align-items:center;gap:8px;font-size:14px;padding:6px 8px;margin:0 -4px 8px;background:var(--surface-2);border-radius:6px}
-.tip .tt-key i,#work #state-card .tt-key i{width:10px;height:10px;border-radius:50%;flex:none}
-.tip .tt-key b,#work #state-card .tt-key b{display:inline!important}
-.tip .tt-list li,#work #state-card .tt-list li{display:flex;justify-content:space-between;gap:10px}
-.tip .tt-list li,#work #state-card .tt-list li{align-items:baseline}
-.tip .tt-list li span,#work #state-card .tt-list li span{flex:none}
-.tip .tt-list li small,#work #state-card .tt-list li small{display:inline!important;text-align:right;white-space:normal;color:var(--muted);font-size:13px;line-height:1.3}
-.tip .tt-use,#work #state-card .tt-use{display:block;color:var(--muted);font-size:14px;margin-top:2px}
 .toc-cta{white-space:nowrap}
 .toc-cta svg{width:16px!important;height:16px!important;flex:none;margin:0!important}
-.tip .tt-list li.hit span,#work #state-card .tt-list li.hit span{font-weight:700;color:var(--accent-strong)}
-.tip .tt-states,#work #state-card .tt-states{display:block;margin-top:6px;font-size:13px;color:var(--muted);line-height:1.45}
-.tip{max-width:340px!important}
 /* on this page */
 @media (min-width:1300px){
   .toc-title{font-family:var(--mono);font-size:12px!important;text-transform:none;letter-spacing:.02em}
@@ -881,12 +826,8 @@ blockquote.q cite{font-size:15px}
   .toc li a.on::before{color:var(--accent-strong);opacity:1}
   .toc-cta{display:flex!important;align-items:center;justify-content:center;gap:8px;width:100%;font-size:15px!important;padding:10px 12px!important;border-radius:8px;margin-top:4px}
 }
-@media (min-width:761px){#work .map-wrap .state-card{grid-column:1/-1;order:3}}
-@media (max-width:760px){#work .map-wrap #map{order:0}#work .map-wrap .state-card{order:1;margin-top:0}}
 /* meta rows on phones: no leading separators when a row wraps */
 @media (max-width:640px){.meta span+span::before,.sec-head .meta span+span::before,.sub-block .meta span+span::before{content:none!important}.meta,.sec-head .meta,.sub-block .meta{column-gap:16px;row-gap:4px}}
-#work #state-card .tt-list li{font-size:15px}
-#work #state-card .tt-key{margin:8px 0}
 </style>
 </head>
 <body>
@@ -1034,17 +975,7 @@ blockquote.q cite{font-size:15px}
       <p class="lede">What each state fills most at the pharmacy. I designed the original and built it in code, with help from my engineering colleague Marc Mendiola.</p>
       <p class="map-find">Levothyroxine, a thyroid medicine, was the most-filled prescription in <b>24 of 50 states</b>.</p>
     </div>
-    <div class="map-controls">
-      <div class="seg2" role="tablist" aria-label="Color the map by">
-        <button role="tab" data-m="top" aria-selected="true">Top drug in each state</button>
-        <button role="tab" data-m="follow" aria-selected="false">Follow one drug</button>
-      </div>
-      <div class="drug-pills" id="map-modes" role="group" aria-label="Pick a drug" hidden></div>
-    </div>
-    <div class="map-wrap">
-      <div class="legend" id="legend" role="list"></div>
-      <div class="state-card" id="state-card" hidden></div><svg id="map" role="img" aria-label="Map of US states colored by prescription"></svg>
-    </div>
+    <div id="usod"></div>
 
     <div class="sec-head sub-head"><p class="meta"><span>Published 2017 to 2018</span></p><h3 class="sub-title">Charts the press picked up</h3></div>
     <div class="press">
@@ -1087,6 +1018,7 @@ blockquote.q cite{font-size:15px}
 <script src="analytics-init.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="assets/demos/us-of-drugs.js"></script>
 <script>
 (function () {
   const LENSES = { age_group: 'Age', education: 'School', region: 'Where you live', gender: 'Gender' };
@@ -1632,108 +1564,8 @@ blockquote.q cite{font-size:15px}
   });
   outward(); setTimeout(outward, 1500);
 
-  // ---- Chapter 2: United States of Drugs (GoodRx Research, 2018), rebuilt from the original CSV ----
-  // Plain-language uses, for the average reader (general, not medical advice).
-  const DRUG = {
-    'levothyroxine': 'Thyroid hormone, for an underactive thyroid', 'lisinopril': 'Blood pressure', 'atorvastatin': 'Cholesterol',
-    'amlodipine': 'Blood pressure', 'prednisone': 'Steroid for swelling, asthma and allergies', 'hydrocodone/acetaminophen': 'Opioid painkiller',
-    'amoxicillin': 'Antibiotic', 'azithromycin': 'Antibiotic', 'omeprazole': 'Heartburn and acid reflux', 'oseltamivir': 'The flu (Tamiflu)',
-    'amphetamine salt combo': 'ADHD (Adderall)', 'sertraline': 'Depression and anxiety', 'ventolin': 'Asthma inhaler', 'alprazolam': 'Anxiety (Xanax)',
-    'phentermine': 'Weight loss', 'losartan': 'Blood pressure', 'metoprolol er': 'Blood pressure and heart', 'hydrochlorothiazide': 'Blood pressure (water pill)',
-    'gabapentin': 'Nerve pain and seizures', 'simvastatin': 'Cholesterol', 'ibuprofen': 'Pain and swelling', 'pantoprazole': 'Heartburn and acid reflux',
-    'fluoxetine': 'Depression and anxiety (Prozac)', 'escitalopram': 'Depression and anxiety', 'proair': 'Asthma inhaler', 'ondansetron': 'Nausea',
-    'amoxicillin/potassium clavulanate': 'Antibiotic (Augmentin)', 'zolpidem': 'Sleep (Ambien)', 'sildenafil': 'Erectile dysfunction (Viagra)',
-    'montelukast': 'Asthma and allergies', 'lorazepam': 'Anxiety', 'bupropion xl': 'Depression, and quitting smoking', 'tramadol': 'Pain',
-    'oxycodone/acetaminophen': 'Opioid painkiller', 'oxycodone': 'Opioid painkiller', 'metformin': 'Type 2 diabetes', 'lantus': 'Insulin, for diabetes',
-    'fluticasone propionate': 'Allergy nasal spray'
-  };
-  const cap = n => n.replace(/\b\w/, c => c.toUpperCase());
-  const useOf = n => DRUG[n] || '';
-  Promise.all([
-    d3.csv('data/goodrx-top-drugs-by-state-2018.csv'),
-    d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json')
-  ]).then(([drugs, us]) => {
-    const byName = new Map(drugs.map(d => [d.statename, d]));
-    const top10 = d => [1,2,3,4,5,6,7,8,9,10].map(i => d['drug' + i]);
-    const tops = d3.rollups(drugs, v => v.length, d => d.drug1).sort((a, b) => b[1] - a[1]);
-    const palette = ['#2a9d4f', '#c2410c', '#3b6fb6', '#b58a1b', '#7a4fb3', '#8a8a82'];
-    const colorOf = new Map(tops.map(([k], i) => [k, palette[Math.min(i, palette.length - 1)]]));
-    const inTop10 = new Map(d3.rollups(drugs.flatMap(top10), v => v.length, d => d));
-    const common = [...inTop10].sort((a, b) => b[1] - a[1]).slice(0, 6).map(d => d[0]);
-    const rankColor = d3.scaleSequential(t => d3.interpolateGreens(1 - t * 0.8)).domain([1, 10]);
-    let mode = 'top', follow = common[0], hl = null;
-    const svg = d3.select('#map').attr('viewBox', '-8 -8 991 626'); // padding so Alaska's outline stays inside
-    const states = svg.selectAll('path').data(topojson.feature(us, us.objects.states).features).join('path')
-      .attr('class', 'state').attr('d', d3.geoPath());
-    function fill(f) {
-      const d = byName.get(f.properties.name); if (!d) return 'var(--none)';
-      if (mode === 'top') return colorOf.get(d.drug1) || palette[5];
-      const r = top10(d).indexOf(follow) + 1; return r ? rankColor(r) : 'var(--none)';
-    }
-    const isOther = k => !tops.slice(0, 5).some(t => t[0] === k);
-    function matches(f) {
-      const d = byName.get(f.properties.name); if (!d || hl == null) return true;
-      if (mode === 'top') return hl === 'other' ? isOther(d.drug1) : d.drug1 === hl;
-      const r = top10(d).indexOf(follow) + 1; return hl === 'none' ? !r : r && r <= hl && r > hl - (hl === 1 ? 1 : hl === 5 ? 4 : 5);
-    }
-    const paint = () => states.attr('fill', fill).attr('opacity', f => matches(f) ? 1 : .18);
-    const listStates = pred => { const n = drugs.filter(pred).map(d => d.statename).sort(); return n.length ? n.join(', ') : 'None'; };
-    function legendTip(k) {
-      if (mode === 'top') {
-        if (k === 'other') { const ds = tops.slice(5).map(t => cap(t[0])); return `<b>Something else</b><span class="tt-use">${ds.join(', ')}</span><span class="tt-states">${listStates(d => isOther(d.drug1))}</span>`; }
-        return `<b>${cap(k)}</b><span class="tt-use">${useOf(k)}</span><span class="tt-states">Top drug in ${listStates(d => d.drug1 === k)}</span>`;
-      }
-      const rk = d => top10(d).indexOf(follow) + 1;
-      const [lab, pred] = k === 1 ? ['Ranks #1 in', d => rk(d) === 1] : k === 5 ? ['Ranks #2 to #5 in', d => rk(d) >= 2 && rk(d) <= 5]
-        : k === 10 ? ['Ranks #6 to #10 in', d => rk(d) >= 6] : ['Not in the top 10 in', d => !rk(d)];
-      return `<b>${cap(follow)}</b><span class="tt-use">${lab}</span><span class="tt-states">${listStates(pred)}</span>`;
-    }
-    function legend() {
-      const L = $('legend');
-      L.innerHTML = mode === 'top'
-        ? tops.slice(0, 5).map(([k, n]) => `<button role="listitem" data-k="${k}"><i style="background:${colorOf.get(k)}"></i><span><b>${cap(k)}</b><small>${useOf(k)} · top in ${n} state${n > 1 ? 's' : ''}</small></span></button>`).join('')
-          + `<button role="listitem" data-k="other"><i style="background:${palette[5]}"></i><span><b>Something else</b><small>${tops.length - 5} other drugs</small></span></button>`
-        : `<p class="lg-h">Where <b>${cap(follow)}</b> ranks</p><p class="lg-use">${useOf(follow)}</p>`
-          + [[1, '#1'], [5, '#2 to #5'], [10, '#6 to #10'], ['none', 'Not in the top 10']].map(([k, t]) => `<button role="listitem" data-k="${k}"><i style="background:${k === 'none' ? 'var(--none)' : rankColor(k === 1 ? 1 : k === 5 ? 3 : 8)}"></i><span><b>${t}</b></span></button>`).join('');
-      L.querySelectorAll('button').forEach(b => {
-        const k = isNaN(+b.dataset.k) ? b.dataset.k : +b.dataset.k;
-        const on = () => { hl = k; paint(); L.querySelectorAll('button').forEach(x => x.classList.toggle('dim', x !== b)); };
-        const off = () => { hl = null; paint(); hideTip(); L.querySelectorAll('button').forEach(x => x.classList.remove('dim')); };
-        b.addEventListener('pointerenter', on); b.addEventListener('pointermove', ev => showTip(legendTip(k), ev)); b.addEventListener('pointerleave', off); b.addEventListener('focus', on); b.addEventListener('blur', off);
-      });
-    }
-    function pills() {
-      $('map-modes').innerHTML = common.map(c => `<button aria-pressed="${c === follow}" data-d="${c}" title="${useOf(c)}">${cap(c)}</button>`).join('');
-      $('map-modes').querySelectorAll('button').forEach(b => b.onclick = () => { follow = b.dataset.d; pills(); legend(); states.transition().duration(RM ? 0 : 400).attr('fill', fill); });
-    }
-    document.querySelectorAll('.seg2 button').forEach(b => b.onclick = () => {
-      mode = b.dataset.m === 'top' ? 'top' : 'follow';
-      document.querySelectorAll('.seg2 button').forEach(x => x.setAttribute('aria-selected', x === b));
-      $('map-modes').hidden = mode === 'top'; pills(); legend(); states.transition().duration(RM ? 0 : 400).attr('fill', fill);
-    });
-    function card(f) {
-      const d = byName.get(f.properties.name);
-      if (!d) return `<b>${f.properties.name}</b>No data in the 2018 file.`;
-      const list = top10(d), r = list.indexOf(follow) + 1;
-      const key = mode === 'top'
-        ? `<span class="tt-key"><i style="background:${colorOf.get(d.drug1) || palette[5]}"></i><span>Top drug: <b>${cap(d.drug1)}</b></span></span>`
-        : `<span class="tt-key"><i style="background:${r ? rankColor(r === 1 ? 1 : r <= 5 ? 3 : 8) : 'var(--none)'}"></i><span>${r ? `${cap(follow)} ranks <b>#${r}</b> here` : `${cap(follow)} isn't in the top 10 here`}</span></span>`;
-      const odd = list.reduce((a, b) => (inTop10.get(b) || 99) < (inTop10.get(a) || 99) ? b : a), oddN = inTop10.get(odd);
-      return `<b class="tt-title">${d.statename}</b>${key}<span class="tt-sub">Top 10 prescriptions, 2018</span><ol class="tt-list">${list.map(x =>
-        `<li${(mode === 'top' ? x === d.drug1 : x === follow) ? ' class="hit"' : ''}><span>${cap(x)}</span><small>${useOf(x)}</small></li>`).join('')}</ol>`
-        + (oddN <= 12 ? `<span class="tt-odd"><b>Unusual here:</b> ${cap(odd)}. Only ${oddN} state${oddN > 1 ? 's' : ''} have it in their top 10.</span>` : '');
-    }
-    states
-      .on('pointerenter', function () { d3.select(this).raise().classed('hov', true); svg.classed('hovering', true); })
-      .on('pointermove', (ev, f) => { if (ev.pointerType === 'mouse') showTip(card(f), ev); })
-      .on('pointerleave', function () { d3.select(this).classed('hov', false); svg.classed('hovering', false); hideTip(); })
-      .on('click', function (ev, f) {
-        if (ev.pointerType === 'mouse') return;
-        states.classed('hov', false); d3.select(this).raise().classed('hov', true); svg.classed('hovering', true);
-        $('state-card').hidden = false; $('state-card').innerHTML = card(f);
-      });
-    paint(); legend(); pills();
-  });
+  // ---- Chapter 2: United States of Drugs, the shared component in assets/demos/us-of-drugs.js ----
+  USOfDrugs.mount($('usod'));
 })();
 </script>
 </body>

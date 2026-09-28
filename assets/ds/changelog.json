@@ -1,5 +1,11 @@
 [
  {
+  "date": "2026-09-27",
+  "area": "Case studies",
+  "change": "Case studies can embed a live demo. The first is The United States of Drugs on the GoodRx Research case study: the same map component the Epoch page uses, loaded only when you scroll near it, with the published 2018 map as the fallback.",
+  "commit": ""
+ },
+ {
   "date": "2026-09-24",
   "area": "Case studies",
   "change": "Case studies open with everything up front, inside the colored band: the title, a one-line summary, the main image in a fixed wide frame, the facts, and the outcome. Then the chapters.",
