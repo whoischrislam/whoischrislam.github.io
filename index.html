@@ -149,7 +149,7 @@ img{display:block;max-width:100%;height:auto}
 a{color:var(--text);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--border)}
 ::selection{background:var(--accent);color:var(--on-accent)}
 a:hover{color:var(--accent);text-decoration-color:var(--accent)}
-/* The column is centred on the full window (100vw), the same basis worlds use, so a scrollbar appearing or
+/* The column is centered on the full window (100vw), the same basis worlds use, so a scrollbar appearing or
    disappearing never moves it and the homepage and every world line up (Chris 2026-09-25). The right padding
    gives the scrollbar's width back (100vw - 100%) so the column stays 1180px wide. */
 .wrap{--wrap-min:24px;--wrap-l:max(var(--wrap-min),calc((100vw - 1180px)/2));
@@ -578,7 +578,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
 /* Logo row: every wordmark's LETTERS span the same top line and baseline, 14px apart (Vicky Vo's guides, Chris picked
    14px, 2026-09-25). Each logo carries where its letters sit inside its own SVG (--top, --base: fractions of the
    image height, measured from the files); the image is sized so that band is exactly --letters tall and pulled up
-   by its top. Icons, the Amazon smile and GoodRx's plus hang outside the band. The 12px padding (cancelled by the
+   by its top. Icons, the Amazon smile and GoodRx's plus hang outside the band. The 12px padding (canceled by the
    margin) gives that overhang room, because the row scrolls sideways and so clips vertically. Replacing a logo
    means re-measuring its two fractions. */
 .hero-logo-row{--letters:14px;display:flex;align-items:flex-start;gap:14px 28px;list-style:none;margin:-12px 0;padding:12px 0;
@@ -1155,7 +1155,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .visual-placeholder{position:relative;display:flex;flex-direction:column;justify-content:flex-end;
   min-width:0;min-height:180px;padding:24px;overflow:hidden;border:0;
   background:var(--world-bg,var(--band,var(--surface-2)));color:var(--world-ink,var(--text));text-align:left}
-/* #5 dot-density placeholder: a faint dot matrix in the ink colour, fading toward the title, over the
+/* #5 dot-density placeholder: a faint dot matrix in the ink color, fading toward the title, over the
    world/company brand field. Themes per company for free; reads as "part of the system, art pending". */
 .visual-placeholder::before{content:"";position:absolute;inset:0;pointer-events:none;
   background-image:radial-gradient(color-mix(in srgb,currentColor 24%,transparent) 1.3px,transparent 1.6px);
@@ -1230,7 +1230,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .work-project-card-media>.portfolio-diagram .portfolio-diagram-item{min-height:0;padding:9px 11px}
 /* Wrap-return (long flows, 4+ items): balanced rows that each read left to right; an elbow connector drops from
    the last item of a row, runs back left, and lands (arrowhead) on the first item of the next row. Columns are
-   equal (repeat(--per)), so the connector ends are pure CSS: centre of col 1 and centre of col --per. */
+   equal (repeat(--per)), so the connector ends are pure CSS: center of col 1 and center of col --per. */
 .portfolio-diagram[data-diagram-type="flow"] .portfolio-diagram-stage.is-wrapped{display:flex;flex-direction:column;gap:0}
 .portfolio-diagram-row{display:grid;grid-template-columns:repeat(var(--per),minmax(0,1fr));column-gap:22px}
 .portfolio-diagram-return{--col:calc((100% - (var(--per) - 1) * 22px) / var(--per));position:relative;display:block;height:22px;
@@ -1240,7 +1240,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .portfolio-diagram-return i:nth-child(2){top:11px;height:10px;left:calc(var(--col) / 2);border-left-width:1.5px}
 .portfolio-diagram-return i:nth-child(3){bottom:-1px;left:calc(var(--col) / 2 - 4.5px);width:0;height:0;
   border-width:6px 4.5px 0;border-color:currentColor transparent transparent}
-/* Loop-back (loops): a U from the centre of the last item, under the row, up into the centre of the first item
+/* Loop-back (loops): a U from the center of the last item, under the row, up into the center of the first item
    (arrowhead up). Same line grammar as the wrap-return; --per = item count, so the ends are pure CSS. */
 .portfolio-diagram-return--loop{order:1;flex:0 0 100%;margin-top:-22px;height:20px}
 .portfolio-diagram-return--loop i:nth-child(1){top:0;bottom:auto;height:14px;left:calc(var(--col) / 2);right:calc(var(--col) / 2);
@@ -1487,8 +1487,8 @@ body.tb-6.ho-c .hl-design{opacity:0;animation:hc-in .45s ease forwards}
 .hl-underline{position:absolute;left:0;bottom:.02em;width:104%;height:.32em;overflow:visible;pointer-events:none}
 .hl-underline path{fill:none;stroke:var(--text);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
 
-/* colour story: the signature green marks the story words (toggled by col-* class) */
-/* colour: tagline is one uniform ink (--text) - no green accents (Chris 2026-09-19).
+/* color story: the signature green marks the story words (toggled by col-* class) */
+/* color: tagline is one uniform ink (--text) - no green accents (Chris 2026-09-19).
    --text is near-white in dark mode / near-black in light, so it reads correctly on both grounds. */
 body.tb-6 .hl-design .lit-word,
 body.tb-6 .hl-codechar,
@@ -1587,7 +1587,7 @@ body.work-focus-open[data-world].world-entering .work-shell{background:var(--bg)
    dissolve rides the SHARED __openWorldClip reveal circle for EVERY world: cheap on the Air, verifiable
    headless (2D, no GPU), drawn over the real homepage backdrop that world-entering keeps behind the layer.
    Blocks BORROW the incoming world's palette (--world-bg mass / --world-ink grit / --world-accent sparks) -
-   no fixed brand colour; per-world identity comes for free. GoodRx's WebGL grain stays a per-world OVERRIDE.
+   no fixed brand color; per-world identity comes for free. GoodRx's WebGL grain stays a per-world OVERRIDE.
    Reduced-motion falls back to the clean clip. Tuned values are baked in window.__DTUNE (live tuner removed). ==== */
 #world-dissolve{position:fixed;inset:0;z-index:61;pointer-events:none;display:none}
 body.dissolve-edge.world-entering #world-dissolve{display:block}
@@ -1689,7 +1689,7 @@ body.work-focus-open[data-world] #work-panel{
      made #28 mode-dependent. Derive them from the world so a world is fully self-contained. */
   --bg:var(--world-bg);--surface-2:color-mix(in srgb,var(--world-bg) 84%,var(--world-ink) 16%);--border-strong:color-mix(in srgb,var(--world-ink) 30%,transparent);
   background:var(--world-bg);color:var(--world-ink)}
-/* the colour OVERTAKES the whole focused page - every wrapper + the Selected-projects area */
+/* the color OVERTAKES the whole focused page - every wrapper + the Selected-projects area */
 body.work-focus-open[data-world] #top,
 body.work-focus-open[data-world] .work-shell,
 body.work-focus-open[data-world] #work-focus-content{background:var(--world-bg)}
@@ -1739,7 +1739,7 @@ body[data-world] .work-panel-facts .tok{border-color:var(--world-line);color:var
 body[data-world] .work-panel.is-company-view .work-panel-facts{grid-template-columns:1fr;gap:0;border-top:1px solid var(--world-line)}
 body[data-world] .work-panel.is-company-view .work-panel-facts div{grid-template-columns:1fr;border-bottom:1px solid var(--world-line);padding:14px 0}
 body[data-world] .work-panel.is-company-view .work-panel-facts .fact-icon{display:none}
-/* ONE rule for fact + outcome labels on company AND story views (Chris 2026-09-23): muted small caps, the grey
+/* ONE rule for fact + outcome labels on company AND story views (Chris 2026-09-23): muted small caps, the gray
    letterspaced labels of his 2020 site. No mono, no uppercase micro-labels, no per-view copies to drift. */
 body[data-world] .work-panel .work-panel-facts dt,body[data-world] .work-panel .work-panel-result-label{grid-column:1;grid-row:1;font:400 var(--t-xs)/1.4 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;text-transform:none;color:var(--world-ink-soft)}
 body[data-world] .work-panel .work-panel-facts dd{grid-column:1;grid-row:2;margin:7px 0 0;font-size:var(--t-base);line-height:1.5;color:var(--world-ink)} /* same specificity as the label rule, so per-view base sizes never win */
@@ -1855,7 +1855,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
 <!-- 2. Hero -->
 <header class="hero">
   <h1 class="hero-lockup"><span class="hl-design">I <span class="lit-word">design</span></span> <span class="hl-ship"><span class="hl-ship-text">&amp; code to</span></span><br class="lb"><span class="hl-ship2"><span class="hl-ship-text2">ship</span></span> <span class="hl-special"><span class="hl-prod">products</span><span class="hl-dot">.</span></span></h1>
-  <p class="sub"><b>Product designer</b>. I also build in production <b>React, TypeScript, and Python</b>, so design intent survives to launch. <b>14+ years</b> shipping software across healthcare, marketplaces, education, and creative tools. Now building <b>AI products</b>.</p>
+  <p class="sub"><b>Product designer</b>. I also build in production <b>React, TypeScript, and Python</b>, so design intent survives to launch. <b>14+ years</b> shipping software across healthcare, marketplaces, education, and creative tools. I joined early and helped lay the groundwork at <b>4 companies that went public or were acquired</b>. Now building AI products, with AI as both my tool and my material.</p>
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
     <p class="lbl">Built products at</p>
     <ul class="hero-logo-row">
@@ -2473,13 +2473,13 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         facts: [
           ["Users", "Older adults, family caregivers, care professionals"],
           ["Owned", "Product, design, full stack engineering"],
-          ["Collaborators", "Two founders, clinical advisors, QA intern"],
+          ["Collaborators", "2 founders, clinical advisors, QA intern"],
           ["Stage", "Production and development deployments, closed alpha with testers outside the founding team"]
         ],
         resultLabel: "What changed",
         result: "The voice got warmer without a model swap, the game stopped depending on the prompt, and confirmed failures became regression tests",
         storySectionTitle: "Pivotal product decisions",
-        storySectionIntro: "Three decisions show how I improved the experience, made required behavior reliable, and built a quality loop around the product.",
+        storySectionIntro: "3 decisions show how I improved the experience, made required behavior reliable, and built a quality loop around the product.",
         supportTitle: "Smaller decisions that shaped the product",
         supportIntro: "Not every important decision needed a full case study. These show how I handled feedback, turn taking, controls, scope, and language.",
         vignettes: [
@@ -2489,7 +2489,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             summary: "A facility owner stress tested our production build. Our safety guardrail pushed back 3 times, then gave in. He told us to use a stronger model than GPT-4o mini, but we stayed the course so we could benchmark real costs for pricing, and built a safety suite we reran after every fix.",
             delivery: "Deployed",
             visual: {
-              title: "The guardrail held three times, then gave in",
+              title: "The guardrail held 3 times, then gave in",
               status: "RECREATE",
               note: "Diagram from rob_feedback_status_2026-04-10.md:35 and D139 (2026-09-25).",
               diagram: {
@@ -2533,12 +2533,12 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             summary: "I took an AI suggestion to merge pause and mute into one button. Shipped it without thinking it through. We split them and tested the feel ourselves. AI is not great at judging feel.",
             delivery: "Closed alpha",
             visual: {
-              title: "One button split into two intents",
+              title: "One button split into 2 intents",
               status: "RECREATE",
               note: "Diagram from the 2026-04-13 sync record (candidates c7, 2026-09-25).",
               diagram: {
                 type: "split",
-                eyebrow: "Two different intents",
+                eyebrow: "2 different intents",
                 columns: 2,
                 items: [
                   {label:"Pause", meta:"Stepping away · everything stops · \u201cwelcome back\u201d", tone:"accent"},
@@ -2551,10 +2551,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             name: "Ending with a menu, not a blank",
             kicker: "Conversation design · Choice",
-            summary: "Ending a game with \u201cWhat do you want to talk about?\u201d fell apart, even in our own testing. Keeping it open-ended is similar to offering too many options. People already know phone menus from calling customer service, so we ended with a short recap and three choices.",
+            summary: "Ending a game with \u201cWhat do you want to talk about?\u201d fell apart, even in our own testing. Keeping it open-ended is similar to offering too many options. People already know phone menus from calling customer service, so we ended with a short recap and 3 choices.",
             delivery: "Closed alpha",
             visual: {
-              title: "A recap, then three choices",
+              title: "A recap, then 3 choices",
               status: "RECREATE",
               note: "Diagram from candidate c9 sources (2026-09-25).",
               diagram: {
@@ -2596,7 +2596,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             delivery: "Closed alpha",
             result: "Conversation rules backed by regression checks",
             visual: {
-              title: "Three rules for dignity",
+              title: "3 rules for dignity",
               status: "RECREATE",
               note: "Diagram from the existing row copy (2026-09-25).",
               diagram: {
@@ -2721,11 +2721,11 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         summary: "A focused application sprint turned into a finished browser game. I built the interaction system, sound, instrumentation, tests, and the release path.",
         facts: [
           ["Build shape", "Solo product, game design through production engineering"],
-          ["Game system", "Five microgames · one shipped boss · shared engine"],
+          ["Game system", "5 microgames · 1 shipped boss · shared engine"],
           ["Instrumentation", "PostHog events · HogQL leaderboard · flag · survey"],
           ["Verification", "Adversarial review · playtesting · headless game suite"]
         ],
-        result: "Five microgames; one boss; instrumented in PostHog: 80 players, 948 microgames cleared",
+        result: "5 microgames; 1 boss; instrumented in PostHog: 80 players, 948 microgames cleared",
         delivery: "Finished + playable",                // status label on its card (Chris 2026-09-25)
         cardMedia: ["images/work/hogware-game.png"],   // its "Recent work" card (a world card: opens the HogWare world)
         actions: [["hogware.html", "Play it"], ["https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md", "Read the build log", true]]
@@ -2776,7 +2776,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           ["Collaboration", "A friend wrote the story"]
         ],
         resultLabel: "Experiment",
-        result: "A physical prototype tested through two playtest sessions",
+        result: "A physical prototype tested through 2 playtest sessions",
         actions: []
       },
       rat_with_wings: {
@@ -3145,7 +3145,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             visual: {
               title: "GM onboarding from application to marketplace readiness",
               status: "CURATE",
-              note: "Rebuild the giant source board as four or five legible stages.",
+              note: "Rebuild the giant source board as 4 or 5 legible stages.",
               diagram: {
                 type: "flow",
                 eyebrow: "Completed design · not launched",
@@ -3175,7 +3175,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         supportingItems: [
           {
             name: "Continuous GM discovery",
-            description: "Two or three GM / DM video interviews most weeks, plus synthesis of older notes and recordings.",
+            description: "2 or 3 GM / DM video interviews most weeks, plus synthesis of older notes and recordings.",
             delivery: "Ongoing practice"
           }
         ],
@@ -3316,7 +3316,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             copy: "The system talked too fast, cut people off, sometimes missed the emotional point, was tone deaf, and could forget what someone just shared. Testers called the voice robotic. I first assumed that the model or voice provider was not good enough. Those failures did not all have a singular cause, so I needed to figure out a way to stop guessing.",
             media: [
               {
-                visual: "Four failures, no single cause",
+                visual: "4 failures, no single cause",
                 status: "RECREATE",
                 note: "Diagram from the chapter copy; replaces the generic UI capture (2026-09-25).",
                 diagram: {
@@ -3338,7 +3338,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "02 · What I tried first",
             title: "My first guess was the model. It wasn’t.",
-            copy: "My cofounder and I built a switchboard to swap speech recognition, the language model, and speech generation one at a time. I tested three language models on the same pipeline. **Speed and cost differences were below human perception.** Another model swap wasn’t going to fix it.",
+            copy: "My cofounder and I built a switchboard to swap speech recognition, the language model, and speech generation one at a time. I tested 3 language models on the same pipeline. **Speed and cost differences were below human perception.** Another model swap wasn’t going to fix it.",
             media: [
               {
                 visual: "Provider switchboard: independent STT, LLM, and TTS controls with availability, estimated latency, and estimated cost",
@@ -3352,12 +3352,12 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
                     {label:"Language model", meta:"Swap on its own"},
                     {label:"Speech generation", meta:"Swap on its own"}
                   ],
-                  footer: "Hold two layers steady, change the third. Health, latency, and cost per minute in the admin tools."
+                  footer: "Hold 2 layers steady, change the third. Health, latency, and cost per minute in the admin tools."
                 },
                 span: 12
               },
               {
-                visual: "Controlled comparison: three LLMs on the same STT and TTS pipeline, compared across latency, cost, and safety",
+                visual: "Controlled comparison: 3 LLMs on the same STT and TTS pipeline, compared across latency, cost, and safety",
                 status: "RECREATE",
                 note: "Recreate from FB-171. Keep the measurements qualified as internal benchmark results.",
                 diagram: {
@@ -3365,7 +3365,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
                   eyebrow: "Controlled internal benchmark",
                   items: [
                     {label:"Speech recognition", meta:"Held constant"},
-                    {label:"Three language models", meta:"Similar speed and safety", tone:"accent"},
+                    {label:"3 language models", meta:"Similar speed and safety", tone:"accent"},
                     {label:"Speech generation", meta:"Held constant"}
                   ],
                   footer: "Speed and cost differences were below human perception."
@@ -3400,12 +3400,12 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "04 · What changed",
             title: "The same tester came back.",
-            copy: "Across four iterations and three models, our internal warmth rubric moved from 3.28 to 4.17 while the blocking safety suite held at 7 of 7. The tester who called it robotic said, **“This is the complete opposite of robotic.”** These were internal signals, not a validated study. Pacing, interruptions, and memory each became their own work.",
+            copy: "Across 4 iterations and 3 models, our internal warmth rubric moved from 3.28 to 4.17 while the blocking safety suite held at 7 of 7. The tester who called it robotic said, **“This is the complete opposite of robotic.”** These were internal signals, not a validated study. Pacing, interruptions, and memory each became their own work.",
             media: [
               {explorer:"voice-xray", title:"Watch a real call run through the pipeline", span:12},
               {src:"images/work/y30-call-poster.jpg", title:"An unscripted reminiscence call with y30, recorded June 2026. I\u2019m the one talking.", video:{provider:"loom", id:"eb44015201554d11ac841cd1700653ce"}, span:12, fit:"contain"},
               {
-                visual: "Four-iteration warmth score with the safety gate held constant",
+                visual: "4-iteration warmth score with the safety gate held constant",
                 status: "RECREATE",
                 note: "Build from the recorded warmth-runner results; label this as an automated rubric and pair it with the anonymized tester response.",
                 diagram: {
@@ -3413,7 +3413,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
                   eyebrow: "Internal regression signals",
                   items: [
                     {value:"3.28", label:"Baseline warmth", meta:"Automated rubric"},
-                    {value:"4.17", label:"After four iterations", meta:"Automated rubric", tone:"accent"},
+                    {value:"4.17", label:"After 4 iterations", meta:"Automated rubric", tone:"accent"},
                     {value:"7 / 7", label:"Blocking safety suite", meta:"Held throughout"}
                   ],
                   footer: "Internal evaluation, not a validated cohort outcome."
@@ -3433,7 +3433,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         cardTitle: "Drawing the line between what's scripted and what's improvised",
         meta: "Voice architecture · Product engineering",
         delivery: "Closed alpha",
-        summary: "Even after eight prompt revisions, the model started only about 70% of game rounds. I hardcoded the flow and left the model the conversation.",
+        summary: "Even after 8 prompt revisions, the model started only about 70% of game rounds. I hardcoded the flow and left the model the conversation.",
         result: "The game's structure and flow became consistent, and the conversation stayed unscripted",
         cardMedia: [
           "images/work/y30-game.png",
@@ -3460,10 +3460,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "02 · What I tried first",
             title: "I tried to fix it with words.",
-            copy: "More than eight prompt revisions, then phase guards, then a watchdog. The model still started a round only **about 70% of the time.** The watchdog didn’t raise that number. It added a new way to fail. The problem was architecture, not wording.",
+            copy: "More than 8 prompt revisions, then phase guards, then a watchdog. The model still started a round only **about 70% of the time.** The watchdog didn’t raise that number. It added a new way to fail. The problem was architecture, not wording.",
             media: [
               {
-                visual: "Three fixes, the same 70%",
+                visual: "3 fixes, the same 70%",
                 status: "RECREATE",
                 note: "Diagram from y30 LEARNINGS.md:954 and D104 (2026-09-25).",
                 diagram: {
@@ -3512,7 +3512,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
               {
                 visual: "Interactive boundary map: model judgment versus deterministic ownership",
                 status: "RECREATE",
-                note: "Adapt the three-era interaction from the private draft into a portfolio-native artifact rather than linking the old page.",
+                note: "Adapt the 3-era interaction from the private draft into a portfolio-native artifact rather than linking the old page.",
                 diagram: {
                   type: "split",
                   eyebrow: "Explicit authority boundary",
@@ -3560,7 +3560,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             copy: "The voice AI wasn’t consistent. Every bug we fixed let new regressions creep in. For an older adult, **a missed crisis and a false alarm both break trust.**",
             media: [
               {
-                visual: "Two ways to lose an older adult’s trust",
+                visual: "2 ways to lose an older adult’s trust",
                 status: "RECREATE",
                 note: "Diagram from the safety story chapter 01 copy (2026-09-25).",
                 diagram: {
@@ -3617,7 +3617,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "03 · The decision",
             title: "A loop, not a checklist.",
-            copy: "I built a quality loop: a manual QA script with more than sixty scenarios, automated and adversarial checks, and a reviewer queue where a QA intern rated individual AI responses. **I kept the approval boundary**, so confirmed failures became regression tests and raw notes never promoted themselves. Acute medical language got its own always on route with a 911 or staff response, and smoke tests now hit the deployed build.",
+            copy: "I built a quality loop: a manual QA script with more than 60 scenarios, automated and adversarial checks, and a reviewer queue where a QA intern rated individual AI responses. **I kept the approval boundary**, so confirmed failures became regression tests and raw notes never promoted themselves. Acute medical language got its own always on route with a 911 or staff response, and smoke tests now hit the deployed build.",
             media: [
               {
                 visual: "Layered QA system: manual scenarios, automated checks, adversarial review, and deployed smoke",
@@ -3720,7 +3720,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "01 · Diagnose the live system",
             title: "The lesson looked like a long page, but the failure was planning and completion.",
-            copy: "Three weeks into the role, I audited twenty-six screens and mapped the ecosystem around them. Research showed that working adults studied in short windows, avoided stopping midway through a lesson, and often could not tell whether the platform had registered completed work. A sixty-minute undifferentiated scroll made starting, resuming, and finishing unnecessarily uncertain.",
+            copy: "3 weeks into the role, I audited 26 screens and mapped the ecosystem around them. Research showed that working adults studied in short windows, avoided stopping midway through a lesson, and often could not tell whether the platform had registered completed work. A 60-minute undifferentiated scroll made starting, resuming, and finishing unnecessarily uncertain.",
             media: [
               {src:"images/craft/pathstream-pathstreamecosystem.webp", title:"Pathstream learning ecosystem", span:12, fit:"contain"}
             ]
@@ -3744,7 +3744,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           },
           {
             step: "04 · Resolve focus versus reference",
-            title: "Three test rounds produced a hybrid rather than a false winner.",
+            title: "3 test rounds produced a hybrid rather than a false winner.",
             copy: "I randomized whether participants saw a vertical or horizontal prototype first to reduce order bias. Horizontal felt cleaner and more focused; vertical made it easier to refer backward. The shipped direction kept vertical reading, visually contained each part, and used navigation plus Go to current to make orientation cheap.",
             media: [
               {src:"images/craft/pathstream-completelesson.webp", title:"Explicit lesson completion and the payoff state", span:12}
@@ -3823,7 +3823,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             copy: "The completed dashboard grouped courses in session, supported cohort filtering, and specified states from one course through no updates and all caught up. I finished the design before leaving; it was queued for build.",
             media: [
               {
-                visual: "Four instructor-dashboard states",
+                visual: "4 instructor-dashboard states",
                 status: "CURATE",
                 note: "Replace faces with initials and generalize institution names before export.",
                 span: 12
@@ -3860,7 +3860,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "01 · Inventory the real product",
             title: "The live interface, not a clean component file, was the source of truth.",
-            copy: "I audited screens and catalogued what the product actually used: sixteen colors, twelve type sizes, eleven component families, duplicated names, and body copy as small as 10.3 pixels. That made drift visible before the team tried to standardize it.",
+            copy: "I audited screens and cataloged what the product actually used: 16 colors, 12 type sizes, 11 component families, duplicated names, and body copy as small as 10.3 pixels. That made drift visible before the team tried to standardize it.",
             media: [
               {
                 visual: "Color, typography, and component inventory",
@@ -4343,7 +4343,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "03 · Responsive system",
             title: "The same decision had to remain legible on a phone in a pharmacy line.",
-            copy: "Mobile compressed the hierarchy without removing the prescription, price, and coupon context. Desktop used the additional space for persistent navigation and comparison. The two versions shared the same product model instead of becoming separate experiences.",
+            copy: "Mobile compressed the hierarchy without removing the prescription, price, and coupon context. Desktop used the additional space for persistent navigation and comparison. The 2 versions shared the same product model instead of becoming separate experiences.",
             media: [
               {src:"images/craft/goodrx_14.webp", title:"Mobile prescription and savings state", span:4, fit:"contain"},
               {src:"images/craft/goodrx_17.webp", title:"Desktop prescription and savings state", span:8, fit:"contain"}
@@ -4368,7 +4368,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         meta: "Data visualization · Design to code",
         delivery: "Published + shipped",
         summary: "I taught myself JavaScript and D3, then designed and built production interactives that made prescription-price and utilization data easier to explore.",
-        result: "Referenced by The New York Times and ABC News; fifty state briefs for federal policy meetings",
+        result: "Referenced by The New York Times and ABC News; 50 state briefs for federal policy meetings",
         actions: [
           ["https://www.goodrx.com/healthcare-access/research/the-most-popular-drugs-in-america-by-state", "See the live research map", true],
           ["https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html", "As cited in the NYT", true]
@@ -4422,14 +4422,14 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           },
           {
             step: "05 · Policy communication",
-            title: "Build one evidence structure for fifty policymaker conversations.",
-            copy: "For GoodRx’s Washington advocacy team, I designed one reusable InDesign structure for state-specific prescription-price briefs. The team supplied an Excel workbook; I manually populated all fifty sheets and checked every data point. They were created for meetings with federal policymakers around S.2553 and S.2554, both of which became law. The briefs supported that effort; they did not independently cause the result.",
+            title: "Build one evidence structure for 50 policymaker conversations.",
+            copy: "For GoodRx’s Washington advocacy team, I designed one reusable InDesign structure for state-specific prescription-price briefs. The team supplied an Excel workbook; I manually populated all 50 sheets and checked every data point. They were created for meetings with federal policymakers around S.2553 and S.2554, both of which became law. The briefs supported that effort; they did not independently cause the result.",
             layout: "wide",
             media: [
               {
-                visual: "Fifty state-specific prescription-price briefs",
+                visual: "50 state-specific prescription-price briefs",
                 status: "CURATE",
-                note: "Export one representative sheet plus a compact fifty-state system view from the archived InDesign sources.",
+                note: "Export one representative sheet plus a compact 50-state system view from the archived InDesign sources.",
                 span: 12
               }
             ]
@@ -4443,7 +4443,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         name: "Amazon Music Importer",
         meta: "Desktop software · Music",
         delivery: "Shipped",
-        summary: "I translated an assigned direction into a complete overhaul that joined two live desktop applications into one installation, onboarding, and music-ownership experience.",
+        summary: "I translated an assigned direction into a complete overhaul that joined 2 live desktop applications into one installation, onboarding, and music-ownership experience.",
         result: "Unified Importer and Downloader released to customers",
         cardVisual: {
           title: "One desktop application for local and cloud music",
@@ -4465,7 +4465,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           note: "Safe recreation of the verified product model; no internal screens or Amazon email addresses.",
           diagram: {
             type: "flow",
-            eyebrow: "Two live products → one shipped experience",
+            eyebrow: "2 live products → one shipped experience",
             items: [
               {label:"Local music", meta:"Scan and match"},
               {label:"Amazon cloud", meta:"Upload and ownership", tone:"accent"},
@@ -4476,23 +4476,23 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         },
         facts: [
           ["Owned", "End-to-end product design from assigned direction through release"],
-          ["Starting point", "Two separate live desktop applications"],
+          ["Starting point", "2 separate live desktop applications"],
           ["Surfaces", "Installation · onboarding · matching · upload · download"],
           ["Delivery", "Unified application shipped"]
         ],
         chapters: [
           {
             step: "01 · Assigned direction",
-            title: "Combine two existing products without losing either mental model.",
+            title: "Combine 2 existing products without losing either mental model.",
             copy: "Amazon MP3 Downloader brought cloud-owned and Amazon-purchased music down to a device. Music Importer moved a customer’s local library into the cloud. I was assigned the consolidation and had to determine the updated experience from scratch.",
             media: [
               {
                 visual: "Downloader and Importer before consolidation",
                 status: "RECREATE",
-                note: "Abstract the two opposing flows; do not reproduce confidential boards.",
+                note: "Abstract the 2 opposing flows; do not reproduce confidential boards.",
                 diagram: {
                   type: "split",
-                  eyebrow: "Two existing mental models",
+                  eyebrow: "2 existing mental models",
                   columns: 2,
                   items: [
                     {label:"Downloader", meta:"Amazon cloud → customer device"},
@@ -4529,7 +4529,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "03 · Cohesive lifecycle",
             title: "One install and onboarding path held the system together.",
-            copy: "I carried the redesign through flows, high-fidelity screens, edge cases, and engineering collaboration. The two applications became one desktop product with shared installation and onboarding rather than adjacent utilities that customers had to reconcile themselves.",
+            copy: "I carried the redesign through flows, high-fidelity screens, edge cases, and engineering collaboration. The 2 applications became one desktop product with shared installation and onboarding rather than adjacent utilities that customers had to reconcile themselves.",
             media: [
               {
                 visual: "Shared installation and onboarding lifecycle",
@@ -4578,7 +4578,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
                   type: "grid",
                   eyebrow: "Delivery receipt",
                   items: [
-                    {label:"Assigned direction", meta:"Combine two live products"},
+                    {label:"Assigned direction", meta:"Combine 2 live products"},
                     {label:"Owned design", meta:"Flows · states · high fidelity"},
                     {label:"Engineering collaboration", meta:"Edge cases and release"},
                     {label:"Shipped", meta:"Released to customers", tone:"accent"}
@@ -4669,7 +4669,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
                 note: "Use a neutral architecture of sources, states, and user choices.",
                 diagram: {
                   type: "split",
-                  eyebrow: "Two sources · one search",
+                  eyebrow: "2 sources · one search",
                   columns: 2,
                   items: [
                     {label:"Cloud library", meta:"Available to stream"},
@@ -4698,7 +4698,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "03 · Alpha",
             title: "Bring the full listening loop to working software.",
-            copy: "I worked closely with two to three engineers, including an engineering manager, across authentication, browsing, search, playback, playlists, and downloads. The result was a working alpha; the product was later shuttered rather than launched publicly.",
+            copy: "I worked closely with 2 to 3 engineers, including an engineering manager, across authentication, browsing, search, playback, playlists, and downloads. The result was a working alpha; the product was later shuttered rather than launched publicly.",
             layout: "wide",
             media: [
               {
@@ -4865,7 +4865,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             layout: "wide",
             media: [
               {
-                visual: "Four-part PlaySesh adoption proof",
+                visual: "4-part PlaySesh adoption proof",
                 status: "RECREATE",
                 note: "Separate authorizations, server installs, individual installs, and peak MAU with dates and definitions.",
                 diagram: {
@@ -5182,7 +5182,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "01 · Field research",
             title: "Follow the visit before redesigning the form.",
-            copy: "I spent a week in New Jersey shadowing nurse practitioners during home visits and interviewed clinical operations, member experience, and data science. The paper packet shaped the visit: nurses spent one to two hours every night pre-filling it, then Clover waited days or weeks for the same information to be entered again.",
+            copy: "I spent a week in New Jersey shadowing nurse practitioners during home visits and interviewed clinical operations, member experience, and data science. The paper packet shaped the visit: nurses spent 1 to 2 hours every night pre-filling it, then Clover waited days or weeks for the same information to be entered again.",
             media: [
               {src:"images/craft/clover-care-visit_04.webp", title:"New Jersey visit territory", span:6},
               {src:"images/craft/clover-care-visit_01.webp", title:"Early workflow sketches", span:6}
@@ -5211,7 +5211,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           {
             step: "04 · Pilot",
             title: "Pilot the workflow in the field before converting the team.",
-            copy: "We piloted the app with three nurse practitioners for one week. Their feedback validated the operational change, and Clover transitioned the full nurse-practitioner team from paper to the new digital workflow.",
+            copy: "We piloted the app with 3 nurse practitioners for one week. Their feedback validated the operational change, and Clover transitioned the full nurse-practitioner team from paper to the new digital workflow.",
             media: [
               {src:"images/craft/clover-care-visit_14.webp", title:"Pilot feedback from a nurse practitioner", span:12, fit:"contain"}
             ]
@@ -7407,7 +7407,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       if(reduceWorkMotion.matches || !worldLayer.animate){ commit(); return; } // instant fallback
       // Shared cheap dissolve edge rides the growing circle (all worlds). GoodRx WebGL stays its override.
       // Fire on fresh AND interrupt (reopen) so a reversed close still gets particles; start() reads the clip's
-      // own centre/radius. try/catch: this optional effect must never abort the world-open navigation below.
+      // own center/radius. try/catch: this optional effect must never abort the world-open navigation below.
       if(document.body.classList.contains("dissolve-edge") && window.__worldDissolve){
         try{ window.__worldDissolve.start(); }catch(e){}
       }
@@ -7583,7 +7583,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           if(isWorldEntry(p)){
             // Every world enters via the clip reveal grown from the click point (GoodRx layers its
             // own WebGL dissolve on top via its band). Keyboard activation (no pointer coords) grows
-            // from the tile centre. Falls back to an instant open if the clip fn isn't available.
+            // from the tile center. Falls back to an instant open if the clip fn isn't available.
             var r = tile.getBoundingClientRect();
             var ox = (e && e.clientX) ? e.clientX : Math.round(r.left + r.width / 2);
             var oy = (e && e.clientY) ? e.clientY : Math.round(r.top + r.height / 2);
@@ -7601,7 +7601,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     if(siteLogo) siteLogo.addEventListener("click", function(e){
       if(!document.body.classList.contains("work-focus-open")) return; // homepage: let #top jump happen
       e.preventDefault();
-      var lr = siteLogo.getBoundingClientRect();             // grow/shrink the reveal from the name itself, not screen centre
+      var lr = siteLogo.getBoundingClientRect();             // grow/shrink the reveal from the name itself, not screen center
       var origin = { x: lr.left + lr.width/2, y: lr.top + lr.height/2 };
       if(document.body.getAttribute("data-world")) closeWorldClip(origin);
       else resetWork(false, { restoreScroll: workOverviewScrollY });
@@ -7634,7 +7634,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       button.addEventListener("focus", preloadCompanyFocus, {once:true});
       button.addEventListener("touchstart", preloadCompanyFocus, {once:true, passive:true});
       button.addEventListener("click", function(){
-        // Rail logos enter a world through the same portal as its band, grown from the logo's centre.
+        // Rail logos enter a world through the same portal as its band, grown from the logo's center.
         var p = button.dataset.workCompany;
         if(isWorldEntry(p) && window.__openWorldClip){
           var r = button.getBoundingClientRect();
@@ -7951,10 +7951,10 @@ document.body.classList.add('fx-dissolve','skin-digital');
     // DIGITAL WAVE / DISSOLVE hover: the photo resolves into a grid of data-cells that ripples out from
     // the cursor. Two skins on the SAME mechanic (uniform `skin`): 0 = BLUEPRINT (round data-viz dots on
     // ink, faint green hairline grid - on-brand, calm); 1 = DIGITAL/Digimon (square glowing data-cells,
-    // bright green grid - materialisation). Each cell samples the photo, so it stays his data-viz colour.
+    // bright green grid - materialisation). Each cell samples the photo, so it stays his data-viz color.
     var fs='precision highp float;varying vec2 uv;uniform sampler2D tx;uniform vec2 mouse;uniform float t;uniform float aspect;uniform float amp;uniform float dens;uniform float skin;'
       +'uniform vec3 uCol;uniform float uGlow;uniform float uGrain;uniform float uFlick;uniform float uReach;uniform float uInten;'  // live tuning
-      +'uniform vec3 uBg;uniform float uImgMix;'  // preview-hint: cell ground colour + true-photo blend
+      +'uniform vec3 uBg;uniform float uImgMix;'  // preview-hint: cell ground color + true-photo blend
       +'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}'
       +'void main(){vec2 d=vec2((uv.x-mouse.x)*aspect,uv.y-mouse.y);float dist=length(d);'
       +'float ring=sin(dist*32.0 - t*6.0);float env=exp(-dist*uReach)*amp;'
@@ -7974,14 +7974,14 @@ document.body.classList.add('fx-dissolve','skin-digital');
       +'  dotted=mix(dotted,vec3(0.11,0.10,0.09),grid*0.16);'
       +'}else{'                                              // DIGITAL - GRAINY glowing data-grid, squares kept (all live-tunable)
       +'  float sq=1.0-smoothstep(0.26,0.44,max(abs(fp.x-0.5),abs(fp.y-0.5)));'
-      +'  float flick=(1.0-uFlick*0.5)+uFlick*hash(floor(cell)+floor(t*6.0));'  // per-cell flicker, centred ~1
-      +'  vec3 cimg=dc*1.2*flick;'                            // cell sampled from the destination hero (true colour = image-sample)
+      +'  float flick=(1.0-uFlick*0.5)+uFlick*hash(floor(cell)+floor(t*6.0));'  // per-cell flicker, centered ~1
+      +'  vec3 cimg=dc*1.2*flick;'                            // cell sampled from the destination hero (true color = image-sample)
       +'  float lum=dot(dc,vec3(0.299,0.587,0.114));'         // its luminance
-      +'  vec3 ctint=uCol*(0.35+lum*1.15)*flick;'             // that luminance recoloured toward the hint colour = palette-hint
-      +'  vec3 ccol=mix(ctint,cimg,uImgMix);'                 // uImgMix 0 = pure palette recolour, 1 = true photo (both, blended)
+      +'  vec3 ctint=uCol*(0.35+lum*1.15)*flick;'             // that luminance recolored toward the hint color = palette-hint
+      +'  vec3 ccol=mix(ctint,cimg,uImgMix);'                 // uImgMix 0 = pure palette recolor, 1 = true photo (both, blended)
       +'  dotted=mix(uBg,ccol,sq);'                           // cells over the hint ground
-      +'  dotted+=uCol*grid*uGlow;'                           // glowing grid in the hint colour
-      +'  dotted+=uCol*0.32*sq;'                              // cell glow, same colour
+      +'  dotted+=uCol*grid*uGlow;'                           // glowing grid in the hint color
+      +'  dotted+=uCol*0.32*sq;'                              // cell glow, same color
       +'  dotted+=(hash(uv*vec2(760.0,440.0)+t*11.0)-0.5)*uGrain;'  // film grain
       +'}'
       +'float infl=clamp(env*(uInten+0.28*ring),0.0,1.0);'
@@ -8144,12 +8144,12 @@ document.body.classList.add('fx-dissolve','skin-digital');
       u:Math.pow(Math.random(),0.85),   // position across the outward spray: 0 = on the edge → 1 = farthest out
       j:(Math.random()-0.5),            // tangential wobble seed
       s:0.55+Math.random()*1.1,         // size multiplier
-      g:Math.random(),                  // colour-role selector (accent / grit / mass)
+      g:Math.random(),                  // color-role selector (accent / grit / mass)
       f:Math.random()*6.283,            // flicker phase
       b:0.7+Math.random()*0.55          // per-grain brightness (tonal variation of the sand)
     }); } })(4200);
 
-  // Palette borrowed from the world being revealed (no fixed brand colour): mass = bg, grit = ink, spark = accent.
+  // Palette borrowed from the world being revealed (no fixed brand color): mass = bg, grit = ink, spark = accent.
   var BG=[255,255,255], SURF=[255,255,255], INK=[20,20,20], ACC=[136,136,136];
   function hex2rgb(v,fb){ var m=/#?([0-9a-f]{6})/i.exec((v||'').trim()); return m?[parseInt(m[1].slice(0,2),16),parseInt(m[1].slice(2,4),16),parseInt(m[1].slice(4,6),16)]:fb; }
   function refreshColors(){
@@ -8191,7 +8191,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
       if(y - sz/2 < headClip) continue; // keep particles out of the sticky header strip (canvas is full-viewport, above the header)
       var flick=1 - grain*0.45 + grain*0.45*Math.sin(t*9+c.f);   // alpha twinkle (grain)
       var a=alpha*flick; if(a<0)a=0; if(a>1)a=1;
-      // colour borrowed from the incoming world: spark=accent, grit=ink, then surface, mass=bg
+      // color borrowed from the incoming world: spark=accent, grit=ink, then surface, mass=bg
       var col, spark=false;
       if(c.g<af){ col=ACC; spark=true; }
       else if(c.g<af+0.16){ col=INK; }
@@ -8212,7 +8212,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     raf=requestAnimationFrame(frame);
   }
   window.__worldDissolve={
-    // No args: derive centre + radius + header clip from the clip's OWN state (the --reveal-x/y that
+    // No args: derive center + radius + header clip from the clip's OWN state (the --reveal-x/y that
     // setWorldCenter set, and the layer rect that worldFullR() uses) so the sand always matches the real
     // circle - for fresh opens AND interrupt-reopens (where setWorldCenter is skipped but the vars persist).
     start:function(){
@@ -8221,7 +8221,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
       var lx=parseFloat(getComputedStyle(layer).getPropertyValue('--reveal-x'));
       var ly=parseFloat(getComputedStyle(layer).getPropertyValue('--reveal-y'));
       if(isNaN(lx)) lx=b.width/2; if(isNaN(ly)) ly=b.height/2;
-      cx=b.left+lx; cy=b.top+ly;                          // clip centre in viewport space
+      cx=b.left+lx; cy=b.top+ly;                          // clip center in viewport space
       headClip=b.top;                                     // header strip height (layer is inset var(--head-h))
       fullR=Math.hypot(Math.max(lx,b.width-lx),Math.max(ly,b.height-ly))||1;
       refreshColors(); resize();
@@ -8241,7 +8241,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   top(); window.addEventListener('scroll',top,{passive:true});
   function cueIn(){ setTimeout(function(){ b.classList.add('cue-in'); },250); }
   if(window.__heroDone) cueIn(); else window.addEventListener('hero:done',cueIn,{once:true});
-  setTimeout(function(){ b.classList.add('cue-in'); },3600);   // headline never signalled: show it anyway
+  setTimeout(function(){ b.classList.add('cue-in'); },3600);   // headline never signaled: show it anyway
   // Intro: start as "products." begins to form (.hl-special gets .in), 140ms apart; never hold past 3s.
   var items=[].slice.call(document.querySelectorAll('.hero .sub,.hero .sub-line,.hero-credibility')), started=false;
   function introIn(){ if(started) return; started=true;
@@ -8262,7 +8262,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
 <script src="assets/dev-panel.js"></script>
 
 <!-- Homepage HALFTONE REVEAL (Chris picks 2026-09-23; spikes spike-reveal R3 + spike-cards C). ONE engine for every
-     homepage image: it starts as a fine 8px grid in its own ground colour; on scroll-in every cell samples the image
+     homepage image: it starts as a fine 8px grid in its own ground color; on scroll-in every cell samples the image
      and grows until the cells merge into the picture, then the real content takes over. It is the cell hover
      (photo -> cells) run backwards.
        THE site's one scroll entrance (Chris 2026-09-25, option A): every image resolves, each on its own, 450ms,
@@ -8273,7 +8273,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
                44px lines, label), so every card in a row resolves the same way.
      The hover waits for a reveal to end; a click never waits. Same length whether the image took 50ms or 3s (a slow
      image holds on the grid). Reduced motion / no JS / script failure = plain content (the head flag fails open).
-     Session replay does NOT record canvases (analytics-init.js): replay serialising them froze the page 1.35s. -->
+     Session replay does NOT record canvases (analytics-init.js): replay serializing them froze the page 1.35s. -->
 <style>
 .hx-busy:not(.hx-show) .work-tile.on img,.wcard-thumb.hx-busy:not(.hx-show) img,
 .wcard-thumb.hx-busy:not(.hx-show) .wcard-thumb-label,.wcard-thumb.hx-busy:not(.hx-show)::before,
@@ -8308,7 +8308,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     if(lab){ var ls=getComputedStyle(lab); c.fillStyle=ls.color; c.font=ls.fontSize+' '+ls.fontFamily; c.textAlign='center'; c.textBaseline='middle'; c.fillText(lab.textContent,W/2,H/2); }
     return cv;
   }
-  // sample every cell's colour from the source, placed exactly where the page shows it (object-fit contain / cover)
+  // sample every cell's color from the source, placed exactly where the page shows it (object-fit contain / cover)
   function sample(B){
     var off=document.createElement('canvas'); off.width=Math.max(1,Math.round(B.W)); off.height=Math.max(1,Math.round(B.H));
     var o=off.getContext('2d'); o.fillStyle=rgba(B.bg,1); o.fillRect(0,0,off.width,off.height);
@@ -8383,7 +8383,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   },{threshold:.35});
   window.addEventListener('hero:done',releaseAll);
   window.addEventListener('scroll',function(){ if(!scrolled&&window.scrollY>4){ scrolled=true; releaseAll(); } },{passive:true});
-  setTimeout(function(){ if(!window.__heroDone){ window.__heroDone=true; releaseAll(); } },3400);   // headline never signalled: don't hold forever
+  setTimeout(function(){ if(!window.__heroDone){ window.__heroDone=true; releaseAll(); } },3400);   // headline never signaled: don't hold forever
   window.addEventListener('resize',function(){ all.forEach(function(B){ if(B.state==='rest') B.size(); }); });
 
   window.__hxAlive=true;
@@ -8493,7 +8493,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     muts.forEach(function(m){ m.addedNodes.forEach(scan); if(m.removedNodes.length) removed=true; });
     if(removed) prune();
   }).observe(document.body,{childList:true,subtree:true});
-  // theme / world switches change the ink colour: redraw the resting grid
+  // theme / world switches change the ink color: redraw the resting grid
   var recolor=function(){ live.forEach(function(S){ S.ink=inkOf(S.el); draw(S); }); };
   new MutationObserver(recolor).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
   new MutationObserver(recolor).observe(document.body,{attributes:true,attributeFilter:['data-world']});

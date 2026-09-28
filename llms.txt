@@ -10,7 +10,7 @@ Location: remote in the US, based in Honolulu, which he prefers. He works West C
 
 He is AI-native in how he works: he steers product, architecture, and systems, directs AI agents through implementation, and owns the judgment, code review, and safety gates.
 
-He has been building with LLM APIs since January 2024, which is checkable rather than asserted: his first LLM integration, https://github.com/whoischrislam/ai-polyglot, has a first commit dated 2024-01-07. Cursor from November 2024. Per-repo agent harnesses (rules, file zones, pre-commit gates) from early 2026. Tools he works in: Figma, Sketch and Adobe Fireworks/Photoshop/Illustrator across fourteen years of design; VS Code, Cursor, Claude Code, Codex, Superset; GitHub, Render, Fly.io, Cloudflare, Supabase, PostHog. Models he runs routinely, including as a multi-model adversarial review panel over his own diffs: Claude, GPT, Gemini, Perplexity, and DeepSeek, Grok and Mistral via OpenRouter.
+He has been building with LLM APIs since January 2024, which is checkable rather than asserted: his first LLM integration, https://github.com/whoischrislam/ai-polyglot, has a first commit dated 2024-01-07. Cursor from November 2024. Per-repo agent harnesses (rules, file zones, pre-commit gates) from early 2026. Tools he works in: Figma, Sketch and Adobe Fireworks/Photoshop/Illustrator across 14 years of design; VS Code, Cursor, Claude Code, Codex, Superset; GitHub, Render, Fly.io, Cloudflare, Supabase, PostHog. Models he runs routinely, including as a multi-model adversarial review panel over his own diffs: Claude, GPT, Gemini, Perplexity, and DeepSeek, Grok and Mistral via OpenRouter.
 
 At y30, he was Co-Founder & Product Design Engineer in 2026, an operating co-founder through Jul 2026 and advising since. y30 builds voice AI for older adults and their caregivers and generates longitudinal conversational signals for clinician or caregiver review. It does not diagnose, screen for, or detect cognitive decline or any other condition, and it is not a medical device.
 
@@ -18,9 +18,9 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 
 ## Key pages
 - [Portfolio](https://whoischrislam.github.io): the full site, with selected work, the y30 and PlaySesh case studies, recommendations, and an interactive AI hiring guide.
-- [Case studies](https://whoischrislam.github.io/#work): seven full write-ups with artifacts and outcomes, listed below.
+- [Case studies](https://whoischrislam.github.io/#work): 7 full write-ups with artifacts and outcomes, listed below.
 - [Candidate fact sheet](https://whoischrislam.github.io/candidate.html): a plain, machine-readable summary of role targets, outcomes, skills, and common questions.
-- [HogWare](https://whoischrislam.github.io/hogware.html): a daily browser microgame gauntlet built from PostHog's five handbook values for the Technical Ex-Founder application, with scores stored in PostHog and ranked through HogQL.
+- [HogWare](https://whoischrislam.github.io/hogware.html): a daily browser microgame gauntlet built from PostHog's 5 handbook values for the Technical Ex-Founder application, with scores stored in PostHog and ranked through HogQL.
 - [HogWare build notes](https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md): product decisions, technical architecture, leaderboard design, and verification.
 - [Resume (PDF)](https://whoischrislam.github.io/chris-lam-resume.pdf)
 - [Resume (JSON Resume)](https://whoischrislam.github.io/resume.json): machine-readable structured resume.
@@ -53,10 +53,10 @@ Full write-ups with artifacts, outcomes, and what went wrong. Index: https://who
 - Modus Create: designed and implemented cross-app dark mode and visual consistency for Jira and Confluence Cloud products serving a 500K+ installed/reachable user base; shipped through the team's existing review, test, QA, and CI/CD process.
 - y30: built the voice pipeline with multi-provider fallback and a model-independent safety floor.
 - PlaySesh (Co-Founder and CEO; company founded 2024, live Discord product launched November 2025): started 0 to 1 solo, then led product and design with a co-founder and founding engineer. Active development paused in March 2026; the Discord product remains live. It grew organically to over 6,700 authorized Discord accounts, 161 server installs, and 77 individual-user installs (Discord's approximate counts, read September 11, 2026), and 1,043 monthly active users at peak in January 2026.
-  - Measurement note: these are four different measurements and are never interchangeable. Authorized accounts are Discord OAuth authorizations, not users and not installs. Server and individual-user installs are separate Discord install types. MAU is unique users in the peak calendar month, January 2026, from PlaySesh's own analytics. Discord counts as of September 11, 2026.
+  - Measurement note: these are 4 different measurements and are never interchangeable. Authorized accounts are Discord OAuth authorizations, not users and not installs. Server and individual-user installs are separate Discord install types. MAU is unique users in the peak calendar month, January 2026, from PlaySesh's own analytics. Discord counts as of September 11, 2026.
 
 ## Selected engineering (systems depth, not commit counts)
-- HogWare (solo, 2026): a WarioWare-style microgame gauntlet built from PostHog's five handbook values in about a week. PostHog is the backend: a HogQL leaderboard with in-query cheat protection behind a Cloudflare Worker, a live flag experiment, and a survey; a 32-check headless suite plays the game end to end.
+- HogWare (solo, 2026): a WarioWare-style microgame gauntlet built from PostHog's 5 handbook values in about a week. PostHog is the backend: a HogQL leaderboard with in-query cheat protection behind a Cloudflare Worker, a live flag experiment, and a survey; a 32-check headless suite plays the game end to end.
 - PlaySesh: shipped a TLDraw-based Discord whiteboard with the team, then authored operation-based synchronization and WebSocket reconnection work in a substantial but incomplete Three.js rewrite. The rewrite is engineering evidence, not a shipped product claim.
 - Evolve, Die, Repeat (solo Lua/Love2D game): a solver that proves every procedurally generated level is completable via a reachability search over the player's jump physics; from-scratch headless test harness, about 1,568 tests.
 - y30: conversation flow as a deterministic state machine with the language model scoped to phrasing and warmth, plus a model-independent rule-based safety floor; about half of routing resolves with no model call.
