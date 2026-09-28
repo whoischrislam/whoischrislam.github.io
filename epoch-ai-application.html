@@ -574,7 +574,8 @@ footer{margin-top:var(--s-12)!important}
 .cmp-close i{background:var(--none);color:var(--text)}
 .why{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));margin-bottom:var(--s-12);gap:1px;background:var(--border-strong);border:1px solid var(--border-strong);margin-top:var(--s-3)}
 .wcard{background:var(--bg);padding:24px;display:flex;flex-direction:column}
-.wcard img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border:1px solid var(--border);margin-bottom:16px;background:var(--surface)}
+.wcard .wz{display:block;padding:0;border:none;background:none;cursor:zoom-in;margin-bottom:16px}.wcard .wz:hover img{border-color:var(--text)}
+.wcard img{width:100%;aspect-ratio:16/10;object-fit:contain;object-position:center;border:1px solid var(--border);margin-bottom:16px;background:var(--surface)}
 .wcard h3{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.15;margin:0 0 12px}
 .wcard ul a{color:var(--accent-strong)}
 .wcard ul{margin:0 0 16px;padding-left:18px;font-size:15px;line-height:1.5;color:var(--muted)}
@@ -777,6 +778,24 @@ footer{margin-top:var(--s-12)!important}
 .k-used{background:var(--accent)}.k-none{background:var(--none)}
 .k-gap.lo{background:var(--accent);opacity:.45}.k-gap.hi{background:var(--guess);opacity:.45}
 #round1[data-step="3"] #guess-widget svg,#round1.filling #guess-widget svg{cursor:default!important}
+.press .zoom img{aspect-ratio:4/3;object-fit:contain;background:#fff;padding:6px;transition:border-color .15s}
+.press .zoom:hover img{border-color:var(--text)}
+.wcard img{margin-bottom:0!important}
+/* lightbox: easy to open and close */
+.lightbox[open]{animation:lbIn .2s ease}
+@keyframes lbIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
+.lb-close{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.14)!important}
+.lb-close:hover{background:rgba(255,255,255,.28)!important}
+/* 4 transitions: full width, no orphans */
+.trans{max-width:none!important;text-wrap:balance}
+#colleagues .sec-head{margin-bottom:8px}
+blockquote.q p{margin-top:0}
+.bridge,.lede,.opening{text-wrap:pretty}
+/* 6 quote: a real quotation mark, no bar */
+blockquote.q{border-left:none!important;padding:0!important;margin:16px 0 0!important;position:relative}
+blockquote.q::before{content:"\201C";display:block;font-family:var(--serif);font-size:72px;line-height:1;height:36px;color:var(--accent);margin:0}
+blockquote.q p{font-size:21px;line-height:1.5}
+blockquote.q cite{font-size:15px}
 </style>
 </head>
 <body>
@@ -790,11 +809,9 @@ footer{margin-top:var(--s-12)!important}
 <div class="sticker-fact" id="sticker-fact" role="status"></div>
 <main>
   <div id="hello" data-toc="Hello"></div>
-  <p class="opening">Hi María and the Epoch team. I'm Chris Lam, and I'm applying for your Design Lead / Head of Design role.</p>
-  <p class="lede">I've spent 14 years designing for companies like Amazon, TaskRabbit, Clover Health and GoodRx, and one thread runs through all of it: helping people make better decisions about things that matter to them.</p>
-  <p class="lede">At GoodRx Research, that meant health. At Epoch, it means AI, and right now I can't think of more important work. Your <a href="https://epoch.ai/data/ai-data-centers">AI data centers tracker ↗</a> stopped me in my tracks. I care deeply about how much power and water AI uses, and I want to help build work like that.</p>
-  <p class="lede">Below: how I match the role, then something I built to show it rather than tell it: a short game on your July 2026 poll. Guess how many people like you use AI, then see how close you were. It shows how I turn research into something people want to explore.</p>
-  <p class="lede">Want the full picture? <a href="index.html">See my full portfolio ↗</a></p>
+  <p class="opening">Hi María and the Epoch team. I'm Chris Lam, applying for your Design Lead / Head of Design role.</p>
+  <p class="lede">For 14 years at companies like Amazon, TaskRabbit, Clover Health and GoodRx, I've helped people make better decisions about things that matter to them. I care deeply about how much power and water AI uses, so your <a href="https://epoch.ai/data/ai-data-centers">AI data centers tracker ↗</a> is exactly the kind of work I want to help build.</p>
+  <p class="lede">Below: how I match the role, then a short game I built on your July 2026 poll. Or see my <a href="index.html">full portfolio ↗</a>.</p>
 
   <section class="chapter" id="why" data-toc="How I match the role">
     <div class="sec-head"><h2>How I match the role</h2></div>
@@ -805,32 +822,32 @@ footer{margin-top:var(--s-12)!important}
         <li>The first designer at Iodine, Pathstream and StartPlaying, setting how design works with engineering and product</li>
         <li>Always a player-coach: at Iodine I ran product brainstorms and post-launch retrospectives, and hired and managed a contract icon and illustration designer. Outside work, I've started and led breakdancing crews.</li>
         <li>I haven't managed a full design team yet. I'm always learning and looking to improve, and I'll get a career coach and an executive coach because I want to be the best I can be for my team and myself.</li></ul></article>
-      <article class="wcard"><img src="images/work/goodrx/iodine-hero.png" alt="Iodine.com on phone and desktop, with its Webby Award" loading="lazy" /><h3>Websites and data products</h3><ul>
+      <article class="wcard"><h3>Websites and data products</h3><button class="zoom wz" aria-label="Enlarge: Websites and data products"><img src="images/work/goodrx/iodine-hero.png" alt="Iodine.com on phone and desktop, with its Webby Award" loading="lazy" /></button><ul>
         <li>Iodine.com: public drug information and prices, made usable. Won the <a href="https://winners.webbyawards.com/2018/websites-and-mobile-sites/general-desktop-mobile-sites/health-wellness/47451/iodine">Webby for Best Health Website (2018) ↗</a>; coupon conversion from 2% to 5%</li>
         <li>GoodRx: conversion projects across the drug pages, a 10% lift on mobile and 25% on desktop</li></ul>
         <a href="index.html?work=goodrx&amp;project=iodine-product#work">Iodine and GoodRx case study ↗</a></article>
-      <article class="wcard"><img src="images/work/goodrx-cities-prices.webp" alt="GoodRx Research chart of the most and least expensive US cities for prescriptions" loading="lazy" /><h3>Data visualization for non-experts</h3><ul>
+      <article class="wcard"><h3>Data visualization for non-experts</h3><button class="zoom wz" aria-label="Enlarge: Data visualization for non-experts"><img src="images/work/goodrx-cities-prices.webp" alt="GoodRx Research chart of the most and least expensive US cities for prescriptions" loading="lazy" /></button><ul>
         <li>Designed and coded GoodRx Research's interactive charts (D3 and Vega)</li>
         <li>Cited by <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html">The New York Times ↗</a>, used by <a href="https://abcnews.com/video/53014507/">Good Morning America ↗</a></li>
         <li>State briefs used in advocacy around two drug-price bills, both now law: <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553">S.2553 ↗</a> and <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554">S.2554 ↗</a></li></ul>
         <a href="#work">See it up close ↓</a></article>
-      <article class="wcard"><img src="images/taskrabbit-design-system.png" alt="TaskRabbit mobile design system" loading="lazy" /><h3>Design systems and quality standards</h3><ul>
+      <article class="wcard"><h3>Design systems and quality standards</h3><button class="zoom wz" aria-label="Enlarge: Design systems and quality standards"><img src="images/taskrabbit-design-system.png" alt="TaskRabbit mobile design system" loading="lazy" /></button><ul>
         <li>TaskRabbit: consolidated years of legacy interface work into one mobile design system (<a href="https://dribbble.com/shots/1940029-TaskRabbit-Tasker-Mobile-UI-Kit/attachments/335099?mode=media">Tasker UI kit ↗</a>)</li>
         <li>Pathstream: found the drift (16 colors, body text at 4 sizes) and designed the shared system, built in React and Storybook</li>
         <li>My own site: tokens and components in a live catalog</li></ul>
         <a href="index.html?ds">See the catalog ↗</a></article>
-      <article class="wcard"><img src="images/work/clover-hero.png" alt="A Clover Health nurse practitioner with a patient at home" loading="lazy" /><h3>User research</h3><ul>
+      <article class="wcard"><h3>User research</h3><button class="zoom wz" aria-label="Enlarge: User research"><img src="images/work/clover-hero.png" alt="A Clover Health nurse practitioner with a patient at home" loading="lazy" /></button><ul>
         <li>Clover Health: shadowed nurse practitioners on home visits; nurses reported saving 1 to 2 hours of chart prep a day</li>
         <li>Pathstream: a 26-screen audit, three rounds of usability testing, five co-design sessions</li></ul>
         <a href="index.html?work=clover&amp;project=care-visit#work">Clover case study ↗</a></article>
-      <article class="wcard"><img src="images/work/handcoded-portfolio.jpg" alt="Chris's hand-coded portfolio" loading="lazy" /><h3>Front end</h3><ul>
+      <article class="wcard"><h3>Front end</h3><button class="zoom wz" aria-label="Enlarge: Front end"><img src="images/work/handcoded-portfolio.jpg" alt="Chris's hand-coded portfolio" loading="lazy" /></button><ul>
         <li>I designed and built this page and the game below, with AI assistance for speed</li>
         <li>Hand-coded portfolios, 2023 to 2024: <a href="https://github.com/whoischrislam/portfolio">portfolio ↗</a> and <a href="https://github.com/whoischrislam/gamedev-portfolio">gamedev-portfolio ↗</a></li>
         <li>I use code for design whenever I can: custom CSS for TaskRabbit's customer support portal (Zendesk), CoffeeScript prototypes for its mobile interactions and motion, and custom CSS for Pathstream's website during the rebrand</li></ul></article>
     </div>
   </section>
 
-  <p class="trans">That's the list. Here's the proof, built on your data.</p>
+  <p class="trans">That's the list. Here's proof, built on your own data.</p>
   <div class="band band-epoch">
   <div id="game" data-toc="The game"></div>
   <div class="sec-head"><h1 id="game-title">How many people like you use AI?</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span class="src-tip" tabindex="0">Data: Epoch AI <i>ⓘ</i><em role="tooltip">Epoch AI poll, July 2026 · 1,103 working US adults · CC BY</em></span></p></div>
@@ -948,15 +965,15 @@ footer{margin-top:var(--s-12)!important}
 
   <p class="trans">Here's what the person who managed me there said.</p>
   <section class="chapter" id="colleagues" data-toc="Recommendation">
-    <div class="sec-head"><h2><span class="ico" data-icon="quote"></span>From my manager at Iodine</h2><p class="meta"><span>LinkedIn recommendation</span><span>Quoted word for word</span></p></div>
-    <blockquote><p>Chris is a splendid and multi-talented designer, with an innate ability to understand user needs and experiment with software design until the product matches the purpose. He ably took on assignments in a range of media - from PDF to D3 data visualizations - and was dependably curious and creative in creating effective software and design solutions. He is literate in code - engineers love working with him - and is also deeply attuned to the needs of ordinary people (we worked on healthcare information and tools, which is not an easy area whatsoever to understand user needs and concerns). I heartily recommend him as a product designer with a flair for UX/UI.</p><cite>Thomas Goetz, GM and Head of Research at Iodine, managed Chris directly</cite></blockquote>
+    <div class="sec-head"><h2>From my manager at Iodine</h2><p class="meta"><span>LinkedIn recommendation</span><span>Quoted word for word</span></p></div>
+    <blockquote class="q"><p>Chris is a splendid and multi-talented designer, with an innate ability to understand user needs and experiment with software design until the product matches the purpose. He ably took on assignments in a range of media - from PDF to D3 data visualizations - and was dependably curious and creative in creating effective software and design solutions. He is literate in code - engineers love working with him - and is also deeply attuned to the needs of ordinary people (we worked on healthcare information and tools, which is not an easy area whatsoever to understand user needs and concerns). I heartily recommend him as a product designer with a flair for UX/UI.</p><cite>Thomas Goetz, GM and Head of Research at Iodine, managed Chris directly</cite></blockquote>
     <p class="aside"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/">All recommendations on LinkedIn ↗</a></p>
   </section>
 
   <section class="chapter contact" id="contact" data-toc="Get in touch">
     <h2>Let's talk.</h2>
     <p class="lede">I'd love to figure out how we can work together.</p>
-    <p>Based in Honolulu, working West Coast hours. Happy to travel for retreats.</p>
+    <p>Based in Honolulu, working West Coast hours: 9am–5pm Pacific (PDT, UTC−7; PST, UTC−8 in winter). Happy to travel for retreats.</p>
     <a class="btn btn-primary btn-lg" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI%3A%20Design%20Lead">Email Chris</a>
     <a class="btn btn-lg btn-ghost" href="index.html">See my full portfolio ↗</a>
     <p class="aside">Or download my <a href="chris-lam-resume.pdf">résumé</a>.</p>
