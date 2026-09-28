@@ -796,6 +796,59 @@ blockquote.q{border-left:none!important;padding:0!important;margin:16px 0 0!impo
 blockquote.q::before{content:"\201C";display:block;font-family:var(--serif);font-size:72px;line-height:1;height:36px;color:var(--accent);margin:0}
 blockquote.q p{font-size:21px;line-height:1.5}
 blockquote.q cite{font-size:15px}
+/* ===== GoodRx section ===== */
+#work > .sec-head{margin-bottom:32px}
+.sub-block .meta{margin:0 0 6px}
+.sub-block .meta a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.sub-block .meta a:hover{color:var(--text)}
+.sub-title{font-family:var(--serif)!important;font-weight:400!important;font-size:30px!important;line-height:1.15;margin:0 0 10px}
+#work .lede{font-size:18px;margin:0 0 6px}
+.map-find{font-size:17px;margin:0 0 20px;color:var(--muted)}.map-find b{color:var(--text)}
+.map-controls{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.seg2{display:inline-flex;align-self:flex-start;background:rgba(0,0,0,.07);border-radius:999px;padding:4px}
+.seg2 button{font:600 14px var(--sans);border:none;background:none;border-radius:999px;padding:8px 16px;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+.seg2 button[aria-selected="true"]{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.drug-pills{display:flex;flex-wrap:wrap;gap:8px}
+.drug-pills button{font:14px var(--sans);padding:8px 14px;border:1px solid rgba(0,0,0,.18);border-radius:999px;background:rgba(255,255,255,.55);color:var(--text);cursor:pointer}
+.drug-pills button:hover{background:#fff}
+.drug-pills button[aria-pressed="true"]{background:var(--text);color:#fff;border-color:var(--text)}
+.map-wrap{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;align-items:center}
+@media (max-width:760px){.map-wrap{grid-template-columns:1fr}.legend{order:2}}
+#work .legend{display:flex;flex-direction:column;gap:4px;margin:0}
+#work .legend button{display:flex;align-items:flex-start;gap:10px;text-align:left;background:none;border:none;border-radius:8px;padding:8px;cursor:default;font:inherit;color:var(--text);transition:opacity .15s,background .15s}
+#work .legend button:hover,#work .legend button:focus{background:rgba(255,255,255,.55);outline:none}
+#work .legend button.dim{opacity:.45}
+#work .legend i{width:14px;height:14px;border-radius:50%;flex:none;margin-top:3px}
+#work .legend b{display:block;font-size:15px;font-weight:600}
+#work .legend small{display:block;font-size:13px;color:var(--muted);line-height:1.35}
+.lg-h{font-size:15px;margin:0 8px}.lg-use{font-size:13px;color:var(--muted);margin:0 8px 6px}
+#map path.state{transition:opacity .15s}
+#map path.state:hover{stroke:var(--text);stroke-width:1.5}
+.tip .tt-sub{display:block;font-size:12px;color:var(--muted);margin:-2px 0 6px}
+.tip .tt-list{margin:0;padding-left:20px;max-width:none}
+.tip .tt-list li{font-size:13px;line-height:1.3;margin:2px 0}
+.tip .tt-list li small{display:block;color:var(--muted);font-size:12px}
+.tip .tt-list li.hit span{font-weight:700;color:var(--accent-strong)}
+.tip .tt-odd{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px}
+.tip{max-width:300px!important}
+#work .state-card{background:rgba(255,255,255,.6);border:none;border-radius:8px;padding:16px;margin-top:12px;min-height:0}
+#work .state-card .tt-list{padding-left:20px}
+#work .state-card b:first-child{display:block;font-size:17px}
+/* bills */
+#work .bills{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 10px}
+@media (max-width:560px){#work .bills{grid-template-columns:1fr}}
+#work .bill{display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,.6)!important;border:1px solid rgba(0,0,0,.08)!important;border-radius:10px;padding:18px!important;color:var(--text);text-decoration:none;transition:background .15s,transform .15s}
+#work .bill:hover{background:#fff!important;transform:translateY(-2px)}
+.bill-meta{font-family:var(--mono);font-size:12px;color:var(--muted)}
+#work .bill-name{font-family:var(--serif);font-size:22px;line-height:1.2;margin:0}
+#work .bill-what{font-size:15px;color:var(--muted);margin:0}
+.bill-go{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600;color:var(--accent-strong)}
+#work .bill-date{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);grid-column:auto}
+#work .bill-date .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.tip .tt-odd b,.lg-h b{display:inline!important}
+#work .sub-head{margin-top:56px!important;margin-bottom:12px!important;flex-direction:column;align-items:flex-start;gap:6px}
+#work .sub-head .sub-title{margin:0}
+.sub-block .meta span+span::before{content:"·";margin:0 8px;color:var(--border-strong)}
 </style>
 </head>
 <body>
@@ -810,7 +863,7 @@ blockquote.q cite{font-size:15px}
 <main>
   <div id="hello" data-toc="Hello"></div>
   <p class="opening">Hi María and the Epoch team. I'm Chris Lam, applying for your Design Lead / Head of Design role.</p>
-  <p class="lede">For 14 years at companies like Amazon, TaskRabbit, Clover Health and GoodRx, I've helped people make better decisions about things that matter to them. I care deeply about how much power and water AI uses, so your <a href="https://epoch.ai/data/ai-data-centers">AI data centers tracker ↗</a> is exactly the kind of work I want to help build.</p>
+  <p class="lede">Epoch makes research on AI accessible to policymakers and the public, without losing rigor. That's the work I did at GoodRx Research for drug prices: charts the public actually used, and briefs used in advocacy around two drug-price transparency laws. I want to do the same for AI.</p>
   <p class="lede">Below: how I match the role, then a short game I built on your July 2026 poll. Or see my <a href="index.html">full portfolio ↗</a>.</p>
 
   <section class="chapter" id="why" data-toc="How I match the role">
@@ -936,30 +989,41 @@ blockquote.q cite{font-size:15px}
 
   <p class="trans">I've done this before. Here's one example up close: the research team at GoodRx, turning drug-price data into charts the public and lawmakers could use.</p>
   <section class="chapter" id="work" data-toc="GoodRx Research">
-    <div class="sec-head"><h2>Up close: GoodRx Research</h2><p class="meta"><span>2017 to 2018</span></p></div>
-    
-    <div class="sec-head sub-head"><h3>The United States of Drugs</h3><p class="meta"><span>Shipped 2018</span><span>Rebuilt 2026 from the original data</span><span>GoodRx Research</span></p></div>
-    <p class="lede">The ten most-filled prescriptions in each state. I designed the original and built it in code (Vega) with engineer Marc Mendiola's help. Rebuilt here from the 2018 data.</p>
-    <p class="aside">In the 2018 data, levothyroxine was the most-filled prescription in 24 of 50 states, followed by atorvastatin (6) and hydrocodone/acetaminophen (5).</p>
-    <div class="tabs" id="map-modes" role="group" aria-label="Color the map by"></div>
-    <div class="legend" id="legend"></div>
-    <svg id="map" role="img" aria-label="Map of US states colored by prescription rank"></svg>
-    <div class="state-card" id="state-card"><strong>Hover or tap a state</strong><p class="share-status">to see its top ten.</p></div>
+    <div class="sec-head"><p class="meta"><span>2017 to 2018</span></p><h2>Up close: GoodRx Research</h2></div>
 
-    <div class="sec-head sub-head"><h3><span class="ico" data-icon="press"></span>Published graphics</h3><p class="meta"><span>GoodRx Research, 2017 to 2018</span></p></div>
+    <div class="sub-block">
+      <p class="meta"><span>Shipped 2018</span><span class="src-tip" tabindex="0">Rebuilt 2026 <i>ⓘ</i><em role="tooltip">Redrawn from the original 2018 data file. The original was built in Vega.</em></span><span><a href="https://www.goodrx.com/healthcare-access/research">GoodRx Research ↗</a></span></p>
+      <h3 class="sub-title">The United States of Drugs</h3>
+      <p class="lede">What each state fills most at the pharmacy. I designed the original and built it in code with engineer Marc Mendiola's help.</p>
+      <p class="map-find">Levothyroxine, a thyroid medicine, was the most-filled prescription in <b>24 of 50 states</b>.</p>
+    </div>
+    <div class="map-controls">
+      <div class="seg2" role="tablist" aria-label="Color the map by">
+        <button role="tab" data-m="top" aria-selected="true">Top drug in each state</button>
+        <button role="tab" data-m="follow" aria-selected="false">Follow one drug</button>
+      </div>
+      <div class="drug-pills" id="map-modes" role="group" aria-label="Pick a drug" hidden></div>
+    </div>
+    <div class="map-wrap">
+      <div class="legend" id="legend" role="list"></div>
+      <svg id="map" role="img" aria-label="Map of US states colored by prescription"></svg>
+    </div>
+    <div class="state-card" id="state-card" hidden></div>
+
+    <div class="sec-head sub-head"><p class="meta"><span>Published 2017 to 2018</span></p><h3 class="sub-title">Charts the press picked up</h3></div>
     <div class="press">
       <figure><button class="zoom" aria-label="Enlarge: Some drugs cost more with insurance"><img src="images/work/goodrx/research-insurance-prices.jpg" alt="GoodRx Research chart: some drugs cost more with insurance, with average overpayment and how often GoodRx beat insurance prices for ten common drugs" loading="lazy" /></button><figcaption>Some drugs cost more with insurance. Data from a Massachusetts Health Policy Commission analysis.</figcaption></figure>
       <figure><button class="zoom" aria-label="Enlarge: most and least expensive cities"><img src="images/work/goodrx-cities-prices.webp" alt="GoodRx Research chart of the most and least expensive US cities for prescriptions" loading="lazy" /></button><figcaption>Most and least expensive cities for prescriptions. Cited by <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html">The New York Times ↗</a>. <a href="https://www.goodrx.com/healthcare-access/research/most-least-expensive-cities-prescription-medications">GoodRx Research ↗</a></figcaption></figure>
       <figure><button class="zoom" aria-label="Enlarge: flu prescriptions map"><img src="images/work/goodrx-flu-prescriptions.webp" alt="GoodRx Research map of flu prescriptions across the US" loading="lazy" /></button><figcaption>Flu prescriptions across the US. Used by <a href="https://abcnews.com/video/53014507/">Good Morning America and ABC News ↗</a>. <a href="https://www.goodrx.com/oseltamivir/tamiflu-prescriptions-reveal-shocking-flu-trend">GoodRx Research ↗</a></figcaption></figure>
     </div>
 
-    <div class="sec-head sub-head" id="briefs"><h3><span class="ico" data-icon="policy"></span>Briefs for policymakers</h3><p class="meta"><span>Shipped 2018</span><span>Originals lost</span></p></div>
-    <p>With GoodRx's executive team, I designed state-specific briefs for meetings with policymakers: one reusable structure, filled in for all 50 states with each state's top health conditions, top prescriptions and health facts. They were used in advocacy around two drug-price transparency bills.</p>
+    <div class="sec-head sub-head" id="briefs"><p class="meta"><span>Shipped 2018</span></p><h3 class="sub-title">Briefs for policymakers</h3></div>
+    <p>With GoodRx's executive team, I designed state-specific briefs for meetings with policymakers: one reusable structure, filled in for all 50 states with each state's top health conditions, top prescriptions and health facts. They were used in advocacy around two drug-price transparency bills. The original briefs didn't survive, but the laws did.</p>
     <div class="bills">
-      <div class="bill"><a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553"><div class="bill-id">S.2553 ↗</div><div class="bill-name">Know the Lowest Price Act of 2018</div><div class="bill-law">Public Law 115-262</div><div class="bill-what">Medicare drug plans can't stop pharmacists from telling patients when paying cash is cheaper.</div></a></div>
-      <div class="bill"><a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554"><div class="bill-id">S.2554 ↗</div><div class="bill-name">Patient Right to Know Drug Prices Act</div><div class="bill-law">Public Law 115-263</div><div class="bill-what">The same for private insurance: no more pharmacy "gag clauses."</div></a></div>
-      <div class="bill-date">Both signed into law October 10, 2018</div>
+      <a class="bill" href="https://www.congress.gov/bill/115th-congress/senate-bill/2553"><span class="bill-meta">S.2553 · Public Law 115-262</span><span class="bill-name">Know the Lowest Price Act</span><span class="bill-what">Medicare drug plans can't stop pharmacists from telling you when paying cash is cheaper.</span><span class="bill-go">Read the law ↗</span></a>
+      <a class="bill" href="https://www.congress.gov/bill/115th-congress/senate-bill/2554"><span class="bill-meta">S.2554 · Public Law 115-263</span><span class="bill-name">Patient Right to Know Drug Prices Act</span><span class="bill-what">The same for private insurance: no more pharmacy "gag clauses."</span><span class="bill-go">Read the law ↗</span></a>
     </div>
+    <p class="bill-date"><span class="dot"></span>Both signed into law on October 10, 2018</p>
   </section>
 
 
@@ -1234,7 +1298,7 @@ blockquote.q cite{font-size:15px}
       const qh = document.querySelector('#s2').getBoundingClientRect().height;
       $('res-a').style.height = qh + 'px'; $('res-a').style.minHeight = '';
       $('flank-l').innerHTML = flankL;
-      $('grid-key').innerHTML = `<span><i class="k-used"></i>Used AI</span>${guessed && Math.abs(guess - real) > 0 ? `<span><i class="k-gap ${guess > real ? 'hi' : 'lo'}"></i>Between your guess and the real number</span>` : ''}<span><i class="k-none"></i>Didn’t</span>`;
+      $('grid-key').innerHTML = `<span><i class="k-used"></i>Used AI</span>${guessed && Math.abs(guess - real) > 0 ? `<span><i class="k-gap ${guess > real ? 'hi' : 'lo'}"></i>Between your guess and the real number</span>` : ''}<span><i class="k-none"></i>Didn’t use AI</span>`;
       $('flank-r').title = `Based on a survey of ${me.n} people, so it could be a few points either way.`;
       setStep(3); $('step-reveal').classList.remove('hidden'); drawChart(me, g);
       setTimeout(() => { const li = document.querySelector('#round1 .stepper li[data-s="3"]'); li.classList.add('done'); li.querySelector('span').textContent = '✓'; }, RM ? 0 : 900);
@@ -1540,6 +1604,22 @@ blockquote.q cite{font-size:15px}
   outward(); setTimeout(outward, 1500);
 
   // ---- Chapter 2: United States of Drugs (GoodRx Research, 2018), rebuilt from the original CSV ----
+  // Plain-language uses, for the average reader (general, not medical advice).
+  const DRUG = {
+    'levothyroxine': 'Thyroid hormone, for an underactive thyroid', 'lisinopril': 'Blood pressure', 'atorvastatin': 'Cholesterol',
+    'amlodipine': 'Blood pressure', 'prednisone': 'Steroid for swelling, asthma and allergies', 'hydrocodone/acetaminophen': 'Opioid painkiller',
+    'amoxicillin': 'Antibiotic', 'azithromycin': 'Antibiotic', 'omeprazole': 'Heartburn and acid reflux', 'oseltamivir': 'The flu (Tamiflu)',
+    'amphetamine salt combo': 'ADHD (Adderall)', 'sertraline': 'Depression and anxiety', 'ventolin': 'Asthma inhaler', 'alprazolam': 'Anxiety (Xanax)',
+    'phentermine': 'Weight loss', 'losartan': 'Blood pressure', 'metoprolol er': 'Blood pressure and heart', 'hydrochlorothiazide': 'Blood pressure (water pill)',
+    'gabapentin': 'Nerve pain and seizures', 'simvastatin': 'Cholesterol', 'ibuprofen': 'Pain and swelling', 'pantoprazole': 'Heartburn and acid reflux',
+    'fluoxetine': 'Depression and anxiety (Prozac)', 'escitalopram': 'Depression and anxiety', 'proair': 'Asthma inhaler', 'ondansetron': 'Nausea',
+    'amoxicillin/potassium clavulanate': 'Antibiotic (Augmentin)', 'zolpidem': 'Sleep (Ambien)', 'sildenafil': 'Erectile dysfunction (Viagra)',
+    'montelukast': 'Asthma and allergies', 'lorazepam': 'Anxiety', 'bupropion xl': 'Depression, and quitting smoking', 'tramadol': 'Pain',
+    'oxycodone/acetaminophen': 'Opioid painkiller', 'oxycodone': 'Opioid painkiller', 'metformin': 'Type 2 diabetes', 'lantus': 'Insulin, for diabetes',
+    'fluticasone propionate': 'Allergy nasal spray'
+  };
+  const cap = n => n.replace(/\b\w/, c => c.toUpperCase());
+  const useOf = n => DRUG[n] || '';
   Promise.all([
     d3.csv('data/goodrx-top-drugs-by-state-2018.csv'),
     d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-albers-10m.json')
@@ -1549,44 +1629,68 @@ blockquote.q cite{font-size:15px}
     const tops = d3.rollups(drugs, v => v.length, d => d.drug1).sort((a, b) => b[1] - a[1]);
     const palette = ['#2a9d4f', '#c2410c', '#3b6fb6', '#b58a1b', '#7a4fb3', '#8a8a82'];
     const colorOf = new Map(tops.map(([k], i) => [k, palette[Math.min(i, palette.length - 1)]]));
-    // Drugs that appear in the most states' top tens: the toggle buttons, GoodRx-map style.
-    const common = d3.rollups(drugs.flatMap(top10), v => v.length, d => d).sort((a, b) => b[1] - a[1]).slice(0, 5).map(d => d[0]);
+    const inTop10 = new Map(d3.rollups(drugs.flatMap(top10), v => v.length, d => d));
+    const common = [...inTop10].sort((a, b) => b[1] - a[1]).slice(0, 6).map(d => d[0]);
     const rankColor = d3.scaleSequential(t => d3.interpolateGreens(1 - t * 0.8)).domain([1, 10]);
-    let mode = 'top';
-    const svg = d3.select('#map').attr('viewBox', '0 0 975 610');
+    let mode = 'top', follow = common[0], hl = null;
+    const svg = d3.select('#map').attr('viewBox', '-8 -8 991 626'); // padding so Alaska's outline stays inside
     const states = svg.selectAll('path').data(topojson.feature(us, us.objects.states).features).join('path')
       .attr('class', 'state').attr('d', d3.geoPath());
     function fill(f) {
       const d = byName.get(f.properties.name); if (!d) return 'var(--none)';
-      if (mode === 'top') return colorOf.get(d.drug1);
-      const r = top10(d).indexOf(mode) + 1; return r ? rankColor(r) : 'var(--none)';
+      if (mode === 'top') return colorOf.get(d.drug1) || palette[5];
+      const r = top10(d).indexOf(follow) + 1; return r ? rankColor(r) : 'var(--none)';
     }
+    const isOther = k => !tops.slice(0, 5).some(t => t[0] === k);
+    function matches(f) {
+      const d = byName.get(f.properties.name); if (!d || hl == null) return true;
+      if (mode === 'top') return hl === 'other' ? isOther(d.drug1) : d.drug1 === hl;
+      const r = top10(d).indexOf(follow) + 1; return hl === 'none' ? !r : r && r <= hl && r > hl - (hl === 1 ? 1 : hl === 5 ? 4 : 5);
+    }
+    const paint = () => states.attr('fill', fill).attr('opacity', f => matches(f) ? 1 : .18);
     function legend() {
-      $('legend').innerHTML = mode === 'top'
-        ? tops.slice(0, 5).map(([k, n]) => `<span><i style="background:${colorOf.get(k)}"></i>${k} (${n} states)</span>`).join('') + `<span><i style="background:${palette[5]}"></i>other</span>`
-        : `<span><i style="background:${rankColor(1)}"></i>#1</span><span><i style="background:${rankColor(5)}"></i>#5</span><span><i style="background:${rankColor(10)}"></i>#10</span><span><i style="background:var(--surface-2)"></i>not in the top 10</span>`;
-    }
-    function modes() {
-      const el = $('map-modes'); el.innerHTML = '';
-      [['top', 'Most-filled drug'], ...common.map(c => [c, c])].forEach(([k, label]) => {
-        const b = document.createElement('button'); b.textContent = label; b.setAttribute('aria-pressed', k === mode);
-        b.onclick = () => { mode = k; modes(); legend(); states.transition().duration(RM ? 0 : 400).attr('fill', fill); };
-        el.append(b);
+      const L = $('legend');
+      L.innerHTML = mode === 'top'
+        ? tops.slice(0, 5).map(([k, n]) => `<button role="listitem" data-k="${k}"><i style="background:${colorOf.get(k)}"></i><span><b>${cap(k)}</b><small>${useOf(k)} · top in ${n} state${n > 1 ? 's' : ''}</small></span></button>`).join('')
+          + `<button role="listitem" data-k="other"><i style="background:${palette[5]}"></i><span><b>Something else</b><small>${tops.length - 5} other drugs</small></span></button>`
+        : `<p class="lg-h">Where <b>${cap(follow)}</b> ranks</p><p class="lg-use">${useOf(follow)}</p>`
+          + [[1, '#1'], [5, '#2 to #5'], [10, '#6 to #10'], ['none', 'Not in the top 10']].map(([k, t]) => `<button role="listitem" data-k="${k}"><i style="background:${k === 'none' ? 'var(--none)' : rankColor(k === 1 ? 1 : k === 5 ? 3 : 8)}"></i><span><b>${t}</b></span></button>`).join('');
+      L.querySelectorAll('button').forEach(b => {
+        const k = isNaN(+b.dataset.k) ? b.dataset.k : +b.dataset.k;
+        const on = () => { hl = k; paint(); L.querySelectorAll('button').forEach(x => x.classList.toggle('dim', x !== b)); };
+        const off = () => { hl = null; paint(); L.querySelectorAll('button').forEach(x => x.classList.remove('dim')); };
+        b.addEventListener('pointerenter', on); b.addEventListener('pointerleave', off); b.addEventListener('focus', on); b.addEventListener('blur', off);
       });
     }
+    function pills() {
+      $('map-modes').innerHTML = common.map(c => `<button aria-pressed="${c === follow}" data-d="${c}" title="${useOf(c)}">${cap(c)}</button>`).join('');
+      $('map-modes').querySelectorAll('button').forEach(b => b.onclick = () => { follow = b.dataset.d; pills(); legend(); states.transition().duration(RM ? 0 : 400).attr('fill', fill); });
+    }
+    document.querySelectorAll('.seg2 button').forEach(b => b.onclick = () => {
+      mode = b.dataset.m === 'top' ? 'top' : 'follow';
+      document.querySelectorAll('.seg2 button').forEach(x => x.setAttribute('aria-selected', x === b));
+      $('map-modes').hidden = mode === 'top'; pills(); legend(); states.transition().duration(RM ? 0 : 400).attr('fill', fill);
+    });
     function card(f) {
       const d = byName.get(f.properties.name);
       if (!d) return `<b>${f.properties.name}</b>No data in the 2018 file.`;
-      return `<b>${d.statename}</b><ol>${top10(d).map(x => `<li${x === mode ? ' style="font-weight:600"' : ''}>${x}</li>`).join('')}</ol>`;
+      const list = top10(d);
+      // The most unusual drug in this state's top 10: the one fewest other states share.
+      const odd = list.reduce((a, b) => (inTop10.get(b) || 99) < (inTop10.get(a) || 99) ? b : a);
+      const oddN = inTop10.get(odd);
+      return `<b>${d.statename}</b><span class="tt-sub">Most-filled prescriptions, 2018</span><ol class="tt-list">${list.map(x =>
+        `<li${mode !== 'top' && x === follow ? ' class="hit"' : ''}><span>${cap(x)}</span><small>${useOf(x)}</small></li>`).join('')}</ol>`
+        + (oddN <= 12 ? `<span class="tt-odd">Stands out: <b>${cap(odd)}</b> (${useOf(odd).toLowerCase()}) is in the top 10 of only ${oddN} state${oddN > 1 ? 's' : ''}.</span>` : '');
     }
-    states.attr('fill', fill)
+    states
       .on('pointermove', (ev, f) => { if (ev.pointerType === 'mouse') showTip(card(f), ev); })
       .on('pointerleave', hideTip)
       .on('click', function (ev, f) {
+        if (ev.pointerType === 'mouse') return;
         states.classed('on', false); d3.select(this).classed('on', true);
-        $('state-card').innerHTML = card(f).replace('<b>', '<strong>').replace('</b>', '</strong>');
+        $('state-card').hidden = false; $('state-card').innerHTML = card(f);
       });
-    modes(); legend();
+    paint(); legend(); pills();
   });
 })();
 </script>
