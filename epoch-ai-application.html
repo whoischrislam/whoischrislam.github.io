@@ -187,12 +187,11 @@ body.hl-used [data-s]:not([data-s="used"]),body.hl-range [data-s]:not([data-s="r
 .contact .actions a,.toc-cta{text-decoration:none;display:inline-block}
 /* sticker */
 .sticker{position:absolute;top:24px;right:24px;width:110px;height:110px;padding:0;border:none;background:none;cursor:grab;z-index:6;touch-action:none;transform:rotate(-8deg);transition:transform .25s var(--ease,ease)}
-.sticker:hover{transform:rotate(4deg) scale(1.05)}
+
 .sticker:active{cursor:grabbing}
 .sticker svg{width:100%;height:100%;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15))}
 .st-bg{fill:var(--surface);stroke:var(--accent);stroke-width:3}
 .st-text{font:600 11px var(--sans);fill:var(--accent-strong);letter-spacing:.08em;text-transform:uppercase}
-.sticker-fact{position:absolute;z-index:6;max-width:240px;background:var(--text);color:var(--bg);font-size:var(--t-sm);padding:10px 12px;display:none}
 @media (max-width:760px){.sticker{width:80px;height:80px;top:12px;right:12px}}
 @media (prefers-reduced-motion:reduce){.sticker,.sticker:hover{transition:none}}
 .draft-note{font-size:14px;color:var(--guess);margin:0 0 8px}
@@ -575,7 +574,7 @@ footer{margin-top:var(--s-12)!important}
 .why{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));margin-bottom:var(--s-12);gap:1px;background:var(--border-strong);border:1px solid var(--border-strong);margin-top:var(--s-3)}
 .wcard{background:var(--bg);padding:24px;display:flex;flex-direction:column}
 .wcard .wz{display:block;padding:0;border:none;background:none;cursor:zoom-in;margin-bottom:16px}.wcard .wz:hover img{border-color:var(--text)}
-.wcard img{width:100%;aspect-ratio:16/10;object-fit:contain;object-position:center;border:1px solid var(--border);margin-bottom:16px;background:var(--surface)}
+.wcard img{width:100%;height:auto;object-position:center;border:1px solid var(--border);margin-bottom:16px;background:var(--surface)}
 .wcard h3{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.15;margin:0 0 12px}
 .wcard ul a{color:var(--accent-strong)}
 .wcard ul{margin:0 0 16px;padding-left:18px;font-size:15px;line-height:1.5;color:var(--muted)}
@@ -824,16 +823,21 @@ blockquote.q cite{font-size:15px}
 .lg-h{font-size:15px;margin:0 8px}.lg-use{font-size:13px;color:var(--muted);margin:0 8px 6px}
 #map path.state{transition:opacity .15s}
 #map path.state:hover{stroke:var(--text);stroke-width:1.5}
-.tip .tt-sub{display:block;font-size:12px;color:var(--muted);margin:-2px 0 6px}
-.tip .tt-list{margin:0;padding-left:20px;max-width:none}
-.tip .tt-list li{font-size:13px;line-height:1.3;margin:2px 0}
-.tip .tt-list li small{display:block;color:var(--muted);font-size:12px}
-.tip .tt-list li.hit span{font-weight:700;color:var(--accent-strong)}
-.tip .tt-odd{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px}
+.tip .tt-sub,#work #state-card .tt-sub{display:block;font-size:12px;color:var(--muted);margin:-2px 0 6px}
+.tip .tt-list,#work #state-card .tt-list{margin:0;padding-left:20px;max-width:none}
+.tip .tt-list li,#work #state-card .tt-list li{font-size:13px;line-height:1.3;margin:2px 0}
+.tip .tt-list li small,#work #state-card .tt-list li small{display:block;color:var(--muted);font-size:12px}
+.tip .tt-list,#work #state-card .tt-list{counter-reset:rk;list-style:none;padding-left:0!important}
+.tip .tt-list li,#work #state-card .tt-list li{counter-increment:rk}
+.tip .tt-list li::before,#work #state-card .tt-list li::before{content:counter(rk);flex:none;width:18px;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.tip .tt-list li span,#work #state-card .tt-list li span{margin-right:auto}
+.tip .tt-list li.hit,#work #state-card .tt-list li.hit{background:var(--accent-soft);margin:1px -6px;padding:2px 6px;border-radius:4px}
+.tip .tt-list li.hit span,#work #state-card .tt-list li.hit span{font-weight:700;color:var(--accent-strong)}
+.tip .tt-odd,#work #state-card .tt-odd{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:13px}
 .tip{max-width:300px!important}
 #work .state-card{background:rgba(255,255,255,.6);border:none;border-radius:8px;padding:16px;margin-top:12px;min-height:0}
-#work .state-card .tt-list{padding-left:20px}
-#work .state-card b:first-child{display:block;font-size:17px}
+
+#work .state-card > b:first-child{display:block;font-size:17px}
 /* bills */
 #work .bills{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 10px}
 @media (max-width:560px){#work .bills{grid-template-columns:1fr}}
@@ -849,20 +853,53 @@ blockquote.q cite{font-size:15px}
 #work .sub-head{margin-top:56px!important;margin-bottom:12px!important;flex-direction:column;align-items:flex-start;gap:6px}
 #work .sub-head .sub-title{margin:0}
 .sub-block .meta span+span::before{content:"·";margin:0 8px;color:var(--border-strong)}
+/* map hover: the state lifts, the rest recede */
+#map.hovering path.state:not(.hov){filter:saturate(.6) brightness(1.08)}
+#map path.state.hov{stroke:#111!important;stroke-width:2.5px!important;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
+.tip .tt-title,#work #state-card .tt-title{font-size:16px;margin-bottom:6px}
+.tip .tt-key,#work #state-card .tt-key{display:flex;align-items:center;gap:8px;font-size:14px;padding:6px 8px;margin:0 -4px 8px;background:var(--surface-2);border-radius:6px}
+.tip .tt-key i,#work #state-card .tt-key i{width:10px;height:10px;border-radius:50%;flex:none}
+.tip .tt-key b,#work #state-card .tt-key b{display:inline!important}
+.tip .tt-list li,#work #state-card .tt-list li{display:flex;justify-content:space-between;gap:10px}
+.tip .tt-list li,#work #state-card .tt-list li{align-items:baseline}
+.tip .tt-list li span,#work #state-card .tt-list li span{flex:none}
+.tip .tt-list li small,#work #state-card .tt-list li small{display:inline!important;text-align:right;white-space:normal;color:var(--muted);font-size:13px;line-height:1.3}
+.tip .tt-use,#work #state-card .tt-use{display:block;color:var(--muted);font-size:14px;margin-top:2px}
+.toc-cta{white-space:nowrap}
+.toc-cta svg{width:16px!important;height:16px!important;flex:none;margin:0!important}
+.tip .tt-list li.hit span,#work #state-card .tt-list li.hit span{font-weight:700;color:var(--accent-strong)}
+.tip .tt-states,#work #state-card .tt-states{display:block;margin-top:6px;font-size:13px;color:var(--muted);line-height:1.45}
+.tip{max-width:340px!important}
+/* on this page */
+@media (min-width:1300px){
+  .toc-title{font-family:var(--mono);font-size:12px!important;text-transform:none;letter-spacing:.02em}
+  .toc ol{counter-reset:toc;border-left:none!important}
+  .toc li a{counter-increment:toc;display:flex!important;gap:10px;align-items:baseline;border-left:none!important;margin:0!important;padding:6px 8px!important;border-radius:6px;font-size:15px}
+  .toc li a::before{content:counter(toc,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--muted);opacity:.7}
+  .toc li a:hover{background:rgba(0,0,0,.04)}
+  .toc li a.on{background:var(--accent-soft);color:var(--accent-strong)!important}
+  .toc li a.on::before{color:var(--accent-strong);opacity:1}
+  .toc-cta{display:flex!important;align-items:center;justify-content:center;gap:8px;width:100%;font-size:15px!important;padding:10px 12px!important;border-radius:8px;margin-top:4px}
+}
+@media (min-width:761px){#work .map-wrap .state-card{grid-column:1/-1;order:3}}
+@media (max-width:760px){#work .map-wrap #map{order:0}#work .map-wrap .state-card{order:1;margin-top:0}}
+/* meta rows on phones: no leading separators when a row wraps */
+@media (max-width:640px){.meta span+span::before,.sec-head .meta span+span::before,.sub-block .meta span+span::before{content:none!important}.meta,.sec-head .meta,.sub-block .meta{column-gap:16px;row-gap:4px}}
+#work #state-card .tt-list li{font-size:15px}
+#work #state-card .tt-key{margin:8px 0}
 </style>
 </head>
 <body>
 <nav class="toc" id="toc" aria-label="On this page">
   <p class="toc-title">On this page</p>
   <ol id="toc-list"></ol>
-  <a class="btn btn-primary toc-cta" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI">Email Chris</a>
+  <a class="btn btn-primary toc-cta" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email Chris</a>
 </nav>
 <a class="cta-float" href="mailto:whoischrislam@gmail.com?subject=Epoch%20AI">Email Chris</a>
-<button class="sticker" id="sticker" aria-label="Sticker: made for Epoch AI. Click for a fact from the data, drag to move it."><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="sticker-arc" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><circle cx="60" cy="60" r="58" class="st-bg"/><text class="st-text"><textPath href="#sticker-arc">made for epoch ai · made for epoch ai ·</textPath></text><g id="st-dots"></g></svg></button>
-<div class="sticker-fact" id="sticker-fact" role="status"></div>
+<button class="sticker" id="sticker" aria-label="Sticker: made for Epoch AI. Drag to move it."><svg viewBox="0 0 120 120" aria-hidden="true"><defs><path id="sticker-arc" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><circle cx="60" cy="60" r="58" class="st-bg"/><text class="st-text"><textPath href="#sticker-arc">made for epoch ai · made for epoch ai ·</textPath></text><g id="st-dots"></g></svg></button>
 <main>
   <div id="hello" data-toc="Hello"></div>
-  <p class="opening">Hi María and the Epoch team. I'm Chris Lam, applying for your Design Lead / Head of Design role.</p>
+  <p class="opening">Hi María and the Epoch team. I'm Chris Lam, a product designer with 14 years of experience, applying for your Design Lead / Head of Design role.</p>
   <p class="lede">Epoch makes research on AI accessible to policymakers and the public, without losing rigor. That's the work I did at GoodRx Research for drug prices: charts the public actually used, and briefs used in advocacy around two drug-price transparency laws. I want to do the same for AI.</p>
   <p class="lede">Below: how I match the role, then a short game I built on your July 2026 poll. Or see my <a href="index.html">full portfolio ↗</a>.</p>
 
@@ -874,7 +911,7 @@ blockquote.q cite{font-size:15px}
         <li>Co-founder and CEO of PlaySesh, leading a co-founder and a founding engineer; co-founder of y30</li>
         <li>The first designer at Iodine, Pathstream and StartPlaying, setting how design works with engineering and product</li>
         <li>Always a player-coach: at Iodine I ran product brainstorms and post-launch retrospectives, and hired and managed a contract icon and illustration designer. Outside work, I've started and led breakdancing crews.</li>
-        <li>I haven't managed a full design team yet. I'm always learning and looking to improve, and I'll get a career coach and an executive coach because I want to be the best I can be for my team and myself.</li></ul></article>
+        <li>On most teams I've been on, I've been the design expert and lead who helps run the team, even without a manager's title.</li></ul></article>
       <article class="wcard"><h3>Websites and data products</h3><button class="zoom wz" aria-label="Enlarge: Websites and data products"><img src="images/work/goodrx/iodine-hero.png" alt="Iodine.com on phone and desktop, with its Webby Award" loading="lazy" /></button><ul>
         <li>Iodine.com: public drug information and prices, made usable. Won the <a href="https://winners.webbyawards.com/2018/websites-and-mobile-sites/general-desktop-mobile-sites/health-wellness/47451/iodine">Webby for Best Health Website (2018) ↗</a>; coupon conversion from 2% to 5%</li>
         <li>GoodRx: conversion projects across the drug pages, a 10% lift on mobile and 25% on desktop</li></ul>
@@ -900,7 +937,7 @@ blockquote.q cite{font-size:15px}
     </div>
   </section>
 
-  <p class="trans">That's the list. Here's proof, built on your own data.</p>
+  <p class="trans">That's the list. Here's a demo I built on your own data. Feel free to give it a whirl below!</p>
   <div class="band band-epoch">
   <div id="game" data-toc="The game"></div>
   <div class="sec-head"><h1 id="game-title">How many people like you use AI?</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span class="src-tip" tabindex="0">Data: Epoch AI <i>ⓘ</i><em role="tooltip">Epoch AI poll, July 2026 · 1,103 working US adults · CC BY</em></span></p></div>
@@ -987,14 +1024,14 @@ blockquote.q cite{font-size:15px}
   </div><!-- /band-epoch -->
 
 
-  <p class="trans">I've done this before. Here's one example up close: the research team at GoodRx, turning drug-price data into charts the public and lawmakers could use.</p>
+  <p class="trans">I've done this kind of work before. Here's an example from my time on the research team at GoodRx, turning drug price data into charts the public and lawmakers could use.</p>
   <section class="chapter" id="work" data-toc="GoodRx Research">
     <div class="sec-head"><p class="meta"><span>2017 to 2018</span></p><h2>Up close: GoodRx Research</h2></div>
 
     <div class="sub-block">
-      <p class="meta"><span>Shipped 2018</span><span class="src-tip" tabindex="0">Rebuilt 2026 <i>ⓘ</i><em role="tooltip">Redrawn from the original 2018 data file. The original was built in Vega.</em></span><span><a href="https://www.goodrx.com/healthcare-access/research">GoodRx Research ↗</a></span></p>
+      <p class="meta"><span>Shipped 2018</span><span class="src-tip" tabindex="0">Rebuilt 2026 <i>ⓘ</i><em role="tooltip">Redrawn from the original 2018 data file. The original was built in Vega.</em></span><span><a href="https://www.goodrx.com/healthcare-access/research/the-most-popular-drugs-in-america-by-state">Original on GoodRx ↗</a></span></p>
       <h3 class="sub-title">The United States of Drugs</h3>
-      <p class="lede">What each state fills most at the pharmacy. I designed the original and built it in code with engineer Marc Mendiola's help.</p>
+      <p class="lede">What each state fills most at the pharmacy. I designed the original and built it in code, with help from my engineering colleague Marc Mendiola.</p>
       <p class="map-find">Levothyroxine, a thyroid medicine, was the most-filled prescription in <b>24 of 50 states</b>.</p>
     </div>
     <div class="map-controls">
@@ -1006,13 +1043,12 @@ blockquote.q cite{font-size:15px}
     </div>
     <div class="map-wrap">
       <div class="legend" id="legend" role="list"></div>
-      <svg id="map" role="img" aria-label="Map of US states colored by prescription"></svg>
+      <div class="state-card" id="state-card" hidden></div><svg id="map" role="img" aria-label="Map of US states colored by prescription"></svg>
     </div>
-    <div class="state-card" id="state-card" hidden></div>
 
     <div class="sec-head sub-head"><p class="meta"><span>Published 2017 to 2018</span></p><h3 class="sub-title">Charts the press picked up</h3></div>
     <div class="press">
-      <figure><button class="zoom" aria-label="Enlarge: Some drugs cost more with insurance"><img src="images/work/goodrx/research-insurance-prices.jpg" alt="GoodRx Research chart: some drugs cost more with insurance, with average overpayment and how often GoodRx beat insurance prices for ten common drugs" loading="lazy" /></button><figcaption>Some drugs cost more with insurance. Data from a Massachusetts Health Policy Commission analysis.</figcaption></figure>
+      <figure><button class="zoom" aria-label="Enlarge: Some drugs cost more with insurance"><img src="images/work/goodrx/research-insurance-prices.jpg" alt="GoodRx Research chart: some drugs cost more with insurance, with average overpayment and how often GoodRx beat insurance prices for ten common drugs" loading="lazy" /></button><figcaption>Some drugs cost more with insurance. Data from a <a href="https://www.mass.gov/files/documents/2018/10/04/20181003%20-%20MOAT%20-%20Full%20Presentation_final.pdf">Massachusetts Health Policy Commission analysis ↗</a>.</figcaption></figure>
       <figure><button class="zoom" aria-label="Enlarge: most and least expensive cities"><img src="images/work/goodrx-cities-prices.webp" alt="GoodRx Research chart of the most and least expensive US cities for prescriptions" loading="lazy" /></button><figcaption>Most and least expensive cities for prescriptions. Cited by <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html">The New York Times ↗</a>. <a href="https://www.goodrx.com/healthcare-access/research/most-least-expensive-cities-prescription-medications">GoodRx Research ↗</a></figcaption></figure>
       <figure><button class="zoom" aria-label="Enlarge: flu prescriptions map"><img src="images/work/goodrx-flu-prescriptions.webp" alt="GoodRx Research map of flu prescriptions across the US" loading="lazy" /></button><figcaption>Flu prescriptions across the US. Used by <a href="https://abcnews.com/video/53014507/">Good Morning America and ABC News ↗</a>. <a href="https://www.goodrx.com/oseltamivir/tamiflu-prescriptions-reveal-shocking-flu-trend">GoodRx Research ↗</a></figcaption></figure>
     </div>
@@ -1027,7 +1063,7 @@ blockquote.q cite{font-size:15px}
   </section>
 
 
-  <p class="trans">Here's what the person who managed me there said.</p>
+  <p class="trans">Here's what the person who managed me there said,</p>
   <section class="chapter" id="colleagues" data-toc="Recommendation">
     <div class="sec-head"><h2>From my manager at Iodine</h2><p class="meta"><span>LinkedIn recommendation</span><span>Quoted word for word</span></p></div>
     <blockquote class="q"><p>Chris is a splendid and multi-talented designer, with an innate ability to understand user needs and experiment with software design until the product matches the purpose. He ably took on assignments in a range of media - from PDF to D3 data visualizations - and was dependably curious and creative in creating effective software and design solutions. He is literate in code - engineers love working with him - and is also deeply attuned to the needs of ordinary people (we worked on healthcare information and tools, which is not an easy area whatsoever to understand user needs and concerns). I heartily recommend him as a product designer with a flair for UX/UI.</p><cite>Thomas Goetz, GM and Head of Research at Iodine, managed Chris directly</cite></blockquote>
@@ -1081,7 +1117,7 @@ blockquote.q cite{font-size:15px}
       const H = Math.min(innerHeight, 1000) * (el.dataset.fit || .42);
       const fitFor = c => { const r = Math.ceil(100 / c); return Math.min(44, (Wd / c) / 1.22, (H / r) / 1.22); };
       // Prefer 10 per row (biggest figures); go to 20, then 25, only when the window is too short for 10 rows.
-      cols = [10, 20, 25].find(c => fitFor(c) >= 26) || 25;
+      cols = innerWidth <= 600 ? 10 : [10, 20, 25].find(c => fitFor(c) >= 26) || 25;
       if (el.dataset.cols) cols = +el.dataset.cols;
       rows = Math.ceil(100 / cols);
       size = Math.max(14, fitFor(cols)); gap = Math.round(size * .22);
@@ -1475,37 +1511,30 @@ blockquote.q cite{font-size:15px}
     tocLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
   }), { rootMargin: '-30% 0px -60% 0px' });
   tocItems.forEach(el => tocIO.observe(el));
+  // The first and last sections are too short to cross the marker band: pin them at the page ends.
+  const tocMark = id => tocLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + id));
+  const tocEnds = () => {
+    if (scrollY < 200) tocMark(tocItems[0].id);
+    else if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) tocMark(tocItems[tocItems.length - 1].id);
+  };
+  addEventListener('scroll', tocEnds, { passive: true }); tocEnds();
+  tocLinks.forEach(a => a.addEventListener('click', () => setTimeout(() => tocMark(a.getAttribute('href').slice(1)), 600)));
 
-  // ---- Sticker: drag it anywhere, click it for a fact from the data ----
+  // ---- Sticker: drag it anywhere ----
   (function sticker() {
-    const st = $('sticker'), fact = $('sticker-fact');
+    const st = $('sticker');
     const dots = d3.select('#st-dots');
     d3.range(25).forEach(i => dots.append('circle').attr('cx', 38 + (i % 5) * 11).attr('cy', 38 + Math.floor(i / 5) * 11).attr('r', 4)
       .attr('fill', i < 14 ? 'var(--accent)' : 'var(--none)'));
-    const facts = () => {
-      const f = [`The first time I built a US map like this was 2018. It was Vega then.`];
-      if (all) f.push(`${Math.round(all.used)} of every 100 working adults used AI in the past week (July 2026).`);
-      f.push(`Near-daily AI use: 8 of 100 US adults in March 2026, 19 of 100 in August.`, `Levothyroxine was the most-filled prescription in 24 states in 2018.`, `Every number on this page links back to its source. Try "Check the data".`);
-      return f;
-    };
-    let k = 0, moved = false, start = null;
+    let moved = false, start = null;
     st.addEventListener('pointerdown', e => { start = { x: e.clientX, y: e.clientY, l: st.offsetLeft, t: st.offsetTop }; moved = false; st.setPointerCapture(e.pointerId); });
     st.addEventListener('pointermove', e => {
       if (!start) return;
       const dx = e.clientX - start.x, dy = e.clientY - start.y;
       if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
-      if (moved) { st.style.left = (start.l + dx) + 'px'; st.style.top = (start.t + dy) + 'px'; st.style.right = 'auto'; fact.style.display = 'none'; }
+      if (moved) { st.style.left = (start.l + dx) + 'px'; st.style.top = (start.t + dy) + 'px'; st.style.right = 'auto'; }
     });
     st.addEventListener('pointerup', () => { start = null; });
-    st.addEventListener('click', () => {
-      if (moved) { moved = false; return; }
-      const f = facts(); fact.textContent = f[k++ % f.length];
-      fact.style.display = 'block';
-      fact.style.top = (st.offsetTop + st.offsetHeight + 8) + 'px';
-      fact.style.left = Math.max(8, Math.min(st.offsetLeft + st.offsetWidth - 240, innerWidth - 256)) + 'px';
-      dots.selectAll('circle').transition().duration(RM ? 0 : 300).delay((d, i) => RM ? 0 : i * 15)
-        .attr('fill', () => Math.random() < 0.55 ? 'var(--accent)' : 'var(--none)');
-    });
   })();
 
 
@@ -1648,6 +1677,17 @@ blockquote.q cite{font-size:15px}
       const r = top10(d).indexOf(follow) + 1; return hl === 'none' ? !r : r && r <= hl && r > hl - (hl === 1 ? 1 : hl === 5 ? 4 : 5);
     }
     const paint = () => states.attr('fill', fill).attr('opacity', f => matches(f) ? 1 : .18);
+    const listStates = pred => { const n = drugs.filter(pred).map(d => d.statename).sort(); return n.length ? n.join(', ') : 'None'; };
+    function legendTip(k) {
+      if (mode === 'top') {
+        if (k === 'other') { const ds = tops.slice(5).map(t => cap(t[0])); return `<b>Something else</b><span class="tt-use">${ds.join(', ')}</span><span class="tt-states">${listStates(d => isOther(d.drug1))}</span>`; }
+        return `<b>${cap(k)}</b><span class="tt-use">${useOf(k)}</span><span class="tt-states">Top drug in ${listStates(d => d.drug1 === k)}</span>`;
+      }
+      const rk = d => top10(d).indexOf(follow) + 1;
+      const [lab, pred] = k === 1 ? ['Ranks #1 in', d => rk(d) === 1] : k === 5 ? ['Ranks #2 to #5 in', d => rk(d) >= 2 && rk(d) <= 5]
+        : k === 10 ? ['Ranks #6 to #10 in', d => rk(d) >= 6] : ['Not in the top 10 in', d => !rk(d)];
+      return `<b>${cap(follow)}</b><span class="tt-use">${lab}</span><span class="tt-states">${listStates(pred)}</span>`;
+    }
     function legend() {
       const L = $('legend');
       L.innerHTML = mode === 'top'
@@ -1658,8 +1698,8 @@ blockquote.q cite{font-size:15px}
       L.querySelectorAll('button').forEach(b => {
         const k = isNaN(+b.dataset.k) ? b.dataset.k : +b.dataset.k;
         const on = () => { hl = k; paint(); L.querySelectorAll('button').forEach(x => x.classList.toggle('dim', x !== b)); };
-        const off = () => { hl = null; paint(); L.querySelectorAll('button').forEach(x => x.classList.remove('dim')); };
-        b.addEventListener('pointerenter', on); b.addEventListener('pointerleave', off); b.addEventListener('focus', on); b.addEventListener('blur', off);
+        const off = () => { hl = null; paint(); hideTip(); L.querySelectorAll('button').forEach(x => x.classList.remove('dim')); };
+        b.addEventListener('pointerenter', on); b.addEventListener('pointermove', ev => showTip(legendTip(k), ev)); b.addEventListener('pointerleave', off); b.addEventListener('focus', on); b.addEventListener('blur', off);
       });
     }
     function pills() {
@@ -1674,20 +1714,22 @@ blockquote.q cite{font-size:15px}
     function card(f) {
       const d = byName.get(f.properties.name);
       if (!d) return `<b>${f.properties.name}</b>No data in the 2018 file.`;
-      const list = top10(d);
-      // The most unusual drug in this state's top 10: the one fewest other states share.
-      const odd = list.reduce((a, b) => (inTop10.get(b) || 99) < (inTop10.get(a) || 99) ? b : a);
-      const oddN = inTop10.get(odd);
-      return `<b>${d.statename}</b><span class="tt-sub">Most-filled prescriptions, 2018</span><ol class="tt-list">${list.map(x =>
-        `<li${mode !== 'top' && x === follow ? ' class="hit"' : ''}><span>${cap(x)}</span><small>${useOf(x)}</small></li>`).join('')}</ol>`
-        + (oddN <= 12 ? `<span class="tt-odd">Stands out: <b>${cap(odd)}</b> (${useOf(odd).toLowerCase()}) is in the top 10 of only ${oddN} state${oddN > 1 ? 's' : ''}.</span>` : '');
+      const list = top10(d), r = list.indexOf(follow) + 1;
+      const key = mode === 'top'
+        ? `<span class="tt-key"><i style="background:${colorOf.get(d.drug1) || palette[5]}"></i><span>Top drug: <b>${cap(d.drug1)}</b></span></span>`
+        : `<span class="tt-key"><i style="background:${r ? rankColor(r === 1 ? 1 : r <= 5 ? 3 : 8) : 'var(--none)'}"></i><span>${r ? `${cap(follow)} ranks <b>#${r}</b> here` : `${cap(follow)} isn't in the top 10 here`}</span></span>`;
+      const odd = list.reduce((a, b) => (inTop10.get(b) || 99) < (inTop10.get(a) || 99) ? b : a), oddN = inTop10.get(odd);
+      return `<b class="tt-title">${d.statename}</b>${key}<span class="tt-sub">Top 10 prescriptions, 2018</span><ol class="tt-list">${list.map(x =>
+        `<li${(mode === 'top' ? x === d.drug1 : x === follow) ? ' class="hit"' : ''}><span>${cap(x)}</span><small>${useOf(x)}</small></li>`).join('')}</ol>`
+        + (oddN <= 12 ? `<span class="tt-odd"><b>Unusual here:</b> ${cap(odd)}. Only ${oddN} state${oddN > 1 ? 's' : ''} have it in their top 10.</span>` : '');
     }
     states
+      .on('pointerenter', function () { d3.select(this).raise().classed('hov', true); svg.classed('hovering', true); })
       .on('pointermove', (ev, f) => { if (ev.pointerType === 'mouse') showTip(card(f), ev); })
-      .on('pointerleave', hideTip)
+      .on('pointerleave', function () { d3.select(this).classed('hov', false); svg.classed('hovering', false); hideTip(); })
       .on('click', function (ev, f) {
         if (ev.pointerType === 'mouse') return;
-        states.classed('on', false); d3.select(this).classed('on', true);
+        states.classed('hov', false); d3.select(this).raise().classed('hov', true); svg.classed('hovering', true);
         $('state-card').hidden = false; $('state-card').innerHTML = card(f);
       });
     paint(); legend(); pills();
