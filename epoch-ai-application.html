@@ -593,8 +593,6 @@ footer{margin-top:var(--s-12)!important}
 #round1 .guessed{display:none}
 #round1.touched .guessed{display:block}
 #round1.touched #hint{display:none}
-.tap-cue{display:none;font:600 16px var(--sans);color:var(--accent-strong);margin:4px 0 16px}
-#round1[data-step="2"]:not(.touched) .tap-cue{display:block}
 .fine{font-size:13px;color:var(--muted);margin:var(--s-2) 0 0}
 .btn-link{font:inherit;font-size:15px;background:none;border:none;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px 0}
 .btn-link:hover{color:var(--text)}
@@ -655,12 +653,6 @@ footer{margin-top:var(--s-12)!important}
 #chart .row-label{font-size:15px}#chart .row-val{font-size:15px}#chart .axis text{font-size:13px}
 #step-reveal .share{justify-content:flex-start}
 /* step 3: answer beside the figures, comparison below, all in one screen */
-#round1[data-step="3"] .game-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:32px;align-items:start}
-#round1[data-step="3"] .stepper,#round1[data-step="3"] #step-reveal{grid-column:1/-1}
-#round1[data-step="3"] .reveal-top{grid-column:1}
-#round1[data-step="3"] .grid-wrap{grid-column:2;grid-row:2;margin:0}
-#round1[data-step="3"] .grid-wrap #guess-widget{max-width:340px}
-@media (max-width:760px){#round1[data-step="3"] .game-col{display:flex}}
 .duo b{font-size:56px}
 .res-plain{font-size:21px}
 /* pass: calmer scale + transitions */
@@ -680,7 +672,16 @@ footer{margin-top:var(--s-12)!important}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.25s}
 ::view-transition-group(game-figures){animation-duration:.5s;animation-timing-function:cubic-bezier(.2,0,0,1)}
 @keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-#round1 .s1,#round1[data-step="2"] .s2,#round1[data-step="3"] .reveal-top,#round1[data-step="3"] #step-reveal{animation:stepIn .35s ease both}
+#round1 .s1,#round1[data-step="2"] .s2{animation:stepIn .35s ease both}
+/* step 3: each piece arrives in reading order after the figures settle */
+#round1[data-step="3"] .reveal-top > *{animation:stepIn .45s cubic-bezier(.2,0,0,1) both}
+#round1[data-step="3"] .reveal-top > :nth-child(1){animation-delay:.1s}
+#round1[data-step="3"] .reveal-top > :nth-child(2){animation-delay:.25s}
+#round1[data-step="3"] .reveal-top > :nth-child(3){animation-delay:.5s}
+#round1[data-step="3"] .reveal-top > :nth-child(4){animation-delay:.65s}
+#round1[data-step="3"] .d-real{animation:stepIn .45s cubic-bezier(.2,0,0,1) both;animation-delay:.4s}
+#round1[data-step="3"] .chart-cap{animation:stepIn .4s ease both;animation-delay:.8s}
+#round1[data-step="3"] .share{animation:stepIn .4s ease both;animation-delay:1.9s}
 #round1[data-step="3"] #step-reveal{animation-delay:.15s}
 @media (prefers-reduced-motion:reduce){#round1 *{animation:none!important}}
 /* tighter vertical rhythm in the game */
@@ -694,7 +695,88 @@ footer{margin-top:var(--s-12)!important}
 .guessed{margin:0 0 8px!important}
 .cite.one{margin-top:16px!important}
 .filling .s2-bottom .actions,.filling .tap-cue{visibility:hidden}
-#round1[data-step="3"] .grid-wrap{margin:0!important}
+.live-real{display:none}
+.filling .live-real{display:inline}
+.live-real b{font-family:var(--serif);font-weight:400;font-size:30px;color:var(--accent-strong);font-variant-numeric:tabular-nums}
+/* ===== centered game ===== */
+.band-epoch .sec-head{align-items:center;text-align:center}
+#game-title{font-size:clamp(30px,4.2vw,44px)!important;white-space:normal}
+#round1 .game-col{text-align:center;align-items:center}
+#round1 .stepper{justify-content:center}
+#round1 .madlib{max-width:34ch;margin-left:auto!important;margin-right:auto!important}
+#round1 .hint{margin-left:auto;margin-right:auto}
+.tap-cue{display:block;visibility:hidden;font:600 16px var(--sans);color:var(--accent-strong)}
+#round1[data-step="2"]:not(.touched) .tap-cue{visibility:visible}
+#opts{display:flex;flex-direction:column;gap:14px;align-items:center;margin-top:8px}
+.pk-group{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pk-h{font-family:var(--mono);font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.pk-row2{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.pk-row2 button{font:15px var(--sans);padding:10px 16px;border:1px solid var(--border-strong);border-radius:999px;background:rgba(255,255,255,.6);color:var(--text);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.pk-row2 button:hover{background:#fff;border-color:var(--text);transform:translateY(-1px)}
+.pk-row2 button[aria-checked="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.grid-wrap{display:grid!important;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;width:100%}
+.flank{visibility:hidden;text-align:center}
+.flank span{display:block;font-size:14px;color:var(--muted)}
+.flank b{display:block;font-family:var(--serif);font-weight:400;font-size:56px;line-height:1}
+.fl-l b{color:var(--guess)}.fl-r b{color:var(--accent-strong)}
+#round1[data-step="3"] .flank{visibility:visible;animation:stepIn .45s cubic-bezier(.2,0,0,1) both}
+#round1[data-step="3"] .fl-r{animation-delay:.2s}
+@media (max-width:640px){.grid-wrap{grid-template-columns:1fr 1fr;row-gap:8px}.grid-wrap #guess-widget{grid-column:1/-1;grid-row:2}.flank b{font-size:44px}
+  #round1:not([data-step="3"]) .flank{display:none}}
+#round1[data-step="3"] .reveal-top{order:1;display:flex!important;flex-direction:column;justify-content:center}
+#round1[data-step="3"] .grid-wrap{order:2}
+#round1[data-step="3"] #step-reveal{order:3;width:100%;text-align:left}
+#round1[data-step="3"] .reveal-top .res-plain{max-width:none}
+#round1 .share{justify-content:center!important}
+#round1.leaving .reveal-top,#round1.leaving #step-reveal,#round1.leaving .flank{opacity:0;transition:opacity .25s}
+.cite.one{text-align:center}
+#round1[data-step="1"] .grid-wrap{display:none!important}
+#round1[data-step="3"] .res-plain{font-family:var(--serif)!important;font-size:22px!important}
+/* the numbers live beside the grid from the first tap: less eye travel */
+#round1[data-step="2"].touched .fl-l,#round1.filling .fl-r{visibility:visible}
+#round1.filling .fl-r{animation:stepIn .3s ease both}
+#round1[data-step="3"] .flank{animation:none}
+#round1 .guessed{display:none!important}
+#round1 .madlib{max-width:none!important}
+@media (min-width:761px){.q2{white-space:nowrap}}
+@media (max-width:640px){#round1[data-step="2"] .flank{display:block}#round1 .flank{min-height:66px}}
+#round1[data-step="3"] .reveal-top{margin:0!important;overflow:visible}
+#round1[data-step="3"] .reveal-top > *{margin-top:0}
+#round1 .share{display:flex;gap:10px;flex-wrap:wrap}
+#round1 .share .btn{white-space:nowrap;width:auto;display:inline-flex;align-items:center;gap:8px;font:600 15px var(--sans);padding:10px 16px}
+.src-tip{position:relative;cursor:help;border-bottom:1px dotted var(--muted)}
+.src-tip i{font-style:normal;font-size:12px}
+.src-tip em{display:none;position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font:13px var(--sans);font-style:normal;background:var(--text);color:var(--bg);padding:8px 10px;z-index:5}
+.src-tip:hover em,.src-tip:focus em{display:block}
+.method ul{list-style:none;padding:4px 0 8px!important;margin:0 18px!important}
+.method li{font-size:16px;line-height:1.5;padding:10px 0;border-top:1px solid var(--border);color:var(--muted)}
+.method li:first-child{border-top:none}
+.method li b{color:var(--text);font-weight:600}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:20px;margin:8px 0}
+.mini:empty{display:none}
+.mg{margin:0;animation:stepIn .4s ease both}
+.mg-svg{display:block;width:100%;max-width:140px;margin:0 auto}
+.mg-svg path{fill:var(--none)}.mg-svg path.on{fill:#a9a293}.mg.me .mg-svg path.on{fill:var(--accent)}
+.mg{cursor:default;padding:10px 6px;border-radius:8px;transition:background .15s}.mg:hover,.mg:focus{background:rgba(255,255,255,.55);outline:none}
+.mg-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;max-width:130px;margin:0 auto}
+.mg-grid i{aspect-ratio:1;border-radius:50%;background:var(--none)}
+.mg-grid i.on{background:#a9a293}
+.mg.me .mg-grid i.on{background:var(--accent)}
+.mg figcaption{text-align:center;font-size:14px;margin-top:8px;color:var(--muted)}
+.mg figcaption b{display:block;font-family:var(--serif);font-weight:400;font-size:26px;color:var(--text)}
+.mg.me figcaption b{color:var(--accent-strong)}
+.mg.me figcaption{color:var(--text);font-weight:600}
+.term{border-bottom:2px dotted var(--muted);cursor:help;position:relative}
+.term:hover::after,.term:focus::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:260px;white-space:normal;font:14px/1.4 var(--sans);background:var(--text);color:var(--bg);padding:8px 10px;z-index:6;text-align:left}
+#round1 .reveal-top{position:relative;z-index:7}
+.term:focus{outline:none;border-bottom-color:var(--accent)}
+.grid-key{display:none;justify-content:center;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted);margin:10px 0 0}
+#round1[data-step="3"] .grid-key{display:flex;order:2;animation:stepIn .4s ease both;animation-delay:.7s}
+.grid-key span{display:inline-flex;align-items:center;gap:6px}
+.grid-key i{width:10px;height:14px;border-radius:2px;display:inline-block}
+.k-used{background:var(--accent)}.k-none{background:var(--none)}
+.k-gap.lo{background:var(--accent);opacity:.45}.k-gap.hi{background:var(--guess);opacity:.45}
+#round1[data-step="3"] #guess-widget svg,#round1.filling #guess-widget svg{cursor:default!important}
 </style>
 </head>
 <body>
@@ -751,8 +833,8 @@ footer{margin-top:var(--s-12)!important}
   <p class="trans">That's the list. Here's the proof, built on your data.</p>
   <div class="band band-epoch">
   <div id="game" data-toc="The game"></div>
-  <div class="sec-head"><h1 id="game-title">Guess how many people like you use AI</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span>Data: Epoch AI</span></p></div>
-  <div class="dock" id="dock" aria-hidden="true"><span class="dock-title">Guess how many people like you use AI</span><span class="dock-state" id="dock-state"></span></div>
+  <div class="sec-head"><h1 id="game-title">How many people like you use AI?</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span class="src-tip" tabindex="0">Data: Epoch AI <i>ⓘ</i><em role="tooltip">Epoch AI poll, July 2026 · 1,103 working US adults · CC BY</em></span></p></div>
+  <div class="dock" id="dock" aria-hidden="true"><span class="dock-title">How many people like you use AI?</span><span class="dock-state" id="dock-state"></span></div>
 
   <section class="round" id="round1" data-step="1">
     <div class="game-col">
@@ -763,18 +845,18 @@ footer{margin-top:var(--s-12)!important}
         </ol>
         <div class="s1" id="s1">
           <p class="madlib">Which group are you in?</p>
-          <p class="hint">Pick the one that fits you best.</p>
-          <div class="seg" id="seg" role="tablist" aria-label="Group type"></div>
+          <p class="hint">Pick any one that fits you.</p>
           <div class="opts" id="opts" role="radiogroup" aria-label="Your group"></div>
         </div>
         <div class="s2" id="s2">
-          <p class="madlib">You're <button class="pick" id="pick-btn" aria-label="Change your group">pick a group</button>. Out of 100 working people like you, how many do you think used AI last week?</p>
+          <p class="madlib">You're <button class="pick" id="pick-btn" aria-label="Change your group">pick a group</button>.<br><span class="q2">Out of 100 working people like you, how many used AI last week?</span></p>
           <p class="tap-cue" id="tap-cue">Each figure is one person like you. Tap one to make your guess <span class="bob">↓</span></p>
         </div>
         <div class="reveal-top" id="res-a" aria-live="polite"></div>
-        <div class="grid-wrap"><div id="guess-widget"></div></div>
+        <div class="grid-wrap"><div class="flank fl-l" id="flank-l"></div><div id="guess-widget"></div><div class="flank fl-r" id="flank-r"></div></div>
+        <p class="grid-key" id="grid-key"></p>
         <div class="s2 s2-bottom">
-          <p class="guessed" id="guessed">Your guess: <b id="guess-num" aria-live="polite">? of 100</b></p>
+          <p class="guessed" id="guessed">Your guess: <b id="guess-num" aria-live="polite">? of 100</b><span class="live-real" id="live-real"> · The real number: <b id="live-num">0</b></span></p>
           <div class="actions">
             <button class="btn btn-primary" id="reveal-btn" hidden>Check your guess</button>
             <button class="btn-link" id="skip-btn">Skip to the answer</button>
@@ -784,10 +866,11 @@ footer{margin-top:var(--s-12)!important}
           <div class="res-b" id="res-b" hidden></div>
           <h2 class="reveal-head" id="reveal-head" hidden></h2><p class="verdict" id="verdict" hidden></p><p class="reveal-range" id="reveal-range" hidden></p>
           <p class="chart-cap" id="chart-cap"></p>
+          <div class="mini" id="mini"></div>
           <svg id="chart" role="img" aria-label="How many people in each group used AI last week"></svg>
           <div class="share">
-            <button class="btn-link" id="again-btn">Try another group</button>
-            <button class="btn-link" id="copy-btn">Copy your result</button>
+            <button class="btn btn-ghost" id="again-btn">Try another group</button>
+            <button class="btn btn-ghost" id="copy-btn"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Share your result</span></button>
             <span class="share-status" id="share-status"></span>
           </div>
         </div>
@@ -805,11 +888,11 @@ footer{margin-top:var(--s-12)!important}
   <details>
     <summary>What these numbers can't tell you</summary>
     <ul>
-      <li>The poll only asked people with jobs. If you're retired or a student, "people like you" isn't in it.</li>
-      <li>It's what people said they did, not measured use.</li>
-      <li>Each number is an estimate with a margin of error: the real number most likely falls inside it (Epoch publishes 90% margins).</li>
-      <li>"Too close to call" is a real test, not whether two bars overlap: a gap counts only when it's bigger than 1.645 times the combined standard error of the two groups.</li>
-      <li>Small groups have wide ranges. "Less than high school" is 68 people.</li>
+      <li><b>Only people with jobs were asked.</b> If you're retired or a student, you're not in this survey.</li>
+      <li><b>It's what people said,</b> not something anyone measured.</li>
+      <li><b>Surveys have wiggle room.</b> The real number is probably within a few points of what's shown.</li>
+      <li><b>Small differences may not be real.</b> When two groups are only a few points apart, the page won't call a winner.</li>
+      <li><b>Some groups are small.</b> Only 68 people without a high school diploma answered, so their number is less certain.</li>
     </ul>
   </details>
 
@@ -907,37 +990,45 @@ footer{margin-top:var(--s-12)!important}
   };
   function Grid(el, { interactive = false, onChange } = {}) {
     const host = d3.select(el);
-    let cells, size, gap = 6, value = 0;
+    let cells, size, gap = 6, value = 0, cols = 10, rows = 10;
     function render() {
       delete el.dataset.revealed;
       host.selectAll('*').remove();
-      const Wd = el.clientWidth || 600;
-      // Fill the column, but cap by viewport height so all 10 rows fit with the question above and the button below.
-      const byH = (Math.min(innerHeight, 1000) * (el.dataset.fit || .42)) / 10.6;
-      size = Math.max(14, Math.min((Wd - gap * 9) / 10, byH)); gap = Math.round(size * .22);
-      const side = size * 10 + gap * 9;
-      const svg = host.append('svg').attr('viewBox', `0 0 ${side} ${side}`).attr('height', side).style('max-width', side + 'px');
-      const x0 = i => (i % 10) * (size + gap), y0 = i => Math.floor(i / 10) * (size + gap);
+      const Wd = el.clientWidth || el.parentElement.clientWidth || 600;
+      // Fit the container: 10, 20 or 25 people per row (min 10, max 25), each figure between 26 and 44px,
+      // and capped by the window's height so the whole grid, the question and the button fit on one screen.
+      const H = Math.min(innerHeight, 1000) * (el.dataset.fit || .42);
+      const fitFor = c => { const r = Math.ceil(100 / c); return Math.min(44, (Wd / c) / 1.22, (H / r) / 1.22); };
+      // Prefer 10 per row (biggest figures); go to 20, then 25, only when the window is too short for 10 rows.
+      cols = [10, 20, 25].find(c => fitFor(c) >= 26) || 25;
+      if (el.dataset.cols) cols = +el.dataset.cols;
+      rows = Math.ceil(100 / cols);
+      size = Math.max(14, fitFor(cols)); gap = Math.round(size * .22);
+      const sideW = size * cols + gap * (cols - 1), sideH = size * rows + gap * (rows - 1);
+      const svg = host.append('svg').attr('viewBox', `0 0 ${sideW} ${sideH}`).attr('height', sideH).style('max-width', sideW + 'px');
+      const x0 = i => (i % cols) * (size + gap), y0 = i => Math.floor(i / cols) * (size + gap);
       if (SHAPE === 'square') cells = svg.selectAll('rect').data(d3.range(100)).join('rect').attr('x', x0).attr('y', y0).attr('width', size).attr('height', size).attr('rx', 2);
       else if (FIGURES[SHAPE]) cells = svg.selectAll('path').data(d3.range(100)).join('path').attr('d', FIGURES[SHAPE]).attr('vector-effect', 'non-scaling-stroke').attr('transform', i => `translate(${x0(i)},${y0(i)}) scale(${size})`);
       else cells = svg.selectAll('circle').data(d3.range(100)).join('circle')
         .attr('cx', i => x0(i) + size / 2).attr('cy', i => y0(i) + size / 2).attr('r', size / 2 - 2);
       paint();
       svg.on('pointermove.tip', ev => { if (ev.buttons) return hideTip(); const [px, py] = d3.pointer(ev, svg.node());
-          const c = Math.floor(px / (size + gap)), r = Math.floor(py / (size + gap)); if (c < 0 || c > 9 || r < 0 || r > 9) return hideTip();
-          if (interactive && !el.dataset.revealed) return hideTip(); showTip(tipFor(r * 10 + c), ev); })
+          const c = Math.floor(px / (size + gap)), r = Math.floor(py / (size + gap)); if (c < 0 || c >= cols || r < 0 || r >= rows || r * cols + c > 99) return hideTip();
+          if (interactive && !el.dataset.revealed) return hideTip(); showTip(tipFor(r * cols + c), ev); })
         .on('pointerleave.tip', hideTip);
       if (!interactive) return;
+      const locked = () => !!el.dataset.revealed || document.getElementById('round1').classList.contains('filling') || document.getElementById('round1').dataset.step === '3';
       const pick = (ev) => {
+        if (locked()) return;
         const [px, py] = d3.pointer(ev, svg.node());
-        const col = Math.max(0, Math.min(9, Math.floor(px / (size + gap)))), row = Math.max(0, Math.min(9, Math.floor(py / (size + gap))));
-        set(row * 10 + col + 1);
+        const col = Math.max(0, Math.min(cols - 1, Math.floor(px / (size + gap)))), row = Math.max(0, Math.min(rows - 1, Math.floor(py / (size + gap))));
+        set(Math.min(100, row * cols + col + 1));
       };
       const hoverAt = (ev) => { const [px, py] = d3.pointer(ev, svg.node());
-        const col = Math.floor(px / (size + gap)), row = Math.floor(py / (size + gap)); return (col < 0 || col > 9 || row < 0 || row > 9) ? null : row * 10 + col + 1; };
+        const col = Math.floor(px / (size + gap)), row = Math.floor(py / (size + gap)); return (col < 0 || col >= cols || row < 0 || row >= rows) ? null : Math.min(100, row * cols + col + 1); };
       svg.style('cursor', 'pointer').style('touch-action', 'none')
         .on('pointermove.preview', ev => { if (ev.buttons || el.dataset.revealed) return; const h = hoverAt(ev); preview(h);
-          if (h != null && ev.pointerType === 'mouse') showTip(`<b>${h} of 100</b>Tap to guess ${h}`, ev); })
+          if (h != null && ev.pointerType === 'mouse') showTip(`Guess <b style="display:inline">${h}</b> out of 100`, ev); })
         .on('pointerleave.preview', () => { preview(null); hideTip(); })
         .on('pointerdown', ev => { pick(ev); svg.on('pointermove', pick); })
         .on('pointerup pointerleave', () => svg.on('pointermove', null))
@@ -945,13 +1036,14 @@ footer{margin-top:var(--s-12)!important}
         .attr('aria-valuemin', 0).attr('aria-valuemax', 100).attr('aria-valuenow', value)
         .on('keydown', e => {
           const step = e.shiftKey ? 10 : 1;
+          if (locked()) return;
           if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { set(value + step); e.preventDefault(); }
           if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { set(value - step); e.preventDefault(); }
         });
       this.svg = svg;
     }
     function tipFor(i) { const st = cells.filter((d) => d === i).attr('data-s');
-      return `<b>Person ${i + 1} of 100</b>${{ used: 'Used AI', range: 'Within the margin of error', guess: 'In your guess', gap: 'Between your guess and the answer', none: 'Didn\u2019t use AI' }[st] || ''}`; }
+      return { used: 'Used AI last week', range: 'Maybe. Surveys have a little wiggle room', guess: 'Part of your guess', gap: 'Between your guess and the real number', none: 'Didn\u2019t use AI last week' }[st] || ''; }
     function paint() { cells.attr('fill-opacity', 1).attr('fill', i => i < value ? 'var(--guess)' : 'var(--none)').attr('data-s', i => i < value ? 'guess' : 'none').attr('stroke', 'none'); }
     function preview(h) { if (!cells || el.dataset.revealed) return;
       cells.attr('fill', i => i < value ? 'var(--guess)' : (h != null && i < h) ? 'var(--guess)' : 'var(--none)')
@@ -970,6 +1062,7 @@ footer{margin-top:var(--s-12)!important}
         .attr('fill-opacity', i => g != null && (i < g) !== (i < r) ? .45 : 1).attr('stroke', 'none')
         .attr('data-s', i => g != null && (i < g) !== (i < r) ? 'gap' : i < r ? 'used' : 'none');
     }
+    function clear() { if (!cells) return; cells.transition().duration(RM ? 0 : 120).delay(i => RM ? 0 : (99 - i) * 4).attr('fill', 'var(--none)').attr('fill-opacity', 1); }
     // Honest uncertainty: solid up to the low end of the range, pale across the range.
     function range(lo, hi) {
       const a = Math.round(lo), b = Math.round(hi);
@@ -977,12 +1070,13 @@ footer{margin-top:var(--s-12)!important}
         .attr('fill', i => i < b ? 'var(--accent)' : 'var(--none)').attr('fill-opacity', i => i < a ? 1 : .35).attr('stroke', 'none');
       cells.attr('data-s', i => i < a ? 'used' : i < b ? 'range' : 'none');
     }
-    return { render: render, set, reveal, range, get value() { return value; } };
+    return { render: render, set, reveal, range, clear, get value() { return value; } };
   }
 
   // ---- Tab 1: people like you (July 2026, working adults) ----
   let touched = false;
-  const g1 = Grid($('guess-widget'), { interactive: true, onChange: v => { guess = v; touched = true; $('guess-num').textContent = v + ' of 100'; setButtons(); } });
+  const g1 = Grid($('guess-widget'), { interactive: true, onChange: v => { guess = v; touched = true; $('guess-num').textContent = v + ' of 100';
+    $('flank-l').innerHTML = `<span>Your guess</span><b>${v}</b>`; setButtons(); } });
 
   fetch('data/ai-at-work-jul-2026.json').then(r => r.json()).then(doc => {
     rows = doc.rows;
@@ -1010,11 +1104,17 @@ footer{margin-top:var(--s-12)!important}
     updateDock();
   }
   function buildPicker() {
-    $('seg').innerHTML = Object.entries(LENS_TAB).map(([k, t]) => `<button role="tab" data-l="${k}" aria-selected="${k === lens}">${t}</button>`).join('');
-    $('seg').querySelectorAll('button').forEach(b => b.onclick = () => { lens = b.dataset.l; buildPicker(); });
-    $('opts').innerHTML = groupsFor(lens).map(r => `<button role="radio" aria-checked="${r.group === group && r.lens === lens}" data-g="${r.group}"><i></i>${PHRASE[lens](r.group).replace(/^(a|an) /, '').replace(/^\w/, c => c.toUpperCase())}</button>`).join('');
-    $('opts').querySelectorAll('button').forEach(b => b.onclick = () => morph(() => pickGroup(b.dataset.g)));
+    $('opts').innerHTML = Object.entries(LENS_TAB).map(([k, t]) => `<div class="pk-group"><span class="pk-h"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PK_ICON[k]}</svg>${t}</span><div class="pk-row2">${groupsFor(k).map(r =>
+      `<button role="radio" aria-checked="${r.group === group && k === lens}" data-l="${k}" data-g="${r.group}">${CHIP[k](r.group)}</button>`).join('')}</div></div>`).join('');
+    $('opts').querySelectorAll('button').forEach(b => b.onclick = () => morph(() => { lens = b.dataset.l; pickGroup(b.dataset.g); }));
   }
+  const PK_ICON = {
+    age_group: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    education: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+    region: '<path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+    gender: '<circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/>'
+  };
+  const CHIP = { age_group: g => g, education: g => ({ 'Less than HS': 'No diploma', 'High school': 'High school', 'Some college': 'Some college', 'Bachelor+': 'College grad' }[g]), region: g => g, gender: g => (g === 'Male' ? 'Man' : 'Woman') };
   function openPicker() { setStep(1); buildPicker(); const f = $('opts').querySelector('[aria-checked="true"]') || $('opts').querySelector('button'); f && f.focus(); }
   $('pick-btn').onclick = () => morph(openPicker);
   function setButtons() {
@@ -1025,8 +1125,12 @@ footer{margin-top:var(--s-12)!important}
   function pickGroup(g) {
     group = g; $('pick-btn').textContent = PHRASE[lens](g); $('pick-btn').classList.add('set');
     buildPicker(); resetReveal(); setStep(2); setButtons();
+    g1.render(); if (touched) g1.set(guess); // measure once the grid is visible
   }
   function resetReveal() {
+    $('flank-r').innerHTML = ''; if (!touched) $('flank-l').innerHTML = '';
+    $('res-a').style.minHeight = ''; $('res-a').style.height = '';
+    delete $('guess-widget').dataset.cols;
     $('step-reveal').classList.add('hidden'); $('reveal-more').classList.add('hidden'); $('share-status').textContent = '';
     if (rows.length) { g1.render(); if (touched) g1.set(guess); }
   }
@@ -1063,9 +1167,14 @@ footer{margin-top:var(--s-12)!important}
   $('reveal-btn').onclick = () => morph(() => reveal(true));
   $('skip-btn').onclick = () => morph(() => reveal(false));
   $('again-btn').onclick = () => {
-    const top = $('round1').getBoundingClientRect().top + scrollY - 70;
+    const r1 = $('round1'), top = r1.getBoundingClientRect().top + scrollY - 70;
     if (scrollY > top) scrollTo({ top, behavior: RM ? 'auto' : 'smooth' });
-    setTimeout(() => morph(() => { resetReveal(); g1.set(0); touched = false; $('guess-num').textContent = '? of 100'; setButtons(); openPicker(); }), RM ? 0 : 350);
+    r1.classList.add('leaving');                         // 1) the answer fades out
+    g1.clear();                                          // 2) the figures empty, last one first
+    setTimeout(() => morph(() => {                       // 3) the question comes back
+      r1.classList.remove('leaving');
+      resetReveal(); g1.set(0); touched = false; group = null; $('pick-btn').textContent = 'pick a group'; $('pick-btn').classList.remove('set'); $('flank-l').innerHTML = ''; $('guess-num').textContent = '? of 100'; setButtons(); openPicker();
+    }), RM ? 0 : 650);
   };
 
   function reveal(guessed) {
@@ -1082,34 +1191,50 @@ footer{margin-top:var(--s-12)!important}
     $('verdict').innerHTML = !guessed ? '' : Math.abs(diff) <= 3
       ? `You guessed <b>${guess}</b>. Nearly spot on.`
       : `You guessed <b>${guess}</b>, ${Math.abs(diff)} too ${diff > 0 ? 'high' : 'low'}.`;
-    $('chart-cap').innerHTML = `<b>How you compare with other groups</b>${guessed ? ' · the orange line is your guess' : ''}`;
+    $('chart-cap').innerHTML = `<b>How you compare with other groups</b> · hover one to compare`;
     const lead = `of every 100 ${who(me)} used AI last week`;
     // A: three numbers side by side, weighted evenly
     const ad = Math.abs(diff);
     const band = ad <= 3 ? 'Spot on!' : ad <= 7 ? 'So close' : ad <= 15 ? 'Almost there' : 'Surprising, right?';
-    $('res-a').innerHTML = `${guessed ? `<p class="vband">${band}</p>` : ''}<div class="duo">${guessed ? `<div class="d-guess"><span>You guessed</span><b>${guess}</b></div>` : ''}<div class="d-real"><span>The real number</span><b><span class="cu" data-to="${real}" data-from="${guessed ? guess : 0}">${real}</span></b></div></div>
-      <p class="res-plain"><b>${real}/100</b> ${who(me)} used AI last week.</p>
-      <p class="res-fine">Give or take ${margin} · a survey of ${me.n} people</p>`;
+    const TERM_WORK = 'The survey only asked people with jobs.', TERM_AI = 'Any AI tool, like ChatGPT, Gemini, Claude or Copilot, in the 7 days before the survey.';
+    $('res-a').innerHTML = `<p class="res-plain"><b>${real}/100</b> ${who(me).replace(/working/, `<span class="term" tabindex="0" data-tip="${TERM_WORK}">working</span>`)} <span class="term" tabindex="0" data-tip="${TERM_AI}">used AI</span> last week.</p>
+`;
+    const flankL = guessed ? `<span>You guessed</span><b>${guess}</b>` : '';
     // B: one sentence with the number inline, the guess on its own line
     $('res-b').innerHTML = `<p class="res-sent"><b class="big"><span class="cu" data-to="${real}" data-from="${guessed ? guess : 0}">${real}</span></b> ${lead}.</p>
       <p class="res-guess">${guessed ? `You guessed <b>${guess}</b> · ${Math.abs(diff) <= 3 ? 'nearly spot on' : `${Math.abs(diff)} too ${diff > 0 ? 'high' : 'low'}`} · ` : ''}margin of error ±${margin} · ${me.n} people asked</p>`;
     // 1) fill the answer in place, 2) when it's done, glide into the step-3 layout
     $('round1').classList.add('filling');
     g1.reveal(me.used, g);
-    const toStep3 = () => morph(() => {
+    // Count the real number up in step with the figures filling (one figure every 9ms).
+    $('flank-r').innerHTML = `<span>Real number</span><b id="live-num">0</b>`;
+    const ln = $('live-num'), t0 = performance.now();
+    const tick = t => { const n = Math.min(real, Math.floor((t - t0) / 9)); ln.textContent = n; if (n < real) requestAnimationFrame(tick); };
+    if (RM) ln.textContent = real; else requestAnimationFrame(tick);
+    const toStep3 = () => {
       $('round1').classList.remove('filling');
-      setStep(3); g1.render(); if (guessed) g1.set(guess); g1.reveal(me.used, g, true);
-      $('step-reveal').classList.remove('hidden'); drawChart(me, g); countUps($('res-a'));
-    });
-    setTimeout(toStep3, RM ? 0 : 1250);
+      // the answer takes the question's exact slot, so the figures don't move
+      const qh = document.querySelector('#s2').getBoundingClientRect().height;
+      $('res-a').style.height = qh + 'px'; $('res-a').style.minHeight = '';
+      $('flank-l').innerHTML = flankL;
+      $('grid-key').innerHTML = `<span><i class="k-used"></i>Used AI</span>${guessed && Math.abs(guess - real) > 0 ? `<span><i class="k-gap ${guess > real ? 'hi' : 'lo'}"></i>Between your guess and the real number</span>` : ''}<span><i class="k-none"></i>Didn’t</span>`;
+      $('flank-r').title = `Based on a survey of ${me.n} people, so it could be a few points either way.`;
+      setStep(3); $('step-reveal').classList.remove('hidden'); drawChart(me, g);
+      setTimeout(() => { const li = document.querySelector('#round1 .stepper li[data-s="3"]'); li.classList.add('done'); li.querySelector('span').textContent = '✓'; }, RM ? 0 : 900);
+    };
+    setTimeout(toStep3, RM ? 0 : 1600);
     if (guessed && window.posthog && window.posthog.capture) window.posthog.capture('epoch_guess', { view: 'like', lens, group, guess, real });
     drawCrowd(me);
     drawCompare(me);
     $('copy-btn').hidden = !guessed;
   }
 
+  const CHART_DELAY = 900; // after the verdict, numbers and sentence have arrived
+  let CHART = 'mini'; // Chris picked C
   function drawChart(me, g) {
-    const svg = d3.select('#chart'); svg.selectAll('*').remove();
+    if (CHART === 'bars') return drawBars(me, g);
+    if (CHART === 'mini') return drawMini(me, g);
+    const svg = d3.select('#chart'); svg.selectAll('*').remove(); $('mini').innerHTML = ''; $('chart').style.display = '';
     const data = [all, ...groupsFor(lens)];
     const W = $('chart').clientWidth || 700, L = Math.min(210, W * 0.42), RH = 36, H = data.length * RH + 26;
     svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
@@ -1121,22 +1246,69 @@ footer{margin-top:var(--s-12)!important}
     });
     data.forEach((r, i) => {
       const y = i * RH + RH / 2, isMe = r === me, grp = svg.append('g');
+      const d0 = CHART_DELAY + i * 90, anim = !RM;
+      if (anim) grp.style('opacity', 0).transition().delay(d0).duration(250).style('opacity', 1);
       const HUM = { 'Less than HS': 'No high school diploma', 'High school': 'High school grads', 'Some college': 'Some college', 'Bachelor+': 'College grads', Male: 'Men', Female: 'Women' };
       const base = r.lens === 'full_sample' ? 'Everyone with a job' : (HUM[r.group] || (r.lens === 'age_group' ? 'Aged ' + r.group : r.group));
       const label = base + (isMe ? ' (you)' : '');
       grp.append('text').attr('class', 'row-label' + (isMe ? ' me' : '')).attr('x', 0).attr('y', y + 5).text(label);
-      grp.append('rect').attr('x', x(r.lo)).attr('width', x(r.hi) - x(r.lo)).attr('y', y - 8).attr('height', 16)
+      const bar = grp.append('rect').attr('x', anim ? x(0) : x(r.lo)).attr('width', anim ? 0 : x(r.hi) - x(r.lo)).attr('y', y - 8).attr('height', 16)
         .attr('fill', isMe ? 'var(--accent-soft)' : 'var(--grid)').attr('stroke', isMe ? 'var(--accent)' : 'var(--border)').attr('data-s', 'range');
-      grp.append('circle').attr('cx', x(r.used)).attr('cy', y).attr('r', isMe ? 7 : 5).attr('fill', isMe ? 'var(--accent-strong)' : 'var(--muted)').attr('data-s', 'used');
+      if (anim) bar.transition().delay(d0).duration(600).ease(d3.easeCubicOut).attr('x', x(r.lo)).attr('width', x(r.hi) - x(r.lo));
+      const dot = grp.append('circle').attr('cx', anim ? x(0) : x(r.used)).attr('cy', y).attr('r', isMe ? 7 : 5).attr('fill', isMe ? 'var(--accent-strong)' : 'var(--muted)').attr('data-s', 'used');
+      if (anim) dot.transition().delay(d0).duration(600).ease(d3.easeCubicOut).attr('cx', x(r.used));
       grp.append('text').attr('class', 'row-val').attr('x', W - 36).attr('y', y + 5).text(Math.round(r.used));
       grp.append('rect').attr('x', 0).attr('y', y - RH / 2).attr('width', W).attr('height', RH).attr('fill', 'transparent')
-        .on('pointermove', ev => showTip(`<b>${r.lens === 'full_sample' ? 'All working adults' : r.group}</b>${r.used.toFixed(1)} of 100 used AI<br>Give or take: ${Math.round(r.lo)} to ${Math.round(r.hi)}<br>${r.n} people asked`, ev))
+        .on('pointermove', ev => showTip(`<b>${base}</b>About ${Math.round(r.used)} out of 100 used AI last week${isMe && g != null ? `<br>You guessed ${g}` : ''}`, ev))
         .on('pointerleave', hideTip);
     });
     if (g == null) return;
     const gy = data.indexOf(me) * RH + RH / 2;
-    svg.append('line').attr('x1', x(g)).attr('x2', x(g)).attr('y1', gy - 11).attr('y2', gy + 11).attr('stroke', 'var(--guess)').attr('stroke-width', 3).attr('data-s', 'guess');
+    const gl = svg.append('line').attr('x1', x(g)).attr('x2', x(g)).attr('y1', gy).attr('y2', gy).attr('stroke', 'var(--guess)').attr('stroke-width', 3).attr('data-s', 'guess');
+    gl.transition().delay(RM ? 0 : CHART_DELAY + data.length * 90 + 450).duration(RM ? 0 : 300).attr('y1', gy - 11).attr('y2', gy + 11);
     
+  }
+
+  const HUMN = { 'Less than HS': 'No high school diploma', 'High school': 'High school grads', 'Some college': 'Some college', 'Bachelor+': 'College grads', Male: 'Men', Female: 'Women' };
+  const nameOf = r => r.lens === 'full_sample' ? 'Everyone with a job' : (HUMN[r.group] || (r.lens === 'age_group' ? 'Aged ' + r.group : r.group));
+  // B: plain bars, biggest first, your row highlighted, your guess as a notch
+  function drawBars(me, g) {
+    $('mini').innerHTML = ''; $('chart').style.display = '';
+    const svg = d3.select('#chart'); svg.selectAll('*').remove();
+    const data = [...groupsFor(lens)].sort((a, b) => b.used - a.used);
+    const W = $('chart').clientWidth || 700, L = Math.min(190, W * .4), RH = 34, H = data.length * RH;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleLinear().domain([0, 100]).range([0, W - L - 44]);
+    data.forEach((r, i) => {
+      const y = i * RH, isMe = r === me, grp = svg.append('g').attr('transform', `translate(0,${y})`);
+      grp.append('text').attr('class', 'row-label' + (isMe ? ' me' : '')).attr('x', 0).attr('y', RH / 2 + 5).text(nameOf(r) + (isMe ? ' (you)' : ''));
+      grp.append('rect').attr('x', L).attr('y', 6).attr('height', RH - 12).attr('width', x(100)).attr('fill', 'var(--none)').attr('opacity', .45);
+      const b = grp.append('rect').attr('x', L).attr('y', 6).attr('height', RH - 12).attr('fill', isMe ? 'var(--accent)' : '#a9a293').attr('width', RM ? x(r.used) : 0);
+      if (!RM) b.transition().delay(CHART_DELAY + i * 90).duration(600).ease(d3.easeCubicOut).attr('width', x(r.used));
+      grp.append('text').attr('class', 'row-val').attr('x', L + x(100) + 8).attr('y', RH / 2 + 5).text(Math.round(r.used));
+      if (isMe && g != null) grp.append('rect').attr('x', L + x(g) - 1.5).attr('y', 2).attr('width', 3).attr('height', RH - 4).attr('fill', 'var(--guess)');
+      grp.append('rect').attr('width', W).attr('height', RH).attr('fill', 'transparent')
+        .on('pointermove', ev => showTip(`<b>${nameOf(r)}</b>About ${Math.round(r.used)} out of 100 used AI last week`, ev)).on('pointerleave', hideTip);
+    });
+  }
+  // C: one small grid of 100 people per group
+  function drawMini(me, g) {
+    d3.select('#chart').selectAll('*').remove(); $('chart').style.display = 'none';
+    const fig = (k, on) => `<path d="${FIGURES.figure}" transform="translate(${(k % 10) * 1.25},${Math.floor(k / 10) * 1.25})"${on ? ' class="on"' : ''}/>`;
+    $('mini').innerHTML = groupsFor(lens).map((r, i) => `<figure class="mg${r === me ? ' me' : ''}" data-i="${i}" tabindex="0" style="animation-delay:${RM ? 0 : CHART_DELAY + i * 120}ms">
+      <svg viewBox="0 0 12.25 12.25" class="mg-svg" aria-hidden="true">${d3.range(100).map(k => fig(k, k < Math.round(r.used))).join('')}</svg>
+      <figcaption><b>${Math.round(r.used)}</b> ${nameOf(r)}${r === me ? ' (you)' : ''}</figcaption></figure>`).join('');
+    // Hover: how this group compares with yours, in plain words
+    $('mini').querySelectorAll('.mg').forEach(el => {
+      const r = groupsFor(lens)[+el.dataset.i], d = Math.round(r.used) - Math.round(me.used);
+      const tip = r === me
+        ? `<b>Your group</b>${Math.round(r.used)} out of 100 used AI last week${g != null ? `<br>You guessed ${g}` : ''}`
+        : `<b>${nameOf(r)}</b>${Math.round(r.used)} out of 100 used AI last week<br>${
+            isClose(r, me) ? 'About the same as your group. The gap is small enough that it could just be chance, since the survey asked a sample of people, not everyone.'
+            : `${Math.abs(d)} ${d > 0 ? 'more' : 'fewer'} than your group, a real difference.`}`;
+      el.addEventListener('pointermove', ev => showTip(tip, ev)); el.addEventListener('pointerleave', hideTip);
+      el.addEventListener('focus', () => { const b = el.getBoundingClientRect(); showTip(tip, { clientX: b.right, clientY: b.top }); }); el.addEventListener('blur', hideTip);
+    });
   }
 
   function drawCompare(me) {
@@ -1155,7 +1327,7 @@ footer{margin-top:var(--s-12)!important}
     const url = `${location.origin}${location.pathname}?lens=${lens}&group=${encodeURIComponent(group)}`;
     const text = `I guessed ${guess} of 100 ${who(me)} used AI last week. The real answer: ${Math.round(me.used)}. Guess yours: ${url}`;
     (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
-      .then(() => { $('share-status').textContent = 'Copied.'; }).catch(() => { $('share-status').textContent = text; });
+      .then(() => { const b = $('copy-btn').querySelector('span'); b.textContent = 'Copied to your clipboard'; setTimeout(() => b.textContent = 'Share your result', 2200); }).catch(() => { $('share-status').textContent = text; });
   };
 
   // ---- How other visitors guessed: a dated snapshot, not live ----

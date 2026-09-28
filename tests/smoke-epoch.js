@@ -26,22 +26,24 @@ const log = (name, ok, detail) => { if (!ok) failed++; console.log((ok ? 'PASS' 
     // Regression 2026-09-26: code excerpts spilled over the next rows when the row height was not fixed.
     const lede = await page.evaluate(() => [...document.querySelectorAll('p.lede, p.opening')].filter(e => e.offsetParent).map(e => e.textContent).join(' '));
     log(`opening names only the Design Lead role (${tag})`, /Design Lead( \/ Head of Design)? role/.test(lede) && !/Product Manager/.test(lede));
-    await page.click('#seg button[data-l="age_group"]'); await page.click('#opts button[data-g="30–44"]'); await page.waitForTimeout(700);
+    await page.click('#opts button[data-l="age_group"][data-g="30–44"]'); await page.waitForTimeout(700);
     log(`reveal waits for a guess (${tag})`, await page.isHidden('#reveal-btn'));
     const grid = page.locator('#guess-widget svg'); await grid.scrollIntoViewIfNeeded();
     const bb = await grid.boundingBox(); await page.mouse.click(bb.x + bb.width * 0.35, bb.y + bb.height * 0.25);
     log(`a tap sets a guess (${tag})`, /^\d+ of 100$/.test((await page.textContent('#guess-num')).trim()));
     await page.click('#reveal-btn'); await page.waitForTimeout(1500);
     await page.waitForTimeout(1500);
+    { const before = await page.textContent('#flank-l'); const b2 = await grid.boundingBox(); await page.mouse.click(b2.x + b2.width * .9, b2.y + b2.height * .9);
+      log(`step 3 is locked: clicks don't change the answer (${tag})`, (await page.textContent('#flank-l')) === before && await page.evaluate(() => document.getElementById('round1').dataset.step) === '3'); }
     log(`game reveals a headline (${tag})`, /of every 100/.test(await page.textContent('#reveal-head')));
-    log(`feedback: guess vs truth + pattern (${tag})`, /Spot on|So close|Almost there|Surprising/.test(await page.textContent('#res-a')) && /compare/.test(await page.textContent('#chart-cap')));
+    log(`feedback: guess vs truth + pattern (${tag})`, /You guessed/.test(await page.textContent('#flank-l')) && /Real number/.test(await page.textContent('#flank-r')) && /compare/.test(await page.textContent('#chart-cap')));
     await page.close();
   }
   // What an AI screener without JavaScript reads.
   const page = await browser.newPage({ javaScriptEnabled: false });
   await page.goto(URL);
   const text = await page.evaluate(() => document.body.innerText);
-  for (const k of ['How I match the role', 'Leading design', 'Up close: GoodRx Research', 'most-filled prescription', 'Which group are you in?']) {
+  for (const k of ['How I match the role', 'Leading design', 'Up close: GoodRx Research', 'most-filled prescription', 'Which group are you in?', 'How many people like you use AI?']) {
     log(`readable without JavaScript: "${k}"`, text.includes(k));
   }
   await browser.close();
