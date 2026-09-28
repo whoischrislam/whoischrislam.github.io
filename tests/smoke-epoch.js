@@ -26,15 +26,15 @@ const log = (name, ok, detail) => { if (!ok) failed++; console.log((ok ? 'PASS' 
     // Regression 2026-09-26: code excerpts spilled over the next rows when the row height was not fixed.
     const lede = await page.evaluate(() => [...document.querySelectorAll('p.lede, p.opening')].filter(e => e.offsetParent).map(e => e.textContent).join(' '));
     log(`opening names only the Design Lead role (${tag})`, /Design Lead( \/ Head of Design)? role/.test(lede) && !/Product Manager/.test(lede));
-    await page.click('#seg button[data-l="age_group"]'); await page.click('#opts button[data-g="30–44"]');
+    await page.click('#seg button[data-l="age_group"]'); await page.click('#opts button[data-g="30–44"]'); await page.waitForTimeout(700);
     log(`reveal waits for a guess (${tag})`, await page.isHidden('#reveal-btn'));
     const grid = page.locator('#guess-widget svg'); await grid.scrollIntoViewIfNeeded();
     const bb = await grid.boundingBox(); await page.mouse.click(bb.x + bb.width * 0.35, bb.y + bb.height * 0.25);
     log(`a tap sets a guess (${tag})`, /^\d+ of 100$/.test((await page.textContent('#guess-num')).trim()));
-    await page.click('#reveal-btn');
+    await page.click('#reveal-btn'); await page.waitForTimeout(1500);
     await page.waitForTimeout(1500);
     log(`game reveals a headline (${tag})`, /of every 100/.test(await page.textContent('#reveal-head')));
-    log(`feedback: guess vs truth + pattern (${tag})`, /too (high|low)|spot on/.test(await page.textContent('#verdict')) && /compare\./.test(await page.textContent('#chart-cap')));
+    log(`feedback: guess vs truth + pattern (${tag})`, /Spot on|So close|Almost there|Surprising/.test(await page.textContent('#res-a')) && /compare/.test(await page.textContent('#chart-cap')));
     await page.close();
   }
   // What an AI screener without JavaScript reads.

@@ -593,9 +593,8 @@ footer{margin-top:var(--s-12)!important}
 #round1 .guessed{display:none}
 #round1.touched .guessed{display:block}
 #round1.touched #hint{display:none}
-.tap-cue{display:none;font:600 14px var(--sans);color:var(--accent-strong);margin:0 0 10px}
+.tap-cue{display:none;font:600 16px var(--sans);color:var(--accent-strong);margin:4px 0 16px}
 #round1[data-step="2"]:not(.touched) .tap-cue{display:block}
-#round1[data-step="2"]:not(.touched) #guess-widget svg{outline:2px dashed var(--accent);outline-offset:8px}
 .fine{font-size:13px;color:var(--muted);margin:var(--s-2) 0 0}
 .btn-link{font:inherit;font-size:15px;background:none;border:none;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px 0}
 .btn-link:hover{color:var(--text)}
@@ -605,6 +604,97 @@ footer{margin-top:var(--s-12)!important}
 #step-reveal .verdict b{color:var(--guess)}
 #step-reveal .reveal-range{font-size:14px;margin:0 0 var(--s-3)}
 #step-reveal .share{display:flex;gap:20px}
+/* ===== pass 6 ===== */
+.bob{display:inline-block;animation:bob 1.1s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.stack2 .bob{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){.bob{animation:none}}
+#reveal-more{display:none!important}
+#round1[data-step="3"] #step-reveal{margin-top:0}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong)}
+.nums > div{padding:12px 0}
+.nums > div+div{padding-left:16px;border-left:1px solid var(--border)}
+.nums b{display:block;font-family:var(--serif);font-weight:400;font-size:40px;line-height:1}
+.nums > div > span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+.n-guess b{color:var(--guess)}.n-real b{color:var(--accent-strong)}
+.res-line{font-size:15px;margin:12px 0 20px}
+.res-sent{font-family:var(--serif);font-size:24px;line-height:1.3;margin:0 0 8px}
+.res-sent .big{font-weight:400;font-size:48px;color:var(--accent-strong);vertical-align:-4px}
+.res-guess{font-size:14px;color:var(--muted);margin:0 0 20px}.res-guess b{color:var(--guess)}
+.chart-cap.mini{font-size:13px;margin:0 0 4px;color:var(--muted)}
+#chart .row-label{font-size:14px}#chart .row-val{font-size:14px}#chart .axis text{font-size:12px}
+#step-reveal .share{margin-top:12px}
+.res-who{font-size:14px;color:var(--muted);margin:0 0 8px}
+.nums{margin-bottom:20px}
+/* step 2 stacked option */
+.stack2[data-step="2"] .game-grid{grid-template-columns:1fr!important}
+.stack2[data-step="2"] .gg-graphic{position:static;max-width:420px}
+/* ===== stacked game ===== */
+.game-col{display:flex;flex-direction:column}
+.grid-wrap{display:flex;justify-content:center;margin:8px 0 20px}
+.grid-wrap #guess-widget{width:100%;max-width:520px}
+#guess-widget svg{margin:0 auto;display:block}
+#round1[data-step="1"] .grid-wrap,#round1[data-step="1"] .s2-bottom{display:none}
+.reveal-top{display:none}
+#round1[data-step="3"] .reveal-top{display:block}
+#round1[data-step="3"] .s2{display:none}
+.tap-cue{font:600 16px var(--sans);color:var(--accent-strong);margin:8px 0 0}
+#round1.touched .tap-cue{visibility:hidden}
+.s2-bottom{text-align:center}
+.guessed{display:none;font-size:18px;margin:0 0 12px}
+#round1.touched .guessed{display:block}
+.guessed b{font-family:var(--serif);font-weight:400;font-size:30px;color:var(--guess)}
+.s2-bottom .actions{justify-content:center}
+.duo{display:flex;gap:40px;margin:8px 0 12px}
+.duo > div > span{display:block;font-size:15px;color:var(--muted)}
+.duo b{display:block;font-family:var(--serif);font-weight:400;font-size:64px;line-height:1}
+.d-guess b{color:var(--guess)}.d-real b{color:var(--accent-strong)}
+.res-plain{font-family:var(--serif);font-size:24px;line-height:1.35;margin:0 0 6px;max-width:32ch}
+.res-fine{font-size:15px;color:var(--muted);margin:0 0 8px}
+.chart-cap{font-size:15px!important;margin:8px 0 8px!important}
+#chart .row-label{font-size:15px}#chart .row-val{font-size:15px}#chart .axis text{font-size:13px}
+#step-reveal .share{justify-content:flex-start}
+/* step 3: answer beside the figures, comparison below, all in one screen */
+#round1[data-step="3"] .game-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:32px;align-items:start}
+#round1[data-step="3"] .stepper,#round1[data-step="3"] #step-reveal{grid-column:1/-1}
+#round1[data-step="3"] .reveal-top{grid-column:1}
+#round1[data-step="3"] .grid-wrap{grid-column:2;grid-row:2;margin:0}
+#round1[data-step="3"] .grid-wrap #guess-widget{max-width:340px}
+@media (max-width:760px){#round1[data-step="3"] .game-col{display:flex}}
+.duo b{font-size:56px}
+.res-plain{font-size:21px}
+/* pass: calmer scale + transitions */
+.s2-bottom .actions{flex-direction:column;gap:6px}
+.s2-bottom #skip-btn{font-size:13px;padding:4px 0}
+#round1[data-step="2"] .madlib{font-size:22px!important;line-height:1.4!important}
+.band-epoch #game-title{font-size:clamp(34px,4vw,46px)}
+.grid-wrap #guess-widget{max-width:none}
+#round1[data-step="3"] .grid-wrap #guess-widget{max-width:none}
+.vband{display:inline-block;font:600 14px var(--sans);color:var(--accent-strong);background:var(--accent-soft);padding:4px 10px;border-radius:999px;margin:0 0 10px}
+.res-plain{font-family:var(--sans)!important;font-size:17px!important;margin:4px 0 4px!important}
+.res-plain b{font-weight:600}
+.res-fine{font-size:13px!important}
+.duo b{font-size:52px!important}
+.grid-wrap{view-transition-name:game-figures}
+.reveal-top{view-transition-name:game-answer}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.25s}
+::view-transition-group(game-figures){animation-duration:.5s;animation-timing-function:cubic-bezier(.2,0,0,1)}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#round1 .s1,#round1[data-step="2"] .s2,#round1[data-step="3"] .reveal-top,#round1[data-step="3"] #step-reveal{animation:stepIn .35s ease both}
+#round1[data-step="3"] #step-reveal{animation-delay:.15s}
+@media (prefers-reduced-motion:reduce){#round1 *{animation:none!important}}
+/* tighter vertical rhythm in the game */
+.band-epoch{padding-top:32px!important}
+.band-epoch .sec-head{margin-bottom:8px}
+#round1{margin-top:0!important;padding-top:16px!important;border-top:1px solid rgba(0,0,0,.1)}
+.stepper{margin:0 0 16px!important}
+.gg-text .madlib,#round1 .madlib{margin:0 0 4px!important}
+.tap-cue{margin:4px 0 0!important}
+.grid-wrap{margin:12px 0 12px!important}
+.guessed{margin:0 0 8px!important}
+.cite.one{margin-top:16px!important}
+.filling .s2-bottom .actions,.filling .tap-cue{visibility:hidden}
+#round1[data-step="3"] .grid-wrap{margin:0!important}
 </style>
 </head>
 <body>
@@ -665,8 +755,7 @@ footer{margin-top:var(--s-12)!important}
   <div class="dock" id="dock" aria-hidden="true"><span class="dock-title">Guess how many people like you use AI</span><span class="dock-state" id="dock-state"></span></div>
 
   <section class="round" id="round1" data-step="1">
-    <div class="game-grid">
-      <div class="gg-text">
+    <div class="game-col">
         <ol class="stepper" aria-label="Steps">
           <li data-s="1"><span>1</span>Who you are</li>
           <li data-s="2"><span>2</span>Your guess</li>
@@ -679,33 +768,32 @@ footer{margin-top:var(--s-12)!important}
           <div class="opts" id="opts" role="radiogroup" aria-label="Your group"></div>
         </div>
         <div class="s2" id="s2">
-          <p class="madlib">I'm <button class="pick" id="pick-btn" aria-label="Change your group">pick a group</button>. Out of 100 working people like me, how many used AI last week?</p>
-          <div class="guessed" id="guessed"><p class="gl">Your guess</p>
-          <div class="guess-num" id="guess-num" aria-live="polite">? of 100</div></div>
-          <p class="hint" id="hint">Each figure is one person like you.</p>
-          <div class="actions">
-            <button class="btn btn-primary" id="reveal-btn" hidden>Show me the real answer</button>
-            <button class="btn-link" id="skip-btn">Just show me the answer</button>
-          </div>
-          <p class="fine">Guesses are logged anonymously: just the group and the number.</p>
+          <p class="madlib">You're <button class="pick" id="pick-btn" aria-label="Change your group">pick a group</button>. Out of 100 working people like you, how many do you think used AI last week?</p>
+          <p class="tap-cue" id="tap-cue">Each figure is one person like you. Tap one to make your guess <span class="bob">↓</span></p>
         </div>
-        <div class="hidden" id="step-reveal" aria-live="polite">
-          <h2 class="reveal-head" id="reveal-head"></h2>
-          <p class="verdict" id="verdict"></p>
-          <p class="reveal-range" id="reveal-range"></p>
+        <div class="reveal-top" id="res-a" aria-live="polite"></div>
+        <div class="grid-wrap"><div id="guess-widget"></div></div>
+        <div class="s2 s2-bottom">
+          <p class="guessed" id="guessed">Your guess: <b id="guess-num" aria-live="polite">? of 100</b></p>
+          <div class="actions">
+            <button class="btn btn-primary" id="reveal-btn" hidden>Check your guess</button>
+            <button class="btn-link" id="skip-btn">Skip to the answer</button>
+          </div>
+        </div>
+        <div class="hidden" id="step-reveal">
+          <div class="res-b" id="res-b" hidden></div>
+          <h2 class="reveal-head" id="reveal-head" hidden></h2><p class="verdict" id="verdict" hidden></p><p class="reveal-range" id="reveal-range" hidden></p>
+          <p class="chart-cap" id="chart-cap"></p>
+          <svg id="chart" role="img" aria-label="How many people in each group used AI last week"></svg>
           <div class="share">
             <button class="btn-link" id="again-btn">Try another group</button>
-            <button class="btn-link" id="copy-btn">Copy my result</button>
+            <button class="btn-link" id="copy-btn">Copy your result</button>
             <span class="share-status" id="share-status"></span>
           </div>
         </div>
-      </div>
-      <div class="gg-graphic"><div class="tap-cue" id="tap-cue" aria-hidden="true">Tap a figure to guess ↓</div><div id="guess-widget"></div></div>
     </div>
-    <p class="cite one">Source: <a href="https://epoch.ai/data/polling">Epoch AI poll ↗</a>, July 2026, 1,103 working US adults</p>
+    <p class="cite one">Source: <a href="https://epoch.ai/data/polling">Epoch AI poll ↗</a>, July 2026, 1,103 working US adults · Guesses are logged anonymously</p>
     <div class="hidden" id="reveal-more">
-      <p class="chart-cap" id="chart-cap"></p>
-      <svg id="chart" role="img" aria-label="Share of each group that used AI in the past week, with likely ranges"></svg>
       <div id="compare"></div>
       <div class="crowd" id="crowd"></div>
     </div>
@@ -806,6 +894,7 @@ footer{margin-top:var(--s-12)!important}
   const Z = 1.645; // Epoch's intervals are 90%
   const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (id) => document.getElementById(id);
+  const morph = fn => (!matchMedia('(prefers-reduced-motion: reduce)').matches && document.startViewTransition) ? document.startViewTransition(fn) : fn();
   const params = new URLSearchParams(location.search);
   let rows = [], all = null, lens = 'age_group', group = null, guess = 50;
 
@@ -823,7 +912,9 @@ footer{margin-top:var(--s-12)!important}
       delete el.dataset.revealed;
       host.selectAll('*').remove();
       const Wd = el.clientWidth || 600;
-      size = Math.min(34, (Wd - gap * 9) / 10);
+      // Fill the column, but cap by viewport height so all 10 rows fit with the question above and the button below.
+      const byH = (Math.min(innerHeight, 1000) * (el.dataset.fit || .42)) / 10.6;
+      size = Math.max(14, Math.min((Wd - gap * 9) / 10, byH)); gap = Math.round(size * .22);
       const side = size * 10 + gap * 9;
       const svg = host.append('svg').attr('viewBox', `0 0 ${side} ${side}`).attr('height', side).style('max-width', side + 'px');
       const x0 = i => (i % 10) * (size + gap), y0 = i => Math.floor(i / 10) * (size + gap);
@@ -871,10 +962,10 @@ footer{margin-top:var(--s-12)!important}
       onChange && onChange(value);
     }
     // Real answer fills in green, one person at a time. Orange rings mark the gap between guess and truth.
-    function reveal(real, g) {
+    function reveal(real, g, instant) {
       el.dataset.revealed = 1;
-      const r = Math.round(real);
-      cells.transition().duration(RM ? 0 : 20).delay(i => RM ? 0 : i * 9).attr('fill-opacity', 1)
+      const r = Math.round(real), still = RM || instant;
+      cells.transition().duration(still ? 0 : 20).delay(i => still ? 0 : i * 9).attr('fill-opacity', 1)
         .attr('fill', i => i < r ? 'var(--accent)' : (g != null && i < g) ? 'var(--guess)' : 'var(--none)')
         .attr('fill-opacity', i => g != null && (i < g) !== (i < r) ? .45 : 1).attr('stroke', 'none')
         .attr('data-s', i => g != null && (i < g) !== (i < r) ? 'gap' : i < r ? 'used' : 'none');
@@ -907,7 +998,7 @@ footer{margin-top:var(--s-12)!important}
   // ---- The group picker lives inside the sentence ----
   const PHRASE = {
     age_group: g => `aged ${g}`,
-    education: g => ({ 'Less than HS': 'without a high school diploma', 'High school': 'a high school graduate', 'Some college': 'someone with some college', 'Bachelor+': 'a college graduate' }[g] || g),
+    education: g => ({ 'Less than HS': 'working without a high school diploma', 'High school': 'a high school graduate', 'Some college': 'someone with some college', 'Bachelor+': 'a college graduate' }[g] || g),
     region: g => `in the ${g}`,
     gender: g => (g === 'Male' ? 'a man' : 'a woman')
   };
@@ -922,14 +1013,13 @@ footer{margin-top:var(--s-12)!important}
     $('seg').innerHTML = Object.entries(LENS_TAB).map(([k, t]) => `<button role="tab" data-l="${k}" aria-selected="${k === lens}">${t}</button>`).join('');
     $('seg').querySelectorAll('button').forEach(b => b.onclick = () => { lens = b.dataset.l; buildPicker(); });
     $('opts').innerHTML = groupsFor(lens).map(r => `<button role="radio" aria-checked="${r.group === group && r.lens === lens}" data-g="${r.group}"><i></i>${PHRASE[lens](r.group).replace(/^(a|an) /, '').replace(/^\w/, c => c.toUpperCase())}</button>`).join('');
-    $('opts').querySelectorAll('button').forEach(b => b.onclick = () => pickGroup(b.dataset.g));
+    $('opts').querySelectorAll('button').forEach(b => b.onclick = () => morph(() => pickGroup(b.dataset.g)));
   }
   function openPicker() { setStep(1); buildPicker(); const f = $('opts').querySelector('[aria-checked="true"]') || $('opts').querySelector('button'); f && f.focus(); }
-  $('pick-btn').onclick = openPicker;
+  $('pick-btn').onclick = () => morph(openPicker);
   function setButtons() {
     $('round1').classList.toggle('touched', !!touched);
     $('reveal-btn').hidden = !(group && touched);
-    $('hint').hidden = !!touched;
     updateDock();
   }
   function pickGroup(g) {
@@ -968,9 +1058,15 @@ footer{margin-top:var(--s-12)!important}
     return `working ${me.group === 'Male' ? 'men' : 'women'}`;
   }
 
-  $('reveal-btn').onclick = () => reveal(true);
-  $('skip-btn').onclick = () => reveal(false);
-  $('again-btn').onclick = () => { resetReveal(); touched = false; g1.set(0); touched = false; $('guess-num').textContent = '? of 100'; setButtons(); $('round1').scrollIntoView({ behavior: RM ? 'auto' : 'smooth' }); openPicker(); };
+  // Step changes morph instead of jumping: the figures glide to their new spot (View Transitions, where supported).
+  let rsz; addEventListener('resize', () => { clearTimeout(rsz); rsz = setTimeout(() => { if (!$('guess-widget').dataset.revealed && group) { g1.render(); if (touched) g1.set(guess); } }, 150); });
+  $('reveal-btn').onclick = () => morph(() => reveal(true));
+  $('skip-btn').onclick = () => morph(() => reveal(false));
+  $('again-btn').onclick = () => {
+    const top = $('round1').getBoundingClientRect().top + scrollY - 70;
+    if (scrollY > top) scrollTo({ top, behavior: RM ? 'auto' : 'smooth' });
+    setTimeout(() => morph(() => { resetReveal(); g1.set(0); touched = false; $('guess-num').textContent = '? of 100'; setButtons(); openPicker(); }), RM ? 0 : 350);
+  };
 
   function reveal(guessed) {
     const me = rows.find(r => r.lens === lens && r.group === group);
@@ -986,43 +1082,61 @@ footer{margin-top:var(--s-12)!important}
     $('verdict').innerHTML = !guessed ? '' : Math.abs(diff) <= 3
       ? `You guessed <b>${guess}</b>. Nearly spot on.`
       : `You guessed <b>${guess}</b>, ${Math.abs(diff)} too ${diff > 0 ? 'high' : 'low'}.`;
-    $('chart-cap').innerHTML = `<b>How ${LENS_WORD[lens]} compare.</b> ${pattern}`;
+    $('chart-cap').innerHTML = `<b>How you compare with other groups</b>${guessed ? ' · the orange line is your guess' : ''}`;
+    const lead = `of every 100 ${who(me)} used AI last week`;
+    // A: three numbers side by side, weighted evenly
+    const ad = Math.abs(diff);
+    const band = ad <= 3 ? 'Spot on!' : ad <= 7 ? 'So close' : ad <= 15 ? 'Almost there' : 'Surprising, right?';
+    $('res-a').innerHTML = `${guessed ? `<p class="vband">${band}</p>` : ''}<div class="duo">${guessed ? `<div class="d-guess"><span>You guessed</span><b>${guess}</b></div>` : ''}<div class="d-real"><span>The real number</span><b><span class="cu" data-to="${real}" data-from="${guessed ? guess : 0}">${real}</span></b></div></div>
+      <p class="res-plain"><b>${real}/100</b> ${who(me)} used AI last week.</p>
+      <p class="res-fine">Give or take ${margin} · a survey of ${me.n} people</p>`;
+    // B: one sentence with the number inline, the guess on its own line
+    $('res-b').innerHTML = `<p class="res-sent"><b class="big"><span class="cu" data-to="${real}" data-from="${guessed ? guess : 0}">${real}</span></b> ${lead}.</p>
+      <p class="res-guess">${guessed ? `You guessed <b>${guess}</b> · ${Math.abs(diff) <= 3 ? 'nearly spot on' : `${Math.abs(diff)} too ${diff > 0 ? 'high' : 'low'}`} · ` : ''}margin of error ±${margin} · ${me.n} people asked</p>`;
+    // 1) fill the answer in place, 2) when it's done, glide into the step-3 layout
+    $('round1').classList.add('filling');
     g1.reveal(me.used, g);
+    const toStep3 = () => morph(() => {
+      $('round1').classList.remove('filling');
+      setStep(3); g1.render(); if (guessed) g1.set(guess); g1.reveal(me.used, g, true);
+      $('step-reveal').classList.remove('hidden'); drawChart(me, g); countUps($('res-a'));
+    });
+    setTimeout(toStep3, RM ? 0 : 1250);
     if (guessed && window.posthog && window.posthog.capture) window.posthog.capture('epoch_guess', { view: 'like', lens, group, guess, real });
     drawCrowd(me);
-    drawChart(me, g); drawCompare(me);
+    drawCompare(me);
     $('copy-btn').hidden = !guessed;
-    $('step-reveal').classList.remove('hidden'); $('reveal-more').classList.remove('hidden');
-    setStep(3); countUps($('step-reveal'));
   }
 
   function drawChart(me, g) {
     const svg = d3.select('#chart'); svg.selectAll('*').remove();
     const data = [all, ...groupsFor(lens)];
-    const W = $('chart').clientWidth || 700, L = Math.min(170, W * 0.36), RH = 42, H = data.length * RH + 28;
+    const W = $('chart').clientWidth || 700, L = Math.min(210, W * 0.42), RH = 36, H = data.length * RH + 26;
     svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
     const x = d3.scaleLinear().domain([0, 100]).range([L, W - 44]);
     const ax = svg.append('g').attr('class', 'axis');
     [0, 25, 50, 75, 100].forEach(t => {
       ax.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', 0).attr('y2', data.length * RH);
-      ax.append('text').attr('x', x(t)).attr('y', data.length * RH + 20).attr('text-anchor', 'middle').text(t);
+      ax.append('text').attr('x', x(t)).attr('y', data.length * RH + 18).attr('text-anchor', 'middle').text(t);
     });
     data.forEach((r, i) => {
       const y = i * RH + RH / 2, isMe = r === me, grp = svg.append('g');
-      const label = r.lens === 'full_sample' ? 'All working adults' : r.group + (isMe ? ' (you)' : '') + (r.n < 100 ? ' · small group' : '');
+      const HUM = { 'Less than HS': 'No high school diploma', 'High school': 'High school grads', 'Some college': 'Some college', 'Bachelor+': 'College grads', Male: 'Men', Female: 'Women' };
+      const base = r.lens === 'full_sample' ? 'Everyone with a job' : (HUM[r.group] || (r.lens === 'age_group' ? 'Aged ' + r.group : r.group));
+      const label = base + (isMe ? ' (you)' : '');
       grp.append('text').attr('class', 'row-label' + (isMe ? ' me' : '')).attr('x', 0).attr('y', y + 5).text(label);
       grp.append('rect').attr('x', x(r.lo)).attr('width', x(r.hi) - x(r.lo)).attr('y', y - 8).attr('height', 16)
         .attr('fill', isMe ? 'var(--accent-soft)' : 'var(--grid)').attr('stroke', isMe ? 'var(--accent)' : 'var(--border)').attr('data-s', 'range');
       grp.append('circle').attr('cx', x(r.used)).attr('cy', y).attr('r', isMe ? 7 : 5).attr('fill', isMe ? 'var(--accent-strong)' : 'var(--muted)').attr('data-s', 'used');
       grp.append('text').attr('class', 'row-val').attr('x', W - 36).attr('y', y + 5).text(Math.round(r.used));
       grp.append('rect').attr('x', 0).attr('y', y - RH / 2).attr('width', W).attr('height', RH).attr('fill', 'transparent')
-        .on('pointermove', ev => showTip(`<b>${r.lens === 'full_sample' ? 'All working adults' : r.group}</b>${r.used.toFixed(1)} of 100 used AI<br>Range: ${r.lo.toFixed(1)} to ${r.hi.toFixed(1)}<br>${r.n} people asked`, ev))
+        .on('pointermove', ev => showTip(`<b>${r.lens === 'full_sample' ? 'All working adults' : r.group}</b>${r.used.toFixed(1)} of 100 used AI<br>Give or take: ${Math.round(r.lo)} to ${Math.round(r.hi)}<br>${r.n} people asked`, ev))
         .on('pointerleave', hideTip);
     });
     if (g == null) return;
     const gy = data.indexOf(me) * RH + RH / 2;
-    svg.append('line').attr('x1', x(g)).attr('x2', x(g)).attr('y1', gy - 16).attr('y2', gy + 16).attr('stroke', 'var(--guess)').attr('stroke-width', 3).attr('data-s', 'guess');
-    svg.append('text').attr('data-s', 'guess').attr('x', x(g)).attr('y', gy - 20).attr('text-anchor', 'middle').attr('fill', 'var(--guess)').style('font-size', '14px').text('your guess');
+    svg.append('line').attr('x1', x(g)).attr('x2', x(g)).attr('y1', gy - 11).attr('y2', gy + 11).attr('stroke', 'var(--guess)').attr('stroke-width', 3).attr('data-s', 'guess');
+    
   }
 
   function drawCompare(me) {
@@ -1149,6 +1263,7 @@ footer{margin-top:var(--s-12)!important}
     const draw = () => { bar.innerHTML = ''; Object.entries(opts).forEach(([k, t]) => { const b = document.createElement('button'); b.textContent = t; b.setAttribute('aria-pressed', k === cur); b.onclick = () => { cur = k; apply(k); draw(); }; bar.append(b); }); };
     apply(cur); draw();
   }
+  $('res-b').hidden = true; // Chris picked A
   buildCode();
   document.documentElement.setAttribute('data-style', 'b'); // Chris picked style B
   document.documentElement.setAttribute('data-band', 'c'); // warm gray (Chris 2026-09-26)
