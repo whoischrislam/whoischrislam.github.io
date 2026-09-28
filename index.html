@@ -4353,10 +4353,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             step: "04 · Measured result",
             title: "The shipped experiment improved drug coupon conversion.",
             copy: "The redesign was A/B tested. My historical record documents a 10% increase in drug coupon conversion on mobile web and a 25% increase on desktop web, with an associated increase in revenue. I no longer remember a narrower event definition, so the portfolio keeps the original metric language intact.",
-            layout: "wide",
-            media: [
-              {src:"images/craft/goodrx_18.webp", title:"GoodRx drug-page redesign across mobile and desktop", span:12}
-            ]
+            media: []
           }
         ]
       },
@@ -6598,7 +6595,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         var media = document.createElement("div");
         media.className = "project-chapter-media";
         (chapter.media || []).forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
-        section.append(copy, media);
+        section.append(copy);
+        if(media.childNodes.length) section.appendChild(media); // media: [] = a deliberate text-only chapter
         article.appendChild(section);
         var navButton = document.createElement("button");
         navButton.type = "button";
