@@ -123,7 +123,7 @@
     html+=card('World layer (tame): brand band + per-theme accent',wl);
     // type: every --t-* token, sampled in the family its role uses
     html+=card('Type scale · '+((fams.Type||[]).length)+' tokens (floor 14px; check-design-system fails raw px)','<div style="display:grid;gap:12px;container-type:inline-size">'+(fams.Type||[]).map(function(t){ var fam=SANS_T[t]?'var(--sans)':'var(--serif)';
-      return mk('token:type:'+t,'<div class="tyrow"><div><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(T[t])+'</div></div><div style="font:400 var('+t+')/1.1 '+fam+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(SANS_T[t]?'Figtree · I design and code to ship products':'Newsreader · Controlled comparison')+'</div></div>'); }).join('')+'</div>');
+      return mk('token:type:'+t,'<div class="tyrow"><div><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(T[t])+'</div></div><div style="font:400 var('+t+')/1.1 '+fam+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(SANS_T[t]?'Figtree · I design, code, and do the rest':'Newsreader · Controlled comparison')+'</div></div>'); }).join('')+'</div>');
     // space: bars
     html+=card('Space · '+((fams.Space||[]).length)+' tokens','<div style="display:grid;gap:8px">'+(fams.Space||[]).map(function(t){ return mk('token:space:'+t,'<div class="tyrow"><div><div class="tkn">'+esc(t)+'</div><div class="tkv">'+esc(T[t])+'</div></div><div><div style="height:12px;width:var('+t+');background:var(--accent)"></div></div></div>'); }).join('')+'</div>');
     // motion: tokens with a play demo (hover a row)

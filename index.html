@@ -1864,9 +1864,9 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
 
 <!-- 2. Hero -->
 <header class="hero">
-  <h1 class="hero-lockup"><span class="hl-design">I <span class="lit-word">design</span></span> <span class="hl-ship"><span class="hl-ship-text">&amp; code to</span></span><br class="lb"><span class="hl-ship2"><span class="hl-ship-text2">ship</span></span> <span class="hl-special"><span class="hl-prod">products</span><span class="hl-dot">.</span></span></h1>
+  <h1 class="hero-lockup"><span class="hl-design">I <span class="lit-word">design</span>,</span> <span class="hl-ship"><span class="hl-ship-text">code,</span></span><br class="lb"><span class="hl-ship2"><span class="hl-ship-text2">and do</span></span> <span class="hl-special"><span class="hl-prod">the rest</span><span class="hl-dot">.</span></span></h1>
   <p class="sub"><b>Product designer who ships production code</b> (React, TypeScript). I do <b>whatever the team is missing</b>, even outside my job description: design systems, front-end code, documentation, onboarding teammates. I want the team to win.</p>
-  <p class="sub">Early or <b>first designer multiple times</b>, a software engineer, a <b>founder twice</b>. 14+ years across healthcare, marketplaces, and creative tools. <b>4 of those companies went public or were acquired.</b></p>
+  <p class="sub">Early or <b>first designer multiple times</b>, a software engineer, a <b>founder twice</b>. 14+ years across healthcare, marketplaces, and creative tools. <b>4 of those companies went public or were acquired</b> (GoodRx, Clover, TaskRabbit, doc.ai).</p>
   <p class="sub">I do fun stuff like breakdancing (23 years), roller skating, and making my own games.</p>
   <section class="hero-credibility" aria-label="Companies where Chris has built products">
     <p class="lbl">Built products at</p>
@@ -7883,18 +7883,18 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     if(s1) s1.innerHTML=''; if(s2) s2.innerHTML='';
     if(specialEl) specialEl.classList.remove('in');
     if(reduce){
-      if(s1) s1.textContent='& code to'; if(s2) s2.textContent='ship';
+      if(s1) s1.textContent='code,'; if(s2) s2.textContent='and do';
       if(specialEl) specialEl.classList.add('in');
       heroDone();
       return;
     }
     drawUnderline();
     var segs=[
-      {el:s1, text:'& code to', green:function(i){return i>=2 && i<=5;}},   // "code" green
-      {el:s2, text:'ship'}
+      {el:s1, text:'code,', green:function(i){return i<=3;}},   // "code" green
+      {el:s2, text:'and do'}
     ];
     typeSegments(segs, 1000, function(){
-      timers.push(setTimeout(function(){ if(specialEl) specialEl.classList.add('in'); }, 200));  // "products" fades into existence
+      timers.push(setTimeout(function(){ if(specialEl) specialEl.classList.add('in'); }, 200));  // "the rest" fades into existence
       timers.push(setTimeout(heroDone, 200+750));  // "products." has landed (hl-create is .75s)
     });
   }

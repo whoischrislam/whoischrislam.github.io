@@ -138,15 +138,15 @@ def main() -> int:
         '<link rel="icon" href="favicon.svg" type="image/svg+xml" />':
             "primary homepage must declare its favicon",
         'class="hero-lockup"': "homepage hero needs the one-line lockup hook",
-        "<span class=\"hl-prod\">products</span>":
-            "homepage hero object (products) changed",
-        "text:'& code to'":
-            "homepage hero typed copy (& code to ship) changed",
+        "<span class=\"hl-prod\">the rest</span>":
+            "homepage hero object (the rest) changed (I design, code, and do the rest., Chris 2026-09-28)",
+        "text:'code,'":
+            "homepage hero typed copy (code, / and do) changed",
         "<b>Product designer who ships production code</b> (React, TypeScript).":
             "homepage primary label must lead with Product designer (lane + stack, Chris 2026-09-28)",
         "I do <b>whatever the team is missing</b>, even outside my job description:":
             "homepage market-facing builder line changed (whatever-the-team-is-missing, Chris 2026-09-28)",
-        "14+ years across healthcare, marketplaces, and creative tools. <b>4 of those companies went public or were acquired.</b>":
+        "14+ years across healthcare, marketplaces, and creative tools. <b>4 of those companies went public or were acquired</b> (GoodRx, Clover, TaskRabbit, doc.ai).":
             "homepage proof line changed (split into pitch/proof/personal, AI direction line dropped pending a dev-tools direction line, Chris 2026-09-28)",
         "14+ years": "homepage must use the confirmed 14+ years notation",
         'class="hero-logo-more"': "credibility rail needs its and-more close",
