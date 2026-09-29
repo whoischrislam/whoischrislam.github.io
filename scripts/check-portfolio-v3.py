@@ -142,12 +142,12 @@ def main() -> int:
             "homepage hero object (products) changed",
         "text:'& code to'":
             "homepage hero typed copy (& code to ship) changed",
-        "<b>Product designer</b>":
-            "homepage primary label must lead with Product designer",
-        "I also build in production <b>React, TypeScript, and Python</b>":
-            "homepage market-facing builder line changed",
-        "<b>14+ years</b> shipping software across healthcare, marketplaces, education, and creative tools. I joined early and helped lay the groundwork at <b>4 companies that went public or were acquired</b>. Now building AI products, with AI as both my tool and my material.":
-            "homepage domain-range + direction line changed (adaptability claim cut, direction and bold added 2026-09-24; early-company line + AI tool/material 2026-09-27, Chris)",
+        "<b>Product designer who ships production code</b> (React, TypeScript).":
+            "homepage primary label must lead with Product designer (lane + stack, Chris 2026-09-28)",
+        "I do <b>whatever the team is missing</b>, even outside my job description:":
+            "homepage market-facing builder line changed (whatever-the-team-is-missing, Chris 2026-09-28)",
+        "14+ years across healthcare, marketplaces, and creative tools. <b>4 of those companies went public or were acquired.</b>":
+            "homepage proof line changed (split into pitch/proof/personal, AI direction line dropped pending a dev-tools direction line, Chris 2026-09-28)",
         "14+ years": "homepage must use the confirmed 14+ years notation",
         'class="hero-logo-more"': "credibility rail needs its and-more close",
         'mask-image:var(--logo-mask)':
