@@ -581,19 +581,19 @@ a:focus-visible,button:focus-visible,summary:focus-visible{
    by its top. Icons, the Amazon smile and GoodRx's plus hang outside the band. The 12px padding (canceled by the
    margin) gives that overhang room, because the row scrolls sideways and so clips vertically. Replacing a logo
    means re-measuring its two fractions. */
-.hero-logo-row{--letters:14px;display:flex;align-items:flex-start;gap:14px 28px;list-style:none;margin:-12px 0;padding:12px 0;
+.hero-logo-row{--letters:14px;display:flex;align-items:flex-start;gap:14px 28px;list-style:none;margin:-12px 0 -96px;padding:12px 0 96px; /* bottom room so the hover tooltip is not clipped by the scroll strip */
   min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none}
 .hero-logo-row::-webkit-scrollbar{display:none}
-.hero-logo-row li{--top:0;--base:1;display:flex;flex:0 0 auto;align-items:flex-start;height:var(--letters)}
+.hero-logo-row li{--top:0;--base:1;--h:calc(var(--letters) / (var(--base) - var(--top)));display:flex;flex:0 0 auto;align-items:flex-start;height:var(--letters)}
 .hero-logo-row .hero-logo-more{align-items:center;color:var(--muted);font-size:var(--t-xs);white-space:nowrap}
-.hero-logo-row img{display:block;width:auto;height:calc(var(--letters) / (var(--base) - var(--top)));
-  margin-top:calc(var(--letters) / (var(--base) - var(--top)) * var(--top) * -1);
+.hero-logo-row img{display:block;width:auto;height:var(--h);
+  margin-top:calc(var(--h) * var(--top) * -1);
   opacity:.78;filter:var(--logo-filter)}
 [data-theme="light"] .hero-logo-row img{filter:none}
 /* monochrome, muted, optically-balanced credibility rail (toggle: body.strip-mono) */
 body.strip-mono .hero-logo-row img{filter:brightness(0)!important;opacity:.48}
 :root[data-theme="dark"] body.strip-mono .hero-logo-row img{filter:brightness(0) invert(1)!important;opacity:.58}
-body.strip-mono .hero-company-logo:hover img,body.strip-mono .hero-company-logo:focus-visible img{opacity:.85}
+body.strip-mono .hero-company-logo:hover img,body.strip-mono .hero-company-logo:focus-visible img{opacity:0} /* the green mask replaces it */
 .hero-logo-row li:has([data-work-company="amazon"]){--base:.517}
 .hero-logo-row li:has([data-work-company="taskrabbit"]){--base:.983}
 .hero-logo-row li:has([data-work-company="clover"]){--base:.988}
@@ -607,11 +607,11 @@ body.strip-mono .hero-company-logo:hover img,body.strip-mono .hero-company-logo:
 .hero-company-logo[data-work-company="goodrx"]{--logo-mask:url("images/logos/goodrx.svg")}
 .hero-company-logo[data-work-company="sharecare"]{--logo-mask:url("images/logos/sharecare.svg")}
 .hero-company-logo img{transition:opacity .18s ease}
-.hero-company-logo::before{content:"";position:absolute;inset:0;background:var(--accent);
+.hero-company-logo::before{content:"";position:absolute;left:0;right:0;top:calc(var(--h) * var(--top) * -1);height:var(--h);background:var(--accent); /* sits exactly on the img */
   -webkit-mask-image:var(--logo-mask);mask-image:var(--logo-mask);
   -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-position:center bottom;mask-position:center bottom;
-  -webkit-mask-size:auto var(--h);mask-size:auto var(--h);
+  -webkit-mask-position:left top;mask-position:left top;
+  -webkit-mask-size:auto 100%;mask-size:auto 100%;
   opacity:0;pointer-events:none;transition:opacity .18s ease}
 .hero-company-logo:focus-visible{outline:2px solid var(--accent);outline-offset:6px;border-radius:0}
 .hero-company-logo[aria-pressed="true"] img{opacity:.28}
@@ -623,6 +623,9 @@ body.strip-mono .hero-company-logo:hover img,body.strip-mono .hero-company-logo:
   opacity:0;pointer-events:none;transform:translate(-50%,-4px);transition:opacity .16s ease,transform .16s ease}
 .hero-company-logo:hover::after,.hero-company-logo:focus-visible::after{
   opacity:1;transform:translate(-50%,0)}
+/* the first logo sits on the strip's left edge: anchor its tooltip left so the scroll strip does not clip it */
+.hero-logo-row li:first-child .hero-company-logo::after{left:0;transform:translate(0,-4px)}
+.hero-logo-row li:first-child .hero-company-logo:hover::after,.hero-logo-row li:first-child .hero-company-logo:focus-visible::after{transform:translate(0,0)}
 @media(max-width:560px){
   .hero-credibility{grid-template-columns:minmax(0,1fr);gap:10px}
   /* wrap the logos on small screens instead of the scroll-strip, which was blowing
