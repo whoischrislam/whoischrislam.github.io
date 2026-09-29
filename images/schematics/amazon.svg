@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 225">
+<!-- Amazon Music: importer + matcher brought local and cloud music into one library. Transparent: the card's band color shows through. -->
+<g fill="none" stroke="#fff" stroke-opacity=".9" stroke-width="1.6">
+<rect x="40" y="62" width="100" height="46" rx="3"/><rect x="40" y="130" width="100" height="46" rx="3" stroke-dasharray="4 3"/>
+<path d="M140 85 C 184 85, 184 119, 226 119 M140 153 C 184 153, 184 119, 226 119"/><path d="M219 114 l8 5 -8 5"/>
+<rect x="236" y="68" width="128" height="102" rx="3"/></g>
+<g fill="#fff" fill-opacity=".45"><rect x="248" y="82" width="104" height="9"/><rect x="248" y="100" width="86" height="9"/><rect x="248" y="118" width="98" height="9"/><rect x="248" y="136" width="74" height="9"/></g>
+<g font-family="Figtree, -apple-system, Helvetica, Arial, sans-serif" font-size="13" fill="#fff"><text x="90" y="90" text-anchor="middle">Local files</text><text x="90" y="158" text-anchor="middle">Cloud</text><text x="300" y="192" text-anchor="middle">One library</text></g>
+</svg>

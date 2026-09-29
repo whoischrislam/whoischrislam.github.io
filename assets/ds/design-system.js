@@ -41,6 +41,7 @@
     {id:'hero-credibility',label:'Credibility rail',sel:'.hero-credibility',src:'home',grp:'Chrome'},
     {id:'status-pill',label:'Availability pill (header)',sel:'.status-pill',src:'home',grp:'Chrome'},
     {id:'wcard',label:'More-work card',sel:'.work-tile.wcard',src:'home',grp:'Chrome'},
+    {id:'wcard-schematic',label:'Schematic placeholder (card with no screenshot)',sel:'.wcard-schematic',src:'home',grp:'Chrome'},
     {id:'refs',label:'Contact: reach me / ask first / references',sel:'.refs',src:'home',grp:'Chrome'},
     {id:'foot',label:'Footer',sel:'.foot',src:'home',grp:'Chrome'},
     {id:'read-progress',label:'Read-progress bar',sel:'.read-progress',src:'home',grp:'Chrome'}

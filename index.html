@@ -1567,8 +1567,8 @@ body.card-serif .wcard-name{font-family:var(--serif);font-weight:400;font-size:v
    it reads as an intentional working-drawing placeholder instead of missing art. It's
    reusable: as real screenshots drop in over time the <img> replaces the label and the
    grid disappears automatically. Ties to the living-blueprint DNA of the whole page. ---- */
-.wcard-thumb:has(.wcard-thumb-label){position:relative}
-.wcard-thumb:has(.wcard-thumb-label)::before{
+.wcard-thumb:has(.wcard-thumb-label),.wcard-schematic{position:relative}
+.wcard-thumb:has(.wcard-thumb-label)::before,.wcard-schematic::before{
   content:"";position:absolute;inset:0;pointer-events:none;
   background-image:
     repeating-linear-gradient(to right, rgba(255,255,255,.11) 0 1px, transparent 1px 44px),
@@ -1620,13 +1620,13 @@ body[data-world] .work-panel-navline{position:sticky;top:0;z-index:6;
 @media (prefers-reduced-motion:reduce){ .region-in{animation:none} }
 
 
-/* ==== CURSOR (GoodRx) - LOCKED (Chris, 2026-09-18): the regular system arrow stays (links stay
-   clickable); an "Enter world →" label trails to its right. #gx-cursor is a fixed label JS moves. */
+/* ==== CURSOR - the regular system arrow stays (links stay clickable); a "View company →" / "View project →" label
+   trails to its right on every band and card (Chris 2026-09-28; was GoodRx-only "Enter world", 2026-09-18). #gx-cursor is a fixed label JS moves. */
 #gx-cursor{position:fixed;left:0;top:0;z-index:1260;pointer-events:none;opacity:0;
   transform:translate(15px,14px);transition:opacity .2s ease;
   padding:7px 12px;border-radius:0;background:#141210;color:#fff;font:600 var(--t-xs)/1 var(--sans);white-space:nowrap;
   box-shadow:0 6px 18px rgba(0,0,0,.28)}
-#gx-cursor::after{content:"Enter world \2192"}
+#gx-cursor::after{content:attr(data-label) " \2192"}
 /* the old static corner cue is now redundant with the trailing label */
 /* The "Enter world →" label is a desktop cursor affordance - on touch there's no mouseleave, so it
    lingers after tapping in. Kill it on touch devices, and hide it whenever a world is open/opening. */
@@ -1983,6 +1983,7 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   /* featured single-hero bands: full-bleed baked-background art (no floating-card mat) */
   .co-band[data-hero] .band-frame .work-tile{padding:0!important}
   .co-band[data-hero] .band-frame .work-tile img{object-fit:contain!important;border-radius:0!important;box-shadow:none!important;max-height:100%!important}
+  .co-band[data-hero] .band-frame .work-tile img{background:transparent} /* contain leaves slivers; show the band color there, not .work-tile img's surface-2 (the thin edge lines, 2026-09-28) */
 
   
 
@@ -1996,6 +1997,11 @@ html:not(.js) .hl-caret,html:not(.js) .hl-underline,html:not(.js) .hl-dot::after
   .work-cards .work-tile.wcard:hover{border-color:var(--muted);transform:translateY(-2px)}
   .wcard-thumb{position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/9;background:var(--band,#222);overflow:hidden}
   .wcard-thumb img{width:100%;height:100%;object-fit:cover}   /* crop to fill (Chris 2026-09-23): no letterbox bars */
+  /* SCHEMATIC placeholder (Chris 2026-09-28): a card with no screenshot shows a line diagram of what the system does,
+     on its band color + blueprint grid. The diagram is a transparent SVG in images/schematics/, so the shared hover
+     treats it like any image. Replaces the name-only blueprint label. */
+  .wcard-schematic img{position:relative;object-fit:contain;background:transparent}
+  .wcard-kicker{position:absolute;left:20px;top:16px;z-index:3;font:600 var(--t-xs)/1.3 var(--sans);color:rgba(255,255,255,.8)}
   .wcard-thumb-label{font-family:var(--serif);font-size:var(--t-xl);line-height:1.1;color:rgba(255,255,255,.94);padding:0 18px;text-align:center}
   .wcard-body{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px}
   .wcard-name{font-weight:600;font-size:var(--t-base);color:var(--text);line-height:1.15}
@@ -2271,7 +2277,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         <span class="wcard-body"><span class="wcard-name">Modus Create</span><span class="wcard-desc"><b>Software engineer.</b> Cross-app dark mode shipped to a 500K+ user base, in production TypeScript.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard" type="button" data-kind="work" data-project="startplaying" data-tile-id="startplaying-money">
-        <span class="wcard-thumb" style="--band:var(--band-startplaying)" data-kicker="YC W20 · a16z"><span class="wcard-thumb-label">StartPlaying</span></span>
+        <span class="wcard-thumb wcard-schematic" style="--band:var(--band-startplaying)"><span class="wcard-kicker">StartPlaying · 2022</span><img src="images/schematics/startplaying.svg" alt="Diagram: a player's booking charge splits into the GM payout and the platform fee" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">StartPlaying<span class="tag-outcome">YC W20 · a16z</span></span><span class="wcard-desc"><b>Founding designer.</b> Shipped the payment and payout system.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard" type="button" data-kind="work" data-project="sharecare" data-tile-id="omix-study-builder">
@@ -2283,7 +2289,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         <span class="wcard-body"><span class="wcard-name">TaskRabbit<span class="tag-outcome">Acq. IKEA</span></span><span class="wcard-desc"><b>Product designer.</b> Tasker experience, NPS -5 to mid-50s.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
       <button class="work-tile wcard" type="button" data-kind="work" data-project="amazon" data-tile-id="amazon-music">
-        <span class="wcard-thumb" style="--band:var(--band-amazon)" data-kicker="Amazon Music"><span class="wcard-thumb-label">Amazon</span></span>
+        <span class="wcard-thumb wcard-schematic" style="--band:var(--band-amazon)"><span class="wcard-kicker">Amazon Music · 2012</span><img src="images/schematics/amazon.svg" alt="Diagram: local files and cloud music merge into one library" loading="lazy" decoding="async"></span>
         <span class="wcard-body"><span class="wcard-name">Amazon</span><span class="wcard-desc"><b>UX designer.</b> Amazon Music. Built the importer and matcher that brought local and cloud music into one library.</span><span class="wcard-cta">View &#8594;</span></span>
       </button>
     </div>
@@ -2476,6 +2482,24 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     var workPreloadImages = [];
     var companyFocusPreloaded = false;
     if("scrollRestoration" in history) history.scrollRestoration = "manual";
+    // Homepage scroll must survive leaving the document (HogWare, résumé, a live product) and coming back:
+    // manual restoration + an in-memory Y lost it, so Back landed at the top (Chris 2026-09-28). Keep the
+    // homepage Y in sessionStorage (this tab only) and restore it on a back/forward arrival at the homepage.
+    var HOME_Y_KEY = "home-scroll-y";
+    function saveHomeY(y){ if(/[?&](work|project)=/.test(location.search)) return;   // a direct ?work= load is not a homepage position
+      try{ sessionStorage.setItem(HOME_Y_KEY, String(Math.round(y))); }catch(e){} }
+    window.addEventListener("pagehide", function(){ if(!document.body.classList.contains("work-focus-open")) saveHomeY(window.scrollY); });
+    (function restoreHomeY(){
+      var nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
+      // back/forward and reload both arrive here (Chrome reports a cross-document Back after a reload as "reload")
+      if(!nav || nav.type === "navigate" || /[?&](work|project)=/.test(location.search)) return;
+      var st = history.state || {}, y = st.portfolioOverviewScrollY;   // the history entry's own copy wins
+      if(!(y > 0)){ try{ y = parseInt(sessionStorage.getItem(HOME_Y_KEY), 10); }catch(e){} }
+      if(!(y > 0)) return;
+      workOverviewScrollY = y;
+      var go = function(){ window.scrollTo(0, y); };
+      if(document.readyState === "complete") go(); else { requestAnimationFrame(go); window.addEventListener("load", go, { once:true }); }
+    })();
     var workProjects = {
       y30: {
         name: "y30",
@@ -7193,6 +7217,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
 
     function writeFocusedWorkHistory(project, source){
       workOverviewScrollY = window.scrollY;
+      saveHomeY(workOverviewScrollY);
       var overviewState = Object.assign({}, history.state || {}, {
         portfolioOverviewScrollY: workOverviewScrollY
       });
@@ -7441,6 +7466,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       var interrupting = document.body.classList.contains("world-entering") && worldAnim; // reversing a mid-exit
       if(!interrupting){
         workOverviewScrollY = window.scrollY;               // remember homepage scroll
+        saveHomeY(workOverviewScrollY);
         if(opts.story){                                      // straight into a case study (homepage Recent work)
           openWorkStory(opts.story, { history:opts.history, animate:false, scroll:false, trigger:opts.trigger, fromHome:true });
         }else{
@@ -7758,6 +7784,11 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           });
         }
       }else if(inWorld){
+        // After a reload inside a world the in-memory homepage Y is 0; the history entry (or this tab's
+        // sessionStorage) still has the real one, so Back lands where you left the homepage (2026-09-28).
+        var savedY = event.state && event.state.portfolioOverviewScrollY;
+        if(!(savedY > 0)){ try{ savedY = parseInt(sessionStorage.getItem(HOME_Y_KEY), 10); }catch(e){} }
+        if(savedY > 0 && !(workOverviewScrollY > 0)) workOverviewScrollY = savedY;
         closeWorldClip(backButtonOrigin());                 // planet → galaxy: clip close
       }else if(workGrid.dataset.locked === "true"){         // nothing focused = an in-page #hash jump; let it scroll
         resetWork(true, {
@@ -7929,12 +7960,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
   // Band → REAL themed world via a clip-path circle grown from the click point (see __openWorldClip
   // in the main app script). No View Transitions API - deterministic across browsers.
   function dissolveEnter(x,y){ if(window.__openWorldClip){ var band=heroEl.closest('[data-project]'); window.__openWorldClip((band&&band.dataset.project)||'goodrx', {x:x,y:y}); } }
-  var gxCursor=document.getElementById('gx-cursor');
-  heroEl.addEventListener('mousemove', function(e){
-    if(gxCursor){ gxCursor.style.left=e.clientX+'px'; gxCursor.style.top=e.clientY+'px'; }
-  });
-  heroEl.addEventListener('mouseenter', function(){ if(gxCursor) gxCursor.style.opacity='1'; });
-  heroEl.addEventListener('mouseleave', function(){ if(gxCursor) gxCursor.style.opacity='0'; });
+  // the trailing label is bound for every surface in the shared hover script below
 
   // Intercept the hero-image click in the capture phase so the normal tile-open doesn't also fire; the
   // reveal is the shared clip grown from the click point. Esc-close is the app's global handler.
@@ -8002,16 +8028,16 @@ document.body.classList.add('fx-dissolve','skin-digital');
     // (the old dissolve-as-dots failed on contrast). Tunables: DENS (dot count), disc radius, gap gain.
     // DIGITAL WAVE / DISSOLVE hover: the photo resolves into a grid of data-cells that ripples out from
     // the cursor. Two skins on the SAME mechanic (uniform `skin`): 0 = BLUEPRINT (round data-viz dots on
-    // ink, faint green hairline grid - on-brand, calm); 1 = DIGITAL/Digimon (square glowing data-cells,
+    // ink, faint green hairline grid - on-brand, calm); 1 = DIGITAL (square glowing data-cells,
     // bright green grid - materialisation). Each cell samples the photo, so it stays his data-viz color.
     var fs='precision highp float;varying vec2 uv;uniform sampler2D tx;uniform vec2 mouse;uniform float t;uniform float aspect;uniform float amp;uniform float dens;uniform float skin;'
       +'uniform vec3 uCol;uniform float uGlow;uniform float uGrain;uniform float uFlick;uniform float uReach;uniform float uInten;'  // live tuning
-      +'uniform vec3 uBg;uniform float uImgMix;'  // preview-hint: cell ground color + true-photo blend
+      +'uniform vec3 uBg;uniform float uImgMix;uniform float uWarp;'  // preview-hint: cell ground color + true-photo blend
       +'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}'
       +'void main(){vec2 d=vec2((uv.x-mouse.x)*aspect,uv.y-mouse.y);float dist=length(d);'
       +'float ring=sin(dist*32.0 - t*6.0);float env=exp(-dist*uReach)*amp;'
       +'vec2 dir=dist>0.0001?d/dist:vec2(0.0);'
-      +'vec2 off=dir*ring*0.022*env;off.x/=aspect;'
+      +'vec2 off=dir*ring*0.022*env*uWarp;off.x/=aspect;'
       +'vec2 suv=uv+off;'
       +'vec3 img=texture2D(tx,suv).rgb;'
       +'vec2 gsz=vec2(dens*aspect,dens);'
@@ -8049,22 +8075,28 @@ document.body.classList.add('fx-dissolve','skin-digital');
     uni.aspect=gl.getUniformLocation(prog,'aspect'); uni.amp=gl.getUniformLocation(prog,'amp'); uni.tx=gl.getUniformLocation(prog,'tx'); uni.dens=gl.getUniformLocation(prog,'dens'); uni.skin=gl.getUniformLocation(prog,'skin');
     uni.col=gl.getUniformLocation(prog,'uCol'); uni.glow=gl.getUniformLocation(prog,'uGlow'); uni.grain=gl.getUniformLocation(prog,'uGrain');
     uni.flick=gl.getUniformLocation(prog,'uFlick'); uni.reach=gl.getUniformLocation(prog,'uReach'); uni.inten=gl.getUniformLocation(prog,'uInten');
-    uni.bg=gl.getUniformLocation(prog,'uBg'); uni.imgmix=gl.getUniformLocation(prog,'uImgMix');
+    uni.bg=gl.getUniformLocation(prog,'uBg'); uni.imgmix=gl.getUniformLocation(prog,'uImgMix'); uni.warp=gl.getUniformLocation(prog,'uWarp');
     return true;
   }
   // Texture per hovered target, cached: image cards upload their <img>; blueprint cards get a palette swatch
   // so the same data-grid can materialise over them. Keyed by image src (or blueprint slug).
+  function fitOf(t){ var f=getComputedStyle(t.img).objectFit; return t.crop?'cover':(f==='cover'||f==='contain'?f:'fill'); }
   function texKey(t){ if(!t.img) return 'bp:'+(t.slug||'');
-    var r=t.crop&&t.img.getBoundingClientRect();   // crop textures are per box shape: a resized/relaid card must not reuse a stale crop
-    return (t.img.currentSrc||t.img.src)+(t.crop?'|crop'+Math.round(20*r.width/Math.max(1,r.height)):''); }
+    var f=fitOf(t), r=t.img.getBoundingClientRect();   // fitted textures are per box shape: a resized/relaid card must not reuse a stale one
+    return (t.img.currentSrc||t.img.src)+(f!=='fill'?'|'+f+Math.round(20*r.width/Math.max(1,r.height)):''); }
   // Project cards show their <img> object-fit:cover (top-aligned) in a 4:3 box, so the texture is pre-cropped to
   // that box; otherwise the hover would stretch the whole screenshot. Other surfaces already match their image.
-  function src(t){ var im=t.img; if(!t.crop) return im;
-    var r=im.getBoundingClientRect(), W=1024, H=Math.max(1,Math.round(W*r.height/Math.max(1,r.width)));
+  // Band heroes are object-fit:contain and more-work thumbs are cover, so the raw file never matches the box:
+  // drawing it stretched is what "crunched" the image on hover. Pre-render the texture exactly as the page shows it.
+  function src(t){ var im=t.img, f=fitOf(t); if(f==='fill') return im;
+    var r=im.getBoundingClientRect(), W=Math.min(2048,Math.max(512,Math.round(r.width*Math.min(window.devicePixelRatio||1,2)))), H=Math.max(1,Math.round(W*r.height/Math.max(1,r.width)));
     var c=document.createElement('canvas'); c.width=W; c.height=H; var x=c.getContext('2d');
-    var pos=(getComputedStyle(im).objectPosition||'50% 50%').split(' '), py=parseFloat(pos[1]); py=isNaN(py)?0.5:py/100;
-    var sc=Math.max(W/im.naturalWidth,H/im.naturalHeight), w=im.naturalWidth*sc, h=im.naturalHeight*sc;
-    x.drawImage(im,(W-w)/2,(H-h)*py,w,h); return c; }
+    var cs=getComputedStyle(im), pos=(cs.objectPosition||'50% 50%').split(' ');
+    var px=parseFloat(pos[0]), py=parseFloat(pos[1]); px=isNaN(px)?0.5:px/100; py=isNaN(py)?0.5:py/100;
+    if(t.crop) px=0.5;
+    var bg=getComputedStyle(t.surface).backgroundColor; if(bg && bg!=='rgba(0, 0, 0, 0)' && bg!=='transparent'){ x.fillStyle=bg; x.fillRect(0,0,W,H); }
+    var sc=(f==='contain'?Math.min:Math.max)(W/im.naturalWidth,H/im.naturalHeight), w=im.naturalWidth*sc, h=im.naturalHeight*sc;
+    x.drawImage(im,(W-w)*px,(H-h)*py,w,h); return c; }
   function makeSwatch(pal){
     var c=document.createElement('canvas'); c.width=c.height=64; var x=c.getContext('2d');
     var bg=pal?pal.bg:[0.9,0.9,0.88], ac=pal?pal.acc:[0.4,0.44,0.5], I=function(v){return Math.round(v*255);};
@@ -8122,6 +8154,7 @@ document.body.classList.add('fx-dissolve','skin-digital');
     gl.uniform1f(uni.reach, T.reach!==undefined?T.reach:4.5);
     gl.uniform1f(uni.inten, T.intensity!==undefined?T.intensity:0.78);
     gl.uniform1f(uni.dens, T.density!==undefined?T.density:48.0);
+    gl.uniform1f(uni.warp, T.warp!==undefined?T.warp:0.0);   // ripple displacement off by default (Chris 2026-09-28: it distorted the work)
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
     raf=requestAnimationFrame(loop);
   }
@@ -8155,7 +8188,14 @@ document.body.classList.add('fx-dissolve','skin-digital');
     surface.addEventListener('mouseenter', function(e){ if(active(target)&&!surface.classList.contains('hx-busy')){ start(target); setMouse(e); } });
     surface.addEventListener('mousemove', function(e){ if(active(target)&&!surface.classList.contains('hx-busy')){ if(!running||cur!==target) start(target); setMouse(e); } });
     surface.addEventListener('mouseleave', stop);
-    surface.addEventListener('click', stop, true);   // capture: GoodRx's own capture-phase stopPropagation() must not eat this teardown
+    surface.addEventListener('click', stop, true);
+    // The trailing "View case study" label now rides on every band and card (Chris 2026-09-28), not just GoodRx.
+    var lbl=surface.classList.contains('band-frame')&&document.getElementById('gx-cursor');   // bands only: cards already print "View →" (Chris 2026-09-28, option A)
+    var kind=(surface.closest('[data-kind]')||surface.querySelector('[data-kind]')||{}).dataset;
+    var text=(kind&&kind.kind==='experiment')?'View project':'View company';   // bands + more-work open a company; experiments open a project
+    if(lbl){ surface.addEventListener('mouseenter', function(){ lbl.dataset.label=text; lbl.style.opacity='1'; });
+      surface.addEventListener('mousemove', function(e){ lbl.style.left=e.clientX+'px'; lbl.style.top=e.clientY+'px'; });
+      surface.addEventListener('mouseleave', function(){ lbl.style.opacity='0'; }); }   // capture: GoodRx's own capture-phase stopPropagation() must not eat this teardown
   }
   // The GoodRx data-grid is now the BASELINE hover for every band hero + every more-work/experiment card.
   document.querySelectorAll('.co-band[data-hero] .band-frame').forEach(bind);
