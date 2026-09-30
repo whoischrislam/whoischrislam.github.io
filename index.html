@@ -2173,6 +2173,9 @@ body:is([data-world="goodrx"],[data-world="clover"],[data-world="pathstream"],[d
 body[data-world="playsesh"] .work-shell{--brand-bg:#4A90E2;--brand-ink:#ffffff;--brand-soft:rgba(255,255,255,.88);--brand-line:rgba(255,255,255,.3)}
 body[data-world="y30"] .work-shell{--brand-bg:#196cca;--brand-ink:#ffffff;--brand-soft:rgba(255,255,255,.86);--brand-line:rgba(255,255,255,.3)}
 body[data-world] .work-shell{--tint:color-mix(in srgb,var(--brand-bg) 10%,var(--bg))}
+/* dark theme: near-black brand grounds would vanish on the dark page, so they lift one step (per-world pass may retune) */
+:root[data-theme="dark"] body[data-world="amazon"] .work-shell{--brand-bg:#232f3e}
+:root[data-theme="dark"] body[data-world="modus"] .work-shell{--brand-bg:#2a2f36}
 :root[data-theme="dark"] body[data-world] .work-shell{--tint:color-mix(in srgb,var(--brand-bg) 14%,var(--bg))}
 /* trailer: the band is loud and tall enough for the hero to straddle it */
 body[data-world] .work-panel.is-story-view .work-panel-heading{padding-bottom:200px!important}
@@ -2185,25 +2188,27 @@ body[data-world] header.world-hero.has-straddle{padding-bottom:200px!important}
 body[data-world] .world-hero-media.is-straddle{margin:-160px 0 0!important;position:relative;z-index:1;border:1px solid var(--text);background:var(--surface);overflow:hidden}
 body[data-world] .world-hero-media.is-straddle img{display:block;width:100%;height:auto}
 /* the fact console: outcome on the left, the facts in one bordered box on the right */
-body[data-world] .work-panel-body > .work-story-facts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,336px);gap:0 48px;align-items:start;margin-top:48px!important}
-body[data-world] .work-panel-body > .work-story-facts > dl{grid-column:2;grid-row:1/span 3;display:block;padding:24px;border:1px solid var(--text);background:var(--surface)}
-body[data-world] .work-panel-body > .work-story-facts > dl > div + div{margin-top:14px}
-body[data-world] .work-panel-body > .work-story-facts dd{margin:0!important}
-body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-label{grid-column:1;grid-row:1}
-body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-outcome{grid-column:1;grid-row:2;font-size:var(--t-lg)!important;line-height:1.45!important}
+body[data-world] .fact-console{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,336px);gap:0 48px;align-items:start;margin-top:48px!important}
+body[data-world] .fact-console > dl{grid-column:2;grid-row:1/span 3;display:block;padding:24px;border:1px solid var(--text);background:var(--surface)}
+body[data-world] .fact-console > dl > div + div{margin-top:14px}
+body[data-world] .fact-console dd{margin:0!important}
+body[data-world] .fact-console > .work-story-facts-label{grid-column:1;grid-row:1}
+body[data-world] .fact-console > .work-story-facts-outcome{grid-column:1;grid-row:2;font-size:var(--t-lg)!important;line-height:1.45!important}
 @media (max-width:760px){
   body[data-world] .work-panel.is-story-view .work-panel-heading,body[data-world] header.world-hero.has-straddle{padding-bottom:120px!important}
   body[data-world] .work-panel-body > .work-story-hero,body[data-world] .world-hero-media.is-straddle{margin-top:-90px!important}
-  body[data-world] .work-panel-body > .work-story-facts{grid-template-columns:1fr;gap:20px}
-  body[data-world] .work-panel-body > .work-story-facts > dl{grid-column:1;grid-row:auto}
-  body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-label,body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-outcome{grid-row:auto}
-  body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-label{order:1}
-  body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-outcome{order:2}
-  body[data-world] .work-panel-body > .work-story-facts > dl{order:3;margin-top:4px}
+  body[data-world] .fact-console{grid-template-columns:1fr;gap:20px}
+  body[data-world] .fact-console > dl{grid-column:1;grid-row:auto}
+  body[data-world] .fact-console > .work-story-facts-label,body[data-world] .fact-console > .work-story-facts-outcome{grid-row:auto}
+  body[data-world] .fact-console > .work-story-facts-label{order:1}
+  body[data-world] .fact-console > .work-story-facts-outcome{order:2}
+  body[data-world] .fact-console > dl{order:3;margin-top:4px}
 }
 /* quiet middle: chapters alternate paper and the world's tint, full bleed, plain edges (seams decided: plain) */
 body[data-world] .project-story > section.project-chapter{border-top:0!important;border-bottom:0!important;margin-top:0!important;padding-top:72px!important;padding-bottom:72px!important}
 body[data-world] .project-story > section.project-chapter:nth-of-type(odd){background:var(--tint);box-shadow:0 0 0 100vmax var(--tint);clip-path:inset(0 -100vmax)}
+body[data-world] .fact-console .fact-console-rule{border:0;border-top:1px dashed var(--border-strong);margin:18px 0}
+body[data-world] #work-focus-content > .fact-console{margin:48px 0 var(--s-group)!important}
 </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
@@ -2545,6 +2550,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
     })();
     var workProjects = {
       y30: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product, design, full stack engineering", "code": {"maturity": "production", "scope": "All production code", "method": "with agents"}, "team": "2 founders, clinical advisors, QA intern"}, deliveryState: "Closed alpha with testers outside the founding team; production and development deployments", evidence: [["Users", "Older adults, family caregivers, care professionals"]], roleIsEngineering: true,
         name: "y30",
         portfolioShape: "founder",
         hero: "images/work/y30-hero.png",
@@ -2709,6 +2716,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: [["video:loom:eb44015201554d11ac841cd1700653ce", "Watch an unscripted call (1:43)"]] // Chris 2026-09-25: restore the June 2026 Loom (Chris speaking); "Try y30" stays removed (y30.ai is Vijay's pivot)
       },
       playsesh: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Company direction · product · design · hands-on implementation", "code": {"maturity": "production", "scope": "Most of the frontend; Stripe payments, Supabase edge functions", "method": "mixed", "methodNote": "hand-coded, then agents"}, "team": "CTO · founding engineer"}, deliveryState: "Launched November 2025 · development paused March 2026 · product remains live", evidence: [["Users", "Indie game makers · tabletop groups · Discord communities"]], codeTag: "design + code",
         name: "PlaySesh",
         portfolioShape: "founder",
         dates: "2024–2026",
@@ -2796,6 +2805,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: [["?ds", "See the system"]]
       },
       hogware: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Solo product, game design through production engineering", "code": {"maturity": "production", "scope": "All the code", "method": "with agents", "methodNote": "built with agents; playtesting, QA, and tuning by hand"}, "team": "Solo"}, deliveryState: "Finished + playable", evidence: [["Instrumentation", "PostHog events · HogQL leaderboard · flag · survey"], ["Verification", "Adversarial review · playtesting · headless game suite"]], roleIsEngineering: true,
         name: "HogWare",
         dates: "2026",
         role: "Product Engineer · Game Design",
@@ -2814,6 +2825,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: [["hogware.html", "Play it"], ["https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md", "Read the build log", true]]
       },
       voice_noir: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Voice-first investigation and spoken contradiction finding", "code": {"maturity": "prototype", "scope": "All the code", "method": "with agents"}, "team": "Solo"}, deliveryState: "Working exploration", evidence: [["Stack", "Web Speech API · ElevenLabs · voice UX"], ["Focus", "Speech input · synthesized voice · real-time state from speech"]], roleIsEngineering: true,
         name: "Voice Noir",
         dates: "2026",
         role: "Product Engineer · Voice UX",
@@ -2830,6 +2843,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       evolve_die_repeat: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Game design, solo", "code": {"maturity": "production", "scope": "All the code; cross-platform CI/CD", "method": "with agents"}, "team": "Solo"}, evidence: [["Stack", "Lua · Love2D"], ["Practice", "Test-driven game development · telemetry-driven iteration"]], roleIsEngineering: true,
         name: "Evolve, Die, Repeat",
         dates: "2025",
         role: "Game Design · Engineer",
@@ -2846,6 +2861,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       zodiacus: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Rulebook · most game design", "code": {"maturity": "n/a"}, "team": "A friend wrote the story"}, deliveryState: "Physical prototype · 2 playtest sessions", evidence: [["Practice", "Systems design · physical prototyping · playtesting"]],
         name: "Zodiacus",
         hero: "images/co/zodiacus.webp", // homepage band image (Chris 2026-09-22)
         dates: "2023",
@@ -2863,6 +2880,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       rat_with_wings: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Game design, solo", "code": {"maturity": "production", "scope": "All the code (Unity, C#)", "method": "by hand"}, "team": "Solo"}, deliveryState: "Playable Unity web build", evidence: [["Focus", "Game-engine fundamentals · playable web delivery"]],
         name: "Rat with Wings",
         dates: "2022",
         role: "Game Design",
@@ -2881,6 +2900,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       ai_polyglot: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"code": {"maturity": "production", "scope": "All the code", "method": "by hand"}}, deliveryState: "Shipped", evidence: [["Stack", "JavaScript · LLM APIs"], ["Focus", "First LLM API integration · prompt design · live app delivery"]], roleIsEngineering: true,
         name: "Translator: AI Polyglot",
         dates: "2024",
         role: "Product Engineer · AI",
@@ -2896,6 +2917,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: [["https://github.com/whoischrislam/ai-polyglot", "View the repo", true]]
       },
       pathstream: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · product design · motion prototypes · specs · handoff", "code": {"maturity": "production", "scope": "Small product component fixes; much of the marketing homepage CSS", "method": "by hand"}, "team": "Product · engineering · curriculum · course authors; Matt implemented the shared system"}, evidence: [["Role shape", "First design hire · lead IC · no direct reports"]], codeTag: "design + some code",
         name: "Pathstream",
         hero: "images/work/pathstream-hero.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/pathstream.svg",
@@ -2949,6 +2972,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       sharecare: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Audit · domain synthesis · product definition · end-to-end design", "code": {"maturity": "none", "scope": "No production code; engineering built the working product"}, "team": "Clinical staff · researchers · founders · product · engineering"}, evidence: [["Role shape", "Lead designer · product-direction influence"]], codeTag: "none",
         name: "doc.ai",
         hero: "images/work/omix-study-builder.png", // homepage band image (Chris 2026-09-22)
         dates: "2021",
@@ -2982,6 +3007,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       modus: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Feature design · TypeScript implementation · internal documentation", "code": {"maturity": "production", "scope": "Cross-app dark mode in production TypeScript, CI", "method": "by hand"}}, deliveryState: "Shipped to production", evidence: [["Verification", "PR review · automated tests · visual QA · existing CI/CD"], ["Reach", "Affected apps served a 500K+ installed / reachable user base"]], roleIsEngineering: true,
         name: "Modus Create",
         hero: "images/work/modus-dark-mode.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/modus-create.svg",
@@ -3040,6 +3067,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       goodrx: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product · service · interaction · visual · print · data visualization", "code": {"maturity": "production", "scope": "GoodRx Research interactives only (JavaScript, D3)", "method": "by hand"}, "team": "Research · product · pharmacy · engineering · company leadership"}, evidence: [["Role shape", "Only embedded designer on Iodine, later GoodRx North"]], codeTag: "design + some code",
         name: "GoodRx + Iodine",
         logo: "images/logos/goodrx.svg",
         hero: "images/work/goodrx-hero.png", // per-world bold hero image (Image #4); omit to fall back to the blueprint hero
@@ -3159,6 +3188,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       clover: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Field research · PRDs · interaction design · design system · visual design", "code": {"maturity": "prototype", "scope": "A Framer call-logging prototype; no production code", "method": "by hand"}}, evidence: [["When I joined", "Founder-funded · pre-Series A · second designer"], ["Focus", "Healthcare · clinical tools · member web"]], codeTag: "none",
         name: "Clover Health",
         hero: "images/work/clover-hero.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/clover-health.svg",
@@ -3178,6 +3209,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       startplaying: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · product definition · workflows · product design", "code": {"maturity": "none", "scope": "None; engineering implemented production code"}}, evidence: [["When I joined", "Post-seed · first designer"]], codeTag: "none",
         name: "StartPlaying",
         dates: "2022–2023",
         role: "Founding Product Designer",
@@ -3265,6 +3298,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       amazon: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "End-to-end product design · specs · prototypes · engineering collaboration", "code": {"maturity": "none", "scope": "None"}}, evidence: [["Chapters", "Prime intern · Games contractor · Music full-time"], ["Primary scope", "Amazon Music Importer · Windows Phone"]], codeTag: "none",
         name: "Amazon",
         logo: "images/logos/amazon.svg",
         dates: "2012–2013",
@@ -3304,6 +3339,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         actions: []
       },
       taskrabbit: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Tasker experience · mobile system", "code": {"maturity": "production", "scope": "Zendesk support portal CSS", "method": "by hand"}, "team": "Product · design · engineering"}, evidence: [["Mandate", "Rebuild a two-sided marketplace"], ["Surfaces", "iOS · Android · web · marketplace"]], codeTag: "design + some code",
         name: "TaskRabbit",
         hero: "images/craft/hero-taskrabbit.webp", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/taskrabbit.svg",
@@ -3369,6 +3406,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
     };
     var workStories = {
       y30_voice: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product, conversation design, full-stack implementation, evaluation", "code": {"maturity": "production", "scope": "All production code", "method": "with agents"}}, deliveryState: "Closed alpha, not a senior cohort pilot", evidence: [["Quality bar", "Would grandma keep talking? Would she feel heard?"], ["Method", "Configurable STT, LLM, and TTS. Latency and cost comparisons"]],
         company: "y30",
         depth: "case",
         contentType: "product-decision",
@@ -3508,6 +3547,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       y30_control: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product · conversation design · safety architecture · full-stack engineering", "code": {"maturity": "production", "scope": "All production code", "method": "with agents"}}, deliveryState: "Closed alpha · prod and dev deployments", evidence: [["Finding", "Prompt-driven required action stayed near 70% after repeated revisions"], ["Decision", "Game sequence in deterministic code · open conversation model-led"]],
         company: "y30",
         depth: "case",
         contentType: "product-decision",
@@ -3613,6 +3654,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       y30_safety: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"code": {"maturity": "production", "scope": "All production code", "method": "with agents"}, "team": "QA intern ran sessions and rated individual AI responses"}, deliveryState: "Closed alpha · smoke tests for dev and prod", evidence: [["Testing", "Manual QA · unit and scenario tests · adversarial review · live smoke"], ["Learning loop", "Review queue · approval gate · failure harvest · regression coverage"]],
         company: "y30",
         depth: "case",
         contentType: "product-decision",
@@ -3779,6 +3822,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       pathstream_lessons: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · product design · motion · specification · handoff"}, deliveryState: "Shipped: merged PR · student, instructor, author modes · mobile", evidence: [["Research", "3 test rounds · course-author co-design · support synthesis"], ["Constraint", "Live cohorts at community colleges · roughly 60–80 hours of content per course"]],
         company: "pathstream",
         depth: "case",
         slug: "lesson-system",
@@ -3850,6 +3895,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       pathstream_instructor: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · workflow definition · product design · state specification"}, deliveryState: "Design complete, queued for build", evidence: [["Research", "4+ instructor interviews · competitive review"]],
         company: "pathstream",
         depth: "project",
         slug: "instructor-tools",
@@ -3916,6 +3963,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       pathstream_foundation: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Audit · system design · visual and interaction rules", "team": "Matt implemented React · Storybook · Chromatic"}, deliveryState: "Designed; implementation started", evidence: [["Inventory", "16 colors · 12 type sizes · 11 component families"]],
         company: "pathstream",
         depth: "project",
         slug: "interface-foundation",
@@ -4016,6 +4065,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       omix_study_builder: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Sole design owner · product definition · end-to-end experience"}, deliveryState: "Built for validation · canceled before public launch", evidence: [["Starting point", "Broken workflows · inconsistent UI · unfinished designs"], ["Validation", "Working engineering build · researcher and academic feedback"]],
         company: "sharecare",
         depth: "project",
         slug: "omix-study-builder",
@@ -4194,6 +4245,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       startplaying_money: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · product definition · end-to-end product design", "code": {"maturity": "none", "scope": "None; engineering wrote production code"}, "team": "Founders · engineering · Game Masters"}, deliveryState: "Shipped marketplace system", evidence: [["Cadence", "2–3 GM / DM interviews most weeks"]],
         company: "startplaying",
         depth: "case",
         slug: "marketplace-money",
@@ -4321,6 +4374,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       iodine_product: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Only embedded designer · complete design ownership", "team": "Research · pharmacy · product · engineering"}, deliveryState: "Shipped + measured", evidence: [["Recognition", "2018 Webby · Best Health Website"], ["Surfaces", "Responsive web · service design · print system"]],
         company: "goodrx",
         depth: "case",
         slug: "iodine-product",
@@ -4383,6 +4438,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       goodrx_drug_pages: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Complete product-design ownership"}, deliveryState: "Shipped · A/B tested", evidence: [["Goal", "Improve discovery and drug coupon conversion"], ["Surfaces", "Mobile web · desktop web"]],
         company: "goodrx",
         depth: "project",
         slug: "goodrx-drug-pages",
@@ -4441,6 +4498,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       goodrx_research: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Visual design · data preparation · interactive implementation", "code": {"maturity": "production", "scope": "JavaScript · D3 · production interactives", "method": "by hand", "methodNote": "hand-coded; Marc helped integrate the work before I knew Git"}, "team": "Thomas and other researchers / writers · Marc in engineering"}, deliveryState: "Published + shipped",
         company: "goodrx",
         depth: "case",
         slug: "goodrx-research",
@@ -4520,6 +4579,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       amazon_importer: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "End-to-end product design from assigned direction through release"}, deliveryState: "Unified application shipped", evidence: [["Starting point", "2 separate live desktop applications"], ["Surfaces", "Installation · onboarding · matching · upload · download"]],
         company: "amazon",
         depth: "case",
         slug: "music-importer",
@@ -4674,6 +4735,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       amazon_windows_phone: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Entire product design", "team": "2–3 engineers · engineering manager · 1 product designer (me)"}, deliveryState: "Working alpha · later shuttered", evidence: [["Lifecycle", "Auth · browse · search · playback · playlists · downloads"]],
         company: "amazon",
         depth: "project",
         slug: "windows-phone",
@@ -4805,6 +4868,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       playsesh_whiteboard: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Company direction · product · design · hands-on implementation", "code": {"maturity": "production", "scope": "Most of the frontend", "method": "with agents"}}, deliveryState: "Launched November 2025 · remains live", evidence: [["Pivot", "Matchmaking prototype → shared Discord canvas"], ["Product", "Real-time multiplayer · persistent storage · game-native tools"]],
         company: "playsesh",
         depth: "case",
         contentType: "product-decision",
@@ -4969,6 +5034,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       playsesh_rewrite: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"code": {"maturity": "prototype", "scope": "Operation-based sync and reconnection in the rewrite", "method": "with agents"}}, deliveryState: "Substantial rewrite · incomplete · not deployed", evidence: [["Architecture", "Three.js SceneDocument · custom Durable Object sync"], ["Verification", "Full test suite · TypeScript and production builds passed"]],
         company: "playsesh",
         depth: "case",
         contentType: "product-decision",
@@ -5081,6 +5148,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       tasker: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Tasker experience", "team": "1 PM · 3 engineers · 1 designer (me)"}, deliveryState: "Shipped + measured", evidence: [["Platforms", "iOS · Android · web"]],
         company: "taskrabbit",
         depth: "case",
         slug: "tasker",
@@ -5180,6 +5249,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       client: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Direct hire · task status · search · history", "team": "Product · design · engineering"}, deliveryState: "Shipped", evidence: [["Project", "Client / V3 rebuild"]],
         company: "taskrabbit",
         depth: "project",
         slug: "client",
@@ -5242,6 +5313,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       clover_care: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research through final product design", "team": "1 PM · 3 engineers · 1 data scientist · 1 designer (me)"}, deliveryState: "Shipped + NP-reported", evidence: [["Platforms", "Responsive web · iPad"]],
         company: "clover",
         depth: "case",
         slug: "care-visit",
@@ -5311,6 +5384,8 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         ]
       },
       clover_site: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product design · coordination · visual QA", "team": "1 PM · 2–4 engineers · 1 designer (me) · internal and external partners"}, deliveryState: "Shipped", evidence: [["Platforms", "Web · out-of-home"]],
         company: "clover",
         depth: "project",
         slug: "website",
@@ -6119,6 +6194,7 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
       }
       workFocusContent.replaceChildren();
       var companyData = workProjects[company];
+      var companyConsole = buildFactConsole(companyData, companyData.result); if(companyConsole) workFocusContent.appendChild(companyConsole);
       var companyStories = Object.keys(workStories).filter(function(key){
         return workStories[key].company === company;
       });
@@ -6172,8 +6248,10 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
       if(!grid.children.length){
         // Pages without cards read like a case study: What I did, one facts row, the outcome, then the work.
         if(companyData.summary){ var nintro = document.createElement("p"); nintro.className = "work-story-intro"; nintro.textContent = companyData.summary; workFocusContent.appendChild(nintro); }
-        var band = buildFactBand(companyData); if(band) workFocusContent.appendChild(band);
-        var outcome = buildOutcomeStatement(companyData); if(outcome) workFocusContent.appendChild(outcome);
+        if(!companyConsole){
+          var band = buildFactBand(companyData); if(band) workFocusContent.appendChild(band);
+          var outcome = buildOutcomeStatement(companyData); if(outcome) workFocusContent.appendChild(outcome);
+        }
       }
       if(grid.children.length){
         var storySection = document.createElement("section");
@@ -6340,7 +6418,7 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
       // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
       // blank gap that reads as broken; hero + fact grid + actions still render above it.
       if(companyData.showChangelog) workFocusContent.appendChild(buildChangelog());
-      var credits = buildCredits(companyData.facts); if(credits) workFocusContent.appendChild(credits);
+      var credits = companyData.myPart ? null : buildCredits(companyData.facts); if(credits) workFocusContent.appendChild(credits);
       workFocusContent.hidden = !workFocusContent.children.length;
       return grid;
     }
@@ -6412,6 +6490,36 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
       if(story.result){
         var l = document.createElement("p"); l.className = "work-story-facts-label"; l.textContent = "Outcome";
         var v = document.createElement("p"); v.className = "work-story-facts-outcome"; v.textContent = result;
+        box.append(l, v);
+      }
+      return box;
+    }
+    // V4 fact console (FACT_SCHEMA_PLAN v3): ONE component for case studies, company pages and single-project pages.
+    // Fixed rows from the record's schema fields (My part, Code, With, Delivery), then up to 2 evidence rows; the outcome
+    // sits beside it. Records without myPart fall back to the old renderers.
+    var CODE_METHOD = {"by hand":"hand-coded", "with agents":"built with agents", "mixed":"hand-coded and with agents"};
+    function codeLine(code){
+      if(!code || code.maturity === "n/a") return "";
+      if(code.maturity === "none") return code.scope || "None";
+      return [code.scope, code.methodNote || CODE_METHOD[code.method]].filter(Boolean).join(" · ");
+    }
+    function buildFactConsole(rec, outcomeText){
+      if(!rec || !rec.myPart) return null;
+      var mp = rec.myPart;
+      var rows = [["My part", mp.design], ["Code", codeLine(mp.code)], ["With", mp.team], ["Delivery", publicDelivery(rec.deliveryState)]]
+        .filter(function(r){ return r[1]; });
+      var ev = (rec.evidence || []).slice(0, 2);
+      if(!rows.length && !ev.length && !outcomeText) return null;
+      var box = document.createElement("div"); box.className = "work-story-facts fact-console";
+      var dl = document.createElement("dl");
+      var addRow = function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
+        dt.textContent = r[0]; dd.textContent = String(r[1]).split(" · ").join(", "); row.append(dt, dd); dl.appendChild(row); };
+      rows.forEach(addRow);
+      if(ev.length){ if(rows.length){ var hr = document.createElement("hr"); hr.className = "fact-console-rule"; dl.appendChild(hr); } ev.forEach(addRow); }
+      if(dl.children.length) box.appendChild(dl);
+      if(outcomeText){
+        var l = document.createElement("p"); l.className = "work-story-facts-label"; l.textContent = "Outcome";
+        var v = document.createElement("p"); v.className = "work-story-facts-outcome"; v.textContent = outcomeText;
         box.append(l, v);
       }
       return box;
@@ -6759,7 +6867,7 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
       var storyNavProgress = document.createElement("span");
       storyNavProgress.className = "project-story-nav-progress";
       storyNav.append(storyNavProgress, storyNavMarker);
-      var storyCredits = buildCredits(story.facts); if(storyCredits) article.appendChild(storyCredits);
+      var storyCredits = story.myPart ? null : buildCredits(story.facts); if(storyCredits) article.appendChild(storyCredits);
       var storyEnd = buildStoryEnd(storyKey); if(storyEnd) article.appendChild(storyEnd);
       workFocusContent.appendChild(article);
       workFocusContent.hidden = false;
@@ -7161,6 +7269,9 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
         var stage = mf.find(function(f){ return /^Stage$/i.test(f[0]); });
         var parts = [shape && [null, shape[1]], stage && [null, stage[1]], !stage && item.status && [null, item.status],
           !stage && item.companyOutcome && ["Company", item.companyOutcome]].filter(Boolean);
+        // V4: the header is title + description only (Chris 2026-09-29); a record on the fact schema keeps just the
+        // company milestone here, and its role shape and stage live in the fact console.
+        if(item.myPart) parts = item.companyOutcome ? [["Company", item.companyOutcome]] : [];
         if(parts.length){
           var meta = document.createElement("p"); meta.className = "world-hero-meta";
           parts.forEach(function(pt, i){
@@ -7253,7 +7364,7 @@ body[data-world] .project-story > section.project-chapter:nth-of-type(odd){backg
       // V4: the hero and the fact console sit AFTER the band, so the band can end and the hero straddle its edge
       var storyHeading = workPanel.querySelector(".work-panel-heading");
       var storyHeroFig = buildStoryHero(story); if(storyHeroFig) storyHeading.after(storyHeroFig);
-      var storyFacts = buildStoryFacts(story); if(storyFacts) (storyHeroFig || storyHeading).after(storyFacts);
+      var storyFacts = story.myPart ? buildFactConsole(story, story.result) : buildStoryFacts(story); if(storyFacts) (storyHeroFig || storyHeading).after(storyFacts);
       workPanel.hidden = false;
     }
 
