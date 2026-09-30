@@ -14,7 +14,8 @@ WINDOW = 40  # min duplicated block size, in non-blank lines
 def tracked_sources():
     out = subprocess.run(["git", "ls-files", "*.html", "*.js"],
                          capture_output=True, text=True).stdout.split()
-    return [f for f in out if ".min." not in f and "node_modules/" not in f]
+    # lab/ holds generated preview snapshots (scripts/build-lab-preview.py), not hand-written source
+    return [f for f in out if ".min." not in f and "node_modules/" not in f and not f.startswith("lab/")]
 
 def norm_lines(path):
     lines = pathlib.Path(path).read_text(errors="replace").splitlines()
