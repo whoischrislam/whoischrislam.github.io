@@ -27,7 +27,7 @@ His exits, framed honestly and never as a trophy count: he was early at Clover H
 
 ## Case studies
 Full write-ups with artifacts, outcomes, and what went wrong. Index: https://whoischrislam.github.io/#work
-- Pathstream (2019-2020, Senior Product Design Manager, first design hire): rebuilt the core lesson experience of a live learning platform mid-cohort without forcing a rewrite of 60-80 hours of existing course content; also the Labs PRD across students, instructors, and course authors. Success metrics were written but never measured, and the page says so. https://whoischrislam.github.io/?work=pathstream&project=lesson-system#work
+- Pathstream (2019-2020, Senior Product Design Manager, first design hire): redesigned the core lesson experience of a live learning platform mid-cohort without forcing a rewrite of 60-80 hours of existing course content; also the Labs PRD across students, instructors, and course authors. Success metrics were written but never measured, and the page says so. https://whoischrislam.github.io/?work=pathstream&project=lesson-system#work
 - Iodine (2017-2018, Lead Product Designer, first full-time designer): coupon find-and-redeem flow, conversion 2% to 5%; Webby for Best Health Website 2018. https://whoischrislam.github.io/?work=goodrx&project=iodine-product#work
 - GoodRx Research (2017-2018): drug-page conversion, 10% lift mobile and 25% desktop; data visualizations referenced in the New York Times and on Good Morning America. https://whoischrislam.github.io/?work=goodrx#work
 - Clover Health Care Visit (2015-2016, Designer, second designer): nurse-practitioner home-visit app, nurses reported 1-2 hours of chart prep gone each day, time for more visits. https://whoischrislam.github.io/?work=clover&project=care-visit#work
