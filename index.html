@@ -2161,6 +2161,49 @@ body[data-world] header.world-hero :is(.visual-placeholder-note,.visual-placehol
 body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-card-ink:#ffffff;--world-accent-on-card:var(--brand-accent-dark)} /* #28 'A dark' diagrams stay dark on the foundation */
 /* one image backdrop for every card (was 11 hand-picked colors) */
 .work-project-card .work-project-card-media,.work-project-card[data-work-story] .work-project-card-media,.work-project-card[data-work-company] .work-project-card-media{background:var(--surface-2)}
+
+/* ==== TEMPLATE V4 (2026-09-29; STYLE_GRAMMAR_DRAFT + FACT_SCHEMA_PLAN v3). Extends the tame world layer above:
+   a LOUD trailer band (world color, big title), the hero straddling the band's bottom edge, the facts as one bordered
+   console beside the outcome, and a quiet middle where chapters alternate paper and the world's tint.
+   Band color: a world whose ground is near-white takes its brand color instead (PlaySesh = Grid Blue, Chris
+   2026-09-29); worlds with no palette get the blueprint slate so every header is loud. ==== */
+body[data-world]{--brand-bg:#3f6ea6;--brand-ink:#ffffff;--brand-soft:rgba(255,255,255,.84);--brand-line:rgba(255,255,255,.28)}
+body:is([data-world="goodrx"],[data-world="clover"],[data-world="pathstream"],[data-world="taskrabbit"],[data-world="sharecare"],[data-world="startplaying"],[data-world="modus"],[data-world="amazon"],[data-world="zodiacus"],[data-world="this_site"]){
+  --brand-bg:var(--world-bg);--brand-ink:var(--world-ink);--brand-soft:var(--world-ink-soft);--brand-line:var(--world-line)}
+body[data-world="playsesh"] .work-shell{--brand-bg:#4A90E2;--brand-ink:#ffffff;--brand-soft:rgba(255,255,255,.88);--brand-line:rgba(255,255,255,.3)}
+body[data-world="y30"] .work-shell{--brand-bg:#196cca;--brand-ink:#ffffff;--brand-soft:rgba(255,255,255,.86);--brand-line:rgba(255,255,255,.3)}
+body[data-world] .work-shell{--tint:color-mix(in srgb,var(--brand-bg) 10%,var(--bg))}
+:root[data-theme="dark"] body[data-world] .work-shell{--tint:color-mix(in srgb,var(--brand-bg) 14%,var(--bg))}
+/* trailer: the band is loud and tall enough for the hero to straddle it */
+body[data-world] .work-panel.is-story-view .work-panel-heading{padding-bottom:200px!important}
+body[data-world] .work-panel.is-story-view .work-panel-heading h3{font:400 var(--t-display)/1.02 var(--serif)!important;letter-spacing:-.015em;margin:0 0 22px!important;max-width:980px;text-wrap:balance}
+body[data-world] .work-panel.is-story-view .work-panel-lede{font:400 var(--t-lg)/1.45 var(--serif)!important;max-width:760px;color:var(--brand-ink)!important}
+body[data-world] .work-panel.is-story-view .work-panel-heading .work-links a,body[data-world] .work-panel.is-story-view .work-panel-heading .work-links button{color:var(--brand-ink)!important}
+body[data-world] .work-panel-body > .work-story-hero{grid-column:1/-1;margin:-160px 0 0!important;position:relative;z-index:1;border:1px solid var(--text);background:var(--surface);aspect-ratio:auto;overflow:hidden}
+body[data-world] .work-panel-body > .work-story-hero img{height:auto}
+body[data-world] header.world-hero.has-straddle{padding-bottom:200px!important}
+body[data-world] .world-hero-media.is-straddle{margin:-160px 0 0!important;position:relative;z-index:1;border:1px solid var(--text);background:var(--surface);overflow:hidden}
+body[data-world] .world-hero-media.is-straddle img{display:block;width:100%;height:auto}
+/* the fact console: outcome on the left, the facts in one bordered box on the right */
+body[data-world] .work-panel-body > .work-story-facts{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,336px);gap:0 48px;align-items:start;margin-top:48px!important}
+body[data-world] .work-panel-body > .work-story-facts > dl{grid-column:2;grid-row:1/span 3;display:block;padding:24px;border:1px solid var(--text);background:var(--surface)}
+body[data-world] .work-panel-body > .work-story-facts > dl > div + div{margin-top:14px}
+body[data-world] .work-panel-body > .work-story-facts dd{margin:0!important}
+body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-label{grid-column:1;grid-row:1}
+body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-outcome{grid-column:1;grid-row:2;font-size:var(--t-lg)!important;line-height:1.45!important}
+@media (max-width:760px){
+  body[data-world] .work-panel.is-story-view .work-panel-heading,body[data-world] header.world-hero.has-straddle{padding-bottom:120px!important}
+  body[data-world] .work-panel-body > .work-story-hero,body[data-world] .world-hero-media.is-straddle{margin-top:-90px!important}
+  body[data-world] .work-panel-body > .work-story-facts{grid-template-columns:1fr;gap:20px}
+  body[data-world] .work-panel-body > .work-story-facts > dl{grid-column:1;grid-row:auto}
+  body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-label,body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-outcome{grid-row:auto}
+  body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-label{order:1}
+  body[data-world] .work-panel-body > .work-story-facts > .work-story-facts-outcome{order:2}
+  body[data-world] .work-panel-body > .work-story-facts > dl{order:3;margin-top:4px}
+}
+/* quiet middle: chapters alternate paper and the world's tint, full bleed, plain edges (seams decided: plain) */
+body[data-world] .project-story > section.project-chapter{border-top:0!important;border-bottom:0!important;margin-top:0!important;padding-top:72px!important;padding-bottom:72px!important}
+body[data-world] .project-story > section.project-chapter:nth-of-type(odd){background:var(--tint);box-shadow:0 0 0 100vmax var(--tint);clip-path:inset(0 -100vmax)}
 </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
@@ -6672,7 +6715,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         copy.append(step, title, description);
         var media = document.createElement("div");
         media.className = "project-chapter-media";
-        (chapter.media || []).forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
+        // Unfinished work stays off the public site (Chris 2026-09-29): a bare "Visuals coming soon" placeholder (visual,
+        // no diagram, no file) is skipped, so its chapter reads as text-only. Diagrams still render.
+        (chapter.media || []).filter(function(item){ return !(item.visual && !item.diagram && !item.src && !item.explorer); })
+          .forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
         section.append(copy);
         if(media.childNodes.length) section.appendChild(media); // media: [] = a deliberate text-only chapter
         article.appendChild(section);
@@ -6768,7 +6814,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       // Chip widths change at breakpoints; re-place the marker and fill when the nav resizes.
       new ResizeObserver(function(){ if(storyRevealHandler) storyRevealHandler(); }).observe(storyNav);
       // The card's image morphs into the hero in the title band; no hero, no morph.
-      return workPanel.querySelector(".work-panel-heading .work-story-hero");
+      return workPanel.querySelector(".work-story-hero");
     }
 
     function clearProjectGallery(){
@@ -7091,6 +7137,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     function clearWorldHero(){
       var h = workPanel.querySelector(".work-panel-heading"); if(h) h.classList.remove("world-hidden");
       var ex = workPanel.querySelector(".world-hero"); if(ex) ex.remove();
+      var st = workPanel.querySelector(".world-hero-media.is-straddle"); if(st) st.remove();
     }
     function applyWorldHero(project){
       clearWorldHero();
@@ -7140,6 +7187,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       // so the composite hero stays out of the title band. Kept built (not appended) for a future opt-in.
       heading.classList.add("world-hidden");
       heading.parentNode.insertBefore(hero, heading);
+      // V4: a real hero straddles the band's bottom edge (the blueprint fallback stays out: no placeholder in the trailer)
+      if(item.hero){ m.classList.add("is-straddle"); hero.classList.add("has-straddle"); hero.after(m); }
+      workPanel.querySelectorAll(".work-story-facts, .work-story-hero").forEach(function(n){ n.remove(); });
     }
     function renderWorkPanel(project, source){
       var item = workProjects[project];
@@ -7198,10 +7248,12 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       workPanelResult.textContent = (storyStatus ? storyStatus + ". " : "") + story.result;
       workPanelActions.replaceChildren(); workPanelActions.hidden = true;
       var oldLinks = workPanel.querySelector(".work-panel-heading .work-links"); if(oldLinks) oldLinks.remove();
-      workPanel.querySelectorAll(".work-panel-heading .work-story-facts, .work-panel-heading .work-story-hero").forEach(function(n){ n.remove(); });
+      workPanel.querySelectorAll(".work-story-facts, .work-story-hero").forEach(function(n){ n.remove(); });
       var storyLinks = buildLinkLine(story.actions); if(storyLinks) workPanelLede.after(storyLinks);
-      var storyHeroFig = buildStoryHero(story); if(storyHeroFig) (storyLinks || workPanelLede).after(storyHeroFig);
-      var storyFacts = buildStoryFacts(story); if(storyFacts) (storyHeroFig || storyLinks || workPanelLede).after(storyFacts);
+      // V4: the hero and the fact console sit AFTER the band, so the band can end and the hero straddle its edge
+      var storyHeading = workPanel.querySelector(".work-panel-heading");
+      var storyHeroFig = buildStoryHero(story); if(storyHeroFig) storyHeading.after(storyHeroFig);
+      var storyFacts = buildStoryFacts(story); if(storyFacts) (storyHeroFig || storyHeading).after(storyFacts);
       workPanel.hidden = false;
     }
 
