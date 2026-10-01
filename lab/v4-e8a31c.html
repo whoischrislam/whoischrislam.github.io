@@ -2209,6 +2209,23 @@ body[data-world] .project-story > section.project-chapter{border-top:0!important
 body[data-world] .project-story > section.project-chapter:nth-of-type(odd){background:var(--tint);box-shadow:0 0 0 100vmax var(--tint);clip-path:inset(0 -100vmax)}
 body[data-world] .fact-console .fact-console-rule{border:0;border-top:1px dashed var(--border-strong);margin:18px 0}
 body[data-world] #work-focus-content > .fact-console{margin:48px 0 var(--s-group)!important}
+/* chapter shapes: the text is always the split (step left, heading + copy right, Chris 2026-09-30: "2 columns looks
+   so much better"); media sits below at content width (B, F) or beside the copy (D) */
+body[data-world] .project-story > section.project-chapter{grid-template-columns:minmax(0,1fr)!important;row-gap:40px!important}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy{display:grid;grid-template-columns:216px minmax(0,1fr);column-gap:48px;max-width:none}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > .project-chapter-step{grid-column:1;grid-row:1/span 2;padding-top:12px;align-self:start}
+body[data-world] .project-story .project-chapter-step{text-transform:none!important;letter-spacing:0!important;font:600 var(--t-sm)/1.4 var(--sans)!important;color:var(--muted)!important}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > :is(h4,p){grid-column:2}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > p{max-width:700px;font-size:var(--t-base)}
+body[data-world] .project-story > section.project-chapter[data-shape="D"]{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;column-gap:48px;align-items:center}
+body[data-world] .project-story > section.project-chapter[data-shape="D"] > .project-chapter-copy{grid-template-columns:minmax(0,1fr)}
+body[data-world] .project-story > section.project-chapter[data-shape="D"] > .project-chapter-copy > *{grid-column:1;grid-row:auto}
+body[data-world] .project-story > section.project-chapter[data-shape="D"] .story-artifact{grid-column:span 12!important}
+@media (max-width:760px){
+  body[data-world] .project-story > section.project-chapter,body[data-world] .project-story > section.project-chapter[data-shape="D"]{grid-template-columns:minmax(0,1fr)!important;row-gap:24px!important}
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr)}
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important;padding-top:0}
+}
 </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
@@ -6825,8 +6842,15 @@ body[data-world] #work-focus-content > .fact-console{margin:48px 0 var(--s-group
         media.className = "project-chapter-media";
         // Unfinished work stays off the public site (Chris 2026-09-29): a bare "Visuals coming soon" placeholder (visual,
         // no diagram, no file) is skipped, so its chapter reads as text-only. Diagrams still render.
-        (chapter.media || []).filter(function(item){ return !(item.visual && !item.diagram && !item.src && !item.explorer); })
-          .forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
+        var keptMedia = (chapter.media || []).filter(function(item){ return !(item.visual && !item.diagram && !item.src && !item.explorer); });
+        keptMedia.forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
+        // V4 chapter shape (CHAPTER_LAYOUTS_DRAFT): A = text only (split), D = one small item beside the copy,
+        // F = 3+ same-size items (gallery row), B = everything else (media below the split text). Derived, never typed.
+        var spanOf = function(it){ return Number(it.span || 6); };
+        section.dataset.shape = !keptMedia.length ? "A"
+          : (keptMedia.length === 1 && spanOf(keptMedia[0]) <= 6 && !keptMedia[0].explorer) ? "D"
+          : (keptMedia.length >= 3 && spanOf(keptMedia[0]) < 12 && keptMedia.every(function(it){ return spanOf(it) === spanOf(keptMedia[0]); })) ? "F"
+          : "B";
         section.append(copy);
         if(media.childNodes.length) section.appendChild(media); // media: [] = a deliberate text-only chapter
         article.appendChild(section);
