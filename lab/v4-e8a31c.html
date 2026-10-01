@@ -2245,6 +2245,9 @@ body[data-world][data-chv="c"] .project-story > section.project-chapter > .proje
 body[data-world][data-chv="c"] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important}
 body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy > .project-chapter-step{margin-bottom:10px!important}
 body:not([data-chv="b"]) .ch-sidenote{display:none}
+@media (max-width:1023px){ /* below laptop width the halves drop under ~50 characters per line (measured: 39 at 820px), so A stacks */
+  html body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr)!important;column-gap:0}
+  html body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important}}
 @media (max-width:760px){body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr)!important}
   body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important}
   body[data-world][data-chv="b"] .project-story .ch-sidenote{margin-top:12px}}
