@@ -38,7 +38,7 @@ h1{font:400 clamp(48px,6.6vw,96px)/1 var(--serif);margin:0 0 22px;letter-spacing
 .console{padding:24px;border:1px solid var(--ink);background:var(--card)}.console .f+.f{margin-top:14px}.console hr{border:0;border-top:1px dashed var(--line);margin:18px 0}
 /* T0 story */
 .ch{display:grid;grid-template-columns:216px minmax(0,1fr);gap:48px;padding:48px 0}.ch .st{font-size:15px;font-weight:600;color:var(--soft);padding-top:10px}
-.ch h2{font:400 34px/1.15 var(--serif);margin:0 0 14px}.ch p{max-width:700px;font-size:19px}
+.ch h2{font:400 34px/1.15 var(--serif);margin:0 0 14px}.ch.ch-stacked{grid-template-columns:minmax(0,720px);gap:10px}.ch.ch-stacked .st{padding-top:0}.ch p{max-width:700px;font-size:19px}
 /* seams */
 .seam{display:block;width:100%;height:32px}
 /* T3 showcase: stage */
@@ -131,7 +131,7 @@ const DARKB=T==='light'?'#252525':'#232428';const onDark=bg=>bg===DARKB||bg===b.
 const chsSplit=(a,startDark)=>a.map((c,i)=>{const dark=(i%2===0)===startDark;const bg=dark?DARKB:b.paper;const ink=dark?'#f1f1ee':b.ink;const soft=dark?'rgba(241,241,238,.66)':b.soft;
  return `<section style="background:${bg};color:${ink};padding:120px 0 88px"><div class="wrap chx ${LAY}"><div><p style="font-size:15px;font-weight:600;color:${soft};margin-bottom:10px">${c[0]}</p><h2 class="chh">${c[1]}</h2></div><p class="chp" style="color:${ink}">${c[2]}</p></div></section>`}).join('');
 const chs=a=>a.map(c=>{const i=_chi++;const bg=ALT==='tint'&&i%2===0?TINT:b.paper;const num=NUM==='1'?`<p class="bignum" style="font:400 120px/0.8 var(--serif);color:${_mix(bg,p.band,.35)};margin:0 0 12px">${String(i+1).padStart(2,'0')}</p>`:'';
- return `<section style="background:${bg}"><div class="wrap ch"><div class="st">${num}${c[0]}</div><div><h2>${c[1]}</h2><p>${c[2]}</p></div></div></section>`}).join('');
+ return `<section style="background:${bg}"><div class="wrap ch${LAY==='stacked'?' ch-stacked':''}"><div class="st">${num}${c[0]}</div><div><h2>${c[1]}</h2><p>${c[2]}</p></div></div></section>`}).join('');
 const brkBody=C.brk.cells?`<div class="cells">${C.brk.cells.map(c=>`<div class="cell"><p class="n">${c[0]}</p><p class="t">${c[1]}</p><p class="s">${c[2]}</p></div>`).join('')}</div>`:`<p class="big">${C.brk.big}</p>`;
 document.getElementById('app').innerHTML=`<div class="nav"><div class="wrap"><b>Chris Lam</b><span>About · Work · Resume</span></div></div>
 <header class="head hb" style="position:relative;isolation:isolate"><canvas id="amb" style="position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none"></canvas><svg id="sig" style="position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none"></svg><div class="wrap">${SHOW?`<p class="note" style="color:inherit;opacity:.85">HEADER · world color + ambient breathing pixels (every world) + the company signature (optional, set once per company)</p>`:''}<p class="back">← ${W==='playsesh'?'PlaySesh':'y30'} work</p><p class="kick">${C.kick}</p><h1>${C.title}</h1><p class="lede">${C.lede}</p></div></header>
