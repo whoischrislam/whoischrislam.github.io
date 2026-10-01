@@ -45,6 +45,11 @@ def check_fact_schema(label, rec, company):
         tag = rec.get("codeTag")
         if tag is not None and mat in CODE_TAG_BY_MATURITY and tag not in CODE_TAG_BY_MATURITY[mat]:
             out.append(f"{label} codeTag {tag!r} contradicts code maturity {mat!r}")
+    pq = rec.get("problemQuestion")
+    if pq is not None and not str(pq).rstrip().endswith("?"):
+        out.append(f"{label} problemQuestion must be a question (end with ?)")
+    if rec.get("outcomeTease") and rec.get("outcomeTease") == rec.get("result"):
+        out.append(f"{label} outcomeTease repeats result verbatim (tease and payoff are different jobs)")
     if len(rec.get("evidence") or []) > 2:
         out.append(f"{label} has more than 2 evidence rows")
     return out
