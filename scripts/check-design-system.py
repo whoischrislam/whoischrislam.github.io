@@ -30,7 +30,9 @@ dsjs = REG_SOURCE.read_text(encoding="utf-8")
 
 # --- classes DEFINED in index.html <style> blocks ---
 css = "\n".join(re.findall(r"<style[^>]*>(.*?)</style>", index, re.S))
-defined = set(re.findall(r"\.([A-Za-z_][\w-]*)", css))
+# Shared demo components keep their styles in assets/demos/*.css; their classes are defined too.
+demo_css = "\n".join(f.read_text(encoding="utf-8") for f in sorted((ROOT / "assets" / "demos").glob("*.css")))
+defined = set(re.findall(r"\.([A-Za-z_][\w-]*)", css + "\n" + demo_css))
 
 # --- classes CATALOGED by the registry ---
 cataloged = set()

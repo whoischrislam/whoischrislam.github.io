@@ -1,6 +1,12 @@
 [
  {
   "date": "2026-10-01",
+  "area": "Demos",
+  "change": "The y30 voice replay is now a shared component, like the United States of Drugs map, so any page can embed it. Application pages can now be built from one template with the map, the voice replay, and HogWare as embeddable demos.",
+  "commit": ""
+ },
+ {
+  "date": "2026-10-01",
   "area": "Case studies",
   "change": "New case-study template. A loud world-colored band with the title, and the main image straddling its edge. Then the problem, a short outcome, and a fact console: my part, the code, who I worked with, and whether it shipped. Every chapter splits 50/50 (stacked on smaller screens). A closing band carries the full outcome and what changed.",
   "commit": ""
