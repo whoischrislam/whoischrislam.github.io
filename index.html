@@ -2222,6 +2222,28 @@ body[data-world] .outcome-band-kicker,body[data-world] .outcome-band-label{margi
 body[data-world] .outcome-band-result{margin:0 0 40px;max-width:860px;font:400 var(--t-xl)/1.3 var(--serif);text-wrap:balance}
 body[data-world] .outcome-band-changed{margin:0;max-width:700px;font:400 var(--t-base)/1.6 var(--sans)}
 body[data-world] .tpl-blank{opacity:.7;font-style:italic;outline:1px dashed currentColor;outline-offset:6px}
+/* SPIKE (remove before merge): trailer layout variants for Chris (?tlv= or the switcher on lab previews).
+   a = rail: Problem + Outcome full width, facts as a hairline row beneath; b = slim box: box keeps My part / Code / With,
+   status + evidence become one quiet line under the outcome; c = 50/50 with the facts in 2 columns inside the box. */
+body[data-world][data-tlv="a"] .fact-console{grid-template-columns:minmax(0,1fr)!important;row-gap:32px}
+body[data-world][data-tlv="a"] .fact-console > .fact-console-lead{grid-column:1!important;grid-row:1!important;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;grid-auto-flow:column;column-gap:48px;align-items:start}
+body[data-world][data-tlv="a"] .fact-console > dl{grid-column:1!important;grid-row:2!important;display:grid!important;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px 32px;padding:24px 0!important;border:0!important;border-top:1px solid var(--border-strong)!important;border-bottom:1px solid var(--border-strong)!important;background:transparent!important}
+body[data-world][data-tlv="a"] .fact-console > dl > div + div{margin-top:0!important}
+body[data-world][data-tlv="a"] .fact-console .fact-console-rule{display:none}
+body[data-world][data-tlv="b"] .fact-console > dl > [data-k="Status"],body[data-world][data-tlv="b"] .fact-console > dl > [data-k="Delivery"],body[data-world][data-tlv="b"] .fact-console > dl > [data-ev],body[data-world][data-tlv="b"] .fact-console .fact-console-rule{display:none}
+body[data-world] .tlv-meta{display:none}
+body[data-world][data-tlv="b"] .tlv-meta{display:block;margin:0;font:400 var(--t-sm)/1.6 var(--sans);color:var(--muted)}
+body[data-world][data-tlv="b"] .tlv-meta b{font-weight:600;color:var(--text)}
+body[data-world][data-tlv="c"] .fact-console{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+body[data-world][data-tlv="c"] .fact-console > dl{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px 28px}
+body[data-world][data-tlv="c"] .fact-console > dl > div + div{margin-top:0!important}
+body[data-world][data-tlv="c"] .fact-console .fact-console-rule{grid-column:1/-1;margin:2px 0!important}
+body[data-world][data-tlv] .fact-console-lead .work-story-facts-label + .work-story-facts-outcome{margin-bottom:28px!important}
+body[data-world][data-tlv="a"] .fact-console-lead .work-story-facts-outcome,body[data-world][data-tlv="b"] .fact-console-lead p:nth-of-type(4),body[data-world][data-tlv="c"] .fact-console-lead p:nth-of-type(4){font-size:var(--t-xl)!important;line-height:1.3!important}
+@media (max-width:1023px){body[data-world][data-tlv] .fact-console,body[data-world][data-tlv] .fact-console > .fact-console-lead,body[data-world][data-tlv] .fact-console > dl{grid-template-columns:minmax(0,1fr)!important}
+  body[data-world][data-tlv] .fact-console > *{grid-column:1!important;grid-row:auto!important}}
+#tlv-switch{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9999;display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:6px;background:var(--text);color:var(--bg);font:400 var(--t-xs)/1 var(--sans);border-radius:6px;max-width:calc(100vw - 32px)}
+#tlv-switch button{font:inherit;color:var(--bg);background:color-mix(in srgb,var(--bg) 18%,var(--text));border:0;padding:7px 10px;border-radius:4px;cursor:pointer}#tlv-switch button.on{background:var(--accent);color:var(--on-accent)}#tlv-switch span{opacity:.7;margin-right:4px}
 </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
@@ -6079,7 +6101,7 @@ body[data-world] .tpl-blank{opacity:.7;font-style:italic;outline:1px dashed curr
       }
       workFocusContent.replaceChildren();
       var companyData = workProjects[company];
-      var companyConsole = buildFactConsole(companyData, companyData.result); if(companyConsole) workFocusContent.appendChild(companyConsole);
+      var companyConsole = buildFactConsole(companyData, companyData.result, {company: true}); if(companyConsole) workFocusContent.appendChild(companyConsole);
       var companyStories = Object.keys(workStories).filter(function(key){
         return workStories[key].company === company;
       });
@@ -6334,21 +6356,25 @@ body[data-world] .tpl-blank{opacity:.7;font-style:italic;outline:1px dashed curr
     function codeLine(code){
       if(!code || code.maturity === "n/a") return "";
       if(code.maturity === "none") return code.scope || "None";
-      return [code.scope, code.methodNote || CODE_METHOD[code.method]].filter(Boolean).join(" · ");
+      // Scope and method are different facts: two sentences, so the method never reads as one more thing coded.
+      var how = code.methodNote || CODE_METHOD[code.method] || "";
+      how = how ? how.charAt(0).toUpperCase() + how.slice(1) + "." : "";
+      return [code.scope ? code.scope.replace(/\.$/, "") + "." : "", how].filter(Boolean).join(" ");
     }
-    function buildFactConsole(rec, outcomeText){
+    function buildFactConsole(rec, outcomeText, opts){
+      opts = opts || {};
       if(!rec || !rec.myPart) return null;
       var mp = rec.myPart;
-      var rows = [["My part", mp.design], ["Code", codeLine(mp.code)], ["With", mp.team], ["Delivery", publicDelivery(rec.deliveryState)]]
+      var rows = [["My part", mp.design], ["Code", codeLine(mp.code)], ["With", mp.team], [opts.company ? "Status" : "Delivery", publicDelivery(rec.deliveryState)]]
         .filter(function(r){ return r[1]; });
       var ev = (rec.evidence || []).slice(0, 2);
       if(!rows.length && !ev.length && !outcomeText) return null;
       var box = document.createElement("div"); box.className = "work-story-facts fact-console";
       var dl = document.createElement("dl");
-      var addRow = function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
+      var addRow = function(r, isEv){ var row=document.createElement("div"); row.dataset.k = r[0]; if(isEv) row.dataset.ev = "1"; var dt=document.createElement("dt"); var dd=document.createElement("dd");
         dt.textContent = r[0]; dd.textContent = String(r[1]).split(" · ").join(", "); row.append(dt, dd); dl.appendChild(row); };
-      rows.forEach(addRow);
-      if(ev.length){ if(rows.length){ var hr = document.createElement("hr"); hr.className = "fact-console-rule"; dl.appendChild(hr); } ev.forEach(addRow); }
+      rows.forEach(function(r){ addRow(r); });
+      if(ev.length){ if(rows.length){ var hr = document.createElement("hr"); hr.className = "fact-console-rule"; dl.appendChild(hr); } ev.forEach(function(r){ addRow(r, true); }); }
       if(dl.children.length) box.appendChild(dl);
       // Trailer (STYLE_GRAMMAR_DRAFT "trailer framing"): Problem as a question, then the outcome TEASE; the full outcome
       // pays off in the closing band. Both lines are Chris's; until written, the public page falls back to the record's
@@ -8643,4 +8669,17 @@ document.body.classList.add('fx-dissolve','skin-digital');
 <!-- Hidden design-system catalog. Loads ONLY on ?ds; no-op (and no requests) for normal visitors.
      Renders components with the site's own classes so the catalog is the live CSS. -->
 <script>if(/[?&]ds\b/.test(location.search)){var d=document.createElement('link');d.rel='stylesheet';d.href='assets/ds/design-system.css';document.head.appendChild(d);var s=document.createElement('script');s.src='assets/ds/design-system.js';s.defer=true;document.body.appendChild(s);}</script>
+<script>/* SPIKE (remove before merge): trailer layout switcher, lab previews and ?tlv= only */
+(function(){var q=new URLSearchParams(location.search);if(!(/\/lab\//.test(location.pathname)||q.has("tlv")))return;
+ var v=q.get("tlv");try{v=v||sessionStorage.getItem("tlv")}catch(e){}v=v||"cur";
+ function meta(){document.querySelectorAll(".fact-console").forEach(function(c){if(c.querySelector(".tlv-meta"))return;var lead=c.querySelector(".fact-console-lead");if(!lead)return;
+  var parts=[].slice.call(c.querySelectorAll('dl > [data-k="Status"],dl > [data-k="Delivery"],dl > [data-ev]')).map(function(r){return "<b>"+r.querySelector("dt").textContent+":</b> "+r.querySelector("dd").textContent});
+  if(!parts.length)return;var p=document.createElement("p");p.className="tlv-meta";p.innerHTML=parts.join(" &nbsp;·&nbsp; ");lead.appendChild(p)})}
+ function apply(x){v=x;if(x==="cur")document.body.removeAttribute("data-tlv");else document.body.setAttribute("data-tlv",x);try{sessionStorage.setItem("tlv",x)}catch(e){}meta();
+  document.querySelectorAll("#tlv-switch button").forEach(function(b){b.classList.toggle("on",b.dataset.v===x)})}
+ var w=document.createElement("div");w.id="tlv-switch";w.innerHTML="<span>Trailer</span>";
+ [["cur","Current"],["a","A · rail below"],["b","B · slim box"],["c","C · 50/50, 2-col box"]].forEach(function(o){var b=document.createElement("button");b.type="button";b.dataset.v=o[0];b.textContent=o[1];b.onclick=function(){apply(o[0])};w.appendChild(b)});
+ document.body.appendChild(w);apply(v);
+ new MutationObserver(function(){meta()}).observe(document.body,{childList:true,subtree:true});
+})();</script>
 </body></html>
