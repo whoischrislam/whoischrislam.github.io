@@ -14,13 +14,10 @@
   var REG=[
     {id:'co-band',label:'World band (homepage)',sel:'.co-band',src:'home',grp:'Templated'},
     {id:'world-hero',label:'Title band (world layer, tame)',sel:'.world-hero',src:'company',grp:'Templated'},
-    {id:'work-fact-band',label:'Facts row (pages without cards)',sel:'.work-fact-band',src:'nocards',grp:'Templated'},
-    {id:'work-outcome-statement',label:'Outcome statement (pages without cards)',sel:'.work-outcome-statement',src:'nocards',grp:'Templated'},
     {id:'work-links',label:'Links to live work (title band; ↗ leaves the site)',sel:'.work-links',src:'company',grp:'Templated'},
     {id:'work-story-facts',label:'Fact console: Problem + outcome teaser beside My part / Code / With / Delivery + 2 evidence rows (every page type)',sel:'.work-story-facts',src:'casestudy',grp:'Templated'},
     {id:'outcome-band',label:'Closing outcome band: full outcome + What changed, world color (renders once Chris writes a teaser or What changed)',sel:'.outcome-band',src:'casestudy',grp:'Templated'},
     {id:'work-story-hero',label:'Case study hero (16:9 frame in the title band)',sel:'.work-story-hero',src:'casestudy',grp:'Templated'},
-    {id:'work-credits',label:'Credits (people and code boundaries, end of page)',sel:'.work-credits',src:'company',grp:'Templated'},
     {id:'work-changelog',label:'Recent changes (living log, from changelog.json)',sel:'.work-changelog',src:'thissite',grp:'Templated'},
     {id:'work-panel-facts',label:'Fact grid / spec panel',sel:'.work-panel-facts',src:'company',grp:'Templated',wrap:'work-panel is-company-view',wrapId:'work-panel'},
     {id:'work-support',label:'Also shipped (unified schedule)',sel:'.work-support-row',src:'company',grp:'Templated'},
