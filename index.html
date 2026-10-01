@@ -2209,50 +2209,30 @@ body[data-world] .project-story > section.project-chapter{border-top:0!important
 body[data-world] .project-story > section.project-chapter:nth-of-type(odd){background:var(--tint);box-shadow:0 0 0 100vmax var(--tint);clip-path:inset(0 -100vmax)}
 body[data-world] .fact-console .fact-console-rule{border:0;border-top:1px dashed var(--border-strong);margin:18px 0}
 body[data-world] #work-focus-content > .fact-console{margin:48px 0 var(--s-group)!important}
-/* chapter shapes (CHAPTER_LAYOUTS_DRAFT): A text only = the split (step left, heading + copy right; Chris 2026-09-30
-   "2 columns looks so much better"); B/F = stacked (step, heading, copy) with media below at content width; D = copy
-   beside one small item. The split is for A ONLY: with a visual below it reads as a broken grid (Chris 2026-09-30). */
+/* chapter text (BASELINE, Chris 2026-09-30, picked from rendered A/B/C): ONE grid on every chapter, the 50/50 split.
+   Step + heading in the left half, copy in the right half, both on the content edges, so media below (full content
+   width) shares the same left edge. Below 1024px the halves fall under ~50 characters per line (measured 39 at 820),
+   so the text stacks. D (one small item) keeps copy beside the media. */
 body[data-world] .project-story > section.project-chapter{grid-template-columns:minmax(0,1fr)!important;row-gap:40px!important}
-body[data-world] .project-story > section.project-chapter[data-shape="A"] > .project-chapter-copy{display:grid;grid-template-columns:216px minmax(0,1fr);column-gap:48px;max-width:none}
-body[data-world] .project-story > section.project-chapter[data-shape="A"] > .project-chapter-copy > .project-chapter-step{grid-column:1;grid-row:1/span 2;padding-top:12px;align-self:start}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:48px;max-width:none}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > .project-chapter-step{grid-column:1;grid-row:1;margin-bottom:10px!important}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > h4{grid-column:1;grid-row:2;margin-top:0!important}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > p{grid-column:2;grid-row:1/span 2;padding-top:6px;font-size:var(--t-base)}
 body[data-world] .project-story .project-chapter-step{text-transform:none!important;letter-spacing:0!important;font:600 var(--t-sm)/1.4 var(--sans)!important;color:var(--muted)!important}
-body[data-world] .project-story > section.project-chapter[data-shape="A"] > .project-chapter-copy > :is(h4,p){grid-column:2}
-body[data-world] .project-story > section.project-chapter > .project-chapter-copy > p{max-width:700px;font-size:var(--t-base)}
-body[data-world] .project-story > section.project-chapter:not([data-shape="A"]) > .project-chapter-copy{max-width:760px}
-body[data-world] .project-story > section.project-chapter:not([data-shape="A"]) .project-chapter-step{margin-bottom:10px!important}
 body[data-world] .project-story > section.project-chapter[data-shape="D"]{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;column-gap:48px;align-items:center}
 body[data-world] .project-story > section.project-chapter[data-shape="D"] > .project-chapter-copy{grid-template-columns:minmax(0,1fr)}
 body[data-world] .project-story > section.project-chapter[data-shape="D"] > .project-chapter-copy > *{grid-column:1;grid-row:auto}
 body[data-world] .project-story > section.project-chapter[data-shape="D"] .story-artifact{grid-column:span 12!important}
+@media (max-width:1023px){
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr);column-gap:0}
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important;padding-top:0}
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy > p{max-width:700px}
+}
 @media (max-width:760px){
   body[data-world] .project-story > section.project-chapter,body[data-world] .project-story > section.project-chapter[data-shape="D"]{grid-template-columns:minmax(0,1fr)!important;row-gap:24px!important}
   body[data-world] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr)}
   body[data-world] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important;padding-top:0}
 }
-/* SPIKE (remove before merge): chapter-grid variants for Chris to flip on the preview (?chv= or the switcher).
-   a = 50/50 split on every chapter; b = stacked + right margin note; c = stacked everywhere. */
-body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy{display:grid!important;max-width:none!important;column-gap:48px}
-body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy > *{grid-row:auto!important;padding-top:0!important}
-body[data-world][data-chv="a"] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
-body[data-world][data-chv="a"] .project-story > section.project-chapter > .project-chapter-copy > .project-chapter-step{grid-column:1!important;grid-row:1!important;margin-bottom:10px!important}
-body[data-world][data-chv="a"] .project-story > section.project-chapter > .project-chapter-copy > h4{grid-column:1!important;grid-row:2!important;margin-top:0!important}
-body[data-world][data-chv="a"] .project-story > section.project-chapter > .project-chapter-copy > p{grid-column:2!important;grid-row:1/span 2!important;padding-top:6px!important}
-body[data-world][data-chv="b"] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,700px) minmax(0,1fr)!important}
-body[data-world][data-chv="b"] .project-story > section.project-chapter > .project-chapter-copy > :not(.ch-sidenote){grid-column:1!important}
-body[data-world][data-chv="b"] .project-story .ch-sidenote{grid-column:2!important;grid-row:1/span 3!important;align-self:start;margin-top:38px;padding:16px 18px;border-left:2px solid var(--world-accent,var(--accent));font:400 var(--t-sm)/1.5 var(--sans);color:var(--muted)}
-body[data-world][data-chv="b"] .project-story .ch-sidenote b{display:block;font-weight:600;color:var(--text);margin-bottom:4px}
-body[data-world][data-chv="c"] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,760px)!important}
-body[data-world][data-chv="c"] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important}
-body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy > .project-chapter-step{margin-bottom:10px!important}
-body:not([data-chv="b"]) .ch-sidenote{display:none}
-@media (max-width:1023px){ /* below laptop width the halves drop under ~50 characters per line (measured: 39 at 820px), so A stacks */
-  html body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr)!important;column-gap:0}
-  html body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important}}
-@media (max-width:760px){body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr)!important}
-  body[data-world][data-chv] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important}
-  body[data-world][data-chv="b"] .project-story .ch-sidenote{margin-top:12px}}
-#chv-switch{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:9999;display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:6px;background:var(--text);color:var(--bg);font:400 var(--t-xs)/1 var(--sans);border-radius:6px;max-width:calc(100vw - 32px)}
-#chv-switch button{font:inherit;color:var(--bg);background:color-mix(in srgb,var(--bg) 18%,var(--text));border:0;padding:7px 10px;border-radius:4px;cursor:pointer}#chv-switch button.on{background:var(--accent);color:var(--on-accent)}#chv-switch span{opacity:.7;margin-right:4px}
 </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
@@ -8841,15 +8821,4 @@ document.body.classList.add('fx-dissolve','skin-digital');
 <!-- Hidden design-system catalog. Loads ONLY on ?ds; no-op (and no requests) for normal visitors.
      Renders components with the site's own classes so the catalog is the live CSS. -->
 <script>if(/[?&]ds\b/.test(location.search)){var d=document.createElement('link');d.rel='stylesheet';d.href='assets/ds/design-system.css';document.head.appendChild(d);var s=document.createElement('script');s.src='assets/ds/design-system.js';s.defer=true;document.body.appendChild(s);}</script>
-<script>/* SPIKE (remove before merge): chapter-grid variant switcher, shown on lab previews and with ?chv= */
-(function(){var q=new URLSearchParams(location.search);var on=/\/lab\//.test(location.pathname)||q.has("chv");if(!on)return;
- var v=q.get("chv");try{v=v||sessionStorage.getItem("chv")}catch(e){}v=v||"cur";
- function apply(x){v=x;if(x==="cur")document.body.removeAttribute("data-chv");else document.body.setAttribute("data-chv",x);try{sessionStorage.setItem("chv",x)}catch(e){}
-  document.querySelectorAll("#chv-switch button").forEach(function(b){b.classList.toggle("on",b.dataset.v===x)});
-  document.querySelectorAll(".project-chapter-copy").forEach(function(c){if(!c.querySelector(".ch-sidenote")){var n=document.createElement("aside");n.className="ch-sidenote";n.innerHTML="<b>Side note (blank)</b>[the decision, a number, or what was rejected: you write]";c.appendChild(n)}})}
- var w=document.createElement("div");w.id="chv-switch";w.innerHTML="<span>Chapters</span>";
- [["cur","Current"],["a","A · 50/50 split"],["b","B · stacked + note"],["c","C · stacked"]].forEach(function(o){var b=document.createElement("button");b.type="button";b.dataset.v=o[0];b.textContent=o[1];b.onclick=function(){apply(o[0])};w.appendChild(b)});
- document.body.appendChild(w);apply(v);
- new MutationObserver(function(){if(document.querySelector(".project-chapter-copy:not(:has(.ch-sidenote))"))apply(v)}).observe(document.getElementById("work-focus-content")||document.body,{childList:true,subtree:false});
-})();</script>
 </body></html>
