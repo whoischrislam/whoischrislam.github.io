@@ -2192,17 +2192,15 @@ body[data-world] .fact-console{display:grid;grid-template-columns:minmax(0,1fr) 
 body[data-world] .fact-console > dl{grid-column:2;grid-row:1/span 3;display:block;padding:24px;border:1px solid var(--text);background:var(--surface)}
 body[data-world] .fact-console > dl > div + div{margin-top:14px}
 body[data-world] .fact-console dd{margin:0!important}
-body[data-world] .fact-console > .work-story-facts-label{grid-column:1;grid-row:1}
-body[data-world] .fact-console > .work-story-facts-outcome{grid-column:1;grid-row:2;font-size:var(--t-lg)!important;line-height:1.45!important}
+body[data-world] .fact-console > .fact-console-lead{grid-column:1;grid-row:1}
+body[data-world] .fact-console .work-story-facts-outcome{font-size:var(--t-lg)!important;line-height:1.45!important;margin:0 0 28px!important}
 @media (max-width:760px){
   body[data-world] .work-panel.is-story-view .work-panel-heading,body[data-world] header.world-hero.has-straddle{padding-bottom:120px!important}
   body[data-world] .work-panel-body > .work-story-hero,body[data-world] .world-hero-media.is-straddle{margin-top:-90px!important}
   body[data-world] .fact-console{grid-template-columns:1fr;gap:20px}
   body[data-world] .fact-console > dl{grid-column:1;grid-row:auto}
-  body[data-world] .fact-console > .work-story-facts-label,body[data-world] .fact-console > .work-story-facts-outcome{grid-row:auto}
-  body[data-world] .fact-console > .work-story-facts-label{order:1}
-  body[data-world] .fact-console > .work-story-facts-outcome{order:2}
-  body[data-world] .fact-console > dl{order:3;margin-top:4px}
+  body[data-world] .fact-console > .fact-console-lead{grid-row:auto;order:1}
+  body[data-world] .fact-console > dl{order:2;margin-top:4px}
 }
 /* quiet middle: chapters alternate paper and the world's tint, full bleed, plain edges (seams decided: plain) */
 body[data-world] .project-story > section.project-chapter{border-top:0!important;border-bottom:0!important;margin-top:0!important;padding-top:72px!important;padding-bottom:72px!important}
@@ -2233,6 +2231,12 @@ body[data-world] .project-story > section.project-chapter[data-shape="D"] .story
   body[data-world] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr)}
   body[data-world] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important;padding-top:0}
 }
+/* closing outcome band: world color, full bleed, the payoff (seam: plain until the outcome-seam call is made) */
+body[data-world] .project-story > .outcome-band{position:relative;margin-top:0;padding:72px 0;background:var(--brand-bg);color:var(--brand-ink);box-shadow:0 0 0 100vmax var(--brand-bg);clip-path:inset(0 -100vmax)}
+body[data-world] .outcome-band-kicker,body[data-world] .outcome-band-label{margin:0 0 10px;font:600 var(--t-sm)/1.4 var(--sans);color:var(--brand-soft)}
+body[data-world] .outcome-band-result{margin:0 0 40px;max-width:860px;font:400 var(--t-xl)/1.3 var(--serif);text-wrap:balance}
+body[data-world] .outcome-band-changed{margin:0;max-width:700px;font:400 var(--t-base)/1.6 var(--sans)}
+body[data-world] .tpl-blank{opacity:.7;font-style:italic;outline:1px dashed currentColor;outline-offset:6px}
 </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
@@ -6521,6 +6525,8 @@ body[data-world] .project-story > section.project-chapter[data-shape="D"] .story
     // V4 fact console (FACT_SCHEMA_PLAN v3): ONE component for case studies, company pages and single-project pages.
     // Fixed rows from the record's schema fields (My part, Code, With, Delivery), then up to 2 evidence rows; the outcome
     // sits beside it. Records without myPart fall back to the old renderers.
+    // Copy blanks (Chris's unwritten lines) show only on lab previews and localhost, never on the public site.
+    var SHOW_COPY_BLANKS = /\/lab\//.test(location.pathname) || location.hostname === "localhost";
     var CODE_METHOD = {"by hand":"hand-coded", "with agents":"built with agents", "mixed":"hand-coded and with agents"};
     function codeLine(code){
       if(!code || code.maturity === "n/a") return "";
@@ -6541,12 +6547,38 @@ body[data-world] .project-story > section.project-chapter[data-shape="D"] .story
       rows.forEach(addRow);
       if(ev.length){ if(rows.length){ var hr = document.createElement("hr"); hr.className = "fact-console-rule"; dl.appendChild(hr); } ev.forEach(addRow); }
       if(dl.children.length) box.appendChild(dl);
-      if(outcomeText){
-        var l = document.createElement("p"); l.className = "work-story-facts-label"; l.textContent = "Outcome";
-        var v = document.createElement("p"); v.className = "work-story-facts-outcome"; v.textContent = outcomeText;
-        box.append(l, v);
-      }
+      // Trailer (STYLE_GRAMMAR_DRAFT "trailer framing"): Problem as a question, then the outcome TEASE; the full outcome
+      // pays off in the closing band. Both lines are Chris's; until written, the public page falls back to the record's
+      // result and shows no Problem, and a preview shows a marked blank.
+      var col = document.createElement("div"); col.className = "fact-console-lead";
+      var addLead = function(label, text, blank){
+        if(!text && !(blank && SHOW_COPY_BLANKS)) return;
+        var l = document.createElement("p"); l.className = "work-story-facts-label"; l.textContent = label;
+        var v = document.createElement("p"); v.className = "work-story-facts-outcome" + (text ? "" : " tpl-blank"); v.textContent = text || blank;
+        col.append(l, v);
+      };
+      addLead("Problem", rec.problemQuestion, "[Problem, as a question: you write]");
+      addLead("Outcome", rec.outcomeTease || outcomeText, "[Outcome teaser, one line: you write]");
+      if(col.children.length) box.appendChild(col);
       return box;
+    }
+    // Closing outcome band (tier 2): the payoff. Full outcome + "What changed" (Chris's line). On the public page it
+    // renders only when it adds something the trailer did not already say (a teaser exists, or "What changed" exists).
+    function buildOutcomeBand(rec){
+      if(!rec) return null;
+      var adds = rec.outcomeTease || rec.whatChanged;
+      if(!adds && !SHOW_COPY_BLANKS) return null;
+      var band = document.createElement("section"); band.className = "outcome-band"; band.setAttribute("aria-label", "Outcome");
+      var k = document.createElement("p"); k.className = "outcome-band-kicker"; k.textContent = publicDelivery(rec.deliveryState) || "Outcome";
+      var h = document.createElement("p"); h.className = "outcome-band-result"; h.textContent = rec.result || "";
+      band.append(k, h);
+      if(rec.whatChanged || SHOW_COPY_BLANKS){
+        var wl = document.createElement("p"); wl.className = "outcome-band-label"; wl.textContent = "What changed";
+        var wv = document.createElement("p"); wv.className = "outcome-band-changed" + (rec.whatChanged ? "" : " tpl-blank");
+        wv.textContent = rec.whatChanged || "[What changed, or what you learned: you write]";
+        band.append(wl, wv);
+      }
+      return band;
     }
     // Links to live work (L2): one quiet line in the title band. ↗ marks a link that leaves the site.
     function buildLinkLine(actions){
@@ -6898,6 +6930,7 @@ body[data-world] .project-story > section.project-chapter[data-shape="D"] .story
       var storyNavProgress = document.createElement("span");
       storyNavProgress.className = "project-story-nav-progress";
       storyNav.append(storyNavProgress, storyNavMarker);
+      var outcomeBand = story.myPart ? buildOutcomeBand(story) : null; if(outcomeBand) article.appendChild(outcomeBand);
       var storyCredits = story.myPart ? null : buildCredits(story.facts); if(storyCredits) article.appendChild(storyCredits);
       var storyEnd = buildStoryEnd(storyKey); if(storyEnd) article.appendChild(storyEnd);
       workFocusContent.appendChild(article);
