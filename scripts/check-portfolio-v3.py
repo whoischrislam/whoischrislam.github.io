@@ -21,6 +21,38 @@ from typing import Any
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 ALLOWED_PLACEHOLDERS = {"READY", "CURATE", "CAPTURE", "RECREATE", "TEXT ONLY"}
 ALLOWED_PORTFOLIO_SHAPES = {"company", "founder"}
+
+# Fixed fact schema (FACT_SCHEMA_PLAN v3, template-v4 cutover 2026-09-30). BLOCKING: the old free-form `facts` arrays are
+# retired (the fact console renders myPart / deliveryState / evidence), and the code facts must be self-consistent.
+CODE_MATURITY = {"none", "prototype", "production", "n/a"}
+CODE_METHOD = {"by hand", "with agents", "mixed"}
+CODE_TAG_BY_MATURITY = {"none": {"none"}, "prototype": {"none"}, "n/a": {"none"},
+                        "production": {"design + code", "design + some code"}}
+def check_fact_schema(label, rec, company):
+    out = []
+    if "facts" in rec:
+        out.append(f"{label} still has the retired `facts` array (use myPart / deliveryState / evidence)")
+    mp = rec.get("myPart")
+    if not isinstance(mp, dict):
+        return out + [f"{label} is missing myPart (the fact console)"]
+    code = mp.get("code")
+    if code is not None:
+        mat = code.get("maturity")
+        if mat not in CODE_MATURITY:
+            out.append(f"{label} myPart.code.maturity {mat!r} is not one of {sorted(CODE_MATURITY)}")
+        if mat in ("prototype", "production") and code.get("method") not in CODE_METHOD:
+            out.append(f"{label} myPart.code.method must be one of {sorted(CODE_METHOD)} when maturity is {mat}")
+        tag = rec.get("codeTag")
+        if tag is not None and mat in CODE_TAG_BY_MATURITY and tag not in CODE_TAG_BY_MATURITY[mat]:
+            out.append(f"{label} codeTag {tag!r} contradicts code maturity {mat!r}")
+    pq = rec.get("problemQuestion")
+    if pq is not None and not str(pq).rstrip().endswith("?"):
+        out.append(f"{label} problemQuestion must be a question (end with ?)")
+    if rec.get("outcomeTease") and rec.get("outcomeTease") == rec.get("result"):
+        out.append(f"{label} outcomeTease repeats result verbatim (tease and payoff are different jobs)")
+    if len(rec.get("evidence") or []) > 2:
+        out.append(f"{label} has more than 2 evidence rows")
+    return out
 ALLOWED_CONTENT_TYPES = {"project", "product-decision"}
 
 
@@ -218,7 +250,8 @@ def main() -> int:
         for field in ("name", "summary", "result", "actions"):
             if field not in project:
                 failures.append(f"company {key} is missing {field}")
-        missing_scan = [field for field in ("dates", "role", "context", "facts") if field not in project]
+        missing_scan = [field for field in ("dates", "role", "context") if field not in project]
+        failures.extend(check_fact_schema(f"company {key}", project, company=True))
         if missing_scan:
             warnings.append(
                 f"company {key} still uses the compact fallback; missing {', '.join(missing_scan)}"
@@ -235,6 +268,7 @@ def main() -> int:
 
     slugs: dict[str, str] = {}
     for key, story in stories.items():
+        failures.extend(check_fact_schema(f"story {key}", story, company=False))
         for field in ("company", "slug", "name", "delivery", "summary", "result", "chapters"):
             if field not in story:
                 failures.append(f"story {key} is missing {field}")

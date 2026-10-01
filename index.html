@@ -919,14 +919,6 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
   #work-focus-content .work-project-grid:has(>.work-project-card:nth-child(3))::-webkit-scrollbar{display:none}
   #work-focus-content .work-project-grid:has(>.work-project-card:nth-child(3))>.work-project-card{scroll-snap-align:start}
 }
-/* Company page fact band (Role / When / Owned / Outcome) and the folded role details */
-.work-fact-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--s-item,24px);margin:var(--s-group,64px) 0 0;
-  padding:var(--s-item,24px) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.work-fact-band dt{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
-.work-fact-band dd{margin:0;font:400 var(--t-base)/1.5 var(--sans);color:var(--text)}
-.work-outcome-statement{margin:var(--s-group,64px) 0 0}
-.work-outcome-statement-label{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
-.work-outcome-statement-value{margin:0;font:400 var(--t-xl)/1.25 var(--serif);color:var(--text)}
 .work-changelog{margin-top:var(--s-section,128px)}
 .work-changelog h4{font:400 var(--t-xxl)/1.12 var(--serif);margin:0 0 var(--s-item,24px)}
 .work-changelog .work-panel-facts{display:block!important;border-top:1px solid var(--border)}
@@ -935,8 +927,6 @@ body[data-world] .project-story-nav{top:var(--navline-h,57px)} /* docks just und
 .work-changelog dd{margin:0;font:400 var(--t-base)/1.55 var(--sans);color:var(--text);max-width:none}
 .work-panel.is-company-view .work-panel-brief{display:none}
 /* the band introduces the projects directly (as approved): no second heading + intro between them */
-.work-fact-band + .work-story-section .work-story-section-head{display:none}
-.work-fact-band + .work-story-section{margin-top:0!important;padding-top:0!important;border-top:0!important}
 /* Company page with cards (Chris 2026-09-24, B2 + D2 + credits): role and dates in the kicker, role shape / stage /
    milestone in one meta line, "What I did" introduces the cards, people and code boundaries close the page. */
 .world-hero-meta{margin:var(--s-item,24px) 0 0;font:600 var(--t-xs)/1.4 var(--sans);letter-spacing:.02em;color:var(--world-ink)}
@@ -970,11 +960,6 @@ body[data-world] .work-panel.is-story-view .work-panel-heading{margin-top:0!impo
 .work-panel-heading .work-story-hero{grid-column:1/-1;margin:var(--s-group,64px) 0 0!important;aspect-ratio:16/9;border:1px solid var(--world-line,var(--border));overflow:hidden}
 .work-story-hero img{display:block;width:100%;height:100%;object-fit:contain}
 .project-story-nav{margin-top:var(--s-group,64px)}
-.work-credits{margin-top:var(--s-section,128px);padding-top:var(--s-item,24px);border-top:1px solid var(--border)}
-.work-credits-title{margin:0 0 var(--s-item,24px)!important;font:600 var(--t-xs)/1.3 var(--sans)!important;font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
-.work-credits dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s-item,24px) var(--s-group,64px);margin:0}
-.work-credits dt{margin:0 0 var(--s-in,8px);font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--muted)}
-.work-credits dd{margin:0;font:400 var(--t-sm)/1.5 var(--sans);color:var(--text)}
 /* Case study (S2L): the summary is the one-liner in the title band; the facts read as one row */
 .work-panel-lede{margin:var(--s-item,24px) 0 0;font:400 var(--t-base)/1.55 var(--sans)}
 .work-panel.is-story-view .work-panel-facts{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))!important;gap:var(--s-item,24px);
@@ -2161,6 +2146,98 @@ body[data-world] header.world-hero :is(.visual-placeholder-note,.visual-placehol
 body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-card-ink:#ffffff;--world-accent-on-card:var(--brand-accent-dark)} /* #28 'A dark' diagrams stay dark on the foundation */
 /* one image backdrop for every card (was 11 hand-picked colors) */
 .work-project-card .work-project-card-media,.work-project-card[data-work-story] .work-project-card-media,.work-project-card[data-work-company] .work-project-card-media{background:var(--surface-2)}
+
+/* ==== TEMPLATE V4 (2026-09-29; STYLE_GRAMMAR_DRAFT + FACT_SCHEMA_PLAN v3). Extends the tame world layer above:
+   a LOUD trailer band (world color, big title), the hero straddling the band's bottom edge, the facts as one bordered
+   console beside the outcome, and a quiet middle where chapters alternate paper and the world's tint.
+   Band color: a world whose ground is near-white takes its brand color instead (PlaySesh = Grid Blue, Chris
+   2026-09-29); worlds with no palette get the blueprint slate so every header is loud. ==== */
+body[data-world]{--brand-bg:#3f6ea6;--brand-ink:#ffffff;--brand-soft:rgba(255,255,255,.84);--brand-line:rgba(255,255,255,.28)}
+body:is([data-world="goodrx"],[data-world="clover"],[data-world="pathstream"],[data-world="taskrabbit"],[data-world="sharecare"],[data-world="startplaying"],[data-world="modus"],[data-world="amazon"],[data-world="zodiacus"],[data-world="this_site"]){
+  --brand-bg:var(--world-bg);--brand-ink:var(--world-ink);--brand-soft:var(--world-ink-soft);--brand-line:var(--world-line)}
+body[data-world="playsesh"] .work-shell{--brand-bg:#4A90E2;--brand-ink:#ffffff;--brand-soft:rgba(255,255,255,.88);--brand-line:rgba(255,255,255,.3)}
+body[data-world="y30"] .work-shell{--brand-bg:#196cca;--brand-ink:#ffffff;--brand-soft:rgba(255,255,255,.86);--brand-line:rgba(255,255,255,.3)}
+body[data-world] .work-shell{--tint:color-mix(in srgb,var(--brand-bg) 10%,var(--bg))}
+/* dark theme: near-black brand grounds would vanish on the dark page, so they lift one step (per-world pass may retune) */
+:root[data-theme="dark"] body[data-world="amazon"] .work-shell{--brand-bg:#232f3e}
+:root[data-theme="dark"] body[data-world="modus"] .work-shell{--brand-bg:#2a2f36}
+:root[data-theme="dark"] body[data-world] .work-shell{--tint:color-mix(in srgb,var(--brand-bg) 14%,var(--bg))}
+/* trailer: the band is loud and tall enough for the hero to straddle it */
+body[data-world] .work-panel.is-story-view .work-panel-heading{padding-bottom:200px!important}
+body[data-world] .work-panel.is-story-view .work-panel-heading h3{font:400 var(--t-display)/1.02 var(--serif)!important;letter-spacing:-.015em;margin:0 0 22px!important;max-width:980px;text-wrap:balance}
+body[data-world] .work-panel.is-story-view .work-panel-lede{font:400 var(--t-lg)/1.45 var(--serif)!important;max-width:760px;color:var(--brand-ink)!important}
+body[data-world] .work-panel.is-story-view .work-panel-heading .work-links a,body[data-world] .work-panel.is-story-view .work-panel-heading .work-links button{color:var(--brand-ink)!important}
+body[data-world] .work-panel-body > .work-story-hero{grid-column:1/-1;margin:-160px 0 0!important;position:relative;z-index:1;border:1px solid var(--text);background:var(--surface);aspect-ratio:auto;overflow:hidden}
+body[data-world] .work-panel-body > .work-story-hero img{height:auto}
+body[data-world] header.world-hero.has-straddle{padding-bottom:200px!important}
+body[data-world] .world-hero-media.is-straddle{margin:-160px 0 0!important;position:relative;z-index:1;border:1px solid var(--text);background:var(--surface);overflow:hidden}
+body[data-world] .world-hero-media.is-straddle img{display:block;width:100%;height:auto}
+/* the fact console: outcome on the left, the facts in one bordered box on the right */
+body[data-world] .fact-console{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,336px);gap:0 48px;align-items:start;margin-top:48px!important}
+body[data-world] .fact-console > dl{grid-column:2;grid-row:1/span 3;display:block;padding:24px;border:1px solid var(--text);background:var(--surface)}
+body[data-world] .fact-console > dl > div + div{margin-top:14px}
+body[data-world] .fact-console dd{margin:0!important}
+body[data-world] .fact-console > .fact-console-lead{grid-column:1;grid-row:1}
+body[data-world] .fact-console .work-story-facts-outcome{font-size:var(--t-lg)!important;line-height:1.45!important;margin:0 0 28px!important}
+@media (max-width:760px){
+  body[data-world] .work-panel.is-story-view .work-panel-heading,body[data-world] header.world-hero.has-straddle{padding-bottom:120px!important}
+  body[data-world] .work-panel-body > .work-story-hero,body[data-world] .world-hero-media.is-straddle{margin-top:-90px!important}
+  body[data-world] .fact-console{grid-template-columns:1fr;gap:20px}
+  body[data-world] .fact-console > dl{grid-column:1;grid-row:auto}
+  body[data-world] .fact-console > .fact-console-lead{grid-row:auto;order:1}
+  body[data-world] .fact-console > dl{order:2;margin-top:4px}
+}
+/* quiet middle: chapters alternate paper and the world's tint, full bleed, plain edges (seams decided: plain) */
+body[data-world] .project-story > section.project-chapter{border-top:0!important;border-bottom:0!important;margin-top:0!important;padding-top:72px!important;padding-bottom:72px!important}
+body[data-world] .project-story > section.project-chapter:nth-of-type(odd){background:var(--tint);box-shadow:0 0 0 100vmax var(--tint);clip-path:inset(0 -100vmax)}
+body[data-world] .fact-console .fact-console-rule{border:0;border-top:1px dashed var(--border-strong);margin:18px 0}
+body[data-world] #work-focus-content > .fact-console{margin:48px 0 var(--s-group)!important}
+/* chapter text (BASELINE, Chris 2026-09-30, picked from rendered A/B/C): ONE grid on every chapter, the 50/50 split.
+   Step + heading in the left half, copy in the right half, both on the content edges, so media below (full content
+   width) shares the same left edge. Below 1024px the halves fall under ~50 characters per line (measured 39 at 820),
+   so the text stacks. D (one small item) keeps copy beside the media. */
+body[data-world] .project-story > section.project-chapter{grid-template-columns:minmax(0,1fr)!important;row-gap:40px!important}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:48px;max-width:none}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > .project-chapter-step{grid-column:1;grid-row:1;margin-bottom:10px!important}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > h4{grid-column:1;grid-row:2;margin-top:0!important}
+body[data-world] .project-story > section.project-chapter > .project-chapter-copy > p{grid-column:2;grid-row:1/span 2;padding-top:6px;font-size:var(--t-base)}
+body[data-world] .project-story .project-chapter-step{text-transform:none!important;letter-spacing:0!important;font:600 var(--t-sm)/1.4 var(--sans)!important;color:var(--muted)!important}
+body[data-world] .project-story > section.project-chapter[data-shape="D"]{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)!important;column-gap:48px;align-items:center}
+body[data-world] .project-story > section.project-chapter[data-shape="D"] > .project-chapter-copy{grid-template-columns:minmax(0,1fr)}
+body[data-world] .project-story > section.project-chapter[data-shape="D"] > .project-chapter-copy > *{grid-column:1;grid-row:auto}
+body[data-world] .project-story > section.project-chapter[data-shape="D"] .story-artifact{grid-column:span 12!important}
+@media (max-width:1023px){
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr);column-gap:0}
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important;padding-top:0}
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy > p{max-width:700px}
+}
+@media (max-width:760px){
+  body[data-world] .project-story > section.project-chapter,body[data-world] .project-story > section.project-chapter[data-shape="D"]{grid-template-columns:minmax(0,1fr)!important;row-gap:24px!important}
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy{grid-template-columns:minmax(0,1fr)}
+  body[data-world] .project-story > section.project-chapter > .project-chapter-copy > *{grid-column:1!important;grid-row:auto!important;padding-top:0}
+}
+/* closing outcome band: world color, full bleed, the payoff (seam: plain until the outcome-seam call is made) */
+body[data-world] .project-story > .outcome-band{position:relative;margin-top:0;padding:72px 0;background:var(--brand-bg);color:var(--brand-ink);box-shadow:0 0 0 100vmax var(--brand-bg);clip-path:inset(0 -100vmax)}
+body[data-world] .outcome-band-kicker,body[data-world] .outcome-band-label{margin:0 0 10px;font:600 var(--t-sm)/1.4 var(--sans);color:var(--brand-soft)}
+body[data-world] .outcome-band-result{margin:0 0 40px;max-width:860px;font:400 var(--t-xl)/1.3 var(--serif);text-wrap:balance}
+body[data-world] .outcome-band-changed{margin:0;max-width:700px;font:400 var(--t-base)/1.6 var(--sans)}
+body[data-world] .tpl-blank{opacity:.7;font-style:italic;outline:1px dashed currentColor;outline-offset:6px}
+/* company lobby: "Who I was there" on the chapter grid, and the closing impact band */
+body[data-world] #work-focus-content > .company-role{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:48px;margin:56px 0 0!important}
+body[data-world] .company-role p{margin:0}
+body[data-world] .company-role-kicker{font:600 var(--t-sm)/1.4 var(--sans);color:var(--muted);margin-bottom:10px!important}
+body[data-world] .company-role-title{font:400 var(--t-xxl)/1.1 var(--serif);text-wrap:balance}
+body[data-world] .company-role-dates{font:400 var(--t-base)/1.5 var(--sans);color:var(--muted);margin-top:8px!important}
+body[data-world] .company-role-stage{font:400 var(--t-base)/1.5 var(--sans);margin-top:20px!important}
+body[data-world] .company-role-summary{font:400 var(--t-lg)/1.5 var(--serif);padding-top:6px}
+body[data-world] .company-role-byline{margin:24px 0 0;display:grid;gap:12px}
+body[data-world] .company-role-byline div{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px}
+body[data-world] .company-role-byline dt{font:600 var(--t-sm)/1.5 var(--sans);color:var(--muted)}
+body[data-world] .company-role-byline dd{margin:0;font:400 var(--t-sm)/1.5 var(--sans)}
+body[data-world] #work-focus-content > .company-close{position:relative;margin-top:var(--s-group);padding:72px 0;background:var(--brand-bg);color:var(--brand-ink);box-shadow:0 0 0 100vmax var(--brand-bg);clip-path:inset(0 -100vmax)}
+body[data-world] .company-close .outcome-band-result{margin-bottom:24px}
+body[data-world] .company-close .outcome-band-label{margin:0}
+@media (max-width:1023px){body[data-world] #work-focus-content > .company-role{grid-template-columns:minmax(0,1fr);row-gap:24px}}
 </style>
   <h2 class="sec" id="work">Work</h2>
   <div class="work-controls">
@@ -2502,6 +2579,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     })();
     var workProjects = {
       y30: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product, design, full stack engineering", "code": {"maturity": "production", "scope": "All production code", "method": "with agents"}, "team": "2 founders, clinical advisors, QA intern"}, deliveryState: "Closed alpha with testers outside the founding team; production and development deployments", evidence: [["Users", "Older adults, family caregivers, care professionals"]], roleIsEngineering: true,
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "What does it take to build a voice AI that can respect the dignity of a senior?", outcomeTease: "We launched an early alpha with 11 testers outside the founding team giving us feedback.",
         name: "y30",
         portfolioShape: "founder",
         hero: "images/work/y30-hero.png",
@@ -2510,12 +2591,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "y30 uses conversation and games to help older adults feel less alone. It gives family caregivers and care professionals longitudinal conversational signals to support care. It does not diagnose or detect medical conditions.",
         meta: "2026 · Co-Founder & Product Design Engineer",
         summary: "I owned the product, design, and engineering. I built the voice experience, games, caregiver tools, and the testing system we used to improve them.",
-        facts: [
-          ["Users", "Older adults, family caregivers, care professionals"],
-          ["Owned", "Product, design, full stack engineering"],
-          ["Collaborators", "2 founders, clinical advisors, QA intern"],
-          ["Stage", "Production and development deployments, closed alpha with testers outside the founding team"]
-        ],
         resultLabel: "What changed",
         result: "The voice got warmer without a model swap, the game stopped depending on the prompt, and confirmed failures became regression tests",
         storySectionTitle: "Pivotal product decisions",
@@ -2666,6 +2741,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         actions: [["video:loom:eb44015201554d11ac841cd1700653ce", "Watch an unscripted call (1:43)"]] // Chris 2026-09-25: restore the June 2026 Loom (Chris speaking); "Try y30" stays removed (y30.ai is Vijay's pivot)
       },
       playsesh: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Company direction · product · design · hands-on implementation", "code": {"maturity": "production", "scope": "Most of the frontend; Stripe payments, Supabase edge functions", "method": "mixed", "methodNote": "hand-coded, then agents"}, "team": "CTO · founding engineer"}, deliveryState: "Launched November 2025 · development paused March 2026 · product remains live", evidence: [["Users", "Indie game makers · tabletop groups · Discord communities"]], codeTag: "design + code",
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we improve the tools and processes game developers use to match the speed that software and games are made now with AI?", outcomeTease: "We only got to an early version of where we wanted to go: a working multiplayer whiteboard on Discord, with 1,043 peak monthly active users.",
         name: "PlaySesh",
         portfolioShape: "founder",
         dates: "2024–2026",
@@ -2674,12 +2753,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "A game-development collaboration company whose shipped product was a persistent multiplayer whiteboard inside Discord.",
         meta: "2024–2026 · Co-founder, CEO",
         summary: "Research and economics showed that matchmaking was not a business. I redirected PlaySesh into a shipped multiplayer Discord whiteboard, then tested the architecture needed for a playable game-development loop.",
-        facts: [
-          ["Users", "Indie game makers · tabletop groups · Discord communities"],
-          ["Owned", "Company direction · product · design · hands-on implementation"],
-          ["Team", "CEO (me) · CTO · founding engineer"],
-          ["Stage", "Launched November 2025 · development paused March 2026 · product remains live"]
-        ],
         resultLabel: "Verified adoption",
         result: "1,043 peak monthly active users in January 2026; 6,750 authorized accounts and 161 server installs as of September 11, 2026",
         storySectionTitle: "Pivotal product decisions",
@@ -2753,56 +2826,56 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         actions: [["?ds", "See the system"]]
       },
       hogware: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Solo product, game design through production engineering", "code": {"maturity": "production", "scope": "All the code", "method": "with agents", "methodNote": "built with agents; playtesting, QA, and tuning by hand"}, "team": "Solo"}, deliveryState: "Finished + playable", evidence: [["Instrumentation", "PostHog events · HogQL leaderboard · flag · survey"], ["Verification", "Adversarial review · playtesting · headless game suite"]], roleIsEngineering: true,
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do you take a unique company culture and turn it into a game that communicates what that company is all about?", outcomeTease: "Shipped a playable game: 80 players, 948 microgames cleared.",
         name: "HogWare",
         dates: "2026",
         role: "Product Engineer · Game Design",
         context: "A finished browser-game application built from PostHog’s public company values and product stack.",
         meta: "2026 · Product engineer, game design",
         summary: "A focused application sprint turned into a finished browser game. I built the interaction system, sound, instrumentation, tests, and the release path.",
-        facts: [
-          ["Build shape", "Solo product, game design through production engineering"],
-          ["Game system", "5 microgames · 1 shipped boss · shared engine"],
-          ["Instrumentation", "PostHog events · HogQL leaderboard · flag · survey"],
-          ["Verification", "Adversarial review · playtesting · headless game suite"]
-        ],
         result: "5 microgames; 1 boss; instrumented in PostHog: 80 players, 948 microgames cleared",
         delivery: "Finished + playable",                // status label on its card (Chris 2026-09-25)
         cardMedia: ["images/work/hogware-game.png"],   // its "Recent work" card (a world card: opens the HogWare world)
         actions: [["hogware.html", "Play it"], ["https://github.com/whoischrislam/whoischrislam.github.io/blob/main/HOGWARE.md", "Read the build log", true]]
       },
       voice_noir: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Voice-first investigation and spoken contradiction finding", "code": {"maturity": "prototype", "scope": "All the code", "method": "with agents"}, "team": "Solo"}, deliveryState: "Working exploration", evidence: [["Stack", "Web Speech API · ElevenLabs · voice UX"], ["Focus", "Speech input · synthesized voice · real-time state from speech"]], roleIsEngineering: true,
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do you build a modern game with voice commands that actually work?", outcomeTease: "A working exploration and demo, unfinished and on hiatus.",
         name: "Voice Noir",
         dates: "2026",
         role: "Product Engineer · Voice UX",
         context: "A voice-first noir detective game built to explore speech as the primary game input.",
         meta: "2026 · Product engineer, voice UX",
         summary: "Inspect the scene, question witnesses, and call out contradictions aloud. The experiment connects speech recognition, synthesized voice, and game state.",
-        facts: [
-          ["Interaction", "Voice-first investigation and spoken contradiction finding"],
-          ["Stack", "Web Speech API · ElevenLabs · voice UX"],
-          ["Focus", "Speech input · synthesized voice · real-time state from speech"]
-        ],
         resultLabel: "Experiment",
         result: "A working exploration of speech recognition, TTS, and voice-driven game interaction",
         actions: []
       },
       evolve_die_repeat: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Game design, solo", "code": {"maturity": "production", "scope": "All the code; cross-platform CI/CD", "method": "with agents"}, "team": "Solo"}, evidence: [["Stack", "Lua · Love2D"], ["Practice", "Test-driven game development · telemetry-driven iteration"]], roleIsEngineering: true,
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "Is evolution as a game mechanic a viable game idea?", outcomeTease: "A playable demo with a few playtesters and feedback.",
         name: "Evolve, Die, Repeat",
         dates: "2025",
         role: "Game Design · Engineer",
         context: "A solo 2D side-scrolling roguelite built in Lua and Love2D.",
         meta: "2025 · Game design, engineering",
         summary: "Swap body parts mid-run to evolve: fins to swim, wings to fly, claws to climb, and stingers to shoot venom.",
-        facts: [
-          ["Stack", "Lua · Love2D"],
-          ["Practice", "Test-driven game development · telemetry-driven iteration"],
-          ["Delivery", "Cross-platform CI/CD"]
-        ],
         resultLabel: "Experiment",
         result: "A 2D roguelite built around evolution as both traversal and combat",
         actions: []
       },
       zodiacus: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Rulebook · most game design", "code": {"maturity": "n/a"}, "team": "A friend wrote the story"}, deliveryState: "Physical prototype · 2 playtest sessions", evidence: [["Practice", "Systems design · physical prototyping · playtesting"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "Is there any appeal for a board game themed on the Chinese zodiac?", outcomeTease: "A prototype and 2 playtests in real life, still unfinished: it needs more testing and balancing to ship and sell someday.",
         name: "Zodiacus",
         hero: "images/co/zodiacus.webp", // homepage band image (Chris 2026-09-22)
         dates: "2023",
@@ -2810,26 +2883,21 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "A physical board game built on the Chinese zodiac and started during the pandemic in response to rising anti-Asian hate.",
         meta: "2023 · Game design, print production",
         summary: "I wrote the rulebook and most of the design; a friend wrote the story. We built a physical prototype and playtested it twice.",
-        facts: [
-          ["Practice", "Systems design · physical prototyping · playtesting"],
-          ["Owned", "Rulebook · most game design"],
-          ["Collaboration", "A friend wrote the story"]
-        ],
         resultLabel: "Experiment",
         result: "A physical prototype tested through 2 playtest sessions",
         actions: []
       },
       rat_with_wings: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Game design, solo", "code": {"maturity": "production", "scope": "All the code (Unity, C#)", "method": "by hand"}, "team": "Solo"}, deliveryState: "Playable Unity web build", evidence: [["Focus", "Game-engine fundamentals · playable web delivery"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "Am I able to make a simple game and finish it?", outcomeTease: "A finished, playable game in Unity, built in evenings and one weekend.",
         name: "Rat with Wings",
         dates: "2022",
         role: "Game Design",
         context: "A weekend project built to learn Unity and C# through a complete playable slice.",
         meta: "2022 · Game design",
         summary: "Evenings and one weekend, from first Unity project to playable web build.",
-        facts: [
-          ["Stack", "Unity · c#"],
-          ["Focus", "Game-engine fundamentals · playable web delivery"]
-        ],
         resultLabel: "Experiment",
         result: "A playable Unity web build completed in evenings and one weekend",
         actions: [
@@ -2838,21 +2906,25 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       ai_polyglot: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"code": {"maturity": "production", "scope": "All the code", "method": "by hand"}}, deliveryState: "Shipped", evidence: [["Stack", "JavaScript · LLM APIs"], ["Focus", "First LLM API integration · prompt design · live app delivery"]], roleIsEngineering: true,
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "Can I build a simple AI translator by hand?", outcomeTease: "Shipped demo, my first LLM API integration (January 2024).",
         name: "Translator: AI Polyglot",
         dates: "2024",
         role: "Product Engineer · AI",
         context: "An early LLM API experiment built before AI became a primary product domain in my work.",
         meta: "2024 · Product engineer, AI",
         summary: "A small translation product used to learn LLM API integration, prompt design, and live AI application delivery.",
-        facts: [
-          ["Stack", "JavaScript · LLM APIs"],
-          ["Focus", "First LLM API integration · prompt design · live app delivery"]
-        ],
         resultLabel: "Experiment",
         result: "A shipped first LLM API integration from January 2024",
         actions: [["https://github.com/whoischrislam/ai-polyglot", "View the repo", true]]
       },
       pathstream: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · product design · motion prototypes · specs · handoff", "code": {"maturity": "production", "scope": "Small product component fixes; much of the marketing homepage CSS", "method": "by hand"}, "team": "Product · engineering · curriculum · course authors; Matt implemented the shared system"}, evidence: [["Role shape", "First design hire · lead IC · no direct reports"]], codeTag: "design + some code",
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "Can certificate programs supplement college education for people training up for jobs?",
         name: "Pathstream",
         hero: "images/work/pathstream-hero.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/pathstream.svg",
@@ -2861,12 +2933,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "A live career-learning platform delivered through colleges and technology partners.",
         meta: "2019–2020 · Senior Product Design Manager",
         summary: "As Pathstream’s first design hire and lead IC, I redesigned live student, instructor, and course-author workflows while courses were already running.",
-        facts: [
-          ["Role shape", "First design hire · lead IC · no direct reports"],
-          ["Owned", "Research · product design · motion prototypes · specs · handoff"],
-          ["Partners", "Product · engineering · curriculum · course authors"],
-          ["Code boundary", "Product code: small component fixes; Matt implemented the shared system. Marketing site: CSS"]
-        ],
         resultLabel: "Shipped result",
         result: "Core lesson redesign shipped with zero forced migration for existing courses",
         supportTitle: "More of the platform",
@@ -2906,6 +2972,8 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         actions: []
       },
       sharecare: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Audit · domain synthesis · product definition · end-to-end design", "code": {"maturity": "none", "scope": "No production code; engineering built the working product"}, "team": "Clinical staff · researchers · founders · product · engineering"}, evidence: [["Role shape", "Lead designer · product-direction influence"]], codeTag: "none",
         name: "doc.ai",
         hero: "images/work/omix-study-builder.png", // homepage band image (Chris 2026-09-22)
         dates: "2021",
@@ -2914,12 +2982,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "Omix was a guided platform for configuring decentralized clinical studies before launch.",
         meta: "2021 · Lead Product Designer",
         summary: "As Omix’s lead designer, I audited fragmented clinical-study workflows and worked with clinical, product, and engineering partners to turn them into one coherent pre-launch study builder.",
-        facts: [
-          ["Role shape", "Lead designer · product-direction influence"],
-          ["Owned", "Audit · domain synthesis · product definition · end-to-end design"],
-          ["Partners", "Clinical staff · researchers · founders · product · engineering"],
-          ["Code boundary", "No production code; engineering built the working product"]
-        ],
         resultLabel: "Delivery",
         result: "Functioning engineering build validated with researchers, canceled before public launch",
         supportTitle: "Planned next iteration",
@@ -2939,6 +3001,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         actions: []
       },
       modus: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Feature design · TypeScript implementation · internal documentation", "code": {"maturity": "production", "scope": "Cross-app dark mode in production TypeScript, CI", "method": "by hand"}}, deliveryState: "Shipped to production", evidence: [["Verification", "PR review · automated tests · visual QA · existing CI/CD"], ["Reach", "Affected apps served a 500K+ installed / reachable user base"]], roleIsEngineering: true,
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we create useful apps for Jira and Confluence Cloud users?", outcomeTease: "Cross-app dark mode, live for users.",
         name: "Modus Create",
         hero: "images/work/modus-dark-mode.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/modus-create.svg",
@@ -2947,12 +3013,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "I worked on Modus Create’s portfolio of Jira and Confluence Cloud apps.",
         meta: "2023–2024 · Software Engineer (Contract)",
         summary: "As a contract software engineer, I designed and implemented visual product features in a legacy TypeScript codebase, then shipped them through the team’s existing review, test, QA, and release process.",
-        facts: [
-          ["Role shape", "Contract software engineer · bounded product-feature scope"],
-          ["Owned", "Feature design · TypeScript implementation · internal documentation"],
-          ["Verification", "PR review · automated tests · visual QA · existing CI/CD"],
-          ["Reach", "Affected apps served a 500K+ installed / reachable user base"]
-        ],
         resultLabel: "Shipped result",
         result: "Cross-app dark mode and visual consistency shipped to production",
         supportTitle: "Production engineering proof",
@@ -2997,6 +3057,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         actions: []
       },
       goodrx: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product · service · interaction · visual · print · data visualization", "code": {"maturity": "production", "scope": "GoodRx Research interactives only (JavaScript, D3)", "method": "by hand"}, "team": "Research · product · pharmacy · engineering · company leadership"}, evidence: [["Role shape", "Only embedded designer on Iodine, later GoodRx North"]], codeTag: "design + some code",
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we help people make better-informed decisions around prescription drugs?",
         name: "GoodRx + Iodine",
         logo: "images/logos/goodrx.svg",
         hero: "images/work/goodrx-hero.png", // per-world bold hero image (Image #4); omit to fall back to the blueprint hero
@@ -3006,12 +3070,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "GoodRx helps people compare prescription prices and access discounts; Iodine helped people understand medications.",
         meta: "2017–2018 · Lead Product Designer",
         summary: "I owned product design for Iodine, expanded into GoodRx conversion and editorial work, then learned JavaScript and D3 to build production research interactives.",
-        facts: [
-          ["Role shape", "Only embedded designer on Iodine, later GoodRx North"],
-          ["Owned", "Product · service · interaction · visual · print · data visualization"],
-          ["Partners", "Research · product · pharmacy · engineering · company leadership"],
-          ["Code boundary", "Production code only for GoodRx Research interactives"]
-        ],
         resultLabel: "Measured outcomes",
         result: "Iodine coupon conversion 2% → 5%, GoodRx drug-page coupon conversion +10% mobile / +25% desktop",
         supportTitle: "Also shipped and explored",
@@ -3116,6 +3174,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         actions: []
       },
       clover: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Field research · PRDs · interaction design · design system · visual design", "code": {"maturity": "prototype", "scope": "A Framer call-logging prototype; no production code", "method": "by hand"}}, evidence: [["When I joined", "Founder-funded · pre-Series A · second designer"], ["Focus", "Healthcare · clinical tools · member web"]], codeTag: "none",
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we create better insurance and healthcare experiences for seniors?",
         name: "Clover Health",
         hero: "images/work/clover-hero.png", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/clover-health.svg",
@@ -3125,16 +3187,15 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "A Medicare Advantage insurer using data and software to coordinate member care.",
         meta: "2015–2016 · Designer",
         summary: "I worked across the clinical tools used in members’ homes and the company’s first public enrollment site. I planned the product and wrote PRDs alongside the PMs, and helped build the design team.",
-        facts: [
-          ["When I joined", "Founder-funded · pre-Series A · second designer"],
-          ["Owned", "Field research · PRDs · interaction design · design system · visual design"],
-          ["Focus", "Healthcare · clinical tools · member web"]
-        ],
         resultLabel: "Outcomes",
         result: "Nurses reported 1-2 hours of chart prep gone each day · first public enrollment site shipped for the 2016 season",
         actions: []
       },
       startplaying: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · product definition · workflows · product design", "code": {"maturity": "none", "scope": "None; engineering implemented production code"}}, evidence: [["When I joined", "Post-seed · first designer"]], codeTag: "none",
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do you enable people to get paid fairly for what they love to do?", outcomeTease: "Helping game masters make money doing what they love.",
         name: "StartPlaying",
         dates: "2022–2023",
         role: "Founding Product Designer",
@@ -3142,11 +3203,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "A marketplace where players hire professional Game Masters for tabletop roleplaying games.",
         meta: "2022–2023 · Founding Product Designer",
         summary: "As the first designer after the seed round, I focused on financial trust: replacing manual payouts, handling marketplace edge cases, and keeping weekly contact with Game Masters.",
-        facts: [
-          ["When I joined", "Post-seed · first designer"],
-          ["Owned", "Research · product definition · workflows · product design"],
-          ["Boundary", "Design lead; engineering implemented production code"]
-        ],
         resultLabel: "Shipped result",
         result: "Marketplace money movement shipped, manual payout and accounting pain resolved",
         supportTitle: "Shipped features, completed design, and exploration",
@@ -3222,6 +3278,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         actions: []
       },
       amazon: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "End-to-end product design · specs · prototypes · engineering collaboration", "code": {"maturity": "none", "scope": "None"}}, evidence: [["Chapters", "Prime intern · Games contractor · Music full-time"], ["Primary scope", "Amazon Music Importer · Windows Phone"]], codeTag: "none",
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we improve the customer experience online?",
         name: "Amazon",
         logo: "images/logos/amazon.svg",
         dates: "2012–2013",
@@ -3229,12 +3289,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "Prime, Games, and Music products spanning web, desktop software, and emerging devices.",
         meta: "2012–2013 · User Experience Designer",
         summary: "I moved from a Prime internship to Games contract work and then the full-time Music team, repeatedly taking assigned or unfinished products through complete design and engineering handoff.",
-        facts: [
-          ["Chapters", "Prime intern · Games contractor · Music full-time"],
-          ["Primary scope", "Amazon Music Importer · Windows Phone"],
-          ["Owned", "End-to-end product design · specs · prototypes · engineering collaboration"],
-          ["Surfaces", "Web · desktop · mobile · device integrations"]
-        ],
         resultLabel: "Delivery",
         result: "Unified importer and downloader shipped, Windows Phone product reached working alpha",
         supportTitle: "Earlier and supporting work",
@@ -3261,6 +3315,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         actions: []
       },
       taskrabbit: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Tasker experience · mobile system", "code": {"maturity": "production", "scope": "Zendesk support portal CSS", "method": "by hand"}, "team": "Product · design · engineering"}, evidence: [["Mandate", "Rebuild a two-sided marketplace"], ["Surfaces", "iOS · Android · web · marketplace"]], codeTag: "design + some code",
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we improve the business through a rebrand and redesign?",
         name: "TaskRabbit",
         hero: "images/craft/hero-taskrabbit.webp", // homepage band image (Chris 2026-09-22)
         logo: "images/logos/taskrabbit.svg",
@@ -3270,12 +3328,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         context: "A two-sided marketplace for local help, mid-rebuild.",
         meta: "2014–2015 · Product Designer",
         summary: "Hired onto a new design team as TaskRabbit moved from bidding to direct hire. I owned the Tasker experience, contributed across the Client rebuild, and led the consolidation of TaskRabbit’s legacy mobile design into one shared system.",
-        facts: [
-          ["Mandate", "Rebuild a two-sided marketplace"],
-          ["Primary scope", "Tasker experience · mobile system"],
-          ["Collaborated", "Product · design · engineering"],
-          ["Surfaces", "iOS · Android · web · marketplace"]
-        ],
         resultLabel: "Measured outcomes",
         result: "Tasker NPS −5 → mid-50s, Client NPS → high-40s",
         vignettes: [
@@ -3326,6 +3378,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     };
     var workStories = {
       y30_voice: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product, conversation design, full-stack implementation, evaluation", "code": {"maturity": "production", "scope": "All production code", "method": "with agents"}}, deliveryState: "Closed alpha, not a senior cohort pilot", evidence: [["Quality bar", "Would grandma keep talking? Would she feel heard?"], ["Method", "Configurable STT, LLM, and TTS. Latency and cost comparisons"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we keep users engaged and actually wanting to use y30?", outcomeTease: "No longer robotic, per the tester who raised it, while operating under constraints like safety.", whatChanged: "There are a lot of factors to consider when making a voice agent work: safety, respect, knowing how to listen vs. interrupt, a lot of micro decision making that we humans do not think about.",
         company: "y30",
         depth: "case",
         contentType: "product-decision",
@@ -3343,12 +3399,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ],
         hero: "images/work/y30-voice.png",
         heroFit: "contain",
-        facts: [
-          ["Quality bar", "Would grandma keep talking? Would she feel heard?"],
-          ["Method", "Configurable STT, LLM, and TTS. Latency and cost comparisons"],
-          ["Owned", "Product, conversation design, full-stack implementation, evaluation"],
-          ["Boundary", "Closed alpha, not a senior cohort pilot"]
-        ],
         chapters: [
           {
             step: "01 · The problem",
@@ -3465,6 +3515,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       y30_control: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product · conversation design · safety architecture · full-stack engineering", "code": {"maturity": "production", "scope": "All production code", "method": "with agents"}}, deliveryState: "Closed alpha · prod and dev deployments", evidence: [["Finding", "Prompt-driven required action stayed near 70% after repeated revisions"], ["Decision", "Game sequence in deterministic code · open conversation model-led"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we get a system to act with a structure (like a game) and strictly follow it, while having some freedom in how it responds to users?", outcomeTease: "A consistent, predictable, and dependable structure that also responds in ways that don't sound the same all the time.", whatChanged: "Learning how to build and tweak a system that is structured and deterministic while allowing its responses to be creative, open, and probabilistic.",
         company: "y30",
         depth: "case",
         contentType: "product-decision",
@@ -3482,12 +3536,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ],
         hero: "images/work/y30-game.png",
         heroFit: "contain",
-        facts: [
-          ["Owned", "Product · conversation design · safety architecture · full-stack engineering"],
-          ["Finding", "Prompt-driven required action stayed near 70% after repeated revisions"],
-          ["Decision", "Game sequence in deterministic code · open conversation model-led"],
-          ["Boundary", "Closed alpha · prod and dev deployments"]
-        ],
         chapters: [
           {
             step: "01 · The problem",
@@ -3570,6 +3618,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       y30_safety: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"code": {"maturity": "production", "scope": "All production code", "method": "with agents"}, "team": "QA intern ran sessions and rated individual AI responses"}, deliveryState: "Closed alpha · smoke tests for dev and prod", evidence: [["Testing", "Manual QA · unit and scenario tests · adversarial review · live smoke"], ["Learning loop", "Review queue · approval gate · failure harvest · regression coverage"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we keep covering the seemingly endless edge cases that come from open-ended speech?", outcomeTease: "We ended up building a self-improving flywheel that learns from every failure, weighted with a human, and feeds it into our tests.", whatChanged: "We learned that we needed evaluations, and a system that will evolve with the edge cases of something this open-ended.",
         company: "y30",
         depth: "case",
         contentType: "product-decision",
@@ -3587,12 +3639,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ],
         hero: "images/work/y30-system.png",
         heroFit: "contain",
-        facts: [
-          ["Testing", "Manual QA · unit and scenario tests · adversarial review · live smoke"],
-          ["Human QA", "QA intern ran sessions and rated individual AI responses"],
-          ["Learning loop", "Review queue · approval gate · failure harvest · regression coverage"],
-          ["Boundary", "Closed alpha · smoke tests for dev and prod"]
-        ],
         chapters: [
           {
             step: "01 · The problem",
@@ -3736,6 +3782,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       pathstream_lessons: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · product design · motion · specification · handoff"}, deliveryState: "Shipped: merged PR · student, instructor, author modes · mobile", evidence: [["Research", "3 test rounds · course-author co-design · support synthesis"], ["Constraint", "Live cohorts at community colleges · roughly 60–80 hours of content per course"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we make lessons more digestible, in easy-to-complete chunks that help students finish?", outcomeTease: "This was merged into the live platform with zero forced migration for existing courses.", whatChanged: "Making parts of lessons digestible. Helping people learn in completable units works with busy schedules and is realistically accomplishable.",
         company: "pathstream",
         depth: "case",
         slug: "lesson-system",
@@ -3750,12 +3800,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           "images/craft/pathstream-completelesson.webp"
         ],
         hero: "images/craft/pathstream-menuscrolling.webp",
-        facts: [
-          ["Owned", "Research · product design · motion · specification · handoff"],
-          ["Constraint", "Live cohorts at community colleges · roughly 60–80 hours of content per course"],
-          ["Research", "3 test rounds · course-author co-design · support synthesis"],
-          ["Delivery", "Merged PR · student, instructor, author modes · mobile"]
-        ],
         chapters: [
           {
             step: "01 · Diagnose the live system",
@@ -3807,6 +3851,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       pathstream_instructor: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · workflow definition · product design · state specification"}, deliveryState: "Design complete, queued for build", evidence: [["Research", "4+ instructor interviews · competitive review"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How can instructors better manage their students and see where each individual student needs support?", outcomeTease: "Design was complete and queued to ship.", whatChanged: "Being able to understand a student's journey in the class is crucial. Allowing resubmissions to learn from mistakes is important. Having context to grade and know where to help students is crucial.",
         company: "pathstream",
         depth: "project",
         slug: "instructor-tools",
@@ -3825,11 +3873,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           status: "CURATE",
           note: "Recompose only cleared mock data; raw screen shares contain personal information."
         },
-        facts: [
-          ["Owned", "Research · workflow definition · product design · state specification"],
-          ["Research", "4+ instructor interviews · competitive review"],
-          ["Delivery", "Grading, resubmission, and dashboard designs queued for build"]
-        ],
         chapters: [
           {
             step: "01 · Instructor reality",
@@ -3873,6 +3916,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       pathstream_foundation: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Audit · system design · visual and interaction rules", "team": "Matt implemented React · Storybook · Chromatic"}, deliveryState: "Designed; implementation started", evidence: [["Inventory", "16 colors · 12 type sizes · 11 component families"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we make sure the foundation and the system are in a good enough place for engineers and designers to scale?", outcomeTease: "Designed a first version of a design system; Matt started implementing it in Storybook and Chromatic.", whatChanged: "Dealing with design and tech debt requires a team and lots of work.",
         company: "pathstream",
         depth: "project",
         slug: "interface-foundation",
@@ -3891,11 +3938,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           status: "CURATE",
           note: "Pair the UI audit with a clearly attributed design → engineering implementation boundary."
         },
-        facts: [
-          ["Owned", "Audit · system design · visual and interaction rules"],
-          ["Inventory", "16 colors · 12 type sizes · 11 component families"],
-          ["Engineering", "Matt implemented React · Storybook · Chromatic"]
-        ],
         chapters: [
           {
             step: "01 · Inventory the real product",
@@ -3973,6 +4015,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       omix_study_builder: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Sole design owner · product definition · end-to-end experience"}, deliveryState: "Built for validation · canceled before public launch", evidence: [["Starting point", "Broken workflows · inconsistent UI · unfinished designs"], ["Validation", "Working engineering build · researcher and academic feedback"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we help researchers get organized to launch clinical studies?", outcomeTease: "A working engineering build with validation, then the project was eventually canceled.", whatChanged: "Clinical trials require a lot of steps and heavy approval, with a lot of moving parts. Making it multiplayer is essential.",
         company: "sharecare",
         depth: "project",
         slug: "omix-study-builder",
@@ -4011,12 +4057,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           }
         },
-        facts: [
-          ["Owned", "Sole design owner · product definition · end-to-end experience"],
-          ["Starting point", "Broken workflows · inconsistent UI · unfinished designs"],
-          ["Validation", "Working engineering build · researcher and academic feedback"],
-          ["Delivery", "Built for validation · canceled before public launch"]
-        ],
         chapters: [
           {
             step: "01 · Rescue the product",
@@ -4151,6 +4191,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       startplaying_money: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research · product definition · end-to-end product design", "code": {"maturity": "none", "scope": "None; engineering wrote production code"}, "team": "Founders · engineering · Game Masters"}, deliveryState: "Shipped marketplace system", evidence: [["Cadence", "2–3 GM / DM interviews most weeks"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we make sure the company and the GMs get paid accurately and on time?", outcomeTease: "Accurate, traceable, and timely money that was no longer handled manually.", whatChanged: "Automating systems when it makes sense. Making sure people get paid on time builds trust.",
         company: "startplaying",
         depth: "case",
         slug: "marketplace-money",
@@ -4189,13 +4233,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             footer: "Chris owned product definition and design. Engineering wrote the production code."
           }
         },
-        facts: [
-          ["Owned", "Research · product definition · end-to-end product design"],
-          ["Cadence", "2–3 GM / DM interviews most weeks"],
-          ["Collaboration", "Founders · engineering · Game Masters"],
-          ["Boundary", "I owned product design; engineering wrote production code"],
-          ["Delivery", "Shipped marketplace system"]
-        ],
         chapters: [
           {
             step: "01 · Business constraint",
@@ -4278,6 +4315,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       iodine_product: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Only embedded designer · complete design ownership", "team": "Research · pharmacy · product · engineering"}, deliveryState: "Shipped + measured", evidence: [["Recognition", "2018 Webby · Best Health Website"], ["Surfaces", "Responsive web · service design · print system"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we help people be better informed about prescription drugs?", outcomeTease: "Coupon conversion 2% to 5%, and session time nearly doubled.", whatChanged: "Trust and credibility are important. Human answers will always win. Medication guidance is something people need.",
         company: "goodrx",
         depth: "case",
         slug: "iodine-product",
@@ -4292,12 +4333,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           "images/craft/iodine_09.webp"
         ],
         hero: "images/craft/hero-iodine.webp",
-        facts: [
-          ["Owned", "Only embedded designer · complete design ownership"],
-          ["Partners", "Research · pharmacy · product · engineering"],
-          ["Surfaces", "Responsive web · service design · print system"],
-          ["Recognition", "2018 Webby · Best Health Website"]
-        ],
         chapters: [
           {
             step: "01 · Printable information",
@@ -4340,6 +4375,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       goodrx_drug_pages: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Complete product-design ownership"}, deliveryState: "Shipped · A/B tested", evidence: [["Goal", "Improve discovery and drug coupon conversion"], ["Surfaces", "Mobile web · desktop web"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we make it easier for people to understand prescription drugs and medications?", outcomeTease: "Drug coupon conversion up 10% on mobile and 25% on desktop (A/B tested).", whatChanged: "The hierarchy and order matter. Understanding what people are looking for and thinking about their medications is the most important thing.",
         company: "goodrx",
         depth: "project",
         slug: "goodrx-drug-pages",
@@ -4355,12 +4394,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ],
         hero: "images/craft/goodrx_15.webp",
         heroFit: "contain",
-        facts: [
-          ["Owned", "Complete product-design ownership"],
-          ["Goal", "Improve discovery and drug coupon conversion"],
-          ["Surfaces", "Mobile web · desktop web"],
-          ["Delivery", "Shipped · a/B tested"]
-        ],
         chapters: [
           {
             step: "01 · Conversion problem",
@@ -4398,6 +4431,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       goodrx_research: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Visual design · data preparation · interactive implementation", "code": {"maturity": "production", "scope": "JavaScript · D3 · production interactives", "method": "by hand", "methodNote": "hand-coded; Marc helped integrate the work before I knew Git"}, "team": "Thomas and other researchers / writers · Marc in engineering"}, deliveryState: "Published + shipped",
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we help journalists, reporters, and people in drug policy better understand prescription drugs through data?", outcomeTease: "Referenced by The New York Times and ABC News, and 50 state briefs for federal policy meetings.", whatChanged: "Working with researchers, writers, and medical experts is a team effort. Research and ethical rigor are important.",
         company: "goodrx",
         depth: "case",
         slug: "goodrx-research",
@@ -4417,12 +4454,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ],
         hero: "images/craft/goodrx_01.webp",
         heroFit: "contain",
-        facts: [
-          ["Owned", "Visual design · data preparation · interactive implementation"],
-          ["Partners", "Thomas and other researchers / writers · Marc in engineering"],
-          ["Code", "JavaScript · D3 · production interactives"],
-          ["Boundary", "Marc helped integrate the work before I knew Git"]
-        ],
         chapters: [
           {
             step: "01 · Close the handoff gap",
@@ -4477,6 +4508,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       amazon_importer: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "End-to-end product design from assigned direction through release"}, deliveryState: "Unified application shipped", evidence: [["Starting point", "2 separate live desktop applications"], ["Surfaces", "Installation · onboarding · matching · upload · download"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do you reconcile your music library?", outcomeTease: "Unified 2 separate desktop apps into one for customers.", whatChanged: "Legality and consistent data labeling are important.",
         company: "amazon",
         depth: "case",
         slug: "music-importer",
@@ -4514,12 +4549,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             footer: "One installation and onboarding path connected both directions."
           }
         },
-        facts: [
-          ["Owned", "End-to-end product design from assigned direction through release"],
-          ["Starting point", "2 separate live desktop applications"],
-          ["Surfaces", "Installation · onboarding · matching · upload · download"],
-          ["Delivery", "Unified application shipped"]
-        ],
         chapters: [
           {
             step: "01 · Assigned direction",
@@ -4631,6 +4660,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       amazon_windows_phone: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Entire product design", "team": "2–3 engineers · engineering manager · 1 product designer (me)"}, deliveryState: "Working alpha · later shuttered", evidence: [["Lifecycle", "Auth · browse · search · playback · playlists · downloads"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        whatChanged: "Plans can change and projects can shut down. Working on a completely different surface can change the context of use.", problemQuestion: "How do we expand an existing brand and app to a new surface?", outcomeTease: "A working alpha, but the project was canceled.",
         company: "amazon",
         depth: "project",
         slug: "windows-phone",
@@ -4669,12 +4702,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             footer: "Purchasing stayed on the web. The mobile product reached a working alpha, not public launch."
           }
         },
-        facts: [
-          ["Owned", "Entire product design"],
-          ["Team", "2–3 engineers · engineering manager · 1 product designer (me)"],
-          ["Lifecycle", "Auth · browse · search · playback · playlists · downloads"],
-          ["Delivery", "Working alpha · later shuttered"]
-        ],
         chapters: [
           {
             step: "01 · Inherited product",
@@ -4762,6 +4789,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       playsesh_whiteboard: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Company direction · product · design · hands-on implementation", "code": {"maturity": "production", "scope": "Most of the frontend", "method": "with agents"}}, deliveryState: "Launched November 2025 · remains live", evidence: [["Pivot", "Matchmaking prototype → shared Discord canvas"], ["Product", "Real-time multiplayer · persistent storage · game-native tools"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How can people collaborate on their game ideas and mechanics in a visual, spatial way, besides prompting?", outcomeTease: "A live Discord app that is still being used: 1,043 peak monthly active users.", whatChanged: "A whiteboard is an excellent surface to start with. Where it goes afterwards is something we ran out of time to figure out.",
         company: "playsesh",
         depth: "case",
         contentType: "product-decision",
@@ -4774,12 +4805,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         result: "1,043 peak monthly active users; Shipped on Discord and remains live",
         cardMedia: ["https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg"],
         hero: "https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg",
-        facts: [
-          ["Pivot", "Matchmaking prototype → shared Discord canvas"],
-          ["Product", "Real-time multiplayer · persistent storage · game-native tools"],
-          ["Owned", "Company direction · product · design · hands-on implementation"],
-          ["Delivery", "Launched November 2025 · remains live"]
-        ],
         chapters: [
           {
             step: "01 · Kill the wrong hypothesis",
@@ -4926,6 +4951,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       playsesh_rewrite: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"code": {"maturity": "prototype", "scope": "Operation-based sync and reconnection in the rewrite", "method": "with agents"}}, deliveryState: "Substantial rewrite · incomplete · not deployed", evidence: [["Architecture", "Three.js SceneDocument · custom Durable Object sync"], ["Verification", "Full test suite · TypeScript and production builds passed"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How much control and ownership do you need in your software to build what you want to build? Build or buy?", outcomeTease: "Working design, IDE, and play mode prototypes that were never finished to ship.", whatChanged: "It was fine to build on a framework to see if there was any value, but we ran out of time before we could build what we truly wanted.",
         company: "playsesh",
         depth: "case",
         contentType: "product-decision",
@@ -4953,12 +4982,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
             ]
           }
         },
-        facts: [
-          ["Product goal", "Design → play → observe → learn → iterate"],
-          ["Architecture", "Three.js SceneDocument · custom Durable Object sync"],
-          ["Verification", "Full test suite · TypeScript and production builds passed"],
-          ["Boundary", "Substantial incomplete rewrite · not deployed"]
-        ],
         chapters: [
           {
             step: "01 · Find the product constraint",
@@ -5038,6 +5061,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       tasker: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Tasker experience", "team": "1 PM · 3 engineers · 1 designer (me)"}, deliveryState: "Shipped + measured", evidence: [["Platforms", "iOS · Android · web"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we help Taskers manage and improve their skills for better service?", outcomeTease: "Tasker NPS rose from -5 to the mid-50s.", whatChanged: "Designing for the users who help make your business ultimately improves the experience and trust where the money comes from.",
         company: "taskrabbit",
         depth: "case",
         slug: "tasker",
@@ -5052,11 +5079,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           "images/craft/taskrabbit-tasker-experience_34.webp"
         ],
         hero: "images/craft/hero-taskrabbit.webp",
-        facts: [
-          ["Owned", "Tasker experience"],
-          ["Team", "1 PM · 3 engineers · 1 designer (me)"],
-          ["Platforms", "iOS · Android · web"]
-        ],
         chapters: [
           {
             step: "01 · System problem",
@@ -5137,6 +5159,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       client: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Direct hire · task status · search · history", "team": "Product · design · engineering"}, deliveryState: "Shipped", evidence: [["Project", "Client / V3 rebuild"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we improve the experience for users who are used to an older one?", outcomeTease: "We improved a lifecycle that improved the experience.",
         company: "taskrabbit",
         depth: "project",
         slug: "client",
@@ -5150,11 +5176,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           "images/craft/taskrabbit-client-redesign_17.webp"
         ],
         hero: "images/craft/hero-taskrabbit.webp",
-        facts: [
-          ["Contribution", "Client / V3 rebuild"],
-          ["Scope", "Direct hire · task status · search · history"],
-          ["Partners", "Product · design · engineering"]
-        ],
         chapters: [
           {
             step: "01 · Direct-hire foundation",
@@ -5199,6 +5220,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       clover_care: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Research through final product design", "team": "1 PM · 3 engineers · 1 data scientist · 1 designer (me)"}, deliveryState: "Shipped + NP-reported", evidence: [["Platforms", "Responsive web · iPad"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we improve the home visit experience?", outcomeTease: "Nurses saved 1-2 hours daily, and digitizing records cut paper.", whatChanged: "Being in the field is important. Understanding the caregivers and medical staff is crucial to improving care for patients.",
         company: "clover",
         depth: "case",
         slug: "care-visit",
@@ -5213,11 +5238,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           "images/craft/clover-care-visit_08.webp"
         ],
         hero: "images/craft/hero-clover.webp",
-        facts: [
-          ["Owned", "Research through final product design"],
-          ["Team", "1 PM · 3 engineers · 1 data scientist · 1 designer (me)"],
-          ["Platforms", "Responsive web · iPad"]
-        ],
         chapters: [
           {
             step: "01 · Field research",
@@ -5268,6 +5288,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         ]
       },
       clover_site: {
+        // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
+        myPart: {"design": "Product design · coordination · visual QA", "team": "1 PM · 2–4 engineers · 1 designer (me) · internal and external partners"}, deliveryState: "Shipped", evidence: [["Platforms", "Web · out-of-home"]],
+        // Chris's own lines (copy ledger, approved 2026-10-01)
+        problemQuestion: "How do we launch the first version of Clover Health's branded website?", outcomeTease: "We launched the first version of the site, serving prospects, members, brokers, and providers.", whatChanged: "Working with branding agencies is tough, and assets made for print and brand also need work for digital.",
         company: "clover",
         depth: "project",
         slug: "website",
@@ -5282,11 +5306,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
           "images/craft/clover-health-aep_16.webp"
         ],
         hero: "images/craft/hero-clover.webp",
-        facts: [
-          ["Owned", "Product design · coordination · visual QA"],
-          ["Team", "1 PM · 2–4 engineers · 1 designer (me) · internal and external partners"],
-          ["Platforms", "Web · out-of-home"]
-        ],
         chapters: [
           {
             step: "01 · Launch constraint",
@@ -6079,6 +6098,12 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       var companyStories = Object.keys(workStories).filter(function(key){
         return workStories[key].company === company;
       });
+      // A company with case studies is a LOBBY (Chris 2026-10-01): orientation, not a story, so no case-study trailer.
+      // A single-project page (no case studies) reads like a case study and keeps the fact console.
+      var isLobby = companyStories.length > 0;
+      var companyConsole = isLobby ? null : buildFactConsole(companyData, companyData.result, {company: true});
+      if(companyConsole) workFocusContent.appendChild(companyConsole);
+      var roleBlock = isLobby ? buildCompanyRole(companyData) : null; if(roleBlock) workFocusContent.appendChild(roleBlock);
       var grid = document.createElement("div");
       grid.className = "work-project-grid";
       companyStories.forEach(function(key){ grid.appendChild(createProjectCard(key)); });
@@ -6129,8 +6154,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       if(!grid.children.length){
         // Pages without cards read like a case study: What I did, one facts row, the outcome, then the work.
         if(companyData.summary){ var nintro = document.createElement("p"); nintro.className = "work-story-intro"; nintro.textContent = companyData.summary; workFocusContent.appendChild(nintro); }
-        var band = buildFactBand(companyData); if(band) workFocusContent.appendChild(band);
-        var outcome = buildOutcomeStatement(companyData); if(outcome) workFocusContent.appendChild(outcome);
       }
       if(grid.children.length){
         var storySection = document.createElement("section");
@@ -6145,9 +6168,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         // "What I did" is its intro. The fact band's rows live in the title band, the cards, and the credits.
         var storySectionIntro = document.createElement("p");
         storySectionIntro.className = "work-story-intro";
-        storySectionIntro.textContent = companyData.summary || companyData.storySectionIntro ||
-          "The strongest examples of the problems I owned, the decisions I made, and what reached users.";
-        storySectionHead.append(storySectionTitle, storySectionIntro);
+        storySectionIntro.textContent = isLobby ? (companyData.storySectionIntro || "") : (companyData.summary || companyData.storySectionIntro ||
+          "The strongest examples of the problems I owned, the decisions I made, and what reached users.");
+        storySectionHead.append(storySectionTitle);
+        if(storySectionIntro.textContent) storySectionHead.appendChild(storySectionIntro);
         storySection.append(storySectionHead, grid);
         workFocusContent.appendChild(storySection);
       }
@@ -6294,35 +6318,14 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         });
         workFocusContent.appendChild(quotes);
       }
+      var companyClose = isLobby ? buildCompanyClose(companyData) : null; if(companyClose) workFocusContent.appendChild(companyClose);
       // Sparse world (facts/actions only, no regions) → keep the region container hidden so there's no
       // blank gap that reads as broken; hero + fact grid + actions still render above it.
       if(companyData.showChangelog) workFocusContent.appendChild(buildChangelog());
-      var credits = buildCredits(companyData.facts); if(credits) workFocusContent.appendChild(credits);
       workFocusContent.hidden = !workFocusContent.children.length;
       return grid;
     }
 
-    // Facts row for pages without cards (HogWare, Zodiacus): the record's facts minus what the header and credits
-    // already show. Labels and values come from the record; nothing new is written here.
-    var HEADER_FACT = /^(Role shape|When I joined|Mandate|Chapters|Stage)$/i;
-    function buildFactBand(item){
-      var cells = (item.facts || []).filter(function(f){ return !isCreditFact(f) && !HEADER_FACT.test(f[0]); });
-      if(!cells.length) return null;
-      var band = document.createElement("dl"); band.className = "work-fact-band";
-      cells.forEach(function(c){
-        var cell = document.createElement("div"); var dt = document.createElement("dt"); var dd = document.createElement("dd");
-        dt.textContent = c[0]; dd.textContent = c[1]; cell.append(dt, dd); band.appendChild(cell);
-      });
-      return band;
-    }
-    // The outcome as a statement, the same voice as a case study's outcome.
-    function buildOutcomeStatement(item){
-      if(!item.result) return null;
-      var sec = document.createElement("div"); sec.className = "work-outcome-statement";
-      var l = document.createElement("p"); l.className = "work-outcome-statement-label"; l.textContent = item.resultLabel || "Outcome";
-      var v = document.createElement("p"); v.className = "work-outcome-statement-value"; v.textContent = item.result;
-      sec.append(l, v); return sec;
-    }
     // "Recent changes": the living log of system decisions. One source (assets/ds/changelog.json) for this world and
     // the ?ds dashboard, so the two can't disagree.
     function buildChangelog(){
@@ -6335,14 +6338,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       }).catch(function(){ sec.remove(); });
       return sec;
     }
-    // Credits: the people and code-boundary rows, verbatim from the record, at the end of the page (film-credits style).
-    // Company page = credits for the whole role; case study = credits for that project (Chris 2026-09-24, option 1).
-    // "Boundary" is a credit only when it says who built what; delivery boundaries ("Deployed internal build · not
-    // production") stay in the facts row with the delivery state.
-    var CREDIT_FACT = /^(Team|Partners|Collaborat\w*|Code( boundary)?|Engineering)$/i;
-    function isCreditFact(f){
-      return CREDIT_FACT.test(f[0]) || (/^Boundary$/i.test(f[0]) && /code|engineer|design|helped/i.test(f[1] || ""));
-    }
     // Case-study hero (P1, Chris 2026-09-24): one 16:9 frame in the title band, under the one-liner. The frame is the
     // spec for new heroes (recreated in Figma; motion or interactive pieces can take the same slot later). Placeholders
     // stay out of the band: no hero is better than a "coming soon" box.
@@ -6353,25 +6348,108 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       img.loading = "eager"; img.decoding = "async";
       fig.appendChild(img); return fig;
     }
-    // Case-study facts in the title band (G1): the facts row and the outcome, where the reader starts.
-    function buildStoryFacts(story){
-      var rows = (story.facts || []).filter(function(f){ return !isCreditFact(f); });
-      var status = publicDelivery(story.delivery);
-      var result = (status ? status + ". " : "") + (story.result || "");
-      if(!rows.length && !story.result) return null;
-      var box = document.createElement("div"); box.className = "work-story-facts";
-      if(rows.length){
-        var dl = document.createElement("dl");
-        rows.forEach(function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
-          dt.textContent=r[0]; dd.textContent=String(r[1]).split(" · ").join(", "); row.append(dt,dd); dl.appendChild(row); }); // plain English, like the old facts row
-        box.appendChild(dl);
-      }
-      if(story.result){
-        var l = document.createElement("p"); l.className = "work-story-facts-label"; l.textContent = "Outcome";
-        var v = document.createElement("p"); v.className = "work-story-facts-outcome"; v.textContent = result;
-        box.append(l, v);
-      }
+    // V4 fact console (FACT_SCHEMA_PLAN v3): ONE component for case studies, company pages and single-project pages.
+    // Fixed rows from the record's schema fields (My part, Code, With, Delivery), then up to 2 evidence rows; the outcome
+    // sits beside it. Records without myPart fall back to the old renderers.
+    // Copy blanks (Chris's unwritten lines) show only on lab previews and localhost, never on the public site.
+    var SHOW_COPY_BLANKS = /\/lab\//.test(location.pathname) || location.hostname === "localhost";
+    var CODE_METHOD = {"by hand":"hand-coded", "with agents":"built with agents", "mixed":"hand-coded and with agents"};
+    function codeLine(code){
+      if(!code || code.maturity === "n/a") return "";
+      if(code.maturity === "none") return code.scope || "None";
+      // Scope and method are different facts: two sentences, so the method never reads as one more thing coded.
+      var how = code.methodNote || CODE_METHOD[code.method] || "";
+      how = how ? how.charAt(0).toUpperCase() + how.slice(1) + "." : "";
+      return [code.scope ? code.scope.replace(/\.$/, "") + "." : "", how].filter(Boolean).join(" ");
+    }
+    function buildFactConsole(rec, outcomeText, opts){
+      opts = opts || {};
+      if(!rec || !rec.myPart) return null;
+      var mp = rec.myPart;
+      var rows = [["My part", mp.design], ["Code", codeLine(mp.code)], ["With", mp.team], [opts.company ? "Status" : "Delivery", publicDelivery(rec.deliveryState)]]
+        .filter(function(r){ return r[1]; });
+      var ev = (rec.evidence || []).slice(0, 2);
+      if(!rows.length && !ev.length && !outcomeText) return null;
+      var box = document.createElement("div"); box.className = "work-story-facts fact-console";
+      var dl = document.createElement("dl");
+      var addRow = function(r, isEv){ var row=document.createElement("div"); row.dataset.k = r[0]; if(isEv) row.dataset.ev = "1"; var dt=document.createElement("dt"); var dd=document.createElement("dd");
+        dt.textContent = r[0]; dd.textContent = String(r[1]).split(" · ").join(", "); row.append(dt, dd); dl.appendChild(row); };
+      rows.forEach(function(r){ addRow(r); });
+      if(ev.length){ if(rows.length){ var hr = document.createElement("hr"); hr.className = "fact-console-rule"; dl.appendChild(hr); } ev.forEach(function(r){ addRow(r, true); }); }
+      if(dl.children.length) box.appendChild(dl);
+      // Trailer (STYLE_GRAMMAR_DRAFT "trailer framing"): Problem as a question, then the outcome TEASE; the full outcome
+      // pays off in the closing band. Both lines are Chris's; until written, the public page falls back to the record's
+      // result and shows no Problem, and a preview shows a marked blank.
+      var col = document.createElement("div"); col.className = "fact-console-lead";
+      var addLead = function(label, text, blank){
+        if(!text && !(blank && SHOW_COPY_BLANKS)) return;
+        var l = document.createElement("p"); l.className = "work-story-facts-label"; l.textContent = label;
+        var v = document.createElement("p"); v.className = "work-story-facts-outcome" + (text ? "" : " tpl-blank"); v.textContent = text || blank;
+        col.append(l, v);
+      };
+      addLead("Problem", rec.problemQuestion, "[Problem, as a question: you write]");
+      addLead("Outcome", rec.outcomeTease || outcomeText, "[Outcome teaser, one line: you write]");
+      if(col.children.length) box.appendChild(col);
       return box;
+    }
+    // Company lobby, "Who I was there" (Chris 2026-10-01): role-level context at a glance before any project. Left: the
+    // role, dates, and the stage when Chris joined; right: his own first-person summary, then one quiet line of code,
+    // collaborators, and status. Same 50/50 grid as the chapters. Every value is an existing record field.
+    var STAGE_LABELS = /^(Role shape|When I joined|Chapters|Mandate)$/i;
+    function buildCompanyRole(rec){
+      if(!rec) return null;
+      var sec = document.createElement("section"); sec.className = "company-role"; sec.setAttribute("aria-label", "Who I was there");
+      var left = document.createElement("div"); left.className = "company-role-who";
+      var k = document.createElement("p"); k.className = "company-role-kicker"; k.textContent = "Who I was there";
+      var r = document.createElement("p"); r.className = "company-role-title"; r.textContent = rec.role || "";
+      var d = document.createElement("p"); d.className = "company-role-dates"; d.textContent = rec.dates || "";
+      left.append(k, r, d);
+      var stage = (rec.evidence || []).find(function(e){ return STAGE_LABELS.test(e[0]); });
+      if(stage){ var st = document.createElement("p"); st.className = "company-role-stage"; st.textContent = String(stage[1]).split(" · ").join(", "); left.appendChild(st); }
+      var right = document.createElement("div"); right.className = "company-role-what";
+      if(rec.summary){ var p = document.createElement("p"); p.className = "company-role-summary"; p.textContent = rec.summary; right.appendChild(p); }
+      var mp = rec.myPart || {};
+      var by = [["Code", codeLine(mp.code)], ["With", mp.team], ["Status", publicDelivery(rec.deliveryState)]].filter(function(x){ return x[1]; });
+      if(by.length){
+        var dl = document.createElement("dl"); dl.className = "company-role-byline";
+        by.forEach(function(x){ var row = document.createElement("div"); var dt = document.createElement("dt"); var dd = document.createElement("dd");
+          dt.textContent = x[0]; dd.textContent = String(x[1]).split(" · ").join(", "); row.append(dt, dd); dl.appendChild(row); });
+        right.appendChild(dl);
+      }
+      sec.append(left, right);
+      return sec;
+    }
+    // Company close: the company-level impact and milestone, in the world color, after the recommendations.
+    function buildCompanyClose(rec){
+      if(!rec || !(rec.result || rec.companyOutcome)) return null;
+      var band = document.createElement("section"); band.className = "company-close"; band.setAttribute("aria-label", "Impact");
+      var k = document.createElement("p"); k.className = "outcome-band-kicker"; k.textContent = rec.resultLabel || "Impact";
+      band.appendChild(k);
+      if(rec.result){ var h = document.createElement("p"); h.className = "outcome-band-result"; h.textContent = rec.result; band.appendChild(h); }
+      if(rec.companyOutcome){ var m = document.createElement("p"); m.className = "outcome-band-label"; m.textContent = "Company: " + rec.companyOutcome; band.appendChild(m); }
+      return band;
+    }
+    // Closing outcome band (tier 2): the payoff. Full outcome + "What changed" (Chris's line). On the public page it
+    // renders only when it adds something the trailer did not already say (a teaser exists, or "What changed" exists).
+    function buildOutcomeBand(rec){
+      if(!rec) return null;
+      var adds = rec.outcomeTease || rec.whatChanged;
+      if(!adds && !SHOW_COPY_BLANKS) return null;
+      var band = document.createElement("section"); band.className = "outcome-band"; band.setAttribute("aria-label", "Outcome");
+      var k = document.createElement("p"); k.className = "outcome-band-kicker"; k.textContent = publicDelivery(rec.deliveryState) || "Outcome";
+      band.appendChild(k);
+      // One fact, one slot: when the trailer teaser already carries the outcome's numbers, the band does not repeat them.
+      var nums = function(t){ return (String(t || "").match(/\d[\d,.]*/g) || []).map(function(n){ return n.replace(/[,.]$/, ""); }); };
+      var resultNums = nums(rec.result), teaseNums = nums(rec.outcomeTease);
+      var repeats = resultNums.length && resultNums.some(function(n){ return teaseNums.indexOf(n) >= 0; });
+      if(rec.result && !repeats){ var h = document.createElement("p"); h.className = "outcome-band-result"; h.textContent = rec.result; band.appendChild(h); }
+      if(rec.whatChanged || SHOW_COPY_BLANKS){
+        var wl = document.createElement("p"); wl.className = "outcome-band-label"; wl.textContent = "What changed";
+        var wv = document.createElement("p"); wv.className = "outcome-band-changed" + (rec.whatChanged ? "" : " tpl-blank");
+        wv.textContent = rec.whatChanged || "[What changed, or what you learned: you write]";
+        band.append(wl, wv);
+      }
+      return band;
     }
     // Links to live work (L2): one quiet line in the title band. ↗ marks a link that leaves the site.
     function buildLinkLine(actions){
@@ -6393,16 +6471,6 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         p.appendChild(a);
       });
       return p;
-    }
-    function buildCredits(facts){
-      var rows = (facts || []).filter(isCreditFact);
-      if(!rows.length) return null;
-      var sec = document.createElement("section"); sec.className = "work-credits";
-      var h = document.createElement("h4"); h.className = "work-credits-title"; h.textContent = "Credits"; sec.appendChild(h);
-      var dl = document.createElement("dl");
-      rows.forEach(function(r){ var row=document.createElement("div"); var dt=document.createElement("dt"); var dd=document.createElement("dd");
-        dt.textContent=r[0]; dd.textContent=r[1]; row.append(dt,dd); dl.appendChild(row); });
-      sec.appendChild(dl); return sec;
     }
     // ONE hover + entrance for every project card (company pages and the homepage "Recent work").
     // Hover = the shared data-grid hover (bound via window.__bindHoverFx; tall screenshots pan only as the
@@ -6672,7 +6740,17 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
         copy.append(step, title, description);
         var media = document.createElement("div");
         media.className = "project-chapter-media";
-        (chapter.media || []).forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
+        // Unfinished work stays off the public site (Chris 2026-09-29): a bare "Visuals coming soon" placeholder (visual,
+        // no diagram, no file) is skipped, so its chapter reads as text-only. Diagrams still render.
+        var keptMedia = (chapter.media || []).filter(function(item){ return !(item.visual && !item.diagram && !item.src && !item.explorer); });
+        keptMedia.forEach(function(item){ media.appendChild(createStoryArtifact(item)); });
+        // V4 chapter shape (CHAPTER_LAYOUTS_DRAFT): A = text only (split), D = one small item beside the copy,
+        // F = 3+ same-size items (gallery row), B = everything else (media below the split text). Derived, never typed.
+        var spanOf = function(it){ return Number(it.span || 6); };
+        section.dataset.shape = !keptMedia.length ? "A"
+          : (keptMedia.length === 1 && spanOf(keptMedia[0]) <= 6 && !keptMedia[0].explorer) ? "D"
+          : (keptMedia.length >= 3 && spanOf(keptMedia[0]) < 12 && keptMedia.every(function(it){ return spanOf(it) === spanOf(keptMedia[0]); })) ? "F"
+          : "B";
         section.append(copy);
         if(media.childNodes.length) section.appendChild(media); // media: [] = a deliberate text-only chapter
         article.appendChild(section);
@@ -6713,7 +6791,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       var storyNavProgress = document.createElement("span");
       storyNavProgress.className = "project-story-nav-progress";
       storyNav.append(storyNavProgress, storyNavMarker);
-      var storyCredits = buildCredits(story.facts); if(storyCredits) article.appendChild(storyCredits);
+      var outcomeBand = story.myPart ? buildOutcomeBand(story) : null; if(outcomeBand) article.appendChild(outcomeBand);
       var storyEnd = buildStoryEnd(storyKey); if(storyEnd) article.appendChild(storyEnd);
       workFocusContent.appendChild(article);
       workFocusContent.hidden = false;
@@ -6768,7 +6846,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       // Chip widths change at breakpoints; re-place the marker and fill when the nav resizes.
       new ResizeObserver(function(){ if(storyRevealHandler) storyRevealHandler(); }).observe(storyNav);
       // The card's image morphs into the hero in the title band; no hero, no morph.
-      return workPanel.querySelector(".work-panel-heading .work-story-hero");
+      return workPanel.querySelector(".work-story-hero");
     }
 
     function clearProjectGallery(){
@@ -7091,6 +7169,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
     function clearWorldHero(){
       var h = workPanel.querySelector(".work-panel-heading"); if(h) h.classList.remove("world-hidden");
       var ex = workPanel.querySelector(".world-hero"); if(ex) ex.remove();
+      var st = workPanel.querySelector(".world-hero-media.is-straddle"); if(st) st.remove();
     }
     function applyWorldHero(project){
       clearWorldHero();
@@ -7098,7 +7177,10 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       if(!item || !heading) return;
       var hero = document.createElement("header"); hero.className = "world-hero";
       // One header everywhere (B2): "Role · dates" above the title.
-      var kickerText = [item.role, item.dates].filter(Boolean).join(" · ");
+      // A lobby (company with case studies) keeps its band to name + what the company does; role and dates live in
+      // "Who I was there" and the milestone in the closing band (Chris 2026-10-01).
+      var lobby = Object.keys(workStories).some(function(k){ return workStories[k].company === project; });
+      var kickerText = lobby ? "" : [item.role, item.dates].filter(Boolean).join(" · ");
       if(kickerText){ var k=document.createElement("p"); k.className="world-hero-kicker"; k.textContent=kickerText; hero.appendChild(k); }
       var h2=document.createElement("h2"); h2.className="world-hero-title"; h2.textContent=item.name; hero.appendChild(h2);
       // World lede = company context only (Chris 2026-09-23: "the one-liner below the company name gives context on
@@ -7109,11 +7191,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       {
         // One meta line: role shape, stage or status, and the company milestone, verbatim from the record. A stage line
         // already says where the product ended up, so the milestone only shows without one (PlaySesh said "remains live" twice).
-        var mf = item.facts || [];
-        var shape = mf.find(function(f){ return /^(Role shape|When I joined|Mandate|Chapters)$/i.test(f[0]); });
-        var stage = mf.find(function(f){ return /^Stage$/i.test(f[0]); });
-        var parts = [shape && [null, shape[1]], stage && [null, stage[1]], !stage && item.status && [null, item.status],
-          !stage && item.companyOutcome && ["Company", item.companyOutcome]].filter(Boolean);
+        // V4: the header is title + description only (Chris 2026-09-29). It keeps the company milestone, or the living
+        // world's status; role shape and stage live in the fact console.
+        var parts = lobby ? [] : item.companyOutcome ? [["Company", item.companyOutcome]] : (item.status ? [[null, item.status]] : []);
         if(parts.length){
           var meta = document.createElement("p"); meta.className = "world-hero-meta";
           parts.forEach(function(pt, i){
@@ -7140,6 +7220,9 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       // so the composite hero stays out of the title band. Kept built (not appended) for a future opt-in.
       heading.classList.add("world-hidden");
       heading.parentNode.insertBefore(hero, heading);
+      // V4: a real hero straddles the band's bottom edge (the blueprint fallback stays out: no placeholder in the trailer)
+      if(item.hero){ m.classList.add("is-straddle"); hero.classList.add("has-straddle"); hero.after(m); }
+      workPanel.querySelectorAll(".work-story-facts, .work-story-hero").forEach(function(n){ n.remove(); });
     }
     function renderWorkPanel(project, source){
       var item = workProjects[project];
@@ -7159,9 +7242,7 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       // In a world, fold the summary into the grid as the lead "What I did" cell (and hide the loose paragraph).
       var inWorld = companyView && document.body.getAttribute("data-world");
       workPanelSummary.hidden = !!inWorld;
-      var facts = companyView ? item.facts : null;
-      if(inWorld && item.summary) facts = [["What I did", item.summary]].concat(item.facts || []);
-      renderWorkFacts(facts, Boolean(companyView));
+      renderWorkFacts(null, Boolean(companyView)); // company facts live in the fact console (buildFactConsole)
       workPanelDetails.open = !(companyView && window.matchMedia("(max-width:520px)").matches);
       workPanelResultLabel.textContent = companyView
         ? (item.resultLabel || (hasCompanyStories(project) ? "Company impact" : "Outcome"))
@@ -7191,17 +7272,19 @@ body[data-world] .work-shell .portfolio-diagram{--world-card-bg:#1c1a17;--world-
       workPanelSummary.textContent = story.summary;
       workPanelSummary.hidden = true; // S2L: the summary is the title band's one-liner
       workPanelLede.textContent = story.summary || ""; workPanelLede.hidden = !story.summary;
-      renderWorkFacts((story.facts || []).filter(function(f){ return !isCreditFact(f); }), true); // people rows move to the credits
+      renderWorkFacts(null, true); // facts live in the fact console (buildFactConsole)
       workPanelDetails.open = true;
       workPanelResultLabel.textContent = "Outcome";
       var storyStatus = publicDelivery(story.delivery);
       workPanelResult.textContent = (storyStatus ? storyStatus + ". " : "") + story.result;
       workPanelActions.replaceChildren(); workPanelActions.hidden = true;
       var oldLinks = workPanel.querySelector(".work-panel-heading .work-links"); if(oldLinks) oldLinks.remove();
-      workPanel.querySelectorAll(".work-panel-heading .work-story-facts, .work-panel-heading .work-story-hero").forEach(function(n){ n.remove(); });
+      workPanel.querySelectorAll(".work-story-facts, .work-story-hero").forEach(function(n){ n.remove(); });
       var storyLinks = buildLinkLine(story.actions); if(storyLinks) workPanelLede.after(storyLinks);
-      var storyHeroFig = buildStoryHero(story); if(storyHeroFig) (storyLinks || workPanelLede).after(storyHeroFig);
-      var storyFacts = buildStoryFacts(story); if(storyFacts) (storyHeroFig || storyLinks || workPanelLede).after(storyFacts);
+      // V4: the hero and the fact console sit AFTER the band, so the band can end and the hero straddle its edge
+      var storyHeading = workPanel.querySelector(".work-panel-heading");
+      var storyHeroFig = buildStoryHero(story); if(storyHeroFig) storyHeading.after(storyHeroFig);
+      var storyFacts = buildFactConsole(story, story.result); if(storyFacts) (storyHeroFig || storyHeading).after(storyFacts);
       workPanel.hidden = false;
     }
 

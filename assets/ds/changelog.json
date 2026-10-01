@@ -1,5 +1,23 @@
 [
  {
+  "date": "2026-10-01",
+  "area": "Case studies",
+  "change": "New case-study template. A loud world-colored band with the title, and the main image straddling its edge. Then the problem, a short outcome, and a fact console: my part, the code, who I worked with, and whether it shipped. Every chapter splits 50/50 (stacked on smaller screens). A closing band carries the full outcome and what changed.",
+  "commit": ""
+ },
+ {
+  "date": "2026-10-01",
+  "area": "Company pages",
+  "change": "Company pages are now a lobby: the band says what the company does, then who I was there, the case studies, everything else I shipped, recommendations, and a closing impact band.",
+  "commit": ""
+ },
+ {
+  "date": "2026-10-01",
+  "area": "Facts",
+  "change": "Every project uses the same fact fields, so the facts read the same way on every page. The old fact band and credits rows are gone.",
+  "commit": ""
+ },
+ {
   "date": "2026-09-27",
   "area": "Case studies",
   "change": "Case studies can embed a live demo. The first is The United States of Drugs on the GoodRx Research case study: the same map component the Epoch page uses, loaded only when you scroll near it, with the published 2018 map as the fallback.",
