@@ -1045,9 +1045,12 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .project-story[data-story-company="goodrx"] .project-story-hero{background:#f4df3d}
 .project-story[data-story-key="iodine_product"] .project-story-hero{background:#6339b6}
 .project-story-nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:4px;
-  min-width:0;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  min-width:0;padding:10px 16px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
   background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);
-  overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none;isolation:isolate}
+  overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scrollbar-width:none;isolation:isolate;
+  /* Full width (Chris 2026-10-01, option C): fill and both lines run edge to edge like the bands; the shadow is the fill outside the box */
+  box-shadow:0 0 0 100vmax color-mix(in srgb,var(--bg) 94%,transparent);clip-path:inset(0 -100vmax);
+  border-image:linear-gradient(var(--border),var(--border)) 1 / 1px 0 / 0 100vmax}
 .project-story-nav::-webkit-scrollbar{display:none}
 /* Active chapter = a 3px underline that glides between chips (same weight as .read-progress);
    reading progress = a fill on the same line, mapped chip-to-chip so it runs under the active chip. */
@@ -1737,7 +1740,7 @@ body[data-world] .work-panel.is-story-view .work-panel-story-meta{justify-conten
 body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;margin:0}
 
 /* #14 · JUMP TO nav - world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
-body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent)}
+body[data-world] .project-story-nav{background:color-mix(in srgb,var(--world-bg) 92%,transparent);box-shadow:0 0 0 100vmax color-mix(in srgb,var(--world-bg) 92%,transparent)}
 
 /* Product-map ("supporting work") cards: the li used the GLOBAL --bg (dark) but text used --world-ink
    (dark on light worlds) -> dark-on-dark. Pair them with the world CARD tokens so text is always legible. */
