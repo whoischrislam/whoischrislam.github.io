@@ -4,7 +4,7 @@
         "name": "Chris Lam",
         "label": "Product Designer for AI-native products",
         "email": "whoischrislam@gmail.com",
-        "url": "https://whoischrislam.github.io",
+        "url": "https://madebychrislam.com",
         "summary": "Product designer, 14 years shipping healthcare, marketplace, education, and consumer software. I own the work from research through interaction design to design systems, and I ship production code (React, TypeScript, Python), so design intent survives to what users actually touch. Results: GoodRx coupon conversion from 2% to 5%, TaskRabbit NPS from about -5 to the mid-50s, and a Clover Health nurse app I designed and shipped, which nurses said gave them back 1-2 hours of chart prep a day. Seeking product design roles on AI-native teams.",
         "location": {
             "city": "Honolulu",
@@ -33,7 +33,7 @@
         {
             "name": "y30",
             "position": "Co-Founder & Product Design Engineer",
-            "url": "https://whoischrislam.github.io/?work=y30#work",
+            "url": "https://madebychrislam.com/?work=y30#work",
             "startDate": "2026-03",
             "endDate": "2026-07",
             "summary": "Co-founder through Jul 2026; advising since. Voice AI for older adults and their care teams.",
@@ -254,8 +254,8 @@
         }
     ],
     "meta": {
-        "canonical": "https://whoischrislam.github.io/resume.json",
-        "factSheet": "https://whoischrislam.github.io/candidate.html",
+        "canonical": "https://madebychrislam.com/resume.json",
+        "factSheet": "https://madebychrislam.com/candidate.html",
         "note": "Seeking product design roles, full-time. Remote US from Honolulu (preferred), working West Coast hours. Can also work remotely from Seattle or the Bay Area. Open to relocation for the right role.",
         "locationLine": "Remote US from Honolulu, HI \u00b7 Or remote from Seattle / Bay Area \u00b7 West Coast hours \u00b7 Open to relocation",
         "variants": {
@@ -270,7 +270,8 @@
             },
             "product-engineer": {
                 "label": "Product Engineer",
-                "summary": ""
+                "summary": "Product engineer with 14 years of product design behind every decision. I own features end to end, from the user problem to production React, TypeScript, and Python. I build with AI coding agents: I define the architecture, contracts, and acceptance criteria, agents implement inside them, and I own review, tests, and safety, including a regression test for every confirmed failure. Most recently I built a voice-AI system whose crisis paths are deterministic code the model cannot override, and co-founded and shipped a real-time collaborative whiteboard inside Discord that peaked at 1,043 monthly active users.",
+                "skillsOrder": ["Production Engineering", "AI-Native Systems", "Product & Design"]
             },
             "ai-product-engineer": {
                 "label": "AI Product Engineer",

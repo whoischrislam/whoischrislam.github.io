@@ -80,7 +80,17 @@ def resolve_variant(data, key, label_override, summary_override):
             avail = [k for k in variants if not k.startswith("_")]
             sys.exit(f"Unknown variant '{key}'. Available: {', '.join(avail)}")
         label = variant.get("label") or label
+        if not (variant.get("summary") or summary_override):
+            # The label is not printed; the summary is the headline a screener reads.
+            print(f"WARNING: variant '{key}' has no summary; the PDF will open with the "
+                  "canonical summary.", file=sys.stderr)
         summary = variant.get("summary") or summary
+        order = variant.get("skillsOrder")
+        if order:
+            # Variant may lead the skills rail with different groups; unnamed groups keep their place after.
+            rank = {name: i for i, name in enumerate(order)}
+            data["skills"] = sorted(data.get("skills", []),
+                                    key=lambda g: rank.get(g["name"], len(order)))
     return (label_override or label, summary_override or summary)
 
 
