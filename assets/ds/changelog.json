@@ -1,6 +1,18 @@
 [
  {
   "date": "2026-10-01",
+  "area": "Case studies",
+  "change": "The closing band is now the payoff and the exit: the full outcome, who it helped, what changed, then the next case study and a way to get in touch, all inside the band.",
+  "commit": ""
+ },
+ {
+  "date": "2026-10-01",
+  "area": "Case studies",
+  "change": "The Jump to bar runs the full width of the page with a solid fill, so its edges no longer stop at the content column.",
+  "commit": ""
+ },
+ {
+  "date": "2026-10-01",
   "area": "Demos",
   "change": "The y30 voice replay is now a shared component, like the United States of Drugs map, so any page can embed it. Application pages can now be built from one template with the map, the voice replay, and HogWare as embeddable demos.",
   "commit": ""
