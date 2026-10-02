@@ -8,7 +8,7 @@
 //
 // The script never writes copy. Every sentence on the page comes from page.md verbatim;
 // the script supplies only structure, the demo embeds, and recommendations quoted from
-// index.html's workRecommendations (the canonical source). Format: templates/apply-page.md.
+// index.html's workRecommendations (the canonical source). Format: templates/apply-<door>.md.
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -99,7 +99,7 @@ function checkImage(p, where) { if (!fs.existsSync(path.join(ROOT, p))) err(`${w
 // ---- Parse page.md ----
 const raw = fs.readFileSync(src, 'utf8').replace(/\r\n/g, '\n');
 const fm = raw.match(/^---\n([\s\S]*?)\n---\n/);
-if (!fm) { console.error(`${src}: needs a --- front matter block (see templates/apply-page.md)`); process.exit(2); }
+if (!fm) { console.error(`${src}: needs a --- front matter block (see templates/apply-<door>.md)`); process.exit(2); }
 const meta = {};
 fm[1].split('\n').forEach(l => { const m = l.match(/^(\w+):\s*(.*)$/); if (m) meta[m[1]] = m[2].trim(); });
 ['company', 'role', 'slug', 'description'].forEach(k => { if (!meta[k]) err(`front matter: missing ${k}`); });
