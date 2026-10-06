@@ -8,7 +8,7 @@ description: Resume portfolio, career-evidence, or job-hunt work from the reposi
 Reconstruct the working state from maintained evidence rather than conversation
 memory.
 
-1. Read `AGENTS.md`, then `.jobhunt/README.md` and
+1. Read `AGENTS.md`, then `.jobhunt/README.md`, `.jobhunt/INDEX.md`, and
    `.jobhunt/ACTIVE_PORTFOLIO_HANDOFF.md` completely.
 2. Inspect `git status` before making changes. Treat unrelated edits as Chris's
    work and preserve them.
