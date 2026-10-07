@@ -1,5 +1,11 @@
 [
  {
+  "date": "2026-10-07",
+  "area": "Type and color",
+  "change": "New type pairing: Besley for headings and Kumbh Sans for body text, replacing Newsreader and Figtree. The page ground is now a neutral off-white instead of a warm one.",
+  "commit": ""
+ },
+ {
   "date": "2026-10-01",
   "area": "Case studies",
   "change": "The closing band is now the payoff and the exit: the full outcome, who it helped, what changed, then the next case study and a way to get in touch, all inside the band.",

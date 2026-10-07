@@ -80,8 +80,12 @@ and any token under 14px. Was 26 rendered sizes (10-13px micro text included).
 --sp-1:4  --sp-2:8  --sp-3:16  --sp-4:24  --sp-6:32  --sp-8:44  --sp-12:88
 ```
 
-**Two typefaces, two weights (Chris 2026-09-24, after Vicky Vo's review).** Newsreader (display
-serif) + Figtree (text sans), weights 400 and 600 only. IBM Plex Mono, Instrument Serif (never
+**Two typefaces, two weights.** Besley (display serif, Clarendon-style) + Kumbh Sans (text sans,
+geometric), weights 400 and 600 only, on a neutral off-white ground (`--bg:#fafafa`). Chose 2026-10-07,
+replacing Newsreader + Figtree on a warm #f6f5f3 ground: an "AI-built website" checklist flagged
+beige + editorial serif, and his taste is sturdy serifs over a geometric sans.
+Rejected: Jost (hard to read), Montserrat (on an overused-AI-defaults list). The two-typeface,
+two-weight rule dates from 2026-09-24, after Vicky Vo's review. IBM Plex Mono, Instrument Serif (never
 loaded; it fell back to the browser serif) and Caveat (loaded, unused) are retired. `--mono` is gone;
 `check-design-system.py` requires only `--serif` / `--sans`.
 

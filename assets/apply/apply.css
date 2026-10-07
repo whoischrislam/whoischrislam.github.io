@@ -3,11 +3,11 @@
    Tokens mirror index.html :root (light only, like the Epoch page). */
 :root{
   color-scheme:light;
-  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --bg:#fafafa; --surface:#ffffff; --surface-2:#f0f0f0; --text:#1e1e1e; --muted:#696969;
   --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --accent-strong:#1e7a3c;
   --border:rgba(0,0,0,.10); --border-strong:rgba(0,0,0,.16);
   --guess:#c2410c; --none:#cfc9bd; --band-goodrx:#fcef72;
-  --serif:'Newsreader',Georgia,serif; --sans:'Figtree',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --serif:'Besley',Georgia,serif; --sans:'Kumbh Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
   --s-2:16px; --s-3:24px; --s-4:32px; --s-6:48px; --s-8:64px; --s-12:96px;
 }
 *,*::before,*::after{box-sizing:border-box}

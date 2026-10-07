@@ -10,7 +10,7 @@
 <meta name="robots" content="noindex" /><!-- unlisted on purpose: an application page addressed to one employer, shared by link only -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Figtree:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;1,400&family=Kumbh+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <script>
   // Same pre-paint theme init + storage key as the rest of the site.
   (function () {
@@ -27,11 +27,11 @@
 :root{--band-goodrx:#fcef72}
 :root, :root[data-theme="light"]{
   color-scheme:light;
-  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --bg:#fafafa; --surface:#ffffff; --surface-2:#f0f0f0; --text:#1e1e1e; --muted:#696969;
   --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --accent-strong:#1e7a3c;
   --border:rgba(0,0,0,.10); --border-strong:rgba(0,0,0,.16); --grid:rgba(0,0,0,.045);
   --guess:#c2410c; --range:rgba(42,157,79,.35); --none:#cfc9bd;
-  --serif:'Newsreader',Georgia,serif; --sans:'Figtree',system-ui,sans-serif;
+  --serif:'Besley',Georgia,serif; --sans:'Kumbh Sans',system-ui,sans-serif;
   --t-h1:clamp(34px,4.2vw,56px); --t-xl:30px; --t-lg:24px; --t-md:21px; --t-base:18px; --t-sm:16px;
 }
 :root[data-theme="dark"]{
@@ -320,7 +320,7 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .band-epoch{margin-top:48px}
 :root[data-band="a"] .band-epoch{background:#e3eaf2}
 :root[data-band="b"] .band-epoch{background:#e8e3f3}
-:root[data-band="c"] .band-epoch{background:#ebe7df}
+:root[data-band="c"] .band-epoch{background:#e9e9e9}
 .band-epoch .method{border-color:rgba(0,0,0,.12)}
 .band-epoch .tabs button,.band-epoch .chips button{background:rgba(255,255,255,.65)}
 @media (max-width:760px){.band,:root[data-style="b"] #work{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}}
@@ -347,7 +347,7 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .md-list button[aria-selected="true"]{color:var(--text);border-left-color:var(--accent);font-weight:600}
 .pair-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:start;padding:24px 0;border-top:1px solid var(--border)}
 @media (max-width:640px){.pair-row{grid-template-columns:1fr}}
-.lb-code{display:none;max-width:min(900px,92vw);max-height:78vh;overflow:auto;background:#1f1d1b;color:#e9e6df;padding:18px 20px;font:13px/1.55 var(--mono);margin:0 auto}
+.lb-code{display:none;max-width:min(900px,92vw);max-height:78vh;overflow:auto;background:#1e1e1e;color:#e6e6e6;padding:18px 20px;font:13px/1.55 var(--mono);margin:0 auto}
 /* code rows: one header line, then code and output at the same height */
 .code-pairs{margin-top:32px;display:grid;gap:48px}
 .pair-row{display:block;padding:0;border:none}
@@ -359,7 +359,7 @@ body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opa
 .pr-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:300px;gap:16px}
 /* fixed row height: a percentage height inside an auto-sized grid row resolves to the content, which let long code spill over the next rows (2026-09-26) */
 .pr-code{min-width:0;height:300px}
-.pr-code pre{margin:0;height:100%;overflow:auto;background:#1f1d1b;color:#e9e6df;padding:16px 18px;font:12.5px/1.6 var(--mono)}
+.pr-code pre{margin:0;height:100%;overflow:auto;background:#1e1e1e;color:#e6e6e6;padding:16px 18px;font:12.5px/1.6 var(--mono)}
 .pr-out{position:relative;height:300px;display:flex;flex-direction:column;gap:8px;min-width:0}
 .pr-shot{flex:1;min-height:0;display:block;border:1px solid var(--border);background:var(--surface);overflow:hidden}
 .pr-shot img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
@@ -417,7 +417,7 @@ body [data-role="pm"]{display:none}
 .flip button[aria-pressed="true"]{background:var(--guess);color:#fff;border-style:solid}
 /* ===== Game pass 2 ===== */
 .bridge{font-size:var(--t-md);line-height:1.5;margin:0 0 28px;max-width:60ch}
-.dock{position:fixed;top:0;left:0;right:0;z-index:8;display:flex;gap:16px;align-items:baseline;justify-content:center;padding:10px 16px;background:#ebe7df;border-bottom:1px solid rgba(0,0,0,.1);transform:translateY(-100%);transition:transform .25s ease}
+.dock{position:fixed;top:0;left:0;right:0;z-index:8;display:flex;gap:16px;align-items:baseline;justify-content:center;padding:10px 16px;background:#e9e9e9;border-bottom:1px solid rgba(0,0,0,.1);transform:translateY(-100%);transition:transform .25s ease}
 .dock.on{transform:none}
 .dock-title{font-family:var(--serif);font-size:18px}
 .dock-state{font-family:var(--mono);font-size:13px;color:var(--muted)}
@@ -1480,7 +1480,7 @@ blockquote.q cite{font-size:15px}
   $('res-b').hidden = true; // Chris picked A
   buildCode();
   document.documentElement.setAttribute('data-style', 'b'); // Chris picked style B
-  document.documentElement.setAttribute('data-band', 'c'); // warm gray (Chris 2026-09-26)
+  document.documentElement.setAttribute('data-band', 'c'); // neutral gray (Chris 2026-10-07; was warm gray 2026-09-26)
 
 
   // ---- Data-viz kit: each component is {name, desc, html, init}; the views below only arrange them ----

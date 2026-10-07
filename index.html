@@ -82,27 +82,28 @@
         </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Figtree:wght@400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;1,400&family=Kumbh+Sans:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
   color-scheme:light;
   /* WORKING DRAWINGS system (Chris's own, 2026-09-16): off-white ground + very-dark-gray ink,
      green as the ONE signature accent; color otherwise comes from the work (per-company bands).
      Blueprint/editorial. NOT cream+terracotta - that was mis-sourced from an archive viewer's CSS. */
-  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --bg:#fafafa; --surface:#ffffff; --surface-2:#f0f0f0; --text:#1e1e1e; --muted:#696969;
   --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --border:rgba(0,0,0,.10);
   --accent-strong:#1e7a3c; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.06);
-  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(30,40,30,.08);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(0,0,0,.08);
   --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none;
   --grid:rgba(0,0,0,.045); /* structural-grid hairline - content aligns to it, not wallpaper */
   --body-font:var(--sans); --border-radius:0; --btn-border-radius:0; --transition:.25s ease; --enter:.5s ease; /* entrance (scroll cue) */
   /* motion tokens (research 2026-09-24: Carbon / Material 3 / Fluent / Atlassian agree) */
   --dur-instant:100ms; --dur-quick:200ms; --dur-base:400ms; --dur-slow:700ms;
   --ease-out:cubic-bezier(.2,0,0,1); --ease-in:cubic-bezier(.3,0,.8,.15); --ease-expressive:cubic-bezier(.05,.7,.1,1);
-  /* Newsreader = anti-slop serif display (NOT Fraunces/Instrument Serif). Figtree = Proxima Nova
-     stand-in (real Proxima pending Adobe kit). IBM Plex Mono = blueprint annotation layer. */
-  --serif:'Newsreader',Georgia,'Times New Roman',serif;
-  --sans:'Figtree',system-ui,-apple-system,sans-serif;
+  /* Type (Chris 2026-10-07): Besley = sturdy Clarendon-style display serif; Kumbh Sans = geometric
+     text sans. Neither is on the overused-AI-defaults list
+     (Inter, Montserrat, Fraunces, Instrument Serif...). Ground is a neutral off-white, not warm. */
+  --serif:'Besley',Georgia,'Times New Roman',serif;
+  --sans:'Kumbh Sans',system-ui,-apple-system,sans-serif;
   --head-h:56px;
   /* Type scale, seven steps. Was twenty-one sizes at half-pixel granularity,
      which is the granularity of a generator, not a decision. */
@@ -123,10 +124,10 @@
 }
 :root[data-theme="light"], :root[data-theme="light"] *{color-scheme:light}
 :root[data-theme="light"]{
-  --bg:#f6f5f3; --surface:#ffffff; --surface-2:#eeece7; --text:#1f1d1b; --muted:#6c6960;
+  --bg:#fafafa; --surface:#ffffff; --surface-2:#f0f0f0; --text:#1e1e1e; --muted:#696969;
   --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --border:rgba(0,0,0,.10);
   --accent-strong:#1e7a3c; --border-strong:rgba(0,0,0,.16); --border-soft:rgba(0,0,0,.06);
-  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(30,40,30,.08);
+  --chip-bg:rgba(0,0,0,.05); --drop-shadow:0 12px 34px rgba(0,0,0,.08);
   --on-accent:#ffffff; --surface-hover:var(--surface-2); --logo-filter:none; --grid:rgba(0,0,0,.045);}
 :root[data-theme="dark"], :root[data-theme="dark"] *{color-scheme:dark}
 :root[data-theme="dark"]{
@@ -1435,7 +1436,7 @@ body.dv-base::after{content:"";position:fixed;inset:0;z-index:2;pointer-events:n
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 :root[data-theme="dark"] body.dv-base::after{mix-blend-mode:screen;opacity:.05}
 /* GRID DECIDED OUT (Chris 2026-09-17): no visible grid, grain only. */
-/* ---- B · Type-as-hero treatments. All on-system fonts (Newsreader/Figtree/Plex Mono),
+/* ---- B · Type-as-hero treatments. All on-system fonts (Besley/Kumbh Sans),
    no new copy - just treatment of the existing lockup + its two .lit-word verbs
    ("design", "ship"). tb-1 = current baseline. ---- */
 
@@ -7808,7 +7809,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
   var bar=document.getElementById('dv-bar');
   document.body.classList.add('dv-base'); // grain locked on
   var caps={
-    "1":"1 · Current - Newsreader serif, one line.",
+    "1":"1 · Current - Besley serif, one line.",
     "2":"2 · Big two-line - display-scale, wraps to two lines, tight leading.",
     "3":"3 · Italic verbs - 'design' and 'ship' in italic.",
     "4":"4 · Green verbs - signature accent on 'design' and 'ship'.",

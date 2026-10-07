@@ -226,7 +226,7 @@ const page = `<!DOCTYPE html>
 <meta name="robots" content="noindex" /><!-- unlisted on purpose: an application page addressed to one employer, shared by link only -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Figtree:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;1,400&family=Kumbh+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/apply/apply.css">
 ${css}
 </head>
