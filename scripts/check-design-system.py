@@ -173,7 +173,7 @@ MEASURE_GRANDFATHERED = {
     ".visual-placeholder-note", ".work-tile>.visual-placeholder .visual-placeholder-title", ".world-hero-lede",
 }
 HARDCODED_COLOR_BASELINE = 47
-HARDCODED_DURATION_BASELINE = 50
+HARDCODED_DURATION_BASELINE = 44
 _rules = re.findall(r"([^{}]+)\{([^{}]*)\}", css_nc)
 for sel, body in _rules:
     for val in re.findall(r"max-width:\s*([^;]+)", body):
