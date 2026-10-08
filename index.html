@@ -1060,8 +1060,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .project-story-nav-marker{z-index:2;width:0;background:var(--accent);
   transition:left .38s cubic-bezier(.2,.75,.2,1),width .38s cubic-bezier(.2,.75,.2,1)}
 .project-story-nav-progress{z-index:1;width:0;background:color-mix(in srgb,var(--accent) 45%,transparent)}
-.project-story-nav-label{flex:0 0 auto;margin:0 8px 0 0;color:var(--muted);font-size:var(--t-xs);
-  letter-spacing:.12em;text-transform:uppercase}
+.project-story-nav-label{flex:0 0 auto;margin:0 8px 0 0;color:var(--muted);font-size:var(--t-xs);font-weight:600} /* sentence case (Chris 2026-10-07) */
 .project-story-nav button{appearance:none;position:relative;z-index:1;flex:0 0 auto;padding:7px 10px;border:1px solid transparent;
   border-radius:0;background:transparent;color:var(--muted);font:600 var(--t-xs)/1.2 var(--sans);
   cursor:pointer;transition:color .3s ease,border-color .16s ease,background .16s ease}
@@ -1105,7 +1104,7 @@ body.work-focus-open[data-world] .work-support-result{color:color-mix(in srgb,va
 .story-artifact.is-video::after{content:"\25B6";position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:64px;height:64px;display:grid;place-items:center;background:rgba(20,20,20,.78);color:#fff;font-size:var(--t-md);pointer-events:none}
 .story-end{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--s-item,24px);margin-top:var(--s-group,64px);padding-top:var(--s-item,24px);border-top:1px solid var(--border)}
 .story-end-next{display:flex;flex-direction:column;gap:var(--s-in,8px);text-align:left;background:none;border:0;padding:0;cursor:pointer;color:inherit;font:inherit}
-.story-end-label{font:600 var(--t-xs)/1.3 var(--sans);font-variant-caps:all-small-caps;letter-spacing:.06em;color:var(--world-ink-soft,var(--muted))}
+.story-end-label{font:600 var(--t-xs)/1.3 var(--sans);color:var(--world-ink-soft,var(--muted))} /* sentence case (Chris 2026-10-07) */
 .story-end-title{font:400 var(--t-md,18px)/1.3 var(--serif);color:var(--world-ink,var(--text))}
 .story-end-meta{font-size:var(--t-xs);color:var(--world-ink-soft,var(--muted))}
 .story-end-next:hover .story-end-title,.story-end-next:focus-visible .story-end-title{text-decoration:underline}
@@ -1741,7 +1740,7 @@ body[data-world] .work-panel.is-story-view .work-panel-heading{grid-template-col
 body[data-world] .work-panel.is-story-view .work-panel-story-meta{justify-content:flex-start;margin-top:14px}
 body[data-world] .work-panel.is-story-view .work-panel-meta{text-align:left;margin:0}
 
-/* #14 · JUMP TO nav - world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
+/* #14 · Jump to nav - world palette doesn't remap --bg, so tint the bar to the world bg; white text on the active pill */
 body[data-world] .project-story-nav{background:var(--world-bg);box-shadow:0 0 0 100vmax var(--world-bg)}
 
 /* Product-map ("supporting work") cards: the li used the GLOBAL --bg (dark) but text used --world-ink
@@ -2200,6 +2199,8 @@ body[data-world] .project-story > .outcome-band{position:relative;margin-top:0;p
 body[data-world] .outcome-band-kicker,body[data-world] .outcome-band-label{margin:0 0 10px;font:600 var(--t-sm)/1.4 var(--sans);color:var(--brand-soft)}
 body[data-world] .outcome-band-result{margin:0 0 40px;max-width:860px;font:400 var(--t-xl)/1.3 var(--serif);text-wrap:balance}
 body[data-world] .outcome-band-changed{margin:0;max-width:700px;font:400 var(--t-base)/1.6 var(--sans)}
+.outcome-band-proof{margin:-24px 0 40px;font:400 var(--t-sm)/1.5 var(--sans)}
+.outcome-band-proof a{color:inherit;text-underline-offset:3px}
 body[data-world] .outcome-band-changed + .outcome-band-label{margin-top:32px}
 /* Next case study + contact close the band (option B): band ink, a line in band ink above */
 body[data-world] .outcome-band > .story-end{--world-ink:var(--brand-ink);--world-ink-soft:var(--brand-soft);margin-top:56px;border-top-color:color-mix(in srgb,var(--brand-ink) 30%,transparent)}
@@ -3374,7 +3375,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Conversation design · Voice quality",
         delivery: "Closed alpha",
         summary: "Testers said the voice sounded robotic. We built a switchboard to find out why, and I rewrote it to listen.",
-        result: "No longer robotic, per the tester who raised it. Safety checks held",
+        result: "No longer robotic, per feedback from the tester who raised it. The safety checks passed.",
+        whatLearned: "I learned that with anything AI, being as human as possible is table stakes. The baseline absolutely has to be trustworthy for people.",
         cardMedia: [
           "images/work/y30-voice.png",
           "images/work/y30-system.png",
@@ -3511,7 +3513,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Voice architecture · Product engineering",
         delivery: "Closed alpha",
         summary: "Even after 8 prompt revisions, the model started only about 70% of game rounds. I hardcoded the flow and left the model the conversation.",
-        result: "The game's structure and flow became consistent, and the conversation stayed unscripted",
+        result: "The game's structure and flow became consistent. The conversation stayed unscripted and adaptable.",
+        whatLearned: "When it comes to building products that involve AI agents, you absolutely need to know where the line is drawn between where the system is deterministic and where it can be owned by the agent.",
         cardMedia: [
           "images/work/y30-game.png",
           "images/work/y30-system.png",
@@ -3604,7 +3607,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
         myPart: {"code": {"maturity": "production", "scope": "All production code", "method": "with agents"}, "team": "QA intern ran sessions and rated individual AI responses"}, deliveryState: "Closed alpha · smoke tests for dev and prod", evidence: [["Testing", "Manual QA · unit and scenario tests · adversarial review · live smoke"], ["Learning loop", "Review queue · approval gate · failure harvest · regression coverage"]],
         // Chris's own lines (copy ledger, approved 2026-10-01)
-        problemQuestion: "How do we keep covering the seemingly endless edge cases that come from open-ended speech?", outcomeTease: "We ended up building a self-improving flywheel that learns from every failure, weighted with a human, and feeds it into our tests.", whatChanged: "We learned that we needed evaluations, and a system that will evolve with the edge cases of something this open-ended.",
+        problemQuestion: "How do we keep covering the seemingly endless edge cases that come from open-ended speech?", outcomeTease: "We ended up building a self-improving flywheel that learns from every failure, weighted with a human, and feeds it into our tests.", whatChanged: "We learned that we needed evaluations and a system that will evolve with the edge cases of something this open-ended.",
         company: "y30",
         depth: "case",
         contentType: "product-decision",
@@ -3614,7 +3617,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Safety architecture · Human and automated QA",
         delivery: "Closed alpha",
         summary: "Voice AI hallucinates. Every bug we fixed let new regressions creep in. I built a quality loop to keep up with the endless edge cases.",
-        result: "The system learns from every failure we approve. Silent failures get caught, and emergencies hit a safety floor",
+        result: "The system learns from every failure we approve. Silent failures get caught and emergencies hit a scripted response.",
+        whatLearned: "Evaluations are table stakes when working with anything that has to do with AI.",
         cardMedia: [
           "images/work/y30-system.png",
           "images/work/y30-signals.png",
@@ -3776,7 +3780,9 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Core learning experience · Web",
         delivery: "Shipped",
         summary: "I redesigned Pathstream’s core lesson surface around how working adults planned, resumed, and completed coursework, without disrupting the community colleges and live learners already running courses on it.",
-        result: "Merged into the live platform, zero forced migration for existing courses",
+        result: "Merged into the live platform without interrupting existing courses that were live.",
+        whoHelped: "Students actively taking the courses.",
+        whatLearned: "Talking to students and understanding what they're juggling and how they complete lessons shapes how lessons should be designed as well as how they interact with the platform.",
         cardMedia: [
           "images/craft/pathstream-menuscrolling.webp",
           "images/craft/pathstream-contrast.webp",
@@ -3845,7 +3851,10 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Teaching operations · Web",
         delivery: "Design complete, queued for build",
         summary: "I redesigned grading and resubmission around the history instructors needed, then completed a dashboard for finding live cohorts and students who needed attention.",
-        result: "Design complete, queued for build",
+        result: "The design was completed and queued for build with the engineering team.",
+        whoHelped: "Instructors, so they know how students are doing and when they need help. I interviewed a few of them.",
+        whoHelpedLabel: "Who it was for",
+        whatLearned: "Student success is also affected by how involved and supportive an instructor is. If the instructor has no signals or indication a student needs support and help, the student has a higher chance of failing.",
         cardVisual: {
           title: "Grading history, resubmission, and instructor dashboard states",
           status: "CURATE",
@@ -3902,7 +3911,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
         myPart: {"design": "Audit · system design · visual and interaction rules", "team": "Matt implemented React · Storybook · Chromatic"}, deliveryState: "Designed; implementation started", evidence: [["Inventory", "16 colors · 12 type sizes · 11 component families"]],
         // Chris's own lines (copy ledger, approved 2026-10-01)
-        problemQuestion: "How do we make sure the foundation and the system are in a good enough place for engineers and designers to scale?", outcomeTease: "Designed a first version of a design system; Matt started implementing it in Storybook and Chromatic.", whatChanged: "Dealing with design and tech debt requires a team and lots of work.",
+        problemQuestion: "How do we make sure the foundation and the system are in a good enough place for engineers and designers to scale?", outcomeTease: "Designed a first version of a design system; Matt started implementing it in Storybook and Chromatic.", whatLearned: "Dealing with design and tech debt requires a team and lots of work.",
         company: "pathstream",
         depth: "project",
         slug: "interface-foundation",
@@ -3910,7 +3919,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Design system · Accessibility",
         delivery: "Designed; implementation started",
         summary: "I audited the live interface, designed a shared foundation on Ant Design, and worked closely with Matt as he implemented it in React, Storybook, and Chromatic.",
-        result: "One documented foundation replaced visible interface drift",
+        result: "A built foundational design system that design, product, and engineering agreed on.",
+        whoHelped: "Design and engineering.",
         cardVisual: {
           title: "Pathstream interface inventory and shared foundation",
           status: "CURATE",
@@ -4009,7 +4019,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Clinical research · Product rescue",
         delivery: "Built + validated · canceled",
         summary: "I consolidated a fragmented clinical-studies product into a guided pre-launch workflow, then partnered with engineering as researchers evaluated the working build.",
-        result: "Working engineering build under domain-expert validation, no public launch",
+        result: "A working engineering build that domain experts were testing.",
+        whatLearned: "Working with domain and subject matter experts is crucial for highly complex and specific workflows like designing scientific studies.",
         cardVisual: {
           title: "Study idea → review → IRB → activities → launch readiness",
           status: "RECREATE",
@@ -4177,7 +4188,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
         myPart: {"design": "Research · product definition · end-to-end product design", "code": {"maturity": "none", "scope": "None; engineering wrote production code"}, "team": "Founders · engineering · Game Masters"}, deliveryState: "Shipped marketplace system", evidence: [["Cadence", "2–3 GM / DM interviews most weeks"]],
         // Chris's own lines (copy ledger, approved 2026-10-01)
-        problemQuestion: "How do we make sure the company and the GMs get paid accurately and on time?", outcomeTease: "Accurate, traceable, and timely money that was no longer handled manually.", whatChanged: "Automating systems when it makes sense. Making sure people get paid on time builds trust.",
+        problemQuestion: "How do we make sure the company and the GMs get paid accurately and on time?", outcomeTease: "Accurate, traceable, and timely money that was no longer handled manually.", whatLearned: "Automating systems when it makes sense. Making sure people get paid on time builds trust.",
         company: "startplaying",
         depth: "case",
         slug: "marketplace-money",
@@ -4185,7 +4196,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Marketplace finance · Web",
         delivery: "Shipped",
         summary: "I turned manually managed payouts into an official marketplace system connecting bookings, platform fees, GM accounts, payouts, and transaction history.",
-        result: "Correct, timely, and traceable money movement reached production",
+        result: "A payment system shipped that made money movement accurate, timely, and traceable. It ensured that game and dungeon masters were paid on time and that StartPlaying generated revenue from games.",
         cardVisual: {
           title: "From manual payouts to a marketplace money system",
           status: "CURATE",
@@ -4301,7 +4312,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
         myPart: {"design": "Only embedded designer · complete design ownership", "team": "Research · pharmacy · product · engineering"}, deliveryState: "Shipped + measured", evidence: [["Recognition", "2018 Webby · Best Health Website"], ["Surfaces", "Responsive web · service design · print system"]],
         // Chris's own lines (copy ledger, approved 2026-10-01)
-        problemQuestion: "How do we help people be better informed about prescription drugs?", outcomeTease: "Coupon conversion 2% to 5%, and session time nearly doubled.", whatChanged: "Trust and credibility are important. Human answers will always win. Medication guidance is something people need.",
+        problemQuestion: "How do we help people be better informed about prescription drugs?", outcomeTease: "Coupon conversion 2% to 5%, and session time nearly doubled.", whatLearned: "Trust and credibility are important. Human answers will always win. Medication guidance is something people need.",
         company: "goodrx",
         depth: "case",
         slug: "iodine-product",
@@ -4309,7 +4320,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Medication decisions · Product / service",
         delivery: "Shipped + measured",
         summary: "As Iodine’s embedded designer, I designed a connected set of tools that helped people understand medications, compare alternatives, trust coupons, and ask pharmacists for help.",
-        result: "Coupon conversion 2% → 5%, alternative pages nearly doubled session time",
+        result: "Drug coupon conversion increased from 2% to 5%. Alternative drug pages nearly doubled session time.",
         cardMedia: [
           "images/craft/iodine_23.webp",
           "images/craft/iodine_01.webp",
@@ -4361,7 +4372,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
         myPart: {"design": "Complete product-design ownership"}, deliveryState: "Shipped · A/B tested", evidence: [["Goal", "Improve discovery and drug coupon conversion"], ["Surfaces", "Mobile web · desktop web"]],
         // Chris's own lines (copy ledger, approved 2026-10-01)
-        problemQuestion: "How do we make it easier for people to understand prescription drugs and medications?", outcomeTease: "Drug coupon conversion up 10% on mobile and 25% on desktop (A/B tested).", whatChanged: "The hierarchy and order matter. Understanding what people are looking for and thinking about their medications is the most important thing.",
+        problemQuestion: "How do we make it easier for people to understand prescription drugs and medications?", outcomeTease: "Drug coupon conversion up 10% on mobile and 25% on desktop (A/B tested).", whatLearned: "The hierarchy and order matter. Understanding what people are looking for and thinking about their medications is the most important thing.",
         company: "goodrx",
         depth: "project",
         slug: "goodrx-drug-pages",
@@ -4369,7 +4380,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Scaled product · Responsive web",
         delivery: "Shipped + A/B tested",
         summary: "I redesigned a high-traffic medication page so people could move between drug information, prescription settings, local prices, and coupons without losing context.",
-        result: "Drug coupon conversion +10% on mobile, +25% on desktop",
+        result: "Drug coupon conversion increased +10% on mobile, +25% on desktop.",
         cardMedia: [
           "images/craft/goodrx_12.webp",
           "images/craft/goodrx_15.webp",
@@ -4417,7 +4428,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
         myPart: {"design": "Visual design · data preparation · interactive implementation", "code": {"maturity": "production", "scope": "JavaScript · D3 · production interactives", "method": "by hand", "methodNote": "hand-coded; Marc helped integrate the work before I knew Git"}, "team": "Thomas and other researchers / writers · Marc in engineering"}, deliveryState: "Published + shipped",
         // Chris's own lines (copy ledger, approved 2026-10-01)
-        problemQuestion: "How do we help journalists, reporters, and people in drug policy better understand prescription drugs through data?", outcomeTease: "Referenced by The New York Times and ABC News, and 50 state briefs for federal policy meetings.", whatChanged: "Working with researchers, writers, and medical experts is a team effort. Research and ethical rigor are important.",
+        problemQuestion: "How do we help journalists, reporters, and people in drug policy better understand prescription drugs through data?", outcomeTease: "Referenced by The New York Times and ABC News, and 50 state briefs for federal policy meetings.", whatLearned: "Working with researchers, writers, and medical experts is a team effort. Research and ethical rigor are important.",
         company: "goodrx",
         depth: "case",
         slug: "goodrx-research",
@@ -4425,7 +4436,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Data visualization · Design to code",
         delivery: "Published + shipped",
         summary: "I taught myself JavaScript and D3, then designed and built production interactives that made prescription-price and utilization data easier to explore.",
-        result: "Referenced by The New York Times and ABC News; 50 state briefs for federal policy meetings",
+        result: "Referenced by The New York Times and ABC News. 50 state briefs created and used for federal policy meetings.",
+        proof: ["https://www.goodrx.com/healthcare-access/research/the-most-popular-drugs-in-america-by-state", "See it published"],
         actions: [
           ["https://www.goodrx.com/healthcare-access/research/the-most-popular-drugs-in-america-by-state", "See the live research map", true],
           ["https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html", "As cited in the NYT", true]
@@ -4494,7 +4506,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
         myPart: {"design": "End-to-end product design from assigned direction through release"}, deliveryState: "Unified application shipped", evidence: [["Starting point", "2 separate live desktop applications"], ["Surfaces", "Installation · onboarding · matching · upload · download"]],
         // Chris's own lines (copy ledger, approved 2026-10-01)
-        problemQuestion: "How do you reconcile your music library?", outcomeTease: "Unified 2 separate desktop apps into one for customers.", whatChanged: "Legality and consistent data labeling are important.",
+        problemQuestion: "How do you reconcile your music library?", outcomeTease: "Unified 2 separate desktop apps into one for customers.", whatLearned: "Legality and consistent data labeling are important.",
         company: "amazon",
         depth: "case",
         slug: "music-importer",
@@ -4502,7 +4514,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Desktop software · Music",
         delivery: "Shipped",
         summary: "I translated an assigned direction into a complete overhaul that joined 2 live desktop applications into one installation, onboarding, and music-ownership experience.",
-        result: "Unified Importer and Downloader released to customers",
+        result: "Unified Importer and Downloader updated and available for download to Amazon customers.",
         cardVisual: {
           title: "One desktop application for local and cloud music",
           status: "RECREATE",
@@ -4646,7 +4658,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         // v4 fact schema (FACT_SCHEMA_PLAN v3): values from this record's facts + the canon design/build pass
         myPart: {"design": "Entire product design", "team": "2–3 engineers · engineering manager · 1 product designer (me)"}, deliveryState: "Working alpha · later shuttered", evidence: [["Lifecycle", "Auth · browse · search · playback · playlists · downloads"]],
         // Chris's own lines (copy ledger, approved 2026-10-01)
-        whatChanged: "Plans can change and projects can shut down. Working on a completely different surface can change the context of use.", problemQuestion: "How do we expand an existing brand and app to a new surface?", outcomeTease: "A working alpha, but the project was canceled.",
+        whatLearned: "Plans can change and projects can shut down. Working on a completely different surface can change the context of use.", problemQuestion: "How do we expand an existing brand and app to a new surface?", outcomeTease: "A working alpha, but the project was canceled.",
         company: "amazon",
         depth: "project",
         slug: "windows-phone",
@@ -4785,7 +4797,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Product strategy · Discord / web",
         delivery: "Shipped + adopted",
         summary: "A research-led pivot became a persistent multiplayer whiteboard inside Discord, built for collaborative drawing, tabletop tools, and lightweight playtesting.",
-        result: "1,043 peak monthly active users; Shipped on Discord and remains live",
+        result: "Shipped on Discord and remains live in maintenance mode. Usage peaked at 1,043 monthly active users (January 2026).",
+        whatLearned: "Pivots are challenging.",
         cardMedia: ["https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg"],
         hero: "https://img.youtube.com/vi/Cuqu38j7-vQ/maxresdefault.jpg",
         chapters: [
@@ -4947,7 +4960,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Product architecture · Three.js / Cloudflare",
         delivery: "Substantial rewrite · incomplete",
         summary: "The shipped whiteboard could not support the playable runtime and learning loop we wanted. I attempted to replace its canvas foundation with an owned scene model, synchronization protocol, and limited game runtime.",
-        result: "Working Design, IDE, and Play modes; rewrite remained incomplete and undeployed",
+        result: "Working Design, IDE, and Play modes; rewrite remained incomplete and undeployed.",
+        whatLearned: "Build vs. buy is always a crucial decision.",
         cardMedia: ["https://img.youtube.com/vi/Q0S-_WAea6Y/maxresdefault.jpg"],
         heroVisual: {
           title: "From collaborative document to owned game-authoring foundations",
@@ -5055,7 +5069,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Marketplace operations · Mobile",
         delivery: "Shipped + measured",
         summary: "I owned the Tasker side of the marketplace rebuild: the tools people used to manage availability, understand new work, complete tasks, and track payment.",
-        result: "Tasker NPS −5 → mid-50s",
+        result: "The Tasker NPS grew from −5 to the mid-50s.",
+        whatLearned: "When running a product that depends on service, it's important to build not only for the customers, but also for the service providers.",
         cardMedia: [
           "images/craft/taskrabbit-tasker-experience_09.webp",
           "images/craft/taskrabbit-tasker-experience_23.webp",
@@ -5153,7 +5168,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Marketplace redesign · Web",
         delivery: "Shipped",
         summary: "I helped rebuild the client experience around direct hiring, clear task status, task history, and repeat relationships.",
-        result: "A complete task lifecycle built for repeat trust",
+        result: "A complete task lifecycle built for repeat trust and loyal customers.",
         cardMedia: [
           "images/craft/taskrabbit-client-redesign_01.webp",
           "images/craft/taskrabbit-client-redesign_17.webp"
@@ -5214,7 +5229,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Clinical operations · Web / iPad",
         delivery: "Shipped + NP-reported",
         summary: "Nurses pre-filled paper packets every night before home visits. I replaced them with an iPad web app built as one long scrolling form, like a clipboard.",
-        result: "Nurses reported 1-2 hours of chart prep gone each day",
+        result: "Nurses reported saving 1-2 hours of chart prep daily.",
+        whatLearned: "You learn so much when you're in the field with your users and co-designing with them provides clarity and direction.",
         cardMedia: [
           "images/craft/clover-care-visit_07.webp",
           "images/craft/clover-care-visit_13.webp",
@@ -5282,7 +5298,8 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         meta: "Enrollment experience · Web",
         delivery: "Shipped",
         summary: "The agency’s brand was built for print: no forms, no digital patterns. I invented the digital layer and shipped Clover’s first member-facing site before the 2016 enrollment window.",
-        result: "One launch serving prospects, members, brokers, and providers",
+        result: "A successful debut launch serving prospects, members, brokers, and providers.",
+        whatLearned: "Consistency between all surfaces matters.",
         cardMedia: [
           "images/craft/clover-health-aep_01.webp",
           "images/craft/clover-health-aep_05.webp",
@@ -6313,7 +6330,7 @@ body[data-world] .company-close .outcome-band-label{margin:0}
     // renders only when it adds something the trailer did not already say (a teaser, "Who it helped" or "What changed").
     function buildOutcomeBand(rec){
       if(!rec) return null;
-      var adds = rec.outcomeTease || rec.whatChanged || rec.whoHelped;
+      var adds = rec.outcomeTease || rec.whatChanged || rec.whoHelped || rec.whatLearned || rec.whatNext || rec.proof;
       if(!adds && !SHOW_COPY_BLANKS) return null;
       var band = document.createElement("section"); band.className = "outcome-band"; band.setAttribute("aria-label", "Outcome");
       var k = document.createElement("p"); k.className = "outcome-band-kicker"; k.textContent = publicDelivery(rec.deliveryState) || "Outcome";
@@ -6321,8 +6338,14 @@ body[data-world] .company-close .outcome-band-label{margin:0}
       // The payoff always shows the full outcome, even when the trailer teaser shares its numbers (Chris picked option B
       // with the outcome visible, 2026-10-01: the teaser pulls you in, the band is the receipt).
       if(rec.result){ var h = document.createElement("p"); h.className = "outcome-band-result"; h.textContent = rec.result; band.appendChild(h); }
+      // Proof (results ledger, Chris 2026-10-07): one link a skeptic can check, right under the result. The arrow = leaves the site.
+      if(rec.proof && rec.proof[0]){
+        var pf = document.createElement("p"); pf.className = "outcome-band-proof"; pf.appendChild(document.createTextNode("Proof: "));
+        var pa = document.createElement("a"); pa.href = rec.proof[0]; pa.target = "_blank"; pa.rel = "noopener"; pa.textContent = (rec.proof[1] || "Source") + " \u2197";
+        pf.appendChild(pa); band.appendChild(pf);
+      }
       if(rec.whoHelped || SHOW_COPY_BLANKS){
-        var hl = document.createElement("p"); hl.className = "outcome-band-label"; hl.textContent = "Who it helped";
+        var hl = document.createElement("p"); hl.className = "outcome-band-label"; hl.textContent = rec.whoHelpedLabel || "Who it helped"; // "Who it was for" when the work never reached users
         var hv = document.createElement("p"); hv.className = "outcome-band-changed" + (rec.whoHelped ? "" : " tpl-blank");
         hv.textContent = rec.whoHelped || "[Who this helped, and how: you write]";
         band.append(hl, hv);
@@ -6333,6 +6356,13 @@ body[data-world] .company-close .outcome-band-label{margin:0}
         wv.textContent = rec.whatChanged || "[What changed, or what you learned: you write]";
         band.append(wl, wv);
       }
+      // "What I learned" and "What happened next" (results ledger, Chris 2026-10-07): optional, hidden when empty.
+      [["whatLearned", "What I learned"], ["whatNext", "What happened next"]].forEach(function(pair){
+        if(!rec[pair[0]]) return;
+        var l = document.createElement("p"); l.className = "outcome-band-label"; l.textContent = pair[1];
+        var v = document.createElement("p"); v.className = "outcome-band-changed"; v.textContent = rec[pair[0]];
+        band.append(l, v);
+      });
       return band;
     }
     // Links to live work (L2): one quiet line in the title band. ↗ marks a link that leaves the site.

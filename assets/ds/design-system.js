@@ -18,7 +18,7 @@
     {id:'work-story-facts',label:'Fact console: Problem + outcome teaser beside My part / Code / With / Delivery + 2 evidence rows (every page type)',sel:'.work-story-facts',src:'casestudy',grp:'Templated'},
     {id:'company-role',label:'Company lobby: Who I was there (role, dates, stage, summary, code / with / status line)',sel:'.company-role',src:'company',grp:'Templated'},
     {id:'company-close',label:'Company close: company-level impact + milestone, world color',sel:'.company-close',src:'company',grp:'Templated'},
-    {id:'outcome-band',label:'Closing outcome band: full outcome + What changed, world color (renders once Chris writes a teaser or What changed)',sel:'.outcome-band',src:'casestudy',grp:'Templated'},
+    {id:'outcome-band',label:'Closing outcome band: result, proof link (.outcome-band-proof), Who it helped, What changed, What I learned, What happened next; empty slots hidden; world color (renders once Chris writes a teaser or What changed)',sel:'.outcome-band',src:'casestudy',grp:'Templated'},
     {id:'work-story-hero',label:'Case study hero (16:9 frame in the title band)',sel:'.work-story-hero',src:'casestudy',grp:'Templated'},
     {id:'work-changelog',label:'Recent changes (living log, from changelog.json)',sel:'.work-changelog',src:'thissite',grp:'Templated'},
     {id:'work-panel-facts',label:'Fact grid / spec panel',sel:'.work-panel-facts',src:'company',grp:'Templated',wrap:'work-panel is-company-view',wrapId:'work-panel'},
