@@ -5,7 +5,7 @@
         "label": "Product Designer for AI-native products",
         "email": "whoischrislam@gmail.com",
         "url": "https://madebychrislam.com",
-        "summary": "Product designer, 14 years shipping healthcare, marketplace, education, and consumer software. I own the work from research through interaction design to design systems, and I ship production code (React, TypeScript, Python), so design intent survives to what users actually touch. Results: GoodRx coupon conversion from 2% to 5%, TaskRabbit NPS from about -5 to the mid-50s, and a Clover Health nurse app I designed and shipped, which nurses said gave them back 1-2 hours of chart prep a day. Seeking product design roles on AI-native teams.",
+        "summary": "Product designer, 14 years shipping healthcare, marketplace, education, and consumer software. I own the work from research through interaction design to design systems, and I ship production code (React, TypeScript), so design intent survives to what users actually touch. Results: GoodRx coupon conversion from 2% to 5%, TaskRabbit NPS from about -5 to the mid-50s, and a Clover Health nurse app I designed and shipped, which nurses said gave them back 1-2 hours of chart prep a day. Seeking product design roles on AI-native teams.",
         "location": {
             "city": "Honolulu",
             "region": "HI",
@@ -196,7 +196,6 @@
             "keywords": [
                 "React",
                 "TypeScript",
-                "Python",
                 "Next.js",
                 "HTML/CSS",
                 "Cloudflare Workers",
@@ -270,7 +269,7 @@
             },
             "product-engineer": {
                 "label": "Product Engineer",
-                "summary": "Product engineer with 14 years of product design behind every decision. I own features end to end, from the user problem to production React, TypeScript, and Python. I build with AI coding agents: I define the architecture, contracts, and acceptance criteria, agents implement inside them, and I own review, tests, and safety, including a regression test for every confirmed failure. Most recently I built a voice-AI system whose crisis paths are deterministic code the model cannot override, and co-founded and shipped a real-time collaborative whiteboard inside Discord that peaked at 1,043 monthly active users.",
+                "summary": "Product engineer with 14 years of product design behind every decision. I own features end to end, from the user problem to production React and TypeScript. I build with AI coding agents: I define the architecture, contracts, and acceptance criteria, agents implement inside them, and I own review, tests, and safety, including a regression test for every confirmed failure. Most recently I built a voice-AI system whose crisis paths are deterministic code the model cannot override, and co-founded and shipped a real-time collaborative whiteboard inside Discord that peaked at 1,043 monthly active users.",
                 "skillsOrder": ["Production Engineering", "AI-Native Systems", "Product & Design"]
             },
             "ai-product-engineer": {
