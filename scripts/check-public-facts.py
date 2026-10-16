@@ -43,11 +43,11 @@ APPLICATION_SUFFIXES = {".json", ".md", ".txt", ".html"}
 
 PLAYSESH_REQUIRED = [
     "authorized",
-    "161",
+    "174",
     "server install",
-    "77",
+    "89",
     "individual-user install",
-    "1,043",
+    "1,035",
 ]
 
 
