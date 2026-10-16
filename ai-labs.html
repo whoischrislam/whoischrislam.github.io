@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For AI labs · Chris Lam</title>
+<link rel="stylesheet" href="assets/demos/us-of-drugs.css">
+<meta name="description" content="Chris Lam, product designer who codes: research made usable for regular people, design with measured results, and AI safety work in production." />
+<meta name="author" content="Chris Lam" />
+<meta name="robots" content="noindex" /><!-- unlisted on purpose: shared by link with AI labs. Built from epoch-ai-application.html (frozen as sent); the game is copied, not shared. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;1,400&family=Kumbh+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>
+  // Same pre-paint theme init + storage key as the rest of the site.
+  (function () {
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    document.documentElement.setAttribute('data-theme', 'light'); // light only (Chris 2026-09-26)
+    document.documentElement.className = 'js';
+
+  })();
+</script>
+<style>
+/* Tokens mirror index.html :root (canonical). v0 copy: parity check owed before this ships. */
+/* site band color for the GoodRx chapter (mirrors index.html --band-goodrx) */
+:root{--band-goodrx:#fcef72}
+:root, :root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#fafafa; --surface:#ffffff; --surface-2:#f0f0f0; --text:#1e1e1e; --muted:#696969;
+  --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --accent-strong:#1e7a3c;
+  --border:rgba(0,0,0,.10); --border-strong:rgba(0,0,0,.16); --grid:rgba(0,0,0,.045);
+  --guess:#c2410c; --range:rgba(42,157,79,.35); --none:#cfc9bd;
+  --serif:'Besley',Georgia,serif; --sans:'Kumbh Sans',system-ui,sans-serif;
+  --t-h1:clamp(34px,4.2vw,56px); --t-xl:30px; --t-lg:24px; --t-md:21px; --t-base:18px; --t-sm:16px;
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#17181a; --surface:#202225; --surface-2:#2a2c30; --text:#ece9e3; --muted:#9a978f;
+  --accent:#4fc276; --accent-soft:rgba(79,194,118,.14); --accent-strong:#6ad189;
+  --border:rgba(255,255,255,.12); --border-strong:rgba(255,255,255,.18); --grid:rgba(255,255,255,.05);
+  --guess:#fb923c; --range:rgba(79,194,118,.35); --none:#34363a;
+}
+*,*::before,*::after{box-sizing:border-box}
+button,input{font-family:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--t-base)/1.55 var(--sans)}
+main{max-width:760px;margin:0 auto;padding:40px 16px 96px}
+.draft{font-size:var(--t-sm);color:var(--guess);border:1px dashed var(--guess);padding:6px 10px;display:inline-block;margin-bottom:28px}
+.back{color:var(--muted);text-decoration:none;font-size:var(--t-sm)}
+.back:hover{color:var(--text)}
+.kicker{font-size:var(--t-sm);color:var(--muted);letter-spacing:.02em;margin:48px 0 8px}
+h1,h2{font-family:var(--serif);font-weight:400;line-height:1.1;margin:0 0 12px}
+h1{font-size:var(--t-h1)}
+h2{font-size:var(--t-xl);margin-top:0}
+p{margin:0 0 16px}
+.lede{font-size:var(--t-md);color:var(--muted)}
+.step{border-top:1px solid var(--border);padding-top:28px;margin-top:32px}
+.step-label{font-size:var(--t-sm);color:var(--muted);margin-bottom:8px}
+.tabs,.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.tabs button,.chips button,.btn{font-size:var(--t-sm);padding:10px 14px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);cursor:pointer;border-radius:0}
+.tabs button[aria-pressed="true"]{border-color:var(--text);font-weight:600}
+.chips button[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn-primary:disabled{opacity:.45;cursor:default}
+.btn:focus-visible,.tabs button:focus-visible,.chips button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.guess-row{display:flex;align-items:center;gap:20px;margin:8px 0 20px}
+.guess-num{font-family:var(--serif);font-size:64px;line-height:1;min-width:3.2ch;font-variant-numeric:tabular-nums;color:var(--guess)}
+input[type=range]{flex:1;accent-color:var(--guess);height:32px}
+.hidden{display:none}
+.reveal-num{font-family:var(--serif);font-size:clamp(64px,12vw,112px);line-height:1;color:var(--accent-strong);font-variant-numeric:tabular-nums}
+.reveal-range{color:var(--muted);margin:6px 0 16px}
+.verdict{font-size:var(--t-md);margin:0 0 24px}
+svg{display:block;width:100%;overflow:visible}
+.row-label{fill:var(--text);font-size:16px}
+.row-label.me{font-weight:600}
+.row-val{fill:var(--muted);font-size:16px;font-variant-numeric:tabular-nums}
+.axis text{fill:var(--muted);font-size:14px}
+.axis line{stroke:var(--grid);stroke-width:1}
+.note{border-left:3px solid var(--border-strong);padding:4px 0 4px 14px;color:var(--text);margin:20px 0}
+.note.close{border-color:var(--guess)}
+.share{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:24px}
+.share-status{font-size:var(--t-sm);color:var(--muted)}
+details{margin-top:40px;border-top:1px solid var(--border);padding-top:16px}
+summary{cursor:pointer;font-size:var(--t-sm);color:var(--muted)}
+details p,details li{font-size:var(--t-sm);color:var(--muted)}
+.chapter{margin-top:96px;border-top:1px solid var(--border-strong);padding-top:8px}
+.placeholder{border:1px dashed var(--border-strong);padding:24px;color:var(--muted);font-size:var(--t-sm);margin-top:24px}
+footer{margin-top:64px;font-size:var(--t-sm);color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){ .reveal-num{transition:opacity .4s ease} }
+.blank{background:var(--accent-soft);border:1px dashed var(--accent);padding:2px 6px;color:var(--accent-strong);font-style:italic}
+.opening{font-family:var(--serif);font-size:var(--t-lg);line-height:1.35;margin:0 0 20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}
+.card{background:var(--surface);border:1px solid var(--border);padding:18px 20px}
+.card h3{font-family:var(--sans);font-size:var(--t-sm);font-weight:600;margin:0 0 8px}
+.card p,.card li{font-size:var(--t-sm);color:var(--muted);margin:0 0 8px}
+.card ul{padding-left:18px;margin:0}
+blockquote{margin:24px 0;padding:0 0 0 18px;border-left:3px solid var(--accent);font-family:var(--serif);font-size:var(--t-md);line-height:1.45}
+blockquote cite{display:block;font-family:var(--sans);font-style:normal;font-size:var(--t-sm);color:var(--muted);margin-top:10px}
+.links a{color:var(--accent-strong)}
+#guess-widget{margin:4px 0 24px;touch-action:none}
+#guess-widget svg{cursor:pointer;user-select:none}
+#guess-widget .handle:focus-visible{outline:none;stroke:var(--text);stroke-width:3}
+.w-caption{font-size:var(--t-sm);color:var(--muted);margin-top:6px}
+.skip{font-size:var(--t-sm);margin:32px 0 0}.skip a{color:var(--muted)}
+.view-tabs{margin-top:24px}
+.view-tabs button[aria-selected="true"]{border-color:var(--text);font-weight:600;background:var(--surface)}
+.q{font-size:var(--t-md);margin:0 0 8px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn-link{border:none;background:none;text-decoration:underline;color:var(--muted)}
+.btn-link:disabled{opacity:.45}
+.reveal-head{font-family:var(--serif);font-size:var(--t-xl);font-weight:400;margin:0 0 6px}
+.reveal-head b{color:var(--accent-strong);font-weight:500}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:16px 0}
+.pair figure{margin:0}.pair figcaption{font-size:var(--t-sm);font-weight:600;margin-bottom:8px}
+.viewer{margin-top:24px}
+.table-wrap{overflow-x:auto}
+.viewer table{border-collapse:collapse;font-size:var(--t-sm);margin:8px 0 12px;min-width:100%}
+.viewer td,.viewer th{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;font-variant-numeric:tabular-nums;color:var(--text)}
+.scrolly{margin-top:72px}
+.scrolly-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;margin-top:24px}
+.scrolly-sticky{position:sticky;top:24px;align-self:start}
+.scrolly-num{font-family:var(--serif);font-size:var(--t-lg);line-height:1.25;min-height:3.8em;margin-bottom:12px}
+.scrolly-num b{color:var(--accent-strong);font-weight:500}
+.scrolly-steps .sc-step{min-height:70vh;display:flex;align-items:center}
+.scrolly-steps .sc-step>div{background:var(--surface);border:1px solid var(--border);padding:18px 20px;opacity:.35;transition:opacity .3s ease}
+.scrolly-steps .sc-step.on>div{opacity:1;border-color:var(--border-strong)}
+.scrolly-steps .sc-step:last-child{min-height:50vh}
+.scrolly-key{font-size:var(--t-sm);color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 16px;align-items:center}.scrolly-key span{white-space:nowrap}
+.k{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+.k.solid{background:var(--accent)}.k.soft{background:var(--accent);opacity:.35}.k.none{background:var(--surface-2);border:1px solid var(--border)}
+@media (max-width:760px){
+  .scrolly-grid{grid-template-columns:1fr;gap:0}
+  .scrolly-sticky{top:0;background:var(--bg);padding:12px 0;z-index:2}
+  .scrolly-num{font-size:var(--t-md);min-height:3.2em}
+  .scrolly-steps .sc-step{min-height:60vh}
+}
+.tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--border-strong);box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 12px;font-size:var(--t-sm);max-width:260px;z-index:10;display:none}
+.tip b{display:block;margin-bottom:4px}
+.tip ol{margin:4px 0 0;padding-left:20px}
+.sub{font-family:var(--sans);font-size:var(--t-base);font-weight:600;margin:40px 0 12px}
+.press{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.press figure{margin:0}.press img{width:100%;height:auto;display:block;border:1px solid var(--border)}
+.press figcaption{font-size:var(--t-sm);color:var(--muted);margin-top:8px}
+.bills{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.bill{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);padding:14px 16px}
+.bill-id{font-family:var(--serif);font-size:var(--t-lg)}
+.bill-name{font-size:var(--t-sm);margin:4px 0}
+.bill-law{font-size:var(--t-sm);color:var(--accent-strong);font-weight:600}
+.bill-date{grid-column:1/-1;font-size:var(--t-sm);color:var(--muted)}
+@media (max-width:560px){.bills{grid-template-columns:1fr}}
+.embed{width:100%;height:640px;border:1px solid var(--border-strong);background:var(--surface);margin-top:8px}
+/* tightened type: serif for display only, one sans for everything else, tabular numbers for data */
+h1,h2,.opening,.reveal-head,.scrolly-num,.bill-id,.guess-num{font-family:var(--serif)}
+.kicker{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--text);letter-spacing:.01em}
+.ico{display:inline-flex;width:20px;height:20px;color:var(--accent-strong)}
+.ico svg{width:20px;height:20px}
+.sub .ico{vertical-align:-4px;margin-right:6px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.meta span{font-size:14px;line-height:1;padding:6px 8px;border:1px solid var(--border);color:var(--muted);background:var(--surface)}
+.meta span:first-child{border-color:var(--accent);color:var(--accent-strong);font-weight:600}
+/* linked highlighting: words in the text share a color with the marks they describe */
+.hl{font-weight:600;border-bottom:3px solid;padding:0 1px;cursor:help}
+.hl-used{border-color:var(--accent);color:var(--accent-strong)}
+.hl-range{border-color:var(--range)}
+.hl-guess{border-color:var(--guess);color:var(--guess)}
+.hl-none{border-color:var(--none)}
+[data-s]{transition:opacity .2s ease}
+body.hl-used [data-s]:not([data-s="used"]),body.hl-range [data-s]:not([data-s="range"]),body.hl-guess [data-s]:not([data-s="guess"]),body.hl-none [data-s]:not([data-s="none"]){opacity:.15}
+/* sticky table of contents (wide screens) */
+.toc{display:none}
+@media (min-width:1300px){
+  .toc{display:block;position:fixed;top:96px;left:max(16px,calc(50% - 380px - 250px));width:210px;font-size:var(--t-sm)}
+  .toc-title{color:var(--muted);margin:0 0 10px}
+  .toc ol{list-style:none;margin:0 0 20px;padding:0;border-left:2px solid var(--border)}
+  .toc li a{display:block;padding:5px 0 5px 12px;margin-left:-2px;border-left:2px solid transparent;color:var(--muted);text-decoration:none}
+  .toc li a:hover{color:var(--text)}
+  .toc li a.on{color:var(--text);border-left-color:var(--accent);font-weight:600}
+  .cta-float{display:none!important}
+}
+.cta-float{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:5;background:var(--accent);color:#fff;font-weight:600;padding:12px 20px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.contact .actions a,.toc-cta{text-decoration:none;display:inline-block}
+/* sticker */
+.sticker{position:absolute;top:24px;right:24px;width:110px;height:110px;padding:0;border:none;background:none;cursor:grab;z-index:6;touch-action:none;transform:rotate(-8deg);transition:transform .25s var(--ease,ease)}
+
+.sticker:active{cursor:grabbing}
+.sticker svg{width:100%;height:100%;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15))}
+.st-bg{fill:var(--surface);stroke:var(--accent);stroke-width:3}
+.st-text{font:600 11px var(--sans);fill:var(--accent-strong);letter-spacing:.08em;text-transform:uppercase}
+@media (max-width:760px){.sticker{width:80px;height:80px;top:12px;right:12px}}
+@media (prefers-reduced-motion:reduce){.sticker,.sticker:hover{transition:none}}
+.draft-note{font-size:14px;color:var(--guess);margin:0 0 8px}
+.brief{margin:16px 0 0}
+.brief-page{max-width:360px;aspect-ratio:8.5/11;background:var(--surface);border:1px solid var(--border-strong);padding:18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.bp-head{font-family:var(--serif);font-size:var(--t-md);border-bottom:2px solid var(--accent);padding-bottom:6px}
+.bp-head span{display:block;font-family:var(--sans);font-size:14px;color:var(--muted)}
+.bp-cols{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:1}
+.bp-box{border:1px dashed var(--border-strong);padding:8px;display:flex;flex-direction:column;gap:6px}
+.bp-box b{font-size:14px}
+.bp-box i{display:block;height:6px;background:var(--none)}
+.bp-wide{flex:.6}
+.bp-foot{font-size:14px;color:var(--muted);text-align:right}
+.brief figcaption{font-size:var(--t-sm);color:var(--muted);margin-top:8px;max-width:420px}
+.crowd{margin-top:20px;padding:14px 16px;border:1px dashed var(--border-strong);font-size:var(--t-sm);color:var(--muted)}
+.crowd b{color:var(--text)}
+.bill a{color:inherit;text-decoration:none}.bill a:hover .bill-id{text-decoration:underline}
+.bill-what{font-size:14px;color:var(--muted);margin-top:6px}
+.brief-page{max-width:240px}
+/* ===== Pass 2: typography, rhythm, section heads, palettes ===== */
+body{font-size:18px;line-height:1.6}
+main{max-width:760px;padding:64px 16px 128px}
+p,li{max-width:66ch}
+h1{font-size:clamp(40px,5vw,60px);line-height:1.04;letter-spacing:-.015em;margin:0}
+h2{font-size:clamp(28px,3.2vw,36px);line-height:1.12;letter-spacing:-.01em;margin:0}
+h3{font-family:var(--sans);font-size:19px;line-height:1.3;font-weight:600;margin:0}
+.opening{font-size:clamp(26px,3vw,32px);line-height:1.2;margin:0 0 24px}
+.lede{font-size:20px;line-height:1.55;color:var(--text);margin:0 0 20px}
+.lede + .lede{margin-top:-4px}
+.chapter{margin-top:128px;padding-top:32px;border-top:1px solid var(--border)}
+.scrolly{margin-top:128px}
+#game{scroll-margin-top:24px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px 24px;flex-wrap:wrap;margin:0 0 24px}
+.sec-head h2,.sec-head h1,.sec-head h3{display:flex;align-items:center;gap:10px}
+.sec-head .ico{width:22px;height:22px}
+.sub-head{margin-top:56px}
+.meta{margin:0;gap:0;display:flex;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.meta span{border:none;background:none;padding:0;font-size:14px;line-height:1.4;color:var(--muted)}
+.meta span:first-child{border:none;color:var(--muted);font-weight:600}
+.meta span+span::before{content:"·";margin:0 8px;color:var(--border-strong)}
+.step{margin-top:40px;padding-top:32px}
+.skip{margin:40px 0 0}
+.view-tabs{margin-top:32px}
+.aside{font-size:var(--t-sm);color:var(--muted);margin-top:20px}
+.aside a,figcaption a,.lede a,p a{color:var(--accent-strong)}
+/* proof figures */
+.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media (max-width:640px){.proof-grid{grid-template-columns:1fr}}
+.proof{margin:0 0 8px}
+.proof img,.press img{width:100%;height:auto;display:block;border:1px solid var(--border);background:var(--surface)}
+.proof figcaption,.press figcaption{font-size:var(--t-sm);color:var(--muted);margin-top:12px;line-height:1.5}
+.proof figcaption b{display:block;color:var(--text);font-size:var(--t-base);margin-bottom:4px}
+.zoom{display:block;width:100%;padding:0;border:none;background:none;cursor:zoom-in}
+.zoom:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.press{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.lightbox{border:none;padding:0;background:transparent;max-width:min(1200px,94vw);max-height:92vh}
+.lightbox::backdrop{background:rgba(10,10,10,.82)}
+.lightbox img{display:block;max-width:100%;max-height:82vh;margin:0 auto;background:#fff}
+.lightbox p{color:#eee;font-size:var(--t-sm);text-align:center;margin:12px auto 0}
+.lb-close{position:fixed;top:16px;right:20px;font-size:32px;line-height:1;background:none;border:none;color:#fff;cursor:pointer}
+blockquote p{margin:0 0 14px;max-width:none}
+blockquote{margin:32px 0}
+/* live design-system strip */
+.ds-live{border:1px solid var(--border);background:var(--surface);padding:20px;display:grid;gap:20px;margin-top:12px}
+.ds-row h4{font-size:14px;font-weight:600;color:var(--muted);margin:0 0 10px}
+.swatches{display:flex;flex-wrap:wrap;gap:10px}
+.sw{width:64px;font-size:12px;color:var(--muted);line-height:1.3}
+.sw i{display:block;height:40px;border:1px solid var(--border);margin-bottom:4px}
+.typescale div{display:flex;align-items:baseline;gap:14px;border-bottom:1px dashed var(--border);padding:4px 0}
+.typescale code{font-size:12px;color:var(--muted);min-width:64px}
+.spacing{display:flex;align-items:flex-end;gap:12px}
+.spacing div{background:var(--accent);opacity:.7}
+.spacing span{display:block;font-size:12px;color:var(--muted);text-align:center;margin-top:4px}
+/* timeline */
+.timeline{margin:20px 0 28px}
+.timeline svg{display:block;width:100%;overflow:visible}
+.tl-label{font-size:13px;fill:var(--muted)}
+.tl-key{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:14px;color:var(--muted);margin-top:8px}
+.tl-key i{display:inline-block;width:12px;height:12px;margin-right:6px;vertical-align:-1px}
+/* contact */
+.contact h2{margin-bottom:16px}
+.btn-lg{font-size:var(--t-base);padding:14px 22px;text-decoration:none;display:inline-block}
+footer{border-top:1px solid var(--border);padding-top:20px;margin-top:96px}
+/* palette switcher (review tool for Chris; remove before sending) */
+.pal{position:fixed;left:16px;bottom:16px;z-index:7;display:flex;gap:4px;font-size:13px;background:var(--surface);border:1px dashed var(--guess);padding:6px}
+.pal button{font:inherit;border:1px solid var(--border);background:none;color:var(--text);padding:4px 8px;cursor:pointer}
+.pal button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+@media (max-width:1299px){.pal{bottom:72px}}
+:root[data-palette="b"]{--bg:#fbfbfa;--surface:#ffffff;--surface-2:#eff0f2;--text:#16181d;--muted:#5b616e;--accent:#2456c7;--accent-strong:#1b3f94;--accent-soft:rgba(36,86,199,.10);--range:rgba(36,86,199,.30);--guess:#d9480f;--none:#e3e5e9}
+:root[data-palette="b"][data-theme="dark"]{--bg:#121418;--surface:#1b1e24;--surface-2:#252930;--text:#e8eaee;--muted:#9aa1ad;--accent:#6d9bff;--accent-strong:#9dbcff;--accent-soft:rgba(109,155,255,.14);--range:rgba(109,155,255,.30);--guess:#ff8a4c;--none:#2e323a}
+:root[data-palette="c"]{--bg:#f7f3ec;--surface:#fffdf8;--surface-2:#efe9de;--text:#231f1a;--muted:#6f665a;--accent:#0f766e;--accent-strong:#0b5a54;--accent-soft:rgba(15,118,110,.10);--range:rgba(15,118,110,.30);--guess:#c2410c;--none:#e6dfd2}
+:root[data-palette="c"][data-theme="dark"]{--bg:#1a1714;--surface:#24201b;--surface-2:#2e2922;--text:#efe8dc;--muted:#a89e8f;--accent:#3fb8ac;--accent-strong:#6fd3c8;--accent-soft:rgba(63,184,172,.14);--range:rgba(63,184,172,.30);--guess:#fb923c;--none:#38322a}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:8px 32px}
+.sec-head .meta{flex-direction:column;align-items:flex-end;text-align:right;max-width:240px}
+.sec-head .meta span+span::before{content:none}
+@media (max-width:640px){.sec-head{grid-template-columns:1fr}.sec-head .meta{flex-direction:row;align-items:flex-start;text-align:left;max-width:none}.sec-head .meta span+span::before{content:"·";margin:0 8px}}
+/* ===== Pass 3 ===== */
+:root{--mono:'IBM Plex Mono',ui-monospace,monospace}
+.skip{margin:40px 0 40px}
+.sec-head{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin:0 0 24px}
+.sec-head .meta{order:-1;flex-direction:row;align-items:center;text-align:left;max-width:none}
+.meta,.meta span,.meta span:first-child{font-family:var(--mono);font-size:14px;font-weight:400;letter-spacing:0;color:var(--muted)}
+.sec-head .meta span+span::before{content:"/";margin:0 10px;color:var(--border-strong)}
+@media (max-width:640px){.sec-head .meta{flex-wrap:wrap}}
+.method{margin-top:48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.method details{margin:0;border:none;padding:16px 0}
+.method details+details{border-top:1px solid var(--border)}
+.method details[open]{padding-bottom:20px}
+.scrolly-steps .sc-step:last-child{min-height:30vh}
+body::after{content:"";position:fixed;inset:0;z-index:20;pointer-events:none;opacity:.06;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+:root[data-theme="dark"] body::after{mix-blend-mode:screen;opacity:.05}
+.flip{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 12px;font-size:13px}
+.flip button,.pal button{font:13px var(--sans);border:1px dashed var(--guess);background:none;color:var(--guess);padding:4px 8px;cursor:pointer}
+.flip button[aria-pressed="true"],.pal button[aria-pressed="true"]{background:var(--guess);color:#fff;border-style:solid}
+[data-variants]>[data-v]{display:none}
+[data-variants]>[data-v].on{display:block}
+[data-variants]>.proof-grid.on,[data-variants]>.kit.on,[data-variants]>.comp-md.on{display:grid}
+.role-counts{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0 24px}
+.role-counts div{border-top:3px solid var(--accent);padding:10px 0 0;min-width:180px}
+.role-counts b{font-family:var(--serif);font-size:40px;font-weight:400;line-height:1;display:block}
+.role-counts span{font-size:var(--t-sm);color:var(--muted)}
+/* style option B: hairlines instead of boxes, GoodRx chapter on its band color */
+:root[data-style="b"] .card,:root[data-style="b"] .state-card,:root[data-style="b"] .ds-live,:root[data-style="b"] .bill{border:none;border-top:1px solid var(--border-strong);background:none;padding-left:0;padding-right:0}
+:root[data-style="b"] .bill{border-top:3px solid var(--text)}
+:root[data-style="b"] #work{background:var(--band-goodrx,#fcef72);box-shadow:0 0 0 100vmax var(--band-goodrx,#fcef72);clip-path:inset(0 -100vmax);border-top:none;padding-top:64px;padding-bottom:64px;--muted:#4a4630;--border:rgba(0,0,0,.15)}
+:root[data-style="b"] #work .tabs button,:root[data-style="b"] #work .state-card{background:rgba(255,255,255,.55)}
+/* bands stay inside the reading column so the left nav never sits on color */
+:root[data-style="b"] #work{box-shadow:none;clip-path:none}
+.band{margin:0 -32px;padding:48px 32px 56px}
+:root[data-style="b"] #work{margin-left:-32px;margin-right:-32px;padding-left:32px;padding-right:32px}
+.band-epoch{margin-top:48px}
+:root[data-band="a"] .band-epoch{background:#e3eaf2}
+:root[data-band="b"] .band-epoch{background:#e8e3f3}
+:root[data-band="c"] .band-epoch{background:#e9e9e9}
+.band-epoch .method{border-color:rgba(0,0,0,.12)}
+.band-epoch .tabs button,.band-epoch .chips button{background:rgba(255,255,255,.65)}
+@media (max-width:760px){.band,:root[data-style="b"] #work{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}}
+.embed{width:100%;height:560px;border:1px solid var(--border-strong);background:var(--surface);margin-top:8px}
+.kit{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;margin-top:8px}
+@media (max-width:640px){.kit{grid-template-columns:1fr}}
+.kc{border-top:1px solid var(--border-strong);padding-top:14px}
+.kc h4{font-family:var(--mono);font-size:14px;font-weight:400;color:var(--muted);margin:0 0 12px}
+.kc .big{font-family:var(--serif);font-size:44px;line-height:1}
+.kc .sub{font-size:var(--t-sm);font-weight:400;color:var(--muted);margin-top:6px}
+.kc select,.kc .seg button{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text)}
+.kc .seg{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.kc .seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.kc .verdict{margin-top:10px;font-size:var(--t-sm)}
+.kdesc{font-size:var(--t-sm);color:var(--muted);margin:-4px 0 12px}
+.site-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px 28px}
+.site-grid img,.pg-stage img,.md-stage img{width:100%;height:auto;display:block;border:1px solid var(--border)}
+@media (max-width:640px){.site-grid{grid-template-columns:1fr}}
+.comp-md{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px}
+@media (max-width:640px){.comp-md{grid-template-columns:1fr}}
+.md-list{list-style:none;margin:0;padding:0;border-left:1px solid var(--border)}
+.md-list .md-grp{font-family:var(--mono);font-size:13px;color:var(--muted);padding:12px 0 6px 12px}
+.md-list button{display:block;width:100%;text-align:left;font:inherit;font-size:var(--t-sm);background:none;border:none;border-left:2px solid transparent;margin-left:-1px;padding:6px 12px;color:var(--muted);cursor:pointer}
+.md-list button[aria-selected="true"]{color:var(--text);border-left-color:var(--accent);font-weight:600}
+.pair-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px;align-items:start;padding:24px 0;border-top:1px solid var(--border)}
+@media (max-width:640px){.pair-row{grid-template-columns:1fr}}
+.lb-code{display:none;max-width:min(900px,92vw);max-height:78vh;overflow:auto;background:#1e1e1e;color:#e6e6e6;padding:18px 20px;font:13px/1.55 var(--mono);margin:0 auto}
+/* code rows: one header line, then code and output at the same height */
+.code-pairs{margin-top:32px;display:grid;gap:48px}
+.pair-row{display:block;padding:0;border:none}
+.pr-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-top:1px solid var(--border-strong);padding-top:14px}
+.pr-year{font-family:var(--serif);font-size:28px;line-height:1}
+.pr-file{font-family:var(--mono);font-size:14px}
+.pr-lang{font-family:var(--mono);font-size:14px;color:var(--muted);margin-left:auto}
+.pr-what{font-size:var(--t-sm);color:var(--muted);margin:8px 0 16px}
+.pr-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:300px;gap:16px}
+/* fixed row height: a percentage height inside an auto-sized grid row resolves to the content, which let long code spill over the next rows (2026-09-26) */
+.pr-code{min-width:0;height:300px}
+.pr-code pre{margin:0;height:100%;overflow:auto;background:#1e1e1e;color:#e6e6e6;padding:16px 18px;font:12.5px/1.6 var(--mono)}
+.pr-out{position:relative;height:300px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pr-shot{flex:1;min-height:0;display:block;border:1px solid var(--border);background:var(--surface);overflow:hidden}
+.pr-shot img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.pr-label{position:absolute;left:8px;bottom:8px;font-family:var(--mono);font-size:12px;background:rgba(255,255,255,.9);padding:2px 6px;color:var(--text)}
+@media (max-width:640px){.pr-body{grid-template-columns:1fr;grid-template-rows:220px 220px}.pr-code,.pr-out,.pr-code pre{height:220px}}
+/* list + detail: self-contained, the stage never grows the page */
+.comp-md{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start}
+.md-stage{min-height:420px}
+.md-stage .kc{border-top:none;padding-top:0}
+.md-stage .zoom img{max-height:460px;object-fit:contain;object-position:top left;background:var(--surface)}
+@media (max-width:640px){.comp-md{grid-template-columns:1fr}.md-list{display:flex;overflow-x:auto;border-left:none;border-bottom:1px solid var(--border);gap:4px}.md-list .md-grp{display:none}.md-list button{white-space:nowrap;border-left:none;border-bottom:2px solid transparent;margin:0}.md-list button[aria-selected="true"]{border-bottom-color:var(--accent)}.md-stage{min-height:0}}
+body [data-role="pm"]{display:none}
+:root[data-role="pm"] body [data-role="pm"]{display:revert}
+:root[data-role="pm"] body [data-role="design"]{display:none}
+.proofline{font-size:var(--t-sm);color:var(--muted);border-left:3px solid var(--accent);padding:6px 0 6px 14px;margin:28px 0 0}
+.proofline a{color:var(--text)}
+.logline{font-size:var(--t-sm);color:var(--muted);margin:-8px 0 0}
+.thesis{margin-top:72px}
+.thesis dl{display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px 24px;margin:20px 0 28px}
+.thesis dt{font-family:var(--mono);font-size:14px;color:var(--muted);padding-top:3px}
+.thesis dd{margin:0}
+@media (max-width:640px){.thesis dl{grid-template-columns:1fr;gap:4px}.thesis dd{margin-bottom:12px}}
+.draft-mark{font-family:var(--mono);font-size:13px;color:var(--guess);border:1px dashed var(--guess);padding:2px 6px;display:inline-block;margin-bottom:8px}
+.comp-static{margin:0}
+.js .comp-static{display:none}
+.comp-static dt{font-weight:600;margin-top:12px}
+.comp-static dd{margin:0;color:var(--muted);font-size:var(--t-sm)}
+.js .sc-head-text{display:none}
+.sc-head-text{font-family:var(--serif);font-size:var(--t-md)}
+.proofbox{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:32px 0 0;background:var(--text);color:var(--bg)}
+.proofbox a{display:block;padding:20px 22px;color:inherit;text-decoration:none;border-left:1px solid rgba(255,255,255,.14)}
+.proofbox a:first-child{border-left:none}
+.proofbox a:hover{background:rgba(255,255,255,.06)}
+.proofbox b{display:block;font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.05;margin-bottom:8px}
+.proofbox span{display:block;font-size:14px;line-height:1.45;opacity:.78}
+@media (max-width:640px){.proofbox{grid-template-columns:1fr}.proofbox a{border-left:none;border-top:1px solid rgba(255,255,255,.14)}.proofbox a:first-child{border-top:none}}
+.flip{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 12px;font-size:13px}
+.flip button{font:13px var(--sans);border:1px dashed var(--guess);background:none;color:var(--guess);padding:4px 8px;cursor:pointer}
+.flip button[aria-pressed="true"]{background:var(--guess);color:#fff;border-style:solid}
+[data-variants]>[data-v]{display:none}
+[data-variants]>[data-v].on{display:block}
+.no-js [data-variants]>[data-v="o"]{display:block}
+.thesis-p{font-size:var(--t-md);line-height:1.55;margin:16px 0 28px}
+.verdict > span[class^=fb-]{display:block}
+#guess-widget svg:focus:not(:focus-visible){outline:none}
+#guess-widget svg:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.fb-dir{font-family:var(--serif);font-size:var(--t-lg);line-height:1.2;margin-bottom:4px}
+.fb-vs{margin-bottom:8px}
+.fb-pattern{font-size:var(--t-sm);color:var(--muted)}
+/* layout option B: the question is the form */
+.madlib{font-family:var(--serif);font-size:clamp(24px,3vw,30px);line-height:1.5;margin:32px 0 8px}
+.madlib select{font:inherit;font-size:.8em;border:none;border-bottom:2px solid var(--accent);background:transparent;color:var(--accent-strong);padding:0 2px;cursor:pointer}
+.flip{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 6px;font-size:13px}
+.flip button{font:13px var(--sans);border:1px dashed var(--guess);background:none;color:var(--guess);padding:4px 8px;cursor:pointer}
+.flip button[aria-pressed="true"]{background:var(--guess);color:#fff;border-style:solid}
+/* ===== Game pass 2 ===== */
+.bridge{font-size:var(--t-md);line-height:1.5;margin:0 0 28px;max-width:60ch}
+.dock{position:fixed;top:0;left:0;right:0;z-index:8;display:flex;gap:16px;align-items:baseline;justify-content:center;padding:10px 16px;background:#e9e9e9;border-bottom:1px solid rgba(0,0,0,.1);transform:translateY(-100%);transition:transform .25s ease}
+.dock.on{transform:none}
+.dock-title{font-family:var(--serif);font-size:18px}
+.dock-state{font-family:var(--mono);font-size:13px;color:var(--muted)}
+@media (max-width:640px){.dock{padding:10px 16px!important;flex-direction:column;gap:2px}.dock-title{font-size:15px}}
+.round{margin-top:40px;padding-top:24px;border-top:1px solid rgba(0,0,0,.12)}
+.round-label{font-family:var(--mono);font-size:14px;margin:0 0 18px}
+.round-label span{color:var(--muted)}
+.game-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:36px;align-items:start}
+.gg-text .madlib{display:block;margin:0 0 16px;font-size:clamp(22px,2.4vw,27px);line-height:1.45}
+.gg-text .guess-num{font-size:56px;margin:4px 0 8px}
+.hint{font-size:var(--t-sm);color:var(--muted);margin:0 0 12px}
+.pick{font:inherit;color:var(--accent-strong);background:none;border:none;border-bottom:2px dashed var(--accent);padding:0 2px;cursor:pointer}
+.pick.set{border-bottom-style:solid}
+.pick:hover{background:var(--accent-soft)}
+.picker{position:absolute;z-index:9;background:var(--surface);border:1px solid var(--border-strong);box-shadow:0 12px 30px rgba(0,0,0,.14);padding:14px 16px;max-width:420px;margin-top:-6px}
+.gg-text{position:relative}
+.pk-row{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:baseline;padding:6px 0}
+.pk-row+.pk-row{border-top:1px solid var(--border)}
+.pk-lab{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.pk-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pk-chips button{font:14px var(--sans);padding:6px 10px;border:1px solid var(--border-strong);background:var(--bg);color:var(--text);cursor:pointer}
+.pk-chips button:hover{border-color:var(--text)}
+.pk-chips button[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn-link{font:inherit;font-size:var(--t-sm);background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;padding:10px 4px}
+.btn-link:hover{color:var(--text)}
+#round1 .actions,#round2 .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+[hidden]{display:none!important}
+#step-reveal .reveal-head,#step-reveal2 .reveal-head{font-size:clamp(24px,2.6vw,30px);margin-top:4px}
+#reveal-more,#reveal-more2{margin-top:32px}
+.muted-note{font-size:14px;color:var(--muted)}
+/* scroll section: words left, picture right */
+.scrolly-steps{order:1}.scrolly-sticky{order:2}
+body.in-game .cta-float{display:none}
+/* ===== Game pass 3: rhythm on an 8px grid; text left, graphic right ===== */
+.game-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)!important;gap:40px!important}
+.gg-graphic{position:sticky;top:64px}
+@media (max-width:760px){.game-grid{display:block!important}.gg-graphic{position:static;margin-top:24px}}
+.round{margin-top:48px;padding-top:32px}
+.round-label{font-family:var(--mono);font-size:13px;letter-spacing:.02em;margin:0 0 4px}
+.cite{font-size:13px;color:var(--muted);margin:0 0 24px}
+.cite a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+.cite a:hover{color:var(--text)}
+.stepper{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 24px;padding:0;font-size:13px;color:var(--muted)}
+.stepper li{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.stepper li+li::before{content:"";width:12px;height:1px;background:var(--border-strong);margin-right:4px}
+.stepper span{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--border-strong);font-size:12px}
+.stepper li.on{color:var(--text);font-weight:600}
+.stepper li.on span{background:var(--text);color:var(--bg);border-color:var(--text)}
+.stepper li.done span{background:var(--accent);color:#fff;border-color:var(--accent)}
+.gg-text .madlib{font-size:24px!important;line-height:1.4!important;margin:0 0 8px!important}
+.gg-text .hint{font-size:15px;color:var(--muted);margin:0 0 16px}
+.gg-text .guess-num{font-size:48px!important;margin:16px 0 8px!important;line-height:1}
+.gg-text .actions{margin-top:16px}
+#round1[data-step="1"] .s2,#round1:not([data-step="1"]) .s1{display:none}
+#round1[data-step="3"] .s2 .guess-num,#round1[data-step="3"] .s2 .hint,#round1[data-step="3"] .s2 .actions{display:none}
+.seg{display:inline-flex;border:1px solid var(--border-strong);margin:8px 0 16px;background:rgba(255,255,255,.5)}
+.seg button{font:14px var(--sans);border:none;background:none;padding:8px 14px;cursor:pointer;color:var(--muted)}
+.seg button+button{border-left:1px solid var(--border-strong)}
+.seg button:hover{color:var(--text);background:rgba(0,0,0,.04)}
+.seg button[aria-selected="true"]{background:var(--text);color:var(--bg)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts button{display:flex;align-items:center;gap:10px;text-align:left;font:16px var(--sans);padding:12px 14px;border:1px solid var(--border-strong);background:rgba(255,255,255,.55);color:var(--text);cursor:pointer;transition:border-color .15s,background .15s}
+.opts button i{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border-strong);flex:none}
+.opts button:hover{border-color:var(--text);background:#fff}
+.opts button[aria-checked="true"]{border-color:var(--accent);background:#fff}
+.opts button[aria-checked="true"] i{border:5px solid var(--accent)}
+.pick{transition:background .15s}
+.pick::after{content:" ✎";font-size:.6em;color:var(--muted)}
+.cu{font-variant-numeric:tabular-nums}
+/* legend keys are buttons */
+.scrolly-key{display:flex;flex-wrap:wrap;gap:8px}
+.key{display:inline-flex;align-items:center;gap:8px;font:14px var(--sans);padding:6px 12px;border:1px solid var(--border-strong);background:rgba(255,255,255,.5);color:var(--text);cursor:pointer;border-radius:999px;transition:background .15s,border-color .15s}
+.key:hover{background:#fff;border-color:var(--text)}
+.key[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.sw{width:10px;height:14px;border-radius:2px;display:inline-block}
+.sw-used{background:var(--accent)}.sw-range{background:var(--accent);opacity:.4}.sw-none{background:var(--none)}
+/* crowd note: small and quiet */
+.crowd{margin-top:16px;padding:8px 12px;border:none;background:rgba(0,0,0,.04);font-size:14px;display:inline-block}
+/* method: cards that open */
+.method{border:none!important;display:grid;gap:8px;margin-top:40px}
+.method details{border:1px solid rgba(0,0,0,.12)!important;background:rgba(255,255,255,.45);padding:0!important;transition:background .15s}
+.method details:hover{background:rgba(255,255,255,.8)}
+.method summary{list-style:none;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;font-size:15px;color:var(--text);font-weight:600}
+.method summary::-webkit-details-marker{display:none}
+.method summary::after{content:"+";font:400 20px var(--sans);color:var(--muted);transition:transform .2s}
+.method details[open] summary::after{transform:rotate(45deg)}
+.method details>*:not(summary){margin-left:18px;margin-right:18px}
+.method details[open]{padding-bottom:12px!important;background:#fff}
+/* dock matches the reading column */
+.dock{left:50%!important;right:auto!important;width:min(792px,100vw);transform:translate(-50%,-110%)!important;justify-content:flex-start!important;padding:12px 32px!important;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.dock.on{transform:translate(-50%,0)!important}
+/* ===== Pass 4: page rhythm (8px scale) ===== */
+:root{--s-2:16px;--s-3:24px;--s-4:32px;--s-6:48px;--s-8:64px;--s-12:96px}
+.thesis{margin-top:var(--s-12)!important}
+.chapter,.scrolly{margin-top:var(--s-12)!important;padding-top:var(--s-4)!important}
+.sub-head{margin-top:var(--s-6)!important}
+.method{margin-top:var(--s-6)!important}
+footer{margin-top:var(--s-12)!important}
+.bridge-wrap{margin:var(--s-12) 0 var(--s-6)}
+.bridge{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.35;margin:0;max-width:34ch}
+.band-epoch{margin-top:0!important;padding-top:var(--s-6)!important}
+.round{margin-top:var(--s-6)!important;padding-top:var(--s-4)!important}
+.round-label{margin-bottom:var(--s-2)!important}
+.cite{margin-bottom:var(--s-4)!important}
+/* stepper: connectors fill as you progress, done steps pop to a check */
+.stepper li+li::before{width:24px!important;height:2px!important;background:linear-gradient(var(--accent),var(--accent)) left/0% 100% no-repeat,var(--border-strong)!important;transition:background-size .5s ease}
+.stepper li.on::before,.stepper li.done::before{background-size:100% 100%!important}
+.stepper span{transition:background .3s,color .3s,transform .3s}
+.stepper li.done span{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+/* interaction cues */
+.cue-hint{display:flex;align-items:center;gap:8px;color:var(--accent-strong)!important;font-weight:600}
+.cue-arrow::before{content:"→";display:inline-block;animation:nudge-x 1.2s ease-in-out infinite}
+.cue-down .cue-arrow::before{content:"↓";animation-name:nudge-y}
+@keyframes nudge-x{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@keyframes nudge-y{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media (max-width:760px){.cue-arrow::before{content:"↓";animation-name:nudge-y}}
+#round1[data-step="1"] .opts button i{animation:ring 1.8s ease-in-out infinite}
+#round1[data-step="1"] .opts button:nth-child(2) i{animation-delay:.2s}
+#round1[data-step="1"] .opts button:nth-child(3) i{animation-delay:.4s}
+#round1[data-step="1"] .opts button:nth-child(4) i{animation-delay:.6s}
+#round1[data-step="1"] .opts:hover button i{animation:none}
+@keyframes ring{0%,100%{box-shadow:0 0 0 0 rgba(42,157,79,0)}50%{box-shadow:0 0 0 5px rgba(42,157,79,.18)}}
+@media (prefers-reduced-motion:reduce){.cue-arrow::before,#round1 .opts button i,#guess-widget.invite svg > *,.stepper li.done span{animation:none!important}}
+/* step 2 hierarchy */
+.gl{font-family:var(--mono);font-size:13px;color:var(--muted);margin:var(--s-3) 0 0}
+.gg-text .guess-num{margin:4px 0 var(--s-2)!important}
+.btn-ghost{font:600 15px var(--sans);padding:10px 16px;border:1px solid var(--border-strong);background:transparent;color:var(--text);cursor:pointer;transition:background .15s,border-color .15s}
+.btn-ghost:hover{background:#fff;border-color:var(--text)}
+.btn-ghost span{display:inline-block;transition:transform .15s}.btn-ghost:hover span{transform:translateX(3px)}
+/* step 3: one stat, one line, one verdict */
+#round1[data-step="3"] .s2 .madlib{font-size:17px!important;color:var(--muted)}
+#round1[data-step="3"] .s2 .gl{display:none}
+.stepper{flex-wrap:nowrap!important;gap:6px!important;font-size:12.5px!important}
+.stepper li+li::before{width:14px!important;margin-right:2px!important}
+.stat{display:block;font-family:var(--serif);font-size:72px;line-height:1;color:var(--accent-strong);font-weight:400}
+.stat-lab{display:block;font-family:var(--sans);font-size:18px;line-height:1.4;margin-top:8px;color:var(--text)}
+#step-reveal .reveal-head{margin:var(--s-2) 0 var(--s-1,8px)}
+#step-reveal .reveal-range{font-size:15px;color:var(--muted);margin:8px 0 var(--s-2)}
+#step-reveal .verdict{font-size:18px;margin:0 0 var(--s-3)}
+.chart-cap{font-size:15px;color:var(--muted);margin:0 0 var(--s-2);max-width:66ch}
+.chart-cap b{color:var(--text)}
+.cmp{list-style:none;padding:0;margin:var(--s-3) 0 0;display:grid;gap:8px}
+.cmp li{display:flex;gap:10px;align-items:baseline;font-size:15px}
+.cmp i{font-style:normal;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:12px;flex:none}
+.cmp-real i{background:var(--accent);color:#fff}
+.cmp-close i{background:var(--none);color:var(--text)}
+.why{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));margin-bottom:var(--s-12);gap:1px;background:var(--border-strong);border:1px solid var(--border-strong);margin-top:var(--s-3)}
+.wcard{background:var(--bg);padding:24px;display:flex;flex-direction:column}
+.wcard .wz{display:block;padding:0;border:none;background:none;cursor:zoom-in;margin-bottom:16px}.wcard .wz:hover img{border-color:var(--text)}
+.wcard img{width:100%;height:auto;object-position:center;border:1px solid var(--border);margin-bottom:16px;background:var(--surface)}
+.wcard h3{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.15;margin:0 0 12px}
+.wcard ul a{color:var(--accent-strong)}
+.wcard ul{margin:0 0 16px;padding-left:18px;font-size:15px;line-height:1.5;color:var(--muted)}
+.wcard li+li{margin-top:6px}
+.wcard > a{margin-top:auto;font-size:15px;color:var(--accent-strong)}
+.trans{font-family:var(--serif);font-size:clamp(22px,2.4vw,28px);line-height:1.35;max-width:34ch;margin:var(--s-12) 0 var(--s-6)}
+.trans + .chapter,.trans + .band{margin-top:0!important}
+.trans + .chapter{border-top:none}
+.contact .btn-lg{margin:0 8px 8px 0;vertical-align:middle}
+.contact .btn-ghost.btn-lg{padding:14px 22px;font-size:var(--t-base)}
+/* ===== Game pass 5: lighter, one thing at a time ===== */
+#round1 .opts button i{animation:none!important}
+.cite.one{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;margin:var(--s-3) 0 0!important}
+#round1[data-step="1"] .game-grid{grid-template-columns:1fr!important}
+#round1[data-step="1"] .gg-graphic{display:none}
+#round1 .guessed{display:none}
+#round1.touched .guessed{display:block}
+#round1.touched #hint{display:none}
+.fine{font-size:13px;color:var(--muted);margin:var(--s-2) 0 0}
+.btn-link{font:inherit;font-size:15px;background:none;border:none;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px 0}
+.btn-link:hover{color:var(--text)}
+#round1[data-step="3"] .s2{display:none}
+#step-reveal .verdict{font-size:18px;margin:var(--s-2) 0 4px}
+#round1[data-step="3"] #step-reveal{margin-top:var(--s-3)}
+#step-reveal .verdict b{color:var(--guess)}
+#step-reveal .reveal-range{font-size:14px;margin:0 0 var(--s-3)}
+#step-reveal .share{display:flex;gap:20px}
+/* ===== pass 6 ===== */
+.bob{display:inline-block;animation:bob 1.1s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+.stack2 .bob{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){.bob{animation:none}}
+#reveal-more{display:none!important}
+#round1[data-step="3"] #step-reveal{margin-top:0}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--border-strong);border-bottom:1px solid var(--border-strong)}
+.nums > div{padding:12px 0}
+.nums > div+div{padding-left:16px;border-left:1px solid var(--border)}
+.nums b{display:block;font-family:var(--serif);font-weight:400;font-size:40px;line-height:1}
+.nums > div > span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+.n-guess b{color:var(--guess)}.n-real b{color:var(--accent-strong)}
+.res-line{font-size:15px;margin:12px 0 20px}
+.res-sent{font-family:var(--serif);font-size:24px;line-height:1.3;margin:0 0 8px}
+.res-sent .big{font-weight:400;font-size:48px;color:var(--accent-strong);vertical-align:-4px}
+.res-guess{font-size:14px;color:var(--muted);margin:0 0 20px}.res-guess b{color:var(--guess)}
+.chart-cap.mini{font-size:13px;margin:0 0 4px;color:var(--muted)}
+#chart .row-label{font-size:14px}#chart .row-val{font-size:14px}#chart .axis text{font-size:12px}
+#step-reveal .share{margin-top:12px}
+.res-who{font-size:14px;color:var(--muted);margin:0 0 8px}
+.nums{margin-bottom:20px}
+/* step 2 stacked option */
+.stack2[data-step="2"] .game-grid{grid-template-columns:1fr!important}
+.stack2[data-step="2"] .gg-graphic{position:static;max-width:420px}
+/* ===== stacked game ===== */
+.game-col{display:flex;flex-direction:column}
+.grid-wrap{display:flex;justify-content:center;margin:8px 0 20px}
+.grid-wrap #guess-widget{width:100%;max-width:520px}
+#guess-widget svg{margin:0 auto;display:block}
+#round1[data-step="1"] .grid-wrap,#round1[data-step="1"] .s2-bottom{display:none}
+.reveal-top{display:none}
+#round1[data-step="3"] .reveal-top{display:block}
+#round1[data-step="3"] .s2{display:none}
+.tap-cue{font:600 16px var(--sans);color:var(--accent-strong);margin:8px 0 0}
+#round1.touched .tap-cue{visibility:hidden}
+.s2-bottom{text-align:center}
+.guessed{display:none;font-size:18px;margin:0 0 12px}
+#round1.touched .guessed{display:block}
+.guessed b{font-family:var(--serif);font-weight:400;font-size:30px;color:var(--guess)}
+.s2-bottom .actions{justify-content:center}
+.duo{display:flex;gap:40px;margin:8px 0 12px}
+.duo > div > span{display:block;font-size:15px;color:var(--muted)}
+.duo b{display:block;font-family:var(--serif);font-weight:400;font-size:64px;line-height:1}
+.d-guess b{color:var(--guess)}.d-real b{color:var(--accent-strong)}
+.res-plain{font-family:var(--serif);font-size:24px;line-height:1.35;margin:0 0 6px;max-width:32ch}
+.res-fine{font-size:15px;color:var(--muted);margin:0 0 8px}
+.chart-cap{font-size:15px!important;margin:8px 0 8px!important}
+#chart .row-label{font-size:15px}#chart .row-val{font-size:15px}#chart .axis text{font-size:13px}
+#step-reveal .share{justify-content:flex-start}
+/* step 3: answer beside the figures, comparison below, all in one screen */
+.duo b{font-size:56px}
+.res-plain{font-size:21px}
+/* pass: calmer scale + transitions */
+.s2-bottom .actions{flex-direction:column;gap:6px}
+.s2-bottom #skip-btn{font-size:13px;padding:4px 0}
+#round1[data-step="2"] .madlib{font-size:22px!important;line-height:1.4!important}
+.band-epoch #game-title{font-size:clamp(34px,4vw,46px)}
+.grid-wrap #guess-widget{max-width:none}
+#round1[data-step="3"] .grid-wrap #guess-widget{max-width:none}
+.vband{display:inline-block;font:600 14px var(--sans);color:var(--accent-strong);background:var(--accent-soft);padding:4px 10px;border-radius:999px;margin:0 0 10px}
+.res-plain{font-family:var(--sans)!important;font-size:17px!important;margin:4px 0 4px!important}
+.res-plain b{font-weight:600}
+.res-fine{font-size:13px!important}
+.duo b{font-size:52px!important}
+.grid-wrap{view-transition-name:game-figures}
+.reveal-top{view-transition-name:game-answer}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.25s}
+::view-transition-group(game-figures){animation-duration:.5s;animation-timing-function:cubic-bezier(.2,0,0,1)}
+@keyframes stepIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#round1 .s1,#round1[data-step="2"] .s2{animation:stepIn .35s ease both}
+/* step 3: each piece arrives in reading order after the figures settle */
+#round1[data-step="3"] .reveal-top > *{animation:stepIn .45s cubic-bezier(.2,0,0,1) both}
+#round1[data-step="3"] .reveal-top > :nth-child(1){animation-delay:.1s}
+#round1[data-step="3"] .reveal-top > :nth-child(2){animation-delay:.25s}
+#round1[data-step="3"] .reveal-top > :nth-child(3){animation-delay:.5s}
+#round1[data-step="3"] .reveal-top > :nth-child(4){animation-delay:.65s}
+#round1[data-step="3"] .d-real{animation:stepIn .45s cubic-bezier(.2,0,0,1) both;animation-delay:.4s}
+#round1[data-step="3"] .chart-cap{animation:stepIn .4s ease both;animation-delay:.8s}
+#round1[data-step="3"] .share{animation:stepIn .4s ease both;animation-delay:1.9s}
+#round1[data-step="3"] #step-reveal{animation-delay:.15s}
+@media (prefers-reduced-motion:reduce){#round1 *{animation:none!important}}
+/* tighter vertical rhythm in the game */
+.band-epoch{padding-top:32px!important}
+.band-epoch .sec-head{margin-bottom:8px}
+#round1{margin-top:0!important;padding-top:16px!important;border-top:1px solid rgba(0,0,0,.1)}
+.stepper{margin:0 0 16px!important}
+.gg-text .madlib,#round1 .madlib{margin:0 0 4px!important}
+.tap-cue{margin:4px 0 0!important}
+.grid-wrap{margin:12px 0 12px!important}
+.guessed{margin:0 0 8px!important}
+.cite.one{margin-top:16px!important}
+.filling .s2-bottom .actions,.filling .tap-cue{visibility:hidden}
+.live-real{display:none}
+.filling .live-real{display:inline}
+.live-real b{font-family:var(--serif);font-weight:400;font-size:30px;color:var(--accent-strong);font-variant-numeric:tabular-nums}
+/* ===== centered game ===== */
+.band-epoch .sec-head{align-items:center;text-align:center}
+#game-title{font-size:clamp(30px,4.2vw,44px)!important;white-space:normal}
+#round1 .game-col{text-align:center;align-items:center}
+#round1 .stepper{justify-content:center}
+#round1 .madlib{max-width:34ch;margin-left:auto!important;margin-right:auto!important}
+#round1 .hint{margin-left:auto;margin-right:auto}
+.tap-cue{display:block;visibility:hidden;font:600 16px var(--sans);color:var(--accent-strong)}
+#round1[data-step="2"]:not(.touched) .tap-cue{visibility:visible}
+#opts{display:flex;flex-direction:column;gap:14px;align-items:center;margin-top:8px}
+.pk-group{display:flex;flex-direction:column;align-items:center;gap:6px}
+.pk-h{font-family:var(--mono);font-size:13px;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.pk-row2{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.pk-row2 button{font:15px var(--sans);padding:10px 16px;border:1px solid var(--border-strong);border-radius:999px;background:rgba(255,255,255,.6);color:var(--text);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.pk-row2 button:hover{background:#fff;border-color:var(--text);transform:translateY(-1px)}
+.pk-row2 button[aria-checked="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.grid-wrap{display:grid!important;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;width:100%}
+.flank{visibility:hidden;text-align:center}
+.flank span{display:block;font-size:14px;color:var(--muted)}
+.flank b{display:block;font-family:var(--serif);font-weight:400;font-size:56px;line-height:1}
+.fl-l b{color:var(--guess)}.fl-r b{color:var(--accent-strong)}
+#round1[data-step="3"] .flank{visibility:visible;animation:stepIn .45s cubic-bezier(.2,0,0,1) both}
+#round1[data-step="3"] .fl-r{animation-delay:.2s}
+@media (max-width:640px){.grid-wrap{grid-template-columns:1fr 1fr;row-gap:8px}.grid-wrap #guess-widget{grid-column:1/-1;grid-row:2}.flank b{font-size:44px}
+  #round1:not([data-step="3"]) .flank{display:none}}
+#round1[data-step="3"] .reveal-top{order:1;display:flex!important;flex-direction:column;justify-content:center}
+#round1[data-step="3"] .grid-wrap{order:2}
+#round1[data-step="3"] #step-reveal{order:3;width:100%;text-align:left}
+#round1[data-step="3"] .reveal-top .res-plain{max-width:none}
+#round1 .share{justify-content:center!important}
+#round1.leaving .reveal-top,#round1.leaving #step-reveal,#round1.leaving .flank{opacity:0;transition:opacity .25s}
+.cite.one{text-align:center}
+#round1[data-step="1"] .grid-wrap{display:none!important}
+#round1[data-step="3"] .res-plain{font-family:var(--serif)!important;font-size:22px!important}
+/* the numbers live beside the grid from the first tap: less eye travel */
+#round1[data-step="2"].touched .fl-l,#round1.filling .fl-r{visibility:visible}
+#round1.filling .fl-r{animation:stepIn .3s ease both}
+#round1[data-step="3"] .flank{animation:none}
+#round1 .guessed{display:none!important}
+#round1 .madlib{max-width:none!important}
+@media (min-width:761px){.q2{white-space:nowrap}}
+@media (max-width:640px){#round1[data-step="2"] .flank{display:block}#round1 .flank{min-height:66px}}
+#round1[data-step="3"] .reveal-top{margin:0!important;overflow:visible}
+#round1[data-step="3"] .reveal-top > *{margin-top:0}
+#round1 .share{display:flex;gap:10px;flex-wrap:wrap}
+#round1 .share .btn{white-space:nowrap;width:auto;display:inline-flex;align-items:center;gap:8px;font:600 15px var(--sans);padding:10px 16px}
+.src-tip{position:relative;cursor:help;border-bottom:1px dotted var(--muted)}
+.src-tip i{font-style:normal;font-size:12px}
+.src-tip em{display:none;position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font:13px var(--sans);font-style:normal;background:var(--text);color:var(--bg);padding:8px 10px;z-index:5}
+.src-tip:hover em,.src-tip:focus em{display:block}
+.method ul{list-style:none;padding:4px 0 8px!important;margin:0 18px!important}
+.method li{font-size:16px;line-height:1.5;padding:10px 0;border-top:1px solid var(--border);color:var(--muted)}
+.method li:first-child{border-top:none}
+.method li b{color:var(--text);font-weight:600}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:20px;margin:8px 0}
+.mini:empty{display:none}
+.mg{margin:0;animation:stepIn .4s ease both}
+.mg-svg{display:block;width:100%;max-width:140px;margin:0 auto}
+.mg-svg path{fill:var(--none)}.mg-svg path.on{fill:#a9a293}.mg.me .mg-svg path.on{fill:var(--accent)}
+.mg{cursor:default;padding:10px 6px;border-radius:8px;transition:background .15s}.mg:hover,.mg:focus{background:rgba(255,255,255,.55);outline:none}
+.mg-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;max-width:130px;margin:0 auto}
+.mg-grid i{aspect-ratio:1;border-radius:50%;background:var(--none)}
+.mg-grid i.on{background:#a9a293}
+.mg.me .mg-grid i.on{background:var(--accent)}
+.mg figcaption{text-align:center;font-size:14px;margin-top:8px;color:var(--muted)}
+.mg figcaption b{display:block;font-family:var(--serif);font-weight:400;font-size:26px;color:var(--text)}
+.mg.me figcaption b{color:var(--accent-strong)}
+.mg.me figcaption{color:var(--text);font-weight:600}
+.term{border-bottom:2px dotted var(--muted);cursor:help;position:relative}
+.term:hover::after,.term:focus::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);width:max-content;max-width:260px;white-space:normal;font:14px/1.4 var(--sans);background:var(--text);color:var(--bg);padding:8px 10px;z-index:6;text-align:left}
+#round1 .reveal-top{position:relative;z-index:7}
+.term:focus{outline:none;border-bottom-color:var(--accent)}
+.grid-key{display:none;justify-content:center;flex-wrap:wrap;gap:6px 18px;font-size:14px;color:var(--muted);margin:10px 0 0}
+#round1[data-step="3"] .grid-key{display:flex;order:2;animation:stepIn .4s ease both;animation-delay:.7s}
+.grid-key span{display:inline-flex;align-items:center;gap:6px}
+.grid-key i{width:10px;height:14px;border-radius:2px;display:inline-block}
+.k-used{background:var(--accent)}.k-none{background:var(--none)}
+.k-gap.lo{background:var(--accent);opacity:.45}.k-gap.hi{background:var(--guess);opacity:.45}
+#round1[data-step="3"] #guess-widget svg,#round1.filling #guess-widget svg{cursor:default!important}
+.press .zoom img{aspect-ratio:4/3;object-fit:contain;background:#fff;padding:6px;transition:border-color .15s}
+.press .zoom:hover img{border-color:var(--text)}
+.wcard img{margin-bottom:0!important}
+/* lightbox: easy to open and close */
+.lightbox[open]{animation:lbIn .2s ease}
+@keyframes lbIn{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
+.lb-close{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.14)!important}
+.lb-close:hover{background:rgba(255,255,255,.28)!important}
+/* 4 transitions: full width, no orphans */
+.trans{max-width:none!important;text-wrap:balance}
+#colleagues .sec-head{margin-bottom:8px}
+blockquote.q p{margin-top:0}
+.bridge,.lede,.opening{text-wrap:pretty}
+/* 6 quote: a real quotation mark, no bar */
+blockquote.q{border-left:none!important;padding:0!important;margin:16px 0 0!important;position:relative}
+blockquote.q::before{content:"\201C";display:block;font-family:var(--serif);font-size:72px;line-height:1;height:36px;color:var(--accent);margin:0}
+blockquote.q p{font-size:21px;line-height:1.5}
+blockquote.q cite{font-size:15px}
+/* ===== GoodRx section ===== */
+#work > .sec-head{margin-bottom:32px}
+.sub-block .meta{margin:0 0 6px}
+.sub-block .meta a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.sub-block .meta a:hover{color:var(--text)}
+.sub-title{font-family:var(--serif)!important;font-weight:400!important;font-size:30px!important;line-height:1.15;margin:0 0 10px}
+#work .lede{font-size:18px;margin:0 0 6px}
+.map-find{font-size:17px;margin:0 0 20px;color:var(--muted)}.map-find b{color:var(--text)}
+
+/* bills */
+#work .bills{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 10px}
+@media (max-width:560px){#work .bills{grid-template-columns:1fr}}
+#work .bill{display:flex;flex-direction:column;gap:6px;background:rgba(255,255,255,.6)!important;border:1px solid rgba(0,0,0,.08)!important;border-radius:10px;padding:18px!important;color:var(--text);text-decoration:none;transition:background .15s,transform .15s}
+#work .bill:hover{background:#fff!important;transform:translateY(-2px)}
+.bill-meta{font-family:var(--mono);font-size:12px;color:var(--muted)}
+#work .bill-name{font-family:var(--serif);font-size:22px;line-height:1.2;margin:0}
+#work .bill-what{font-size:15px;color:var(--muted);margin:0}
+.bill-go{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600;color:var(--accent-strong)}
+#work .bill-date{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);grid-column:auto}
+#work .bill-date .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+#work .sub-head{margin-top:56px!important;margin-bottom:12px!important;flex-direction:column;align-items:flex-start;gap:6px}
+#work .sub-head .sub-title{margin:0}
+.sub-block .meta span+span::before{content:"·";margin:0 8px;color:var(--border-strong)}
+/* map hover: the state lifts, the rest recede */
+.toc-cta{white-space:nowrap}
+.toc-cta svg{width:16px!important;height:16px!important;flex:none;margin:0!important}
+/* on this page */
+@media (min-width:1300px){
+  .toc-title{font-family:var(--mono);font-size:12px!important;text-transform:none;letter-spacing:.02em}
+  .toc ol{counter-reset:toc;border-left:none!important}
+  .toc li a{counter-increment:toc;display:flex!important;gap:10px;align-items:baseline;border-left:none!important;margin:0!important;padding:6px 8px!important;border-radius:6px;font-size:15px}
+  .toc li a::before{content:counter(toc,decimal-leading-zero);font-family:var(--mono);font-size:11px;color:var(--muted);opacity:.7}
+  .toc li a:hover{background:rgba(0,0,0,.04)}
+  .toc li a.on{background:var(--accent-soft);color:var(--accent-strong)!important}
+  .toc li a.on::before{color:var(--accent-strong);opacity:1}
+  .toc-cta{display:flex!important;align-items:center;justify-content:center;gap:8px;width:100%;font-size:15px!important;padding:10px 12px!important;border-radius:8px;margin-top:4px}
+}
+/* meta rows on phones: no leading separators when a row wraps */
+@media (max-width:640px){.meta span+span::before,.sec-head .meta span+span::before,.sub-block .meta span+span::before{content:none!important}.meta,.sec-head .meta,.sub-block .meta{column-gap:16px;row-gap:4px}}
+</style>
+</head>
+<body>
+<nav class="toc" id="toc" aria-label="On this page">
+  <p class="toc-title">On this page</p>
+  <ol id="toc-list"></ol>
+  <a class="btn btn-primary toc-cta" href="mailto:whoischrislam@gmail.com?subject=Hi%20Chris"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Email Chris</a>
+</nav>
+<a class="cta-float" href="mailto:whoischrislam@gmail.com?subject=Hi%20Chris">Email Chris</a>
+<main>
+  <div id="hello" data-toc="Hello"></div>
+  <p class="opening">Hi there! I'm Chris Lam, a product designer who codes.</p>
+  <p class="lede">I'm currently expanding my knowledge on AI Safety &amp; Control taking <a href="https://lensacademy.org/courses/ai-control">Lens Academy's AI Control course ↗</a>, applying for <a href="https://bluedot.org/courses/technical-ai-safety">BlueDot's Technical AI Safety ↗</a>, and part of the priority cohort for <a href="https://www.effectivealtruism.org/courses/bootcamp">CEA Career Bootcamp ↗</a>. I want to make AI research usable by the people it affects, not just the people who wrote it. I love working on how to close that gap. Sometimes that's a product, sometimes a data visualization, sometimes a tool. The problem decides the form, and I like figuring that out. I've shipped all three; the work below shows it.</p>
+  <p class="lede">Below, check out what I bring to the table and a short interactive visualization I built on Epoch AI's July 2026 poll. Or see <a href="index.html">14+ years of work and case studies ↗</a>.</p>
+
+  <section class="chapter" id="why" data-toc="What I bring">
+    <div class="sec-head"><h2>What I bring</h2></div>
+    
+    <div class="why">
+      <article class="wcard"><h3>Data visualization for non-experts</h3><button class="zoom wz" aria-label="Enlarge: Data visualization for non-experts"><img src="images/work/goodrx-cities-prices.webp" alt="GoodRx Research chart of the most and least expensive US cities for prescriptions" loading="lazy" /></button><ul>
+        <li>Designed and coded GoodRx Research's interactive charts (D3 and Vega)</li>
+        <li>Cited by <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html">The New York Times ↗</a>, used by <a href="https://abcnews.com/video/53014507/">Good Morning America ↗</a></li>
+        <li>State briefs used in advocacy around two drug-price bills, both now law: <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2553">S.2553 ↗</a> and <a href="https://www.congress.gov/bill/115th-congress/senate-bill/2554">S.2554 ↗</a></li></ul>
+        <a href="#work">See it up close ↓</a></article>
+      <article class="wcard"><h3>Websites and data products</h3><button class="zoom wz" aria-label="Enlarge: Websites and data products"><img src="images/work/goodrx/iodine-hero.png" alt="Iodine.com on phone and desktop, with its Webby Award" loading="lazy" /></button><ul>
+        <li>Iodine.com: public drug information and prices, made usable. Won the <a href="https://winners.webbyawards.com/2018/websites-and-mobile-sites/general-desktop-mobile-sites/health-wellness/47451/iodine">Webby for Best Health Website (2018) ↗</a>; coupon conversion from 2% to 5%</li>
+        <li>GoodRx: conversion projects across the drug pages, a 10% lift on mobile and 25% on desktop</li></ul>
+        <a href="index.html?work=goodrx&amp;project=iodine-product#work">Iodine and GoodRx case study ↗</a></article>
+      <article class="wcard"><h3>Why I care about AI safety</h3><button class="zoom wz" aria-label="Enlarge: Why I care about AI safety"><img src="images/work/y30-system.png" alt="y30's voice system: deterministic routing and the model's boundary" loading="lazy" /></button><ul>
+        <li>We tested y30, a voice AI for older adults, with 11 people outside the founding team, including 4 elder-care professionals, and changed the product from their feedback</li>
+        <li>One of them, an assisted-living facility owner, pressed it on an unsafe suggestion. It pushed back about 3 times, then gave in: "If your doctor advised that then it's probably appropriate." That pulled me into AI safety.</li>
+        <li>So what has to be safe moved into code: medical emergencies get an always-on route to a 911 or staff response, not a model judgment</li>
+        <li>It was the start of my work on evals, safeguards and human review: every failure became a test, through a review queue and an approval gate</li>
+        <li>Production code (closed alpha) built with AI agents, with HIPAA safeguards: no health details in logs, row-level security, a consent flow, and no vendor gets health data without a BAA</li></ul>
+        <a href="index.html?work=y30&amp;project=safety-quality-system#work">y30 case study ↗</a></article>
+      <article class="wcard"><h3>Front end</h3><button class="zoom wz" aria-label="Enlarge: Front end"><img src="images/work/handcoded-portfolio.jpg" alt="Chris's hand-coded portfolio" loading="lazy" /></button><ul>
+        <li>I designed and built this page and the game below, with AI assistance for speed</li>
+        <li>Hand-coded portfolios, 2023 to 2024: <a href="https://github.com/whoischrislam/portfolio">portfolio ↗</a> and <a href="https://github.com/whoischrislam/gamedev-portfolio">gamedev-portfolio ↗</a></li>
+        <li>I use code for design whenever I can: custom CSS for TaskRabbit's customer support portal (Zendesk), CoffeeScript prototypes for its mobile interactions and motion, and custom CSS for Pathstream's website during the rebrand</li></ul></article>
+      <article class="wcard"><h3>User research</h3><button class="zoom wz" aria-label="Enlarge: User research"><img src="images/work/clover-hero.png" alt="A Clover Health nurse practitioner with a patient at home" loading="lazy" /></button><ul>
+        <li>Clover Health: shadowed nurse practitioners on home visits; nurses reported saving 1 to 2 hours of chart prep a day</li>
+        <li>Pathstream: a 26-screen audit, three rounds of usability testing, five co-design sessions</li></ul>
+        <a href="index.html?work=clover&amp;project=care-visit#work">Clover case study ↗</a></article>
+      <article class="wcard"><h3>Design systems and quality standards</h3><button class="zoom wz" aria-label="Enlarge: Design systems and quality standards"><img src="images/taskrabbit-design-system.png" alt="TaskRabbit mobile design system" loading="lazy" /></button><ul>
+        <li>TaskRabbit: consolidated years of legacy interface work into one mobile design system (<a href="https://dribbble.com/shots/1940029-TaskRabbit-Tasker-Mobile-UI-Kit/attachments/335099?mode=media">Tasker UI kit ↗</a>)</li>
+        <li>Pathstream: found the drift (16 colors, body text at 4 sizes) and designed the shared system, built in React and Storybook</li>
+        <li>My own site: tokens and components in a live catalog</li></ul>
+        <a href="index.html?ds">See the catalog ↗</a></article>
+      <article class="wcard"><h3>Leading design</h3><ul>
+        <li>Co-founder and CEO of PlaySesh, leading a co-founder and a founding engineer; co-founder of y30</li>
+        <li>The first designer at Iodine, Pathstream and StartPlaying, setting how design works with engineering and product</li>
+        <li>Always a player-coach: at Iodine I ran product brainstorms and post-launch retrospectives, and hired and managed a contract icon and illustration designer. Outside work, I've started and led breakdancing crews.</li>
+        <li>On most teams I've been on, I've been the design expert and lead who helps run the team, even without a manager's title.</li></ul></article>
+    </div>
+  </section>
+
+  <p class="trans">Here's what that looks like. I took Epoch AI's July 2026 poll and turned it into a game: guess how many people like you use AI, then see the real number.</p>
+  <div class="band band-epoch">
+  <div id="game" data-toc="The game"></div>
+  <div class="sec-head"><h1 id="game-title">How many people like you use AI?</h1><p class="meta"><span>Prototype</span><span>September 2026</span><span class="src-tip" tabindex="0">Data: Epoch AI <i>ⓘ</i><em role="tooltip">Epoch AI poll, July 2026 · 1,103 working US adults · CC BY</em></span></p></div>
+  <div class="dock" id="dock" aria-hidden="true"><span class="dock-title">How many people like you use AI?</span><span class="dock-state" id="dock-state"></span></div>
+
+  <section class="round" id="round1" data-step="1">
+    <div class="game-col">
+        <ol class="stepper" aria-label="Steps">
+          <li data-s="1"><span>1</span>Who you are</li>
+          <li data-s="2"><span>2</span>Your guess</li>
+          <li data-s="3"><span>3</span>The answer</li>
+        </ol>
+        <div class="s1" id="s1">
+          <p class="madlib">Which group are you in?</p>
+          <p class="hint">Pick any one that fits you.</p>
+          <div class="opts" id="opts" role="radiogroup" aria-label="Your group"></div>
+        </div>
+        <div class="s2" id="s2">
+          <p class="madlib">You're <button class="pick" id="pick-btn" aria-label="Change your group">pick a group</button>.<br><span class="q2">Out of 100 working people like you, how many used AI last week?</span></p>
+          <p class="tap-cue" id="tap-cue">Each figure is one person like you. Tap one to make your guess <span class="bob">↓</span></p>
+        </div>
+        <div class="reveal-top" id="res-a" aria-live="polite"></div>
+        <div class="grid-wrap"><div class="flank fl-l" id="flank-l"></div><div id="guess-widget"></div><div class="flank fl-r" id="flank-r"></div></div>
+        <p class="grid-key" id="grid-key"></p>
+        <div class="s2 s2-bottom">
+          <p class="guessed" id="guessed">Your guess: <b id="guess-num" aria-live="polite">? of 100</b><span class="live-real" id="live-real"> · The real number: <b id="live-num">0</b></span></p>
+          <div class="actions">
+            <button class="btn btn-primary" id="reveal-btn" hidden>Check your guess</button>
+            <button class="btn-link" id="skip-btn">Skip to the answer</button>
+          </div>
+        </div>
+        <div class="hidden" id="step-reveal">
+          <div class="res-b" id="res-b" hidden></div>
+          <h2 class="reveal-head" id="reveal-head" hidden></h2><p class="verdict" id="verdict" hidden></p><p class="reveal-range" id="reveal-range" hidden></p>
+          <p class="chart-cap" id="chart-cap"></p>
+          <div class="mini" id="mini"></div>
+          <svg id="chart" role="img" aria-label="How many people in each group used AI last week"></svg>
+          <div class="share">
+            <button class="btn btn-ghost" id="again-btn">Try another group</button>
+            <button class="btn btn-ghost" id="copy-btn"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg><span>Share your result</span></button>
+            <span class="share-status" id="share-status"></span>
+          </div>
+        </div>
+    </div>
+    <p class="cite one">Source: <a href="https://epoch.ai/data/polling">Epoch AI poll ↗</a>, July 2026, 1,103 working US adults · Guesses are logged anonymously</p>
+    <div class="hidden" id="reveal-more">
+      <div id="compare"></div>
+      <div class="crowd" id="crowd"></div>
+    </div>
+  </section>
+
+
+
+  <div class="method">
+  <details>
+    <summary>What these numbers can't tell you</summary>
+    <ul>
+      <li><b>Only people with jobs were asked.</b> If you're retired or a student, you're not in this survey.</li>
+      <li><b>It's what people said,</b> not something anyone measured.</li>
+      <li><b>Surveys have wiggle room.</b> The real number is probably within a few points of what's shown.</li>
+      <li><b>Small differences may not be real.</b> When two groups are only a few points apart, the page won't call a winner.</li>
+      <li><b>Some groups are small.</b> Only 68 people without a high school diploma answered, so their number is less certain.</li>
+    </ul>
+  </details>
+
+  <details class="viewer" id="viewer-like">
+      <summary>Check the data</summary>
+      <p><b>Source:</b> <a href="https://epoch.ai/data/polling">Epoch AI, polling on AI usage</a> (CC BY). Ipsos KnowledgePanel, July 10 to 19, 2026. 1,103 US adults with jobs, weighted to match the Census.</p>
+      <p><b>Question, word for word:</b> "In the past 7 days, did you use any of the following AI services? Select all that apply." "Used AI" here means any answer except "None (no AI use)."</p>
+      <div class="table-wrap"><table id="table-like"></table></div>
+      <p><a href="https://epoch.ai/data/polling/polling_on_ai_usage_jul_2026.csv">Download Epoch's full CSV</a> · <a href="data/ai-at-work-jul-2026.json">The slice this page uses</a></p>
+    
+</details>
+
+  <details>
+    <summary>Why a guessing game?</summary>
+    <ul>
+      <li>Guessing first, then seeing the gap, helped people remember and understand the data better, even people who knew little about the topic. Kim, Reinecke and Hullman, <a href="https://idl.cs.washington.edu/files/2017-ExplainingTheGap-CHI.pdf">"Explaining the Gap"</a>, CHI 2017.</li>
+      <li>Grids of 100 people help readers with low numeracy understand risk. Galesic, Garcia-Retamero and Gigerenzer, <a href="https://doi.org/10.1037/a0014474">"Using icon arrays to communicate medical risks"</a>, Health Psychology, 2009.</li>
+      <li>Counting dots beats reading a range for everyday decisions. Kay et al., <a href="https://doi.org/10.1145/2858036.2858558">"When (ish) is my bus?"</a>, CHI 2016.</li>
+    </ul>
+  </details>
+  </div>
+  </div><!-- /band-epoch -->
+
+
+  <p class="trans">I've done this kind of work before. Here's an example from my time on the research team at GoodRx, turning drug price data into charts the public and lawmakers could use.</p>
+  <section class="chapter" id="work" data-toc="GoodRx Research">
+    <div class="sec-head"><p class="meta"><span>2017 to 2018</span></p><h2>Up close: GoodRx Research</h2></div>
+
+    <div class="sub-block">
+      <p class="meta"><span>Shipped 2018</span><span class="src-tip" tabindex="0">Rebuilt 2026 <i>ⓘ</i><em role="tooltip">Redrawn from the original 2018 data file. The original was built in Vega.</em></span><span><a href="https://www.goodrx.com/healthcare-access/research/the-most-popular-drugs-in-america-by-state">Original on GoodRx ↗</a></span></p>
+      <h3 class="sub-title">The United States of Drugs</h3>
+      <p class="lede">What each state fills most at the pharmacy. I designed the original and built it in code, with help from my engineering colleague Marc Mendiola.</p>
+      <p class="map-find">Levothyroxine, a thyroid medicine, was the most-filled prescription in <b>24 of 50 states</b>.</p>
+    </div>
+    <div id="usod"></div>
+
+    <div class="sec-head sub-head"><p class="meta"><span>Published 2017 to 2018</span></p><h3 class="sub-title">Charts the press picked up</h3></div>
+    <div class="press">
+      <figure><button class="zoom" aria-label="Enlarge: Some drugs cost more with insurance"><img src="images/work/goodrx/research-insurance-prices.jpg" alt="GoodRx Research chart: some drugs cost more with insurance, with average overpayment and how often GoodRx beat insurance prices for ten common drugs" loading="lazy" /></button><figcaption>Some drugs cost more with insurance. Data from a <a href="https://www.mass.gov/files/documents/2018/10/04/20181003%20-%20MOAT%20-%20Full%20Presentation_final.pdf">Massachusetts Health Policy Commission analysis ↗</a>.</figcaption></figure>
+      <figure><button class="zoom" aria-label="Enlarge: most and least expensive cities"><img src="images/work/goodrx-cities-prices.webp" alt="GoodRx Research chart of the most and least expensive US cities for prescriptions" loading="lazy" /></button><figcaption>Most and least expensive cities for prescriptions. Cited by <a href="https://www.nytimes.com/2018/07/06/health/drug-prices-cities.html">The New York Times ↗</a>. <a href="https://www.goodrx.com/healthcare-access/research/most-least-expensive-cities-prescription-medications">GoodRx Research ↗</a></figcaption></figure>
+      <figure><button class="zoom" aria-label="Enlarge: flu prescriptions map"><img src="images/work/goodrx-flu-prescriptions.webp" alt="GoodRx Research map of flu prescriptions across the US" loading="lazy" /></button><figcaption>Flu prescriptions across the US. Used by <a href="https://abcnews.com/video/53014507/">Good Morning America and ABC News ↗</a>. <a href="https://www.goodrx.com/oseltamivir/tamiflu-prescriptions-reveal-shocking-flu-trend">GoodRx Research ↗</a></figcaption></figure>
+    </div>
+
+    <div class="sec-head sub-head" id="briefs"><p class="meta"><span>Shipped 2018</span></p><h3 class="sub-title">Briefs for policymakers</h3></div>
+    <p>With GoodRx's executive team, I designed state-specific briefs for meetings with policymakers: one reusable structure, filled in for all 50 states with each state's top health conditions, top prescriptions and health facts. They were used in advocacy around two drug-price transparency bills. The original briefs didn't survive, but the laws did.</p>
+    <div class="bills">
+      <a class="bill" href="https://www.congress.gov/bill/115th-congress/senate-bill/2553"><span class="bill-meta">S.2553 · Public Law 115-262</span><span class="bill-name">Know the Lowest Price Act</span><span class="bill-what">Medicare drug plans can't stop pharmacists from telling you when paying cash is cheaper.</span><span class="bill-go">Read the law ↗</span></a>
+      <a class="bill" href="https://www.congress.gov/bill/115th-congress/senate-bill/2554"><span class="bill-meta">S.2554 · Public Law 115-263</span><span class="bill-name">Patient Right to Know Drug Prices Act</span><span class="bill-what">The same for private insurance: no more pharmacy "gag clauses."</span><span class="bill-go">Read the law ↗</span></a>
+    </div>
+    <p class="bill-date"><span class="dot"></span>Both signed into law on October 10, 2018</p>
+  </section>
+
+
+  <p class="trans">Here's what the person who managed me there said,</p>
+  <section class="chapter" id="colleagues" data-toc="Recommendation">
+    <div class="sec-head"><h2>From my manager at GoodRx (Iodine)</h2><p class="meta"><span>LinkedIn recommendation</span><span>Quoted word for word</span></p></div>
+    <blockquote class="q"><p>Chris is a splendid and multi-talented designer, with an innate ability to understand user needs and experiment with software design until the product matches the purpose. He ably took on assignments in a range of media - from PDF to D3 data visualizations - and was dependably curious and creative in creating effective software and design solutions. He is literate in code - engineers love working with him - and is also deeply attuned to the needs of ordinary people (we worked on healthcare information and tools, which is not an easy area whatsoever to understand user needs and concerns). I heartily recommend him as a product designer with a flair for UX/UI.</p><cite>Thomas Goetz, GM and Head of Research at Iodine, managed Chris directly</cite></blockquote>
+    <p class="aside"><a href="https://www.linkedin.com/in/whoischrislam/details/recommendations/">All recommendations on LinkedIn ↗</a></p>
+  </section>
+
+  <section class="chapter contact" id="contact" data-toc="Get in touch">
+    <h2>Let's talk.</h2>
+    <p class="lede">I'd love to figure out how we can work together.</p>
+    <p>Based in Honolulu, working Pacific time. Happy to travel for retreats.</p>
+    <a class="btn btn-primary btn-lg" href="mailto:whoischrislam@gmail.com?subject=Hi%20Chris">Email Chris</a>
+    <a class="btn btn-lg btn-ghost" href="index.html">See my full portfolio ↗</a>
+    <p class="aside">Or download my <a href="chris-lam-resume.pdf">résumé</a>.</p>
+  </section>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Enlarged image"><button class="lb-close" aria-label="Close">×</button><img id="lb-img" alt="" /><pre id="lb-code" class="lb-code"></pre><p id="lb-cap"></p></dialog>
+  <div class="tip" id="tip" role="tooltip"></div>
+  <footer>Data: Epoch AI (CC BY) and GoodRx Research (2018). Design and build: Chris Lam.</footer>
+</main>
+
+<script src="analytics-init.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="assets/demos/us-of-drugs.js"></script>
+<script>
+(function () {
+  const LENSES = { age_group: 'Age', education: 'School', region: 'Where you live', gender: 'Gender' };
+  const LENS_NOUN = { age_group: 'aged', education: 'with', region: 'in the', gender: '' };
+  const Z = 1.645; // Epoch's intervals are 90%
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (id) => document.getElementById(id);
+  const morph = fn => (!matchMedia('(prefers-reduced-motion: reduce)').matches && document.startViewTransition) ? document.startViewTransition(fn) : fn();
+  const params = new URLSearchParams(location.search);
+  let rows = [], all = null, lens = 'age_group', group = null, guess = 50;
+
+  // ---- 100-people grid: the one component for every count on this page ----
+  let SHAPE = 'figure'; // Chris picked the full standing figure
+  // Two person figures in a 1x1 box: a bust (head + rounded shoulders) and a full standing figure.
+  const FIGURES = {
+    bust: 'M0.5,0.12a0.18,0.18 0 1,0 0.0001,0Z M0.13,0.96C0.13,0.72 0.29,0.57 0.5,0.57C0.71,0.57 0.87,0.72 0.87,0.96Z',
+    figure: 'M0.5,0.02a0.1,0.1 0 1,0 0.0001,0Z M0.33,0.25H0.67Q0.75,0.25 0.75,0.33V0.6H0.65V0.98H0.54V0.66H0.46V0.98H0.35V0.6H0.25V0.33Q0.25,0.25 0.33,0.25Z'
+  };
+  function Grid(el, { interactive = false, onChange } = {}) {
+    const host = d3.select(el);
+    let cells, size, gap = 6, value = 0, cols = 10, rows = 10;
+    function render() {
+      delete el.dataset.revealed;
+      host.selectAll('*').remove();
+      const Wd = el.clientWidth || el.parentElement.clientWidth || 600;
+      // Fit the container: 10, 20 or 25 people per row (min 10, max 25), each figure between 26 and 44px,
+      // and capped by the window's height so the whole grid, the question and the button fit on one screen.
+      const H = Math.min(innerHeight, 1000) * (el.dataset.fit || .42);
+      const fitFor = c => { const r = Math.ceil(100 / c); return Math.min(44, (Wd / c) / 1.22, (H / r) / 1.22); };
+      // Prefer 10 per row (biggest figures); go to 20, then 25, only when the window is too short for 10 rows.
+      cols = innerWidth <= 600 ? 10 : [10, 20, 25].find(c => fitFor(c) >= 26) || 25;
+      if (el.dataset.cols) cols = +el.dataset.cols;
+      rows = Math.ceil(100 / cols);
+      size = Math.max(14, fitFor(cols)); gap = Math.round(size * .22);
+      const sideW = size * cols + gap * (cols - 1), sideH = size * rows + gap * (rows - 1);
+      const svg = host.append('svg').attr('viewBox', `0 0 ${sideW} ${sideH}`).attr('height', sideH).style('max-width', sideW + 'px');
+      const x0 = i => (i % cols) * (size + gap), y0 = i => Math.floor(i / cols) * (size + gap);
+      if (SHAPE === 'square') cells = svg.selectAll('rect').data(d3.range(100)).join('rect').attr('x', x0).attr('y', y0).attr('width', size).attr('height', size).attr('rx', 2);
+      else if (FIGURES[SHAPE]) cells = svg.selectAll('path').data(d3.range(100)).join('path').attr('d', FIGURES[SHAPE]).attr('vector-effect', 'non-scaling-stroke').attr('transform', i => `translate(${x0(i)},${y0(i)}) scale(${size})`);
+      else cells = svg.selectAll('circle').data(d3.range(100)).join('circle')
+        .attr('cx', i => x0(i) + size / 2).attr('cy', i => y0(i) + size / 2).attr('r', size / 2 - 2);
+      paint();
+      svg.on('pointermove.tip', ev => { if (ev.buttons) return hideTip(); const [px, py] = d3.pointer(ev, svg.node());
+          const c = Math.floor(px / (size + gap)), r = Math.floor(py / (size + gap)); if (c < 0 || c >= cols || r < 0 || r >= rows || r * cols + c > 99) return hideTip();
+          if (interactive && !el.dataset.revealed) return hideTip(); showTip(tipFor(r * cols + c), ev); })
+        .on('pointerleave.tip', hideTip);
+      if (!interactive) return;
+      const locked = () => !!el.dataset.revealed || document.getElementById('round1').classList.contains('filling') || document.getElementById('round1').dataset.step === '3';
+      const pick = (ev) => {
+        if (locked()) return;
+        const [px, py] = d3.pointer(ev, svg.node());
+        const col = Math.max(0, Math.min(cols - 1, Math.floor(px / (size + gap)))), row = Math.max(0, Math.min(rows - 1, Math.floor(py / (size + gap))));
+        set(Math.min(100, row * cols + col + 1));
+      };
+      const hoverAt = (ev) => { const [px, py] = d3.pointer(ev, svg.node());
+        const col = Math.floor(px / (size + gap)), row = Math.floor(py / (size + gap)); return (col < 0 || col >= cols || row < 0 || row >= rows) ? null : Math.min(100, row * cols + col + 1); };
+      svg.style('cursor', 'pointer').style('touch-action', 'none')
+        .on('pointermove.preview', ev => { if (ev.buttons || el.dataset.revealed) return; const h = hoverAt(ev); preview(h);
+          if (h != null && ev.pointerType === 'mouse') showTip(`Guess <b style="display:inline">${h}</b> out of 100`, ev); })
+        .on('pointerleave.preview', () => { preview(null); hideTip(); })
+        .on('pointerdown', ev => { pick(ev); svg.on('pointermove', pick); })
+        .on('pointerup pointerleave', () => svg.on('pointermove', null))
+        .attr('tabindex', 0).attr('role', 'slider').attr('aria-label', 'Your guess, out of 100 people')
+        .attr('aria-valuemin', 0).attr('aria-valuemax', 100).attr('aria-valuenow', value)
+        .on('keydown', e => {
+          const step = e.shiftKey ? 10 : 1;
+          if (locked()) return;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { set(value + step); e.preventDefault(); }
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { set(value - step); e.preventDefault(); }
+        });
+      this.svg = svg;
+    }
+    function tipFor(i) { const st = cells.filter((d) => d === i).attr('data-s');
+      return { used: 'Used AI last week', range: 'Maybe. Surveys have a little wiggle room', guess: 'Part of your guess', gap: 'Between your guess and the real number', none: 'Didn\u2019t use AI last week' }[st] || ''; }
+    function paint() { cells.attr('fill-opacity', 1).attr('fill', i => i < value ? 'var(--guess)' : 'var(--none)').attr('data-s', i => i < value ? 'guess' : 'none').attr('stroke', 'none'); }
+    function preview(h) { if (!cells || el.dataset.revealed) return;
+      cells.attr('fill', i => i < value ? 'var(--guess)' : (h != null && i < h) ? 'var(--guess)' : 'var(--none)')
+        .attr('fill-opacity', i => i < value ? 1 : (h != null && i < h) ? .35 : 1); }
+    function set(v) {
+      value = Math.max(0, Math.min(100, Math.round(v)));
+      if (cells) { paint(); host.select('svg').attr('aria-valuenow', value); }
+      onChange && onChange(value);
+    }
+    // Real answer fills in green, one person at a time. Orange rings mark the gap between guess and truth.
+    function reveal(real, g, instant) {
+      el.dataset.revealed = 1;
+      const r = Math.round(real), still = RM || instant;
+      cells.transition().duration(still ? 0 : 20).delay(i => still ? 0 : i * 9).attr('fill-opacity', 1)
+        .attr('fill', i => i < r ? 'var(--accent)' : (g != null && i < g) ? 'var(--guess)' : 'var(--none)')
+        .attr('fill-opacity', i => g != null && (i < g) !== (i < r) ? .45 : 1).attr('stroke', 'none')
+        .attr('data-s', i => g != null && (i < g) !== (i < r) ? 'gap' : i < r ? 'used' : 'none');
+    }
+    function clear() { if (!cells) return; cells.transition().duration(RM ? 0 : 120).delay(i => RM ? 0 : (99 - i) * 4).attr('fill', 'var(--none)').attr('fill-opacity', 1); }
+    // Honest uncertainty: solid up to the low end of the range, pale across the range.
+    function range(lo, hi) {
+      const a = Math.round(lo), b = Math.round(hi);
+      cells.transition().duration(RM ? 0 : 300).delay(i => RM ? 0 : i * 3)
+        .attr('fill', i => i < b ? 'var(--accent)' : 'var(--none)').attr('fill-opacity', i => i < a ? 1 : .35).attr('stroke', 'none');
+      cells.attr('data-s', i => i < a ? 'used' : i < b ? 'range' : 'none');
+    }
+    return { render: render, set, reveal, range, clear, get value() { return value; } };
+  }
+
+  // ---- Tab 1: people like you (July 2026, working adults) ----
+  let touched = false;
+  const g1 = Grid($('guess-widget'), { interactive: true, onChange: v => { guess = v; touched = true; $('guess-num').textContent = v + ' of 100';
+    $('flank-l').innerHTML = `<span>Your guess</span><b>${v}</b>`; setButtons(); } });
+
+  fetch('data/ai-at-work-jul-2026.json').then(r => r.json()).then(doc => {
+    rows = doc.rows;
+    all = rows.find(r => r.lens === 'full_sample');
+    if (LENSES[params.get('lens')]) lens = params.get('lens');
+    buildPicker(); setStep(1); g1.render(); g1.set(0); touched = false; $('guess-num').textContent = '? of 100'; setButtons(); drawTable();
+    const g = params.get('group');
+    if (g && rows.some(r => r.lens === lens && r.group === g)) pickGroup(g);
+  });
+
+  const groupsFor = (l) => rows.filter(r => r.lens === l);
+
+  // ---- The group picker lives inside the sentence ----
+  const PHRASE = {
+    age_group: g => `aged ${g}`,
+    education: g => ({ 'Less than HS': 'working without a high school diploma', 'High school': 'a high school graduate', 'Some college': 'someone with some college', 'Bachelor+': 'a college graduate' }[g] || g),
+    region: g => `in the ${g}`,
+    gender: g => (g === 'Male' ? 'a man' : 'a woman')
+  };
+  // ---- Round 1 steps: 1 who you are, 2 your guess, 3 the answer ----
+  const LENS_TAB = { age_group: 'Age', education: 'Schooling', region: 'Region', gender: 'Gender' };
+  function setStep(n) {
+    $('round1').dataset.step = n;
+    document.querySelectorAll('#round1 .stepper li').forEach(li => { const k = +li.dataset.s; li.classList.toggle('on', k === n); li.classList.toggle('done', k < n); li.querySelector('span').textContent = k < n ? '✓' : k; });
+    updateDock();
+  }
+  function buildPicker() {
+    $('opts').innerHTML = Object.entries(LENS_TAB).map(([k, t]) => `<div class="pk-group"><span class="pk-h"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PK_ICON[k]}</svg>${t}</span><div class="pk-row2">${groupsFor(k).map(r =>
+      `<button role="radio" aria-checked="${r.group === group && k === lens}" data-l="${k}" data-g="${r.group}">${CHIP[k](r.group)}</button>`).join('')}</div></div>`).join('');
+    $('opts').querySelectorAll('button').forEach(b => b.onclick = () => morph(() => { lens = b.dataset.l; pickGroup(b.dataset.g); }));
+  }
+  const PK_ICON = {
+    age_group: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    education: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+    region: '<path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+    gender: '<circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/>'
+  };
+  const CHIP = { age_group: g => g, education: g => ({ 'Less than HS': 'No diploma', 'High school': 'High school', 'Some college': 'Some college', 'Bachelor+': 'College grad' }[g]), region: g => g, gender: g => (g === 'Male' ? 'Man' : 'Woman') };
+  function openPicker() { setStep(1); buildPicker(); const f = $('opts').querySelector('[aria-checked="true"]') || $('opts').querySelector('button'); f && f.focus(); }
+  $('pick-btn').onclick = () => morph(openPicker);
+  function setButtons() {
+    $('round1').classList.toggle('touched', !!touched);
+    $('reveal-btn').hidden = !(group && touched);
+    updateDock();
+  }
+  function pickGroup(g) {
+    group = g; $('pick-btn').textContent = PHRASE[lens](g); $('pick-btn').classList.add('set');
+    buildPicker(); resetReveal(); setStep(2); setButtons();
+    g1.render(); if (touched) g1.set(guess); // measure once the grid is visible
+  }
+  function resetReveal() {
+    $('flank-r').innerHTML = ''; if (!touched) $('flank-l').innerHTML = '';
+    $('res-a').style.minHeight = ''; $('res-a').style.height = '';
+    delete $('guess-widget').dataset.cols;
+    $('step-reveal').classList.add('hidden'); $('reveal-more').classList.add('hidden'); $('share-status').textContent = '';
+    if (rows.length) { g1.render(); if (touched) g1.set(guess); }
+  }
+  function updateDock() { $('dock-state').textContent = group ? `${PHRASE[lens](group)} · your guess: ${touched ? guess + ' of 100' : '?'}` : ''; }
+
+  // ---- Numbers count up to their value (instant with reduced motion) ----
+  function countUps(root) {
+    root.querySelectorAll('.cu').forEach(el => {
+      const to = +el.dataset.to; if (RM) { el.textContent = to; return; }
+      const from = +(el.dataset.from || 0), t0 = performance.now(), dur = 700;
+      const tick = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(from + (to - from) * e); if (k < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function drawTable() {
+    const t = $('table-like');
+    t.innerHTML = '<tr><th>Group</th><th>Used AI</th><th>90% range</th><th>People asked</th></tr>' +
+      rows.map(r => `<tr><td>${r.group === 'All' ? 'All working adults' : r.group}</td><td>${r.used.toFixed(1)}%</td><td>${r.lo.toFixed(1)} to ${r.hi.toFixed(1)}%</td><td>${r.n}</td></tr>`).join('');
+  }
+
+  const NICE = g => ({ 'Bachelor+': 'college graduates', 'High school': 'high school graduates', 'Some college': 'some college', 'Less than HS': 'no high school diploma', Male: 'men', Female: 'women' }[g] || g);
+  const LENS_WORD = { age_group: 'age groups', education: 'education levels', region: 'regions', gender: 'men and women' };
+  const isClose = (a, b) => Math.abs(a.used - b.used) / Math.sqrt(a.se * a.se + b.se * b.se) < Z;
+  function who(me) {
+    if (lens === 'age_group') return `working people aged ${me.group}`;
+    if (lens === 'education') return { 'Less than HS': 'working people without a high school diploma', 'High school': 'working high school graduates', 'Some college': 'working people with some college', 'Bachelor+': 'working college graduates' }[me.group];
+    if (lens === 'region') return `working people in the ${me.group}`;
+    return `working ${me.group === 'Male' ? 'men' : 'women'}`;
+  }
+
+  // Step changes morph instead of jumping: the figures glide to their new spot (View Transitions, where supported).
+  let rsz; addEventListener('resize', () => { clearTimeout(rsz); rsz = setTimeout(() => { if (!$('guess-widget').dataset.revealed && group) { g1.render(); if (touched) g1.set(guess); } }, 150); });
+  $('reveal-btn').onclick = () => morph(() => reveal(true));
+  $('skip-btn').onclick = () => morph(() => reveal(false));
+  $('again-btn').onclick = () => {
+    const r1 = $('round1'), top = r1.getBoundingClientRect().top + scrollY - 70;
+    if (scrollY > top) scrollTo({ top, behavior: RM ? 'auto' : 'smooth' });
+    r1.classList.add('leaving');                         // 1) the answer fades out
+    g1.clear();                                          // 2) the figures empty, last one first
+    setTimeout(() => morph(() => {                       // 3) the question comes back
+      r1.classList.remove('leaving');
+      resetReveal(); g1.set(0); touched = false; group = null; $('pick-btn').textContent = 'pick a group'; $('pick-btn').classList.remove('set'); $('flank-l').innerHTML = ''; $('guess-num').textContent = '? of 100'; setButtons(); openPicker();
+    }), RM ? 0 : 650);
+  };
+
+  function reveal(guessed) {
+    const me = rows.find(r => r.lens === lens && r.group === group);
+    const real = Math.round(me.used), diff = guess - real, g = guessed ? guess : null;
+    $('reveal-head').innerHTML = `<span class="stat hl-used" data-hl="used"><span class="cu" data-to="${real}" data-from="${guessed ? guess : 0}">${real}</span></span><span class="stat-lab">of every 100 ${who(me)} used AI last week</span>`;
+    const margin = Math.round((me.hi - me.lo) / 2);
+    $('reveal-range').innerHTML = `Margin of error ±${margin} · ${me.n} people asked`;
+    // Feedback in three parts (Kim, Reinecke and Hullman, CHI 2017): direction, guess against truth, then the pattern.
+    const grp = groupsFor(lens), hi = grp.reduce((a, b) => b.used > a.used ? b : a), lo = grp.reduce((a, b) => b.used < a.used ? b : a);
+    const pattern = isClose(hi, lo)
+      ? `Across ${LENS_WORD[lens]}, every group is too close to call. Working adults overall: ${Math.round(all.used)}.`
+      : `Across ${LENS_WORD[lens]}, use is highest for ${NICE(hi.group)} (${Math.round(hi.used)}) and lowest for ${NICE(lo.group)} (${Math.round(lo.used)}), and that gap is real. Working adults overall: ${Math.round(all.used)}.`;
+    $('verdict').innerHTML = !guessed ? '' : Math.abs(diff) <= 3
+      ? `You guessed <b>${guess}</b>. Nearly spot on.`
+      : `You guessed <b>${guess}</b>, ${Math.abs(diff)} too ${diff > 0 ? 'high' : 'low'}.`;
+    $('chart-cap').innerHTML = `<b>How you compare with other groups</b> · hover one to compare`;
+    const lead = `of every 100 ${who(me)} used AI last week`;
+    // A: three numbers side by side, weighted evenly
+    const ad = Math.abs(diff);
+    const band = ad <= 3 ? 'Spot on!' : ad <= 7 ? 'So close' : ad <= 15 ? 'Almost there' : 'Surprising, right?';
+    const TERM_WORK = 'The survey only asked people with jobs.', TERM_AI = 'Any AI tool, like ChatGPT, Gemini, Claude or Copilot, in the 7 days before the survey.';
+    $('res-a').innerHTML = `<p class="res-plain"><b>${real}/100</b> ${who(me).replace(/working/, `<span class="term" tabindex="0" data-tip="${TERM_WORK}">working</span>`)} <span class="term" tabindex="0" data-tip="${TERM_AI}">used AI</span> last week.</p>
+`;
+    const flankL = guessed ? `<span>You guessed</span><b>${guess}</b>` : '';
+    // B: one sentence with the number inline, the guess on its own line
+    $('res-b').innerHTML = `<p class="res-sent"><b class="big"><span class="cu" data-to="${real}" data-from="${guessed ? guess : 0}">${real}</span></b> ${lead}.</p>
+      <p class="res-guess">${guessed ? `You guessed <b>${guess}</b> · ${Math.abs(diff) <= 3 ? 'nearly spot on' : `${Math.abs(diff)} too ${diff > 0 ? 'high' : 'low'}`} · ` : ''}margin of error ±${margin} · ${me.n} people asked</p>`;
+    // 1) fill the answer in place, 2) when it's done, glide into the step-3 layout
+    $('round1').classList.add('filling');
+    g1.reveal(me.used, g);
+    // Count the real number up in step with the figures filling (one figure every 9ms).
+    $('flank-r').innerHTML = `<span>Real number</span><b id="live-num">0</b>`;
+    const ln = $('live-num'), t0 = performance.now();
+    const tick = t => { const n = Math.min(real, Math.floor((t - t0) / 9)); ln.textContent = n; if (n < real) requestAnimationFrame(tick); };
+    if (RM) ln.textContent = real; else requestAnimationFrame(tick);
+    const toStep3 = () => {
+      $('round1').classList.remove('filling');
+      // the answer takes the question's exact slot, so the figures don't move
+      const qh = document.querySelector('#s2').getBoundingClientRect().height;
+      $('res-a').style.height = qh + 'px'; $('res-a').style.minHeight = '';
+      $('flank-l').innerHTML = flankL;
+      $('grid-key').innerHTML = `<span><i class="k-used"></i>Used AI</span>${guessed && Math.abs(guess - real) > 0 ? `<span><i class="k-gap ${guess > real ? 'hi' : 'lo'}"></i>Between your guess and the real number</span>` : ''}<span><i class="k-none"></i>Didn’t use AI</span>`;
+      $('flank-r').title = `Based on a survey of ${me.n} people, so it could be a few points either way.`;
+      setStep(3); $('step-reveal').classList.remove('hidden'); drawChart(me, g);
+      setTimeout(() => { const li = document.querySelector('#round1 .stepper li[data-s="3"]'); li.classList.add('done'); li.querySelector('span').textContent = '✓'; }, RM ? 0 : 900);
+    };
+    setTimeout(toStep3, RM ? 0 : 1600);
+    if (guessed && window.posthog && window.posthog.capture) window.posthog.capture('epoch_guess', { view: 'like', lens, group, guess, real });
+    drawCrowd(me);
+    drawCompare(me);
+    $('copy-btn').hidden = !guessed;
+  }
+
+  const CHART_DELAY = 900; // after the verdict, numbers and sentence have arrived
+  let CHART = 'mini'; // Chris picked C
+  function drawChart(me, g) {
+    if (CHART === 'bars') return drawBars(me, g);
+    if (CHART === 'mini') return drawMini(me, g);
+    const svg = d3.select('#chart'); svg.selectAll('*').remove(); $('mini').innerHTML = ''; $('chart').style.display = '';
+    const data = [all, ...groupsFor(lens)];
+    const W = $('chart').clientWidth || 700, L = Math.min(210, W * 0.42), RH = 36, H = data.length * RH + 26;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleLinear().domain([0, 100]).range([L, W - 44]);
+    const ax = svg.append('g').attr('class', 'axis');
+    [0, 25, 50, 75, 100].forEach(t => {
+      ax.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', 0).attr('y2', data.length * RH);
+      ax.append('text').attr('x', x(t)).attr('y', data.length * RH + 18).attr('text-anchor', 'middle').text(t);
+    });
+    data.forEach((r, i) => {
+      const y = i * RH + RH / 2, isMe = r === me, grp = svg.append('g');
+      const d0 = CHART_DELAY + i * 90, anim = !RM;
+      if (anim) grp.style('opacity', 0).transition().delay(d0).duration(250).style('opacity', 1);
+      const HUM = { 'Less than HS': 'No high school diploma', 'High school': 'High school grads', 'Some college': 'Some college', 'Bachelor+': 'College grads', Male: 'Men', Female: 'Women' };
+      const base = r.lens === 'full_sample' ? 'Everyone with a job' : (HUM[r.group] || (r.lens === 'age_group' ? 'Aged ' + r.group : r.group));
+      const label = base + (isMe ? ' (you)' : '');
+      grp.append('text').attr('class', 'row-label' + (isMe ? ' me' : '')).attr('x', 0).attr('y', y + 5).text(label);
+      const bar = grp.append('rect').attr('x', anim ? x(0) : x(r.lo)).attr('width', anim ? 0 : x(r.hi) - x(r.lo)).attr('y', y - 8).attr('height', 16)
+        .attr('fill', isMe ? 'var(--accent-soft)' : 'var(--grid)').attr('stroke', isMe ? 'var(--accent)' : 'var(--border)').attr('data-s', 'range');
+      if (anim) bar.transition().delay(d0).duration(600).ease(d3.easeCubicOut).attr('x', x(r.lo)).attr('width', x(r.hi) - x(r.lo));
+      const dot = grp.append('circle').attr('cx', anim ? x(0) : x(r.used)).attr('cy', y).attr('r', isMe ? 7 : 5).attr('fill', isMe ? 'var(--accent-strong)' : 'var(--muted)').attr('data-s', 'used');
+      if (anim) dot.transition().delay(d0).duration(600).ease(d3.easeCubicOut).attr('cx', x(r.used));
+      grp.append('text').attr('class', 'row-val').attr('x', W - 36).attr('y', y + 5).text(Math.round(r.used));
+      grp.append('rect').attr('x', 0).attr('y', y - RH / 2).attr('width', W).attr('height', RH).attr('fill', 'transparent')
+        .on('pointermove', ev => showTip(`<b>${base}</b>About ${Math.round(r.used)} out of 100 used AI last week${isMe && g != null ? `<br>You guessed ${g}` : ''}`, ev))
+        .on('pointerleave', hideTip);
+    });
+    if (g == null) return;
+    const gy = data.indexOf(me) * RH + RH / 2;
+    const gl = svg.append('line').attr('x1', x(g)).attr('x2', x(g)).attr('y1', gy).attr('y2', gy).attr('stroke', 'var(--guess)').attr('stroke-width', 3).attr('data-s', 'guess');
+    gl.transition().delay(RM ? 0 : CHART_DELAY + data.length * 90 + 450).duration(RM ? 0 : 300).attr('y1', gy - 11).attr('y2', gy + 11);
+    
+  }
+
+  const HUMN = { 'Less than HS': 'No high school diploma', 'High school': 'High school grads', 'Some college': 'Some college', 'Bachelor+': 'College grads', Male: 'Men', Female: 'Women' };
+  const nameOf = r => r.lens === 'full_sample' ? 'Everyone with a job' : (HUMN[r.group] || (r.lens === 'age_group' ? 'Aged ' + r.group : r.group));
+  // B: plain bars, biggest first, your row highlighted, your guess as a notch
+  function drawBars(me, g) {
+    $('mini').innerHTML = ''; $('chart').style.display = '';
+    const svg = d3.select('#chart'); svg.selectAll('*').remove();
+    const data = [...groupsFor(lens)].sort((a, b) => b.used - a.used);
+    const W = $('chart').clientWidth || 700, L = Math.min(190, W * .4), RH = 34, H = data.length * RH;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleLinear().domain([0, 100]).range([0, W - L - 44]);
+    data.forEach((r, i) => {
+      const y = i * RH, isMe = r === me, grp = svg.append('g').attr('transform', `translate(0,${y})`);
+      grp.append('text').attr('class', 'row-label' + (isMe ? ' me' : '')).attr('x', 0).attr('y', RH / 2 + 5).text(nameOf(r) + (isMe ? ' (you)' : ''));
+      grp.append('rect').attr('x', L).attr('y', 6).attr('height', RH - 12).attr('width', x(100)).attr('fill', 'var(--none)').attr('opacity', .45);
+      const b = grp.append('rect').attr('x', L).attr('y', 6).attr('height', RH - 12).attr('fill', isMe ? 'var(--accent)' : '#a9a293').attr('width', RM ? x(r.used) : 0);
+      if (!RM) b.transition().delay(CHART_DELAY + i * 90).duration(600).ease(d3.easeCubicOut).attr('width', x(r.used));
+      grp.append('text').attr('class', 'row-val').attr('x', L + x(100) + 8).attr('y', RH / 2 + 5).text(Math.round(r.used));
+      if (isMe && g != null) grp.append('rect').attr('x', L + x(g) - 1.5).attr('y', 2).attr('width', 3).attr('height', RH - 4).attr('fill', 'var(--guess)');
+      grp.append('rect').attr('width', W).attr('height', RH).attr('fill', 'transparent')
+        .on('pointermove', ev => showTip(`<b>${nameOf(r)}</b>About ${Math.round(r.used)} out of 100 used AI last week`, ev)).on('pointerleave', hideTip);
+    });
+  }
+  // C: one small grid of 100 people per group
+  function drawMini(me, g) {
+    d3.select('#chart').selectAll('*').remove(); $('chart').style.display = 'none';
+    const fig = (k, on) => `<path d="${FIGURES.figure}" transform="translate(${(k % 10) * 1.25},${Math.floor(k / 10) * 1.25})"${on ? ' class="on"' : ''}/>`;
+    $('mini').innerHTML = groupsFor(lens).map((r, i) => `<figure class="mg${r === me ? ' me' : ''}" data-i="${i}" tabindex="0" style="animation-delay:${RM ? 0 : CHART_DELAY + i * 120}ms">
+      <svg viewBox="0 0 12.25 12.25" class="mg-svg" aria-hidden="true">${d3.range(100).map(k => fig(k, k < Math.round(r.used))).join('')}</svg>
+      <figcaption><b>${Math.round(r.used)}</b> ${nameOf(r)}${r === me ? ' (you)' : ''}</figcaption></figure>`).join('');
+    // Hover: how this group compares with yours, in plain words
+    $('mini').querySelectorAll('.mg').forEach(el => {
+      const r = groupsFor(lens)[+el.dataset.i], d = Math.round(r.used) - Math.round(me.used);
+      const tip = r === me
+        ? `<b>Your group</b>${Math.round(r.used)} out of 100 used AI last week${g != null ? `<br>You guessed ${g}` : ''}`
+        : `<b>${nameOf(r)}</b>${Math.round(r.used)} out of 100 used AI last week<br>${
+            isClose(r, me) ? 'About the same as your group. The gap is small enough that it could just be chance, since the survey asked a sample of people, not everyone.'
+            : `${Math.abs(d)} ${d > 0 ? 'more' : 'fewer'} than your group, a real difference.`}`;
+      el.addEventListener('pointermove', ev => showTip(tip, ev)); el.addEventListener('pointerleave', hideTip);
+      el.addEventListener('focus', () => { const b = el.getBoundingClientRect(); showTip(tip, { clientX: b.right, clientY: b.top }); }); el.addEventListener('blur', hideTip);
+    });
+  }
+
+  function drawCompare(me) {
+    const others = groupsFor(lens).filter(r => r !== me);
+    const far = others.reduce((a, b) => Math.abs(b.used - me.used) > Math.abs(a.used - me.used) ? b : a);
+    const near = others.reduce((a, b) => Math.abs(b.used - me.used) < Math.abs(a.used - me.used) ? b : a);
+    const line = (o) => isClose(me, o)
+      ? `<li class="cmp-close"><i>≈</i><span><b>${NICE(me.group)} vs ${NICE(o.group)}:</b> too close to call</span></li>`
+      : `<li class="cmp-real"><i>✓</i><span><b>${NICE(me.group)} vs ${NICE(o.group)}:</b> a real gap (${Math.round(me.used)} vs ${Math.round(o.used)})</span></li>`;
+    $('compare').innerHTML = '<ul class="cmp">' + line(far) + (near !== far ? line(near) : '') + '</ul>';
+    $('compare').classList.toggle('close', isClose(me, near));
+  }
+
+  $('copy-btn').onclick = () => {
+    const me = rows.find(r => r.lens === lens && r.group === group);
+    const url = `${location.origin}${location.pathname}?lens=${lens}&group=${encodeURIComponent(group)}`;
+    const text = `I guessed ${guess} of 100 ${who(me)} used AI last week. The real answer: ${Math.round(me.used)}. Guess yours: ${url}`;
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+      .then(() => { const b = $('copy-btn').querySelector('span'); b.textContent = 'Copied to your clipboard'; setTimeout(() => b.textContent = 'Share your result', 2200); }).catch(() => { $('share-status').textContent = text; });
+  };
+
+  // ---- How other visitors guessed: a dated snapshot, not live ----
+  let crowd = null;
+  fetch('data/epoch-guesses-snapshot.json').then(r => r.json()).then(d => { crowd = d; }).catch(() => {});
+  function drawCrowd(me) {
+    const el = $('crowd');
+    if (!crowd || crowd.n < 30) { el.innerHTML = '<b>How other visitors guessed</b> shows up here once 30 people have played. You just became one of the first.'; return; }
+    const c = crowd.like[lens + '|' + me.group];
+    const date = new Date(crowd.as_of).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    el.innerHTML = c && c.n >= 10
+      ? `<b>Visitors guessed ${Math.round(c.avg)} on average</b> for ${me.group}, against a real answer of ${Math.round(me.used)}. (${c.n} guesses, as of ${date}.)`
+      : `<b>Across all groups, visitors guessed ${Math.round(crowd.avg)} on average.</b> Not enough guesses for ${me.group} yet. (${crowd.n} guesses, as of ${date}.)`;
+  }
+
+
+  // ---- Dock: once the title scrolls away, keep the question and your guess pinned while you play ----
+  (function dock() {
+    const sync = () => {
+      const titleGone = $('game-title').getBoundingClientRect().bottom < 0;
+      const inGame = [...document.querySelectorAll('.round')].some(r => { const b = r.getBoundingClientRect(); return b.top < innerHeight * .6 && b.bottom > 80; });
+      $('dock').classList.toggle('on', titleGone && inGame);
+      document.body.classList.toggle('in-game', inGame);
+    };
+    addEventListener('scroll', sync, { passive: true }); sync();
+  })();
+
+  // ---- Tooltip, shared by the chart and the map ----
+  function showTip(html, ev) {
+    const t = $('tip'); t.innerHTML = html; t.style.display = 'block';
+    const x = Math.min(ev.clientX + 14, innerWidth - t.offsetWidth - 8), y = Math.min(ev.clientY + 14, innerHeight - t.offsetHeight - 8);
+    t.style.left = x + 'px'; t.style.top = y + 'px';
+  }
+  function hideTip() { $('tip').style.display = 'none'; }
+
+  // ---- Scrollytelling: one sticky grid, five findings ----
+
+
+  // ---- Icons (inline, 24px line style) ----
+  const ICONS = {
+    hello: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+    game: '<circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><circle cx="7" cy="17" r="2.5"/><circle cx="17" cy="17" r="2.5"/>',
+    findings: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+    map: '<path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/>',
+    press: '<rect x="3" y="4" width="18" height="16"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+    policy: '<path d="M3 21h18M5 21V10M19 21V10M9 21V10M15 21V10M2 10h20L12 3z"/>',
+    research: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/>',
+    system: '<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+    leading: '<path d="M5 21V4h11l-2 4 2 4H5"/>',
+    code: '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/>',
+    quote: '<path d="M4 18c0-6 2-9 6-10M14 18c0-6 2-9 6-10"/>',
+    mail: '<rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/>'
+  };
+  document.querySelectorAll('.ico[data-icon]').forEach(el => {
+    el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[el.dataset.icon] || ''}</svg>`;
+  });
+
+  // ---- Sticky table of contents with the current section marked ----
+  const tocItems = [...document.querySelectorAll('[data-toc]')];
+  $('toc-list').innerHTML = tocItems.map(el => `<li><a href="#${el.id}">${el.dataset.toc}</a></li>`).join('');
+  const tocLinks = [...document.querySelectorAll('#toc-list a')];
+  const tocIO = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    tocLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+  }), { rootMargin: '-30% 0px -60% 0px' });
+  tocItems.forEach(el => tocIO.observe(el));
+  // The first and last sections are too short to cross the marker band: pin them at the page ends.
+  const tocMark = id => tocLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + id));
+  const tocEnds = () => {
+    if (scrollY < 200) tocMark(tocItems[0].id);
+    else if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) tocMark(tocItems[tocItems.length - 1].id);
+  };
+  addEventListener('scroll', tocEnds, { passive: true }); tocEnds();
+  tocLinks.forEach(a => a.addEventListener('click', () => setTimeout(() => tocMark(a.getAttribute('href').slice(1)), 600)));
+
+  // ---- Sticker: drag it anywhere ----
+  (function sticker() {
+    const st = $('sticker');
+    if (!st) return;
+    const dots = d3.select('#st-dots');
+    d3.range(25).forEach(i => dots.append('circle').attr('cx', 38 + (i % 5) * 11).attr('cy', 38 + Math.floor(i / 5) * 11).attr('r', 4)
+      .attr('fill', i < 14 ? 'var(--accent)' : 'var(--none)'));
+    let moved = false, start = null;
+    st.addEventListener('pointerdown', e => { start = { x: e.clientX, y: e.clientY, l: st.offsetLeft, t: st.offsetTop }; moved = false; st.setPointerCapture(e.pointerId); });
+    st.addEventListener('pointermove', e => {
+      if (!start) return;
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) moved = true;
+      if (moved) { st.style.left = (start.l + dx) + 'px'; st.style.top = (start.t + dy) + 'px'; st.style.right = 'auto'; }
+    });
+    st.addEventListener('pointerup', () => { start = null; });
+  })();
+
+
+
+  // ---- Review options for the game (for Chris; remove before sending) ----
+  function flipBar(id, opts, cur, apply) {
+    const bar = document.querySelector(`.flip[data-for="${id}"]`);
+    const draw = () => { bar.innerHTML = ''; Object.entries(opts).forEach(([k, t]) => { const b = document.createElement('button'); b.textContent = t; b.setAttribute('aria-pressed', k === cur); b.onclick = () => { cur = k; apply(k); draw(); }; bar.append(b); }); };
+    apply(cur); draw();
+  }
+  $('res-b').hidden = true; // Chris picked A
+  buildCode();
+  document.documentElement.setAttribute('data-style', 'b'); // Chris picked style B
+  document.documentElement.setAttribute('data-band', 'c'); // neutral gray (Chris 2026-10-07; was warm gray 2026-09-26)
+
+
+  // ---- Data-viz kit: each component is {name, desc, html, init}; the views below only arrange them ----
+  function kitItems() {
+    const g = (l, v) => rows.find(r => r.lens === l && r.group === v), A = all;
+    const f6 = 18.7 / 8.2, perYear = f6 * f6, dbl = 6 * Math.log(2) / Math.log(f6), oom = Math.log10(perYear);
+    const U = { x: `×${perYear.toFixed(1)} per year`, d: `doubles every ${dbl.toFixed(1)} months`, o: `${oom.toFixed(2)} orders of magnitude per year` };
+    const opts = rows.filter(r => r.lens !== 'full_sample').map(r => `<option value="${r.lens}|${r.group}">${r.group}</option>`).join('');
+    return [
+      { name: 'Estimate with range', desc: 'A number is never alone: its range and sample size travel with it.',
+        html: `<div class="big">${A.used.toFixed(1)}%</div><svg viewBox="0 0 300 30" style="width:100%;height:auto;display:block;margin-top:10px"><line x1="0" x2="300" y1="15" y2="15" stroke="var(--border-strong)"/><rect x="${A.lo * 3}" width="${(A.hi - A.lo) * 3}" y="7" height="16" fill="var(--range)"/><circle cx="${A.used * 3}" cy="15" r="6" fill="var(--accent-strong)"/></svg><div class="sub">90% range ${A.lo.toFixed(1)} to ${A.hi.toFixed(1)} · ${A.n.toLocaleString()} people asked · working adults who used AI last week</div>`, init() {} },
+      { name: 'Unit toggle', desc: 'The same growth, three ways: the control Epoch uses on its trends page.',
+        html: `<div class="seg" role="group" aria-label="Show growth as">${[['x','×/year'],['d','Doubling time'],['o','OOM/year']].map(([k,t],i)=>`<button data-u="${k}" aria-pressed="${i===0}">${t}</button>`).join('')}</div><div class="big k-u" style="font-size:32px">${U.x}</div><div class="sub">Near-daily AI use, 8.2% (March) to 18.7% (August 2026), annualized. Two surveys only, so treat it as a rough rate.</div>`,
+        init(el) { el.querySelectorAll('.seg button').forEach(b => b.onclick = () => { el.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b)); el.querySelector('.k-u').textContent = U[b.dataset.u]; }); } },
+      { name: 'Real or noise?', desc: 'Compare any two groups; the verdict uses the survey’s own margins.',
+        html: `<select class="k-a" aria-label="First group">${opts}</select> vs <select class="k-b" aria-label="Second group">${opts}</select><div class="verdict k-v"></div>`,
+        init(el) { const sa = el.querySelector('.k-a'), sb = el.querySelector('.k-b'); sa.value = 'age_group|30–44'; sb.value = 'age_group|18–29';
+          const judge = () => { const [la, ga] = sa.value.split('|'), [lb, gb] = sb.value.split('|'); const a = g(la, ga), b = g(lb, gb);
+            el.querySelector('.k-v').innerHTML = a === b ? 'Pick two different groups.' : isClose(a, b) ? `<b>Too close to call.</b> ${Math.round(a.used)} vs ${Math.round(b.used)} could be the same number.` : `<b>Likely real.</b> ${Math.round(a.used)} vs ${Math.round(b.used)}: a bigger gap than the survey's margin.`; };
+          sa.onchange = sb.onchange = judge; judge(); } },
+      { name: 'Chart with a note', desc: 'The note sits on the one gap the survey can vouch for.',
+        html: `<svg class="k-ann" viewBox="0 0 300 130" style="width:100%;height:auto;display:block"></svg><div class="sub">Used AI last week, by age.</div>`,
+        init(el) { const ages = rows.filter(r => r.lens === 'age_group'), svg = d3.select(el.querySelector('.k-ann')); const x = d3.scaleLinear().domain([30, 70]).range([70, 290]);
+          ages.forEach((r, i) => { const y = 24 + i * 30; svg.append('text').attr('x', 0).attr('y', y + 5).style('font-size', '13px').attr('fill', 'var(--text)').text(r.group);
+            svg.append('rect').attr('x', x(r.lo)).attr('width', x(r.hi) - x(r.lo)).attr('y', y - 6).attr('height', 12).attr('fill', 'var(--range)');
+            svg.append('circle').attr('cx', x(r.used)).attr('cy', y).attr('r', 5).attr('fill', 'var(--accent-strong)'); });
+          svg.append('text').attr('x', 70).attr('y', 24 + 3 * 30 + 24).style('font-size', '13px').attr('fill', 'var(--guess)').text('↑ 60+: the lowest, and a real gap'); } }
+    ];
+  }
+  const siteItems = () => JSON.parse($('site-comp-data').textContent).map(c => ({ name: c.name, desc: c.desc, site: true,
+    html: `<button class="zoom" aria-label="Enlarge: ${c.name}"><img src="${c.img}" alt="${c.name}, from Chris's site" loading="lazy" /></button>`, init(el) { bindZoom(el); } }));
+  function mount(host, item) { host.innerHTML = `<div class="kc"><h4>${item.name}</h4>${item.desc ? `<p class="kdesc">${item.desc}</p>` : ''}${item.html}</div>`; item.init(host.querySelector('.kc')); }
+  function buildComponents() {
+    const kit = kitItems(), sitec = siteItems();
+    const all2 = [...kit.map(k => ({ ...k, grp: 'Data-viz kit' })), ...sitec.map(k => ({ ...k, grp: 'This site' }))];
+    // C · list + detail
+    const M = $('comp-md'); let mi = 0;
+    M.innerHTML = `<ul class="md-list" role="listbox" aria-label="Components"></ul><div class="md-stage"></div>`;
+    const list = M.querySelector('.md-list');
+    list.innerHTML = `<li class="md-grp">Data-viz kit</li>` + kit.map((k, i) => `<li><button data-i="${i}">${k.name}</button></li>`).join('') + `<li class="md-grp">This site</li>` + sitec.map((k, i) => `<li><button data-i="${kit.length + i}">${k.name}</button></li>`).join('');
+    const showM = () => { mount(M.querySelector('.md-stage'), all2[mi]); list.querySelectorAll('button').forEach(b => b.setAttribute('aria-selected', +b.dataset.i === mi)); };
+    list.querySelectorAll('button').forEach(b => b.onclick = () => { mi = +b.dataset.i; showM(); });
+    showM();
+    outward();
+  }
+
+  // Code rows are written into the HTML; only the zoom needs wiring.
+  function buildCode() {}
+
+  // ---- Lightbox for every enlargeable image (and code) ----
+  const lb = $('lightbox');
+  function bindZoom(root) { root.querySelectorAll('.zoom').forEach(z => { if (z.dataset.bound) return; z.dataset.bound = 1; z.addEventListener('click', () => {
+    const img = z.querySelector('img'), cap = z.closest('figure, .kc')?.querySelector('figcaption, h4');
+    $('lb-code').style.display = 'none'; $('lb-img').style.display = 'block';
+    $('lb-img').src = img.src; $('lb-img').alt = img.alt; $('lb-cap').textContent = cap ? cap.textContent.replace('Case study ↗', '').trim() : '';
+    lb.showModal(); }); }); }
+  bindZoom(document);
+  lb.querySelector('.lb-close').onclick = () => lb.close();
+  lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+
+  // ---- Live design-system strip: tokens read from index.html's own :root, so it can't drift ----
+  if ($('ds-live')) fetch('index.html').then(r => r.text()).then(html => {
+    const m = html.match(/:root\{([\s\S]*?)\n\}/); if (!m) return;
+    const vars = {}; m[1].replace(/--([\w-]+)\s*:\s*([^;]+);/g, (_, k, v) => { vars[k] = v.trim(); });
+    const colors = ['bg', 'surface', 'surface-2', 'text', 'muted', 'accent', 'accent-strong'].filter(k => vars[k]);
+    const bands = Object.keys(vars).filter(k => k.startsWith('band-'));
+    const types = ['t-xxl', 't-xl', 't-lg', 't-md', 't-base', 't-sm'].filter(k => vars[k]);
+    const sps = Object.keys(vars).filter(k => /^sp-\d+$/.test(k));
+    const sw = k => `<div class="sw"><i style="background:${vars[k]}"></i>${k.replace('band-', '')}</div>`;
+    $('ds-live').innerHTML =
+      `<div class="ds-row"><h4>Core colors</h4><div class="swatches">${colors.map(sw).join('')}</div></div>` +
+      `<div class="ds-row"><h4>One band color per company</h4><div class="swatches">${bands.map(sw).join('')}</div></div>` +
+      `<div class="ds-row"><h4>Type scale</h4><div class="typescale">${types.map(k => `<div><code>${vars[k]}</code><span style="font-size:${vars[k]}">The quick brown fox</span></div>`).join('')}</div></div>` +
+      `<div class="ds-row"><h4>Spacing, 4px base</h4><div class="spacing">${sps.map(k => `<div style="width:${vars[k]};height:${vars[k]}"></div>`).map((d, i) => `<div style="background:none;opacity:1">${d}<span>${vars[sps[i]]}</span></div>`).join('')}</div></div>`;
+  }).catch(() => {});
+
+  // ---- Every link that leaves this page opens in a new tab ----
+  const outward = () => document.querySelectorAll('a[href]').forEach(a => {
+    const h = a.getAttribute('href'); if (h.startsWith('#') || h.startsWith('mailto:')) return;
+    a.target = '_blank'; a.rel = 'noopener';
+  });
+  outward(); setTimeout(outward, 1500);
+
+  // ---- Chapter 2: United States of Drugs, the shared component in assets/demos/us-of-drugs.js ----
+  USOfDrugs.mount($('usod'));
+})();
+</script>
+</body>
+</html>
