@@ -31,7 +31,7 @@ Adversarial plan review (external models, not Claude grading itself) fires when 
 
 - Do not put commit counts or test-file counts on any surface. They are stale or uncountable, and the site deliberately says "systems depth, not commit counts."
 - Do not write Chris's facts or his sentences from a guess. Supply the fact and a marked blank, or ask. A labeled guess is still a guess.
-- Do not stage the whole working tree. Commit the specific files for the change, by path.
+- Do not stage the whole working tree. Before starting, name the files the task owns; edit and commit only those, by path. If a shared file (`index.html`, shared CSS) needs a change outside the task, stop and ask.
 - Do not spawn a subagent for synthesis-heavy work (a task that needs reading 3+ files to know what to write). That is solo work; subagents are for fan-out reads and independent parallel tasks.
 - Do not trust a check that tests one form of a thing. Enumerate every form (the character and the entity, every surface) or it gives false confidence.
 
