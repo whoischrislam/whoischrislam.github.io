@@ -72,6 +72,7 @@ Matched test row: `.jobhunt/MATCHED_DOOR_TEST.md`. Run `.jobhunt/APPLICATION_GAT
 ## Resume
 Summary for this company (blank = the door's foundation summary): [[optional]]
 - Build: `{resume_cmd}`
+- ATS terms (after the JD is captured in .jobhunt/jds/): `python3 scripts/check-ats-terms.py .jobhunt/jds/<jd>.md {pdf}`
 
 ## Make it permanent
 An improvement every future {door} application should get goes in `{cfg['template'] or 'resume.json meta.variants.' + cfg['variant']}`.
