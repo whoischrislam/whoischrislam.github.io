@@ -143,6 +143,11 @@ table.scores{min-width:0}
 .example{margin:10px 0 0}
 .actions{margin-top:10px}
 details{padding:9px 0}
+.read-h{font:600 16px var(--sans);margin:14px 0 6px}
+.read-h:first-child{margin-top:4px}
+.read{font-size:15px;margin:0;padding-left:1.3em;max-width:72ch}
+p.read{padding-left:0}
+.read li{margin:0 0 6px}
 @media (min-width:1100px) and (min-height:700px){
   html,body{height:100%}
   body{display:flex;flex-direction:column;overflow:hidden}
@@ -205,8 +210,22 @@ details{padding:9px 0}
         <p class="fine" style="margin-top:12px">Pay figures are advertised ranges from the <a href="https://salaries.goodstructures.co/">High Impact Jobs Salary Benchmarks</a> (80,000 Hours and Probably Good job boards, Nov 2025 to May 2026) and aisafety.com/jobs (Oct 26, 2026), not actual pay. The senior median for AI safety and governance engineering roles is $221,746, pulled up by frontier lab roles.</p>
       </div>
       <div class="tabpanel" id="tab-read" role="tabpanel" hidden>
-        <p><span class="blank">Chris: current best guess on top 2 to 4 paths, and why</span></p>
-        <p><span class="blank">Chris: what would change my ranking</span></p>
+        <h3 class="read-h">Top paths (the model and my gut agree)</h3>
+        <ol class="read">
+          <li><b>Design/product for AI governance (7.26).</b> This is where I've done the most meaningful impact in my life when I worked in health tech. I feel confident this is something valuable I'm capable of doing to an AI org.</li>
+          <li><b>Plan B, AI-native or dev tools design (7.00).</b> A safer path that gets me opportunities with my existing experience, and possibly a future bridge to where I want to go.</li>
+          <li><b>AI control products (6.73).</b> I'm in Lens Academy's AI control course, I really like what I'm learning, and I want to apply it in a practical way.</li>
+          <li><b>AI safety fieldbuilding (6.61).</b> This feels more like a founder role so I need to figure out how much risk I'm willing to take now.</li>
+        </ol>
+        <h3 class="read-h">What matters most to me</h3>
+        <p class="read">To keep learning and apply what I learn (I learn by doing), and to bridge technical and non-technical people.</p>
+        <h3 class="read-h">What would change my ranking</h3>
+        <ul class="read">
+          <li><b>Hiring odds:</b> which roles are open right now, and whether I'd need to pitch the role myself.</li>
+          <li><b>Learning:</b> it's what drives me most.</li>
+          <li><b>Location:</b> I'm staying in Honolulu and willing to travel for work.</li>
+          <li><b>Real offers:</b> I'm currently interviewing.</li>
+        </ul>
         <p class="fine" style="margin-top:24px">Method: weighted factor model from the CEA career bootcamp, using 80,000 Hours' career decision factors. Built by Chris Lam.</p>
       </div>
     </div>
