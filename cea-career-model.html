@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Career paths model · Chris Lam</title>
+<meta name="description" content="Chris Lam's weighted factor model for AI safety career paths, CEA career bootcamp exercise." />
+<meta name="author" content="Chris Lam" />
+<meta name="robots" content="noindex, nofollow" /><!-- unlisted on purpose: shared by link with a CEA bootcamp advisor and cohort. Visual language follows ai-labs.html. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;1,400&family=Kumbh+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>document.documentElement.setAttribute('data-theme', 'light'); document.documentElement.className = 'js';</script>
+<style>
+/* Tokens mirror ai-labs.html (light only, Chris 2026-09-26). */
+:root{
+  color-scheme:light;
+  --bg:#fafafa; --surface:#ffffff; --surface-2:#f0f0f0; --text:#1e1e1e; --muted:#696969;
+  --accent:#2a9d4f; --accent-soft:rgba(42,157,79,.10); --accent-strong:#1e7a3c;
+  --border:rgba(0,0,0,.10); --border-strong:rgba(0,0,0,.16); --grid:rgba(0,0,0,.045);
+  --guess:#c2410c; --none:#cfc9bd;
+  --serif:'Besley',Georgia,serif; --sans:'Kumbh Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --t-h1:clamp(34px,4.2vw,56px); --t-xl:30px; --t-md:21px; --t-base:18px; --t-sm:16px;
+}
+*,*::before,*::after{box-sizing:border-box}
+button,input{font-family:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--t-base)/1.55 var(--sans)}
+main{max-width:760px;margin:0 auto;padding:40px 16px 96px}
+.kicker{font-size:var(--t-sm);color:var(--muted);letter-spacing:.02em;margin:0 0 8px}
+h1,h2{font-family:var(--serif);font-weight:400;line-height:1.1;margin:0 0 12px}
+h1{font-size:var(--t-h1)}
+h2{font-size:var(--t-xl)}
+p{margin:0 0 16px}
+.lede{font-size:var(--t-md);color:var(--muted)}
+.draft{font-size:var(--t-sm);color:var(--guess);border:1px dashed var(--guess);padding:6px 10px;display:inline-block;margin:8px 0 0}
+.blank{background:var(--accent-soft);border:1px dashed var(--accent);padding:2px 6px;color:var(--accent-strong);font-style:italic}
+section{border-top:1px solid var(--border-strong);padding-top:24px;margin-top:56px}
+.cap{font-size:15px;color:var(--muted);margin:0 0 12px;max-width:66ch}
+.cap b{color:var(--text)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.chips button,.btn{font-size:var(--t-sm);padding:10px 14px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);cursor:pointer;border-radius:0}
+.chips button[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn:hover{border-color:var(--text)}
+.chips button:focus-visible,.btn:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.weights{display:grid;gap:10px;margin:0 0 8px}
+.w{display:grid;grid-template-columns:minmax(0,1fr) 150px 3.2ch;align-items:center;gap:12px;font-size:15px}
+.w input{width:100%;accent-color:var(--accent);height:28px}
+.w output{font-family:var(--mono);font-size:14px;text-align:right;color:var(--muted)}
+.w .h{display:block;font-size:14px;color:var(--muted)}
+svg{display:block;width:100%;overflow:visible}
+.row-label{fill:var(--text);font-size:15px}
+.row-label.base{fill:var(--muted)}
+.row-val{fill:var(--text);font-size:15px;font-family:var(--mono)}
+.axis text{fill:var(--muted);font-size:14px}
+.axis line{stroke:var(--grid)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:var(--muted);margin:0 0 8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:0}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px;background:var(--surface)}
+th,td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:center}
+th{font-weight:600;color:var(--muted);vertical-align:bottom}
+th:first-child,td:first-child{text-align:left}
+td input{width:3.2em;font:14px var(--mono);text-align:center;border:1px solid var(--border);padding:4px;background:var(--bg)}
+td input.changed{border-color:var(--guess);color:var(--guess)}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
+.status{font-size:14px;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:12px 0}
+details:last-of-type{border-bottom:1px solid var(--border)}
+summary{cursor:pointer;font-weight:600;font-size:var(--t-sm)}
+details p{font-size:15px;color:var(--muted);margin:8px 0 0}
+.fine{font-size:14px;color:var(--muted)}
+.fine a,.cap a{color:var(--accent-strong)}
+@media (max-width:560px){.w{grid-template-columns:1fr 3.2ch}.w input{grid-column:1 / -1;grid-row:2}}
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">CEA career bootcamp · Part 2, option A</p>
+  <h1>Which AI safety path, weighted</h1>
+  <p class="lede">6 career paths scored on 7 factors. Move the weights to see how the ranking changes.</p>
+  <p class="draft">Draft scores: gut calls, 1 to 10. Still being revised.</p>
+
+  <section aria-labelledby="w-h">
+    <h2 id="w-h">1. Pick what matters</h2>
+    <p class="cap">Start from a preset, then drag any weight. Weights are shown as a share of the total.</p>
+    <div class="chips" id="presets" role="group" aria-label="Weight presets"></div>
+    <div class="weights" id="weights"></div>
+  </section>
+
+  <section aria-labelledby="r-h">
+    <h2 id="r-h">2. The ranking</h2>
+    <p class="cap" id="rank-cap"></p>
+    <svg id="rank" role="img" aria-label="Weighted score for each career path"></svg>
+  </section>
+
+  <section aria-labelledby="s-h">
+    <h2 id="s-h">3. How much the weights matter</h2>
+    <p class="cap">Each dot is one path's score under one preset. A wide spread means the answer depends on what you value, not on the path.</p>
+    <div class="legend" id="legend"></div>
+    <svg id="spread" role="img" aria-label="Each path's score under the three weight presets"></svg>
+  </section>
+
+  <section aria-labelledby="t-h">
+    <h2 id="t-h">4. The scores</h2>
+    <p class="cap">Edit any score to try your own. Changes stay in your browser. Copy a link to send your version back.</p>
+    <div class="tbl-wrap"><table id="scores"></table></div>
+    <div class="actions">
+      <button class="btn" id="copy">Copy link to this version</button>
+      <button class="btn" id="csv">Download CSV (for Google Sheets)</button>
+      <button class="btn" id="reset">Reset</button>
+      <span class="status" id="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section aria-labelledby="e-h">
+    <h2 id="e-h">5. Evidence behind each path</h2>
+    <div id="notes"></div>
+    <p class="fine" style="margin-top:16px">Pay figures are advertised ranges from the <a href="https://salaries.goodstructures.co/">High Impact Jobs Salary Benchmarks</a> (80,000 Hours and Probably Good job boards, Nov 2025 to May 2026), not actual pay. For AI safety and governance software and engineering roles, the senior median is $221,746, pulled up by frontier lab roles. Design and product roles at governance and fieldbuilding orgs mostly advertise $115K to $225K.</p>
+  </section>
+
+  <section aria-labelledby="m-h">
+    <h2 id="m-h">6. My read</h2>
+    <p><span class="blank">Chris: current best guess on top 2 to 4 paths, and why</span></p>
+    <p><span class="blank">Chris: what would change my ranking</span></p>
+  </section>
+
+  <p class="fine" style="margin-top:56px">Method: weighted factor model from the CEA career bootcamp, using 80,000 Hours' career decision factors. Scores are gut calls, not research. Built by Chris Lam.</p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+(function () {
+  // Single source for this page and its CSV export.
+  const FACTORS = [
+    { k: 'impact',  label: 'Impact potential',     hint: 'How much the path reduces AI risk' },
+    { k: 'fit',     label: 'Personal fit',          hint: 'How strong my evidence is for it' },
+    { k: 'learn',   label: 'Learning',              hint: 'Skill building and career capital' },
+    { k: 'income',  label: 'Income and stability',  hint: 'Pay and job security' },
+    { k: 'balance', label: 'Life balance',          hint: 'Sustainable pace' },
+    { k: 'odds',    label: 'Hiring odds',           hint: 'Chance of landing it in 3 to 6 months' },
+    { k: 'remote',  label: 'Remote-friendly',       hint: 'Works from Honolulu, Pacific hours' },
+  ];
+  const PRESETS = {
+    stability: { label: 'Stability now', color: 'var(--guess)',  w: [10, 15, 10, 25, 15, 20, 5] },
+    impact:    { label: 'Impact-first',  color: 'var(--accent)', w: [30, 15, 20, 10, 10, 10, 5] },
+    balanced:  { label: 'Balanced',      color: '#8a8478',       w: [20, 15, 15, 15, 15, 15, 5] },
+  };
+  const OPTIONS = [
+    { id: 'gov',     label: 'AI governance: design/product engineer', s: [8, 8, 8, 5, 6, 4, 3],
+      note: 'Bridge role: turning technical work into something policymakers and the public can use. Evidence: GoodRx Research charts and 50 state prescription price briefs for policymakers. 80,000 Hours says technical governance values explaining technical concepts to non-experts. Advertised pay: CSET UX Engineer $115K to $135K (DC); CivAI Member of Technical Staff $125K to $200K (SF); IFP Member of Technical Staff $165K to $245K (DC). Few roles, mostly DC and SF.' },
+    { id: 'control', label: 'AI control products: product engineer', s: [8, 5, 9, 7, 5, 3, 4],
+      note: 'Evidence: at y30, crisis paths were deterministic code the model could not override. Taking Lens Academy\'s AI Control course. Gaps: no infosec background, ML literacy. Advertised pay: Apollo Research Full Stack Engineer, Monitoring $132K to $238K (London); Trajectory Labs Member of Technical Staff $125K to $225K (anywhere).' },
+    { id: 'base',    label: 'Plan B: AI-native or dev tools design', s: [3, 8, 7, 8, 5, 7, 7], base: true,
+      note: 'Baseline. Senior product designer or design engineer at an AI-native or developer tools company. Largest market; 14 years of shipped work. Impact near neutral, possibly slightly negative (indirect revenue for frontier labs).' },
+    { id: 'field',   label: 'AI safety fieldbuilding: product/design', s: [7, 7, 6, 5, 6, 4, 7],
+      note: '80,000 Hours calls fieldbuilding badly neglected, with generalists undersupplied; weaker career capital outside AI safety and lower median pay. Advertised pay: Sage Member of Technical Staff (AI Digest) $150K to $200K (anywhere); MATS Program Systems Associate $100K to $180K (SF); Apart Research $70K to $100K (remote).' },
+    { id: 'contract',label: 'Contract work for safety orgs', s: [5, 7, 6, 4, 6, 6, 9],
+      note: 'Contract design and front-end work for AI safety or governance orgs. Flexible and remote, irregular income. Example: Epoch AI Contractor, Web Developer $120K (anywhere).' },
+    { id: 'found',   label: 'Founding: AI for vulnerable users', s: [6, 8, 8, 1, 2, 3, 8],
+      note: 'Fit tested twice as a founder. Not now: founding is very stressful, and I need life balance and steady income. Longer timelines than catastrophe-focused work. Hiring odds here means odds of funding.' },
+  ];
+  const DEFAULT_S = OPTIONS.map(o => o.s.slice());
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DUR = RM ? 0 : 500;
+  const $ = id => document.getElementById(id);
+
+  let weights = PRESETS.balanced.w.slice();
+  let active = 'balanced';
+
+  // ---- URL state: ?w=20,15,...&s=8,8,...|... so a version can be sent back ----
+  (function readURL() {
+    const q = new URLSearchParams(location.search);
+    const w = (q.get('w') || '').split(',').map(Number);
+    if (w.length === FACTORS.length && w.every(n => n >= 0 && n <= 100)) { weights = w; active = matchPreset(); }
+    const s = (q.get('s') || '').split('|').map(r => r.split(',').map(Number));
+    if (s.length === OPTIONS.length && s.every(r => r.length === FACTORS.length && r.every(n => n >= 1 && n <= 10))) s.forEach((r, i) => OPTIONS[i].s = r);
+  })();
+  function matchPreset() { for (const k in PRESETS) if (PRESETS[k].w.join() === weights.join()) return k; return null; }
+
+  const total = (s, w) => { const W = d3.sum(w) || 1; return d3.sum(s, (v, i) => v * w[i]) / W; };
+
+  // ---- 1. presets + weight sliders ----
+  const presetBox = $('presets');
+  Object.entries(PRESETS).forEach(([k, p]) => {
+    const b = document.createElement('button'); b.textContent = p.label; b.dataset.k = k;
+    b.onclick = () => { weights = p.w.slice(); active = k; syncWeights(); render(); };
+    presetBox.appendChild(b);
+  });
+  const wBox = $('weights');
+  FACTORS.forEach((f, i) => {
+    const row = document.createElement('label'); row.className = 'w';
+    row.innerHTML = `<span>${f.label}<span class="h">${f.hint}</span></span><input type="range" min="0" max="40" step="1" aria-label="${f.label} weight"><output></output>`;
+    const inp = row.querySelector('input');
+    inp.addEventListener('input', () => { weights[i] = +inp.value; active = matchPreset(); render(); });
+    wBox.appendChild(row);
+  });
+  function syncWeights() { wBox.querySelectorAll('input').forEach((inp, i) => inp.value = weights[i]); }
+
+  // ---- 2. ranking bars ----
+  function drawRank() {
+    const rows = OPTIONS.map(o => ({ ...o, t: total(o.s, weights) })).sort((a, b) => b.t - a.t);
+    const W = $('rank').clientWidth || 700, narrow = W < 560;
+    const L = narrow ? 0 : 300, rowH = narrow ? 56 : 40, top = 8;
+    const H = top + rows.length * rowH + 28;
+    const x = d3.scaleLinear().domain([0, 10]).range([L, W - 48]);
+    const svg = d3.select('#rank').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    let ax = svg.select('g.axis'); if (ax.empty()) ax = svg.append('g').attr('class', 'axis');
+    ax.selectAll('*').remove();
+    [0, 2, 4, 6, 8, 10].forEach(t => {
+      ax.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', top).attr('y2', H - 24);
+      ax.append('text').attr('x', x(t)).attr('y', H - 4).attr('text-anchor', 'middle').text(t);
+    });
+    const yOf = i => top + i * rowH + (narrow ? 24 : 6);
+    const g = svg.selectAll('g.row').data(rows, d => d.id).join(enter => {
+      const r = enter.append('g').attr('class', 'row').attr('transform', (d, i) => `translate(0,${yOf(i)})`);
+      r.append('text').attr('class', d => 'row-label' + (d.base ? ' base' : ''));
+      r.append('rect').attr('height', 22).attr('x', x(0)).attr('width', 0);
+      r.append('text').attr('class', 'row-val').attr('y', 16);
+      return r;
+    });
+    g.transition().duration(DUR).attr('transform', (d, i) => `translate(0,${yOf(i)})`);
+    g.select('.row-label').attr('x', 0).attr('y', narrow ? -6 : 16).text(d => d.label);
+    g.select('rect').attr('x', x(0)).attr('fill', (d, i) => i === 0 ? 'var(--accent)' : d.base ? 'var(--none)' : 'rgba(42,157,79,.35)')
+      .transition().duration(DUR).attr('width', d => x(d.t) - x(0));
+    g.select('.row-val').transition().duration(DUR).attr('x', d => x(d.t) + 8).text(d => d.t.toFixed(2));
+    const lead = rows[0], gap = rows[0].t - rows[1].t;
+    $('rank-cap').innerHTML = `With these weights, <b>${lead.label}</b> ranks first, ${gap.toFixed(2)} ahead of ${rows[1].label}.` +
+      (gap < 0.3 ? ' That gap is small: treat the top 2 as a tie.' : '');
+  }
+
+  // ---- 3. spread across presets ----
+  function drawSpread() {
+    const keys = Object.keys(PRESETS);
+    const rows = OPTIONS.map(o => ({ ...o, v: keys.map(k => total(o.s, PRESETS[k].w)) }))
+      .sort((a, b) => d3.mean(b.v) - d3.mean(a.v));
+    const W = $('spread').clientWidth || 700, narrow = W < 560;
+    const L = narrow ? 0 : 300, rowH = narrow ? 52 : 36, top = 8;
+    const H = top + rows.length * rowH + 28;
+    const lo = Math.floor(d3.min(rows, r => d3.min(r.v)) * 2) / 2, hi = Math.ceil(d3.max(rows, r => d3.max(r.v)) * 2) / 2;
+    const x = d3.scaleLinear().domain([lo, hi]).range([L + 8, W - 16]);
+    const svg = d3.select('#spread').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H); svg.selectAll('*').remove();
+    const ax = svg.append('g').attr('class', 'axis');
+    d3.range(lo, hi + 0.01, 0.5).forEach(t => {
+      ax.append('line').attr('x1', x(t)).attr('x2', x(t)).attr('y1', top).attr('y2', H - 24);
+      ax.append('text').attr('x', x(t)).attr('y', H - 4).attr('text-anchor', 'middle').text(t.toFixed(1));
+    });
+    rows.forEach((r, i) => {
+      const y = top + i * rowH + (narrow ? 30 : 14);
+      svg.append('text').attr('class', 'row-label' + (r.base ? ' base' : '')).attr('x', 0).attr('y', narrow ? y - 14 : y + 5).text(r.label);
+      svg.append('line').attr('x1', x(d3.min(r.v))).attr('x2', x(d3.max(r.v))).attr('y1', y).attr('y2', y).attr('stroke', 'var(--border-strong)').attr('stroke-width', 2);
+      r.v.forEach((v, j) => svg.append('circle').attr('cx', x(v)).attr('cy', y).attr('r', 6).attr('fill', PRESETS[keys[j]].color)
+        .append('title').text(`${PRESETS[keys[j]].label}: ${v.toFixed(2)}`));
+    });
+    $('legend').innerHTML = keys.map(k => `<span><i style="background:${PRESETS[k].color}"></i>${PRESETS[k].label}</span>`).join('');
+  }
+
+  // ---- 4. editable score table ----
+  function buildTable() {
+    const t = $('scores');
+    t.innerHTML = `<thead><tr><th>Path</th>${FACTORS.map(f => `<th>${f.label}</th>`).join('')}</tr></thead><tbody></tbody>`;
+    const tb = t.querySelector('tbody');
+    OPTIONS.forEach((o, oi) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${o.label}</td>` + FACTORS.map((f, fi) =>
+        `<td><input type="number" min="1" max="10" step="1" value="${o.s[fi]}" aria-label="${o.label}, ${f.label}" data-o="${oi}" data-f="${fi}"></td>`).join('');
+      tb.appendChild(tr);
+    });
+    tb.addEventListener('input', e => {
+      const el = e.target; if (!el.dataset.o) return;
+      const v = Math.max(1, Math.min(10, Math.round(+el.value || 1)));
+      OPTIONS[+el.dataset.o].s[+el.dataset.f] = v;
+      el.classList.toggle('changed', v !== DEFAULT_S[+el.dataset.o][+el.dataset.f]);
+      render();
+    });
+    markChanged();
+  }
+  function markChanged() {
+    $('scores').querySelectorAll('input').forEach(el => {
+      el.value = OPTIONS[+el.dataset.o].s[+el.dataset.f];
+      el.classList.toggle('changed', +el.value !== DEFAULT_S[+el.dataset.o][+el.dataset.f]);
+    });
+  }
+
+  // ---- 5. evidence notes ----
+  $('notes').innerHTML = OPTIONS.map(o => `<details><summary>${o.label}</summary><p>${o.note}</p></details>`).join('');
+
+  // ---- actions ----
+  function link() {
+    const u = new URL(location.href.split('?')[0]);
+    u.searchParams.set('w', weights.join(','));
+    if (OPTIONS.some((o, i) => o.s.join() !== DEFAULT_S[i].join())) u.searchParams.set('s', OPTIONS.map(o => o.s.join(',')).join('|'));
+    return u.toString();
+  }
+  $('copy').onclick = async () => {
+    try { await navigator.clipboard.writeText(link()); $('status').textContent = 'Link copied.'; }
+    catch (e) { $('status').textContent = link(); }
+  };
+  $('csv').onclick = () => {
+    const q = s => `"${String(s).replace(/"/g, '""')}"`;
+    const head = ['Path', ...FACTORS.map(f => f.label), 'Weighted total (your weights)', 'Notes'];
+    const wRow = ['WEIGHTS (%)', ...weights.map(w => Math.round(w / (d3.sum(weights) || 1) * 100)), '', ''];
+    const rows = OPTIONS.map((o, i) => {
+      const r = i + 3; // header row 1, weights row 2
+      return [o.label, ...o.s, `=SUMPRODUCT(B${r}:H${r},$B$2:$H$2)/SUM($B$2:$H$2)`, o.note];
+    });
+    const csv = [head, wRow, ...rows].map(r => r.map(q).join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    a.download = 'career-paths-model.csv'; a.click(); URL.revokeObjectURL(a.href);
+  };
+  $('reset').onclick = () => {
+    OPTIONS.forEach((o, i) => o.s = DEFAULT_S[i].slice());
+    weights = PRESETS.balanced.w.slice(); active = 'balanced';
+    history.replaceState(null, '', location.pathname); syncWeights(); markChanged(); render();
+    $('status').textContent = 'Reset to the original scores.';
+  };
+
+  function render() {
+    presetBox.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.k === active));
+    const sum = d3.sum(weights) || 1;
+    wBox.querySelectorAll('output').forEach((o, i) => o.textContent = Math.round(weights[i] / sum * 100) + '%');
+    drawRank(); drawSpread();
+  }
+  syncWeights(); buildTable(); render();
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(render, 150); });
+})();
+</script>
+<script src="analytics-init.js"></script>
+</body>
+</html>
