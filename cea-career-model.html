@@ -34,7 +34,6 @@ a{color:var(--accent-strong)}
 .title{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
 h1{font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.1;margin:0}
 .kicker{font-size:14px;color:var(--muted)}
-.draft{font-size:14px;color:var(--guess);border:1px dashed var(--guess);padding:1px 7px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .chips .lab{font-size:14px;color:var(--muted);margin-right:4px}
 .chips button,.btn{font-size:14px;padding:7px 11px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);cursor:pointer;border-radius:0}
@@ -123,6 +122,37 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
   main section,main .wrap > .fine{order:2}
   #tip{width:min(340px,calc(100vw - 24px))}
 }
+
+/* ---- full-viewport stage: chart left, details tabs right ---- */
+.wrap{max-width:none;padding:0 32px}
+main{padding:16px 32px 24px}
+.stage{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.stage > *{min-width:0}
+@media (max-width:600px){ .wrap,main{padding-left:16px;padding-right:16px} }
+.how{margin:0 0 12px}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border-strong);margin:-4px 0 12px}
+.tabs button{font:600 15px var(--sans);padding:8px 14px;border:none;border-bottom:2px solid transparent;background:none;color:var(--muted);cursor:pointer;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--text);border-bottom-color:var(--text)}
+.tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.right .cap{max-width:none}
+table.scores{min-width:0}
+.scores th small{font-size:12.5px}
+.scores td,.scores th{padding:5px 6px}
+.scores td:first-child{min-width:11em}
+.scores input{padding:3px}
+.example{margin:10px 0 0}
+.actions{margin-top:10px}
+details{padding:9px 0}
+@media (min-width:1100px) and (min-height:700px){
+  html,body{height:100%}
+  body{display:flex;flex-direction:column;overflow:hidden}
+  main{flex:1;min-height:0}
+  .stage{height:100%}
+  .right{overflow:auto;min-height:0}
+  .stage{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+  .how{grid-template-columns:1fr;gap:6px}
+  .left{display:flex;flex-direction:column;min-height:0}
+}
 </style>
 </head>
 <body>
@@ -132,7 +162,6 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
       <div class="title">
         <h1>Which AI safety path, weighted</h1>
         <span class="kicker">CEA career bootcamp</span>
-        <span class="draft">Draft scores</span>
       </div>
       <div class="chips" id="presets" role="group" aria-label="Weight presets"><span class="lab">Presets</span></div>
     </div>
@@ -141,45 +170,46 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
 </header>
 
 <main>
-  <div class="wrap">
-    <ol class="how">
-      <li><b>Weights (sliders above)</b> set how much each factor matters. Try a preset or drag one.</li>
-      <li><b>Scores (table below)</b> rate each path on each factor, from 1 (poor) to 10 (great).</li>
-      <li><b>Each bar</b> is a path's scores averaged by the weights. Hover or tap a row to see what drives it.</li>
-    </ol>
-
-    <div class="panel">
-      <p class="cap" id="rank-cap"></p>
-      <svg id="rank" role="img" aria-label="Weighted score for each career path"></svg>
-      <div class="legend" id="legend"></div>
-    </div>
-
-    <section aria-labelledby="t-h">
-      <h2 id="t-h">The scores: how each path rates on each factor</h2>
-      <p class="cap">Each cell answers one question: <b>how well does this path do on this factor?</b> 1 is poor, 10 is great. These are gut calls, not research; the evidence behind each path is below. Edit any score to try your own. Your edits stay in your browser, and the link button shares your version.</p>
-      <div class="tbl-wrap"><table class="scores" id="scores"></table></div>
-      <p class="example" id="example"></p>
-      <div class="actions">
-        <button class="btn" id="copy">Copy link to this version</button>
-        <button class="btn" id="csv">Download CSV (for Google Sheets)</button>
-        <button class="btn" id="reset">Reset</button>
-        <span class="status" id="status" aria-live="polite"></span>
+  <div class="stage">
+    <div class="left">
+      <ol class="how">
+        <li><b>Weights (sliders above)</b> set how much each factor matters. Try a preset or drag one.</li>
+        <li><b>Scores (the table)</b> rate each path on each factor, from 1 (poor) to 10 (great).</li>
+        <li><b>Each bar</b> is a path's scores averaged by the weights. Hover or tap a row to see what drives it.</li>
+      </ol>
+      <div class="panel chart">
+        <p class="cap" id="rank-cap"></p>
+        <svg id="rank" role="img" aria-label="Weighted score for each career path"></svg>
+        <div class="legend" id="legend"></div>
       </div>
-    </section>
-
-    <section aria-labelledby="e-h">
-      <h2 id="e-h">Evidence behind each path</h2>
-      <div id="notes"></div>
-      <p class="fine" style="margin-top:16px">Pay figures are advertised ranges from the <a href="https://salaries.goodstructures.co/">High Impact Jobs Salary Benchmarks</a> (80,000 Hours and Probably Good job boards, Nov 2025 to May 2026), not actual pay. For AI safety and governance software and engineering roles, the senior median is $221,746, pulled up by frontier lab roles. Design and product roles at governance and fieldbuilding orgs mostly advertise $115K to $225K.</p>
-    </section>
-
-    <section aria-labelledby="m-h">
-      <h2 id="m-h">My read</h2>
-      <p><span class="blank">Chris: current best guess on top 2 to 4 paths, and why</span></p>
-      <p><span class="blank">Chris: what would change my ranking</span></p>
-    </section>
-
-    <p class="fine" style="margin-top:48px">Method: weighted factor model from the CEA career bootcamp, using 80,000 Hours' career decision factors. Built by Chris Lam.</p>
+    </div>
+    <div class="right panel">
+      <div class="tabs" role="tablist" aria-label="Details">
+        <button role="tab" aria-selected="true" data-tab="scores">The scores</button>
+        <button role="tab" aria-selected="false" data-tab="evidence">Evidence</button>
+        <button role="tab" aria-selected="false" data-tab="read">My read</button>
+      </div>
+      <div class="tabpanel" id="tab-scores" role="tabpanel">
+        <p class="cap">Each cell answers one question: <b>how well does this path do on this factor?</b> 1 is poor, 10 is great. Gut calls; the evidence tab shows what's behind them. Edit any score to try your own.</p>
+        <div class="tbl-wrap"><table class="scores" id="scores"></table></div>
+        <p class="example" id="example"></p>
+        <div class="actions">
+          <button class="btn" id="copy">Copy link to this version</button>
+          <button class="btn" id="csv">Download CSV</button>
+          <button class="btn" id="reset">Reset</button>
+          <span class="status" id="status" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="tabpanel" id="tab-evidence" role="tabpanel" hidden>
+        <div id="notes"></div>
+        <p class="fine" style="margin-top:12px">Pay figures are advertised ranges from the <a href="https://salaries.goodstructures.co/">High Impact Jobs Salary Benchmarks</a> (80,000 Hours and Probably Good job boards, Nov 2025 to May 2026) and aisafety.com/jobs (Oct 26, 2026), not actual pay. The senior median for AI safety and governance engineering roles is $221,746, pulled up by frontier lab roles.</p>
+      </div>
+      <div class="tabpanel" id="tab-read" role="tabpanel" hidden>
+        <p><span class="blank">Chris: current best guess on top 2 to 4 paths, and why</span></p>
+        <p><span class="blank">Chris: what would change my ranking</span></p>
+        <p class="fine" style="margin-top:24px">Method: weighted factor model from the CEA career bootcamp, using 80,000 Hours' career decision factors. Built by Chris Lam.</p>
+      </div>
+    </div>
   </div>
 </main>
 <div id="tip" role="tooltip"></div>
@@ -198,29 +228,30 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
     { label: 'Location fit',         short: 'Location', ten: '10 = remote, or SF' },
   ];
   const PRESETS = {
+    mine:      { label: 'My weights',    color: 'var(--text)',          w: [20, 15, 40, 21, 29, 15, 40] },
     stability: { label: 'Stability now', color: 'var(--guess)',         w: [10, 15, 10, 25, 15, 20, 5] },
     impact:    { label: 'Impact-first',  color: 'var(--accent-strong)', w: [30, 15, 20, 10, 10, 10, 5] },
     balanced:  { label: 'Balanced',      color: '#8a8478',              w: [20, 15, 15, 15, 15, 15, 5] },
   };
   const OPTIONS = [
-    { id: 'gov',     label: 'AI governance: design/product engineer', s: [8, 8, 8, 4, 7, 5, 6],
+    { id: 'gov',     label: 'AI governance: design/product engineer', s: [10, 9, 9, 7, 5, 8, 5],
       note: 'Bridge role: turning technical work into something policymakers and the public can use. Evidence: GoodRx Research charts and 50 state prescription price briefs for policymakers. 80,000 Hours says technical governance values explaining technical concepts to non-experts. Advertised pay: CSET UX Engineer $115K to $135K (DC); CivAI Member of Technical Staff $125K to $200K (SF); IFP Member of Technical Staff $165K to $245K (DC). Open on aisafety.com/jobs (Oct 26, 2026): Epoch AI Senior Product Designer $120K to $200K and Designer/Senior Designer $100K to $170K, both remote. Few roles; DC roles do not fit.' },
-    { id: 'control', label: 'AI control products: product engineer', s: [8, 5, 9, 8, 5, 4, 6],
+    { id: 'control', label: 'AI control products: product engineer', s: [10, 6, 10, 7, 5, 2, 5],
       note: 'Evidence: at y30, crisis paths were deterministic code the model could not override. Taking Lens Academy\'s AI Control course. Gaps: no infosec background, ML literacy. Advertised pay: Apollo Research Full Stack Engineer, Monitoring $132K to $238K (London); Trajectory Labs Member of Technical Staff $125K to $225K (anywhere). Open on aisafety.com/jobs (Oct 26, 2026): Apollo Research Software Engineer, Product, Full-Stack $222K to $290K (SF or London); Andon Labs Design Engineer $120K to $180K (SF). Engineering bar is high.' },
-    { id: 'base',    label: 'Plan B: AI-native or dev tools design', s: [3, 8, 7, 8, 5, 7, 8], base: true,
+    { id: 'base',    label: 'Plan B: AI-native or dev tools design', s: [5, 9, 8, 10, 5, 10, 5], base: true,
       note: 'Baseline. Senior product designer or design engineer at an AI-native or developer tools company. Largest market; 14 years of shipped work. Impact near neutral, possibly slightly negative (indirect revenue for frontier labs).' },
-    { id: 'field',   label: 'AI safety fieldbuilding: product/design', s: [7, 7, 6, 5, 5, 5, 7],
+    { id: 'field',   label: 'AI safety fieldbuilding: product/design', s: [10, 7, 10, 1, 1, 5, 9],
       note: '80,000 Hours calls fieldbuilding badly neglected, with generalists undersupplied; weaker career capital outside AI safety and lower median pay. Advertised pay: Sage Member of Technical Staff (AI Digest) $150K to $200K (anywhere); MATS Program Systems Associate $100K to $180K (SF); Apart Research $70K to $100K (remote). Open on aisafety.com/jobs (Oct 26, 2026): AI Digest Member of Technical Staff, Design Engineering $150K to $350K (remote).' },
-    { id: 'contract',label: 'Contract work for safety orgs', s: [5, 7, 6, 3, 7, 6, 9],
+    { id: 'contract',label: 'Contract work for safety orgs', s: [5, 6, 1, 5, 10, 7, 10],
       note: 'Contract design and front-end work for AI safety or governance orgs. Flexible and remote, irregular income. Example: Epoch AI Contractor, Web Developer $120K (anywhere).' },
-    { id: 'found',   label: 'Founding: AI for vulnerable users', s: [6, 8, 8, 1, 1, 3, 9],
+    { id: 'found',   label: 'Founding: AI for vulnerable users', s: [5, 7, 10, 1, 1, 5, 10],
       note: 'Fit tested twice as a founder. Not now: founding is very stressful, and I need life balance and steady income. Longer timelines than catastrophe-focused work. Hiring odds here means odds of funding.' },
   ];
   const DEFAULT_S = OPTIONS.map(o => o.s.slice());
   const DUR = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 450;
   const $ = id => document.getElementById(id);
   const keys = Object.keys(PRESETS);
-  let weights = PRESETS.balanced.w.slice(), active = 'balanced', pinned = null;
+  let weights = PRESETS.mine.w.slice(), active = 'mine', pinned = null;
   const matchPreset = () => { for (const k in PRESETS) if (PRESETS[k].w.join() === weights.join()) return k; return null; };
   const total = (s, w) => d3.sum(s, (v, i) => v * w[i]) / (d3.sum(w) || 1);
 
@@ -283,7 +314,8 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
   function drawRank() {
     const rows = OPTIONS.map(o => ({ ...o, t: total(o.s, weights), p: keys.map(k => total(o.s, PRESETS[k].w)) })).sort((a, b) => b.t - a.t);
     const el = $('rank'), W = el.clientWidth || 700, narrow = W < 520;
-    const L = narrow ? 0 : Math.min(300, W * 0.4), rowH = narrow ? 46 : 36, top = 4;
+    const meas = svg0 => { const t = d3.select(svg0).append('text').attr('class', 'row-label'); let m = 0; OPTIONS.forEach(o => { t.text(o.label); m = Math.max(m, t.node().getComputedTextLength()); }); t.remove(); return m; };
+    const L = narrow ? 0 : Math.ceil(meas(el)) + 16, rowH = narrow ? 46 : 36, top = 4;
     const H = top + rows.length * rowH + 24;
     const x = d3.scaleLinear().domain([0, 10]).range([L, W - 44]);
     const svg = d3.select(el).attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
@@ -316,7 +348,18 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
     keys.forEach((k, j) => g.select('.t' + j).attr('y1', -3).attr('y2', barH + 3).transition().duration(DUR).attr('x1', d => x(d.p[j])).attr('x2', d => x(d.p[j])));
     g.select('.row-val').attr('y', barH / 2 + 5).transition().duration(DUR).attr('x', d => x(Math.max(d.t, ...d.p)) + 8).text(d => d.t.toFixed(2));
     const gap = rows[0].t - rows[1].t;
-    $('rank-cap').innerHTML = `With these weights, <b>${rows[0].label}</b> ranks first, ${gap.toFixed(2)} ahead of ${rows[1].label}.` + (gap < 0.3 ? ' Close enough to call a tie.' : '');
+    // smallest single-score change that would flip first and second place
+    const wSum = d3.sum(weights) || 1;
+    let flip = null;
+    weights.forEach((w, i) => {
+      if (!w) return;
+      const pts = Math.floor(gap * wSum / w + 1e-9) + 1;
+      [[rows[0], -1, rows[0].s[i] - 1], [rows[1], 1, 10 - rows[1].s[i]]].forEach(([r, dir, room]) => {
+        if (pts <= room && (!flip || pts < flip.pts)) flip = { pts, r, dir, i };
+      });
+    });
+    $('rank-cap').innerHTML = `With these weights, <b>${rows[0].label}</b> ranks first, ${gap.toFixed(2)} ahead of ${rows[1].label}.` +
+      (flip && flip.pts <= 2 ? ` <b>Too close to call:</b> moving ${flip.dir < 0 ? 'its' : flip.r.label + '\'s'} ${FACTORS[flip.i].label.toLowerCase()} score ${flip.dir < 0 ? 'down' : 'up'} ${flip.pts} point${flip.pts > 1 ? 's' : ''} flips the order.` : '');
     $('legend').innerHTML = '<span>Bar: current weights</span>' + keys.map(k => `<span><i style="background:${PRESETS[k].color}"></i>${PRESETS[k].label}</span>`).join('');
     if (pinned) { const d = rows.find(r => r.id === pinned); const n = g.filter(r => r.id === pinned).node();
       if (d && n) { const b = n.getBoundingClientRect(); showTip(d, { clientX: b.left + b.width * 0.55, clientY: b.top }); } }
@@ -379,7 +422,7 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
   };
   $('reset').onclick = () => {
     OPTIONS.forEach((o, i) => o.s = DEFAULT_S[i].slice());
-    weights = PRESETS.balanced.w.slice(); active = 'balanced';
+    weights = PRESETS.mine.w.slice(); active = 'mine';
     history.replaceState(null, '', location.pathname); sync(); markChanged(); render();
     $('status').textContent = 'Reset to the original scores and weights.';
   };
@@ -390,6 +433,11 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
     wBox.querySelectorAll('output').forEach((o, i) => o.textContent = Math.round(weights[i] / sum * 100) + '%');
     drawRank();
   }
+  // ---- tabs ----
+  document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+    document.querySelectorAll('.tabpanel').forEach(p => p.hidden = p.id !== 'tab-' + b.dataset.tab);
+  });
   sync(); buildTable(); render();
   let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(render, 150); });
 })();
