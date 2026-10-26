@@ -143,6 +143,12 @@ table.scores{min-width:0}
 .example{margin:10px 0 0}
 .actions{margin-top:10px}
 details{padding:9px 0}
+table.opps{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+.opps th,.opps td{padding:7px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+.opps th{font-weight:600;white-space:nowrap}
+.opps td small{display:block;color:var(--muted)}
+.opps tr.path td{background:var(--bg);font-weight:600;padding-top:12px}
+.opps .flag{color:var(--guess)}
 .read-h{font:600 16px var(--sans);margin:14px 0 6px}
 .read-h:first-child{margin-top:4px}
 .read{font-size:15px;margin:0;padding-left:1.3em;max-width:72ch}
@@ -193,6 +199,7 @@ p.read{padding-left:0}
         <button role="tab" aria-selected="true" data-tab="scores">The scores</button>
         <button role="tab" aria-selected="false" data-tab="evidence">Evidence</button>
         <button role="tab" aria-selected="false" data-tab="read">My read</button>
+        <button role="tab" aria-selected="false" data-tab="opps">Opportunities</button>
       </div>
       <div class="tabpanel" id="tab-scores" role="tabpanel">
         <p class="cap">Each cell answers one question: <b>how well does this path do on this factor?</b> 1 is poor, 10 is great. Gut calls; the evidence tab shows what's behind them. Edit any score to try your own.</p>
@@ -227,6 +234,11 @@ p.read{padding-left:0}
           <li><b>Real offers:</b> I'm currently interviewing.</li>
         </ul>
         <p class="fine" style="margin-top:24px">Method: weighted factor model from the CEA career bootcamp, using 80,000 Hours' career decision factors. Built by Chris Lam.</p>
+      </div>
+      <div class="tabpanel" id="tab-opps" role="tabpanel" hidden>
+        <p class="cap" id="opps-cap"></p>
+        <div class="tbl-wrap"><table class="opps" id="opps"></table></div>
+        <p class="fine" style="margin-top:12px">Open roles checked against each posting on the date shown. Pay is the advertised range, not actual pay. Remote is preferred; on-site roles are listed and flagged.</p>
       </div>
     </div>
   </div>
@@ -414,6 +426,30 @@ p.read{padding-left:0}
       el.classList.toggle('changed', +el.value !== DEFAULT_S[+el.dataset.o][+el.dataset.f]);
     });
   }
+
+  // ---- opportunities longlist (CEA Part 3), grouped by path ----
+  const OPPS = [
+    { path: 'gov', role: 'Designer / Senior Designer', org: 'Epoch AI', where: 'Remote, Americas', pay: '$100K to $170K', deadline: '', url: 'https://jobs.lever.co/epoch-ai/9ad63519-ec2d-4ae0-b838-3d28972cb62a', source: 'aisafety.com/jobs', checked: 'Oct 26', onsite: false, note: 'data findings for non-experts' },
+    { path: 'gov', role: 'Product Manager, Website', org: 'Epoch AI', where: 'Remote, 3 hrs Pacific overlap', pay: '$125K to $200K', deadline: '', url: 'https://jobs.lever.co/epoch-ai/9abe93df-26a3-4bd4-9253-d2ef9b011d51', source: 'Epoch job board', checked: 'Oct 26', onsite: false, note: 'applied' },
+    { path: 'gov', role: 'Design Engineer, Member of Technical Staff', org: 'AI Digest (Sage)', where: 'Remote', pay: 'About $150K to $350K', deadline: '', url: 'https://jobs.ashbyhq.com/aidigest/46a85cb1-231d-41d5-960f-c7804a4b85f9', source: 'aisafety.com/jobs', checked: 'Oct 26', onsite: false, note: 'interactive AI explainers' },
+    { path: 'gov', role: 'Engineer, Member of Technical Staff', org: 'AI Digest (Sage)', where: 'Remote', pay: 'About $150K to $350K', deadline: '', url: 'https://jobs.ashbyhq.com/aidigest/29113420-96a2-4c82-ab93-5f08755b55c3', source: 'AI Digest job board', checked: 'Oct 26', onsite: false, note: 'same team, more engineering' },
+    { path: 'gov', role: 'Graphic Designer / Data Visualization Artist', org: 'Institute for Progress', where: 'On-site, Washington DC', pay: '$120K+', deadline: 'Priority date Oct 15 passed; rolling', url: 'https://ifp.org/opportunity/graphic-designer-data-visualization-artist/', source: 'IFP careers', checked: 'Oct 26', onsite: true, note: 'policy charts' },
+    { path: 'gov', role: 'Graphic Designer (part-time)', org: 'The Midas Project', where: 'Remote', pay: '$50 to $100/hr', deadline: '', url: 'https://themidasproject.com/careers/graphic-designer', source: 'Midas careers', checked: 'Oct 26', onsite: false, note: 'data viz for an AI watchdog' },
+    { path: 'control', role: 'Software Engineer', org: 'Gray Swan', where: 'Remote, US', pay: '$110K to $185K + bonus', deadline: '', url: 'https://jobs.ashbyhq.com/Gray%20Swan%20AI/2edf0f4c-d356-41da-a7b8-9b54e95f140c', source: 'Gray Swan job board', checked: 'Oct 26', onsite: false, note: 'AI security interfaces' },
+    { path: 'control', role: 'Design Engineer', org: 'Andon Labs', where: 'On-site, SF', pay: '$120K to $180K + equity', deadline: '', url: 'https://andonlabs.notion.site/2c751e560a9583e9a17881e1e36bd802', source: 'aisafety.com/jobs', checked: 'Oct 26', onsite: true, note: 'platform for agent-run businesses' },
+    { path: 'control', role: 'Full-stack Software Engineer (Product)', org: 'Apollo Research', where: 'On-site, SF or London', pay: '$222K to $290K (SF)', deadline: '', url: 'https://jobs.lever.co/apolloresearch/ab3051f4-d5be-4b46-9f54-eb14da1a6a54', source: 'aisafety.com/jobs', checked: 'Oct 26', onsite: true, note: 'monitoring product' },
+    { path: 'control', role: 'Full-Stack Product Engineer', org: 'Transluce', where: 'On-site, SF', pay: '$250K to $500K', deadline: '', url: 'https://jobs.gem.com/transluce/am9icG9zdDqnxHh0KGF4UP1n5BMwIsso', source: '80,000 Hours', checked: 'Oct 26', onsite: true, note: 'front end for AI oversight tools' },
+    { path: 'control', role: 'Product Slinger', org: 'Haize Labs', where: 'On-site, SF or NYC', pay: '$150K to $250K + equity', deadline: '', url: 'https://job-boards.greenhouse.io/haizelabs/jobs/4627851008', source: '80,000 Hours', checked: 'Oct 26', onsite: true, note: 'product, engineering and customer mix' },
+    { path: 'control', role: 'Member of Technical Staff, AI Safety', org: 'Trajectory Labs', where: 'On-site, Berkeley', pay: '$250K to $400K', deadline: '', url: 'https://jobs.ashbyhq.com/trajectory-labs/47e5f4cd-6fc7-457b-87f3-144dd2376f7b', source: 'Trajectory job board', checked: 'Oct 26', onsite: true, note: 'evals engineering, not design' },
+  ];
+  (function buildOpps() {
+    const by = id => OPPS.filter(o => o.path === id);
+    const shown = OPTIONS.filter(o => by(o.id).length);
+    $('opps-cap').innerHTML = `<b>${OPPS.length} options</b> across ${shown.length} paths, longlisted from the 80,000 Hours and aisafety.com job boards and org career pages. Scoring comes next.`;
+    $('opps').innerHTML = '<thead><tr><th>Option</th><th>Where</th><th>Pay</th><th>Deadline</th><th>Source</th></tr></thead><tbody>' +
+      shown.map(p => `<tr class="path"><td colspan="5">${p.label}</td></tr>` + by(p.id).map(o =>
+        `<tr><td><a href="${o.url}">${o.role}</a><small>${o.org}${o.note ? ' · ' + o.note : ''}</small></td><td${o.onsite ? ' class="flag"' : ''}>${o.where}</td><td>${o.pay || 'Not stated'}</td><td>${o.deadline || 'Rolling'}</td><td>${o.source}<small>checked ${o.checked}</small></td></tr>`).join('')).join('') + '</tbody>';
+  })();
 
   // ---- evidence notes ----
   $('notes').innerHTML = OPTIONS.map(o => `<details><summary>${o.label}</summary><p>${o.note}</p></details>`).join('');
