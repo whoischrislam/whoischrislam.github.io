@@ -189,13 +189,13 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
 (function () {
   // Single source for this page and its CSV export.
   const FACTORS = [
-    { label: 'Impact potential',     short: 'Impact',  ten: '10 = big dent in AI risk' },
+    { label: 'Impact potential',     short: 'Impact',  ten: '10 = big dent in AI risk (provisional)' },
     { label: 'Personal fit',         short: 'Fit',     ten: '10 = strong evidence I\'d excel' },
     { label: 'Learning',             short: 'Learning',ten: '10 = fastest skill growth' },
     { label: 'Income and stability', short: 'Income',  ten: '10 = pay and security I need' },
-    { label: 'Life balance',         short: 'Balance', ten: '10 = sustainable pace' },
+    { label: 'Life balance',         short: 'Balance', ten: '10 = about 8-hour days, a life outside work' },
     { label: 'Hiring odds',          short: 'Hiring odds', ten: '10 = likely to land in 3 to 6 months' },
-    { label: 'Remote-friendly',      short: 'Remote',  ten: '10 = fully remote from Honolulu' },
+    { label: 'Location fit',         short: 'Location', ten: '10 = remote, or SF' },
   ];
   const PRESETS = {
     stability: { label: 'Stability now', color: 'var(--guess)',         w: [10, 15, 10, 25, 15, 20, 5] },
@@ -203,17 +203,17 @@ details p{font-size:15px;color:var(--muted);margin:8px 0 0;max-width:72ch}
     balanced:  { label: 'Balanced',      color: '#8a8478',              w: [20, 15, 15, 15, 15, 15, 5] },
   };
   const OPTIONS = [
-    { id: 'gov',     label: 'AI governance: design/product engineer', s: [8, 8, 8, 5, 6, 4, 3],
-      note: 'Bridge role: turning technical work into something policymakers and the public can use. Evidence: GoodRx Research charts and 50 state prescription price briefs for policymakers. 80,000 Hours says technical governance values explaining technical concepts to non-experts. Advertised pay: CSET UX Engineer $115K to $135K (DC); CivAI Member of Technical Staff $125K to $200K (SF); IFP Member of Technical Staff $165K to $245K (DC). Few roles, mostly DC and SF.' },
-    { id: 'control', label: 'AI control products: product engineer', s: [8, 5, 9, 7, 5, 3, 4],
-      note: 'Evidence: at y30, crisis paths were deterministic code the model could not override. Taking Lens Academy\'s AI Control course. Gaps: no infosec background, ML literacy. Advertised pay: Apollo Research Full Stack Engineer, Monitoring $132K to $238K (London); Trajectory Labs Member of Technical Staff $125K to $225K (anywhere).' },
-    { id: 'base',    label: 'Plan B: AI-native or dev tools design', s: [3, 8, 7, 8, 5, 7, 7], base: true,
+    { id: 'gov',     label: 'AI governance: design/product engineer', s: [8, 8, 8, 4, 7, 5, 6],
+      note: 'Bridge role: turning technical work into something policymakers and the public can use. Evidence: GoodRx Research charts and 50 state prescription price briefs for policymakers. 80,000 Hours says technical governance values explaining technical concepts to non-experts. Advertised pay: CSET UX Engineer $115K to $135K (DC); CivAI Member of Technical Staff $125K to $200K (SF); IFP Member of Technical Staff $165K to $245K (DC). Open on aisafety.com/jobs (Oct 26, 2026): Epoch AI Senior Product Designer $120K to $200K and Designer/Senior Designer $100K to $170K, both remote. Few roles; DC roles do not fit.' },
+    { id: 'control', label: 'AI control products: product engineer', s: [8, 5, 9, 8, 5, 4, 6],
+      note: 'Evidence: at y30, crisis paths were deterministic code the model could not override. Taking Lens Academy\'s AI Control course. Gaps: no infosec background, ML literacy. Advertised pay: Apollo Research Full Stack Engineer, Monitoring $132K to $238K (London); Trajectory Labs Member of Technical Staff $125K to $225K (anywhere). Open on aisafety.com/jobs (Oct 26, 2026): Apollo Research Software Engineer, Product, Full-Stack $222K to $290K (SF or London); Andon Labs Design Engineer $120K to $180K (SF). Engineering bar is high.' },
+    { id: 'base',    label: 'Plan B: AI-native or dev tools design', s: [3, 8, 7, 8, 5, 7, 8], base: true,
       note: 'Baseline. Senior product designer or design engineer at an AI-native or developer tools company. Largest market; 14 years of shipped work. Impact near neutral, possibly slightly negative (indirect revenue for frontier labs).' },
-    { id: 'field',   label: 'AI safety fieldbuilding: product/design', s: [7, 7, 6, 5, 6, 4, 7],
-      note: '80,000 Hours calls fieldbuilding badly neglected, with generalists undersupplied; weaker career capital outside AI safety and lower median pay. Advertised pay: Sage Member of Technical Staff (AI Digest) $150K to $200K (anywhere); MATS Program Systems Associate $100K to $180K (SF); Apart Research $70K to $100K (remote).' },
-    { id: 'contract',label: 'Contract work for safety orgs', s: [5, 7, 6, 4, 6, 6, 9],
+    { id: 'field',   label: 'AI safety fieldbuilding: product/design', s: [7, 7, 6, 5, 5, 5, 7],
+      note: '80,000 Hours calls fieldbuilding badly neglected, with generalists undersupplied; weaker career capital outside AI safety and lower median pay. Advertised pay: Sage Member of Technical Staff (AI Digest) $150K to $200K (anywhere); MATS Program Systems Associate $100K to $180K (SF); Apart Research $70K to $100K (remote). Open on aisafety.com/jobs (Oct 26, 2026): AI Digest Member of Technical Staff, Design Engineering $150K to $350K (remote).' },
+    { id: 'contract',label: 'Contract work for safety orgs', s: [5, 7, 6, 3, 7, 6, 9],
       note: 'Contract design and front-end work for AI safety or governance orgs. Flexible and remote, irregular income. Example: Epoch AI Contractor, Web Developer $120K (anywhere).' },
-    { id: 'found',   label: 'Founding: AI for vulnerable users', s: [6, 8, 8, 1, 2, 3, 8],
+    { id: 'found',   label: 'Founding: AI for vulnerable users', s: [6, 8, 8, 1, 1, 3, 9],
       note: 'Fit tested twice as a founder. Not now: founding is very stressful, and I need life balance and steady income. Longer timelines than catastrophe-focused work. Hiring odds here means odds of funding.' },
   ];
   const DEFAULT_S = OPTIONS.map(o => o.s.slice());
