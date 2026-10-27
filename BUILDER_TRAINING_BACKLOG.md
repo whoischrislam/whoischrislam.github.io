@@ -112,7 +112,7 @@ Each of these shipped because it was verified once, on one machine, on the happy
       `cf35cbc`, also baked into the committed `dist/` bundle. The "Fixed private API key"
       commit moved it to `VITE_API_KEY`, which Vite inlines into the client bundle anyway.
 - [ ] **ROTATE: `404humanmissing` (private)** — `.env` committed at `6b5226c`.
-- [ ] **ROTATE: `playsesh.io` (private)** — `.env` at `7eff7e4` holds `SUPABASE_SERVICE_KEY`
+- [ ] **ROTATE: `playsesh.io` (NOW PUBLIC, seen 2026-10-12; linked as the SFC code sample 10-06)** — `.env` at `7eff7e4` holds `SUPABASE_SERVICE_KEY`
       (bypasses RLS). File deleted the same day; history never rewritten.
 - [ ] **ROTATE: `test-discord-app` (private)** — `.env` git-tracked, `.gitignore` empty.
 
