@@ -103,7 +103,50 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .log .e:first-child { color: #fff; }
 .log .hint { color: #aaa; }
 
+/* layout view: content map + journey paths over the same screenshot */
+.bar .list button.on { background: #fff; color: var(--ink); }
+.ov { position: absolute; inset: 0; display: none; pointer-events: none; }
+body.lay .ov { display: block; }
+body.lay .hs { display: none; }
+.sec { position: absolute; left: 3.3%; right: 3.3%; border: 2px dashed rgba(26,26,26,.45); border-radius: 8px; pointer-events: auto; cursor: pointer; background: none; padding: 0; transition: background .2s, border-color .2s; }
+.sec:hover, .sec:focus-visible { border: 3px solid var(--ink); outline: none; }
+body[data-f]:not([data-f="all"]) .sec.dim { background: rgba(255,255,255,.82); border-color: transparent; }
+body[data-f]:not([data-f="all"]) .sec.dim .chip { display: none; }
+body[data-f]:not([data-f="all"]) .sec.match { border: 3px solid var(--ink); }
+.pg.off { display: none; }
+.sec .chip { position: absolute; left: 8px; top: -13px; background: var(--ink); color: #fff; font-size: 13px; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.fold { position: absolute; left: 0; right: 0; border-top: 2px dashed var(--ink); }
+.fold span { position: absolute; right: 8px; top: -26px; background: var(--ink); color: #fff; font-size: 13px; padding: 2px 8px; border-radius: 4px; }
+.paths { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.paths path { fill: none; stroke: var(--ink); stroke-width: 3; vector-effect: non-scaling-stroke; }
+.pl { position: absolute; transform: translate(-50%, 8px); pointer-events: auto; background: #fff; border: 2px solid var(--ink); border-radius: 8px; padding: 6px 10px; font-size: 14px; line-height: 1.3; text-align: left; box-shadow: 0 4px 14px rgba(0,0,0,.18); white-space: nowrap; }
+.pl:hover, .pl:focus-visible { background: var(--ink); color: #fff; outline: none; }
+.pl b { display: block; }
+.dot { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 3px #fff; }
+.dot.end { border-radius: 3px; transform: rotate(45deg); }
+.legend { display: none; max-width: 1440px; margin: 0 auto; padding: 0 16px 10px; font-size: 14px; gap: 8px 20px; flex-wrap: wrap; align-items: center; }
+body.lay .legend { display: flex; }
+@media (min-width: 761px) { body.lay .legend { position: sticky; top: var(--bar-h, 44px); z-index: 25; background: var(--bg); padding-top: 10px; border-bottom: 1px solid var(--line); max-width: none; } }
+.legend .seg { display: inline-flex; border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; }
+.legend .seg button { border: 0; background: #fff; padding: 5px 12px; font-size: 14px; }
+.legend .seg button + button { border-left: 1px solid var(--line); }
+.legend .seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.scen { display: none; flex-basis: 100%; background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--ink); border-radius: 8px; padding: 10px 14px; font-size: 14px; }
+body.lay[data-f]:not([data-f="all"]) .scen { display: block; }
+.scen dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 20px; margin: 0; }
+.scen dt { color: var(--soft); font-size: 13px; }
+.scen dd { margin: 0; }
+@media (max-width: 760px) { .scen dl { grid-template-columns: 1fr; } }
+.legend .btn { margin-left: auto; }
+.brief h3 { font-size: 15px; margin: 18px 0 6px; }
+.brief h3:first-child { margin-top: 0; }
+.brief ul, .brief ol { margin: 0; padding-left: 20px; font-size: 15px; }
+.brief li { margin: 3px 0; }
+.draft { display: inline-block; font-size: 13px; border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; color: var(--mid); margin-left: 8px; vertical-align: 2px; }
+
 @media (max-width: 640px) {
+  .sec .chip, .fold span { font-size: 11px; }
+  .pl { font-size: 12px; padding: 4px 6px; white-space: normal; width: 130px; max-width: 40vw; }
   .rows, .detail dl { grid-template-columns: 1fr; gap: 2px; }
   .rows dd { margin-bottom: 8px; }
   .ctl { grid-template-columns: 1fr; }
@@ -124,9 +167,21 @@ button { font: inherit; color: inherit; cursor: pointer; }
 </div>
 
 <p class="cap">Screenshot of epoch.ai/benchmarks, captured Oct 30, 2026. This is an image of the live page, not the page itself.</p>
+<div class="legend" id="legend">
+  <strong>Page layout: show the page through one group's eyes</strong>
+  <div class="seg" role="group" aria-label="User group">
+    <button data-f="all" aria-pressed="true">All groups</button>
+    <button data-f="trk" aria-pressed="false">Trackers</button>
+    <button data-f="look" aria-pressed="false">Looking something up</button>
+    <button data-f="ref" aria-pressed="false">Referencing data</button>
+  </div>
+  <button class="btn" id="open-brief">Open the layout brief</button>
+  <div class="scen" id="scen"></div>
+</div>
 
 <div class="stage" id="stage">
   <img src="epoch-hub-31af7b94.jpg" width="2880" height="9826" alt="Full-page screenshot of the Epoch AI benchmarks hub">
+  <div class="ov" id="ov"></div>
 </div>
 
 <p class="foot">Concept by Chris Lam for discussion. Not affiliated with or endorsed by Epoch AI. Demos in each panel use placeholder text where research or comms would write the real copy.</p>
@@ -228,6 +283,31 @@ button { font: inherit; color: inherit; cursor: pointer; }
   </div>
 </template>
 
+<template id="p-brief">
+  <div class="brief">
+    <h3>What we're solving</h3>
+    <p style="margin:0;font-size:15px">Three groups come to this page with different questions. Today each one has to scroll past content meant for someone else to reach their answer. Click the paths on the page to see each one.</p>
+    <h3>Success criteria</h3>
+    <ul>
+      <li><b>Looking something up:</b> can say which model leads, and what its score means, without scrolling.</li>
+      <li><b>Trackers:</b> see what changed since the last release within one screen.</li>
+      <li><b>Referencing data:</b> find the method, the date, and how to cite within one click of any chart.</li>
+    </ul>
+    <h3>Must keep</h3>
+    <ul>
+      <li>The ECI over time chart</li>
+      <li>Share, download, and CC-BY on every chart</li>
+      <li>The tabs to the other hub pages, unless Mateo agrees otherwise</li>
+    </ul>
+    <h3>Out of scope</h3>
+    <ul><li>Site header, newsletter, and footer</li></ul>
+    <h3>Your call</h3>
+    <ul><li>Order, grouping, layout, and visual hierarchy</li></ul>
+    <h3>Next step</h3>
+    <ul><li>2 to 3 directions by [date]. We review them against the success criteria above.</li></ul>
+  </div>
+</template>
+
 <script>
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
@@ -264,10 +344,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
     $("#m-n").textContent = s.n;
     $("#m-title").textContent = s.label;
     body.innerHTML = "";
-    body.append($("#" + s.tpl).content.cloneNode(true));
+    body.append(s.node || $("#" + s.tpl).content.cloneNode(true));
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
-    ({ subnav: initSubnav, search: initSearch, tips: initTips, track: initTrack })[s.id]();
+    const init = ({ subnav: initSubnav, search: initSearch, tips: initTips, track: initTrack })[s.id];
+    if (init) init();
     $("#m-x").focus();
   }
   function close() {
@@ -365,6 +446,103 @@ button { font: inherit; color: inherit; cursor: pointer; }
     $("#color").onchange = e => add("color_by_change", { value: e.target.value.toLowerCase() });
     $$("[data-ev]", body).forEach(b => b.onclick = () => add(b.dataset.ev, {}));
   }
+
+  // ===== page layout view =====
+  // Section bounds and answer positions measured on the live page at 1440x900 (Oct 30, 2026).
+  const FOLD = 900;
+  const SECS = [
+    { y0: 70,   y1: 132,  gs: ["trk","look","ref"], chip: "Everyone", name: "Tabs", serves: "Everyone", note: "Links to the other hub pages." },
+    { y0: 175,  y1: 425,  gs: ["look"], chip: "Looking something up", name: "Title and intro", serves: "Looking something up", note: "Describes the database. It doesn't answer a question." },
+    { y0: 452,  y1: 556,  gs: ["look","ref"], chip: "Looking something up · referencing", name: "Search", serves: "Looking something up, referencing data", note: "A plain text box." },
+    { y0: 566,  y1: 812,  gs: ["look","trk"], chip: "Looking something up · trackers", name: "ECI, Models, Benchmarks cards", serves: "Looking something up, trackers", note: "The cards repeat the tabs. The 169 has no scale." },
+    { y0: 845,  y1: 1630, gs: ["trk","ref"], chip: "Trackers · referencing", name: "ECI over time chart", serves: "Trackers, referencing data", note: "The trend view, with share, download, and CC-BY. Keep it." },
+    { y0: 1725, y1: 2515, gs: ["look"], chip: "Looking something up", name: "Frontier over time, math benchmarks", serves: "Looking something up", note: "Defaults to math. Other sets are in a settings panel." },
+    { y0: 2600, y1: 3075, gs: ["trk"], chip: "Trackers", name: "Latest activity", serves: "Trackers", note: "What returning visitors come for." },
+    { y0: 3125, y1: 3905, gs: ["ref"], chip: "Referencing data", name: "Common questions", serves: "Referencing data", note: "Accuracy, error bars, licensing, and access answers, all collapsed." },
+    { y0: 3960, y1: 4260, gs: [], chip: "Epoch: consultations", name: "Consultation", serves: "Epoch's own goal, not a user group", note: "Stays on the page. Placement is open." },
+  ];
+  const scr = y => (y / FOLD).toFixed(1);
+  const PATHS = [
+    { g: "trk", k: "Tracker", dash: "", x0: 640, x1: 330, y1: 2621, lx: 330, lbl: `${scr(2621)} screens down`,
+      who: "Someone who checks back after each model release", from: "Direct, or a post on release day",
+      q: "What changed since I last looked?",
+      today: `Latest activity starts ${scr(2621)} screens down, below two full charts.`,
+      done: "Sees the latest change within one screen." },
+    { g: "look", k: "Looking something up", dash: "12 8", x0: 720, x1: 1120, y1: 1860, lx: 1120, lbl: `${scr(1737)} screens down, then a settings panel`,
+      who: "Someone who searched for which AI is best at coding", from: "A search engine",
+      q: "Which model is best at coding?",
+      today: `The benchmark chart is ${scr(1737)} screens down and shows math. Coding results are behind its settings panel.`,
+      done: "Reaches the coding results in one click from the top." },
+    { g: "ref", k: "Referencing data", dash: "2 7", x0: 800, x1: 700, y1: 3379, lx: 700, lbl: `${scr(3379)} screens down, collapsed`,
+      who: "Someone citing a number, or checking one they saw elsewhere", from: "A paper, GitHub, or an AI assistant's answer",
+      q: "How accurate is this, and how do I cite it?",
+      today: `"How accurate is the data?" is a collapsed question ${scr(3379)} screens down. Licensing is another one further down.`,
+      done: "Finds method, date, and citation within one click of any chart." },
+  ];
+  const pct = (v, d) => (v / d * 100) + "%";
+  const rows = pairs => { const dl = document.createElement("dl"); dl.className = "rows"; pairs.forEach(([t, d]) => dl.insertAdjacentHTML("beforeend", `<dt>${t}</dt><dd>${d}</dd>`)); return dl; };
+  const ov = $("#ov");
+  SECS.forEach(s => {
+    const b = document.createElement("button");
+    b.className = "sec"; b.dataset.g = s.gs.join(" ");
+    b.style.top = pct(s.y0, H); b.style.height = pct(s.y1 - s.y0, H);
+    b.innerHTML = `<span class="chip">${s.chip}</span>`;
+    b.setAttribute("aria-label", `${s.name}: serves ${s.serves}`);
+    b.onclick = () => open({ n: "§", label: s.name, node: rows([["Serves", s.serves], ["Position", s.y0 < FOLD ? "Above the fold" : `${scr(s.y0)} screens down`], ["Today", s.note]]) });
+    ov.append(b);
+  });
+  const fold = document.createElement("div");
+  fold.className = "fold"; fold.style.top = pct(FOLD, H);
+  fold.innerHTML = "<span>Fold at 1440 × 900</span>";
+  ov.append(fold);
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "paths"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("preserveAspectRatio", "none");
+  ov.append(svg);
+  PATHS.forEach(p => {
+    const y0 = 40;
+    const d = `M${p.x0} ${y0} C ${p.x0} ${y0 + 600}, ${p.x1} ${p.y1 - 600}, ${p.x1} ${p.y1}`;
+    const path = document.createElementNS(svg.namespaceURI, "path");
+    path.setAttribute("d", d); if (p.dash) path.setAttribute("stroke-dasharray", p.dash);
+    path.setAttribute("class", "pg"); path.dataset.g = p.g;
+    svg.append(path);
+    [[p.x0, y0, "dot"], [p.x1, p.y1, "dot end"]].forEach(([x, y, c]) => {
+      const e = document.createElement("span"); e.className = c + " pg"; e.dataset.g = p.g; e.style.left = pct(x, W); e.style.top = pct(y, H); ov.append(e);
+    });
+    const l = document.createElement("button");
+    l.className = "pl pg"; l.dataset.g = p.g; l.style.left = pct(p.lx, W); l.style.top = pct(p.y1, H);
+    l.innerHTML = `<b>${p.k}</b>${p.lbl}`;
+    l.onclick = () => open({ n: "→", label: p.k, node: rows([["Who", p.who], ["Arrives from", p.from], ["Their question", `"${p.q}"`], ["Today", p.today], ["Done looks like", p.done]]) });
+    ov.append(l);
+  });
+
+  const land = document.createElement("span");
+  land.className = "fold"; land.style.cssText = "top:" + pct(40, H) + ";border:0";
+  land.innerHTML = '<span style="right:auto;left:' + pct(860, W) + ';top:-12px">All three land here</span>';
+  ov.append(land);
+  // keep the group filter pinned under the top bar while scrolling
+  const barH = () => document.documentElement.style.setProperty("--bar-h", $(".bar").offsetHeight + "px");
+  barH(); addEventListener("resize", barH);
+  const setF = f => {
+    document.body.dataset.f = f;
+    $$("#legend .seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.f === f));
+    $$(".sec", ov).forEach(e => { const m = f === "all" || e.dataset.g.split(" ").includes(f); e.classList.toggle("match", m && f !== "all"); e.classList.toggle("dim", !m); });
+    $$(".pg", ov).forEach(e => e.classList.toggle("off", f !== "all" && e.dataset.g !== f));
+    const p = PATHS.find(x => x.g === f);
+    $("#scen").innerHTML = p ? `<dl><div><dt>${p.who}</dt><dd><b>"${p.q}"</b></dd></div><div><dt>Today</dt><dd>${p.today}</dd></div><div><dt>Done looks like</dt><dd>${p.done}</dd></div></dl>` : "";
+  };
+  $$("#legend .seg button").forEach(b => b.onclick = () => setF(b.dataset.f));
+  setF("all");
+  const layBtn = document.createElement("button");
+  layBtn.innerHTML = `<span class="n">5</span>Page layout`;
+  list.append(layBtn);
+  const setLay = on => {
+    document.body.classList.toggle("lay", on);
+    layBtn.classList.toggle("on", on);
+    layBtn.innerHTML = on ? `<span class="n">5</span>Back to features` : `<span class="n">5</span>Page layout`;
+  };
+  layBtn.onclick = () => { setLay(!document.body.classList.contains("lay")); scrollTo(0, 0); };
+  $("#open-brief").onclick = () => open({ n: "5", label: "Page layout brief", node: (() => { const f = $("#p-brief").content.cloneNode(true); return f; })() });
+  if (location.hash === "#layout") setLay(true);
 })();
 </script>
 </body>
