@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Benchmarks hub proposals</title>
+<style>
+:root {
+  --bg: #f4f4f4; --paper: #fff; --ink: #1a1a1a; --mid: #555; --soft: #888;
+  --line: #d4d4d4; --fill: #ececec;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(--sans); }
+button { font: inherit; color: inherit; cursor: pointer; }
+
+.bar { position: sticky; top: 0; z-index: 30; background: var(--ink); color: #fff; font-size: 14px; }
+.bar .in { max-width: 1440px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.bar strong { font-weight: 600; }
+.bar .list { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.bar .list button { background: none; border: 1px solid #fff; border-radius: 999px; color: #fff; padding: 2px 10px 2px 4px; display: inline-flex; gap: 6px; align-items: center; font-size: 14px; }
+.bar .list button:hover { background: #fff; color: var(--ink); }
+.bar .list .n { width: 20px; height: 20px; border-radius: 50%; background: #fff; color: var(--ink); display: inline-grid; place-items: center; font-size: 13px; font-weight: 600; }
+
+.cap { max-width: 1440px; margin: 0 auto; padding: 10px 16px; font-size: 14px; color: var(--mid); }
+.stage { position: relative; max-width: 1440px; margin: 0 auto; box-shadow: 0 2px 12px rgba(0,0,0,.08); background: #fff; }
+.stage img { display: block; width: 100%; height: auto; }
+
+.hs { position: absolute; border: 2px dashed transparent; border-radius: 8px; background: none; padding: 0; transition: background .15s, border-color .15s; }
+.hs:hover, .hs:focus-visible { border-color: var(--ink); background: rgba(26,26,26,.06); outline: none; }
+.hs .pin { position: absolute; top: -14px; right: -14px; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-size: 14px; font-weight: 700; box-shadow: 0 0 0 3px #fff, 0 2px 8px rgba(0,0,0,.25); animation: pulse 2.4s ease-out 3; }
+.hs .lab { position: absolute; top: -14px; right: 22px; background: var(--ink); color: #fff; font-size: 14px; padding: 3px 10px; border-radius: 6px; white-space: nowrap; opacity: 0; transform: translateX(4px); transition: opacity .15s, transform .15s; pointer-events: none; }
+.hs:hover .lab, .hs:focus-visible .lab { opacity: 1; transform: none; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 3px #fff, 0 0 0 3px rgba(26,26,26,.5); } 100% { box-shadow: 0 0 0 3px #fff, 0 0 0 18px rgba(26,26,26,0); } }
+@media (prefers-reduced-motion: reduce) { .hs .pin { animation: none; } }
+
+.foot { max-width: 1440px; margin: 0 auto; padding: 16px 16px 48px; font-size: 14px; color: var(--soft); }
+
+/* modal */
+.modal { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.5); display: none; align-items: flex-start; justify-content: center; padding: 48px 16px; overflow-y: auto; }
+.modal.open { display: flex; }
+.sheet { background: var(--paper); border-radius: 12px; width: 100%; max-width: 760px; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+.sheet header { padding: 20px 24px 0; display: flex; gap: 12px; align-items: center; }
+.sheet header .n { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; flex: none; }
+.sheet h2 { margin: 0; font-size: 22px; }
+.sheet .x { position: absolute; top: 12px; right: 14px; border: 0; background: none; font-size: 26px; line-height: 1; padding: 4px 8px; }
+.sheet .body { padding: 16px 24px 24px; }
+.rows { display: grid; grid-template-columns: 120px 1fr; gap: 10px 16px; margin: 0 0 20px; font-size: 15px; }
+.rows dt { color: var(--soft); }
+.rows dd { margin: 0; }
+.rows ul { margin: 0; padding-left: 18px; }
+.open-q { font-size: 14px; border-left: 3px solid var(--ink); background: #fafafa; padding: 8px 12px; margin: 0 0 20px; }
+.demo { border: 1px dashed var(--line); border-radius: 10px; padding: 16px; background: #fafafa; }
+.demo .dl { font-size: 13px; color: var(--soft); text-transform: none; margin-bottom: 10px; letter-spacing: .02em; }
+
+/* search demo */
+.search { position: relative; }
+.search input { width: 100%; font: inherit; padding: 12px 14px; border: 2px solid var(--ink); border-radius: 8px; background: #fff; }
+.drop { display: none; margin-top: 6px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 6px; max-height: 300px; overflow: auto; }
+.drop.open { display: block; }
+.drop .grp { font-size: 13px; color: var(--soft); padding: 6px 10px 2px; }
+.drop button { display: flex; width: 100%; gap: 10px; align-items: baseline; text-align: left; background: none; border: 0; padding: 8px 10px; border-radius: 6px; }
+.drop button:hover, .drop button.hl { background: var(--fill); }
+.drop .k { margin-left: auto; font-size: 13px; color: var(--soft); white-space: nowrap; }
+.drop .empty { padding: 8px 10px; font-size: 14px; color: var(--mid); }
+.picked { margin-top: 10px; font-size: 14px; color: var(--mid); min-height: 21px; }
+
+/* sub-nav demo */
+.frame { height: 300px; overflow-y: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; position: relative; }
+.frame nav { position: sticky; top: 0; background: #fff; border-bottom: 1px solid var(--line); display: flex; gap: 2px; overflow-x: auto; z-index: 2; }
+.frame nav a { padding: 10px; font-size: 14px; color: var(--mid); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
+.frame nav a.on { color: var(--ink); font-weight: 600; border-color: var(--ink); }
+.frame section { padding: 16px; min-height: 220px; border-bottom: 1px solid var(--fill); }
+.frame section h3 { margin: 0 0 8px; font-size: 16px; }
+.frame .ph { height: 120px; border-radius: 6px; background: repeating-linear-gradient(135deg, var(--fill) 0 10px, #f4f4f4 10px 20px); }
+
+/* tooltip demo */
+.card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; max-width: 380px; }
+.card .t { font-weight: 600; }
+.card .big { font-size: 36px; font-weight: 600; line-height: 1.2; }
+.tip { position: relative; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--mid); font-size: 13px; color: var(--mid); background: #fff; vertical-align: middle; margin-left: 6px; cursor: help; }
+.tip .bubble { display: none; position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translateX(-50%); width: 260px; background: var(--ink); color: #fff; padding: 10px 12px; border-radius: 6px; font-size: 14px; line-height: 1.4; text-align: left; z-index: 5; }
+.tip:hover .bubble, .tip:focus .bubble { display: block; }
+.more { margin-top: 10px; background: none; border: 0; padding: 0; text-decoration: underline; font-size: 14px; }
+.detail { display: none; margin-top: 12px; border-top: 1px solid var(--line); padding-top: 12px; font-size: 14px; }
+.detail.open { display: block; }
+.detail dl { display: grid; grid-template-columns: 110px 1fr; gap: 4px 12px; margin: 0; }
+.detail dt { color: var(--soft); }
+.detail dd { margin: 0; }
+.steps { font-size: 14px; color: var(--mid); margin: 12px 0 0; }
+
+/* instrumentation demo */
+.ctl { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ctl fieldset { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 0; background: #fff; }
+.ctl legend { font-size: 13px; color: var(--soft); padding: 0 4px; }
+.ctl label { display: block; font-size: 14px; padding: 2px 0; }
+.ctl .btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.btn { border: 1px solid var(--ink); background: #fff; border-radius: 6px; padding: 5px 12px; font-size: 14px; }
+.log { margin-top: 12px; background: var(--ink); color: #eee; border-radius: 8px; font: 13px/1.5 var(--mono); padding: 10px 12px; min-height: 96px; max-height: 160px; overflow: auto; }
+.log .e { padding: 1px 0; }
+.log .e:first-child { color: #fff; }
+.log .hint { color: #aaa; }
+
+@media (max-width: 640px) {
+  .rows, .detail dl { grid-template-columns: 1fr; gap: 2px; }
+  .rows dd { margin-bottom: 8px; }
+  .ctl { grid-template-columns: 1fr; }
+  .modal { padding: 16px 8px; }
+  .hs .pin { width: 22px; height: 22px; top: -11px; right: -11px; font-size: 12px; }
+  .bar .list { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="in">
+    <strong>Benchmarks hub: proposed changes</strong>
+    <span>Click a numbered spot on the page</span>
+    <div class="list" id="list"></div>
+  </div>
+</div>
+
+<p class="cap">Screenshot of epoch.ai/benchmarks, captured Oct 30, 2026. This is an image of the live page, not the page itself.</p>
+
+<div class="stage" id="stage">
+  <img src="epoch-hub-31af7b94.jpg" width="2880" height="9826" alt="Full-page screenshot of the Epoch AI benchmarks hub">
+</div>
+
+<p class="foot">Concept by Chris Lam for discussion. Not affiliated with or endorsed by Epoch AI. Demos in each panel use placeholder text where research or comms would write the real copy.</p>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+  <div class="sheet">
+    <header><span class="n" id="m-n"></span><h2 id="m-title"></h2></header>
+    <button class="x" id="m-x" aria-label="Close">×</button>
+    <div class="body" id="m-body"></div>
+  </div>
+</div>
+
+<!-- panel contents -->
+<template id="p-subnav">
+  <dl class="rows">
+    <dt>Today</dt><dd>The tabs link to other pages. Nothing helps you move around this page, which runs past five screens of charts, updates, and questions.</dd>
+    <dt>Proposed</dt><dd><ul><li>Page sections with their own navigation</li><li>Navigation that makes it easy to hop around the page</li></ul></dd>
+    <dt>Who it helps</dt><dd>Trackers get a predictable, scannable page. People looking something up can jump to it.</dd>
+  </dl>
+  <div class="demo">
+    <div class="dl">Try it: scroll inside the box, or click a section</div>
+    <div class="frame" id="frame">
+      <nav>
+        <a href="#f1" class="on">Search</a><a href="#f2">ECI over time</a><a href="#f3">Math benchmarks</a><a href="#f4">Latest activity</a><a href="#f5">Common questions</a>
+      </nav>
+      <section id="f1"><h3>Search</h3><div class="ph"></div></section>
+      <section id="f2"><h3>ECI over time</h3><div class="ph"></div></section>
+      <section id="f3"><h3>Math benchmarks</h3><div class="ph"></div></section>
+      <section id="f4"><h3>Latest activity</h3><div class="ph"></div></section>
+      <section id="f5"><h3>Common questions</h3><div class="ph"></div></section>
+    </div>
+  </div>
+</template>
+
+<template id="p-search">
+  <dl class="rows">
+    <dt>Today</dt><dd>A plain text box. Nothing appears until you type, and you get no help when nothing matches.</dd>
+    <dt>Proposed</dt><dd><ul><li>Suggestions before anything is typed</li><li>Let people ask a question</li><li>Suggestions when nothing matches</li></ul></dd>
+    <dt>Who it helps</dt><dd>People looking something up and people referencing the data find things faster.</dd>
+  </dl>
+  <p class="open-q"><b>Open question:</b> should a question get a direct answer, or point to where the answer lives? This demo shows the second. Direct answers raise accuracy questions for research.</p>
+  <div class="demo">
+    <div class="dl">Try it: click the box, then type "coding", "how accurate?", or anything that won't match</div>
+    <div class="search">
+      <input id="q" type="search" autocomplete="off" placeholder="Search models and benchmarks, or ask a question" aria-label="Search demo">
+      <div class="drop" id="drop" role="listbox"></div>
+    </div>
+    <div class="picked" id="picked"></div>
+  </div>
+</template>
+
+<template id="p-tips">
+  <dl class="rows">
+    <dt>Today</dt><dd>"169" sits on its own. A newcomer can't tell whether it's high, what scale it's on, or where it comes from.</dd>
+    <dt>Proposed</dt><dd><ul><li>Tooltips where a short explanation is enough</li><li>A modal or expanded view when people want more</li></ul></dd>
+    <dt>Who it helps</dt><dd>People looking something up get guidance. People referencing the data get source, method, and date.</dd>
+  </dl>
+  <div class="demo">
+    <div class="dl">Try it: hover the "i", then open "Learn more"</div>
+    <div class="card">
+      <div class="t">Epoch Capabilities Index</div>
+      <div><span class="big">169</span> <span style="font-size:14px;color:var(--mid)">top ECI: GPT-6 Astra</span><span class="tip" tabindex="0">i<span class="bubble">[One line from research: what the ECI is and what the scale means.]</span></span></div>
+      <button class="more" id="more" aria-expanded="false">Learn more</button>
+      <div class="detail" id="detail">
+        <dl>
+          <dt>What it is</dt><dd>[Short explanation, research to write]</dd>
+          <dt>Scale</dt><dd>[What the range is and what a gap means]</dd>
+          <dt>Method</dt><dd>[How it is calculated, link to methods]</dd>
+          <dt>Updated</dt><dd>[Date of last update]</dd>
+        </dl>
+      </div>
+    </div>
+    <p class="steps">Two levels: a tooltip for the one-line answer, and an expanded view for people who need the details.</p>
+  </div>
+</template>
+
+<template id="p-track">
+  <dl class="rows">
+    <dt>Today</dt><dd>Analytics record page views, scroll depth, and time on page. They don't record which tabs, filters, or charts people use.</dd>
+    <dt>Proposed</dt><dd><ul><li>Track tabs, filters, chart settings, shares, and downloads</li><li>Capture a baseline before the redesign ships, so we can measure it</li></ul></dd>
+    <dt>Who it helps</dt><dd>Us. Without it we can't tell which features people use, or whether the redesign worked.</dd>
+  </dl>
+  <div class="demo">
+    <div class="dl">Try it: change any setting, and watch the events it would send</div>
+    <div class="ctl">
+      <fieldset><legend>Benchmark set</legend>
+        <label><input type="radio" name="set" value="math" checked> Math benchmarks</label>
+        <label><input type="radio" name="set" value="software_engineering"> Software engineering</label>
+        <label><input type="radio" name="set" value="epoch_administered"> Epoch administered</label>
+        <label><input type="radio" name="set" value="knowledge_reasoning"> Knowledge &amp; reasoning</label>
+      </fieldset>
+      <fieldset><legend>Chart</legend>
+        <label><input type="checkbox" id="frontier"> Frontier trend only</label>
+        <label>Color by <select id="color"><option>None</option><option>Country</option><option selected>Organization</option></select></label>
+        <div class="btns"><button class="btn" data-ev="chart_share">Share</button><button class="btn" data-ev="chart_download">Download graph</button></div>
+      </fieldset>
+    </div>
+    <div class="log" id="log"><div class="hint">Events will appear here.</div></div>
+  </div>
+</template>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  // Hotspots in page pixels of the 1440px-wide capture (height 4913).
+  const W = 1440, H = 4913;
+  const SPOTS = [
+    { id: "subnav", n: 1, label: "Sub-navigation", tpl: "p-subnav", x: 48,  y: 78,  w: 670,  h: 50 },
+    { id: "search", n: 2, label: "Search bar",     tpl: "p-search", x: 52,  y: 496, w: 1336, h: 57 },
+    { id: "tips",   n: 3, label: "Tooltips",       tpl: "p-tips",   x: 52,  y: 568, w: 443,  h: 241 },
+    { id: "track",  n: 4, label: "Instrumentation", tpl: "p-track", x: 1030, y: 853, w: 358,  h: 728 },
+  ];
+
+  const stage = $("#stage"), list = $("#list");
+  SPOTS.forEach(s => {
+    const b = document.createElement("button");
+    b.className = "hs";
+    b.style.cssText = `left:${s.x / W * 100}%;top:${s.y / H * 100}%;width:${s.w / W * 100}%;height:${s.h / H * 100}%`;
+    b.innerHTML = `<span class="lab">${s.label}</span><span class="pin">${s.n}</span>`;
+    b.setAttribute("aria-label", `${s.n}. ${s.label}: open proposal`);
+    b.onclick = () => open(s);
+    stage.append(b);
+    const l = document.createElement("button");
+    l.innerHTML = `<span class="n">${s.n}</span>${s.label}`;
+    l.onclick = () => open(s);
+    list.append(l);
+  });
+
+  const modal = $("#modal"), body = $("#m-body");
+  let lastFocus;
+  function open(s) {
+    lastFocus = document.activeElement;
+    $("#m-n").textContent = s.n;
+    $("#m-title").textContent = s.label;
+    body.innerHTML = "";
+    body.append($("#" + s.tpl).content.cloneNode(true));
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    ({ subnav: initSubnav, search: initSearch, tips: initTips, track: initTrack })[s.id]();
+    $("#m-x").focus();
+  }
+  function close() {
+    modal.classList.remove("open");
+    document.body.style.overflow = "";
+    lastFocus && lastFocus.focus();
+  }
+  $("#m-x").onclick = close;
+  modal.addEventListener("click", e => { if (e.target === modal) close(); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && modal.classList.contains("open")) close(); });
+
+  function initSubnav() {
+    const f = $("#frame"), links = $$("nav a", f), secs = links.map(a => $(a.getAttribute("href"), f));
+    links.forEach((a, i) => a.onclick = e => { e.preventDefault(); f.scrollTo({ top: secs[i].offsetTop - 42, behavior: "smooth" }); });
+    const spy = () => {
+      let cur = 0;
+      secs.forEach((s, i) => { if (s.offsetTop - 60 <= f.scrollTop) cur = i; });
+      links.forEach((a, i) => a.classList.toggle("on", i === cur));
+    };
+    f.addEventListener("scroll", spy, { passive: true });
+  }
+
+  function initSearch() {
+    const ITEMS = [
+      { t: "GPQA Diamond", k: "Benchmark" }, { t: "SWE-bench Verified", k: "Benchmark" },
+      { t: "FrontierMath Tier 4", k: "Benchmark" }, { t: "FrontierMath Erdős", k: "Benchmark" },
+      { t: "METR Time Horizons", k: "Benchmark" }, { t: "SimpleBench", k: "Benchmark" },
+      { t: "Humanity's Last Exam", k: "Benchmark" }, { t: "Chess Puzzles", k: "Benchmark" },
+      { t: "GPT-6 Astra", k: "Model" }, { t: "Claude Opus 5.5", k: "Model" }, { t: "Claude Sonnet 5.5", k: "Model" },
+    ];
+    const QS = [
+      { t: "Which model is most capable right now?", where: "ECI over time", re: /(best|most capable|top|leading|smartest)/i },
+      { t: "How fast are AI capabilities improving?", where: "ECI over time", re: /(fast|trend|over time|improv|progress)/i },
+      { t: "Which model is best at coding?", where: "Software engineering benchmarks", re: /(cod|software|programm)/i, specific: 1 },
+      { t: "Which model is best at math?", where: "Math benchmarks", re: /(math)/i, specific: 1 },
+      { t: "How accurate is the data?", where: "Common questions", re: /(accura|error|trust|method)/i, specific: 1 },
+      { t: "How can I access or cite this data?", where: "Data", re: /(cite|citation|download|csv|data|licen|api)/i, specific: 1 },
+    ];
+    const q = $("#q"), drop = $("#drop"), picked = $("#picked");
+    let hits = [], hl = -1;
+    const isQ = s => /\?$/.test(s) || /^(which|what|how|who|why|is|are|can|does)\b/i.test(s);
+    const row = (r, i) => `<button role="option" data-i="${i}"><span>${r.t}</span><span class="k">${r.k}</span></button>`;
+    const esc = s => s.replace(/[<>&"]/g, "");
+    const render = () => {
+      const s = q.value.trim(), lc = s.toLowerCase();
+      let html;
+      if (!s) {
+        hits = [...QS.slice(0, 3).map(x => ({ ...x, k: "→ " + x.where })), ...ITEMS.slice(0, 4)];
+        html = `<div class="grp">Common questions</div>${hits.slice(0, 3).map(row).join("")}<div class="grp">Most viewed benchmarks</div>${hits.slice(3).map((r, i) => row(r, i + 3)).join("")}`;
+      } else {
+        const qs = QS.filter(x => x.re.test(s) || x.t.toLowerCase().includes(lc)).sort((a, b) => (b.specific || 0) - (a.specific || 0)).map(x => ({ ...x, k: "→ " + x.where }));
+        const its = ITEMS.filter(x => x.t.toLowerCase().includes(lc));
+        hits = isQ(s) ? [...qs, ...its] : [...its, ...qs];
+        if (hits.length) html = hits.map(row).join("");
+        else {
+          hits = ITEMS.slice(0, 3);
+          html = `<div class="empty">Nothing matches "${esc(s)}". You might be looking for:</div>${hits.map(row).join("")}`;
+        }
+      }
+      hl = -1; drop.innerHTML = html; drop.classList.add("open");
+    };
+    const pick = r => {
+      drop.classList.remove("open");
+      picked.textContent = r.where ? `Would jump to: ${r.where}` : `Would open the ${r.t} page`;
+    };
+    q.addEventListener("focus", render);
+    q.addEventListener("input", () => { picked.textContent = ""; render(); });
+    q.addEventListener("keydown", e => {
+      const btns = $$("button", drop);
+      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && btns.length) {
+        e.preventDefault();
+        hl = (hl + (e.key === "ArrowDown" ? 1 : -1) + btns.length) % btns.length;
+        btns.forEach((b, i) => b.classList.toggle("hl", i === hl));
+      } else if (e.key === "Enter" && hits.length) { e.preventDefault(); pick(hits[hl >= 0 ? hl : 0]); }
+    });
+    drop.addEventListener("mousedown", e => { const b = e.target.closest("button"); if (b) { e.preventDefault(); pick(hits[+b.dataset.i]); } });
+  }
+
+  function initTips() {
+    const m = $("#more"), d = $("#detail");
+    m.onclick = () => { const o = d.classList.toggle("open"); m.setAttribute("aria-expanded", o); m.textContent = o ? "Show less" : "Learn more"; };
+  }
+
+  function initTrack() {
+    const log = $("#log");
+    const add = (name, props) => {
+      if ($(".hint", log)) log.innerHTML = "";
+      const e = document.createElement("div");
+      e.className = "e";
+      e.textContent = name + " " + JSON.stringify(props);
+      log.prepend(e);
+    };
+    $$('input[name="set"]').forEach(r => r.onchange = () => add("benchmark_set_change", { set: r.value }));
+    $("#frontier").onchange = e => add("frontier_toggle", { on: e.target.checked });
+    $("#color").onchange = e => add("color_by_change", { value: e.target.value.toLowerCase() });
+    $$("[data-ev]", body).forEach(b => b.onclick = () => add(b.dataset.ev, {}));
+  }
+})();
+</script>
+</body>
+</html>
