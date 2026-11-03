@@ -1,6 +1,6 @@
 /* Chris's AI hiring guide — frontend (Phase 1 + P1 interaction model).
    Composer (type or speak) -> /stt (upload) -> /ask (Claude, hiring-guide
-   model) -> /tts. Mode-aware quick flows, four states, floating launcher.
+   model). Text replies only (spoken replies removed 2026-11-03). Mode-aware quick flows, four states, floating launcher.
    The client is dumb plumbing; all judgment lives server-side. */
 (function () {
   "use strict";
@@ -40,8 +40,8 @@
   };
 
   var lens = null;
-  var mediaRecorder = null, chunks = [], audioCtx = null, currentSource = null, thinkTimer = null, requestingMic = false;
-  var streamReader = null, ttsQueue = [], ttsPlaying = false, streamDone = false;
+  var mediaRecorder = null, chunks = [], thinkTimer = null, requestingMic = false;
+  var streamReader = null;
   var receipts = [], turnCount = 0, briefing = false, firstAsked = false;
 
   function state() { return root.dataset.state; }
@@ -58,7 +58,7 @@
     if (thinkTimer) { clearInterval(thinkTimer); thinkTimer = null; }
     if (s === "listening") setStatus("Listening… tap the mic to stop.");
     else if (s === "processing") startThinking();
-    else if (s === "speaking") setStatus("Speaking…");
+    else if (s === "speaking") setStatus("Answering…");
     else setStatus("");
   }
 
@@ -90,7 +90,6 @@
       b.textContent = q;
       b.addEventListener("click", function () {
         if (state() !== "idle") return;
-        unlockAudio();
         addTurn("you", q);
         ask(q);
       });
@@ -98,11 +97,6 @@
     });
   }
 
-  function unlockAudio() {
-    var Ctx = window.AudioContext || window.webkitAudioContext;
-    if (!audioCtx && Ctx) audioCtx = new Ctx();
-    if (audioCtx && audioCtx.state === "suspended") { try { audioCtx.resume(); } catch (e) {} }
-  }
   function pickMime() {
     var prefs = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus", "audio/ogg"];
     if (typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported) {
@@ -145,7 +139,6 @@
     var t = (inputEl.value || "").trim();
     if (!t) return;
     inputEl.value = "";
-    unlockAudio();
     addTurn("you", t);
     ask(t);
   }
@@ -155,7 +148,6 @@
   stopBtn.addEventListener("click", stopTurn);
 
   function onMic() {
-    unlockAudio(); // inside the gesture (iOS)
     if (state() === "listening") { stopRecording(); return; }
     if (state() !== "idle" || requestingMic) return;
     requestingMic = true;
@@ -222,12 +214,10 @@
   }
 
   // Streaming turn (/ask-stream, SSE). Render each sentence as it clears the server-side
-  // leak scan; queue per-sentence audio so speech starts on sentence 1 instead of after the
-  // whole answer. If the stream can't be established before any text is shown, fall back to
+  // leak scan. If the stream can't be established before any text is shown, fall back to
   // the non-streaming /ask so the visitor still gets an answer.
   function streamAsk(body, transcript) {
     var agentEl = null, full = "", guided = false, fellBack = false;
-    ttsQueue = []; ttsPlaying = false; streamDone = false;
 
     function append(text) {
       if (state() !== "speaking") setState("speaking"); // first sentence: drop the "Thinking…" timer
@@ -246,7 +236,6 @@
     function onEvent(ev) {
       if (ev.type === "sentence") {
         append(ev.text);
-        if (ev.ttsToken) enqueueTts(ev.text, ev.ttsToken);
       } else if (ev.type === "done") {
         if (ev.receipt) { receipts.push(ev.receipt); turnCount++; maybeShowBrief(); }
         if (ev.reply && !guided) { guideToProof(transcript, ev.reply); guided = true; }
@@ -257,11 +246,10 @@
     }
 
     function finish() {
-      streamDone = true;
       streamReader = null;
       if (fellBack) return;
       if (!full) { fail("Something went wrong. Try again?"); return; }
-      settleIdle(); // go idle once any queued audio drains
+      done();
     }
 
     fetch(VOICE_API + "/ask-stream", {
@@ -294,45 +282,9 @@
     });
   }
 
-  // --- streaming audio queue (sequential per-sentence playback) ---
-  function enqueueTts(text, token) {
-    if (!audioCtx) return; // no unlocked audio context -> text-only, skip speech
-    ttsQueue.push({ text: text, token: token });
-    if (!ttsPlaying) playNextTts();
-  }
-  function playNextTts() {
-    if (ttsQueue.length === 0) { ttsPlaying = false; settleIdle(); return; }
-    ttsPlaying = true;
-    var item = ttsQueue.shift();
-    fetch(VOICE_API + "/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: item.text, token: item.token }) })
-      .then(function (r) { if (!r.ok) throw new Error("tts"); return r.arrayBuffer(); })
-      .then(function (buf) {
-        if (!audioCtx) { playNextTts(); return; }
-        return audioCtx.decodeAudioData(buf).then(function (ab) {
-          var src = audioCtx.createBufferSource();
-          src.buffer = ab;
-          src.connect(audioCtx.destination);
-          src.onended = function () { src.disconnect(); if (currentSource === src) currentSource = null; playNextTts(); };
-          currentSource = src;
-          src.start();
-        });
-      })
-      .catch(function () { playNextTts(); }); // a failed sentence shouldn't stall the rest
-  }
-  // Idle only when the stream has ended AND all queued audio has played.
-  function settleIdle() {
-    if (streamDone && !ttsPlaying && ttsQueue.length === 0) {
-      if (audioCtx) { try { audioCtx.suspend(); } catch (e) {} }
-      done();
-    }
-  }
-  // Stop button: cancel the stream, drop queued audio, stop playback, go idle.
+  // Stop button: cancel the stream, go idle.
   function stopTurn() {
-    streamDone = true;
     if (streamReader) { try { streamReader.cancel(); } catch (e) {} streamReader = null; }
-    ttsQueue = []; ttsPlaying = false;
-    if (currentSource) { try { currentSource.stop(); } catch (e) {} try { currentSource.disconnect(); } catch (e) {} currentSource = null; }
-    if (audioCtx) { try { audioCtx.suspend(); } catch (e) {} }
     done();
   }
 
@@ -347,27 +299,9 @@
         if (d.receipt) { receipts.push(d.receipt); turnCount++; maybeShowBrief(); }
         addTurn("agent", reply);
         guideToProof(transcript, reply);
-        speakSingle(reply, d.ttsToken);
+        done();
       })
       .catch(function (e) { fail(describeError(e && e.status)); });
-  }
-  function speakSingle(text, token) {
-    setState("speaking");
-    if (!token) { done(); return; }
-    fetch(VOICE_API + "/tts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: text, token: token }) })
-      .then(function (r) { if (!r.ok) throw new Error("tts"); return r.arrayBuffer(); })
-      .then(function (buf) {
-        if (!audioCtx) { done(); return; }
-        return audioCtx.decodeAudioData(buf).then(function (ab) {
-          var src = audioCtx.createBufferSource();
-          src.buffer = ab;
-          src.connect(audioCtx.destination);
-          src.onended = function () { src.disconnect(); currentSource = null; if (audioCtx) { try { audioCtx.suspend(); } catch (e) {} } done(); };
-          currentSource = src;
-          src.start();
-        });
-      })
-      .catch(function () { done(); });
   }
   function done() { setState("idle"); }
   function fail(msg) { setState("idle"); setStatus(msg); }
