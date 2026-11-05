@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Offer letter prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a1a;--ink2:#595961;--ink3:#9d9d9d;--line2:#d3d3d3;--line1:#ededed;--surf1:#f4f4f1;--bg:#fff;
+  --blue:#2966ff;--link:#1a60f8;--blue-dis:#a3beff;--pill:#ccdbff;--surf4:#e8effe;
+  --warn:#f87a1a;--warn-bg:#fdeee0;--ok:#1b873f;--ok-bg:#ddfdcf;--err:#f84131;--err-text:#d92d20;--err-bg:#f8e3e0;
+  --r-sm:8px;--r-md:10px;--r-lg:12px;--r-xl:24px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font:400 14px/20px Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,p{margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+#app{height:100dvh;display:grid;grid-template-rows:72px minmax(0,1fr) auto}
+header{display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--line1);min-width:0}
+.logo{width:24px;height:25px;flex:none}
+.docwrap{min-width:0;max-width:400px;flex:0 1 auto}
+h1.doc{font:700 24px/28px Inter,sans-serif;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.docsub{font-size:12px;line-height:16px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tag{font-size:12px;line-height:16px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.tag.draft{background:var(--pill)}.tag.ready{background:var(--ok-bg)}.tag.sent{background:var(--blue);color:#fff}
+nav.steps{flex:1;display:flex;justify-content:center}
+nav.steps ol{display:flex;align-items:center;gap:12px;list-style:none;margin:0;padding:0}
+nav.steps li{display:flex;align-items:center;gap:12px}
+nav.steps li+li::before{content:"";width:20px;height:1px;background:var(--line2)}
+.step{display:flex;align-items:center;gap:8px;border:0;background:none;padding:4px;border-radius:var(--r-sm);cursor:pointer;text-align:left}
+.step:hover .name{text-decoration:underline}
+.marker{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:500 12px/16px Inter,sans-serif;border:1px solid var(--line2);color:var(--ink2);flex:none}
+.current .marker{background:var(--blue);border-color:var(--blue);color:#fff}
+.gaps .marker{border-color:var(--ink2);color:var(--ink)}
+.done .marker{background:var(--ok);border-color:var(--ok);color:#fff}
+.step .name{display:block;color:var(--ink2)}
+.current .name{color:var(--ink);font-weight:500}.gaps .name,.done .name{color:var(--ink)}
+.step .sub{display:block;font-size:12px;line-height:16px;color:var(--ink2)}
+.gaps .sub{color:var(--err-text)}
+.save{display:flex;align-items:center;gap:6px;color:var(--ink2);white-space:nowrap;min-width:169px;justify-content:flex-end}
+.save svg{width:20px;height:20px}
+
+#app.sentview{grid-template-rows:minmax(0,1fr)}
+main{min-height:0;display:grid;grid-template-columns:469px minmax(0,1fr)}
+.panel{overflow:auto;padding:24px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.note{font-size:12px;line-height:16px;color:var(--ink2)}
+.preview{background:var(--surf1);overflow:auto;padding:24px 32px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.preview-head{display:flex;justify-content:space-between;gap:12px}
+.preview-head strong{font-weight:500}
+.preview-head span{color:var(--ink2)}
+
+.group{border:1px solid var(--line1);border-radius:var(--r-lg)}
+.group.open{border-color:var(--blue)}
+.ghead{display:flex;align-items:center;gap:8px;width:100%;border:0;background:none;padding:12px 16px;text-align:left;cursor:pointer;border-radius:var(--r-lg)}
+.ghead .t{font-weight:500}.ghead .s{margin-left:auto;color:var(--ink2)}.ghead .s.red{color:var(--err-text)}
+.ghead .chev{width:20px;height:20px;flex:none;transition:transform .15s}
+.group.open .chev{transform:rotate(180deg)}
+.tick{width:20px;height:20px;border-radius:50%;background:var(--ok);display:grid;place-items:center;flex:none}
+.tick svg{width:13px;height:13px}
+.gsum{padding:0 16px 12px;display:grid;gap:4px}
+.pair{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px}
+.pair dt{color:var(--ink2)}.pair dd{margin:0;overflow-wrap:anywhere}
+dl{margin:0}
+.gbody{padding:0 16px 16px;display:grid;gap:12px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+.field{display:grid;gap:4px;min-width:0}
+.label{display:flex;align-items:center;gap:4px;min-height:24px}
+.field legend{padding:0;font-weight:500;margin-bottom:4px}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.opt{color:var(--ink2)}
+.in{width:100%;height:44px;border:1px solid var(--line2);border-radius:var(--r-md);background:var(--bg);padding:0 12px}
+.in:hover{background:var(--surf1)}
+.in:focus{border-color:var(--blue);outline:1px solid var(--blue);outline-offset:0;background:var(--bg)}
+.in.filled:not(:focus){background:var(--surf1);border-color:transparent}
+.bad .in,.bad .in.filled{border-color:var(--err);background:var(--bg)}
+select.in{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='none' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:40px}
+.money{position:relative}.money span{position:absolute;left:12px;top:12px}.money .in{padding-left:24px}.money .per{left:auto;right:12px;color:var(--ink2)}
+.radios{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:8px}
+.radio{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:0 12px;border-radius:var(--r-md);background:var(--surf1);border:1px solid transparent;cursor:pointer}
+.radio:has(input:checked){background:var(--bg);border-color:var(--blue)}
+.radio:has(input:focus-visible){outline:2px solid var(--blue);outline-offset:2px}
+.radio input{appearance:none;width:18px;height:18px;margin:0;border-radius:50%;border:1.5px solid var(--ink2);background:var(--bg)}
+.radio input:checked{border:5px solid var(--blue)}
+.radio input:focus{outline:none}
+.msg{display:flex;gap:6px;font-size:12px;line-height:16px;color:var(--err-text);align-items:flex-start}
+.msg:empty{display:none}.msg.soft{color:var(--ink)}
+.msg svg{width:16px;height:16px;flex:none}
+.msg button{border:0;background:none;padding:0;color:var(--link);text-decoration:underline;cursor:pointer;font-size:12px}
+.hint{font-size:12px;line-height:16px;color:var(--ink2)}
+.link{border:0;background:none;padding:0;color:var(--link);cursor:pointer;text-align:left;justify-self:start}
+.link:hover{text-decoration:underline}
+.quick{display:flex;gap:8px;flex-wrap:wrap}
+.quick button{border:1px solid var(--line2);background:var(--bg);border-radius:999px;padding:2px 10px;font-size:12px;line-height:16px;cursor:pointer}
+.quick button:hover{background:var(--surf1)}
+.sender-meta{font-size:12px;line-height:16px;color:var(--ink2)}
+.info{width:20px;height:20px;border:0;background:none;padding:0;cursor:help;position:relative;display:inline-grid;place-items:center;border-radius:50%}
+.info svg{width:16px;height:16px}
+.tip{position:fixed;left:8px;top:8px;width:220px;background:var(--ink);color:#fff;font-size:12px;line-height:16px;padding:12px;border-radius:var(--r-sm);text-align:left;visibility:hidden;z-index:30}
+.info:hover .tip,.info:focus .tip{visibility:visible}
+.info.dismissed .tip{visibility:hidden}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;font-weight:500;cursor:pointer}
+.toggle input{appearance:none;width:44px;height:24px;margin:0;border-radius:999px;background:var(--line2);position:relative;cursor:pointer;flex:none}
+.toggle input::after{content:"";position:absolute;width:18px;height:18px;top:3px;left:3px;border-radius:50%;background:#fff;transition:left .15s}
+.toggle input:checked{background:var(--blue)}.toggle input:checked::after{left:23px}
+
+.letter{background:var(--bg);box-shadow:0 2px 12px rgba(0,0,0,.08);padding:48px 56px;font:400 14px/22px Lora,Georgia,serif;width:100%;max-width:760px;display:flex;flex-direction:column;gap:14px;flex:none}
+.lhead{display:flex;align-items:center;gap:8px}
+.lmark{width:28px;height:28px;border-radius:var(--r-sm);background:var(--ink)}
+.lhead b{font:600 16px/22px Lora,serif}.lhead span{margin-left:auto}
+.letter h2{font:600 14px/22px Lora,serif}
+.slot{font:inherit;border:0;border-radius:var(--r-sm);padding:0 4px;background:var(--surf4);cursor:pointer;color:inherit}
+.slot.missing{background:var(--warn-bg)}
+.slot.active{background:var(--bg);box-shadow:inset 0 0 0 2px var(--blue)}
+.slot:hover{box-shadow:inset 0 0 0 1px var(--blue)}
+.mailnote{background:var(--bg);border-radius:var(--r-sm);padding:12px 16px;max-width:760px;width:100%}
+.mailnote b{font-weight:500;display:block}
+
+.helpcard h2{font:400 20px/26px Inter,sans-serif}
+.help{background:var(--surf1);padding:32px;display:flex;flex-direction:column;gap:12px;overflow:auto}
+.help h2{font:400 20px/26px Inter,sans-serif}.help p.sec,.sec{color:var(--ink2)}
+main.hire{grid-template-columns:minmax(0,760px) minmax(0,1fr)}
+.hirepanel{padding:24px 32px;gap:16px}
+.hirepanel .top{display:flex;justify-content:space-between;align-items:center}
+.hirepanel h2{font:400 24px/32px Inter,sans-serif}
+.h20{font:400 20px/26px Inter,sans-serif}
+
+footer{display:flex;align-items:center;gap:12px;height:72px;padding:0 24px;border-top:1px solid var(--line1)}
+footer .say{margin-right:auto}.say.red{color:var(--err-text)}
+footer .right{margin-left:auto;display:flex;gap:12px}
+.btn{height:40px;padding:0 16px;border-radius:var(--r-md);border:1px solid var(--line2);background:var(--bg);color:var(--ink2);cursor:pointer;white-space:nowrap}
+.btn:hover{background:var(--surf1)}
+.btn.p{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.p:hover{background:var(--link);border-color:var(--link)}
+.btn[aria-disabled=true]{background:var(--blue-dis);border-color:var(--blue-dis);color:#fff;cursor:not-allowed}
+
+.sentpage{grid-column:1/-1;background:var(--surf1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:24px;text-align:center;overflow:auto;position:relative}
+.bigtick{width:64px;height:64px;border-radius:50%;background:var(--ok);display:grid;place-items:center;flex:none}
+.bigtick svg{width:36px;height:36px}
+.sentpage h2{font:400 40px/44px Inter,sans-serif}
+.sentpage .lead{font-size:16px;line-height:22px;color:var(--ink2)}
+.next{background:var(--bg);border:1px solid var(--line1);border-radius:var(--r-xl);padding:24px;width:min(560px,100%);display:grid;gap:12px;text-align:left}
+.next strong{font-weight:500}
+.nrow{display:flex;gap:12px;align-items:center}
+.nrow .marker{border-color:var(--line2)}.nrow.on .marker{background:var(--ok);border-color:var(--ok)}
+.nrow small{display:block;font-size:12px;line-height:16px;color:var(--ink2)}
+.nrow.on b{font-weight:500}.nrow b{font-weight:400;display:block}
+.acts{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:20;width:100%;height:100%}
+
+dialog{border:0;border-radius:var(--r-lg);padding:0;max-width:min(800px,calc(100vw - 32px));max-height:calc(100dvh - 32px);width:100%}
+dialog::backdrop{background:rgba(26,26,26,.4)}
+.dlg{display:flex;flex-direction:column;background:var(--surf1);max-height:calc(100dvh - 32px)}
+.dlg-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg)}
+.dlg-body{overflow:auto;padding:16px}
+.dlg-body .letter{max-width:none}
+
+.tools{position:fixed;right:16px;bottom:88px;z-index:15;font-size:12px;line-height:16px}
+.tools summary{cursor:pointer;background:var(--ink);color:#fff;border-radius:999px;padding:4px 12px;list-style:none;width:max-content}
+.tools summary::-webkit-details-marker{display:none}
+.tools .box{background:var(--bg);border:1px solid var(--line2);border-radius:var(--r-sm);padding:12px;margin-bottom:8px;display:grid;gap:8px;width:240px;position:absolute;bottom:100%;right:0}
+.tools .box button{border:1px solid var(--line2);background:var(--bg);border-radius:var(--r-sm);padding:6px 8px;cursor:pointer;text-align:left;font-size:12px}
+.tools .box button:hover{background:var(--surf1)}
+.tools label{display:flex;gap:6px;align-items:center}
+
+.dock-head,.dock-acts,.mob{display:none}
+@media (max-width:720px){
+  #app{grid-template-rows:56px minmax(0,1fr) auto}
+  header{padding:0 16px;gap:8px}
+  .logo{width:20px;height:21px}
+  h1.doc{font:500 14px/20px Inter,sans-serif;letter-spacing:0}
+  .docsub{display:none}
+  nav.steps{flex:none;margin-left:auto}
+  nav.steps ol{gap:6px}nav.steps li{gap:6px}nav.steps li+li::before{display:none}
+  .step{padding:0}.step .txt{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .save{display:none}
+  .mob{display:block}
+  main,main.hire{display:flex;flex-direction:column}
+  .preview{order:1;flex:1;padding:16px;min-height:0}
+  .preview-head span{display:none}
+  .letter{padding:24px}
+  main.docked .panel{order:2;flex:none;border-top:1px solid var(--line1);padding:12px 16px;gap:12px;overflow:visible}
+  main.docked .note,main.docked .ghead,main.docked .gsum,main.docked .top,main.docked .sub-intro{display:none}
+  main.docked .group{border:0}
+  main.docked .gbody{display:block;padding:0}
+  main.docked .row2{display:block}
+  main.docked .field{display:none}
+  main.docked .field.on{display:grid}
+  main.docked .dock-head{display:grid;gap:12px}
+  main.docked .dock-head .r{display:flex;justify-content:space-between}
+  main.docked .dock-head strong{font-weight:500}
+  main.docked .bar{height:6px;background:var(--line1);border-radius:999px;overflow:hidden}
+  main.docked .bar i{display:block;height:100%;background:var(--blue);transition:width .2s}
+  main.docked .dock-acts{display:flex;gap:8px}
+  main.docked .dock-acts .sp{margin-right:auto}
+  main.docked+footer{display:none}
+  main.docked.hire .help{order:1;flex:1;padding:16px}
+  main.review{overflow:auto}
+  main.review .panel,main.review .preview{overflow:visible;flex:none}
+  footer{height:auto;padding:12px 16px;flex-wrap:wrap}
+  footer .say{width:100%}footer .right{margin-left:0;width:100%}footer .right .btn{flex:1}
+  .sentpage h2{font-size:28px;line-height:32px}
+  .tools{bottom:auto;top:62px;left:auto;right:8px}
+  .tools .box{bottom:auto;top:100%;right:0;margin:4px 0 0}
+}
+/* motion: one system. fast = state, med = reveal, slow = arrival */
+:root{--t1:120ms;--t2:200ms;--t3:320ms;--ease:cubic-bezier(.2,0,0,1);--pop:cubic-bezier(.34,1.56,.64,1)}
+.in,.radio,.btn,.ghead,.slot,.quick button,.group,.marker,.tag{transition:background-color var(--t1) var(--ease),border-color var(--t1) var(--ease),box-shadow var(--t1) var(--ease),color var(--t1) var(--ease),transform var(--t1) var(--ease)}
+.radio input{transition:border-width var(--t1) var(--ease)}
+.ghead:hover{background:var(--surf1)}
+.btn:active,.step:active .marker,.quick button:active{transform:scale(.97)}
+.btn[aria-disabled=true]:active{transform:none}
+.tip{opacity:0;transition:opacity var(--t1) var(--ease),visibility var(--t1)}
+.info:hover .tip,.info:focus .tip{opacity:1}
+.info.dismissed .tip{opacity:0}
+.spin{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pop{from{transform:scale(.6)}to{transform:scale(1)}}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(41,102,255,.45)}100%{box-shadow:0 0 0 8px rgba(41,102,255,0)}}
+@keyframes ink{from{background:var(--pill)}to{background:var(--surf4)}}
+@keyframes settle{from{background:var(--surf4)}to{background:var(--surf1)}}
+@keyframes draw{from{stroke-dashoffset:30}to{stroke-dashoffset:0}}
+@keyframes fromR{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+@keyframes fromL{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+@keyframes toL{to{opacity:0;transform:translateX(-16px)}}
+@keyframes toR{to{opacity:0;transform:translateX(16px)}}
+.msg:not(:empty){animation:rise var(--t2) var(--ease)}
+.enter{animation:rise var(--t2) var(--ease)}
+.step.pop .marker,.save .tick{animation:pop var(--t2) var(--pop)}
+.slot.changed{animation:ink var(--t3) var(--ease)}
+.in.settle:not(:focus){animation:settle var(--t3) var(--ease)}
+.flash .in,.flash .radios{animation:flash var(--t3) var(--ease);border-radius:var(--r-md)}
+.btn.arm{animation:flash 480ms var(--ease) 160ms}
+dialog[open]{animation:rise var(--t2) var(--ease)}
+dialog[open]::backdrop{animation:fade var(--t2) var(--ease)}
+@keyframes fade{from{opacity:0}}
+.sentpage>*{animation:rise var(--t3) var(--ease) both}
+.sentpage>:nth-child(2){animation-delay:60ms}.sentpage>:nth-child(3){animation-delay:120ms}.sentpage>:nth-child(4){animation-delay:180ms}.sentpage>:nth-child(5){animation-delay:240ms}
+.sentpage .bigtick{animation:pop var(--t3) var(--pop) both}
+.bigtick path{stroke-dasharray:30;animation:draw var(--t3) var(--ease) 120ms both}
+main.docked[data-dir="1"] .field.on{animation:fromR var(--t2) var(--ease)}
+main.docked[data-dir="-1"] .field.on{animation:fromL var(--t2) var(--ease)}
+#sendov{position:fixed;inset:0;z-index:18;background:var(--surf1);display:grid;place-items:center;padding:24px;animation:fade var(--t2) var(--ease)}
+.sendbox{display:grid;gap:24px;justify-items:center;width:min(420px,100%)}
+.sendbox h2{font:400 24px/32px Inter,sans-serif}
+.sendbox ol{list-style:none;margin:0;padding:0;display:grid;gap:12px;width:100%}
+.sendbox li{display:flex;align-items:center;gap:12px;color:var(--ink2);transition:color var(--t1) var(--ease)}
+.sendbox li.run,.sendbox li.ok{color:var(--ink)}
+.sendbox li.run .marker{border-color:transparent}.sendbox li.run .marker svg{width:20px;height:20px}
+.sendbox li.ok .marker{background:var(--ok);border-color:var(--ok);animation:pop var(--t2) var(--pop)}
+.paper{width:96px;height:124px;background:var(--bg);box-shadow:0 2px 12px rgba(0,0,0,.1);padding:16px 14px;display:grid;gap:10px;align-content:start;transition:transform var(--t3) var(--ease),opacity var(--t3) var(--ease)}
+.paper i{display:block;height:6px;border-radius:3px;background:var(--line2);transform:scaleX(0);transform-origin:left;transition:transform 420ms var(--ease)}
+.paper i:nth-child(1){width:60%}.paper i.on{transform:none;background:var(--blue-dis)}
+.paper.go{transform:translateY(-16px) scale(.94);opacity:.5}
+.flags{background:var(--warn-bg);border-radius:var(--r-lg);padding:12px 16px;display:grid;gap:8px}.flags strong,.flags b{font-weight:500}
+/* page transitions: header, body and footer move separately; the letter stays put */
+header{view-transition-name:hdr}main{view-transition-name:body}footer{view-transition-name:foot}.letter{view-transition-name:letter}.dlg-body .letter{view-transition-name:none}
+::view-transition-group(*){animation-duration:var(--t2);animation-timing-function:var(--ease)}
+::view-transition-old(*),::view-transition-new(*){animation-duration:var(--t2);animation-timing-function:var(--ease)}
+html[data-vt=fwd]::view-transition-old(body){animation-name:toL}html[data-vt=fwd]::view-transition-new(body){animation-name:fromR}
+html[data-vt=back]::view-transition-old(body){animation-name:toR}html[data-vt=back]::view-transition-new(body){animation-name:fromL}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after,::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="sr" id="live" aria-live="polite" aria-atomic="true"></div>
+<div class="sr" id="alert" aria-live="assertive" aria-atomic="true"></div>
+<dialog id="dlg" aria-label="Offer letter preview"><div class="dlg"><div class="dlg-top"><strong>Exactly what the candidate will get</strong><button class="btn" id="dlgclose">Close</button></div><div class="dlg-body" id="dlgbody"></div></div></dialog>
+<details class="tools"><summary>Prototype tools</summary><div class="box">
+  <button data-tool="gaps">Fill sample, leave 3 to fix</button>
+  <button data-tool="all">Fill everything</button>
+  <button data-tool="contractless">Reset to blank</button>
+  <label><input type="checkbox" id="failnext"> Make the next send fail</label>
+  <span class="hint">Dummy data. Dates are relative to today.</span>
+</div></details>
+
+<script>
+const TODAY=(()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);})();
+const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+const ALERT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>';
+const INFO='<svg viewBox="0 0 24 24" fill="none" stroke="#595961" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>';
+const CHEV='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+const SPIN='<svg class="spin" viewBox="0 0 24 24" fill="none" stroke="#595961" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.2-8.6"/></svg>';
+const LOGO='<svg class="logo" viewBox="0 0 39 40" aria-hidden="true"><path fill="#1A1A1A" d="M23.0102 16.8088L37.9008 1.044C38.2734 0.6496 37.9942 0 37.4522 0H19.531C19.3654 0 19.2066 0.0665976 19.0906 0.184998L0.178423 19.4544C-0.205577 19.8458 0.0712226 20.507 0.618823 20.507H15.9848C16.667 20.507 17.22 21.061 17.22 21.7444V39.38C17.22 39.926 17.8746 40.2044 18.2666 39.8252L38.81 19.9608C39.2098 19.5744 38.9366 18.897 38.3812 18.897H23.9076C22.8234 18.897 22.2652 17.5978 23.0102 16.8088Z"/></svg>';
+const SENDERS={'Sam Patel':['Head of People','sam.patel@example.com'],'Jordan Lee':['Engineering Manager','jordan.lee@example.com']};
+const TERMS={
+  flsa:['FLSA classification','Whether this person is eligible for overtime pay.','Exempt: not eligible for overtime.\nNon-exempt: eligible for overtime.'],
+  i9:['I-9','Verifies identity and eligibility to work in the US.','Employees generally need one. Contractors do not.'],
+  payroll:['Payroll group','The pay schedule and setup this person joins.','[Placeholder: confirm the meaning with Bolto]'],
+  invite:['Automatic invitation','Invites them to Bolto once they sign, so they can start onboarding.','On by default.']
+};
+const blank=()=>({first:'',last:'',email:'',title:'',emp:'',start:'',manager:'',location:'',workplace:'',dept:'',pay:'Salary',amount:'',bonus:'',terms:'',equity:'',expiry:'',sender:'Sam Patel',payroll:'',flsa:'',i9:'',invite:true,note:''});
+const F={
+  first:{l:'First name',g:'candidate'},last:{l:'Last name',g:'candidate'},email:{l:'Email',g:'candidate',t:'email'},title:{l:'Job title',g:'candidate'},
+  emp:{l:'Employment type',g:'candidate',t:'radio',o:['Full-time','Part-time']},start:{l:'Start date',g:'candidate',t:'date'},
+  manager:{l:'Reports to',g:'candidate',t:'select',o:['Jordan Lee','Sam Patel']},location:{l:'Work location',g:'candidate',t:'radio',o:['Remote','Hybrid','On-site']},
+  workplace:{l:'Workplace',g:'candidate',t:'select',o:['New York office','San Francisco office'],show:()=>S.f.location&&S.f.location!=='Remote'},
+  dept:{l:'Department',g:'candidate',t:'select',o:['Engineering','Design','Sales','Operations'],opt:1},
+  pay:{l:'Pay rate',g:'comp',t:'radio',o:['Salary','Hourly']},amount:{l:()=>S.f.pay==='Hourly'?'Hourly rate':'Annual salary',g:'comp',t:'money'},
+  bonus:{l:'Signing bonus',g:'comp',t:'money',opt:1,show:()=>S.bonusOn},terms:{l:'Bonus terms',g:'comp',opt:1,show:()=>S.bonusOn},
+  equity:{l:'Equity',g:'comp',opt:1,show:()=>S.equityOn},
+  expiry:{l:'Offer expires',g:'terms',t:'date'},sender:{l:'Sender',g:'terms',t:'select',o:Object.keys(SENDERS)},
+  payroll:{l:'Payroll group',g:'hire',t:'select',o:['US Salaried','US Hourly'],term:'payroll'},flsa:{l:'FLSA classification',g:'hire',t:'radio',o:['Exempt','Non-exempt'],term:'flsa'},
+  i9:{l:'I-9',g:'hire',t:'radio',o:['Required','Not required'],term:'i9'}
+};
+const GROUPS={candidate:{t:'Candidate and role',k:['first','last','email','title','emp','start','manager','location','workplace','dept']},comp:{t:'Compensation',k:['pay','amount','bonus','terms','equity']},terms:{t:'Offer terms and sender',k:['expiry','sender']}};
+const HIRE=['payroll','flsa','i9'];const OFFER=[...GROUPS.candidate.k,...GROUPS.comp.k,...GROUPS.terms.k];
+let S;
+const RM=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ORDER={offer:0,hire:1,review:2,sent:3};
+function vt(kind,fn){if(!document.startViewTransition||RM()){fn();return;}document.documentElement.dataset.vt=kind;const t=document.startViewTransition(fn);t.finished.finally(()=>{delete document.documentElement.dataset.vt;});}
+const lastSlot={},lastStep={};
+function reset(){S={step:'offer',open:'candidate',visited:{offer:true,hire:false,review:false},seen:{candidate:true},touched:{},f:blank(),bonusOn:false,equityOn:false,noteOn:false,focus:null,read:{},enter:null,help:'flsa',sending:false,failed:false,mi:0};}
+reset();
+const $=s=>document.querySelector(s);const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const label=k=>typeof F[k].l==='function'?F[k].l():F[k].l;
+const shown=k=>!F[k].show||!!F[k].show();
+const fmt=d=>{if(!d)return'';const[y,m,day]=d.split('-').map(Number);return new Date(Date.UTC(y,m-1,day)).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});};
+const addDays=(d,n)=>{const t=new Date(d+'T00:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10);};
+function err(k){const v=S.f[k],d=F[k];if(!shown(k))return'';
+  if(!v){if(d.opt)return'';const verb=d.t==='radio'||d.t==='select'?'Choose':'Enter';const n=label(k);const name=/^[A-Z]{2}|I-9/.test(n)?n:n.charAt(0).toLowerCase()+n.slice(1);return d.t==='date'?`Choose a date for ${name.toLowerCase()}.`:`${verb} ${/^[aeiou]/i.test(name)?'an':'a'} ${name}.`;}
+  if(k==='email'){if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)||/\.\./.test(v))return'Enter a valid email, like name@example.com.';if(mailFix(v)&&S.keepMail!==v)return'typo';}
+  if(F[k].t==='money'){const p=parseMoney(v);if(p.e)return p.e;}
+  if(k==='start'&&v<=TODAY)return'Choose a start date after today.';
+  if(k==='expiry'){if(v<=TODAY)return'Choose an expiry date after today.';if(S.f.start&&v>S.f.start)return'Set the expiry on or before the start date.';}
+  return'';}
+function soft(k){if(!F[k]||!shown(k)||err(k)||!S.f[k])return null;const f=S.f,hr=f.pay==='Hourly';
+  if(F[k].t==='money'){const n=num(f[k]);
+    if(k==='amount'){if(!hr&&n<1000)return{m:'This looks like an hourly rate.',a:'Switch to hourly'};if(hr&&n>=1000)return{m:'This looks like a salary.',a:'Switch to salary'};if(!hr&&n<30000)return{m:'Check this amount. It looks low for a full-time salary.'};if(!hr&&n>=1000000)return{m:'Check this amount. It looks high for a salary.'};if(hr&&n<10)return{m:'Check this amount. It looks low for an hourly rate.'};}
+    if(k==='bonus'&&!hr&&f.amount&&!err('amount')&&n>num(f.amount))return{m:'Check this amount. It is higher than the annual salary.'};return null;}
+  if(k==='terms'&&!f.bonus)return{m:'Add the bonus amount, or remove these terms.'};
+  if(k==='start'){const w=weekday(f.start);if(w==='Saturday'||w==='Sunday')return{m:`This start date is a ${w}.`};if(dayDiff(TODAY,f.start)>365)return{m:'This start date is over a year away. Check the year.'};}
+  if(k==='expiry'&&dayDiff(TODAY,f.expiry)<3)return{m:'This gives the candidate less than 3 days to decide.'};
+  if(k==='flsa'&&hr&&f.flsa==='Exempt')return{m:'Hourly roles are usually non-exempt. Check with whoever runs your payroll.'};
+  if(k==='payroll'&&((hr&&f.payroll==='US Salaried')||(!hr&&f.payroll==='US Hourly')))return{m:`This group does not match the ${hr?'hourly':'salaried'} pay rate.`};
+  return null;}
+const dayDiff=(a,b)=>Math.round((new Date(b+'T00:00:00Z')-new Date(a+'T00:00:00Z'))/864e5);
+const weekday=d=>new Date(d+'T00:00:00Z').toLocaleDateString('en-US',{weekday:'long',timeZone:'UTC'});
+function mailFix(v){const m=String(v).toLowerCase().match(/^([^@\s]+)@(.+)$/);if(!m)return'';const map={'gmial.com':'gmail.com','gamil.com':'gmail.com','gmai.com':'gmail.com','gmail.co':'gmail.com','hotmial.com':'hotmail.com','yahooo.com':'yahoo.com','yaho.com':'yahoo.com','outlok.com':'outlook.com','iclod.com':'icloud.com'};let d=map[m[2]]||m[2];d=d.replace(/\.(con|cmo|ocm|vom|comm)$/,'.com');return d!==m[2]?m[1]+'@'+d:'';}
+const leftOf=keys=>keys.filter(k=>shown(k)&&!F[k].opt&&err(k)).length;
+const leftAll=()=>leftOf(OFFER)+leftOf(HIRE);
+const money=v=>v?'$'+v:'';
+const group=i=>String(i).replace(/^0+(?=\d)/,'').replace(/\B(?=(\d{3})+(?!\d))/g,',');
+const num=v=>+String(v).replace(/,/g,'');
+function parseMoney(raw){let s=String(raw).trim().replace(/^usd\s*/i,'').replace(/\s*usd$/i,'').replace(/^\$\s*/,'').replace(/\s*(\/|a|per)\s*(year|yr|hour|hr)$/i,'').replace(/\s+/g,'');
+  if(!s)return{v:''};if(/^-/.test(s))return{e:'Enter an amount above $0.'};
+  let scale=1;const m=s.match(/^([\d,]*\.?\d*)([km])$/i);if(m){s=m[1];scale=m[2].toLowerCase()==='k'?1e3:1e6;}
+  const eg=S.f.pay==='Hourly'?'95':'150,000';
+  if(!/\d/.test(s)||!/^[\d,]*\.?\d*$/.test(s))return{e:`Enter an amount, like ${eg}.`};
+  const[i,d='']=s.split('.');const int=i.replace(/,/g,'')||'0';
+  if(scale===1&&d.length===3){const fix=group(int+d);return{e:`Check the decimal point. Did you mean ${fix}?`,fix};}
+  if(scale===1&&d.length>3)return{e:'Use up to 2 decimal places.'};
+  const n=Math.round(parseFloat(int+'.'+(d||'0'))*scale*100)/100;if(!(n>0))return{e:'Enter an amount above $0.'};
+  const whole=Math.floor(n),c=Math.round((n-whole)*100);return{v:group(whole)+(c?'.'+String(c).padStart(2,'0'):''),scaled:scale!==1};}
+
+/* letter */
+function slot(k,ph,text,mode){const has=!!text&&!err(k);if(mode==='clean'&&has)return esc(text);if(mode==='fix'&&has)return esc(text);
+  const key=k+ph,val=has?text:'';const chg=mode==='live'&&has&&lastSlot[key]!==undefined&&lastSlot[key]!==val;if(mode==='live')lastSlot[key]=val;const cls=(has?'':'missing')+(chg?' changed':'');const act=S.focus===k?' active':'';return `<button type="button" class="slot ${cls}${act}" data-go="${k}" aria-label="${esc(label(k))}: ${has?esc(text):'missing'}. Go to field">${esc(has?text:ph)}</button>`;}
+function letterHTML(mode){const f=S.f,s=(k,ph,t)=>slot(k,ph,t,mode);const cand=[f.first,f.last].filter(Boolean).join(' ');const sender=SENDERS[f.sender]||['',''];
+  const nameSlot=(f.first||f.last)?s('first','Candidate name',cand):s('first','Candidate name','');
+  const where=f.location==='Remote'?'remote':(f.location?f.location.toLowerCase():'');
+  let pay=f.pay==='Hourly'?`Your hourly rate will be ${s('amount','Hourly rate',money(f.amount))}, paid on the regular payroll schedule.`:`Your annual salary will be ${s('amount','Annual salary',money(f.amount))}, paid on the regular payroll schedule.`;
+  if(S.bonusOn&&f.bonus)pay+=` You will also receive a signing bonus of ${s('bonus','Signing bonus',money(f.bonus))}${f.terms?`, ${s('terms','Bonus terms',f.terms.charAt(0).toLowerCase()+f.terms.slice(1))}`:''}.`;
+  if(S.equityOn&&f.equity)pay+=` You will also be granted ${s('equity','Equity',f.equity)}.`;
+  return `<div class="lhead"><div class="lmark"></div><b>Northwind Labs</b><span>${fmt(TODAY)}</span></div>
+  <p>${nameSlot}<br>${s('email','Candidate email',f.email)}</p><h2>Offer of employment</h2>
+  <p>Dear ${s('first','First name',f.first)},</p>
+  <p>We're pleased to offer you the position of ${s('title','Job title',f.title)}, reporting to ${s('manager','Manager',f.manager)}. This is a ${s('emp','Employment type',f.emp.toLowerCase())}, ${s('location','Work location',where)} role starting on ${s('start','Start date',fmt(f.start))}.</p>
+  <p>${pay}</p><p>This offer expires on ${s('expiry','Offer expiry date',fmt(f.expiry))}. To accept, sign electronically by that date.</p>
+  <p>Sincerely,</p><p>${s('sender','Sender name',f.sender)}<br>${s('sender','Sender title',sender[0])}</p>`;}
+
+/* fields */
+function fieldHTML(k){const d=F[k];if(!shown(k))return'';const id='f-'+k,v=S.f[k],e=S.touched[k]?err(k):'',req=d.opt?'':' aria-required="true"',lab=esc(label(k))+(d.opt?' <span class="opt">(optional)</span>':'');
+  const tip=d.term?`<button type="button" class="info" aria-label="What is ${esc(TERMS[d.term][0])}?">${INFO}<span class="tip" role="tooltip">${esc(TERMS[d.term][1])}</span></button>`:'';
+  const msg=`<div class="msg" id="${id}-m">${msgHTML(k)}</div>`;const aria=`aria-describedby="${id}-m"${e?' aria-invalid="true"':''}`;const filled=v?' filled':'';
+  let ctl;
+  if(d.t==='radio')return `<fieldset class="field${e?' bad':''}" data-f="${k}"${d.opt?'':' aria-required="true"'} aria-describedby="${id}-m"><legend class="label">${lab}${tip}</legend><div class="radios">${d.o.map(o=>`<label class="radio"><span>${o}</span><input type="radio" name="${k}" id="${id}-${o.replace(/\W/g,'')}" value="${o}" data-k="${k}"${v===o?' checked':''}></label>`).join('')}</div>${k==='flsa'?flsaHint():''}${msg}</fieldset>`;
+  if(d.t==='select')ctl=`<select class="in${filled}" id="${id}" data-k="${k}"${req} ${aria}><option value="">${d.opt?'None':'Choose'}</option>${d.o.map(o=>`<option${v===o?' selected':''}>${o}</option>`).join('')}</select>`;
+  else if(d.t==='date')ctl=`<input class="in${filled}" type="date" id="${id}" data-k="${k}" value="${v}" min="${addDays(TODAY,1)}"${req} ${aria}>`;
+  else if(d.t==='money')ctl=`<div class="money"><span aria-hidden="true">$</span><input class="in${filled}" id="${id}" data-k="${k}" inputmode="decimal" autocomplete="off" value="${esc(v)}"${req} ${aria}>${k==='amount'?`<span class="per" aria-hidden="true">${S.f.pay==='Hourly'?'an hour':'a year'}</span>`:''}</div>`;
+  else ctl=`<input class="in${filled}" type="${d.t==='email'?'email':'text'}" id="${id}" data-k="${k}" autocomplete="off" value="${esc(v)}"${req} ${aria}>`;
+  let extra='';
+  if(k==='expiry')extra=`<div class="quick" role="group" aria-label="Quick expiry dates">${[[7,'In 7 days'],[14,'In 14 days']].map(([n,t])=>`<button type="button" data-quick="${n}">${t}</button>`).join('')}</div>`;
+  if(k==='sender'&&SENDERS[v])extra=`<div class="sender-meta">${esc(SENDERS[v][0])}, ${esc(SENDERS[v][1])}</div>`;
+  return `<div class="field${e?' bad':''}${S.enter===k?' enter':''}" data-f="${k}"><div class="label"><label for="${id}">${lab}</label>${tip}</div>${ctl}${extra}${msg}</div>`;}
+function flsaHint(){return S.f.pay==='Hourly'&&!S.f.flsa?'<div class="hint">Hourly roles are usually non-exempt. Check with whoever runs your payroll.</div>':'';}
+function msgHTML(k){const e=S.touched[k]?err(k):'';if(e==='typo'){const fixed=mailFix(S.f.email);return ALERT+`<span>Check the ending. Did you mean ${esc(fixed.split('@')[1])}? <button type="button" data-fixmail="${esc(fixed)}">Use it</button> <button type="button" data-keepmail>Keep as typed</button></span>`;}
+  if(e){const p=F[k].t==='money'?parseMoney(S.f[k]):{};return ALERT+`<span>${esc(e)}${p.fix?` <button type="button" data-fixmoney="${k}" data-v="${esc(p.fix)}">Use it</button>`:''}</span>`;}
+  const s=S.touched[k]?soft(k):null;if(s)return ALERT+`<span>${esc(s.m)}${s.a?` <button type="button" data-switchpay>${esc(s.a)}</button>`:''}</span>`;
+  if(k==='expiry'&&S.f.expiry&&!err('expiry')){const n=dayDiff(TODAY,S.f.expiry);return `<span class="hint">Expires in ${n} ${n===1?'day':'days'}, on a ${weekday(S.f.expiry)}.</span>`;}return S.read[k]?`<span class="hint">${esc(S.read[k])}</span>`:'';}
+function refreshField(k){const w=document.querySelector(`[data-f="${k}"]`);if(!w)return;const e=S.touched[k]?err(k):'';w.classList.toggle('bad',!!e);const m=$(`#f-${k}-m`);if(m){m.innerHTML=msgHTML(k);m.classList.toggle('soft',!e);}const i=w.querySelector('[data-k]');if(i&&F[k].t!=='radio'){if(e)i.setAttribute('aria-invalid','true');else i.removeAttribute('aria-invalid');i.classList.toggle('filled',!!S.f[k]);}}
+
+/* groups */
+function pairs(rows){return `<dl class="gsum">${rows.filter(r=>r[1]).map(([a,b])=>`<div class="pair"><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join('')}</dl>`;}
+function sumRows(g){const f=S.f;if(g==='candidate')return[['Name',[f.first,f.last].filter(Boolean).join(' ')],['Email',f.email],['Role',f.title],['Type',[f.emp,f.location&&f.location.toLowerCase()].filter(Boolean).join(', ')],['Workplace',shown('workplace')?f.workplace:''],['Starts',fmt(f.start)],['Reports to',f.manager],['Department',f.dept]];
+  if(g==='comp')return[[f.pay==='Hourly'?'Rate':'Salary',f.amount?`$${f.amount} ${f.pay==='Hourly'?'an hour':'a year'}`:''],['Bonus',S.bonusOn&&money(f.bonus)],['Bonus terms',S.bonusOn&&f.terms],['Equity',S.equityOn&&f.equity]];
+  if(g==='terms')return[['Expires',fmt(f.expiry)],['From',f.sender&&`${f.sender}, ${(SENDERS[f.sender]||[''])[0]}`],['Sender email',(SENDERS[f.sender]||['',''])[1]]];
+  return[['Payroll group',f.payroll],['FLSA',f.flsa],['I-9',f.i9],['Invite to Bolto',f.invite?'On':'Off']];}
+function gState(g){const n=leftOf(GROUPS[g].k);const open=S.open===g;if(!S.seen[g])return{t:'Not started'};if(n===0)return{t:'Complete',done:true};return{t:`${n} left`,red:!open};}
+function groupHTML(g){const o=S.open===g,st=gState(g),G=GROUPS[g];const body=o?`<div class="gbody" id="b-${g}">${bodyHTML(g)}</div>`:(st.done||(S.seen[g]&&sumRows(g).some(r=>r[1]))?pairs(sumRows(g)):'');
+  return `<section class="group${o?' open':''}" data-g="${g}" style="view-transition-name:g-${g}"><h2 style="font:inherit"><button type="button" class="ghead" data-toggle="${g}" aria-expanded="${o}">${st.done?`<span class="tick">${CHECK}</span>`:''}<span class="t">${G.t}</span><span class="s${st.red?' red':''}" id="gs-${g}">${st.t}</span>${CHEV}</button></h2>${body}</section>`;}
+function bodyHTML(g){const h=fieldHTML;
+  if(g==='candidate')return `<div class="row2">${h('first')}${h('last')}</div>${h('email')}${h('title')}${h('emp')}${h('start')}${h('manager')}${h('location')}${h('workplace')}${h('dept')}`;
+  if(g==='comp')return `${h('pay')}${h('amount')}${S.bonusOn?`<div class="row2${S.enter==='bonus'?' enter':''}">${h('bonus')}${h('terms')}</div>`:`<div class="field"><button type="button" class="link" data-add="bonus">Add signing bonus</button></div>`}${S.equityOn?h('equity'):`<div class="field"><button type="button" class="link" data-add="equity">Add equity</button></div>`}`;
+  return `${h('expiry')}${h('sender')}`;}
+
+/* header + footer */
+function stepState(id){const keys=id==='offer'?OFFER:HIRE;if(id==='review'){if(S.step==='sent')return{c:'done'};if(S.step==='review')return{c:'current',sub:leftAll()?'':'Ready to send'};return{c:''};}
+  const n=leftOf(keys);if(S.step==='sent')return{c:'done'};if(S.step===id)return{c:'current',sub:n?`${n} left`:''};if(!S.visited[id])return{c:''};return n?{c:'gaps',sub:`${n} left`}:{c:'done'};}
+function stepsHTML(){return `<nav class="steps" aria-label="Offer steps"><ol>${[['offer','Offer',1],['hire','Hire setup',2],['review','Review',3]].map(([id,n,i])=>{const s=stepState(id);const pop=s.c==='done'&&lastStep[id]&&lastStep[id]!=='done'?' pop':'';lastStep[id]=s.c||'todo';return `<li><button type="button" class="step ${s.c}${pop}" data-step="${id}"${s.c==='current'?' aria-current="step"':''}${S.step==='sent'?' disabled':''}><span class="marker">${s.c==='done'?`<span style="width:16px;height:16px;display:block">${CHECK}</span>`:i}</span><span class="txt"><span class="name">${n}</span>${s.sub?`<span class="sub">${s.sub}</span>`:''}</span></button></li>`;}).join('')}</ol></nav>`;}
+function tagHTML(){if(S.step==='sent')return'<span class="tag sent">sent</span>';return leftAll()?'<span class="tag draft">draft</span>':'<span class="tag ready">ready to send</span>';}
+function docTitle(){const n=[S.f.first,S.f.last].filter(Boolean).join(' ');return n?`Offer for ${n}`:'New offer';}
+function docSub(){return ['Standard employee offer letter',S.f.title].filter(Boolean).join(', ');}
+function headerHTML(){return `${LOGO}<div class="docwrap"><h1 class="doc" id="doct">${esc(docTitle())}</h1><p class="docsub" id="docs">${esc(docSub())}</p></div><span id="tag">${tagHTML()}</span>${stepsHTML()}<div class="save" id="save" role="status">${saveHTML()}</div>`;}
+let saveState='idle',savedAt=null;
+function saveHTML(){if(saveState==='saving')return SPIN+'Saving...';if(saveState==='saved')return `<span class="tick">${CHECK}</span>Saved`;return savedAt?'Last saved just now':'Not saved yet';}
+function markDirty(){saveState='saving';paintSave();clearTimeout(markDirty.t);markDirty.t=setTimeout(()=>{saveState='saved';savedAt=Date.now();paintSave();markDirty.t=setTimeout(()=>{saveState='idle';paintSave();},2500);},600);}
+function paintSave(){const e=$('#save');if(e)e.innerHTML=saveHTML();}
+function footerHTML(){const n=leftAll();
+  if(S.step==='offer')return `<div class="right"><button class="btn" data-act="draft">Save as draft</button><button class="btn p" data-step="hire">Continue to hire setup</button></div>`;
+  if(S.step==='hire')return `<div class="right"><button class="btn" data-act="draft">Save as draft</button><button class="btn" data-step="offer">Back to offer</button><button class="btn p" data-step="review">Continue to review</button></div>`;
+  if(S.step==='review'){if(S.sending)return `<span class="say" style="display:flex;gap:6px;align-items:center"><span style="width:20px;height:20px;display:block">${SPIN}</span>Sending...</span><div class="right"><button class="btn" aria-disabled="true">Send offer letter</button></div>`;
+    if(S.failed)return `<span class="say red">Couldn't send. Your work is saved.</span><div class="right"><button class="btn p" data-act="send">Try again</button></div>`;
+    if(n)return `<span class="say red" id="fixsay">Fix ${n} ${n===1?'item':'items'} to send this offer</span><div class="right"><button class="btn" data-act="draft">Save as draft</button><button class="btn" aria-disabled="true" aria-describedby="fixsay" data-act="blocked">Send offer letter</button></div>`;
+    return `<span class="say">Ready to send to ${esc(S.f.first)} ${esc(S.f.last)}</span><div class="right"><button class="btn" data-act="draft">Save as draft</button><button class="btn p${S.arm?' arm':''}" data-act="send">Send offer letter</button></div>`;}
+  return'';}
+
+/* views */
+function dockHead(){return `<div class="dock-head"><div class="r"><strong id="dk-t"></strong><span id="dk-l"></span></div><div class="bar" aria-hidden="true"><i id="dk-b"></i></div></div>`;}
+function dockActs(){return `<div class="dock-acts"><button class="btn sp" data-act="draft">Save</button><button class="btn" data-dock="-1">Back</button><button class="btn p" data-dock="1">Next</button></div>`;}
+function viewOffer(){return `<main class="docked"><div class="panel">${dockHead()}<p class="note">All fields are required unless marked optional.</p><div id="groups" style="display:grid;gap:8px">${Object.keys(GROUPS).map(groupHTML).join('')}</div>${dockActs()}</div><section class="preview" aria-label="Live letter preview"><div class="preview-head"><strong>Live preview</strong><span>Select a highlighted item to go to its field</span></div><div class="letter" id="letter">${letterHTML('live')}</div></section></main>`;}
+function helpHTML(){const t=TERMS[S.help]||TERMS.flsa;return `<aside class="help" aria-label="Help"><p class="sec mob">Not in the letter</p><h2>${esc(t[0])}</h2><p>${esc(t[1])}</p><p class="sec" style="white-space:pre-line">${esc(t[2])}</p><p class="sec">Not sure? Save this as a draft and check with whoever runs your payroll.</p><button class="link mob" data-act="letter">View letter</button></aside>`;}
+function viewHire(){return `<main class="hire docked"><div class="panel hirepanel">${dockHead()}<div class="top"><h2>Hire setup</h2><button class="link" data-act="letter">View letter</button></div><p class="sec sub-intro">Used to set ${esc(S.f.first||'them')} up in Bolto once they sign. None of this appears in the letter.</p>${fieldHTML('payroll')}${fieldHTML('flsa')}${fieldHTML('i9')}<div class="field" data-f="invite"><label class="toggle"><span>Automatically invite to Bolto</span><input type="checkbox" role="switch" data-k="invite"${S.f.invite?' checked':''}></label></div>${dockActs()}</div><div id="helpwrap" style="display:contents">${helpHTML()}</div></main>`;}
+function fixList(){return [...OFFER,...HIRE].filter(k=>shown(k)&&!F[k].opt&&err(k));}
+function noteHTML(){return S.noteOn?`<div class="field"><label class="label" for="f-note">Personal note <span class="opt">(optional)</span></label><textarea class="in" style="height:88px;padding:10px 12px" id="f-note" data-note>${esc(S.f.note)}</textarea><span class="hint">Added to the email, above the e-signature request.</span></div>`:`<button class="link" data-act="note">Add a personal note</button>`;}
+function viewReview(){const fix=S.fix||[];const n=leftAll();
+  const list=n?`<h2 class="h20" id="revh" tabindex="-1">${n} ${n===1?'item':'items'} to fix</h2><div style="display:grid;gap:16px">${fix.map(fieldHTML).join('')}</div>`:`<h2 class="h20" id="revh" tabindex="-1">Everything looks ready</h2>`;
+  const flags=n?[]:[...OFFER,...HIRE].filter(k=>soft(k));const flagHTML=flags.length?`<section class="flags" aria-label="Worth a second look"><strong>Worth a second look</strong>${flags.map(k=>`<div><b>${esc(label(k))}</b> ${esc(soft(k).m)} <button class="link" data-go="${k}">Go to field</button></div>`).join('')}</section>`:'';
+  const sums=[['Candidate and role','candidate'],['Compensation','comp'],['Offer terms and sender','terms'],['Hire setup','hire']].map(([t,g])=>{const keys=g==='hire'?HIRE:GROUPS[g].k;if(leftOf(keys))return'';return `<section class="group"><div class="ghead" style="cursor:default"><span class="tick">${CHECK}</span><span class="t">${t}</span></div>${pairs(sumRows(g))}</section>`;}).join('');
+  return `<main class="review"><div class="panel">${list}${flagHTML}${sums}${noteHTML()}</div><section class="preview" aria-label="Letter preview"><div class="preview-head"><strong>Exactly what ${esc(S.f.first||'the candidate')} will get</strong></div>${S.noteOn&&S.f.note?`<div class="mailnote"><b>Your note in the email</b>${esc(S.f.note)}</div>`:''}<div class="letter" id="letter">${letterHTML(n?'fix':'clean')}</div></section></main>`;}
+function viewSent(){const name=`${S.f.first} ${S.f.last}`;return `<main style="display:flex"><section class="sentpage" style="flex:1"><div class="bigtick"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div><h2 tabindex="-1" id="senth">Offer sent to ${esc(name)}</h2><p class="lead">${esc(S.f.first)} will get an e-signature request at ${esc(S.f.email)}. The offer expires ${fmt(S.f.expiry)}.</p><div class="next"><strong>What happens next</strong><div class="nrow on"><span class="marker"><span style="width:16px;height:16px;display:block">${CHECK}</span></span><span><b>Sent</b><small>Just now</small></span></div><div class="nrow"><span class="marker"></span><span><b>Viewed</b><small>When ${esc(S.f.first)} opens it</small></span></div><div class="nrow"><span class="marker"></span><span><b>Signed</b><small>${S.f.invite?`${esc(S.f.first)} is then invited to Bolto automatically`:'The offer is complete'}</small></span></div></div><div class="acts"><button class="btn" data-act="again">Create another offer</button><button class="btn p" data-act="list">View offer letters</button></div></section></main>`;}
+function render(){const v={offer:viewOffer,hire:viewHire,review:viewReview,sent:viewSent}[S.step]();const sent=S.step==='sent';$('#app').classList.toggle('sentview',sent);$('#app').innerHTML=sent?v:`<header>${headerHTML()}</header>${v}<footer>${footerHTML()}</footer>`;applyDock();S.enter=null;}
+let pointerDown=false,pending=false;
+function focusMark(){const a=document.activeElement;if(!a||!a.dataset)return null;if(a.classList.contains('slot'))return {slot:[...document.querySelectorAll('#letter .slot')].indexOf(a)};if(a.dataset.step)return {sel:`nav.steps [data-step="${a.dataset.step}"]`};if(a.closest&&a.closest('footer')&&a.dataset.act)return {sel:`footer [data-act="${a.dataset.act}"]`};return null;}
+function focusBack(m){if(!m)return;const e=m.sel?document.querySelector(m.sel):document.querySelectorAll('#letter .slot')[m.slot];if(e)e.focus({preventScroll:true});}
+function paintLetter(){const l=$('#letter');if(!l)return;if(pointerDown){pending=true;return;}const m=focusMark();if(S.step==='offer')l.innerHTML=letterHTML('live');if(S.step==='review')l.innerHTML=letterHTML(leftAll()?'fix':'clean');focusBack(m);}
+function updateLive(){if(pointerDown){pending=true;return;}const m=focusMark();const l=$('#letter');if(l&&S.step==='offer')l.innerHTML=letterHTML('live');if(l&&S.step==='review')l.innerHTML=letterHTML(leftAll()?'fix':'clean');const n=$('nav.steps');if(n)n.outerHTML=stepsHTML();const t=$('#tag');if(t)t.innerHTML=tagHTML();const dt=$('#doct');if(dt){dt.textContent=docTitle();$('#docs').textContent=docSub();document.title=docTitle();}for(const g of Object.keys(GROUPS)){const e=$('#gs-'+g);if(e){const s=gState(g);e.textContent=s.t;e.classList.toggle('red',!!s.red);}}if(S.step==='review'){const f=$('footer');if(f&&!S.sending&&!S.failed)f.innerHTML=footerHTML();const h=$('#revh');const c=leftAll();if(h&&c)h.textContent=`${c} ${c===1?'item':'items'} to fix`;}applyDock(true);focusBack(m);}
+document.addEventListener('pointerdown',()=>{pointerDown=true;},true);
+document.addEventListener('pointerup',()=>{setTimeout(()=>{pointerDown=false;if(pending){pending=false;updateLive();maybeReady();}},60);},true);
+document.addEventListener('mousedown',e=>{if(e.target.closest&&e.target.closest('.slot'))e.preventDefault();});
+function say(m,loud){const e=loud?$('#alert'):$('#live');e.textContent='';setTimeout(()=>e.textContent=m,30);}
+function goStep(id){if(id===S.step)return;const kind=ORDER[id]>ORDER[S.step]?'fwd':'back';vt(kind,()=>{if(id==='review')S.fix=fixList();S.step=id;S.visited[id]=true;S.mi=0;S.failed=false;render();const h=id==='review'?$('#revh'):id==='hire'?$('.hirepanel h2'):null;if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}if(id==='offer'){const f=$('.gbody [data-k]');if(f)f.focus();}});say(id==='review'?`Review. ${leftAll()?leftAll()+' items to fix.':'Ready to send.'}`:id==='hire'?`Hire setup. ${leftOf(HIRE)} required fields left.`:`Offer. ${leftOf(OFFER)} required fields left.`);}
+function openGroup(g,focusFirst){S.open=g;S.seen[g]=true;render();if(focusFirst){const i=document.querySelector(`#b-${g} [data-k], #b-${g} button`);if(i)i.focus();}}
+function goField(k){const g=F[k].g;if(document.querySelector(`[data-f="${k}"] [data-k]`)){setDockTo(k);focusK(k,true);return;}vt(g==='hire'?'fwd':'group',()=>{if(g==='hire'){S.step='hire';S.visited.hire=true;}else{S.step='offer';S.open=g;S.seen[g]=true;}render();setDockTo(k);focusK(k,true);});}
+function focusK(k,flash){const i=document.querySelector(`[data-f="${k}"] [data-k]`);if(i){i.focus({preventScroll:true});i.scrollIntoView({block:'center',behavior:RM()?'auto':'smooth'});if(flash){const w=document.querySelector(`[data-f="${k}"]`);w.classList.remove('flash');void w.offsetWidth;w.classList.add('flash');}}}
+function rerenderKeep(k,id){render();setDockTo(k);const e=id&&document.getElementById(id);if(e)e.focus();}
+
+function placeTip(i){const t=i.querySelector('.tip');if(!t)return;const r=i.getBoundingClientRect(),w=220;t.style.left=Math.max(8,Math.min(r.left+r.width/2-w/2,innerWidth-w-8))+'px';const h=t.offsetHeight;t.style.top=(r.top-h-6<8?r.bottom+6:r.top-h-6)+'px';}
+document.addEventListener('mouseover',e=>{const i=e.target.closest&&e.target.closest('.info');if(i)placeTip(i);});
+document.addEventListener('focusin',e=>{const i=e.target.closest&&e.target.closest('.info');if(i)placeTip(i);});
+/* mobile dock */
+const mq=matchMedia('(max-width:720px)');
+function dockFields(){return [...document.querySelectorAll('main.docked .panel .field')];}
+function setDockTo(k){const i=dockFields().findIndex(f=>f.dataset.f===k);if(i>=0){S.mi=i;applyDock();}}
+function applyDock(soft){const m=document.querySelector('main.docked');if(!m)return;if(S.step==='offer'&&mq.matches&&!soft){m.querySelectorAll('.group').forEach(()=>{});const b=$('#groups');if(b&&!b.dataset.full){b.dataset.full=1;b.innerHTML=Object.keys(GROUPS).map(g=>`<section class="group"><div class="gbody">${bodyHTML(g)}</div></section>`).join('');}}
+  const fs=dockFields();if(!fs.length)return;S.mi=Math.max(0,Math.min(S.mi,fs.length-1));fs.forEach((f,i)=>f.classList.toggle('on',i===S.mi));const cur=fs[S.mi],k=cur.dataset.f;const t=$('#dk-t'),l=$('#dk-l'),b=$('#dk-b');const g=k&&F[k]?F[k].g:(cur.closest('[data-g]')||{dataset:{}}).dataset.g;if(S.step==='hire'&&mq.matches&&k){const tm=k==='invite'?'invite':F[k]&&F[k].term;if(tm&&tm!==S.help){S.help=tm;const hw=$('#helpwrap');if(hw)hw.innerHTML=helpHTML();}}if(t)t.textContent=S.step==='hire'?'Hire setup':(GROUPS[g]?GROUPS[g].t:'Compensation');if(l)l.textContent=`${leftAll()} left`;if(b)b.style.width=Math.round((S.mi+1)/fs.length*100)+'%';if(mq.matches&&k&&F[k]&&!soft){S.focus=k;paintLetter();}}
+
+/* events */
+document.addEventListener('input',e=>{const t=e.target;if(t.dataset.note!==undefined){S.f.note=t.value;return;}const k=t.dataset.k;if(!k)return;if(k==='invite'){S.f.invite=t.checked;markDirty();return;}if(t.type==='radio')return;S.f[k]=t.value.trim();if(F[k].t==='money'){delete S.read[k];liveMoney(t,k);}if(F[k].g&&GROUPS[F[k].g])S.seen[F[k].g]=true;if(S.touched[k])refreshField(k);updateLive();markDirty();});
+document.addEventListener('change',e=>{const t=e.target,k=t.dataset.k;if(t.dataset.note!==undefined){if(S.step==='review'){const f=$('.preview');}return;}if(!k)return;if(t.type==='radio'){S.f[k]=t.value;S.touched[k]=true;if(F[k].g&&GROUPS[F[k].g])S.seen[F[k].g]=true;markDirty();if(k==='location'||k==='pay'){if(k==='location')S.enter='workplace';rerenderKeep(k,t.id);return;}refreshField(k);updateLive();maybeReady();return;}if(t.tagName==='SELECT'){if(k==='payroll'){S.touched.payroll=true;}if(k==='sender'){rerenderKeep(k,t.id);return;}S.touched[k]=true;refreshField(k);updateLive();maybeReady();}if(t.type==='date'){S.touched[k]=true;refreshField(k);if(k==='start'){S.touched.expiry=S.touched.expiry||!!S.f.expiry;refreshField('expiry');}updateLive();maybeReady();}});
+function liveMoney(t,k){const raw=t.value.replace(/^\$\s*/,'');if(!/^[\d,]*\.?\d*$/.test(raw)){S.f[k]=raw.trim();return;}const caret=t.selectionStart??raw.length;const before=t.value.slice(0,caret).replace(/[^\d.]/g,'').length;const[i,...d]=raw.split('.');const ints=i.replace(/,/g,'');const out=(ints?group(ints):'')+(raw.includes('.')?'.'+d.join(''):'');t.value=out;S.f[k]=out;let c=0,n=0;while(c<out.length&&n<before){if(/[\d.]/.test(out[c]))n++;c++;}t.setSelectionRange(c,c);}
+function maybeReady(){if(S.step==='review'&&!leftAll()&&!S.readyShown){S.readyShown=true;S.arm=true;vt('group',()=>{render();S.arm=false;const h=$('#revh');if(h)h.focus({preventScroll:true});});say('Everything looks ready. You can send this offer.');}if(leftAll())S.readyShown=false;}
+document.addEventListener('focusin',e=>{const k=e.target.dataset&&e.target.dataset.k;if(k&&F[k]){S.focus=k;if(S.step==='offer'){paintLetter();const sl=$('#letter .slot.active');if(sl)sl.scrollIntoView({block:'nearest',behavior:RM()?'auto':'smooth'});}if(F[k].term&&S.step==='hire'&&S.help!==F[k].term){S.help=F[k].term;$('#helpwrap').innerHTML=helpHTML();}}else if(e.target.dataset&&e.target.dataset.k==='invite'&&S.step==='hire'){S.help='invite';$('#helpwrap').innerHTML=helpHTML();}});
+document.addEventListener('focusout',e=>{const t=e.target,k=t.dataset&&t.dataset.k;if(!k||!F[k]||t.type==='radio')return;if(F[k].t==='money'&&S.f[k]){const p=parseMoney(S.f[k]);if(p.v){if(p.scaled){S.read[k]=`Read ${S.f[k]} as $${p.v}.`;say(S.read[k]);}S.f[k]=p.v;t.value=p.v;t.classList.add('settle');}}S.touched[k]=true;refreshField(k);const m=err(k);if(m&&m!=='typo'&&S.f[k])say(m);if(m==='typo')say('Check the email ending.');setTimeout(()=>{updateLive();if(!pointerDown)maybeReady();},0);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const i=e.target.closest&&e.target.closest('.info');if(i)i.classList.add('dismissed');}if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.k&&e.target.tagName==='INPUT'&&e.target.type!=='checkbox')e.preventDefault();});
+document.addEventListener('focusout',e=>{const i=e.target.closest&&e.target.closest('.info');if(i)i.classList.remove('dismissed');});
+document.addEventListener('click',e=>{const q=s=>e.target.closest(s);let b;
+  if(b=q('[data-go]')){e.preventDefault();goField(b.dataset.go);return;}
+  if(b=q('[data-toggle]')){const g=b.dataset.toggle;vt('group',()=>{S.open=S.open===g?null:g;if(S.open)S.seen[g]=true;render();const n=document.querySelector(`[data-toggle="${g}"]`);if(n)n.focus();});return;}
+  if(b=q('[data-step]')){if(!b.disabled)goStep(b.dataset.step);return;}
+  if(b=q('[data-add]')){const a=b.dataset.add;S[a+'On']=true;S.enter=a;render();const k=a==='bonus'?'bonus':'equity';setDockTo(k);focusK(k);return;}
+  if(b=q('[data-quick]')){S.f.expiry=addDays(TODAY,+b.dataset.quick);S.touched.expiry=true;render();setDockTo('expiry');focusK('expiry');markDirty();say(`Offer expires ${fmt(S.f.expiry)}.`);return;}
+  if(b=q('[data-fixmoney]')){const k=b.dataset.fixmoney;S.f[k]=b.dataset.v;render();setDockTo(k);focusK(k);markDirty();say(`Amount set to $${S.f[k]}.`);return;}
+  if(b=q('[data-switchpay]')){S.f.pay=S.f.pay==='Hourly'?'Salary':'Hourly';render();setDockTo('amount');focusK('amount');markDirty();say(`Pay rate set to ${S.f.pay}.`);return;}
+  if(b=q('[data-keepmail]')){S.keepMail=S.f.email;refreshField('email');updateLive();say('Email kept as typed.');return;}
+  if(b=q('[data-fixmail]')){S.f.email=b.dataset.fixmail;render();focusK('email');markDirty();return;}
+  if(b=q('[data-dock]')){const d=+b.dataset.dock,fs=dockFields();const cur=fs[S.mi];const k=cur&&cur.dataset.f;if(k&&F[k]){S.touched[k]=true;refreshField(k);}const nx=S.mi+d;if(nx>=fs.length){goStep(S.step==='offer'?'hire':'review');return;}if(nx<0){if(S.step==='hire')goStep('offer');return;}const mm=document.querySelector('main.docked');if(mm)mm.dataset.dir=d;S.mi=nx;applyDock();const f=fs[S.mi].querySelector('[data-k],button');if(f)f.focus({preventScroll:true});return;}
+  if(b=q('[data-act]')){const a=b.dataset.act;
+    if(a==='draft'){markDirty();say('Draft saved.');}
+    if(a==='note'){S.noteOn=true;render();$('#f-note').focus();}
+    if(a==='letter'){$('#dlgbody').innerHTML=`<div class="letter">${letterHTML('clean')}</div>`;$('#dlg').showModal();}
+    if(a==='blocked'){const n=leftAll();say(`Fix ${n} items to send this offer.`,true);const f=document.querySelector('.panel [data-k]');if(f)f.focus();}
+    if(a==='send')send();
+    if(a==='again'){reset();savedAt=null;saveState='idle';render();}
+    if(a==='list'){say('The offer letters list is out of scope for this prototype.');b.textContent='Out of scope here';}
+    return;}
+  if(b=q('[data-tool]')){tool(b.dataset.tool);$('details.tools').open=false;}
+});
+$('#dlgclose').addEventListener('click',()=>$('#dlg').close());
+$('#failnext').addEventListener('change',e=>{S.failNext=e.target.checked;});
+function send(){if(leftAll())return;const name=S.f.first;const steps=['Checking the offer details','Preparing the letter','Creating the e-signature request',`Sending to ${name}`];const fail=$('#failnext').checked;
+  const o=document.createElement('div');o.id='sendov';o.innerHTML=`<div class="sendbox"><div class="paper" id="paper" aria-hidden="true"><i></i><i></i><i></i><i></i></div><h2 tabindex="-1" id="sendh">Sending your offer</h2><ol>${steps.map(t=>`<li><span class="marker"></span><span>${esc(t)}</span></li>`).join('')}</ol></div>`;document.body.appendChild(o);$('#app').inert=true;$('#sendh').focus({preventScroll:true});say('Sending offer.');
+  const lis=[...o.querySelectorAll('li')],lines=[...o.querySelectorAll('.paper i')],beat=RM()?260:640;let i=0;
+  const mark=j=>{lis[j].classList.add('run');lis[j].querySelector('.marker').innerHTML=SPIN;};
+  const done=j=>{lis[j].classList.remove('run');lis[j].classList.add('ok');lis[j].querySelector('.marker').innerHTML=`<span style="width:16px;height:16px;display:block">${CHECK}</span>`;lines[j].classList.add('on');};
+  const finish=()=>{$('#app').inert=false;if(fail){o.remove();$('#failnext').checked=false;S.failed=true;$('footer').innerHTML=footerHTML();say("Couldn't send. Your work is saved.",true);const t=document.querySelector('[data-act="send"]');if(t)t.focus();return;}vt('fwd',()=>{o.remove();S.step='sent';render();$('#senth').focus({preventScroll:true});});say(`Offer sent to ${S.f.first} ${S.f.last}.`,true);setTimeout(confetti,RM()?0:320);};
+  mark(0);const tick=()=>{if(fail&&i===steps.length-1){finish();return;}done(i);i++;if(i<steps.length){mark(i);setTimeout(tick,beat);}else{$('#paper').classList.add('go');setTimeout(finish,RM()?120:360);}};setTimeout(tick,beat);}
+function sample(){return {first:'Alex',last:'Rivera',email:'alex.rivera@example.com',title:'Senior full-stack engineer',emp:'Full-time',start:addDays(TODAY,28),manager:'Jordan Lee',location:'Remote',workplace:'',dept:'Engineering',pay:'Salary',amount:'150,000',bonus:'10,000',terms:'Repaid if you leave within 12 months',equity:'',expiry:addDays(TODAY,14),sender:'Sam Patel',payroll:'US Salaried',flsa:'Exempt',i9:'Required',invite:true,note:''};}
+function tool(t){if(t==='contractless'){reset();render();return;}S.f=sample();S.bonusOn=true;Object.keys(GROUPS).forEach(g=>S.seen[g]=true);if(t==='gaps'){S.f.amount='';S.f.flsa='';S.f.i9='';}S.visited.hire=true;S.fix=fixList();S.touched={};S.step='review';S.visited.review=true;render();const h=$('#revh');if(h)h.focus({preventScroll:true});say(leftAll()?`${leftAll()} items to fix.`:'Ready to send.');}
+
+/* confetti, skipped for reduced motion */
+function confetti(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=document.createElement('canvas');c.id='confetti';c.setAttribute('aria-hidden','true');document.body.appendChild(c);const x=c.getContext('2d'),d=devicePixelRatio||1;const W=innerWidth,H=innerHeight;c.width=W*d;c.height=H*d;x.scale(d,d);const col=['#2966ff','#1b873f','#f87a1a','#5283ff','#ddfdcf','#ccdbff'];const P=Array.from({length:160},(_, i)=>{const side=i%2;return{x:side?W:0,y:H*.45,vx:(side?-1:1)*(4+Math.random()*9),vy:-(7+Math.random()*9),w:6+Math.random()*6,h:8+Math.random()*8,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:col[i%col.length]};});const t0=performance.now();(function f(t){x.clearRect(0,0,W,H);for(const p of P){p.vy+=.22;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore();}if(t-t0<3200)requestAnimationFrame(f);else c.remove();})(t0);}
+mq.addEventListener('change',()=>render());
+render();
+</script>
+</body>
+</html>
