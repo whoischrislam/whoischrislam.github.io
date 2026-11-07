@@ -1,0 +1,966 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, noai, noimageai">
+<title>Village report (concept)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Baseline in the AI Village's own palette (concept, not affiliated). Visual pass is Chris's. */
+  :root {
+    --bg: #fffdf0; --panel: #fffef7; --ink: #2b2b22; --muted: #6b6b5a; --line: #dfe5c8;
+    --green: #4f7a28; --green-soft: #e3eccb; --chip: #d6e4b4; --accent: #a8541d; --note: #2f5fb3; --blank: #fff1a8;
+    --serif: "Lora", Georgia, serif; --sans: "Source Sans 3", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 var(--sans); }
+  a { color: var(--accent); }
+  button { font: inherit; color: inherit; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px 64px; }
+  header.top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 16px 0 10px; border-bottom: 1px solid var(--line); }
+  .brand { font: 600 28px/1 var(--serif); }
+  .concept { font-size: 14px; color: var(--muted); }
+  .layers { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .switch { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 6px 12px 6px 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
+  .switch .knob { width: 30px; height: 18px; border-radius: 999px; background: #cfd3bf; position: relative; transition: background .15s; }
+  .switch .knob::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform .15s; }
+  .switch[aria-pressed="true"] .knob { background: var(--note); }
+  .switch[aria-pressed="true"] .knob::after { transform: translateX(12px); }
+  h1 { font: 500 30px/1.2 var(--serif); margin: 28px 0 4px; }
+  h2 { font: 500 22px/1.3 var(--serif); margin: 0 0 12px; }
+  h3 { font: 600 17px/1.3 var(--sans); margin: 0 0 6px; }
+  .sub { color: var(--muted); font-size: 15px; }
+
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--panel); }
+  .seg button { border: 0; background: none; font: 600 14px var(--sans); color: var(--muted); padding: 6px 14px; border-radius: 999px; cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--chip); color: var(--green); }
+  .seg button:disabled { opacity: .45; cursor: not-allowed; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin: 20px 0 8px; }
+  .step { display: inline-flex; align-items: center; gap: 6px; }
+  .step button { width: 34px; height: 34px; border: 1px solid var(--line); background: var(--panel); border-radius: 8px; color: var(--green); font-size: 16px; cursor: pointer; }
+  .step button:disabled { opacity: .35; cursor: not-allowed; }
+  .period { font: 600 16px var(--sans); min-width: 12ch; }
+  .coverage { font-size: 14px; color: var(--muted); }
+
+  .goal { margin: 16px 0 28px; padding: 12px 16px; background: var(--green-soft); border-radius: 10px; font-size: 15px; }
+  .goal b { color: var(--green); font-weight: 600; }
+
+  section.block { margin: 0 0 40px; }
+  .strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .day { text-align: left; border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 14px; cursor: pointer; display: flex; flex-direction: column; gap: 8px; min-height: 150px; }
+  .strip.compact .day { min-height: 0; padding: 10px 12px; gap: 4px; }
+  .strip.compact .day .blurb { font-size: 14px; }
+  .day[aria-expanded="true"] { border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); }
+  .day .when { font-size: 14px; color: var(--green); font-weight: 600; }
+  .day .blurb { font: 500 16px/1.35 var(--serif); }
+  .day.empty { cursor: default; color: var(--muted); }
+  .detail { margin-top: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); padding: 18px 20px; }
+  .moment { display: grid; grid-template-columns: 56px 1fr; gap: 4px 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .moment:first-of-type { border-top: 0; }
+  .t { font: 600 14px var(--sans); color: var(--green); background: var(--green-soft); border-radius: 999px; text-align: center; height: 24px; line-height: 24px; }
+  .t.date { font-size: 13px; }
+  .mt { font-weight: 600; }
+  .mx { grid-column: 2; color: #44443a; font-size: 15px; }
+  .ag { color: var(--accent); font-weight: 600; }
+
+  /* Who appeared together */
+  .net { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+  .net svg { width: 100%; height: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; touch-action: manipulation; }
+  .net .edge { stroke: var(--green); stroke-linecap: round; opacity: .35; }
+  .net .edge.hl { stroke: var(--accent); opacity: .9; }
+  .net .edge.dim { opacity: .07; }
+  .net .node { cursor: pointer; }
+  .net .node circle { fill: var(--green-soft); stroke: var(--green); stroke-width: 1.5; }
+  .net .node.on circle { fill: var(--accent); stroke: var(--accent); }
+  .net .node.dim { opacity: .3; }
+  .net .node text { font: 600 12px var(--sans); fill: var(--ink); }
+  .pairs { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); padding: 14px 16px; }
+  .pair { width: 100%; text-align: left; border: 0; border-top: 1px solid var(--line); background: none; padding: 10px 0; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+  .pair:first-of-type { border-top: 0; }
+  .pair .n { color: var(--muted); font-size: 14px; white-space: nowrap; }
+  .evidence { padding: 0 0 8px; }
+  .evidence .moment { grid-template-columns: 76px 1fr; }
+
+  /* Cast */
+  .cast { list-style: none; margin: 0; padding: 0; }
+  .cast > li { border-top: 1px solid var(--line); }
+  .cast > li:first-child { border-top: 0; }
+  .row { width: 100%; border: 0; background: none; text-align: left; cursor: pointer; display: grid; grid-template-columns: minmax(0, 220px) auto 1fr 20px; align-items: center; gap: 16px; padding: 10px 0; }
+  .row .nm { font-weight: 600; }
+  .row .chev { color: var(--muted); transition: transform .15s; }
+  .row[aria-expanded="true"] .chev { transform: rotate(90deg); }
+  .dots { display: inline-flex; flex-wrap: wrap; gap: 5px; max-width: 360px; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--green); }
+  .dots.small .dot { width: 9px; height: 9px; border-width: 1px; }
+  .dot.on { background: var(--green); }
+  .row .first { color: var(--muted); font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sheet { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 28px; margin: 0 0 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); }
+  .sheet dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0; font-size: 15px; }
+  .sheet dt { color: var(--muted); }
+  .sheet dd { margin: 0; font-weight: 600; }
+  .trait { display: grid; grid-template-columns: 150px 1fr 44px; align-items: center; gap: 10px; font-size: 14px; padding: 3px 0; }
+  .bar { position: relative; height: 10px; background: #eef1e0; border-radius: 999px; }
+  .bar i { position: absolute; inset: 0 auto 0 0; background: var(--green); border-radius: 999px; }
+  .bar b { position: absolute; top: -3px; width: 2px; height: 16px; background: var(--ink); opacity: .55; }
+  .trait .pct { text-align: right; color: var(--muted); }
+  .fine { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+
+  footer.src { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  footer.src p { margin: 0 0 6px; }
+
+  /* Notes layer */
+  [data-note] { position: relative; }
+  .pin { display: none; position: absolute; top: -12px; right: -12px; z-index: 5; width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff; background: var(--note); color: #fff; font: 600 14px var(--sans); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
+  body.notes .pin { display: block; }
+  body.notes [data-note] { outline: 2px dashed rgba(47,95,179,.35); outline-offset: 6px; border-radius: 8px; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 100vw); background: #fff; border-left: 1px solid #d9dce6; box-shadow: -8px 0 24px rgba(0,0,0,.08); z-index: 20; transform: translateX(105%); transition: transform .2s; overflow-y: auto; padding: 20px 22px 40px; }
+  .drawer.open { transform: none; }
+  .drawer .close { position: absolute; top: 12px; right: 12px; border: 0; background: none; font-size: 24px; cursor: pointer; color: var(--muted); }
+  .drawer .num { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--note); color: #fff; font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+  .drawer h3 { font: 500 21px/1.3 var(--serif); margin: 0 0 12px; padding-right: 24px; }
+  .drawer dl { margin: 0; }
+  .drawer dt { font-size: 13px; font-weight: 600; color: var(--note); margin-top: 14px; }
+  .drawer dd { margin: 4px 0 0; font-size: 15px; }
+  .blank { background: var(--blank); padding: 0 3px; border-radius: 3px; }
+  .notes-index { display: none; margin: 16px 0 0; padding: 12px 16px; border: 1px solid #d9dce6; border-radius: 10px; background: #f5f7fc; font-size: 15px; }
+  body.notes .notes-index { display: block; }
+
+  /* Explorations layer */
+  #explore[hidden], #report[hidden] { display: none; }
+  .intro { max-width: 70ch; }
+  .group { margin: 32px 0 0; }
+  .group > h2 { margin-bottom: 4px; }
+  .cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 14px; }
+  .card { border: 1px solid var(--line); background: var(--panel); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+  .card .shot { border: 0; padding: 0; background: #fff; cursor: zoom-in; border-bottom: 1px solid var(--line); aspect-ratio: 16 / 9; overflow: hidden; }
+  .card .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+  .card .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: #eef1e0; color: var(--muted); }
+  .chip.live { background: var(--chip); color: var(--green); }
+  .card dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: 14px; }
+  .card dt { color: var(--muted); }
+  .card dd { margin: 0; }
+  .card .go { align-self: flex-start; border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 4px 10px; font-size: 14px; font-weight: 600; color: var(--green); cursor: pointer; }
+  dialog.lb { border: 0; padding: 0; max-width: 96vw; max-height: 92vh; background: #fff; border-radius: 8px; }
+  dialog.lb img { display: block; max-width: 96vw; max-height: 86vh; }
+  dialog.lb p { margin: 0; padding: 8px 12px; font-size: 14px; }
+  dialog.lb::backdrop { background: rgba(20,20,10,.6); }
+
+  /* ============ Range findings inside the report ============ */
+  .rl { font: 400 15px var(--sans); color: var(--muted); }
+  .lead { font: 500 19px/1.4 var(--serif); margin: -4px 0 14px; max-width: 60ch; }
+  .rstats { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 14px; }
+  .rstat { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 8px 14px; cursor: help; min-width: 120px; }
+  .rstat:hover, .rstat:focus { border-color: var(--green); outline: none; }
+  .rstat b { display: block; font: 600 22px/1.1 var(--sans); }
+  .rstat span { font-size: 14px; color: var(--muted); }
+  .rpanel { border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 12px 16px; }
+  .rpanel h3 { margin: 4px 0 8px; }
+  .rrow { width: 100%; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; cursor: pointer; display: grid; grid-template-columns: minmax(0, 210px) 1fr 110px; align-items: center; gap: 12px; padding: 7px 0; font-size: 15px; }
+  .rrow:first-of-type { border-top: 0; }
+  .rrow:hover .rtrack, .rrow:focus .rtrack, .rrow[aria-expanded="true"] .rtrack { box-shadow: 0 0 0 1.5px var(--ink); }
+  .rrow:focus { outline: none; }
+  .rrow .n { color: var(--muted); font-size: 14px; text-align: right; white-space: nowrap; }
+  .rtrack { position: relative; height: 14px; background: var(--g1); border-radius: 4px; }
+  .rtrack i { position: absolute; inset: 0 auto 0 0; background: var(--g4); border-radius: 4px; }
+  .rtrack i.hot { background: var(--accent); }
+  .rtrack b { position: absolute; top: -3px; width: 2px; height: 20px; background: var(--ink); opacity: .6; }
+  .rlegend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--muted); margin: 0 0 6px; align-items: center; }
+  .rlegend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+  .rlegend b.tk { display: inline-block; width: 2px; height: 12px; background: var(--ink); opacity: .6; vertical-align: -2px; margin-right: 5px; }
+  .rev { padding: 2px 0 10px; }
+  .rev .ev { border-top: 1px dashed var(--line); padding: 8px 0; font-size: 14px; }
+  .rev .ev .meta { color: var(--muted); font-size: 13px; }
+  .rev .ev .ref { font: 12px ui-monospace, monospace; color: var(--muted); overflow-wrap: anywhere; }
+  .drow { display: grid; grid-template-columns: minmax(0, 250px) 1fr 120px; align-items: center; gap: 12px; padding: 5px 0; border-top: 1px solid var(--line); }
+  .drow:first-of-type { border-top: 0; }
+  .drow .dl { border: 0; background: none; padding: 0; text-align: left; cursor: pointer; font-size: 14px; }
+  .drow .dl:hover, .drow .dl[aria-expanded="true"] { color: var(--accent); }
+  .drow svg { width: 100%; height: 18px; display: block; overflow: visible; }
+  .drow .n { color: var(--muted); font-size: 13px; text-align: right; }
+  .dc { cursor: pointer; }
+  .dc:hover, .dc:focus, .dc.sel { stroke: var(--ink); stroke-width: 1.2; outline: none; }
+  .kind { font-size: 12px; padding: 0 7px; border-radius: 999px; background: var(--g1); color: var(--green); margin-left: 6px; white-space: nowrap; }
+  .kind.drift { background: #f3e2d4; color: var(--accent); }
+  .rempty { color: var(--muted); font-size: 15px; }
+  .rempty button { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 3px 10px; font-size: 14px; color: var(--green); font-weight: 600; cursor: pointer; margin-left: 6px; }
+  @media (max-width: 760px) {
+    .rrow { grid-template-columns: 1fr 90px; } .rrow .rtrack { grid-column: 1 / -1; grid-row: 2; }
+    .drow { grid-template-columns: 1fr auto; } .drow svg { grid-column: 1 / -1; grid-row: 2; }
+  }
+
+  .chipset { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+  .chipset button { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 3px 12px; font-size: 14px; cursor: pointer; }
+  .chipset button[aria-pressed="true"] { background: var(--chip); color: var(--green); border-color: var(--chip); font-weight: 600; }
+  .hi { width: 100%; border: 0; border-top: 1px solid var(--line); background: none; text-align: left; cursor: pointer; padding: 8px 0; display: grid; grid-template-columns: 96px 1fr 16px; gap: 4px 12px; font-size: 15px; }
+  .hi:first-of-type { border-top: 0; }
+  .hi .when { color: var(--muted); font-size: 13px; }
+  .hi .who { color: var(--accent); font-weight: 600; font-size: 14px; }
+  .hi .chev { color: var(--muted); transition: transform .15s; }
+  .hi[aria-expanded="true"] .chev { transform: rotate(90deg); }
+  .hi .body { grid-column: 2 / 4; font-size: 14px; color: #44443a; }
+  .hi .ref { grid-column: 2 / 4; font: 12px ui-monospace, monospace; color: var(--muted); }
+  .dsn { border-top: 1px solid var(--line); padding: 14px 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 28px; }
+  .dsn:first-child { border-top: 0; }
+  .dsn h3 { grid-column: 1 / -1; margin: 0; }
+  .dsn .fact { font-size: 15px; }
+  .dsn .fact .ref { font: 12px ui-monospace, monospace; color: var(--muted); display: block; margin-top: 4px; overflow-wrap: anywhere; }
+  .dsn .read { font-size: 15px; border-left: 3px solid var(--note); padding-left: 12px; }
+  .dsn .read b { display: block; font-size: 13px; color: var(--note); }
+  .cutlist { margin-top: 14px; }
+  .cut { display: grid; grid-template-columns: 80px minmax(0, 1fr) minmax(0, 1fr); gap: 4px 16px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 15px; }
+  .cut .mk { font-size: 13px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: #eef1e0; color: var(--muted); justify-self: start; align-self: start; }
+  .cut .mk.keep { background: var(--chip); color: var(--green); } .cut .mk.maybe { background: #fbecc4; color: #7a5a06; } .cut .mk.none { background: #e6ebf7; color: var(--note); }
+  .cut .q { font-weight: 600; } .cut .claim { color: var(--muted); font-size: 14px; }
+  .cut .note { border-left: 3px solid var(--note); padding-left: 10px; }
+  .cut .note b, .cut .where b { display: block; font-size: 13px; color: var(--note); }
+  .cut .where { grid-column: 2 / -1; font-size: 14px; }
+  @media (max-width: 760px) { .dsn, .cut { grid-template-columns: 1fr; } .cut .where { grid-column: auto; } .hi { grid-template-columns: minmax(0, 1fr) 16px; } .hi .when { grid-column: 1 / -1; } .hi .body, .hi .ref { grid-column: 1 / -1; } }
+  .hi > span { min-width: 0; overflow-wrap: anywhere; }
+
+  /* ============ Findings layer: story column + one evidence panel ============ */
+  #findings[hidden] { display: none; }
+  :root { --g1: #eef3dc; --g2: #c9d9a0; --g3: #93b35c; --g4: #4f7a28; --g5: #2c4a12; }
+  .f-intro { max-width: 68ch; }
+  .f-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 32px; align-items: start; margin-top: 24px; }
+  .f-beat { min-height: 72vh; padding: 20px 0 0; border-top: 1px solid var(--line); cursor: pointer; }
+  .f-beat:first-child { border-top: 0; padding-top: 0; }
+  .f-beat:last-child { min-height: 60vh; }
+  .f-eyebrow { font-size: 14px; font-weight: 600; color: var(--green); margin: 0 0 8px; }
+  .f-take { font: 500 26px/1.3 var(--serif); margin: 0 0 18px; padding-left: 14px; border-left: 3px solid transparent; transition: border-color .15s; }
+  .f-beat.active .f-take { border-left-color: var(--green); }
+  .f-beat.pinned .f-take { border-left-color: var(--accent); }
+  .f-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .f-stat { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 10px 12px; cursor: help; }
+  .f-stat:hover, .f-stat:focus { border-color: var(--green); outline: none; }
+  .f-stat .v { font: 600 24px/1.1 var(--sans); color: var(--ink); }
+  .f-stat .l { font-size: 14px; color: var(--muted); }
+  .f-actions { display: flex; gap: 10px; align-items: center; margin-top: 14px; font-size: 14px; color: var(--muted); }
+  .f-btn { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 5px 12px; font-size: 14px; font-weight: 600; color: var(--green); cursor: pointer; }
+  .f-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .f-panel { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; border: 1px solid var(--line); background: var(--panel); border-radius: 14px; padding: 16px 18px 20px; }
+  .f-panel-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .f-panel-top .state { font-size: 13px; color: var(--muted); margin-left: auto; }
+  .f-panel .close { display: none; border: 0; background: none; font-size: 24px; cursor: pointer; color: var(--muted); }
+  .f-crumbs { font-size: 14px; color: var(--muted); margin: 0 0 8px; }
+  .f-crumbs button { border: 0; background: none; padding: 0; color: var(--accent); cursor: pointer; font-size: 14px; }
+  .f-crumbs button:hover { text-decoration: underline; }
+  .f-panel h3 { font: 500 19px/1.3 var(--serif); margin: 0 0 6px; }
+  .f-src { font-size: 13px; color: var(--muted); margin: 10px 0 0; }
+  .f-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin: 6px 0 8px; align-items: center; }
+  .f-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+  .f-panel svg { display: block; overflow: visible; }
+  .fm { cursor: pointer; transition: opacity .15s; }
+  .fm:focus { outline: none; }
+  .fm:hover, .fm:focus, .fm.sel { stroke: var(--ink); stroke-width: 1.5; }
+  svg.dim .fm:not(.sel):not(:hover) { opacity: .45; }
+  .f-axis { fill: var(--muted); font-size: 12px; }
+  .f-lab { fill: var(--ink); font-size: 13px; }
+  .f-lab2 { fill: var(--muted); font-size: 12px; }
+  .f-rows { margin-top: 8px; border-top: 1px solid var(--line); }
+  .f-row { padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 14px; animation: f-in .25s ease both; }
+  .f-row .meta { color: var(--muted); font-size: 13px; }
+  .f-row .ref { font: 12px ui-monospace, monospace; color: var(--muted); overflow-wrap: anywhere; }
+  .f-row q { quotes: "\201C" "\201D"; }
+  @keyframes f-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .f-row { animation: none; } }
+  .f-chip { display: inline-block; font-size: 13px; padding: 1px 8px; border-radius: 999px; background: var(--g1); color: var(--green); }
+  .f-note dt { font-size: 13px; font-weight: 600; color: var(--note); margin-top: 14px; }
+  .f-note dd { margin: 4px 0 0; font-size: 15px; }
+  .f-split-bar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; gap: 2px; margin: 4px 0 4px; }
+  .f-split-bar span { display: block; cursor: help; }
+  .f-split-bar span:focus { outline: 2px solid var(--ink); outline-offset: -2px; }
+  #tip { position: fixed; z-index: 50; pointer-events: none; background: #fff; border: 1px solid var(--line); box-shadow: 0 6px 24px rgba(0,0,0,.12); border-radius: 10px; padding: 8px 11px; font-size: 14px; max-width: 320px; opacity: 0; transition: opacity .12s; }
+  #tip.on { opacity: 1; }
+  #tip .v { font-weight: 700; font-size: 16px; }
+  #tip .l { color: #44443a; }
+  #tip .m { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .f-foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .f-foot p { margin: 0 0 6px; }
+  @media (max-width: 900px) {
+    .f-split { grid-template-columns: 1fr; }
+    .f-beat, .f-beat:last-child { min-height: 0; padding-bottom: 24px; cursor: default; }
+    .f-panel { position: fixed; left: 0; right: 0; bottom: 0; top: auto; max-height: 82vh; border-radius: 16px 16px 0 0; z-index: 30; box-shadow: 0 -8px 30px rgba(0,0,0,.15); transform: translateY(105%); transition: transform .22s; padding: 12px 16px 28px; }
+    .f-panel.open { transform: none; }
+    .f-panel .close { display: block; margin-left: auto; }
+    .f-panel-top .state { display: none; }
+  }
+
+  @media (max-width: 760px) {
+    .wrap { padding: 0 16px 48px; }
+    h1 { font-size: 26px; }
+    .layers { margin-left: 0; width: 100%; justify-content: space-between; }
+    .strip, .strip.compact { grid-template-columns: 1fr; }
+    .day { min-height: 0; }
+    .net, .sheet, .cards { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 1fr auto 20px; }
+    .row .first { grid-column: 1 / -1; white-space: normal; }
+    .trait { grid-template-columns: 120px 1fr 40px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="brand">AI Village</span>
+    <span class="concept">Village report · concept by Chris Lam, not affiliated with AI Digest</span>
+    <div class="layers">
+      <button class="switch" id="notes-toggle" aria-pressed="false"><span class="knob"></span>Design notes</button>
+    </div>
+  </header>
+
+  <!-- ============ PROTOTYPE (live, real data) ============ -->
+  <main id="report">
+    <div class="notes-index" id="notes-index"></div>
+    <p class="purpose" id="purpose"></p>
+    <h1 id="title">The week in the Village</h1>
+    <div class="sub" id="days"></div>
+
+    <div class="controls" data-note="ranges">
+      <div class="seg" role="group" aria-label="Time range" id="ranges">
+        <button data-range="day" aria-pressed="false">Day</button>
+        <button data-range="week" aria-pressed="true">Week</button>
+        <button data-range="month" aria-pressed="false">Month</button>
+        <button data-range="custom" aria-pressed="false" disabled title="Explored, not built yet">Custom</button>
+      </div>
+      <div class="step">
+        <button id="prev" aria-label="Earlier">‹</button>
+        <span class="period" id="period"></span>
+        <button id="next" aria-label="Later">›</button>
+      </div>
+      <span class="coverage" id="coverage"></span>
+    </div>
+
+    <div class="goal" id="goal" data-note="goal"></div>
+    <nav class="band" id="band" hidden aria-label="What stood out"></nav>
+    <nav class="jnav" id="jnav" hidden aria-label="Sections"></nav>
+
+    <section class="block" id="strip-block" data-note="strip">
+      <h2 id="strip-h">Day by day</h2>
+      <div class="strip" id="strip"></div>
+      <p class="smore" id="strip-more" hidden></p>
+      <div id="detail"></div>
+    </section>
+
+    <section class="block" id="gate-block" data-note="gate">
+      <h2>Humans at the gate <span class="rl" data-rl></span></h2>
+      <p class="lead" id="gate-lead"></p>
+      <div id="gate"></div>
+    </section>
+
+    <section class="block" id="over-block" data-note="over">
+      <h2>Who over-reported <span class="rl" data-rl></span></h2>
+      <p class="lead" id="over-lead"></p>
+      <div id="over"></div>
+    </section>
+
+    <section class="block" id="drift-block" data-note="drift">
+      <h2>Flags that kept coming back <span class="rl" data-rl></span></h2>
+      <p class="lead" id="drift-lead"></p>
+      <div id="drift"></div>
+    </section>
+
+    <section class="block" id="hi-block" data-note="highlights">
+      <h2>Worth watching <span class="rl" data-rl></span></h2>
+      <p class="lead" id="hi-lead"></p>
+      <div id="hi"></div>
+    </section>
+
+    <section class="block" id="net-block" data-note="together">
+      <h2>Who appeared together</h2>
+      <p class="sub" style="margin-top:-6px" id="net-sub"></p>
+      <div class="net">
+        <svg id="net" viewBox="0 0 640 440" role="img" aria-label="Agents linked by the top moments they shared"></svg>
+        <div class="pairs" id="pairs"></div>
+      </div>
+    </section>
+
+    <section class="block" id="cast-block" data-note="cast">
+      <h2>Cast</h2>
+      <p class="sub" style="margin-top:-6px" id="cast-sub"></p>
+      <ul class="cast" id="cast"></ul>
+    </section>
+
+    <footer class="src" id="src" data-note="source"></footer>
+  </main>
+
+</div>
+
+<aside class="drawer" id="drawer" aria-hidden="true" aria-labelledby="dr-title">
+  <button class="close" id="dr-close" aria-label="Close note">×</button>
+  <span class="num" id="dr-num"></span>
+  <h3 id="dr-title"></h3>
+  <dl id="dr-body"></dl>
+</aside>
+
+<style>
+  textarea.cb { display: block; width: 100%; box-sizing: border-box; min-height: 52px; margin: 6px 0; padding: 8px 10px; font: inherit; font-size: 15px; line-height: 1.45;
+    border: 1.5px dashed #c9a227; border-radius: 6px; background: #fffbea; color: inherit; resize: vertical; }
+  textarea.cb:focus { outline: none; border-style: solid; background: #fff; }
+  textarea.cb.done { border-style: solid; border-color: #8fb98f; background: #f6fbf6; }
+  #cb-bar { position: fixed; z-index: 60; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center;
+    padding: 10px 14px; border-radius: 10px; background: #1d1f24; color: #fff; font: 14px/1.3 system-ui, sans-serif; box-shadow: 0 6px 24px rgba(0,0,0,.25); max-width: calc(100vw - 32px); }
+  #cb-bar button, #cb-bar a { font: inherit; color: #fff; background: #3a3d45; border: 0; border-radius: 6px; padding: 6px 10px; cursor: pointer; text-decoration: none; }
+  #cb-bar .saved { color: #9fd49f; }
+  /* Step 2 layout variants (?layout=a|b|c): exploration, Chris picks */
+  #lay-switch { position: fixed; z-index: 61; bottom: 16px; left: 16px; display: flex; gap: 4px; align-items: center; padding: 6px 8px; border-radius: 10px; background: #1d1f24; color: #fff; font: 13px/1 system-ui, sans-serif; }
+  #lay-switch a { color: #fff; text-decoration: none; padding: 5px 9px; border-radius: 6px; background: #3a3d45; }
+  #lay-switch a[aria-current] { background: #c9a227; color: #1d1f24; font-weight: 600; }
+  .band { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 32px; }
+  .band a { display: block; padding: 14px 16px; border: 1px solid #dfe3d3; border-radius: 10px; background: #fff; color: inherit; text-decoration: none; }
+  .band a:hover { border-color: #9bb37c; }
+  .band .bk { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .band .bt { font: 500 17px/1.35 var(--serif); margin: 6px 0 8px; }
+  .band .bv { font-size: 14px; }
+  .band .bv b { font-size: 20px; margin-right: 4px; }
+  .jnav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; font-size: 14px; }
+  .jnav a { padding: 6px 12px; border-radius: 999px; background: var(--green-soft); color: inherit; text-decoration: none; }
+  .grp { margin: 48px 0 8px; padding-top: 16px; border-top: 2px solid #1d1f24; }
+  .grp h2 { font: 600 13px/1.2 system-ui, sans-serif; letter-spacing: .02em; color: var(--muted); margin: 0 0 4px; }
+  .grp p { margin: 0; font-size: 15px; color: var(--muted); }
+  .smore { margin: 10px 0 0; font-size: 14px; }
+  .purpose { margin: 4px 0 18px; max-width: 68ch; font: 400 19px/1.45 var(--serif); }
+  .band[hidden], .jnav[hidden] { display: none; }
+  @media (max-width: 760px) { .band { grid-template-columns: 1fr; } #lay-switch { bottom: 84px; left: 8px; } }
+  textarea.cb.draft { border-color: #8a7fd1; background: #f5f3ff; }
+  .cb-tag { display: block; margin: -2px 0 8px; font: 12.5px/1.4 system-ui, sans-serif; color: #5b4fb3; }
+  .cb-tag button { font: inherit; color: #fff; background: #6b5fc7; border: 0; border-radius: 4px; padding: 1px 7px; margin: 0 4px; cursor: pointer; }
+  .cb-tag .src { color: #7d7799; }
+  .cb-draft { background: #efecff; box-shadow: 0 0 0 2px #efecff; border-radius: 2px; }
+</style>
+<style>
+  #vlock { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 16px; background: var(--bg, #fffdf0); }
+  #vlock form { width: min(440px, 100%); }
+  #vlock h1 { margin: 0 0 8px; }
+  #vlock p { margin: 0 0 16px; line-height: 1.5; }
+  #vlock input { width: 100%; box-sizing: border-box; font: inherit; padding: 10px 12px; border: 1px solid #b9b9a8; border-radius: 6px; margin-bottom: 10px; }
+  #vlock button { font: inherit; padding: 10px 16px; border: 0; border-radius: 6px; color: #fff; background: #4f7a28; cursor: pointer; }
+  #vlock .err { min-height: 1.4em; margin: 10px 0 0; color: #a8541d; }
+</style>
+<script>
+/* The rows come from AI Digest's gated dataset, so the data ships encrypted and opens with a passphrase. */
+function unlock() {
+  return new Promise(done => {
+    const g = document.createElement("div"); g.id = "vlock";
+    g.innerHTML = `<form><h1>AI Village report</h1><p>This prototype shows rows from AI Digest's gated dataset, so it's locked. Enter the passphrase from Chris's application.</p><label for="vlock-p">Passphrase</label><input id="vlock-p" type="password" autocomplete="off" required><button type="submit">Open the prototype</button><p class="err" role="alert"></p></form>`;
+    document.body.append(g);
+    const f = g.querySelector("form"), err = g.querySelector(".err"), inp = g.querySelector("input"); inp.focus();
+    f.onsubmit = async e => {
+      e.preventDefault(); err.textContent = "Opening...";
+      try {
+        const buf = new Uint8Array(await (await fetch("village-data.bin")).arrayBuffer());
+        const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(inp.value.trim()), "PBKDF2", false, ["deriveKey"]);
+        const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: buf.slice(0, 16), iterations: 600000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+        const zipped = await crypto.subtle.decrypt({ name: "AES-GCM", iv: buf.slice(16, 28) }, key, buf.slice(28));
+        const json = await new Response(new Blob([zipped]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
+        g.remove(); done(JSON.parse(json));
+      } catch (x) { err.textContent = "That passphrase didn't work."; }
+    };
+  });
+}
+</script>
+<style>.purpose:empty, .lead:empty, .grp p:empty { display: none; }</style>
+<script>
+/* Published copy: text slots Chris approved live in TEXT; any other [[slot]] renders as nothing. */
+window.CB = (() => {
+  const TEXT = {};
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const html = (s, key) => esc(String(s ?? "").replace(/\[\[.*?\]\]/g, () => TEXT[key] || ""));
+  return { html };
+})();
+</script>
+<script>
+/* ---------- Copy slots. Facts are filled in; [[...]] marks a blank Chris writes. ---------- */
+const NOTES = {
+  ranges: { title: "Day, Week, Month",
+    what: "One data model, three lenses. Day matches the summary panel the Village already has. Week and Month are new: they answer what happened over a stretch, which today needs either 5 to 20 day panels or the full Timeline (one feed, 32,715px tall at 1440).",
+    data: "AI Digest's daily summaries, 429 days, Apr 2, 2025 to Oct 30, 2026 (Hugging Face export of Nov 1, 2026). Week = Monday to Friday; the stepper skips weeks with no summaries.",
+    why: "[[Why ranges, and why these three, in your words]]",
+    next: "Custom range, with a comparison to the previous span of the same length." },
+  goal: { title: "Goal in play",
+    what: "The goal (or goals) that were active during the range, from the Village's goal history (51 goals). When a range crosses a goal change, both show in order.",
+    data: "village_goals table. The live API's goal field still returns the 2025 charity goal, so the table is the source.",
+    why: "[[Why the goal sits above everything else]]" },
+  strip: { title: "Day by day",
+    what: "Each summarized day as its one-line headline. Open a day for its top moments, in AI Digest's own order.",
+    data: "The blurb and top-moments sections of each daily summary, parsed by rule (4 formats). No new text is generated; every line on this page is AI Digest's summary with people replaced.",
+    why: "[[Why headlines first, detail on demand]]" },
+  gate: { title: "Humans at the gate",
+    what: "Every outreach decision staff made in the range: approved or rejected, and the reason staff wrote when they said no. Select a reason to read the comments.",
+    data: "OUTREACH_APPROVAL_REQUEST and OUTREACH_APPROVAL_RESPONSE events, 443 decisions over the whole run, dated by the decision (Pacific time). Reasons are bucketed by rule from the staff comment (rules in insights.py). A week counts Monday to Sunday.",
+    limits: "The gate covers new outreach. Replies in a thread a person started, and channels a person opted into, need no approval. The Monitor also flagged sends with no request on file (for example 2026-07-07 and 2026-07-22). Recipients and message text are never shown.",
+    why: "[[Why this belongs in the report, in your words]]", next: "[[What you'd build next]]" },
+  over: { title: "Who over-reported",
+    what: "Agents with a Monitor finding about a false or unverified claim in the range: flagged days out of the days the agent was active. The tick is the agent's rate over the whole Monitor run. Select an agent to read the findings.",
+    data: "Village Monitor, 86 days with a valid daily file (Jun 16 to Nov 2, 2026, plus 1 day on Apr 6). Findings matched by the claim rule, excluding highlights and honesty praise, credited to their subject (rules in insights.py). AI Digest's own published question: “Which agents over-report success the most?”",
+    limits: "Subject attribution is a heuristic (the sole agent involved, or the first agent named); read the rows. The Monitor is model-written. Over a single day or week the counts are small: a lead, not a verdict.",
+    why: "[[Why this belongs in the report, in your words]]", next: "[[What you'd build next]]" },
+  drift: { title: "Flags that kept coming back",
+    what: "The same agent and the same Monitor flag on 20 or more of the 86 days, shown when the pair was flagged in this range. Each strip is the whole Monitor run, with the range shaded, so a week reads against the months around it. Select a cell for that day, or a name for the range.",
+    data: "73 pairs. Read as drift when 40%+ of findings are medium or high severity; as allowed when 40%+ of the Monitor's own notes say the action was allowed; otherwise mixed.",
+    limits: "The Monitor sometimes lists a human in its agents field; those are excluded (one pair dropped, 2026-11-04). Severity and the allowed wording are the Monitor's, not a reading of the events.",
+    why: "[[Why this belongs in the report, in your words]]", next: "[[What you'd build next]]" },
+  highlights: { title: "Worth watching",
+    what: "The Monitor's own highlights for the range: interesting work and good posts. Filter by kind; open one for the Monitor's summary.",
+    data: "Village Monitor categories interesting-content (1,524) and good-tweet (571), Jun 16 to Nov 2, 2026 plus 1 day on Apr 6. Agents only; people replaced.",
+    limits: "These are the Monitor's picks, model-written, not a ranking of what mattered. Nothing before Jun 16, 2026.",
+    why: "[[Why the page shows the good side next to the failures, in your words]]", next: "[[What you'd build next]]" },
+  together: { title: "Who appeared together",
+    what: "Agents linked when they are named in the same top moment. Thicker line = more shared moments. Select an agent or a pair to see the moments behind the link.",
+    data: "654 of 2,121 top moments name two or more agents. Strongest pair over the whole run: Claude Opus 4.8 and Gemini 2.5 Pro, 41 shared moments.",
+    limits: "Appearing in the same moment is not proof of collaboration: a moment where one agent catches another's error links them too. That is why every link opens its evidence.",
+    why: "[[Why relationships matter for observing AI behavior, in your words]]",
+    next: "Classify each link (helped, corrected, conflicted, copied) with an AI pass, checked against the evidence." },
+  cast: { title: "Cast profiles",
+    what: "Who was in the range, then a profile per agent across the whole run: first and last featured, days featured, longest streak, usual partners, and behavior tags.",
+    data: "Behavior tags are keyword matches on the summary text of the moments that name the agent (definitions in each profile). The tick on each bar is the Village average.",
+    limits: "Keyword tags are a rough first cut, not a measure: a moment where an agent catches someone else's fabrication tags both. A real version would use the Village Monitor's per-finding labels.",
+    why: "[[Why personality profiles, in your words]]",
+    next: "Profiles that change over time: does an agent's tendency shift after a model update or a goal change?" },
+  source: { title: "Data, privacy and honesty",
+    what: "Every number is computed from the dataset in the browser. No language model writes anything on this page.",
+    data: "Privacy: 147 people (staff, viewers, customers, people the agents emailed, public figures) replaced with consistent stand-ins after a full read of all 2,546 displayed strings. A password, a wallet address and an order number were redacted.",
+    limits: "The daily summaries are LLM-written; AI Digest's README says to treat them as secondary.",
+    why: "[[Your note to AI Digest about the data and the replacements]]" },
+};
+
+(async function () {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const blanks = (s, key) => CB.html(s, key);
+
+  const { D, FD } = await unlock();
+  const RG = FD.range;
+  const byDate = new Map(D.days.map(d => [d.date, d]));
+  const dates = D.days.map(d => d.date);
+  const LAUNCH = new Date(D.launch + "T12:00:00Z");
+  const iso = d => d.toISOString().slice(0, 10);
+  const parse = s => new Date(s + "T12:00:00Z");
+  const addDays = (d, n) => new Date(d.getTime() + n * 864e5);
+  const dayN = s => Math.round((parse(s) - LAUNCH) / 864e5) + 1;
+  const fmt = (s, o) => parse(s).toLocaleDateString("en-US", Object.assign({ timeZone: "UTC" }, o));
+  const short = s => fmt(s, { month: "short", day: "numeric", year: "numeric" });
+
+  // ---- agents named in a moment: full names + short forms ("Opus 5"); longest first so "Opus 5.5" wins ----
+  const aliases = [];
+  for (const a of D.agents) {
+    aliases.push([a.name, a.name]);
+    const sh = a.name.replace(/^(Claude|Gemini)\s+/, "");
+    if (sh !== a.name && /\d/.test(sh)) aliases.push([sh, a.name]);
+  }
+  aliases.sort((a, b) => b[0].length - a[0].length);
+  const rx = new RegExp("(?<![\\w.])(" + aliases.map(a => a[0].replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")(?![\\w.]*\\d)", "g");
+  const canon = new Map(aliases);
+  const agentsIn = t => { const s = new Set(); for (const m of (t || "").matchAll(rx)) s.add(canon.get(m[1])); return s; };
+  const mark = t => esc(t).replace(rx, m => `<span class="ag">${m}</span>`);
+
+  // ---- behavior tags: keyword rules on summary text (shown in each profile) ----
+  const TAGS = [
+    ["Made things up", /fabricat|hallucinat|false(ly)? claim|invent(ed|s)? |misreport|phantom|nonexistent|never (actually )?sent|didn't actually|confabulat/i],
+    ["Got stuck", /stuck|loop|froze|frozen|crash|stall|idle|paus(e|ed|ing)|timed? ?out|unable to/i],
+    ["Caught errors", /caught|catch(es|ing)?\b|verif|fact-check|correct(ed|ion)|audit|debunk/i],
+    ["Reached people", /email|human|viewer|reader|outreach|contact|tweet|subscriber|comment/i],
+    ["Shipped work", /built|shipped|publish|launch|deploy|completed|finished|released|merged/i],
+    ["Pushed back", /refus|declin|pushed back|push back|objected|disagree/i],
+  ];
+
+  const M = [];
+  for (const d of D.days) d.moments.forEach(m => {
+    const txt = m.title + " " + m.text;
+    M.push({ date: d.date, m, agents: agentsIn(txt), tags: TAGS.map(([, r]) => r.test(txt)) });
+  });
+  const byDay = new Map(); M.forEach(x => { if (!byDay.has(x.date)) byDay.set(x.date, []); byDay.get(x.date).push(x); });
+
+  // all-time profile stats
+  const P = new Map();
+  const named = M.filter(x => x.agents.size);
+  const avg = TAGS.map((_, i) => named.filter(x => x.tags[i]).length / Math.max(1, named.length));
+  for (const x of named) for (const a of x.agents) {
+    if (!P.has(a)) P.set(a, { n: 0, days: new Set(), tags: TAGS.map(() => 0), partners: new Map() });
+    const p = P.get(a); p.n++; p.days.add(x.date); x.tags.forEach((t, i) => t && p.tags[i]++);
+    for (const b of x.agents) if (b !== a) p.partners.set(b, (p.partners.get(b) || 0) + 1);
+  }
+  const dIdx = new Map(dates.map((d, i) => [d, i]));
+  for (const p of P.values()) {
+    const ds = [...p.days].sort(); p.first = ds[0]; p.last = ds[ds.length - 1];
+    let best = 1, run = 1; // streak over consecutive summarized days
+    for (let i = 1; i < ds.length; i++) { run = dIdx.get(ds[i]) - dIdx.get(ds[i - 1]) === 1 ? run + 1 : 1; best = Math.max(best, run); }
+    p.streak = best;
+  }
+
+  const goalAt = s => D.goals.filter(g => g.start <= s && (!g.end || g.end >= s)).map(g => g.goal);
+  // Step 2 exploration: a = current order, b = findings first, c = grouped. Default stays a until Chris picks.
+  const LAYOUT = new URLSearchParams(location.search).get("layout") === "a" ? "a" : "bc"; // Chris 11-04: B's cards on top + C's groups
+  {
+    const M = $("report"), F = $("src"), blk = id => $(id), mk = (id, h, sub) => { const d = document.createElement("div"); d.className = "grp"; d.id = id; d.innerHTML = `<h2>${h}</h2><p>${CB.html("[[One line for this group]]", "grp:" + id)}</p>`; return d; };
+    const ORDER = {
+      b: ["gate-block", "over-block", "drift-block", "strip-block", "hi-block", "net-block", "cast-block"],
+      c: [mk("g-watch", "What to watch for"), "gate-block", "over-block", "drift-block",
+          mk("g-happened", "What happened"), "strip-block", "hi-block", "net-block", "cast-block"],
+    }[LAYOUT === "bc" ? "c" : LAYOUT];
+    if (ORDER) ORDER.forEach(x => M.insertBefore(typeof x === "string" ? blk(x) : x, F));
+    if (LAYOUT !== "a") { $("jnav").hidden = false; $("jnav").innerHTML = [["g-watch", "What to watch for"], ["g-happened", "What happened"]].map(([i, t]) => `<a href="#${i}">${t}</a>`).join(""); }
+    const sw = document.createElement("div"); sw.id = "lay-switch";
+    sw.innerHTML = "Layout " + [["a", "A current"], ["b", "B findings first"], ["c", "C grouped"]].map(([k, t]) => { const u = new URL(location.href); u.searchParams.set("layout", k); return `<a href="${u.search}" ${k === LAYOUT ? 'aria-current="true"' : ""}>${t}</a>`; }).join("");
+    // switch retired: Chris picked the combined layout
+  }
+  const state = { range: "week", anchor: dates[dates.length - 1], open: null, sel: null, pair: null, prof: null };
+
+  // ---- Notes layer helpers (used by render) ----
+  const NOTE_IDS = Object.keys(NOTES);
+  NOTE_IDS.forEach(id => ["why", "next"].forEach(f => NOTES[id][f] && CB.html(NOTES[id][f], `note:${id}:${f}`))); // count drawer slots before they open
+  const pinHtml = id => `<button class="pin" data-pin="${id}" aria-label="Design note ${NOTE_IDS.indexOf(id) + 1}: ${esc(NOTES[id].title)}">${NOTE_IDS.indexOf(id) + 1}</button>`;
+
+  function span() {
+    const a = parse(state.anchor);
+    if (state.range === "day") return [state.anchor];
+    if (state.range === "month") { const ym = state.anchor.slice(0, 7); return dates.filter(d => d.startsWith(ym)); }
+    const mon = addDays(a, -((a.getUTCDay() + 6) % 7));
+    return [0, 1, 2, 3, 4].map(i => iso(addDays(mon, i)));
+  }
+  function shift(dir) {
+    const cur = span();
+    if (state.range === "day") {
+      const i = dates.indexOf(state.anchor) + dir;
+      if (i >= 0 && i < dates.length) state.anchor = dates[i];
+    } else if (state.range === "month") {
+      const ym = state.anchor.slice(0, 7);
+      const pick = dir < 0 ? [...dates].reverse().find(d => d.slice(0, 7) < ym) : dates.find(d => d.slice(0, 7) > ym);
+      if (pick) state.anchor = pick;
+    } else {
+      let probe = dir < 0 ? addDays(parse(cur[0]), -3) : addDays(parse(cur[4]), 3);
+      for (let k = 0; k < 60; k++) {
+        const mon = addDays(probe, -((probe.getUTCDay() + 6) % 7));
+        const wk = [0, 1, 2, 3, 4].map(i => iso(addDays(mon, i)));
+        if (wk.some(d => byDate.has(d))) { state.anchor = wk.find(d => byDate.has(d)); break; }
+        probe = addDays(probe, dir * 7);
+      }
+    }
+    state.open = state.sel = state.pair = state.prof = state.gk = state.oa = state.dk = state.hk = state.ho = state.hall = state.sall = null; render();
+  }
+
+  const momentRow = (x, withDate) => `<div class="moment"><span class="t${withDate ? " date" : ""}">${esc(withDate ? fmt(x.date, { month: "short", day: "numeric" }) : (x.m.time || ""))}</span><span class="mt">${mark(x.m.title)}</span><span class="mx">${mark(x.m.text)}</span></div>`;
+
+  function render() {
+    const s = span(), have = s.filter(d => byDate.has(d)), R = state.range;
+    $("ranges").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.range === R));
+    $("title").textContent = { day: "The day in the Village", week: "The week in the Village", month: "The month in the Village" }[R];
+    $("period").textContent = R === "day" ? fmt(s[0], { weekday: "short", month: "short", day: "numeric", year: "numeric" })
+      : R === "month" ? fmt(s[0], { month: "long", year: "numeric" })
+      : `${fmt(s[0], { month: "short", day: "numeric" })} – ${fmt(s[4], { month: "short", day: "numeric", year: "numeric" })}`;
+    $("days").textContent = R === "day" ? `Day ${dayN(s[0])}` : `Days ${dayN(s[0])}–${dayN(s[s.length - 1])}`;
+    $("coverage").textContent = R === "week" ? `${have.length} of 5 weekdays summarized` : R === "month" ? `${have.length} days summarized` : "";
+    $("prev").disabled = s[0] <= dates[0];
+    $("next").disabled = s[s.length - 1] >= dates[dates.length - 1];
+    const goals = [...new Set(s.flatMap(goalAt))];
+    $("goal").innerHTML = (goals.length ? `<b>${goals.length > 1 ? "Goals" : "Goal"} in play:</b> ${goals.map(esc).join(" → ")}` : "") + pinHtml("goal");
+
+    const strip = $("strip");
+    strip.classList.toggle("compact", R === "month");
+    $("strip-h").textContent = R === "day" ? "Top moments" : "Day by day";
+    const fold = LAYOUT !== "a" && R === "month" && !state.sall, sDays = fold ? s.slice(0, 5) : s;
+    $("strip-more").hidden = !(LAYOUT !== "a" && R === "month");
+    $("strip-more").innerHTML = `<a href="#" id="sall">${state.sall ? "Show the first week only" : `Show all ${s.length} days`}</a>`;
+    $("sall").onclick = e => { e.preventDefault(); state.sall = !state.sall; render(); };
+    strip.innerHTML = R === "day" ? "" : sDays.map(d => {
+      const x = byDate.get(d), when = fmt(d, { weekday: "short", month: "short", day: "numeric" });
+      if (!x) return `<div class="day empty"><span class="when">${when}</span><span>No session summary</span></div>`;
+      return `<button class="day" data-d="${d}" aria-expanded="${state.open === d}"><span class="when">${when} · Day ${x.day}</span><span class="blurb">${esc(x.blurb || "(no headline)")}</span></button>`;
+    }).join("");
+    strip.querySelectorAll("button.day").forEach(b => b.onclick = () => { state.open = state.open === b.dataset.d ? null : b.dataset.d; render(); });
+    const openDay = R === "day" ? s[0] : state.open, x = openDay && byDate.get(openDay);
+    $("detail").innerHTML = x ? `<div class="detail">
+        ${R === "day" ? `<p style="font:500 20px/1.35 var(--serif);margin:0 0 8px">${esc(x.blurb || "")}</p>` : `<h2 style="font-size:18px">${fmt(openDay, { weekday: "long", month: "long", day: "numeric" })}</h2>`}
+        ${(byDay.get(openDay) || []).map(y => momentRow(y)).join("")}</div>`
+      : (R === "day" ? `<div class="detail sub">No summary for this day.</div>` : "");
+
+    const inRange = s.flatMap(d => byDay.get(d) || []);
+    const W = inWindow(s, R), label = { day: "this day", week: "this week", month: "this month" }[R];
+    document.querySelectorAll("[data-rl]").forEach(x => x.textContent = "· " + label);
+    const sum = { gate: renderGate(W, label), over: renderOver(W, label, R), drift: renderDrift(W, label) }; renderHi(W, label);
+    renderBand(sum, label);
+    renderNet(inRange, R);
+    renderCast(s, have, inRange, R);
+
+    $("src").innerHTML = `
+      <p>Source: ${esc(D.source)}. Data through ${fmt(D.dataThrough, { month: "long", day: "numeric", year: "numeric" })}.</p>
+      <p>Daily text is AI Digest's own AI-written summary, shown as written. Their dataset notes these summaries can contain inaccuracies.</p>
+      <p>People's names, emails and handles are replaced with consistent stand-ins (Staff member, Viewer, Person, Public figure). Agents keep their names.</p>
+      <p>Coverage: outreach approvals start ${short(RG.decisions.map(x => x.date).sort()[0])} and the Village Monitor ${short(MON0)}, so Humans at the gate, Who over-reported, Flags that kept coming back and Worth watching cover those months only. Before that, the daily summaries are the only source.</p>
+      <p>Cite as: AI Digest, AI Village dataset, 2026.</p>` + pinHtml("source");
+    attachPins();
+  }
+
+  // =====================================================================
+  // Findings, recounted for the range. Every count opens to its rows.
+  // =====================================================================
+  const LEADS = {
+    gate: "AI reaching a real person needs to be approved by a human before it happens.",
+    over: "Some agents exaggerate",
+    drift: "Observing flags across time is important because a monitor can only see the problem on a day-by-day basis.",
+  };
+  $("purpose").innerHTML = blanks("[[The point of this page, in one sentence]]", "lead:purpose");
+  $("gate-lead").textContent = LEADS.gate; $("over-lead").textContent = LEADS.over; $("drift-lead").textContent = LEADS.drift;
+  $("hi-lead").innerHTML = blanks("[[Your sentence for this section]]", "lead:hi");
+  // Monitor categories in plain words; the raw slug stays in the tooltip so it can be checked
+  const CAT = { "off-goal": "off its goal", "likely-scaffolding-issue": "tooling problem (likely)", "surreptitious-or-deceptive": "hidden or deceptive",
+    "human-contact": "contacted a human", "emotional-or-erratic": "emotional or erratic", "conflict": "conflict", "outside-agent-contact": "contacted an outside agent",
+    "unsolicited-outreach": "unsolicited outreach", "other": "other", "interesting-content": "interesting work", "good-tweet": "good post" };
+  const cat = c => CAT[c] || c;
+  // stored text is capped at 220 to 300 characters; end at a word, not mid-word
+  const unesc = t => (t || "").replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
+  const trim = t => (t = unesc(t), t.length < 215) ? t : t.slice(0, t.lastIndexOf(" ")).replace(/[,;:.\s]+$/, "") + "\u2026";
+  const pc = x => Math.round(x * 100) + "%";
+  const tipAttrs = (v, l, m) => `data-tv="${esc(v)}" data-tl="${esc(l || "")}" data-tm="${esc(m || "")}"`;
+  const MD = RG.monitorDays, MON1 = MD[MD.length - 1];
+  // the Monitor has one stray early day (Apr 6, 2026) before its run starts on Jun 16; say so instead of implying a continuous span
+  const STRAY = MD.length > 1 && parse(MD[1]) - parse(MD[0]) > 30 * 864e5 ? MD[0] : null, MON0 = STRAY ? MD[1] : MD[0];
+  const monSpan = () => `${short(MON0)} to ${short(MON1)}` + (STRAY ? ` (plus 1 day, ${short(STRAY)})` : "");
+  const WHOLE = new Map(FD.report.agents.map(a => [a.agent, a]));
+  // week = Monday to Sunday for counting, so weekend decisions are not lost
+  function inWindow(s, R) {
+    if (R === "day") return d => d === s[0];
+    if (R === "month") { const ym = state.anchor.slice(0, 7); return d => d.startsWith(ym); }
+    const a = s[0], b = iso(addDays(parse(s[0]), 6)); return d => d >= a && d <= b;
+  }
+  const evRow = (meta, title, body, ref) => `<div class="ev"><div class="meta">${esc(meta)}</div>${title ? `<div><b>${esc(unesc(title))}</b></div>` : ""}${body ? `<div>${body}</div>` : ""}<div class="ref">${esc(ref)}</div></div>`;
+  const quote = t => /^["“]/.test(t) ? esc(t) : `“${esc(t)}”`;
+  const jumpToMonitor = () => `<button data-jump>Go to the last week with Monitor data</button>`;
+
+  function renderGate(W, label) {
+    const dec = RG.decisions.filter(x => W(x.date));
+    if (!dec.length) { $("gate").innerHTML = `<p class="rempty">No outreach decisions ${label}. Outreach approvals run from ${short(RG.decisions.map(x => x.date).sort()[0])}.</p>`; return; }
+    const rej = dec.filter(x => !x.ok), ok = dec.length - rej.length;
+    const by = new Map(); rej.forEach(x => { const k = x.k || "no comment"; if (!by.has(k)) by.set(k, []); by.get(k).push(x); });
+    const buckets = [...by].sort((a, b) => b[1].length - a[1].length), max = buckets.length ? buckets[0][1].length : 1;
+    const agents = new Map(); dec.forEach(x => { const a = agents.get(x.agent) || [0, 0]; a[x.ok ? 0 : 1]++; agents.set(x.agent, a); });
+    const topAsk = [...agents].sort((a, b) => (b[1][0] + b[1][1]) - (a[1][0] + a[1][1])).slice(0, 3);
+    $("gate").innerHTML = `<div class="rstats">
+        <div class="rstat" tabindex="0" ${tipAttrs(`${dec.length} decisions`, `staff decisions on outreach requests ${label}`, "Most requests: " + topAsk.map(([a, n]) => `${a} ${n[0] + n[1]}`).join(", "))}><b>${dec.length}</b><span>decisions</span></div>
+        <div class="rstat" tabindex="0" ${tipAttrs(`${ok} approved`, pc(ok / dec.length) + " of decisions")}><b>${ok}</b><span>approved</span></div>
+        <div class="rstat" tabindex="0" ${tipAttrs(`${rej.length} rejected`, pc(rej.length / dec.length) + " of decisions", rej.length ? "The reasons are below." : "")}><b>${rej.length}</b><span>rejected</span></div>
+      </div>` + (rej.length ? `<div class="rpanel"><h3>Why staff said no</h3>
+        <div class="rlegend"><span><i style="background:var(--accent)"></i>the agent's message claimed something untrue about its own work</span></div>` +
+      buckets.map(([k, xs]) => {
+        const open = state.gk === k, hot = k === "false claim in the message";
+        const whoN = new Map(); xs.forEach(x => whoN.set(x.agent, (whoN.get(x.agent) || 0) + 1));
+        const who = [...whoN].sort((a, b) => b[1] - a[1]).map(([a, n]) => `${a} ${n}`).join(", ");
+        return `<button class="rrow" data-gk="${esc(k)}" aria-expanded="${open}" ${tipAttrs(`${xs.length} rejection${xs.length > 1 ? "s" : ""}`, k, who + ". Select to read the staff comments.")}>
+            <span>${esc(k)}</span><span class="rtrack"><i class="${hot ? "hot" : ""}" style="width:${Math.max(3, 100 * xs.length / max)}%"></i></span><span class="n">${xs.length} ${open ? "▾" : "▸"}</span></button>` +
+          (open ? `<div class="rev">${xs.map(x => evRow(`Staff, to ${x.agent} · ${short(x.date)}`, "", x.text ? quote(trim(x.text)) : "No comment written.", x.ref)).join("")}</div>` : "");
+      }).join("") + `</div>` : `<p class="rempty">Every request ${label} was approved.</p>`);
+    $("gate").querySelectorAll("[data-gk]").forEach(b => b.onclick = () => { state.gk = state.gk === b.dataset.gk ? null : b.dataset.gk; render(); });
+    return { n: dec.length, rej: rej.length };
+  }
+
+  function renderOver(W, label, R) {
+    const md = MD.filter(W);
+    if (!md.length) { $("over").innerHTML = `<p class="rempty">The Village Monitor covers ${monSpan()}. Nothing to count ${label}. ${jumpToMonitor()}</p>`; return; }
+    const rows = [];
+    for (const [a, ds] of Object.entries(RG.active)) {
+      const act = ds.filter(W).length; if (!act) continue;
+      const f = RG.over.filter(x => x.agent === a && W(x.date));
+      rows.push({ a, act, f, days: new Set(f.map(x => x.date)).size });
+    }
+    const flagged = rows.filter(r => r.days).sort((x, y) => y.days / y.act - x.days / x.act || y.days - x.days);
+    const clean = rows.length - flagged.length;
+    if (!flagged.length) { $("over").innerHTML = `<p class="rempty">No false or unverified claims flagged ${label}, across ${rows.length} active agents.</p>`; return; }
+    $("over").innerHTML = `<div class="rpanel"><h3>Days with a false or unverified claim</h3>
+      <p class="fine" style="margin:0 0 6px">${md.length} of the ${MD.length} days with a Monitor file fall ${label}.</p><div class="rlegend"><span><i style="background:var(--g4)"></i>flagged days out of active days ${label}</span><span><b class="tk"></b>the agent's rate over all ${MD.length} Monitor days</span></div>` +
+      flagged.map(r => {
+        const open = state.oa === r.a, w = WHOLE.get(r.a);
+        return `<button class="rrow" data-oa="${esc(r.a)}" aria-expanded="${open}" ${tipAttrs(`${r.days} of ${r.act} active day${r.act > 1 ? "s" : ""}`, `${r.a} ${label}: ${r.f.length} finding${r.f.length > 1 ? "s" : ""}`, (w ? `Whole run: ${pc(w.rate)} (${w.flagged} of ${w.active} days). ` : "Active on fewer than 20 Monitor days, so no whole-run rate. ") + "Select to read them.")}>
+          <span>${esc(r.a)}</span><span class="rtrack"><i style="width:${Math.max(3, 100 * r.days / r.act)}%"></i>${w ? `<b style="left:${100 * w.rate}%"></b>` : ""}</span><span class="n">${r.days} of ${r.act} days ${open ? "▾" : "▸"}</span></button>` +
+          (open ? `<div class="rev">${r.f.sort((x, y) => x.date < y.date ? -1 : 1).map(x => evRow(`${short(x.date)} · ${x.sev} · ${cat(x.cat)}`, x.heading, esc(trim(x.text)), x.ref)).join("")}</div>` : "");
+      }).join("") + `<p class="fine">${clean} other active agent${clean === 1 ? "" : "s"} had no such finding ${label}.</p></div>`;
+    $("over").querySelectorAll("[data-oa]").forEach(b => b.onclick = () => { state.oa = state.oa === b.dataset.oa ? null : b.dataset.oa; render(); });
+    return { top: flagged[0], n: flagged.length, of: rows.length };
+  }
+
+  const SEVC = { low: "var(--g2)", medium: "var(--g4)", high: "var(--g5)" }, SR = { low: 1, medium: 2, high: 3 };
+  function renderDrift(W, label) {
+    const md = MD.filter(W);
+    if (!md.length) { $("drift").innerHTML = `<p class="rempty">The Village Monitor covers ${monSpan()}. Nothing to show ${label}. ${jumpToMonitor()}</p>`; return; }
+    const live = RG.pairs.map((p, i) => ({ p, i, inR: new Set(p.timeline.filter(t => W(t.date)).map(t => t.date)) })).filter(x => x.inR.size)
+      .sort((a, b) => b.inR.size - a.inR.size || b.p.days - a.p.days);
+    if (!live.length) { $("drift").innerHTML = `<p class="rempty">None of the ${RG.pairs.length} recurring flags fired ${label}.</p>`; return; }
+    const n = MD.length, VW = 860, cw = VW / n, di = new Map(MD.map((d, i) => [d, i]));
+    const first = di.get(md[0]), last = di.get(md[md.length - 1]);
+    const shown = live.slice(0, 15);
+    $("drift").innerHTML = `<div class="rpanel"><h3>${live.length} of the ${RG.pairs.length} recurring flags fired ${label}</h3>
+      <p class="fine" style="margin:0 0 6px">${md.length} of the ${n} days with a Monitor file fall ${label}.</p><div class="rlegend"><span>Each strip is all ${n} Monitor days in order, ${monSpan()}, one cell per day; the shaded band is ${label}.</span>${Object.entries(SEVC).map(([k, c]) => `<span><i style="background:${c}"></i>${k}</span>`).join("")}</div>` +
+      shown.map(({ p, i, inR }) => {
+        const byD = new Map(); p.timeline.forEach(t => { if (!byD.has(t.date)) byD.set(t.date, []); byD.get(t.date).push(t); });
+        const cells = [...byD].map(([d, ts]) => { const t = ts.reduce((a, b) => SR[b.sev] > SR[a.sev] ? b : a), k = `${i}|${d}`;
+          return `<rect class="dc ${state.dk === k ? "sel" : ""}" data-dk="${k}" tabindex="0" x="${di.get(d) * cw + .3}" y="2" width="${Math.max(1.5, cw - .6)}" height="14" fill="${SEVC[t.sev]}" ${tipAttrs(t.heading, `${p.agent} · ${short(d)} · ${t.sev}`, ts.length > 1 ? `${ts.length} findings this day. Select to read.` : "Select to read why it was flagged.")}></rect>`; }).join("");
+        const kind = p.kind === "persistent drift" ? "drift" : p.kind === "standing permitted activity" ? "allowed" : "mixed";
+        const open = state.dk && state.dk.split("|")[0] === String(i);
+        const sel = open ? state.dk.split("|")[1] : null, rows = !open ? [] : sel === "*" ? p.timeline.filter(t => W(t.date)) : p.timeline.filter(t => t.date === sel);
+        return `<div class="drow"><button class="dl" data-dk="${i}|*" aria-expanded="${open && sel === "*"}" ${tipAttrs(`${inR.size} day${inR.size > 1 ? "s" : ""} ${label}`, `${p.agent} · ${cat(p.cat)} · ${p.kind} (Monitor label: ${p.cat})`, `${p.days} of ${n} days over the whole run, ${p.findings} findings. Select for this range's findings.`)}>${esc(p.agent)} · ${esc(cat(p.cat))}<span class="kind ${kind === "drift" ? "drift" : ""}">${kind}</span></button>
+          <svg viewBox="0 0 ${VW} 18" preserveAspectRatio="none" role="img" aria-label="${esc(p.agent)} ${esc(cat(p.cat))}, flagged ${p.days} of ${n} days"><rect x="0" y="2" width="${VW}" height="14" fill="var(--g1)"></rect><rect x="${first * cw}" y="0" width="${(last - first + 1) * cw}" height="18" fill="#f3d9c4" opacity=".9"></rect>${cells}</svg>
+          <span class="n">${inR.size} ${label} · ${p.days} of ${n}</span></div>` +
+          (open ? `<div class="rev">${rows.map(t => evRow(`${short(t.date)} · ${t.sev}`, t.heading, esc(trim(t.why)), t.ref)).join("") || `<div class="ev">No findings for this pair ${label}.</div>`}</div>` : "");
+      }).join("") + (live.length > shown.length ? `<p class="fine">${live.length - shown.length} more fired ${label}; showing the 15 with the most days in the range.</p>` : "") + `</div>`;
+    $("drift").querySelectorAll("[data-dk]").forEach(b => { const f = () => { state.dk = state.dk === b.dataset.dk ? null : b.dataset.dk; render(); }; b.addEventListener("click", f); b.addEventListener("keydown", e => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), f())); });
+    return { n: live.length, of: RG.pairs.length };
+  }
+
+  // ---- Step 2 layout variants. Counts come from the section renderers' return values, never recounted here ----
+  function renderBand(sum, label) {
+    $("band").hidden = LAYOUT === "a";
+    if (LAYOUT === "a") return;
+    const card = (id, k, t, v) => `<a href="#${id}"><div class="bk">${k}</div><div class="bt">${esc(t)}</div><div class="bv">${v}</div></a>`;
+    $("band").innerHTML =
+      card("gate-block", "Humans at the gate", LEADS.gate, sum.gate ? `<b>${sum.gate.rej}</b>of ${sum.gate.n} outreach requests rejected ${label}` : `No outreach decisions ${label}`) +
+      card("over-block", "Who over-reported", LEADS.over, sum.over ? `<b>${sum.over.top.days} of ${sum.over.top.act}</b>active days flagged: ${esc(sum.over.top.a)}, ${label}` : `No Monitor data ${label}`) +
+      card("drift-block", "Flags that kept coming back", LEADS.drift, sum.drift ? `<b>${sum.drift.n}</b>of ${sum.drift.of} recurring flags fired ${label}` : `No Monitor data ${label}`);
+  }
+  // ---- Worth watching: the Monitor's highlights in the range ----
+  function renderHi(W, label) {
+    const md = MD.filter(W);
+    if (!md.length) { $("hi").innerHTML = `<p class="rempty">The Village Monitor covers ${monSpan()}. Nothing to show ${label}. ${jumpToMonitor()}</p>`; return; }
+    const all = RG.highlights.filter(x => W(x.date)), k = state.hk || "all";
+    const list = all.filter(x => k === "all" || x.cat === k).sort((a, b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+    const n = c => all.filter(x => x.cat === c).length, LIM = 8, show = state.hall ? list : list.slice(0, LIM);
+    $("hi").innerHTML = `<div class="rpanel">
+      <div class="chipset" role="group" aria-label="Kind">${[["all", `All ${all.length}`], ["interesting-content", `Interesting work ${n("interesting-content")}`], ["good-tweet", `Good posts ${n("good-tweet")}`]].map(([v, t]) => `<button data-hk="${v}" aria-pressed="${k === v}">${t}</button>`).join("")}</div>` +
+      (show.length ? show.map(x => { const open = state.ho === x.ref;
+        return `<button class="hi" data-ho="${esc(x.ref)}" aria-expanded="${open}"><span class="when">${esc(fmt(x.date, { month: "short", day: "numeric" }))}<br>${esc(cat(x.cat))}</span><span><span class="who">${esc(x.agents.join(", ") || "Village")}</span><br><b>${esc(unesc(x.heading))}</b></span><span class="chev">›</span>` +
+          (open ? `<span class="body">${esc(trim(x.text))}</span><span class="ref">${esc(x.ref)}</span>` : "") + `</button>`; }).join("") : `<p class="rempty">No highlights of this kind ${label}.</p>`) +
+      (list.length > LIM ? `<p class="fine"><a href="#" id="hi-all">${state.hall ? "Show fewer" : `Show all ${list.length}`}</a></p>` : "") + `</div>`;
+    $("hi").querySelectorAll("[data-hk]").forEach(b => b.onclick = () => { state.hk = b.dataset.hk; state.ho = null; state.hall = false; render(); });
+    $("hi").querySelectorAll("[data-ho]").forEach(b => b.onclick = () => { state.ho = state.ho === b.dataset.ho ? null : b.dataset.ho; render(); });
+    const more = $("hi-all"); if (more) more.onclick = e => { e.preventDefault(); state.hall = !state.hall; render(); };
+  }
+
+  // jump from an empty state into the Monitor's window
+  document.addEventListener("click", e => { if (e.target.closest("[data-jump]")) { state.range = "week"; state.anchor = [...dates].reverse().find(d => d <= MON1) || dates[dates.length - 1]; state.open = state.sel = state.pair = state.prof = state.gk = state.oa = state.dk = state.hk = state.ho = state.hall = state.sall = null; render(); } });
+  // one tooltip for every [data-tv] element: hover and keyboard focus; it adds detail, never gates it
+  const tipEl = () => document.getElementById("tip");
+  const showT = (t, x, y) => { const tp = tipEl(); tp.replaceChildren(); [["v", t.dataset.tv], ["l", t.dataset.tl], ["m", t.dataset.tm]].forEach(([c, v]) => { if (v) { const d = document.createElement("div"); d.className = c; d.textContent = v; tp.append(d); } });
+    tp.classList.add("on"); const w = tp.offsetWidth, h = tp.offsetHeight; tp.style.left = Math.min(innerWidth - w - 8, Math.max(8, x + 14)) + "px"; tp.style.top = (y - h - 12 < 8 ? y + 18 : y - h - 12) + "px"; };
+  document.addEventListener("pointermove", e => { const t = e.target.closest && e.target.closest("#report [data-tv]"); if (t) showT(t, e.clientX, e.clientY); else if (!$("report").hidden && !(document.activeElement && document.activeElement.closest && document.activeElement.closest("#report [data-tv]"))) tipEl().classList.remove("on"); });
+  document.addEventListener("focusin", e => { const t = e.target.closest && e.target.closest("#report [data-tv]"); if (t) { const r = t.getBoundingClientRect(); showT(t, r.left + r.width / 2, r.top); } });
+  document.addEventListener("focusout", () => tipEl().classList.remove("on"));
+
+  // ---- Who appeared together ----
+  function renderNet(inRange, R) {
+    $("net-block").hidden = R === "day";
+    if (R === "day") return;
+    const multi = inRange.filter(x => x.agents.size > 1);
+    const cnt = new Map(), E = new Map();
+    inRange.forEach(x => x.agents.forEach(a => cnt.set(a, (cnt.get(a) || 0) + 1)));
+    multi.forEach(x => { const a = [...x.agents].sort(); for (let i = 0; i < a.length; i++) for (let j = i + 1; j < a.length; j++) { const k = a[i] + "|" + a[j]; if (!E.has(k)) E.set(k, []); E.get(k).push(x); } });
+    const minW = R === "month" ? 2 : 1;
+    let edges = [...E].filter(([, v]) => v.length >= minW).sort((a, b) => b[1].length - a[1].length);
+    const nodes = [...new Set(edges.flatMap(([k]) => k.split("|")))].sort((a, b) => cnt.get(b) - cnt.get(a)).slice(0, 14);
+    edges = edges.filter(([k]) => k.split("|").every(n => nodes.includes(n)));
+    $("net-sub").textContent = edges.length
+      ? `${multi.length} of ${inRange.length} top moments name two or more agents. A line means two agents were named in the same moment${minW > 1 ? ` at least ${minW} times` : ""}. Select an agent or a pair to see the moments behind it.`
+      : "No top moment in this range names more than one agent.";
+    if (!edges.length) { $("net").innerHTML = ""; $("pairs").innerHTML = ""; return; }
+
+    // circle layout; greedy chain so strong pairs sit next to each other
+    const w = k => (E.get(k) || []).length, key = (a, b) => [a, b].sort().join("|");
+    const order = [nodes[0]];
+    while (order.length < nodes.length) {
+      const last = order[order.length - 1];
+      order.push(nodes.filter(n => !order.includes(n)).sort((a, b) => (w(key(last, b)) - w(key(last, a))) || cnt.get(b) - cnt.get(a))[0]);
+    }
+    const W = 640, H = 440, cx = W / 2, cy = H / 2, r = Math.min(W, H) / 2 - 40;
+    const pos = new Map(order.map((n, i) => { const t = -Math.PI / 2 + i * 2 * Math.PI / order.length; return [n, [cx + r * Math.cos(t), cy + r * Math.sin(t), t]]; }));
+    const maxW = edges[0][1].length, maxC = Math.max(...nodes.map(n => cnt.get(n)));
+    const sel = state.sel, pair = state.pair;
+    $("net").innerHTML = edges.map(([k, v]) => { const [a, b] = k.split("|"), [x1, y1] = pos.get(a), [x2, y2] = pos.get(b);
+        const cls = pair === k || (sel && k.split("|").includes(sel)) ? "hl" : (sel || pair) ? "dim" : "";
+        return `<line class="edge ${cls}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke-width="${1.5 + 7 * v.length / maxW}"><title>${esc(a)} + ${esc(b)}: ${v.length}</title></line>`; }).join("") +
+      order.map(n => { const [x, y, t] = pos.get(n), rad = 7 + 11 * Math.sqrt(cnt.get(n) / maxC);
+        const c = Math.cos(t), lx = x + c * (rad + 6), ly = y + Math.sin(t) * (rad + 6) + 4;
+        const on = sel === n || (pair && pair.split("|").includes(n));
+        const dim = (sel && !on && !E.has(key(sel, n))) || (pair && !on);
+        return `<g class="node ${on ? "on" : ""} ${dim ? "dim" : ""}" data-n="${esc(n)}" tabindex="0" role="button" aria-label="${esc(n)}, ${cnt.get(n)} moments"><circle cx="${x}" cy="${y}" r="${rad}"></circle><text x="${lx}" y="${ly}" text-anchor="${Math.abs(c) < .2 ? "middle" : c > 0 ? "start" : "end"}">${esc(n)}</text></g>`; }).join("");
+    $("net").querySelectorAll(".node").forEach(g => { const f = () => { state.sel = state.sel === g.dataset.n ? null : g.dataset.n; state.pair = null; render(); }; g.onclick = f; g.onkeydown = e => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), f()); });
+
+    const list = edges.filter(([k]) => !sel || k.split("|").includes(sel)).slice(0, sel ? 20 : 8);
+    $("pairs").innerHTML = `<h3>${sel ? `${esc(sel)} appeared with` : "Strongest pairs"}</h3>` + list.map(([k, v]) => {
+      const [a, b] = k.split("|"), open = pair === k;
+      return `<button class="pair" data-k="${esc(k)}" aria-expanded="${open}"><span>${sel ? esc(a === sel ? b : a) : `${esc(a)} + ${esc(b)}`}</span><span class="n">${v.length} moment${v.length > 1 ? "s" : ""} ${open ? "▾" : "▸"}</span></button>` +
+        (open ? `<div class="evidence">${v.map(x => momentRow(x, true)).join("")}</div>` : "");
+    }).join("") + (sel ? `<p class="fine"><a href="#" id="clear-sel">Show all agents</a></p>` : "");
+    $("pairs").querySelectorAll(".pair").forEach(b => b.onclick = () => { state.pair = state.pair === b.dataset.k ? null : b.dataset.k; render(); });
+    const c = $("clear-sel"); if (c) c.onclick = e => { e.preventDefault(); state.sel = state.pair = null; render(); };
+  }
+
+  // ---- Cast + profiles ----
+  function renderCast(s, have, inRange, R) {
+    $("cast-block").hidden = R === "day";
+    if (R === "day") return;
+    const seen = new Map();
+    for (const x of inRange) for (const a of x.agents) { if (!seen.has(a)) seen.set(a, { days: new Set(), first: x }); seen.get(a).days.add(x.date); }
+    const rows = [...seen].sort((a, b) => b[1].days.size - a[1].days.size || a[0].localeCompare(b[0])).slice(0, R === "month" ? 16 : 12);
+    $("cast-sub").textContent = `Agents named in this range's top moments, most days first. Open one for its profile across all ${dayN(D.dataThrough)} days.`;
+    $("cast").innerHTML = rows.map(([a, r]) => {
+      const open = state.prof === a;
+      return `<li><button class="row" data-a="${esc(a)}" aria-expanded="${open}"><span class="nm">${esc(a)}</span>
+        <span class="dots ${R === "month" ? "small" : ""}" aria-label="${r.days.size} of ${have.length} days">${(R === "month" ? have : s).map(d => `<span class="dot ${r.days.has(d) ? "on" : ""}" title="${fmt(d, { weekday: "short", month: "short", day: "numeric" })}"></span>`).join("")}</span>
+        <span class="first">${esc(r.first.m.title)}</span><span class="chev">›</span></button>${open ? profile(a) : ""}</li>`;
+    }).join("") || `<li class="sub">No agents named in this range.</li>`;
+    $("cast").querySelectorAll(".row").forEach(b => b.onclick = () => { state.prof = state.prof === b.dataset.a ? null : b.dataset.a; render(); });
+  }
+
+  function profile(a) {
+    const p = P.get(a), joined = (D.agents.find(x => x.name === a) || {}).joined;
+    const partners = [...p.partners].sort((x, y) => y[1] - x[1]).slice(0, 3);
+    return `<div class="sheet">
+      <div><h3>Across the whole run</h3><dl>
+        ${joined ? `<dt>Joined</dt><dd>${short(joined)} (Day ${dayN(joined)})</dd>` : ""}
+        <dt>First featured</dt><dd>${short(p.first)}</dd>
+        <dt>Last featured</dt><dd>${short(p.last)}</dd>
+        <dt>Days featured</dt><dd>${p.days.size} of ${dates.length} summarized days</dd>
+        <dt>Top moments</dt><dd>${p.n}</dd>
+        <dt>Longest streak</dt><dd>${p.streak} summarized day${p.streak > 1 ? "s" : ""} in a row</dd>
+        <dt>Usually with</dt><dd>${partners.length ? partners.map(([b, n]) => `${esc(b)} (${n})`).join(", ") : "Mostly alone"}</dd>
+      </dl></div>
+      <div><h3>Behavior tags</h3>
+        ${TAGS.map(([t], i) => { const v = p.tags[i] / p.n; return `<div class="trait"><span>${t}</span><span class="bar"><i style="width:${Math.round(v * 100)}%"></i><b style="left:${Math.round(avg[i] * 100)}%" title="Village average ${Math.round(avg[i] * 100)}%"></b></span><span class="pct">${Math.round(v * 100)}%</span></div>`; }).join("")}
+        <p class="fine">Share of this agent's ${p.n} top moments whose text matches each tag's keywords. Tick = Village average. A rough first cut: a moment where one agent catches another's mistake tags both.</p>
+      </div></div>`;
+  }
+
+  // ---- Notes layer ----
+  function attachPins() {
+    document.querySelectorAll("[data-note]").forEach(el => { if (!el.querySelector(":scope > .pin")) el.insertAdjacentHTML("beforeend", pinHtml(el.dataset.note)); });
+    document.querySelectorAll(".pin").forEach(b => b.onclick = e => { e.stopPropagation(); openNote(b.dataset.pin); });
+  }
+  function openNote(id) {
+    const n = NOTES[id];
+    $("dr-num").textContent = NOTE_IDS.indexOf(id) + 1;
+    $("dr-title").textContent = n.title;
+    $("dr-body").innerHTML = [["What it does", n.what, "what"], ["Data", n.data, "data"], ["Limits", n.limits, "limits"], ["Why (Chris)", n.why, "why"], ["Next", n.next, "next"]]
+      .filter(([, v, f]) => v && blanks(v, `note:${id}:${f}`).trim()).map(([k, v, f]) => `<dt>${k}</dt><dd>${blanks(v, `note:${id}:${f}`)}</dd>`).join("");
+    $("drawer").classList.add("open"); $("drawer").setAttribute("aria-hidden", "false"); $("dr-close").focus();
+  }
+  $("dr-close").onclick = () => { $("drawer").classList.remove("open"); $("drawer").setAttribute("aria-hidden", "true"); };
+  document.addEventListener("keydown", e => e.key === "Escape" && $("dr-close").onclick());
+  const setNotes = on => { document.body.classList.toggle("notes", on); $("notes-toggle").setAttribute("aria-pressed", on); if (!on) $("dr-close").onclick(); };
+  $("notes-toggle").onclick = () => setNotes(!document.body.classList.contains("notes"));
+  $("notes-index").innerHTML = `<b>Design notes are on.</b> Numbered pins mark each decision: ` +
+    NOTE_IDS.map((id, i) => `<a href="#" data-open="${id}">${i + 1}. ${esc(NOTES[id].title)}</a>`).join(" · ");
+  $("notes-index").querySelectorAll("a").forEach(a => a.onclick = e => { e.preventDefault(); openNote(a.dataset.open); });
+
+  $("ranges").querySelectorAll("button").forEach(b => b.onclick = () => { if (!b.disabled) { state.range = b.dataset.range; state.open = state.sel = state.pair = state.prof = state.gk = state.oa = state.dk = state.hk = state.ho = state.hall = state.sall = null; render(); } });
+  $("prev").onclick = () => shift(-1);
+  $("next").onclick = () => shift(1);
+  const q = new URLSearchParams(location.search);
+  if (["day", "week", "month"].includes(q.get("range"))) state.range = q.get("range");
+  if (q.get("agent")) state.prof = q.get("agent");
+  render();
+  if (q.has("notes")) setNotes(true);
+})();
+</script>
+<div id="tip" role="tooltip"></div>
+</body>
+</html>

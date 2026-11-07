@@ -47,6 +47,15 @@ const DEMOS = {
     html: `<section class="vx-host" id="vx" aria-label="Watch a real call run through the pipeline"></section>`,
     init: `VoiceXray.mount(document.getElementById('vx'), {title: 'Watch a real call run through the pipeline'});`,
   },
+  'ai-village': {
+    toc: 'The prototype',
+    band: 'band-plain',
+    css: [], js: [],
+    // Link, not embed (Chris 2026-11-04): a long interactive report needs its own URL and its own scroll.
+    html: `<a class="proto-shot" href="lab/ai-village-1666fad9/index.html"><img src="lab/ai-village-1666fad9/prototype.jpg" alt="The AI Village report prototype: a week in the Village, three findings on top" loading="lazy" style="width:100%;border-radius:10px;border:1px solid #ddd" /></a>
+    <p><a class="btn btn-primary btn-lg" href="lab/ai-village-1666fad9/index.html">Open the prototype ↗</a></p>`,
+    init: '',
+  },
   'hogware': {
     toc: 'HogWare',
     band: 'band-plain',
@@ -223,7 +232,7 @@ const page = `<!DOCTYPE html>
 <meta property="og:title" content="${attr(title)}" />
 <meta property="og:description" content="${attr(meta.description)}" />
 <meta name="author" content="Chris Lam" />
-<meta name="robots" content="noindex" /><!-- unlisted on purpose: an application page addressed to one employer, shared by link only -->
+<meta name="robots" content="noindex, nofollow, noarchive, noai, noimageai" /><!-- unlisted on purpose: an application page addressed to one employer, shared by link only -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;1,400&family=Kumbh+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />

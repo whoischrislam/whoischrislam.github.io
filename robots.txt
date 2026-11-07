@@ -1,38 +1,61 @@
 # whoischrislam.github.io: open to humans and AI alike.
 # AI crawlers are explicitly welcome, especially the query-time search bots
 # that surface citations when someone researches Chris with an AI assistant.
+# Unlisted work samples and application pages stay out of all crawls.
 
 User-agent: GPTBot
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: Claude-User
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 User-agent: *
 Allow: /
+Disallow: /lab/
+Disallow: /*-application.html
 
 Sitemap: https://whoischrislam.github.io/sitemap.xml
