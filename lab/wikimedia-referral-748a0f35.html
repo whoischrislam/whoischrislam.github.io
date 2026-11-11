@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Referral details · Chris Lam</title>
+<meta name="robots" content="noindex, nofollow, noarchive, noai, noimageai" /><!-- unlisted: shared by link with one referrer only -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Besley:ital,wght@0,400;0,600;1,400&family=Kumbh+Sans:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { --ink:#1a1a1a; --mute:#5c5c5c; --line:#e2e2e2; --bg:#fafafa; --card:#fff; --green:#2f6b4f; --blank:#a33; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 "Kumbh Sans",system-ui,sans-serif; }
+  main { max-width:680px; margin:0 auto; padding:56px 20px 80px; }
+  h1 { font:600 32px/1.2 Besley,Georgia,serif; margin:0 0 12px; }
+  h2 { font:600 20px/1.3 Besley,Georgia,serif; margin:40px 0 4px; }
+  p.lede { color:var(--mute); margin:0 0 8px; }
+  .hint { color:var(--mute); font-size:14px; margin:0 0 14px; }
+  .row { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:0 0 10px; display:flex; gap:12px; align-items:flex-start; }
+  .row .body { flex:1; min-width:0; }
+  .label { font-size:14px; color:var(--mute); margin:0 0 2px; }
+  .value { font-size:16px; overflow-wrap:anywhere; white-space:pre-wrap; margin:0; }
+  .value a { color:var(--green); }
+  .row.blank .value { color:var(--blank); font-style:italic; }
+  button.copy { flex:none; font:600 14px "Kumbh Sans",sans-serif; color:var(--green); background:#fff; border:1px solid var(--green); border-radius:8px; padding:7px 12px; cursor:pointer; min-width:74px; }
+  button.copy:hover { background:#f0f6f2; }
+  button.copy.done { background:var(--green); color:#fff; }
+  button.copy:disabled { color:#aaa; border-color:#ddd; cursor:not-allowed; background:#fff; }
+  .all { margin:28px 0 0; display:flex; gap:10px; flex-wrap:wrap; }
+  .all button { font:600 15px "Kumbh Sans",sans-serif; border-radius:8px; padding:10px 16px; cursor:pointer; border:1px solid var(--green); background:var(--green); color:#fff; }
+  .all a { font:600 15px "Kumbh Sans",sans-serif; border-radius:8px; padding:10px 16px; border:1px solid var(--green); color:var(--green); text-decoration:none; background:#fff; }
+  .note { font-size:14px; color:var(--blank); margin:6px 0 0; }
+  footer { margin-top:48px; color:var(--mute); font-size:14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Referring Chris Lam to Wikimedia</h1>
+  <p class="hint">Each line matches a field on the referral form. Tap Copy, then paste.</p>
+
+  <div id="sections"></div>
+
+  <div class="all">
+    <button type="button" id="copy-all">Copy everything</button>
+    <a href="https://madebychrislam.com/chris-lam-resume.pdf" download>Download resume (PDF)</a>
+  </div>
+
+  <footer>Questions? <a href="mailto:whoischrislam@gmail.com">whoischrislam@gmail.com</a></footer>
+</main>
+
+<script>
+// ONE place to edit. Any value still wrapped in [[ ]] shows red and cannot be copied.
+const SECTIONS = [
+  { title: "The role", hint: "", rows: [
+    { label: "Job title", value: "Senior UX Designer (Product Design, Reader Growth)" },
+    { label: "Job link", value: "https://job-boards.greenhouse.io/wikimedia/jobs/8319366", link: true },
+  ]},
+  { title: "About Chris", hint: "Candidate details.", rows: [
+    { label: "First name", value: "Chris" },
+    { label: "Last name", value: "Lam" },
+    { label: "Email", value: "whoischrislam@gmail.com" },
+    { label: "Location", value: "Honolulu, HI, United States" },
+    { label: "LinkedIn", value: "https://www.linkedin.com/in/whoischrislam/", link: true },
+    { label: "Portfolio", value: "https://madebychrislam.com", link: true },
+    { label: "Resume (link)", value: "https://madebychrislam.com/chris-lam-resume.pdf", link: true },
+  ]},
+  { title: "Your part", hint: "Edit these freely so they're true for you.", rows: [
+    { label: "How do you know Chris?", value: "Through a former colleague. We haven't worked together directly." },
+    { label: "Why are you referring him? (short)", value: "I haven't worked with Chris, but I reviewed his portfolio. He has redesigned high-traffic health-information pages for everyday readers (A/B tested) and rebuilt the core lesson experience on a live learning platform, which maps closely to Reader Growth.", note: "A draft. Edit it so it is true for you before pasting." },
+    { label: "Strongest relevant work", value: "GoodRx drug pages: redesigned high-traffic medication pages so everyday readers could understand a drug and act on it. A/B tested: +10% mobile, +25% desktop coupon conversion.\nhttps://madebychrislam.com/?work=goodrx&project=goodrx-drug-pages#work\n\nGoodRx Research: designed and personally coded the interactive data visualizations (D3), referenced in The New York Times and on Good Morning America.\nhttps://madebychrislam.com/?work=goodrx&project=goodrx-research#work\n\nPathstream: rebuilt the core lesson experience of a live learning platform mid-cohort, with no forced migration for course authors.\nhttps://madebychrislam.com/?work=pathstream&project=lesson-system#work" },
+  ]},
+];
+
+const isBlank = v => /\[\[.*?\]\]/.test(v);
+const root = document.getElementById("sections");
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function flash(btn, text) {
+  const old = btn.textContent;
+  btn.textContent = text; btn.classList.add("done");
+  setTimeout(() => { btn.textContent = old; btn.classList.remove("done"); }, 1400);
+}
+async function copy(text, btn) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
+  flash(btn, "Copied");
+}
+
+for (const s of SECTIONS) {
+  const h = document.createElement("h2"); h.textContent = s.title; root.appendChild(h);
+  if (s.hint) { const p = document.createElement("p"); p.className = "hint"; p.textContent = s.hint; root.appendChild(p); }
+  for (const r of s.rows) {
+    const blank = isBlank(r.value);
+    const row = document.createElement("div");
+    row.className = "row" + (blank ? " blank" : "");
+    const shown = r.link && !blank ? `<a href="${esc(r.value)}" target="_blank" rel="noopener">${esc(r.value)}</a>` : esc(r.value);
+    row.innerHTML = `<div class="body"><p class="label">${esc(r.label)}</p><p class="value">${shown}</p>${r.note ? `<p class="note">${esc(r.note)}</p>` : ""}</div>
+      <button type="button" class="copy" aria-label="Copy ${esc(r.label)}"${blank ? " disabled" : ""}>Copy</button>`;
+    row.querySelector("button").addEventListener("click", e => copy(r.value, e.currentTarget));
+    root.appendChild(row);
+  }
+}
+
+document.getElementById("copy-all").addEventListener("click", e => {
+  const text = SECTIONS.flatMap(s => s.rows.filter(r => !isBlank(r.value)).map(r => `${r.label}: ${r.value}`)).join("\n");
+  copy(text, e.currentTarget);
+});
+</script>
+</body>
+</html>
