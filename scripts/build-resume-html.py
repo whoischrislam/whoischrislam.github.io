@@ -119,6 +119,9 @@ def render_html(data, label, summary):
         contacts.append((p["url"], strip(p["url"])))
     contact = " · ".join(
         f'<a href="{esc(href)}">{esc(disp)}</a>' for href, disp in contacts)
+    loc = basics.get("location") or {}
+    if loc.get("city") and loc.get("region"):
+        contact = f'{esc(loc["city"])}, {esc(loc["region"])} · ' + contact
 
     # Skills rail
     skill_html = ['<h2>Skills</h2>']
