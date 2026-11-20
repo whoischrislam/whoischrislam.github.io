@@ -443,7 +443,7 @@
     { anchor: "#y30", kw: ["y30", "elder", "caregiver", "grandma", "safety", "patience window", "fsm", "voice ai"] },
     { anchor: "#playsesh", kw: ["playsesh", "discord", "game dev", "game-thinking", "durable objects", "websocket", "multiplayer", "indie"] },
     { anchor: "#work", kw: ["goodrx", "good rx", "clover", "amazon", "taskrabbit", "task rabbit", "ipo", "acquisition", "acquired", "conversion", "revenue", "nurse", "coupon", "prime", "webby", "sharecare", "modus", "jira", "dark mode", "metric", "outcome", "nps"] },
-    { anchor: "#looking-for", kw: ["looking for", "role", "remote", "relocat", "location", "honolulu", "bay area", "seniority", "level", "open to", "best fit", "best-fit"] },
+    { anchor: "#looking-for", kw: ["looking for", "role", "remote", "relocat", "location", "seattle", "honolulu", "bay area", "seniority", "level", "open to", "best fit", "best-fit"] },
     { anchor: "#stack", kw: ["how he works", "how does he work", "his stack", "ai-native", "ai native", "force multiplier", "how he builds"] },
     { anchor: "#contact", kw: ["recommend", "reference", "vouch", "say about him", "testimonial"] },
     { anchor: "#play", kw: ["side project", "voice noir", "evolve die repeat", "board game", "for fun"] },

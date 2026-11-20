@@ -51,4 +51,4 @@ quotes: Thomas Goetz
 # Contact: Let's talk.
 [[Closing line, in your words.]]
 
-Based in Honolulu, working Pacific time (UTC−7).
+Based in Seattle, WA, working Pacific hours.
