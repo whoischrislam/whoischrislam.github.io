@@ -174,8 +174,8 @@ def main() -> int:
             "homepage hero object (the rest) changed (I design, code, and do the rest., Chris 2026-09-28)",
         "text:'code,'":
             "homepage hero typed copy (code, / and do) changed",
-        "<b>Product designer who ships production code</b> (React, TypeScript), working toward design engineering":
-            "homepage primary label must lead with Product designer, then the design-engineering direction (Chris 2026-11-10)",
+        "<b>Design engineer with roots in product design</b>, shipping production code (React, TypeScript)":
+            "homepage primary label must lead with Design engineer, roots in product design (Chris 2026-11-20; supersedes 2026-11-10 Product-designer-first)",
         "<b>First designer multiple times</b>, a <b>founder twice</b>, 14+ years across healthcare, marketplaces, and creative tools.":
             "homepage proof line changed (one-paragraph intro after Melissa review; exits line moved to logo row, Chris 2026-11-10)",
         "14+ years": "homepage must use the confirmed 14+ years notation",
